@@ -1,0 +1,38 @@
+{
+  "name": "@onfinance/maxwell",
+  "version": "0.1.0",
+  "description": "Maxwell: a self-hostable workspace agent for regulated financial-services cybersecurity workflows, run headlessly on Claude Code and OpenCode.",
+  "license": "AGPL-3.0-only",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OnFinance/Maxwell"
+  },
+  "scripts": {
+    "prepare": "git config core.hooksPath .claude/hooks/git || true",
+    "validate": "node .claude/scripts/validate.mjs",
+    "validate:schemas": "jsonschema metaschema .claude/schemas -e .schema.json --ignore .claude/schemas/layout.json --ignore .claude/schemas/tests --resolve .claude/schemas/v1 --resolve .claude/schemas/vocab --continue && jsonschema lint .claude/schemas -e .schema.json --ignore .claude/schemas/layout.json --ignore .claude/schemas/tests --resolve .claude/schemas/v1 --resolve .claude/schemas/vocab --exclude orphan_definitions --exclude simple_properties_identifiers && jsonschema fmt .claude/schemas -e .schema.json --ignore .claude/schemas/layout.json --ignore .claude/schemas/tests --check",
+    "validate:data": "node .claude/scripts/validate-data.mjs",
+    "validate:layout": "node .claude/scripts/validate-layout.mjs",
+    "validate:frontmatter": "node .claude/scripts/validate-frontmatter.mjs",
+    "validate:workflows": "node .claude/scripts/validate-workflows.mjs",
+    "validate:mirror": "node .claude/scripts/validate-mirror.mjs",
+    "fix:fmt": "jsonschema fmt .claude/schemas -e .schema.json --ignore .claude/schemas/layout.json --ignore .claude/schemas/tests",
+    "fix:lint": "jsonschema lint .claude/schemas -e .schema.json --ignore .claude/schemas/layout.json --ignore .claude/schemas/tests --resolve .claude/schemas/v1 --resolve .claude/schemas/vocab --exclude orphan_definitions --exclude simple_properties_identifiers --fix",
+    "sync:agents": "node .claude/scripts/sync-agents-mirror.mjs",
+    "ingest:session": "node .claude/scripts/sessions/ingest.mjs",
+    "kpis": "node .claude/scripts/kpis/compute.mjs",
+    "test": "npm run --silent test:schemas && node --test \".claude/scripts/**/*.test.mjs\"",
+    "test:schemas": "jsonschema test .claude/schemas/tests --resolve .claude/schemas/v1 --resolve .claude/schemas/vocab"
+  },
+  "devDependencies": {
+    "@sourcemeta/jsonschema": "^16.10.0",
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
+    "gray-matter": "^4.0.3"
+  }
+}

@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/meta/layout.schema.json",
+  "title": "Maxwell layout manifest",
+  "description": "Schema for .claude/schemas/layout.json, the single source of truth for which paths may exist and which schema validates each",
+  "examples": [
+    {
+      "schemaVersion": "1",
+      "kind": "maxwell.layout",
+      "rootEntries": [ "CLAUDE.md" ],
+      "harnessDirs": {
+        ".claude": [ "scripts" ],
+        ".agents": [ "scripts" ]
+      },
+      "rules": [
+        {
+          "glob": "CLAUDE.md",
+          "format": "markdown"
+        }
+      ],
+      "requiredPerCompany": [],
+      "requiredPerApplication": [],
+      "requiredFiles": []
+    }
+  ],
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "kind",
+    "rootEntries",
+    "harnessDirs",
+    "rules",
+    "requiredPerCompany",
+    "requiredPerApplication",
+    "requiredFiles"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/schemaVersion"
+    },
+    "kind": {
+      "const": "maxwell.layout"
+    },
+    "description": {
+      "type": "string"
+    },
+    "rootEntries": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9._-]+$"
+      }
+    },
+    "harnessDirs": {
+      "type": "object",
+      "required": [ ".claude", ".agents" ],
+      "properties": {
+        ".claude": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        ".agents": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "rules": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "format": {
+                  "enum": [ "json", "jsonl", "frontmatter", "sops-json" ]
+                }
+              }
+            },
+            "then": {
+              "required": [ "schema" ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "format": {
+                  "const": "symlink"
+                }
+              }
+            },
+            "then": {
+              "required": [ "target" ]
+            }
+          }
+        ],
+        "required": [ "glob", "format" ],
+        "properties": {
+          "glob": {
+            "type": "string",
+            "minLength": 1
+          },
+          "format": {
+            "enum": [
+              "json",
+              "jsonl",
+              "json-schema",
+              "frontmatter",
+              "markdown",
+              "yaml",
+              "javascript",
+              "workflow",
+              "diff",
+              "sops-json",
+              "symlink",
+              "empty",
+              "any"
+            ]
+          },
+          "schema": {
+            "type": "string",
+            "pattern": "^https://maxwell\\.onfinance\\.ai/schemas/.+\\.schema\\.json$"
+          },
+          "target": {
+            "type": "string"
+          },
+          "exclude": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "requiredPerCompany": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "requiredPerApplication": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "requiredFiles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

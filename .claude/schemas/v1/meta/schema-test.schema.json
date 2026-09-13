@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/meta/schema-test.schema.json",
+  "title": "Schema unit test file",
+  "description": "Format of .claude/schemas/tests/**/*.test.json consumed by `jsonschema test`. Every Maxwell schema has at least one valid and one invalid case",
+  "examples": [
+    {
+      "target": "https://maxwell.onfinance.ai/schemas/vocab/regulators.schema.json",
+      "tests": [
+        {
+          "description": "known regulator",
+          "valid": true,
+          "data": "SEBI"
+        },
+        {
+          "description": "unknown regulator",
+          "valid": false,
+          "data": "FBI"
+        }
+      ]
+    }
+  ],
+  "type": "object",
+  "required": [ "target", "tests" ],
+  "properties": {
+    "target": {
+      "type": "string",
+      "pattern": "^https://maxwell\\.onfinance\\.ai/schemas/.+\\.schema\\.json$"
+    },
+    "$comment": {
+      "type": "string"
+    },
+    "tests": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "oneOf": [
+          {
+            "required": [ "data" ]
+          },
+          {
+            "required": [ "dataPath" ]
+          }
+        ],
+        "required": [ "valid", "description" ],
+        "properties": {
+          "description": {
+            "type": "string",
+            "minLength": 3
+          },
+          "valid": {
+            "type": "boolean"
+          },
+          "data": true,
+          "dataPath": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

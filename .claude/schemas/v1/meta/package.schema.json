@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/meta/package.schema.json",
+  "title": "Maxwell package.json",
+  "description": "Guards the npm manifest: the validation scripts must keep existing and the package must stay private and AGPL",
+  "examples": [
+    {
+      "name": "@onfinance/maxwell",
+      "version": "0.1.0",
+      "license": "AGPL-3.0-only",
+      "private": true,
+      "type": "module",
+      "scripts": {
+        "validate": "node .claude/scripts/validate.mjs",
+        "validate:schemas": "node .claude/scripts/validate-schemas.mjs",
+        "validate:data": "node .claude/scripts/validate-data.mjs",
+        "validate:layout": "node .claude/scripts/validate-layout.mjs",
+        "validate:frontmatter": "node .claude/scripts/validate-frontmatter.mjs",
+        "validate:workflows": "node .claude/scripts/validate-workflows.mjs",
+        "validate:mirror": "node .claude/scripts/validate-mirror.mjs",
+        "sync:agents": "node .claude/scripts/sync-agents.mjs",
+        "kpis": "node .claude/scripts/kpis.mjs",
+        "ingest:session": "node .claude/scripts/ingest-session.mjs",
+        "test": "node .claude/scripts/test.mjs"
+      }
+    }
+  ],
+  "type": "object",
+  "required": [ "name", "version", "license", "private", "type", "scripts" ],
+  "properties": {
+    "name": {
+      "const": "@onfinance/maxwell"
+    },
+    "version": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/semver"
+    },
+    "description": {
+      "type": "string"
+    },
+    "license": {
+      "const": "AGPL-3.0-only"
+    },
+    "private": {
+      "const": true
+    },
+    "type": {
+      "const": "module"
+    },
+    "engines": {
+      "type": "object"
+    },
+    "repository": {
+      "type": "object"
+    },
+    "scripts": {
+      "type": "object",
+      "required": [
+        "validate",
+        "validate:schemas",
+        "validate:data",
+        "validate:layout",
+        "validate:frontmatter",
+        "validate:workflows",
+        "validate:mirror",
+        "sync:agents",
+        "kpis",
+        "ingest:session",
+        "test"
+      ],
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "devDependencies": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "dependencies": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "lint-staged": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false
+}

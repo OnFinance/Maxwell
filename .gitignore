@@ -1,0 +1,12 @@
+node_modules/
+# cloned application sources (manifests are committed, checkouts are not)
+applications/*/repos/*/
+# decrypted credentials must never be committed
+applications/*/credentials.dec.json
+# local sops/age keys
+.sops-key.txt
+*.age-key.txt
+# raw harness transcripts can be large; keep summaries, ignore verbatim copies unless opted in
+kpis/data/raw/sessions/*/*.jsonl
+kpis/data/raw/sessions/*/*.export.json
+.DS_Store

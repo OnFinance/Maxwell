@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json",
+  "title": "Maxwell status lifecycles",
+  "description": "Closed status vocabularies. Referenced via $ref to '#/$defs/<name>'. Transitions are documented in the maxwell-conventions skill",
+  "x-lint-exclude": [ "top_level_examples" ],
+  "$defs": {
+    "controlImplementation": {
+      "enum": [
+        "implemented",
+        "partial",
+        "planned",
+        "not-implemented",
+        "not-applicable",
+        "alternative",
+        "unknown"
+      ]
+    },
+    "controlEffectiveness": {
+      "enum": [
+        "effective",
+        "partially-effective",
+        "ineffective",
+        "not-tested"
+      ]
+    },
+    "finding": {
+      "enum": [
+        "open",
+        "triaged",
+        "remediating",
+        "resolved",
+        "risk-accepted",
+        "false-positive",
+        "duplicate"
+      ]
+    },
+    "risk": {
+      "enum": [
+        "open",
+        "investigating",
+        "mitigating",
+        "closed",
+        "accepted",
+        "deviation-approved"
+      ]
+    },
+    "incident": {
+      "enum": [
+        "detected",
+        "triaged",
+        "contained",
+        "eradicated",
+        "recovered",
+        "closed",
+        "false-positive"
+      ]
+    },
+    "initiative": {
+      "enum": [
+        "proposed",
+        "approved",
+        "in-progress",
+        "blocked",
+        "verifying",
+        "closed",
+        "cancelled",
+        "reopened"
+      ]
+    },
+    "task": {
+      "enum": [ "todo", "in-progress", "blocked", "done", "cancelled" ]
+    },
+    "suggestion": {
+      "enum": [
+        "proposed",
+        "surfaced",
+        "accepted",
+        "rejected",
+        "merged",
+        "reverted",
+        "superseded",
+        "expired"
+      ]
+    },
+    "changeType": {
+      "description": "ITIL 4 change enablement types",
+      "enum": [ "standard", "normal", "emergency" ]
+    },
+    "vexStatus": {
+      "description": "OpenVEX statement statuses",
+      "enum": [ "not_affected", "affected", "fixed", "under_investigation" ]
+    },
+    "environmentTier": {
+      "enum": [
+        "dev",
+        "test",
+        "devtest",
+        "qa",
+        "uat",
+        "staging",
+        "prod",
+        "dr",
+        "sandbox"
+      ]
+    },
+    "exposure": {
+      "enum": [ "internet", "partner", "internal", "isolated" ]
+    },
+    "dataClassification": {
+      "enum": [
+        "public",
+        "internal",
+        "confidential",
+        "restricted",
+        "pii",
+        "spdi",
+        "cardholder",
+        "financial",
+        "regulatory"
+      ]
+    }
+  }
+}

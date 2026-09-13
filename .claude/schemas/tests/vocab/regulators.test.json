@@ -1,0 +1,7 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/vocab/regulators.schema.json",
+  "tests": [
+    { "description": "known regulator", "valid": true, "data": "SEBI" },
+    { "description": "unknown regulator", "valid": false, "data": "FBI" }
+  ]
+}

@@ -1,0 +1,317 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json",
+  "title": "Maxwell common definitions",
+  "description": "Shared building blocks referenced by every Maxwell schema. Documents never validate against this file directly",
+  "x-lint-exclude": [ "top_level_examples" ],
+  "$defs": {
+    "schemaVersion": {
+      "description": "Major version of the Maxwell document schema family. Bumped only on breaking changes",
+      "const": "1"
+    },
+    "slug": {
+      "description": "Human-chosen identifier for companies, applications, vendors, repos, images, environments and KPIs",
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{1,62}$"
+    },
+    "ulid": {
+      "type": "string",
+      "pattern": "^[0-7][0-9A-HJKMNP-TV-Z]{25}$"
+    },
+    "initiativeId": {
+      "type": "string",
+      "pattern": "^init_[0-7][0-9A-HJKMNP-TV-Z]{25}$"
+    },
+    "taskId": {
+      "type": "string",
+      "pattern": "^task_[0-9]{1,6}$"
+    },
+    "suggestionId": {
+      "type": "string",
+      "pattern": "^sug_[0-7][0-9A-HJKMNP-TV-Z]{25}$"
+    },
+    "findingId": {
+      "type": "string",
+      "pattern": "^fnd_[0-7][0-9A-HJKMNP-TV-Z]{25}$"
+    },
+    "observationId": {
+      "type": "string",
+      "pattern": "^obs_[0-7][0-9A-HJKMNP-TV-Z]{25}$"
+    },
+    "riskId": {
+      "type": "string",
+      "pattern": "^rsk_[0-7][0-9A-HJKMNP-TV-Z]{25}$"
+    },
+    "incidentId": {
+      "type": "string",
+      "pattern": "^inc_[0-7][0-9A-HJKMNP-TV-Z]{25}$"
+    },
+    "queryId": {
+      "type": "string",
+      "pattern": "^q_[0-7][0-9A-HJKMNP-TV-Z]{25}$"
+    },
+    "runId": {
+      "description": "Identifier of one headless run (a bundle of harness sessions). Set via MAXWELL_RUN_ID",
+      "type": "string",
+      "pattern": "^run_[0-7][0-9A-HJKMNP-TV-Z]{25}$"
+    },
+    "sessionId": {
+      "description": "Harness session identifier. Claude Code uses UUIDs; OpenCode uses ses_ prefixed ids",
+      "type": "string",
+      "pattern": "^([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}|ses_[A-Za-z0-9]{6,64})$"
+    },
+    "controlId": {
+      "description": "Control identifier as published by the framework, e.g. SEBI CSCRF 'GV.SC.S5', ISO 'A.8.8', NIST CSF 'PR.AA-01'",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._()\\-]{0,63}$"
+    },
+    "timestamp": {
+      "description": "RFC 3339 timestamp in UTC",
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,9})?Z$",
+      "format": "date-time"
+    },
+    "date": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+      "format": "date"
+    },
+    "url": {
+      "type": "string",
+      "pattern": "^https?://",
+      "format": "uri"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "gitCommit": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{7,40}$"
+    },
+    "semver": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+([-+][0-9A-Za-z.-]+)?$"
+    },
+    "workspacePath": {
+      "description": "Path relative to the workspace root, POSIX separators, no traversal",
+      "type": "string",
+      "pattern": "^(?!\\.\\./)(?!/)([A-Za-z0-9._-]+/)*[A-Za-z0-9._-]+$"
+    },
+    "nonEmptyString": {
+      "type": "string",
+      "maxLength": 4000,
+      "minLength": 1
+    },
+    "shortText": {
+      "type": "string",
+      "maxLength": 200,
+      "minLength": 1
+    },
+    "longText": {
+      "type": "string",
+      "maxLength": 20000,
+      "minLength": 1
+    },
+    "email": {
+      "type": "string",
+      "format": "email"
+    },
+    "countryCode": {
+      "type": "string",
+      "pattern": "^[A-Z]{2}$"
+    },
+    "lei": {
+      "type": "string",
+      "pattern": "^[A-Z0-9]{18}[0-9]{2}$"
+    },
+    "purl": {
+      "type": "string",
+      "pattern": "^pkg:[a-z0-9.+-]+/.+"
+    },
+    "cveId": {
+      "type": "string",
+      "pattern": "^CVE-[0-9]{4}-[0-9]{4,}$"
+    },
+    "severity": {
+      "description": "Maxwell canonical severity. Map CVSS 4.0/3.1 qualitative ratings 1:1; 'info' is for observations with no risk",
+      "enum": [ "critical", "high", "medium", "low", "info" ]
+    },
+    "confidence": {
+      "enum": [ "confirmed", "likely", "possible", "unverified" ]
+    },
+    "harness": {
+      "enum": [ "claude-code", "opencode", "human", "script" ]
+    },
+    "actor": {
+      "description": "Who performed an action: a harness agent, a human, or a script",
+      "type": "object",
+      "required": [ "type", "id" ],
+      "properties": {
+        "type": {
+          "enum": [ "agent", "human", "script" ]
+        },
+        "id": {
+          "description": "Agent name (e.g. 'iac-auditor'), human email or handle, or script path",
+          "$ref": "#/$defs/shortText"
+        }
+      },
+      "additionalProperties": false
+    },
+    "provenance": {
+      "description": "How and by whom a document or record was produced. Links outputs to harness sessions for KPI attribution",
+      "type": "object",
+      "required": [ "harness", "generatedAt" ],
+      "properties": {
+        "harness": {
+          "$ref": "#/$defs/harness"
+        },
+        "generatedAt": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "sessionId": {
+          "$ref": "#/$defs/sessionId"
+        },
+        "runId": {
+          "$ref": "#/$defs/runId"
+        },
+        "workflow": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/workflows.schema.json"
+        },
+        "agent": {
+          "$ref": "#/$defs/shortText"
+        },
+        "model": {
+          "$ref": "#/$defs/shortText"
+        },
+        "gitCommit": {
+          "$ref": "#/$defs/gitCommit"
+        },
+        "inputsHash": {
+          "description": "sha256 over the ordered inputs that produced this artefact, for reproducibility checks",
+          "$ref": "#/$defs/sha256"
+        }
+      },
+      "additionalProperties": false
+    },
+    "regulatoryRef": {
+      "description": "Pointer to a clause or control in a regulatory instrument or framework",
+      "type": "object",
+      "required": [ "regulator", "instrument", "controlId" ],
+      "properties": {
+        "regulator": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/regulators.schema.json"
+        },
+        "instrument": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/instruments.schema.json"
+        },
+        "version": {
+          "$ref": "#/$defs/shortText"
+        },
+        "controlId": {
+          "$ref": "#/$defs/controlId"
+        },
+        "url": {
+          "$ref": "#/$defs/url"
+        }
+      },
+      "additionalProperties": false
+    },
+    "evidenceRef": {
+      "description": "Reference to evidence stored in the workspace or an external system",
+      "type": "object",
+      "required": [ "type", "ref" ],
+      "properties": {
+        "type": {
+          "enum": [
+            "workspace-file",
+            "url",
+            "command-output",
+            "screenshot",
+            "log-excerpt",
+            "ticket",
+            "pull-request",
+            "commit",
+            "sbom",
+            "sarif",
+            "ocsf"
+          ]
+        },
+        "ref": {
+          "description": "Workspace path, URL, ticket key, PR URL or commit hash depending on type",
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "collectedAt": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "description": {
+          "$ref": "#/$defs/shortText"
+        }
+      },
+      "additionalProperties": false
+    },
+    "assetRef": {
+      "description": "Points at an asset in the workspace: an application, an environment, a repo, an image or a vendor",
+      "type": "object",
+      "required": [ "type", "appId" ],
+      "properties": {
+        "type": {
+          "enum": [
+            "application",
+            "environment",
+            "repo",
+            "image",
+            "vendor",
+            "company"
+          ]
+        },
+        "appId": {
+          "$ref": "#/$defs/slug"
+        },
+        "envId": {
+          "$ref": "#/$defs/slug"
+        },
+        "repoId": {
+          "$ref": "#/$defs/slug"
+        },
+        "imageId": {
+          "$ref": "#/$defs/slug"
+        },
+        "vendorId": {
+          "$ref": "#/$defs/slug"
+        },
+        "path": {
+          "$ref": "#/$defs/workspacePath"
+        }
+      },
+      "additionalProperties": false
+    },
+    "money": {
+      "type": "object",
+      "required": [ "amount", "currency" ],
+      "properties": {
+        "amount": {
+          "type": "number",
+          "minimum": 0
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "tags": {
+      "type": "array",
+      "maxItems": 32,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9][a-z0-9:_-]{0,47}$"
+      }
+    }
+  }
+}
