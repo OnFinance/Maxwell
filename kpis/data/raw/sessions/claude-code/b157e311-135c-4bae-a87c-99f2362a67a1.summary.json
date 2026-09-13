@@ -1,0 +1,115 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.session.summary",
+  "sessionId": "b157e311-135c-4bae-a87c-99f2362a67a1",
+  "harness": "claude-code",
+  "harnessVersion": "2.1.270",
+  "runId": "run_01M2E41RNSKYR5GV880QKGSWM8",
+  "workflow": "manual",
+  "startedAt": "2026-09-13T17:49:19.128Z",
+  "endedAt": "2026-09-13T19:31:31.091Z",
+  "durationMs": 6131963,
+  "turns": 778,
+  "inferenceCalls": 778,
+  "toolCalls": {
+    "total": 757,
+    "byTool": {
+      "ToolSearch": 14,
+      "EnterPlanMode": 1,
+      "Bash": 594,
+      "Agent": 2,
+      "Write": 23,
+      "Read": 15,
+      "AskUserQuestion": 4,
+      "ExitPlanMode": 1,
+      "Workflow": 1,
+      "WebSearch": 45,
+      "WebFetch": 34,
+      "Skill": 2,
+      "StructuredOutput": 21
+    }
+  },
+  "subagentSessions": 43,
+  "permissionDenials": [
+    {
+      "toolName": "unknown",
+      "reason": "automode-blocked"
+    },
+    {
+      "toolName": "unknown",
+      "reason": "automode-blocked"
+    },
+    {
+      "toolName": "unknown",
+      "reason": "automode-unavailable"
+    }
+  ],
+  "models": [
+    {
+      "model": "claude-fable-5-1",
+      "provider": "anthropic",
+      "tokens": {
+        "input": 19706,
+        "output": 1375237,
+        "cacheWrite5m": 4169330,
+        "cacheWrite1h": 467654,
+        "cacheRead": 68349687,
+        "thinking": 418530
+      },
+      "webSearchRequests": 0,
+      "webFetchRequests": 0,
+      "costUsd": 147.516037
+    },
+    {
+      "model": "claude-opus-5",
+      "provider": "anthropic",
+      "tokens": {
+        "input": 228,
+        "output": 128825,
+        "cacheWrite5m": 627252,
+        "cacheWrite1h": 0,
+        "cacheRead": 8414729,
+        "thinking": 12992
+      },
+      "webSearchRequests": 0,
+      "webFetchRequests": 0,
+      "costUsd": 11.349455
+    }
+  ],
+  "costUsd": {
+    "computed": 158.865492,
+    "reported": null,
+    "deltaPct": null
+  },
+  "pricingVersion": "2026-09-13",
+  "dedup": {
+    "strategy": "requestId-max-total-tokens",
+    "duplicatesDropped": 1576
+  },
+  "filesWritten": [
+    ".claude/schemas/v1/frontmatter/opencode-command.schema.json",
+    ".claude/schemas/v1/frontmatter/skill.schema.json",
+    ".claude/schemas/v1/harness/claude-settings.schema.json",
+    ".claude/schemas/vocab/pricing.schema.json",
+    ".claude/scripts/lib/layout.mjs",
+    ".claude/scripts/validate.mjs",
+    ".claude/skills/credentials-sops/SKILL.md",
+    ".claude/skills/maxwell-conventions/SKILL.md",
+    ".claude/skills/reference-architectures/SKILL.md",
+    ".claude/skills/regulatory-catalogs/references/regulatory-comms-manager-offline-copy.md",
+    "CLAUDE.md",
+    "kpis/measurement/incident_rate.md"
+  ],
+  "linesAdded": 0,
+  "linesRemoved": 0,
+  "outcome": "success",
+  "transcriptFormatVersion": "2.1.270",
+  "provenance": {
+    "harness": "script",
+    "generatedAt": "2026-09-13T19:31:33Z",
+    "sessionId": "b157e311-135c-4bae-a87c-99f2362a67a1",
+    "runId": "run_01M2E41RNSKYR5GV880QKGSWM8",
+    "workflow": "manual",
+    "agent": ".claude/scripts/sessions/ingest.mjs"
+  }
+}

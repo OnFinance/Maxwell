@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.session.meta",
+  "sessionId": "b157e311-135c-4bae-a87c-99f2362a67a1",
+  "harness": "claude-code",
+  "workflow": "manual",
+  "args": {
+    "appIds": [],
+    "envIds": [],
+    "dryRun": false
+  },
+  "startedAt": "2026-09-13T19:31:33Z",
+  "cwd": "/home/priyesh/Maxwell",
+  "transcriptPath": "kpis/data/raw/sessions/claude-code/b157e311-135c-4bae-a87c-99f2362a67a1.jsonl",
+  "sampled": true,
+  "samplingReason": "forced",
+  "model": "unknown",
+  "invokedBy": {
+    "type": "script",
+    "id": "headless"
+  },
+  "provenance": {
+    "harness": "script",
+    "generatedAt": "2026-09-13T19:31:33Z",
+    "sessionId": "b157e311-135c-4bae-a87c-99f2362a67a1",
+    "agent": ".claude/scripts/sessions/ingest.mjs"
+  },
+  "runId": "run_01M2E41RNSKYR5GV880QKGSWM8",
+  "endedAt": "2026-09-13T19:31:33Z",
+  "harnessVersion": "2.1.270"
+}
