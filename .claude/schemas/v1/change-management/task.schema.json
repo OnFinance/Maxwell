@@ -1,0 +1,434 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/change-management/task.schema.json",
+  "title": "Initiative task",
+  "description": "company-profile/<company_id>/change_management/initiatives/<init_id>/tasks/task_<n>.json: one unit of work under an initiative. The cm_actionability KPI (kpi/registry.schema.json) is count(tasks with status in [in-progress, done] and humanEdited == false) / count(tasks created in period): a generated task counts as actionable when a human moved it forward without rewriting its text. owner, dueAt, acceptanceCriteria, verificationMethod and rootCause are still required at creation so the task is executable as written, but they do not enter the formula",
+  "examples": [
+    {
+      "schemaVersion": "1",
+      "kind": "maxwell.cm.task",
+      "taskId": "task_1",
+      "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+      "companyId": "arthveda-securities",
+      "seq": 1,
+      "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+      "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+      "owner": {
+        "type": "human",
+        "id": "platform-lead@arthveda.example"
+      },
+      "status": "done",
+      "humanEdited": false,
+      "acceptanceCriteria": [
+        "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+        "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+        "Build fails when the SBOM step exits non-zero"
+      ],
+      "verificationMethod": {
+        "type": "re-probe",
+        "workflow": "probe-cicd-env",
+        "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+      },
+      "rootCause": {
+        "category": "process-gap",
+        "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+      },
+      "targets": [
+        {
+          "type": "repo",
+          "appId": "trading-gateway",
+          "repoId": "trading-gateway-api",
+          "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+        }
+      ],
+      "effortEstimateHours": 4,
+      "createdAt": "2026-08-22T04:10:00Z",
+      "startedAt": "2026-09-02T05:00:00Z",
+      "doneAt": "2026-09-05T13:20:00Z",
+      "dueAt": "2026-09-12T06:30:00Z",
+      "evidence": [
+        {
+          "type": "pull-request",
+          "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+          "collectedAt": "2026-09-05T13:20:00Z",
+          "description": "PR adding the sbom job"
+        },
+        {
+          "type": "sbom",
+          "ref": "applications/trading-gateway/images/trading-gateway-api.cdx.json",
+          "sha256": "6b3d7a1f0c9e2b4d5f6a7b8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f708192a",
+          "collectedAt": "2026-09-05T13:25:00Z"
+        }
+      ],
+      "suggestionIds": [ "sug_01M0KTP6M0GSB53TM0315NTTZW" ],
+      "dependsOn": [],
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-05T13:20:00Z",
+        "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+        "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+        "workflow": "impl-change-management",
+        "agent": "change-manager"
+      }
+    }
+  ],
+  "type": "object",
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "in-progress"
+          }
+        }
+      },
+      "then": {
+        "required": [ "startedAt" ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "todo"
+          }
+        }
+      },
+      "then": {
+        "not": {
+          "required": [ "startedAt" ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "blocked"
+          }
+        }
+      },
+      "then": {
+        "required": [ "blockedReason" ]
+      },
+      "else": {
+        "not": {
+          "required": [ "blockedReason" ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "cancelled"
+          }
+        }
+      },
+      "then": {
+        "required": [ "cancelledAt", "cancelledReason" ]
+      },
+      "else": {
+        "not": {
+          "anyOf": [
+            {
+              "required": [ "cancelledAt" ]
+            },
+            {
+              "required": [ "cancelledReason" ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "humanEdited": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "required": [ "lastEditedBy", "lastEditedAt" ]
+      }
+    }
+  ],
+  "if": {
+    "properties": {
+      "status": {
+        "const": "done"
+      }
+    }
+  },
+  "then": {
+    "required": [ "startedAt", "doneAt" ],
+    "properties": {
+      "acceptanceCriteria": {
+        "type": "array",
+        "minItems": 1
+      },
+      "evidence": {
+        "type": "array",
+        "minItems": 1
+      },
+      "rootCause": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "not": {
+              "const": "unknown"
+            }
+          }
+        }
+      }
+    }
+  },
+  "else": {
+    "not": {
+      "required": [ "doneAt" ]
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "kind",
+    "taskId",
+    "initiativeId",
+    "companyId",
+    "seq",
+    "title",
+    "description",
+    "owner",
+    "status",
+    "humanEdited",
+    "acceptanceCriteria",
+    "verificationMethod",
+    "rootCause",
+    "targets",
+    "effortEstimateHours",
+    "createdAt",
+    "evidence",
+    "suggestionIds",
+    "dependsOn",
+    "provenance"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/schemaVersion"
+    },
+    "kind": {
+      "const": "maxwell.cm.task"
+    },
+    "taskId": {
+      "description": "task_<n> where <n> equals seq; also the file name without .json. Unique within the initiative, not globally",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/taskId"
+    },
+    "initiativeId": {
+      "description": "Initiative this task belongs to; must equal the grandparent directory name",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/initiativeId"
+    },
+    "companyId": {
+      "description": "Slug of the owning company; must equal the company-profile directory name",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+    },
+    "seq": {
+      "description": "1-based position of the task within the initiative; equals the <n> in taskId and the file name",
+      "type": "integer",
+      "maximum": 999999,
+      "minimum": 1
+    },
+    "title": {
+      "description": "Imperative one-line title of the work item",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+    },
+    "description": {
+      "description": "What to change, where, and any constraints the implementer must respect",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+    },
+    "owner": {
+      "description": "Person or agent responsible for completing the task; counted by cm_actionability",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/actor"
+    },
+    "status": {
+      "description": "todo -> in-progress -> (blocked) -> done, or cancelled from any state. todo forbids startedAt; in-progress requires startedAt; blocked requires blockedReason (remove it on unblock, it is forbidden in every other state); done requires startedAt, doneAt, at least one acceptance criterion, at least one evidence item and a rootCause.category other than unknown; cancelled requires cancelledAt and cancelledReason. Every transition is mirrored by a task-* event in the initiative timeline",
+      "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/task"
+    },
+    "humanEdited": {
+      "description": "false when the harness generates the task; true once any human changed title, description or acceptanceCriteria after generation. Set by the harness edit hook, never by an agent. cm_actionability counts only tasks with humanEdited == false; a true value requires lastEditedBy and lastEditedAt",
+      "type": "boolean"
+    },
+    "lastEditedBy": {
+      "description": "Human who last changed the task text; set together with lastEditedAt by the harness edit hook and mirrored by a task-edited timeline event",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/actor",
+      "properties": {
+        "type": {
+          "const": "human"
+        }
+      }
+    },
+    "lastEditedAt": {
+      "description": "When lastEditedBy last changed the task text",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+    },
+    "acceptanceCriteria": {
+      "description": "Testable statements that must all hold for the task to be done. Write them at creation; cm_actionability counts tasks with at least one",
+      "type": "array",
+      "maxItems": 50,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/nonEmptyString"
+      }
+    },
+    "verificationMethod": {
+      "$ref": "#/$defs/verificationMethod"
+    },
+    "rootCause": {
+      "$ref": "#/$defs/rootCause"
+    },
+    "targets": {
+      "description": "Assets the task changes; usually a subset of the initiative's targets",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/assetRef"
+      }
+    },
+    "effortEstimateHours": {
+      "description": "Estimated engineering effort in hours, used to schedule work against dueAt",
+      "type": "number",
+      "maximum": 10000,
+      "minimum": 0
+    },
+    "createdAt": {
+      "description": "When the task was added to the initiative",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+    },
+    "startedAt": {
+      "description": "When work began; required once status is in-progress or done, forbidden while todo",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+    },
+    "doneAt": {
+      "description": "When all acceptance criteria were met; present only when status is done",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+    },
+    "dueAt": {
+      "description": "Task-level deadline, never later than the initiative's dueAt; counted by cm_actionability",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+    },
+    "evidence": {
+      "description": "Proof the task was done: PRs, commits, probe output, SBOMs. At least one item once status is done",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/evidenceRef"
+      }
+    },
+    "suggestionIds": {
+      "description": "Auto-improvement suggestions whose diffs implement this task",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/suggestionId"
+      }
+    },
+    "dependsOn": {
+      "description": "Tasks in the same initiative that must be done before this one can start",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/taskId"
+      }
+    },
+    "blockedReason": {
+      "description": "Why the task cannot proceed and what would unblock it; present exactly while status is blocked and removed on unblock (the task-blocked timeline event keeps the history)",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/nonEmptyString"
+    },
+    "provenance": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/provenance"
+    },
+    "cancelledAt": {
+      "description": "When the task was cancelled; present exactly when status is cancelled",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+    },
+    "cancelledReason": {
+      "description": "Why the task was abandoned (superseded by another task, finding closed as false positive, initiative cancelled); present exactly when status is cancelled",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/nonEmptyString"
+    }
+  },
+  "unevaluatedProperties": false,
+  "dependentRequired": {
+    "lastEditedBy": [ "lastEditedAt" ],
+    "lastEditedAt": [ "lastEditedBy" ]
+  },
+  "$defs": {
+    "verificationMethod": {
+      "description": "How completion will be independently verified. type re-probe names the probe workflow to rerun in workflow; every other type must omit workflow",
+      "type": "object",
+      "if": {
+        "properties": {
+          "type": {
+            "const": "re-probe"
+          }
+        }
+      },
+      "then": {
+        "required": [ "workflow" ]
+      },
+      "else": {
+        "not": {
+          "required": [ "workflow" ]
+        }
+      },
+      "required": [ "type", "description" ],
+      "properties": {
+        "type": {
+          "description": "re-probe = rerun a Maxwell probe workflow; manual-test = a human exercises the control; code-review = reviewer inspects the diff; evidence-review = inspect uploaded artefacts; pentest = external or internal penetration test; attestation = owner or vendor signs off",
+          "enum": [
+            "re-probe",
+            "manual-test",
+            "code-review",
+            "evidence-review",
+            "pentest",
+            "attestation"
+          ]
+        },
+        "workflow": {
+          "description": "Maxwell probe workflow to rerun (probe-* or runtime-probe-*); required exactly when type is re-probe",
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/workflows.schema.json",
+          "type": "string",
+          "pattern": "^(runtime-)?probe-"
+        },
+        "description": {
+          "description": "Concrete verification steps and the expected observable result",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/nonEmptyString"
+        }
+      },
+      "additionalProperties": false
+    },
+    "rootCause": {
+      "description": "Why the gap existed, so the fix addresses the cause and not only the symptom. Required at creation; category unknown is allowed while the task is open but forbidden once status is done",
+      "type": "object",
+      "required": [ "category", "description" ],
+      "properties": {
+        "category": {
+          "description": "missing-control = control never implemented; misconfiguration = control exists but is set wrongly; vulnerable-dependency = third-party component; insecure-code = first-party code defect; process-gap = no procedure or ownership; vendor-gap = outsourced party's failure; awareness = people did not know the requirement; unknown = not yet analysed (treated as no root cause; not allowed once status is done)",
+          "enum": [
+            "missing-control",
+            "misconfiguration",
+            "vulnerable-dependency",
+            "insecure-code",
+            "process-gap",
+            "vendor-gap",
+            "awareness",
+            "unknown"
+          ]
+        },
+        "description": {
+          "description": "Root-cause narrative specific to this task",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/nonEmptyString"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

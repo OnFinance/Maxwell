@@ -1,0 +1,640 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/harness/claude-settings.schema.json",
+  "title": "Claude Code project settings",
+  "description": "Validates .claude/settings.json, the Claude Code project settings Maxwell ships with. Human-authored: no schemaVersion, kind or provenance because Claude Code reads this file directly. Only the keys Claude Code documents and Maxwell relies on are permitted; hook event names and hook handler types are closed enums. Values that Claude Code ignores in a project file (defaultMode auto or bypassPermissions, model inherit) are refused rather than silently dropped",
+  "examples": [
+    {
+      "$schema": "https://json.schemastore.org/claude-code-settings.json",
+      "permissions": {
+        "defaultMode": "acceptEdits",
+        "disableBypassPermissionsMode": "disable",
+        "blockReadsOutsideWorkingDirectories": true,
+        "allow": [
+          "Read(./**)",
+          "Edit(./company-profile/**)",
+          "Write(./company-profile/**)",
+          "Edit(./applications/**)",
+          "Write(./applications/**)",
+          "Edit(./kpis/**)",
+          "Write(./kpis/**)",
+          "Edit(./cves/**)",
+          "Write(./cves/**)",
+          "Bash(npm run validate*)",
+          "Bash(npm run kpis*)",
+          "Bash(npm run sync:agents)",
+          "Bash(node .claude/scripts/*)",
+          "Bash(git status*)",
+          "Bash(git diff*)",
+          "Bash(git log*)",
+          "Workflow(refresh-ctx)",
+          "Workflow(refresh-soc)",
+          "Workflow(probe-iac)",
+          "Workflow(report-audit-findings)",
+          "Workflow(validate)"
+        ],
+        "ask": [
+          "Bash(git push*)",
+          "Bash(git commit*)",
+          "Bash(sops --decrypt*)"
+        ],
+        "deny": [
+          "Read(./applications/*/credentials.dec.json)",
+          "Read(./**/*.dec.json)",
+          "Edit(./.claude/schemas/**)",
+          "Write(./.claude/schemas/**)",
+          "Edit(./.agents/**)",
+          "Write(./.agents/**)",
+          "Bash(rm -rf*)",
+          "Bash(curl*)",
+          "WebFetch"
+        ]
+      },
+      "hooks": {
+        "SessionStart": [
+          {
+            "hooks": [
+              {
+                "type": "command",
+                "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\"",
+                "timeout": 30
+              }
+            ]
+          }
+        ],
+        "UserPromptSubmit": [
+          {
+            "hooks": [
+              {
+                "type": "command",
+                "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/user-prompt.mjs\"",
+                "timeout": 10
+              }
+            ]
+          }
+        ],
+        "PreToolUse": [
+          {
+            "matcher": "Write|Edit|MultiEdit",
+            "hooks": [
+              {
+                "type": "command",
+                "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-write.mjs\"",
+                "timeout": 20,
+                "statusMessage": "Checking layout and secrets"
+              }
+            ]
+          }
+        ],
+        "PostToolUse": [
+          {
+            "matcher": "Write|Edit|MultiEdit",
+            "hooks": [
+              {
+                "type": "command",
+                "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/validate-write.mjs\"",
+                "timeout": 60,
+                "statusMessage": "Validating against Maxwell schemas"
+              }
+            ]
+          }
+        ],
+        "SessionEnd": [
+          {
+            "hooks": [
+              {
+                "type": "command",
+                "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-end.mjs\"",
+                "timeout": 120,
+                "async": true
+              }
+            ]
+          }
+        ],
+        "Notification": [
+          {
+            "matcher": "permission_prompt",
+            "hooks": [
+              {
+                "type": "http",
+                "url": "https://alerts.example.internal/claude",
+                "headers": {
+                  "Authorization": "Bearer $MAXWELL_ALERT_TOKEN"
+                },
+                "allowedEnvVars": [ "MAXWELL_ALERT_TOKEN" ]
+              }
+            ]
+          }
+        ]
+      },
+      "env": {
+        "MAXWELL_HARNESS": "claude-code",
+        "MAXWELL_WORKSPACE_ROOT": ".",
+        "SOPS_AGE_KEY_FILE": "/etc/maxwell/age.key",
+        "NODE_OPTIONS": "--max-old-space-size=2048"
+      },
+      "model": "opus",
+      "effortLevel": "high",
+      "disableWorkflows": false,
+      "attribution": {
+        "commit": "Co-Authored-By: Maxwell <maxwell@onfinance.ai>",
+        "pr": "",
+        "sessionUrl": false
+      },
+      "cleanupPeriodDays": 90,
+      "enabledPlugins": {}
+    }
+  ],
+  "type": "object",
+  "required": [ "permissions", "hooks" ],
+  "properties": {
+    "$schema": {
+      "description": "Optional editor hint pointing at the public Claude Code settings JSON Schema; Maxwell validation uses this file instead",
+      "const": "https://json.schemastore.org/claude-code-settings.json"
+    },
+    "permissions": {
+      "description": "Permission rules evaluated before every tool call. deny wins over ask, ask wins over allow. Rule syntax is 'Tool' or 'Tool(specifier)' where specifier is a glob for paths (Read/Edit/Write), a command prefix for Bash, or a workflow name for Workflow",
+      "type": "object",
+      "required": [ "allow", "deny" ],
+      "properties": {
+        "defaultMode": {
+          "description": "Permission mode used when no rule matches. Maxwell headless runs use acceptEdits. bypassPermissions is refused because the hooks must stay in the loop, and auto is refused because Claude Code ignores both values in a project settings file",
+          "enum": [ "default", "acceptEdits", "plan", "dontAsk", "manual" ]
+        },
+        "disableBypassPermissionsMode": {
+          "description": "The string 'disable' stops anyone entering bypassPermissions mode (rejects --dangerously-skip-permissions and ignores a subagent's permissionMode bypassPermissions), which keeps the Maxwell guard hooks in the loop",
+          "const": "disable"
+        },
+        "blockReadsOutsideWorkingDirectories": {
+          "description": "When true the Read, Grep, Glob and LSP tools refuse paths outside the working directories in every permission mode; set true so decrypted credentials outside the workspace stay unreadable",
+          "type": "boolean"
+        },
+        "allow": {
+          "description": "Rules that let a tool call run without prompting. Keep Bash rules as narrow command prefixes (e.g. 'Bash(npm run validate*)') and Workflow rules per workflow name",
+          "$ref": "#/$defs/permissionRules"
+        },
+        "ask": {
+          "description": "Rules that always prompt a human, e.g. git push or decrypting credentials. Ignored in headless mode, where the call is refused",
+          "$ref": "#/$defs/permissionRules"
+        },
+        "deny": {
+          "description": "Rules that always block. Must include decrypted credential files, schema edits and the generated .agents mirror",
+          "$ref": "#/$defs/permissionRules"
+        },
+        "additionalDirectories": {
+          "description": "Extra directories Claude Code may access beyond the workspace, e.g. a cloned target repository checkout. Absolute or workspace-relative paths",
+          "type": "array",
+          "maxItems": 16,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "hooks": {
+      "description": "Hook handlers keyed by Claude Code lifecycle event. Each event holds matcher groups; each group runs its handlers in order. Every documented event is permitted; Maxwell relies on SessionStart, UserPromptSubmit, PreToolUse, PostToolUse and SessionEnd for KPI attribution and write guarding. Matchers are exact strings or '|'-separated lists when they contain only letters, digits, '_', '-', spaces, ',' and '|', and unanchored regexes otherwise",
+      "type": "object",
+      "properties": {
+        "SessionStart": {
+          "description": "Fired when a session starts or resumes; matcher values are startup, resume, clear, compact, fork. Maxwell writes the session meta file here",
+          "$ref": "#/$defs/hookMatchers"
+        },
+        "SessionEnd": {
+          "description": "Fired when a session ends; matcher values are clear, resume, logout, prompt_input_exit, other. Maxwell ingests the transcript for KPI extraction here",
+          "$ref": "#/$defs/hookMatchers"
+        },
+        "Setup": {
+          "description": "Fired by the setup CLI flags; matcher values are init or maintenance",
+          "$ref": "#/$defs/hookMatchers"
+        },
+        "UserPromptSubmit": {
+          "description": "Fired before a user prompt is processed; Maxwell records /<workflow> invocations here. No matcher",
+          "$ref": "#/$defs/hookMatchers"
+        },
+        "UserPromptExpansion": {
+          "description": "Fired when a prompt is expanded (slash command or skill substitution) before the model sees it. No matcher",
+          "$ref": "#/$defs/hookMatchers"
+        },
+        "PreToolUse": {
+          "description": "Fired before a tool runs; matcher is a tool name, list or regex (e.g. 'Write|Edit|MultiEdit', 'mcp__.*'). Exit 2 blocks the call",
+          "$ref": "#/$defs/hookMatchers"
+        },
+        "PostToolUse": {
+          "description": "Fired after a tool succeeds; matcher is a tool name, list or regex. Maxwell validates written files here",
+          "$ref": "#/$defs/hookMatchers"
+        },
+        "PostToolUseFailure": {
+          "description": "Fired after a tool call fails; matcher is a tool name, list or regex",
+          "$ref": "#/$defs/hookMatchers"
+        },
+        "PostToolBatch": {
+          "description": "Fired after a batch of parallel tool calls completes. No matcher",
+          "$ref": "#/$defs/hookMatchers"
+        },
+        "PermissionRequest": {
+          "description": "Fired when a permission prompt would be shown; matcher is a tool name, list or regex",
+          "$ref": "#/$defs/hookMatchers"
+        },
+        "PermissionDenied": {
+          "description": "Fired when a permission rule denies a call; matcher is a tool name, list or regex",
+          "$ref": "#/$defs/hookMatchers"
+        },
+        "SubagentStart": {
+          "description": "Fired when a subagent is spawned; matcher is the agent type (built-in or custom agent name)",
+          "$ref": "#/$defs/hookMatchers"
+        },
+        "SubagentStop": {
+          "description": "Fired when a subagent finishes; matcher is the agent type",
+          "$ref": "#/$defs/hookMatchers"
+        },
+        "Stop": {
+          "description": "Fired when the main agent finishes responding. No matcher",
+          "$ref": "#/$defs/hookMatchers"
+        },
+        "StopFailure": {
+          "description": "Fired when a turn ends with an API error; matcher is the error type (rate_limit, overloaded, authentication_failed, billing_error, invalid_request, model_not_found, server_error, max_output_tokens, cloud_credential_error, unknown, ...)",
+          "$ref": "#/$defs/hookMatchers"
+        },
+        "TeammateIdle": {
+          "description": "Fired when a teammate agent goes idle. No matcher",
+          "$ref": "#/$defs/hookMatchers"
+        },
+        "TaskCreated": {
+          "description": "Fired when a task is created. No matcher",
+          "$ref": "#/$defs/hookMatchers"
+        },
+        "TaskCompleted": {
+          "description": "Fired when a task completes. No matcher",
+          "$ref": "#/$defs/hookMatchers"
+        },
+        "MessageDisplay": {
+          "description": "Fired when a message is displayed to the user. No matcher",
+          "$ref": "#/$defs/hookMatchers"
+        },
+        "InstructionsLoaded": {
+          "description": "Fired when a CLAUDE.md/AGENTS.md instructions file is loaded; matcher values are session_start, nested_traversal, path_glob_match, include, compact",
+          "$ref": "#/$defs/hookMatchers"
+        },
+        "ConfigChange": {
+          "description": "Fired when a settings source changes on disk; matcher values are user_settings, project_settings, local_settings, policy_settings, skills",
+          "$ref": "#/$defs/hookMatchers"
+        },
+        "CwdChanged": {
+          "description": "Fired when the session's working directory changes. No matcher",
+          "$ref": "#/$defs/hookMatchers"
+        },
+        "DirectoryAdded": {
+          "description": "Fired when a working directory is added; matcher values are slash_command or register_repo_root",
+          "$ref": "#/$defs/hookMatchers"
+        },
+        "WorktreeCreate": {
+          "description": "Fired when an isolated git worktree is created for an agent. No matcher",
+          "$ref": "#/$defs/hookMatchers"
+        },
+        "WorktreeRemove": {
+          "description": "Fired when an isolated git worktree is removed. No matcher",
+          "$ref": "#/$defs/hookMatchers"
+        },
+        "PreModelSwitch": {
+          "description": "Fired before the session switches model; matcher is the canonical model name or a regex over it",
+          "$ref": "#/$defs/hookMatchers"
+        },
+        "PostModelSwitch": {
+          "description": "Fired after the session switches model; matcher is the canonical model name or a regex over it",
+          "$ref": "#/$defs/hookMatchers"
+        },
+        "PreCompact": {
+          "description": "Fired before context compaction; matcher values are manual or auto",
+          "$ref": "#/$defs/hookMatchers"
+        },
+        "PostCompact": {
+          "description": "Fired after context compaction; matcher values are manual or auto",
+          "$ref": "#/$defs/hookMatchers"
+        },
+        "Elicitation": {
+          "description": "Fired when an MCP server asks the user for input; matcher is the MCP server name",
+          "$ref": "#/$defs/hookMatchers"
+        },
+        "ElicitationResult": {
+          "description": "Fired when the user answers an MCP elicitation; matcher is the MCP server name",
+          "$ref": "#/$defs/hookMatchers"
+        },
+        "Notification": {
+          "description": "Fired when Claude Code emits a notification; matcher is the notification type (permission_prompt, idle_prompt, auth_success, elicitation_dialog, agent_needs_input, agent_completed, ...)",
+          "$ref": "#/$defs/hookMatchers"
+        },
+        "FileChanged": {
+          "description": "Fired when a watched file changes on disk; matcher is a '|'-separated list of literal file names such as '.envrc|.env'",
+          "$ref": "#/$defs/hookMatchers"
+        }
+      },
+      "additionalProperties": false
+    },
+    "env": {
+      "description": "Environment variables exported to every tool call and hook. Names are upper snake case; values are non-empty literal strings and must never hold secret values (reference a vault path or env var name instead)",
+      "type": "object",
+      "maxProperties": 64,
+      "propertyNames": {
+        "pattern": "^[A-Z][A-Z0-9_]{0,127}$"
+      },
+      "additionalProperties": {
+        "type": "string",
+        "maxLength": 4000,
+        "minLength": 1
+      }
+    },
+    "model": {
+      "description": "Default model for the main agent: an alias (opus, sonnet, haiku, fable) or a full model id such as claude-opus-5. inherit is a subagent-only alias and is refused here",
+      "$ref": "#/$defs/model"
+    },
+    "effortLevel": {
+      "description": "Default reasoning effort for models without a saved level of their own (the canonical key)",
+      "$ref": "#/$defs/effort"
+    },
+    "effort": {
+      "description": "Legacy alias of effortLevel kept for settings files written before the rename; prefer effortLevel",
+      "$ref": "#/$defs/effort"
+    },
+    "disableWorkflows": {
+      "description": "When true the Workflow tool is unavailable and /<workflow> invocations fail; Maxwell requires false",
+      "type": "boolean"
+    },
+    "attribution": {
+      "description": "Attribution Claude Code adds to git commits and pull requests; replaces includeCoAuthoredBy",
+      "type": "object",
+      "properties": {
+        "commit": {
+          "description": "Commit trailer text (empty string hides commit attribution)",
+          "type": "string",
+          "maxLength": 500
+        },
+        "pr": {
+          "description": "Pull request description text (empty string hides PR attribution)",
+          "type": "string",
+          "maxLength": 500
+        },
+        "sessionUrl": {
+          "description": "Whether cloud and Remote Control commits carry the claude.ai session link; keep false so client transcripts are not linked from public repositories",
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "includeCoAuthoredBy": {
+      "description": "Deprecated since Claude Code v2.0.62 in favour of attribution; still honoured when attribution.commit and attribution.pr are unset. New settings files should use attribution",
+      "type": "boolean"
+    },
+    "cleanupPeriodDays": {
+      "description": "Days to retain local transcripts before Claude Code deletes them. Must exceed the KPI ingestion window so session-end can always find the transcript",
+      "type": "integer",
+      "maximum": 3650,
+      "minimum": 0
+    },
+    "enabledPlugins": {
+      "description": "Plugins enabled for this project keyed by 'plugin@marketplace'; true enables, false disables an otherwise enabled plugin",
+      "type": "object",
+      "maxProperties": 32,
+      "propertyNames": {
+        "pattern": "^[a-z0-9][a-z0-9._-]{0,63}@[a-z0-9][a-z0-9._-]{0,63}$"
+      },
+      "additionalProperties": {
+        "type": "boolean"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "permissionRule": {
+      "description": "One permission rule: 'Tool', 'Tool(specifier)' or an MCP tool name 'mcp__server__tool'. Examples: 'Bash(npm run *)', 'Read(./**)', 'Workflow(refresh-ctx)', 'WebFetch'. The specifier must not be blank",
+      "type": "string",
+      "pattern": "^([A-Z][A-Za-z0-9]*|mcp__[A-Za-z0-9_*-]+)(\\((?!\\s*\\))(?:[^()]|\\([^()]*\\))+\\))?$",
+      "maxLength": 500
+    },
+    "permissionRules": {
+      "type": "array",
+      "maxItems": 256,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/permissionRule"
+      }
+    },
+    "hookMatchers": {
+      "description": "Matcher groups for one event. A group without a matcher applies to every occurrence of the event",
+      "type": "array",
+      "maxItems": 32,
+      "items": {
+        "$ref": "#/$defs/hookMatcher"
+      }
+    },
+    "hookMatcher": {
+      "type": "object",
+      "required": [ "hooks" ],
+      "properties": {
+        "matcher": {
+          "description": "Exact value, '|'-separated list or unanchored regex selecting when the group runs (tool names for tool events, literal values for SessionStart, PreCompact, Notification and the like). Omit or use '*' to match everything",
+          "type": "string",
+          "maxLength": 500,
+          "minLength": 1
+        },
+        "hooks": {
+          "description": "Handlers executed in order for this group",
+          "type": "array",
+          "maxItems": 16,
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/hookHandler"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "hookHandler": {
+      "description": "One hook handler. type decides which payload fields are required: command needs command, prompt and agent need prompt, http needs url, mcp_tool needs server and tool",
+      "type": "object",
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "command"
+              }
+            }
+          },
+          "then": {
+            "required": [ "command" ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "enum": [ "prompt", "agent" ]
+              }
+            }
+          },
+          "then": {
+            "required": [ "prompt" ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "http"
+              }
+            }
+          },
+          "then": {
+            "required": [ "url" ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "mcp_tool"
+              }
+            }
+          },
+          "then": {
+            "required": [ "server", "tool" ]
+          }
+        }
+      ],
+      "required": [ "type" ],
+      "properties": {
+        "type": {
+          "description": "command runs a shell command with the event JSON on stdin; prompt asks the model a yes/no question; agent runs a subagent with tools; http POSTs the event JSON to url; mcp_tool calls tool on a configured MCP server",
+          "enum": [ "command", "prompt", "agent", "http", "mcp_tool" ]
+        },
+        "if": {
+          "description": "Permission-rule style filter (e.g. 'Bash(git *)', 'Edit(*.ts)') that the tool call must match for this handler to run",
+          "$ref": "#/$defs/permissionRule"
+        },
+        "once": {
+          "description": "When true the handler is removed after its first successful run (honoured for skill hooks)",
+          "type": "boolean"
+        },
+        "command": {
+          "description": "Shell command for type command, or the executable when args is present. Maxwell hooks use the cwd-independent form 'node \"$CLAUDE_PROJECT_DIR/.claude/hooks/<name>.mjs\"'; exit 2 blocks the action and feeds stderr back to the model",
+          "type": "string",
+          "pattern": "\\S",
+          "maxLength": 2000,
+          "minLength": 1
+        },
+        "args": {
+          "description": "Argument list for type command; when present the command runs in exec form (no shell)",
+          "type": "array",
+          "maxItems": 64,
+          "items": {
+            "type": "string",
+            "maxLength": 2000
+          }
+        },
+        "shell": {
+          "description": "Shell used for type command; Maxwell hosts always run bash",
+          "enum": [ "bash", "powershell" ]
+        },
+        "timeout": {
+          "description": "Seconds before the handler is killed (Claude Code defaults: 600 for command/http/mcp_tool, 30 for prompt, 60 for agent)",
+          "type": "integer",
+          "maximum": 3600,
+          "minimum": 1
+        },
+        "async": {
+          "description": "When true the handler runs in the background and cannot block the action; use for ingestion, never for guards",
+          "type": "boolean"
+        },
+        "asyncRewake": {
+          "description": "When true the handler runs in the background and wakes the model if it exits with code 2",
+          "type": "boolean"
+        },
+        "statusMessage": {
+          "description": "Spinner text shown while the handler runs",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "prompt": {
+          "description": "Instruction for type prompt or agent; $ARGUMENTS is replaced with the event JSON",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/nonEmptyString"
+        },
+        "model": {
+          "description": "Model used to evaluate a prompt or agent handler; defaults to the fast model",
+          "$ref": "#/$defs/model"
+        },
+        "url": {
+          "description": "Endpoint for type http that receives the event JSON by POST",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/url"
+        },
+        "headers": {
+          "description": "Extra HTTP headers for type http. Credential-bearing headers (auth, api-key, token, secret, cookie in the name) must interpolate an environment variable ('$NAME' or '${NAME}', optionally after a scheme such as 'Bearer ') that is listed in allowedEnvVars; other headers may carry a short literal",
+          "type": "object",
+          "maxProperties": 32,
+          "propertyNames": {
+            "pattern": "^[A-Za-z0-9-]{1,128}$"
+          },
+          "patternProperties": {
+            "^[A-Za-z0-9-]*([Aa][Uu][Tt][Hh]|[Aa][Pp][Ii]-?[Kk][Ee][Yy]|[Tt][Oo][Kk][Ee][Nn]|[Ss][Ee][Cc][Rr][Ee][Tt]|[Cc][Oo][Oo][Kk][Ii][Ee])[A-Za-z0-9-]*$": {
+              "type": "string",
+              "pattern": "^([A-Za-z]+ )?\\$\\{?[A-Z][A-Z0-9_]{0,127}\\}?$",
+              "maxLength": 200
+            }
+          },
+          "additionalProperties": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1
+          }
+        },
+        "allowedEnvVars": {
+          "description": "Environment variable names that may be interpolated into headers for type http; the only sanctioned way to send an API key",
+          "type": "array",
+          "maxItems": 16,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9_]{0,127}$"
+          }
+        },
+        "server": {
+          "description": "Configured MCP server name for type mcp_tool (or 'plugin:<name>:<server>')",
+          "type": "string",
+          "pattern": "^(plugin:[a-z0-9][a-z0-9._-]*:)?[A-Za-z0-9][A-Za-z0-9._-]{0,127}$",
+          "maxLength": 200
+        },
+        "tool": {
+          "description": "Tool to call on server for type mcp_tool",
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$",
+          "maxLength": 128
+        },
+        "input": {
+          "description": "Arguments passed to the MCP tool; '${path}' expressions are substituted from the hook input JSON",
+          "type": "object",
+          "maxProperties": 32
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "model": {
+      "description": "Claude Code model for a project settings file: an alias or a full claude-* id (inherit is subagent-only)",
+      "anyOf": [
+        {
+          "enum": [ "opus", "sonnet", "haiku", "fable" ]
+        },
+        {
+          "type": "string",
+          "pattern": "^claude-[a-z0-9-]+$",
+          "maxLength": 100
+        }
+      ]
+    },
+    "effort": {
+      "description": "Reasoning effort level as documented for effortLevel",
+      "enum": [ "low", "medium", "high", "xhigh" ]
+    }
+  }
+}

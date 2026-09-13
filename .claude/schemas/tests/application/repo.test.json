@@ -1,0 +1,1783 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/v1/application/repo.schema.json",
+  "tests": [
+    {
+      "description": "realistic complete instance (schema example)",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.repo",
+        "appId": "ledger-core",
+        "repoId": "ledger-core-api",
+        "url": "git@github.com:arthanidhi/ledger-core-api.git",
+        "host": "github",
+        "visibility": "private",
+        "defaultBranch": "main",
+        "pinnedCommit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+        "lastFetchedAt": "2026-09-13T05:40:12Z",
+        "languages": [
+          "typescript",
+          "sql",
+          "dockerfile",
+          "hcl"
+        ],
+        "buildSystem": "pnpm",
+        "ciSystem": "github-actions",
+        "packageManifests": [
+          "package.json",
+          "services/settlement/package.json"
+        ],
+        "containsIac": true,
+        "containsHelmChart": true,
+        "containsAgentCode": false,
+        "codeownersPresent": true,
+        "branchProtection": {
+          "required": true,
+          "minApprovers": 2,
+          "requireCodeOwnerReviews": true,
+          "dismissStaleReviews": true,
+          "statusChecks": [
+            "ci/build",
+            "ci/test",
+            "security/semgrep",
+            "security/trivy"
+          ],
+          "requireSignedCommits": true,
+          "requireLinearHistory": true,
+          "enforceAdmins": true
+        },
+        "localCheckout": "applications/ledger-core/repos/ledger-core-api",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T05:41:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "https clone url form",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.repo",
+        "appId": "ledger-core",
+        "repoId": "ledger-core-api",
+        "url": "https://github.com/arthanidhi/ledger-core-api.git",
+        "host": "github",
+        "visibility": "private",
+        "defaultBranch": "main",
+        "pinnedCommit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+        "lastFetchedAt": "2026-09-13T05:40:12Z",
+        "languages": [
+          "typescript",
+          "sql",
+          "dockerfile",
+          "hcl"
+        ],
+        "buildSystem": "pnpm",
+        "ciSystem": "github-actions",
+        "packageManifests": [
+          "package.json",
+          "services/settlement/package.json"
+        ],
+        "containsIac": true,
+        "containsHelmChart": true,
+        "containsAgentCode": false,
+        "codeownersPresent": true,
+        "branchProtection": {
+          "required": true,
+          "minApprovers": 2,
+          "statusChecks": [
+            "ci/build",
+            "ci/test",
+            "security/semgrep",
+            "security/trivy"
+          ],
+          "requireSignedCommits": true,
+          "requireLinearHistory": true
+        },
+        "localCheckout": "applications/ledger-core/repos/ledger-core-api",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T05:41:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "ssh scheme clone url form",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.repo",
+        "appId": "ledger-core",
+        "repoId": "ledger-core-api",
+        "url": "ssh://git@gitlab.arthanidhi.example:2222/platform/ledger-core-api.git",
+        "host": "gitlab",
+        "visibility": "private",
+        "defaultBranch": "main",
+        "pinnedCommit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+        "lastFetchedAt": "2026-09-13T05:40:12Z",
+        "languages": [
+          "typescript",
+          "sql",
+          "dockerfile",
+          "hcl"
+        ],
+        "buildSystem": "pnpm",
+        "ciSystem": "github-actions",
+        "packageManifests": [
+          "package.json",
+          "services/settlement/package.json"
+        ],
+        "containsIac": true,
+        "containsHelmChart": true,
+        "containsAgentCode": false,
+        "codeownersPresent": true,
+        "branchProtection": {
+          "required": true,
+          "minApprovers": 2,
+          "statusChecks": [
+            "ci/build",
+            "ci/test",
+            "security/semgrep",
+            "security/trivy"
+          ],
+          "requireSignedCommits": true,
+          "requireLinearHistory": true
+        },
+        "localCheckout": "applications/ledger-core/repos/ledger-core-api",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T05:41:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "invented extra top-level key",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.repo",
+        "appId": "ledger-core",
+        "repoId": "ledger-core-api",
+        "url": "git@github.com:arthanidhi/ledger-core-api.git",
+        "host": "github",
+        "visibility": "private",
+        "defaultBranch": "main",
+        "pinnedCommit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+        "lastFetchedAt": "2026-09-13T05:40:12Z",
+        "languages": [
+          "typescript",
+          "sql",
+          "dockerfile",
+          "hcl"
+        ],
+        "buildSystem": "pnpm",
+        "ciSystem": "github-actions",
+        "packageManifests": [
+          "package.json",
+          "services/settlement/package.json"
+        ],
+        "containsIac": true,
+        "containsHelmChart": true,
+        "containsAgentCode": false,
+        "codeownersPresent": true,
+        "branchProtection": {
+          "required": true,
+          "minApprovers": 2,
+          "statusChecks": [
+            "ci/build",
+            "ci/test",
+            "security/semgrep",
+            "security/trivy"
+          ],
+          "requireSignedCommits": true,
+          "requireLinearHistory": true
+        },
+        "localCheckout": "applications/ledger-core/repos/ledger-core-api",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T05:41:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        },
+        "stars": 12
+      }
+    },
+    {
+      "description": "repoId with underscore violates slug pattern",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.repo",
+        "appId": "ledger-core",
+        "repoId": "ledger_core_api",
+        "url": "git@github.com:arthanidhi/ledger-core-api.git",
+        "host": "github",
+        "visibility": "private",
+        "defaultBranch": "main",
+        "pinnedCommit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+        "lastFetchedAt": "2026-09-13T05:40:12Z",
+        "languages": [
+          "typescript",
+          "sql",
+          "dockerfile",
+          "hcl"
+        ],
+        "buildSystem": "pnpm",
+        "ciSystem": "github-actions",
+        "packageManifests": [
+          "package.json",
+          "services/settlement/package.json"
+        ],
+        "containsIac": true,
+        "containsHelmChart": true,
+        "containsAgentCode": false,
+        "codeownersPresent": true,
+        "branchProtection": {
+          "required": true,
+          "minApprovers": 2,
+          "statusChecks": [
+            "ci/build",
+            "ci/test",
+            "security/semgrep",
+            "security/trivy"
+          ],
+          "requireSignedCommits": true,
+          "requireLinearHistory": true
+        },
+        "localCheckout": "applications/ledger-core/repos/ledger-core-api",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T05:41:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "host not in enum",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.repo",
+        "appId": "ledger-core",
+        "repoId": "ledger-core-api",
+        "url": "git@github.com:arthanidhi/ledger-core-api.git",
+        "host": "sourcehut",
+        "visibility": "private",
+        "defaultBranch": "main",
+        "pinnedCommit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+        "lastFetchedAt": "2026-09-13T05:40:12Z",
+        "languages": [
+          "typescript",
+          "sql",
+          "dockerfile",
+          "hcl"
+        ],
+        "buildSystem": "pnpm",
+        "ciSystem": "github-actions",
+        "packageManifests": [
+          "package.json",
+          "services/settlement/package.json"
+        ],
+        "containsIac": true,
+        "containsHelmChart": true,
+        "containsAgentCode": false,
+        "codeownersPresent": true,
+        "branchProtection": {
+          "required": true,
+          "minApprovers": 2,
+          "statusChecks": [
+            "ci/build",
+            "ci/test",
+            "security/semgrep",
+            "security/trivy"
+          ],
+          "requireSignedCommits": true,
+          "requireLinearHistory": true
+        },
+        "localCheckout": "applications/ledger-core/repos/ledger-core-api",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T05:41:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "missing required url",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.repo",
+        "appId": "ledger-core",
+        "repoId": "ledger-core-api",
+        "host": "github",
+        "visibility": "private",
+        "defaultBranch": "main",
+        "pinnedCommit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+        "lastFetchedAt": "2026-09-13T05:40:12Z",
+        "languages": [
+          "typescript",
+          "sql",
+          "dockerfile",
+          "hcl"
+        ],
+        "buildSystem": "pnpm",
+        "ciSystem": "github-actions",
+        "packageManifests": [
+          "package.json",
+          "services/settlement/package.json"
+        ],
+        "containsIac": true,
+        "containsHelmChart": true,
+        "containsAgentCode": false,
+        "codeownersPresent": true,
+        "branchProtection": {
+          "required": true,
+          "minApprovers": 2,
+          "statusChecks": [
+            "ci/build",
+            "ci/test",
+            "security/semgrep",
+            "security/trivy"
+          ],
+          "requireSignedCommits": true,
+          "requireLinearHistory": true
+        },
+        "localCheckout": "applications/ledger-core/repos/ledger-core-api",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T05:41:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "url with embedded credentials",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.repo",
+        "appId": "ledger-core",
+        "repoId": "ledger-core-api",
+        "url": "https://user:pass@github.com/arthanidhi/ledger-core-api.git",
+        "host": "github",
+        "visibility": "private",
+        "defaultBranch": "main",
+        "pinnedCommit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+        "lastFetchedAt": "2026-09-13T05:40:12Z",
+        "languages": [
+          "typescript",
+          "sql",
+          "dockerfile",
+          "hcl"
+        ],
+        "buildSystem": "pnpm",
+        "ciSystem": "github-actions",
+        "packageManifests": [
+          "package.json",
+          "services/settlement/package.json"
+        ],
+        "containsIac": true,
+        "containsHelmChart": true,
+        "containsAgentCode": false,
+        "codeownersPresent": true,
+        "branchProtection": {
+          "required": true,
+          "minApprovers": 2,
+          "statusChecks": [
+            "ci/build",
+            "ci/test",
+            "security/semgrep",
+            "security/trivy"
+          ],
+          "requireSignedCommits": true,
+          "requireLinearHistory": true
+        },
+        "localCheckout": "applications/ledger-core/repos/ledger-core-api",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T05:41:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "url with http scheme",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.repo",
+        "appId": "ledger-core",
+        "repoId": "ledger-core-api",
+        "url": "http://github.com/arthanidhi/ledger-core-api.git",
+        "host": "github",
+        "visibility": "private",
+        "defaultBranch": "main",
+        "pinnedCommit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+        "lastFetchedAt": "2026-09-13T05:40:12Z",
+        "languages": [
+          "typescript",
+          "sql",
+          "dockerfile",
+          "hcl"
+        ],
+        "buildSystem": "pnpm",
+        "ciSystem": "github-actions",
+        "packageManifests": [
+          "package.json",
+          "services/settlement/package.json"
+        ],
+        "containsIac": true,
+        "containsHelmChart": true,
+        "containsAgentCode": false,
+        "codeownersPresent": true,
+        "branchProtection": {
+          "required": true,
+          "minApprovers": 2,
+          "statusChecks": [
+            "ci/build",
+            "ci/test",
+            "security/semgrep",
+            "security/trivy"
+          ],
+          "requireSignedCommits": true,
+          "requireLinearHistory": true
+        },
+        "localCheckout": "applications/ledger-core/repos/ledger-core-api",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T05:41:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "pinnedCommit with uppercase hex",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.repo",
+        "appId": "ledger-core",
+        "repoId": "ledger-core-api",
+        "url": "git@github.com:arthanidhi/ledger-core-api.git",
+        "host": "github",
+        "visibility": "private",
+        "defaultBranch": "main",
+        "pinnedCommit": "9F2C4D1E7A3B",
+        "lastFetchedAt": "2026-09-13T05:40:12Z",
+        "languages": [
+          "typescript",
+          "sql",
+          "dockerfile",
+          "hcl"
+        ],
+        "buildSystem": "pnpm",
+        "ciSystem": "github-actions",
+        "packageManifests": [
+          "package.json",
+          "services/settlement/package.json"
+        ],
+        "containsIac": true,
+        "containsHelmChart": true,
+        "containsAgentCode": false,
+        "codeownersPresent": true,
+        "branchProtection": {
+          "required": true,
+          "minApprovers": 2,
+          "statusChecks": [
+            "ci/build",
+            "ci/test",
+            "security/semgrep",
+            "security/trivy"
+          ],
+          "requireSignedCommits": true,
+          "requireLinearHistory": true
+        },
+        "localCheckout": "applications/ledger-core/repos/ledger-core-api",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T05:41:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "language not in enum",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.repo",
+        "appId": "ledger-core",
+        "repoId": "ledger-core-api",
+        "url": "git@github.com:arthanidhi/ledger-core-api.git",
+        "host": "github",
+        "visibility": "private",
+        "defaultBranch": "main",
+        "pinnedCommit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+        "lastFetchedAt": "2026-09-13T05:40:12Z",
+        "languages": [
+          "brainfuck"
+        ],
+        "buildSystem": "pnpm",
+        "ciSystem": "github-actions",
+        "packageManifests": [
+          "package.json",
+          "services/settlement/package.json"
+        ],
+        "containsIac": true,
+        "containsHelmChart": true,
+        "containsAgentCode": false,
+        "codeownersPresent": true,
+        "branchProtection": {
+          "required": true,
+          "minApprovers": 2,
+          "statusChecks": [
+            "ci/build",
+            "ci/test",
+            "security/semgrep",
+            "security/trivy"
+          ],
+          "requireSignedCommits": true,
+          "requireLinearHistory": true
+        },
+        "localCheckout": "applications/ledger-core/repos/ledger-core-api",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T05:41:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "duplicate languages",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.repo",
+        "appId": "ledger-core",
+        "repoId": "ledger-core-api",
+        "url": "git@github.com:arthanidhi/ledger-core-api.git",
+        "host": "github",
+        "visibility": "private",
+        "defaultBranch": "main",
+        "pinnedCommit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+        "lastFetchedAt": "2026-09-13T05:40:12Z",
+        "languages": [
+          "typescript",
+          "typescript"
+        ],
+        "buildSystem": "pnpm",
+        "ciSystem": "github-actions",
+        "packageManifests": [
+          "package.json",
+          "services/settlement/package.json"
+        ],
+        "containsIac": true,
+        "containsHelmChart": true,
+        "containsAgentCode": false,
+        "codeownersPresent": true,
+        "branchProtection": {
+          "required": true,
+          "minApprovers": 2,
+          "statusChecks": [
+            "ci/build",
+            "ci/test",
+            "security/semgrep",
+            "security/trivy"
+          ],
+          "requireSignedCommits": true,
+          "requireLinearHistory": true
+        },
+        "localCheckout": "applications/ledger-core/repos/ledger-core-api",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T05:41:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "ciSystem not in enum",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.repo",
+        "appId": "ledger-core",
+        "repoId": "ledger-core-api",
+        "url": "git@github.com:arthanidhi/ledger-core-api.git",
+        "host": "github",
+        "visibility": "private",
+        "defaultBranch": "main",
+        "pinnedCommit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+        "lastFetchedAt": "2026-09-13T05:40:12Z",
+        "languages": [
+          "typescript",
+          "sql",
+          "dockerfile",
+          "hcl"
+        ],
+        "buildSystem": "pnpm",
+        "ciSystem": "travis",
+        "packageManifests": [
+          "package.json",
+          "services/settlement/package.json"
+        ],
+        "containsIac": true,
+        "containsHelmChart": true,
+        "containsAgentCode": false,
+        "codeownersPresent": true,
+        "branchProtection": {
+          "required": true,
+          "minApprovers": 2,
+          "statusChecks": [
+            "ci/build",
+            "ci/test",
+            "security/semgrep",
+            "security/trivy"
+          ],
+          "requireSignedCommits": true,
+          "requireLinearHistory": true
+        },
+        "localCheckout": "applications/ledger-core/repos/ledger-core-api",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T05:41:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "packageManifests with traversal",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.repo",
+        "appId": "ledger-core",
+        "repoId": "ledger-core-api",
+        "url": "git@github.com:arthanidhi/ledger-core-api.git",
+        "host": "github",
+        "visibility": "private",
+        "defaultBranch": "main",
+        "pinnedCommit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+        "lastFetchedAt": "2026-09-13T05:40:12Z",
+        "languages": [
+          "typescript",
+          "sql",
+          "dockerfile",
+          "hcl"
+        ],
+        "buildSystem": "pnpm",
+        "ciSystem": "github-actions",
+        "packageManifests": [
+          "../other/package.json"
+        ],
+        "containsIac": true,
+        "containsHelmChart": true,
+        "containsAgentCode": false,
+        "codeownersPresent": true,
+        "branchProtection": {
+          "required": true,
+          "minApprovers": 2,
+          "statusChecks": [
+            "ci/build",
+            "ci/test",
+            "security/semgrep",
+            "security/trivy"
+          ],
+          "requireSignedCommits": true,
+          "requireLinearHistory": true
+        },
+        "localCheckout": "applications/ledger-core/repos/ledger-core-api",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T05:41:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "localCheckout outside applications/<app>/repos/",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.repo",
+        "appId": "ledger-core",
+        "repoId": "ledger-core-api",
+        "url": "git@github.com:arthanidhi/ledger-core-api.git",
+        "host": "github",
+        "visibility": "private",
+        "defaultBranch": "main",
+        "pinnedCommit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+        "lastFetchedAt": "2026-09-13T05:40:12Z",
+        "languages": [
+          "typescript",
+          "sql",
+          "dockerfile",
+          "hcl"
+        ],
+        "buildSystem": "pnpm",
+        "ciSystem": "github-actions",
+        "packageManifests": [
+          "package.json",
+          "services/settlement/package.json"
+        ],
+        "containsIac": true,
+        "containsHelmChart": true,
+        "containsAgentCode": false,
+        "codeownersPresent": true,
+        "branchProtection": {
+          "required": true,
+          "minApprovers": 2,
+          "statusChecks": [
+            "ci/build",
+            "ci/test",
+            "security/semgrep",
+            "security/trivy"
+          ],
+          "requireSignedCommits": true,
+          "requireLinearHistory": true
+        },
+        "localCheckout": "repos/ledger-core-api",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T05:41:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "branchProtection missing required flag",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.repo",
+        "appId": "ledger-core",
+        "repoId": "ledger-core-api",
+        "url": "git@github.com:arthanidhi/ledger-core-api.git",
+        "host": "github",
+        "visibility": "private",
+        "defaultBranch": "main",
+        "pinnedCommit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+        "lastFetchedAt": "2026-09-13T05:40:12Z",
+        "languages": [
+          "typescript",
+          "sql",
+          "dockerfile",
+          "hcl"
+        ],
+        "buildSystem": "pnpm",
+        "ciSystem": "github-actions",
+        "packageManifests": [
+          "package.json",
+          "services/settlement/package.json"
+        ],
+        "containsIac": true,
+        "containsHelmChart": true,
+        "containsAgentCode": false,
+        "codeownersPresent": true,
+        "branchProtection": {
+          "minApprovers": 2,
+          "statusChecks": [
+            "ci/build",
+            "ci/test",
+            "security/semgrep",
+            "security/trivy"
+          ],
+          "requireSignedCommits": true,
+          "requireLinearHistory": true
+        },
+        "localCheckout": "applications/ledger-core/repos/ledger-core-api",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T05:41:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "branchProtection extra key",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.repo",
+        "appId": "ledger-core",
+        "repoId": "ledger-core-api",
+        "url": "git@github.com:arthanidhi/ledger-core-api.git",
+        "host": "github",
+        "visibility": "private",
+        "defaultBranch": "main",
+        "pinnedCommit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+        "lastFetchedAt": "2026-09-13T05:40:12Z",
+        "languages": [
+          "typescript",
+          "sql",
+          "dockerfile",
+          "hcl"
+        ],
+        "buildSystem": "pnpm",
+        "ciSystem": "github-actions",
+        "packageManifests": [
+          "package.json",
+          "services/settlement/package.json"
+        ],
+        "containsIac": true,
+        "containsHelmChart": true,
+        "containsAgentCode": false,
+        "codeownersPresent": true,
+        "branchProtection": {
+          "required": true,
+          "minApprovers": 2,
+          "statusChecks": [
+            "ci/build",
+            "ci/test",
+            "security/semgrep",
+            "security/trivy"
+          ],
+          "requireSignedCommits": true,
+          "requireLinearHistory": true,
+          "dismissStale": true
+        },
+        "localCheckout": "applications/ledger-core/repos/ledger-core-api",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T05:41:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "containsAgentCode as string",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.repo",
+        "appId": "ledger-core",
+        "repoId": "ledger-core-api",
+        "url": "git@github.com:arthanidhi/ledger-core-api.git",
+        "host": "github",
+        "visibility": "private",
+        "defaultBranch": "main",
+        "pinnedCommit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+        "lastFetchedAt": "2026-09-13T05:40:12Z",
+        "languages": [
+          "typescript",
+          "sql",
+          "dockerfile",
+          "hcl"
+        ],
+        "buildSystem": "pnpm",
+        "ciSystem": "github-actions",
+        "packageManifests": [
+          "package.json",
+          "services/settlement/package.json"
+        ],
+        "containsIac": true,
+        "containsHelmChart": true,
+        "containsAgentCode": "no",
+        "codeownersPresent": true,
+        "branchProtection": {
+          "required": true,
+          "minApprovers": 2,
+          "statusChecks": [
+            "ci/build",
+            "ci/test",
+            "security/semgrep",
+            "security/trivy"
+          ],
+          "requireSignedCommits": true,
+          "requireLinearHistory": true
+        },
+        "localCheckout": "applications/ledger-core/repos/ledger-core-api",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T05:41:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "lastFetchedAt without Z suffix",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.repo",
+        "appId": "ledger-core",
+        "repoId": "ledger-core-api",
+        "url": "git@github.com:arthanidhi/ledger-core-api.git",
+        "host": "github",
+        "visibility": "private",
+        "defaultBranch": "main",
+        "pinnedCommit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+        "lastFetchedAt": "2026-09-13T05:40:12+05:30",
+        "languages": [
+          "typescript",
+          "sql",
+          "dockerfile",
+          "hcl"
+        ],
+        "buildSystem": "pnpm",
+        "ciSystem": "github-actions",
+        "packageManifests": [
+          "package.json",
+          "services/settlement/package.json"
+        ],
+        "containsIac": true,
+        "containsHelmChart": true,
+        "containsAgentCode": false,
+        "codeownersPresent": true,
+        "branchProtection": {
+          "required": true,
+          "minApprovers": 2,
+          "statusChecks": [
+            "ci/build",
+            "ci/test",
+            "security/semgrep",
+            "security/trivy"
+          ],
+          "requireSignedCommits": true,
+          "requireLinearHistory": true
+        },
+        "localCheckout": "applications/ledger-core/repos/ledger-core-api",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T05:41:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "missing required ciSystem",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.repo",
+        "appId": "ledger-core",
+        "repoId": "ledger-core-api",
+        "url": "git@github.com:arthanidhi/ledger-core-api.git",
+        "host": "github",
+        "visibility": "private",
+        "defaultBranch": "main",
+        "pinnedCommit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+        "lastFetchedAt": "2026-09-13T05:40:12Z",
+        "languages": [
+          "typescript",
+          "sql",
+          "dockerfile",
+          "hcl"
+        ],
+        "buildSystem": "pnpm",
+        "packageManifests": [
+          "package.json",
+          "services/settlement/package.json"
+        ],
+        "containsIac": true,
+        "containsHelmChart": true,
+        "containsAgentCode": false,
+        "codeownersPresent": true,
+        "branchProtection": {
+          "required": true,
+          "minApprovers": 2,
+          "requireCodeOwnerReviews": true,
+          "dismissStaleReviews": true,
+          "statusChecks": [
+            "ci/build",
+            "ci/test",
+            "security/semgrep",
+            "security/trivy"
+          ],
+          "requireSignedCommits": true,
+          "requireLinearHistory": true,
+          "enforceAdmins": true
+        },
+        "localCheckout": "applications/ledger-core/repos/ledger-core-api",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T05:41:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "missing required buildSystem",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.repo",
+        "appId": "ledger-core",
+        "repoId": "ledger-core-api",
+        "url": "git@github.com:arthanidhi/ledger-core-api.git",
+        "host": "github",
+        "visibility": "private",
+        "defaultBranch": "main",
+        "pinnedCommit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+        "lastFetchedAt": "2026-09-13T05:40:12Z",
+        "languages": [
+          "typescript",
+          "sql",
+          "dockerfile",
+          "hcl"
+        ],
+        "ciSystem": "github-actions",
+        "packageManifests": [
+          "package.json",
+          "services/settlement/package.json"
+        ],
+        "containsIac": true,
+        "containsHelmChart": true,
+        "containsAgentCode": false,
+        "codeownersPresent": true,
+        "branchProtection": {
+          "required": true,
+          "minApprovers": 2,
+          "requireCodeOwnerReviews": true,
+          "dismissStaleReviews": true,
+          "statusChecks": [
+            "ci/build",
+            "ci/test",
+            "security/semgrep",
+            "security/trivy"
+          ],
+          "requireSignedCommits": true,
+          "requireLinearHistory": true,
+          "enforceAdmins": true
+        },
+        "localCheckout": "applications/ledger-core/repos/ledger-core-api",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T05:41:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "ciSystem none and buildSystem none for a docs-only repo",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.repo",
+        "appId": "ledger-core",
+        "repoId": "ledger-core-api",
+        "url": "git@github.com:arthanidhi/ledger-core-api.git",
+        "host": "github",
+        "visibility": "private",
+        "defaultBranch": "main",
+        "pinnedCommit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+        "lastFetchedAt": "2026-09-13T05:40:12Z",
+        "languages": [
+          "typescript",
+          "sql",
+          "dockerfile",
+          "hcl"
+        ],
+        "buildSystem": "none",
+        "ciSystem": "none",
+        "packageManifests": [
+          "package.json",
+          "services/settlement/package.json"
+        ],
+        "containsIac": true,
+        "containsHelmChart": true,
+        "containsAgentCode": false,
+        "codeownersPresent": true,
+        "branchProtection": {
+          "required": true,
+          "minApprovers": 2,
+          "requireCodeOwnerReviews": true,
+          "dismissStaleReviews": true,
+          "statusChecks": [
+            "ci/build",
+            "ci/test",
+            "security/semgrep",
+            "security/trivy"
+          ],
+          "requireSignedCommits": true,
+          "requireLinearHistory": true,
+          "enforceAdmins": true
+        },
+        "localCheckout": "applications/ledger-core/repos/ledger-core-api",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T05:41:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "ciSystem aws-codepipeline",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.repo",
+        "appId": "ledger-core",
+        "repoId": "ledger-core-api",
+        "url": "git@github.com:arthanidhi/ledger-core-api.git",
+        "host": "github",
+        "visibility": "private",
+        "defaultBranch": "main",
+        "pinnedCommit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+        "lastFetchedAt": "2026-09-13T05:40:12Z",
+        "languages": [
+          "typescript",
+          "sql",
+          "dockerfile",
+          "hcl"
+        ],
+        "buildSystem": "pnpm",
+        "ciSystem": "aws-codepipeline",
+        "packageManifests": [
+          "package.json",
+          "services/settlement/package.json"
+        ],
+        "containsIac": true,
+        "containsHelmChart": true,
+        "containsAgentCode": false,
+        "codeownersPresent": true,
+        "branchProtection": {
+          "required": true,
+          "minApprovers": 2,
+          "requireCodeOwnerReviews": true,
+          "dismissStaleReviews": true,
+          "statusChecks": [
+            "ci/build",
+            "ci/test",
+            "security/semgrep",
+            "security/trivy"
+          ],
+          "requireSignedCommits": true,
+          "requireLinearHistory": true,
+          "enforceAdmins": true
+        },
+        "localCheckout": "applications/ledger-core/repos/ledger-core-api",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T05:41:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "ciSystem argo is no longer accepted (use argo-workflows)",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.repo",
+        "appId": "ledger-core",
+        "repoId": "ledger-core-api",
+        "url": "git@github.com:arthanidhi/ledger-core-api.git",
+        "host": "github",
+        "visibility": "private",
+        "defaultBranch": "main",
+        "pinnedCommit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+        "lastFetchedAt": "2026-09-13T05:40:12Z",
+        "languages": [
+          "typescript",
+          "sql",
+          "dockerfile",
+          "hcl"
+        ],
+        "buildSystem": "pnpm",
+        "ciSystem": "argo",
+        "packageManifests": [
+          "package.json",
+          "services/settlement/package.json"
+        ],
+        "containsIac": true,
+        "containsHelmChart": true,
+        "containsAgentCode": false,
+        "codeownersPresent": true,
+        "branchProtection": {
+          "required": true,
+          "minApprovers": 2,
+          "requireCodeOwnerReviews": true,
+          "dismissStaleReviews": true,
+          "statusChecks": [
+            "ci/build",
+            "ci/test",
+            "security/semgrep",
+            "security/trivy"
+          ],
+          "requireSignedCommits": true,
+          "requireLinearHistory": true,
+          "enforceAdmins": true
+        },
+        "localCheckout": "applications/ledger-core/repos/ledger-core-api",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T05:41:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "branchProtection with code-owner review, stale dismissal and admin enforcement flags",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.repo",
+        "appId": "ledger-core",
+        "repoId": "ledger-core-api",
+        "url": "git@github.com:arthanidhi/ledger-core-api.git",
+        "host": "github",
+        "visibility": "private",
+        "defaultBranch": "main",
+        "pinnedCommit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+        "lastFetchedAt": "2026-09-13T05:40:12Z",
+        "languages": [
+          "typescript",
+          "sql",
+          "dockerfile",
+          "hcl"
+        ],
+        "buildSystem": "pnpm",
+        "ciSystem": "github-actions",
+        "packageManifests": [
+          "package.json",
+          "services/settlement/package.json"
+        ],
+        "containsIac": true,
+        "containsHelmChart": true,
+        "containsAgentCode": false,
+        "codeownersPresent": true,
+        "branchProtection": {
+          "required": true,
+          "minApprovers": 1,
+          "requireCodeOwnerReviews": true,
+          "dismissStaleReviews": false,
+          "enforceAdmins": true
+        },
+        "localCheckout": "applications/ledger-core/repos/ledger-core-api",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T05:41:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "branchProtection requireCodeOwnerReviews as string",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.repo",
+        "appId": "ledger-core",
+        "repoId": "ledger-core-api",
+        "url": "git@github.com:arthanidhi/ledger-core-api.git",
+        "host": "github",
+        "visibility": "private",
+        "defaultBranch": "main",
+        "pinnedCommit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+        "lastFetchedAt": "2026-09-13T05:40:12Z",
+        "languages": [
+          "typescript",
+          "sql",
+          "dockerfile",
+          "hcl"
+        ],
+        "buildSystem": "pnpm",
+        "ciSystem": "github-actions",
+        "packageManifests": [
+          "package.json",
+          "services/settlement/package.json"
+        ],
+        "containsIac": true,
+        "containsHelmChart": true,
+        "containsAgentCode": false,
+        "codeownersPresent": true,
+        "branchProtection": {
+          "required": true,
+          "minApprovers": 2,
+          "requireCodeOwnerReviews": "yes",
+          "dismissStaleReviews": true,
+          "statusChecks": [
+            "ci/build",
+            "ci/test",
+            "security/semgrep",
+            "security/trivy"
+          ],
+          "requireSignedCommits": true,
+          "requireLinearHistory": true,
+          "enforceAdmins": true
+        },
+        "localCheckout": "applications/ledger-core/repos/ledger-core-api",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T05:41:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "https clone url with username only (Bitbucket Cloud)",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.repo",
+        "appId": "ledger-core",
+        "repoId": "ledger-core-api",
+        "url": "https://alice@bitbucket.org/arthanidhi/ledger-core-api.git",
+        "host": "bitbucket",
+        "visibility": "private",
+        "defaultBranch": "main",
+        "pinnedCommit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+        "lastFetchedAt": "2026-09-13T05:40:12Z",
+        "languages": [
+          "typescript",
+          "sql",
+          "dockerfile",
+          "hcl"
+        ],
+        "buildSystem": "pnpm",
+        "ciSystem": "github-actions",
+        "packageManifests": [
+          "package.json",
+          "services/settlement/package.json"
+        ],
+        "containsIac": true,
+        "containsHelmChart": true,
+        "containsAgentCode": false,
+        "codeownersPresent": true,
+        "branchProtection": {
+          "required": true,
+          "minApprovers": 2,
+          "requireCodeOwnerReviews": true,
+          "dismissStaleReviews": true,
+          "statusChecks": [
+            "ci/build",
+            "ci/test",
+            "security/semgrep",
+            "security/trivy"
+          ],
+          "requireSignedCommits": true,
+          "requireLinearHistory": true,
+          "enforceAdmins": true
+        },
+        "localCheckout": "applications/ledger-core/repos/ledger-core-api",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T05:41:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "ssh clone url with non-git user (Gitea)",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.repo",
+        "appId": "ledger-core",
+        "repoId": "ledger-core-api",
+        "url": "ssh://gitea@git.arthanidhi.example:2222/arthanidhi/ledger-core-api.git",
+        "host": "gitea",
+        "visibility": "private",
+        "defaultBranch": "main",
+        "pinnedCommit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+        "lastFetchedAt": "2026-09-13T05:40:12Z",
+        "languages": [
+          "typescript",
+          "sql",
+          "dockerfile",
+          "hcl"
+        ],
+        "buildSystem": "pnpm",
+        "ciSystem": "github-actions",
+        "packageManifests": [
+          "package.json",
+          "services/settlement/package.json"
+        ],
+        "containsIac": true,
+        "containsHelmChart": true,
+        "containsAgentCode": false,
+        "codeownersPresent": true,
+        "branchProtection": {
+          "required": true,
+          "minApprovers": 2,
+          "requireCodeOwnerReviews": true,
+          "dismissStaleReviews": true,
+          "statusChecks": [
+            "ci/build",
+            "ci/test",
+            "security/semgrep",
+            "security/trivy"
+          ],
+          "requireSignedCommits": true,
+          "requireLinearHistory": true,
+          "enforceAdmins": true
+        },
+        "localCheckout": "applications/ledger-core/repos/ledger-core-api",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T05:41:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "https clone url with percent-encoded project name (Azure DevOps)",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.repo",
+        "appId": "ledger-core",
+        "repoId": "ledger-core-api",
+        "url": "https://dev.azure.com/arthanidhi/Ledger%20Core/_git/ledger-core-api",
+        "host": "azure-devops",
+        "visibility": "private",
+        "defaultBranch": "main",
+        "pinnedCommit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+        "lastFetchedAt": "2026-09-13T05:40:12Z",
+        "languages": [
+          "typescript",
+          "sql",
+          "dockerfile",
+          "hcl"
+        ],
+        "buildSystem": "pnpm",
+        "ciSystem": "github-actions",
+        "packageManifests": [
+          "package.json",
+          "services/settlement/package.json"
+        ],
+        "containsIac": true,
+        "containsHelmChart": true,
+        "containsAgentCode": false,
+        "codeownersPresent": true,
+        "branchProtection": {
+          "required": true,
+          "minApprovers": 2,
+          "requireCodeOwnerReviews": true,
+          "dismissStaleReviews": true,
+          "statusChecks": [
+            "ci/build",
+            "ci/test",
+            "security/semgrep",
+            "security/trivy"
+          ],
+          "requireSignedCommits": true,
+          "requireLinearHistory": true,
+          "enforceAdmins": true
+        },
+        "localCheckout": "applications/ledger-core/repos/ledger-core-api",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T05:41:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "clone url with path traversal",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.repo",
+        "appId": "ledger-core",
+        "repoId": "ledger-core-api",
+        "url": "https://github.com/arthanidhi/../etc/ledger-core-api.git",
+        "host": "github",
+        "visibility": "private",
+        "defaultBranch": "main",
+        "pinnedCommit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+        "lastFetchedAt": "2026-09-13T05:40:12Z",
+        "languages": [
+          "typescript",
+          "sql",
+          "dockerfile",
+          "hcl"
+        ],
+        "buildSystem": "pnpm",
+        "ciSystem": "github-actions",
+        "packageManifests": [
+          "package.json",
+          "services/settlement/package.json"
+        ],
+        "containsIac": true,
+        "containsHelmChart": true,
+        "containsAgentCode": false,
+        "codeownersPresent": true,
+        "branchProtection": {
+          "required": true,
+          "minApprovers": 2,
+          "requireCodeOwnerReviews": true,
+          "dismissStaleReviews": true,
+          "statusChecks": [
+            "ci/build",
+            "ci/test",
+            "security/semgrep",
+            "security/trivy"
+          ],
+          "requireSignedCommits": true,
+          "requireLinearHistory": true,
+          "enforceAdmins": true
+        },
+        "localCheckout": "applications/ledger-core/repos/ledger-core-api",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T05:41:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "clone url with trailing slash",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.repo",
+        "appId": "ledger-core",
+        "repoId": "ledger-core-api",
+        "url": "https://github.com/arthanidhi/ledger-core-api/",
+        "host": "github",
+        "visibility": "private",
+        "defaultBranch": "main",
+        "pinnedCommit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+        "lastFetchedAt": "2026-09-13T05:40:12Z",
+        "languages": [
+          "typescript",
+          "sql",
+          "dockerfile",
+          "hcl"
+        ],
+        "buildSystem": "pnpm",
+        "ciSystem": "github-actions",
+        "packageManifests": [
+          "package.json",
+          "services/settlement/package.json"
+        ],
+        "containsIac": true,
+        "containsHelmChart": true,
+        "containsAgentCode": false,
+        "codeownersPresent": true,
+        "branchProtection": {
+          "required": true,
+          "minApprovers": 2,
+          "requireCodeOwnerReviews": true,
+          "dismissStaleReviews": true,
+          "statusChecks": [
+            "ci/build",
+            "ci/test",
+            "security/semgrep",
+            "security/trivy"
+          ],
+          "requireSignedCommits": true,
+          "requireLinearHistory": true,
+          "enforceAdmins": true
+        },
+        "localCheckout": "applications/ledger-core/repos/ledger-core-api",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T05:41:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "clone url with doubled .git suffix",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.repo",
+        "appId": "ledger-core",
+        "repoId": "ledger-core-api",
+        "url": "https://github.com/arthanidhi/ledger-core-api.git.git",
+        "host": "github",
+        "visibility": "private",
+        "defaultBranch": "main",
+        "pinnedCommit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+        "lastFetchedAt": "2026-09-13T05:40:12Z",
+        "languages": [
+          "typescript",
+          "sql",
+          "dockerfile",
+          "hcl"
+        ],
+        "buildSystem": "pnpm",
+        "ciSystem": "github-actions",
+        "packageManifests": [
+          "package.json",
+          "services/settlement/package.json"
+        ],
+        "containsIac": true,
+        "containsHelmChart": true,
+        "containsAgentCode": false,
+        "codeownersPresent": true,
+        "branchProtection": {
+          "required": true,
+          "minApprovers": 2,
+          "requireCodeOwnerReviews": true,
+          "dismissStaleReviews": true,
+          "statusChecks": [
+            "ci/build",
+            "ci/test",
+            "security/semgrep",
+            "security/trivy"
+          ],
+          "requireSignedCommits": true,
+          "requireLinearHistory": true,
+          "enforceAdmins": true
+        },
+        "localCheckout": "applications/ledger-core/repos/ledger-core-api",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T05:41:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "ssh clone url with embedded password",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.repo",
+        "appId": "ledger-core",
+        "repoId": "ledger-core-api",
+        "url": "ssh://git:hunter2@github.com/arthanidhi/ledger-core-api.git",
+        "host": "github",
+        "visibility": "private",
+        "defaultBranch": "main",
+        "pinnedCommit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+        "lastFetchedAt": "2026-09-13T05:40:12Z",
+        "languages": [
+          "typescript",
+          "sql",
+          "dockerfile",
+          "hcl"
+        ],
+        "buildSystem": "pnpm",
+        "ciSystem": "github-actions",
+        "packageManifests": [
+          "package.json",
+          "services/settlement/package.json"
+        ],
+        "containsIac": true,
+        "containsHelmChart": true,
+        "containsAgentCode": false,
+        "codeownersPresent": true,
+        "branchProtection": {
+          "required": true,
+          "minApprovers": 2,
+          "requireCodeOwnerReviews": true,
+          "dismissStaleReviews": true,
+          "statusChecks": [
+            "ci/build",
+            "ci/test",
+            "security/semgrep",
+            "security/trivy"
+          ],
+          "requireSignedCommits": true,
+          "requireLinearHistory": true,
+          "enforceAdmins": true
+        },
+        "localCheckout": "applications/ledger-core/repos/ledger-core-api",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T05:41:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    }
+  ]
+}

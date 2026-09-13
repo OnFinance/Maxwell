@@ -1,0 +1,1332 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/soc/record.schema.json",
+  "title": "State-of-controls ledger record",
+  "description": "One line of company-profile/<company_id>/soc/main.jsonl. The ledger is append-only: a record is never edited, it is superseded by appending a new record whose 'supersedes' names the old id. Five record kinds share a base and follow NIST OSCAL 1.1.3 assessment-results vocabulary: control (implemented-requirement), observation (evidence collected by a method), finding (a gap against a control, SARIF-shaped), risk (risk register entry) and incident (a security event with regulator reporting clocks)",
+  "examples": [
+    {
+      "schemaVersion": "1",
+      "kind": "control",
+      "id": "sebi-cscrf-2024:GV.SC.S5",
+      "recordedAt": "2026-09-13T08:00:00Z",
+      "companyId": "kalpataru-securities",
+      "frameworkRefs": [
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "GV.SC.S5"
+        },
+        {
+          "regulator": "NIST",
+          "instrument": "nist-ssdf-800-218",
+          "controlId": "PS.3.2"
+        }
+      ],
+      "title": "Software Bill of Materials for critical systems",
+      "statement": "An SBOM is generated for every production image of the trading platform on each release and stored under applications/<app_id>/images",
+      "category": "GV.SC",
+      "implementationStatus": "partial",
+      "effectiveness": "partially-effective",
+      "owner": {
+        "type": "human",
+        "id": "ciso@kalpatarusec.example"
+      },
+      "applicableAssets": [
+        {
+          "type": "application",
+          "appId": "trading-api"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "sbomFormat",
+          "value": "cyclonedx-1.6"
+        }
+      ],
+      "lastAssessedAt": "2026-09-13T07:45:00Z",
+      "nextDueAt": "2026-12-13T00:00:00Z",
+      "evidence": [
+        {
+          "type": "sbom",
+          "ref": "applications/trading-api/images/trading-api.cdx.json",
+          "sha256": "a3f1a3f1a3f1a3f1a3f1a3f1a3f1a3f1a3f1a3f1a3f1a3f1a3f1a3f1a3f1a3f1"
+        }
+      ],
+      "notes": "SBOM exists for the API image but not for the batch-settlement image",
+      "tags": [ "supply-chain", "sbom" ],
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-13T08:00:00Z",
+        "sessionId": "8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b",
+        "runId": "run_01J7Q3V8K2M4N6P8R0S2T4V702",
+        "workflow": "refresh-soc",
+        "agent": "control-assessor"
+      }
+    },
+    {
+      "schemaVersion": "1",
+      "kind": "observation",
+      "id": "obs_01J7Q3V8K2M4N6P8R0S2T4V6W8",
+      "recordedAt": "2026-09-13T08:10:00Z",
+      "companyId": "kalpataru-securities",
+      "controlIds": [ "sebi-cscrf-2024:GV.SC.S5" ],
+      "title": "CI pipeline generates SBOM for trading-api but not batch-settlement",
+      "description": "The GitHub Actions workflow release.yml runs cyclonedx-npm on the trading-api image; the batch-settlement Dockerfile has no SBOM step",
+      "methods": [ "probe-cicd-env" ],
+      "subjects": [
+        {
+          "type": "repo",
+          "appId": "trading-api",
+          "repoId": "trading-platform"
+        }
+      ],
+      "collectedAt": "2026-09-13T08:05:00Z",
+      "expiresAt": "2026-10-13T08:05:00Z",
+      "result": "partial",
+      "toolOutput": {
+        "format": "sarif",
+        "path": "kpis/data/raw/sessions/8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b/probe-cicd-env.sarif.export.json",
+        "sha256": "b4e2b4e2b4e2b4e2b4e2b4e2b4e2b4e2b4e2b4e2b4e2b4e2b4e2b4e2b4e2b4e2"
+      },
+      "evidence": [
+        {
+          "type": "workspace-file",
+          "ref": "applications/trading-api/repos/trading-platform.json",
+          "description": "Repo record listing release.yml jobs"
+        }
+      ],
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-13T08:10:00Z",
+        "sessionId": "8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b",
+        "runId": "run_01J7Q3V8K2M4N6P8R0S2T4V702",
+        "workflow": "probe-cicd-env",
+        "agent": "cicd-auditor"
+      }
+    },
+    {
+      "schemaVersion": "1",
+      "kind": "finding",
+      "id": "fnd_01J7Q3V8K2M4N6P8R0S2T4V6X9",
+      "recordedAt": "2026-09-13T08:20:00Z",
+      "companyId": "kalpataru-securities",
+      "title": "batch-settlement image ships lodash 4.17.20 with CVE-2021-23337",
+      "description": "The batch-settlement production image contains lodash 4.17.20, vulnerable to command injection via template. No SBOM was generated so the package was not tracked",
+      "severity": "high",
+      "confidence": "confirmed",
+      "controlIds": [ "sebi-cscrf-2024:GV.SC.S5" ],
+      "regulatoryRefs": [
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "GV.SC.S5"
+        }
+      ],
+      "target": {
+        "type": "image",
+        "appId": "trading-api",
+        "imageId": "batch-settlement"
+      },
+      "location": {
+        "path": "package-lock.json",
+        "startLine": 1421,
+        "endLine": 1426
+      },
+      "fingerprint": "c5d3c5d3c5d3c5d3c5d3c5d3c5d3c5d3c5d3c5d3c5d3c5d3c5d3c5d3c5d3c5d3",
+      "source": {
+        "kind": "sarif",
+        "ruleId": "CVE-2021-23337",
+        "tool": "grype",
+        "toolVersion": "0.92.0"
+      },
+      "cvss": {
+        "version": "3.1",
+        "vector": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H",
+        "score": 7.2
+      },
+      "cveIds": [ "CVE-2021-23337" ],
+      "status": "open",
+      "slaDueAt": "2026-09-20T08:05:00Z",
+      "slaBasis": {
+        "instrument": "sebi-cscrf-2024",
+        "controlId": "PR.PS.S6",
+        "topic": "patch-sla",
+        "severity": "high",
+        "days": 7
+      },
+      "relatedObservationIds": [ "obs_01J7Q3V8K2M4N6P8R0S2T4V6W8" ],
+      "firstSeenAt": "2026-09-13T08:05:00Z",
+      "lastSeenAt": "2026-09-13T08:05:00Z",
+      "evidence": [
+        {
+          "type": "sarif",
+          "ref": "kpis/data/raw/sessions/8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b/probe-cicd-env.sarif.export.json"
+        }
+      ],
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-13T08:20:00Z",
+        "sessionId": "8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b",
+        "runId": "run_01J7Q3V8K2M4N6P8R0S2T4V702",
+        "workflow": "probe-cicd-env",
+        "agent": "cicd-auditor"
+      }
+    },
+    {
+      "schemaVersion": "1",
+      "kind": "risk",
+      "id": "rsk_01J7Q3V8K2M4N6P8R0S2T4V6Y0",
+      "recordedAt": "2026-09-13T08:30:00Z",
+      "companyId": "kalpataru-securities",
+      "title": "Untracked third-party components in settlement pipeline",
+      "statement": "Because no SBOM exists for the batch-settlement image, a vulnerable dependency may reach production undetected and disrupt T+1 settlement",
+      "severity": "high",
+      "likelihood": "likely",
+      "impact": "major",
+      "status": "mitigating",
+      "owner": {
+        "type": "human",
+        "id": "ciso@kalpatarusec.example"
+      },
+      "relatedFindingIds": [ "fnd_01J7Q3V8K2M4N6P8R0S2T4V6X9" ],
+      "controlIds": [ "sebi-cscrf-2024:GV.SC.S5" ],
+      "regulatoryRefs": [
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "GV.SC.S5"
+        }
+      ],
+      "threatIds": [ "T1195.002" ],
+      "mitigations": [
+        {
+          "description": "Add cyclonedx step to the batch-settlement release job and gate on grype critical/high",
+          "initiativeId": "init_01J7Q3V8K2M4N6P8R0S2T4V700",
+          "dueAt": "2026-09-20T00:00:00Z"
+        }
+      ],
+      "deadline": "2026-09-30T00:00:00Z",
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-13T08:30:00Z",
+        "sessionId": "8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b",
+        "runId": "run_01J7Q3V8K2M4N6P8R0S2T4V702",
+        "workflow": "refresh-soc",
+        "agent": "risk-analyst"
+      }
+    },
+    {
+      "schemaVersion": "1",
+      "kind": "incident",
+      "id": "inc_01J7Q3V8K2M4N6P8R0S2T4V6Z1",
+      "recordedAt": "2026-09-13T11:00:00Z",
+      "companyId": "kalpataru-securities",
+      "title": "Exploitation attempt against lodash template in batch-settlement",
+      "description": "WAF logs show crafted template payloads hitting the settlement report endpoint from a single IP; no evidence of successful execution",
+      "severity": "high",
+      "status": "contained",
+      "category": "targeted-scanning",
+      "dedupKey": "waf-template-injection:batch-settlement:prod",
+      "detectedAt": "2026-09-13T09:12:00Z",
+      "acknowledgedAt": "2026-09-13T09:20:00Z",
+      "containedAt": "2026-09-13T10:05:00Z",
+      "reportedToRegulatorAt": "2026-09-13T13:40:00Z",
+      "regulatorReportRefs": [
+        {
+          "regulator": "CERT-In",
+          "instrument": "cert-in-directions-2022",
+          "slaTopic": "incident-reporting",
+          "deadlineHours": 6,
+          "reference": "CERT-In/IR/2026/09/00421",
+          "submittedAt": "2026-09-13T13:40:00Z"
+        },
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "slaTopic": "incident-reporting",
+          "deadlineHours": 6,
+          "reference": "SEBI-CSCRF-IR-2026-0087",
+          "submittedAt": "2026-09-13T13:55:00Z"
+        }
+      ],
+      "affectedAssets": [
+        {
+          "type": "image",
+          "appId": "trading-api",
+          "imageId": "batch-settlement"
+        }
+      ],
+      "affectedDataClassifications": [ "financial" ],
+      "relatedFindingIds": [ "fnd_01J7Q3V8K2M4N6P8R0S2T4V6X9" ],
+      "rootCause": "Vulnerable lodash version not detected because the image had no SBOM and no scan gate",
+      "externalRefs": {
+        "pagerdutyId": "Q1ABC23DEF45",
+        "pagerdutyIncidentNumber": 1187,
+        "ticket": "SEC-2044"
+      },
+      "timeline": [
+        {
+          "at": "2026-09-13T09:12:00Z",
+          "note": "WAF alert on template payloads",
+          "actor": {
+            "type": "script",
+            "id": ".claude/scripts/pagerduty/ingest.mjs"
+          }
+        },
+        {
+          "at": "2026-09-13T10:05:00Z",
+          "note": "Endpoint disabled and source IP blocked at the perimeter",
+          "actor": {
+            "type": "human",
+            "id": "oncall-sre@kalpatarusec.example"
+          }
+        }
+      ],
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-13T11:00:00Z",
+        "sessionId": "8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b",
+        "runId": "run_01J7Q3V8K2M4N6P8R0S2T4V702",
+        "workflow": "manual",
+        "agent": "incident-responder"
+      }
+    }
+  ],
+  "type": "object",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/control"
+    },
+    {
+      "$ref": "#/$defs/observation"
+    },
+    {
+      "$ref": "#/$defs/finding"
+    },
+    {
+      "$ref": "#/$defs/risk"
+    },
+    {
+      "$ref": "#/$defs/incident"
+    }
+  ],
+  "unevaluatedProperties": false,
+  "$defs": {
+    "recordId": {
+      "description": "Any ledger record id: an instrument-qualified control id ('<instrumentId>:<controlId>') for controls, or a prefixed ULID (obs_, fnd_, rsk_, inc_) for generated records. The two forms cannot overlap because a controlId never contains ':'",
+      "type": "string",
+      "pattern": "^((sebi-cscrf-2024|rbi-cyber-tech-directions-2026|rbi-it-governance-md-2023|rbi-cyber-security-framework-2016|rbi-it-outsourcing-md-2023|rbi-digital-payment-security-2021|irdai-info-cyber-security-2023|cert-in-directions-2022|dpdp-act-2023|dpdp-rules-2025|npci-system-audit|eu-dora-2022-2554|eu-dora-roi-its-2024-2956|nydfs-23-nycrr-500|pci-dss-4\\.0\\.1|sec-cyber-disclosure-2023|mas-trm-2021|hkma-craf-2\\.0|apra-cps-234|apra-cps-230|uk-ss1-21|nist-csf-2\\.0|nist-800-53-r5|nist-ssdf-800-218|nist-ssdf-800-218a|nist-ai-600-1|iso-27001-2022|cis-controls-8\\.1|soc2-tsc-2017|owasp-asvs-5\\.0|owasp-llm-top10-2025|owasp-agentic-top10-2026|eu-ai-act-2024-1689|mitre-atlas|csa-mcp-security-2025|cisa-bod-26-04):[A-Za-z0-9][A-Za-z0-9._()\\-]{0,63}|(obs|fnd|rsk|inc)_[0-7][0-9A-HJKMNP-TV-Z]{25})$"
+    },
+    "qualifiedControlId": {
+      "description": "Ledger identity of a control: '<instrumentId>:<controlId>', e.g. 'sebi-cscrf-2024:GV.SC.S5'. The prefix is frameworkRefs[0].instrument (a vocab/instruments id) and the suffix frameworkRefs[0].controlId, so numbered clauses from different instruments (PCI DSS '1.2.1', an RBI clause '1.2.1', CIS '1.2') never collide in one ledger. The instrument alternation in the pattern must equal the vocab/instruments enum; regenerate it when the vocab changes",
+      "type": "string",
+      "pattern": "^(sebi-cscrf-2024|rbi-cyber-tech-directions-2026|rbi-it-governance-md-2023|rbi-cyber-security-framework-2016|rbi-it-outsourcing-md-2023|rbi-digital-payment-security-2021|irdai-info-cyber-security-2023|cert-in-directions-2022|dpdp-act-2023|dpdp-rules-2025|npci-system-audit|eu-dora-2022-2554|eu-dora-roi-its-2024-2956|nydfs-23-nycrr-500|pci-dss-4\\.0\\.1|sec-cyber-disclosure-2023|mas-trm-2021|hkma-craf-2\\.0|apra-cps-234|apra-cps-230|uk-ss1-21|nist-csf-2\\.0|nist-800-53-r5|nist-ssdf-800-218|nist-ssdf-800-218a|nist-ai-600-1|iso-27001-2022|cis-controls-8\\.1|soc2-tsc-2017|owasp-asvs-5\\.0|owasp-llm-top10-2025|owasp-agentic-top10-2026|eu-ai-act-2024-1689|mitre-atlas|csa-mcp-security-2025|cisa-bod-26-04):[A-Za-z0-9][A-Za-z0-9._()\\-]{0,63}$"
+    },
+    "base": {
+      "description": "Fields every ledger record carries. kind, id and supersedes are narrowed by each record kind. Records produced by a harness (claude-code, opencode) must carry provenance.sessionId, workflow and agent because cost_of_audit and the incident KPIs join the ledger on them (AGENTS.md section 4)",
+      "type": "object",
+      "if": {
+        "properties": {
+          "provenance": {
+            "type": "object",
+            "properties": {
+              "harness": {
+                "enum": [ "claude-code", "opencode" ]
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "provenance": {
+            "type": "object",
+            "required": [ "sessionId", "workflow", "agent" ],
+            "properties": {
+              "sessionId": {
+                "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/sessionId"
+              },
+              "workflow": {
+                "$ref": "https://maxwell.onfinance.ai/schemas/vocab/workflows.schema.json"
+              },
+              "agent": {
+                "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+              }
+            }
+          }
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "kind",
+        "id",
+        "recordedAt",
+        "companyId",
+        "provenance"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/schemaVersion"
+        },
+        "kind": {
+          "description": "Record discriminator; selects which branch of this schema applies",
+          "enum": [ "control", "observation", "finding", "risk", "incident" ]
+        },
+        "id": {
+          "description": "Stable identity of the record across supersessions: '<instrumentId>:<controlId>' for controls, a prefixed ULID otherwise",
+          "$ref": "#/$defs/recordId"
+        },
+        "recordedAt": {
+          "description": "When this line was appended to the ledger; monotonically non-decreasing within main.jsonl",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "companyId": {
+          "description": "Company the ledger belongs to; must equal the <company_id> directory name",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+        },
+        "supersedes": {
+          "description": "id of the earlier record of the same kind that this record replaces. For controls and findings it equals this record's own id (same identity, newer state); for observations it points at the observation being refreshed. Each kind narrows it to its own id shape, so a finding can never supersede an observation",
+          "$ref": "#/$defs/recordId"
+        },
+        "tags": {
+          "description": "Free-form lowercase labels for filtering, e.g. 'supply-chain', 'pci:req6'",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/tags"
+        },
+        "provenance": {
+          "description": "Who and which run appended the record; KPIs are attributed through it. sessionId, workflow and agent are required when harness is claude-code or opencode; set runId from MAXWELL_RUN_ID whenever a run id exists",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/provenance"
+        }
+      }
+    },
+    "owner": {
+      "description": "Accountable party: a full actor object, or simply the human's email (common owner)",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/owner"
+    },
+    "controlIds": {
+      "description": "Instrument-qualified control ids ('<instrumentId>:<controlId>') the record relates to; each must exist as a control record in this ledger",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/qualifiedControlId"
+      }
+    },
+    "regulatoryRefs": {
+      "description": "Clauses cited; prefer the most specific Indian instrument first, global mappings after",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/regulatoryRef"
+      }
+    },
+    "assetRefs": {
+      "description": "Workspace assets involved",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/assetRef"
+      }
+    },
+    "evidence": {
+      "description": "Evidence supporting the record, as workspace files, URLs, tickets or tool outputs",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/evidenceRef"
+      }
+    },
+    "findingIds": {
+      "description": "Related finding record ids",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/findingId"
+      }
+    },
+    "control": {
+      "description": "OSCAL implemented-requirement: the company's current implementation state of one framework control",
+      "$ref": "#/$defs/base",
+      "type": "object",
+      "required": [
+        "kind",
+        "id",
+        "frameworkRefs",
+        "title",
+        "implementationStatus"
+      ],
+      "properties": {
+        "kind": {
+          "const": "control"
+        },
+        "id": {
+          "description": "'<instrumentId>:<controlId>' built from frameworkRefs[0], e.g. 'sebi-cscrf-2024:GV.SC.S5'; a newer control record with the same id supersedes the older one",
+          "$ref": "#/$defs/qualifiedControlId"
+        },
+        "supersedes": {
+          "$ref": "#/$defs/qualifiedControlId"
+        },
+        "frameworkRefs": {
+          "description": "The instrument clause this control implements first (its instrument and controlId form this record's id), then equivalent clauses in other instruments",
+          "$ref": "#/$defs/regulatoryRefs",
+          "type": "array",
+          "minItems": 1
+        },
+        "title": {
+          "description": "Control heading as in the regulator catalog",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "statement": {
+          "description": "How the company implements the control, in the company's own terms (OSCAL implemented-requirement statement)",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+        },
+        "category": {
+          "description": "Framework category the control sits in, e.g. NIST CSF 'PR.AA', CSCRF 'GV.SC'",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "implementationStatus": {
+          "description": "OSCAL implementation-status of the control today",
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/controlImplementation"
+        },
+        "effectiveness": {
+          "description": "Outcome of the last assessment of the control's operation; 'not-tested' until an observation exists",
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/controlEffectiveness"
+        },
+        "owner": {
+          "$ref": "#/$defs/owner"
+        },
+        "applicableAssets": {
+          "description": "Assets the control is expected to cover; empty or omitted means company-wide",
+          "$ref": "#/$defs/assetRefs"
+        },
+        "parameters": {
+          "description": "OSCAL set-parameter values chosen by the company, e.g. sbomFormat=cyclonedx-1.6, passwordMinLength=14",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "required": [ "name", "value" ],
+            "properties": {
+              "name": {
+                "description": "Parameter name, camelCase",
+                "type": "string",
+                "pattern": "^[a-z][A-Za-z0-9]{0,63}$"
+              },
+              "value": {
+                "description": "Parameter value as text",
+                "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "lastAssessedAt": {
+          "description": "When the most recent observation against this control was collected",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "nextDueAt": {
+          "description": "When the control must next be re-assessed, from the catalog cadence",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence"
+        },
+        "notes": {
+          "description": "Assessor remarks, gaps and compensating controls",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+        }
+      }
+    },
+    "observation": {
+      "description": "OSCAL observation: what a workflow, interview or document review saw about one or more controls, with the evidence it produced",
+      "$ref": "#/$defs/base",
+      "type": "object",
+      "required": [
+        "kind",
+        "id",
+        "controlIds",
+        "title",
+        "methods",
+        "collectedAt",
+        "result"
+      ],
+      "properties": {
+        "kind": {
+          "const": "observation"
+        },
+        "id": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/observationId"
+        },
+        "supersedes": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/observationId"
+        },
+        "controlIds": {
+          "$ref": "#/$defs/controlIds",
+          "type": "array",
+          "minItems": 1
+        },
+        "title": {
+          "description": "One-line statement of what was observed",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "description": {
+          "description": "What was examined, what was seen and why it matters for the listed controls",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+        },
+        "methods": {
+          "description": "OSCAL observation methods: the Maxwell workflow that produced it, or 'manual', 'interview', 'document-review' for human collection. The utility entry points (validate, kpis, seed-company, status) are not observation methods",
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/observationMethod"
+          }
+        },
+        "subjects": {
+          "description": "OSCAL subjects: the assets examined",
+          "$ref": "#/$defs/assetRefs"
+        },
+        "collectedAt": {
+          "description": "When the evidence was collected from the subject",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "expiresAt": {
+          "description": "When the observation should no longer be relied on and the control needs re-probing",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence"
+        },
+        "result": {
+          "description": "Assessment outcome for the listed controls: satisfied, not-satisfied, partial, not-applicable, or inconclusive when access or evidence was insufficient",
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/observationResult"
+        },
+        "toolOutput": {
+          "description": "Raw tool output the observation was derived from, stored in the session raw directory as kpis/data/raw/sessions/<sessionId>/<workflow>.<format>.export.json (the only raw-output file name layout.json sanctions there)",
+          "type": "object",
+          "required": [ "format", "path" ],
+          "properties": {
+            "format": {
+              "description": "Output format: SARIF 2.1.0, OCSF 1.x events, or plain text",
+              "enum": [ "sarif", "ocsf", "text" ]
+            },
+            "path": {
+              "description": "Workspace path of the stored output; must be kpis/data/raw/sessions/<sessionId>/<name>.export.json so validate-layout accepts it, e.g. 'kpis/data/raw/sessions/8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b/probe-cicd-env.sarif.export.json'",
+              "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/workspacePath",
+              "type": "string",
+              "pattern": "^kpis/data/raw/sessions/[A-Za-z0-9._-]+/[A-Za-z0-9._-]+\\.export\\.json$"
+            },
+            "sha256": {
+              "description": "Digest of the stored output for tamper evidence",
+              "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/sha256"
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "finding": {
+      "description": "OSCAL finding shaped like a SARIF result: a gap against one or more controls with severity, SLA and lifecycle status",
+      "$ref": "#/$defs/base",
+      "type": "object",
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [ "risk-accepted", "false-positive", "duplicate" ]
+              }
+            }
+          },
+          "then": {
+            "required": [ "statusReason" ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "resolved",
+                  "risk-accepted",
+                  "false-positive",
+                  "duplicate"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [ "resolvedAt" ]
+          }
+        }
+      ],
+      "required": [
+        "kind",
+        "id",
+        "title",
+        "severity",
+        "regulatoryRefs",
+        "target",
+        "fingerprint",
+        "source",
+        "status",
+        "firstSeenAt",
+        "lastSeenAt"
+      ],
+      "properties": {
+        "kind": {
+          "const": "finding"
+        },
+        "id": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/findingId"
+        },
+        "supersedes": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/findingId"
+        },
+        "title": {
+          "description": "One-line statement of the gap, naming the asset and the weakness",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "description": {
+          "description": "Detail: what was found, how it was confirmed, impact and suggested fix",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+        },
+        "severity": {
+          "description": "Canonical severity: derive from cvss when present, else copy the regulator catalog control's defaultSeverity (catalog/regulator-catalog $defs/control.defaultSeverity) for the most specific instrument cited; never estimate it",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/severity"
+        },
+        "confidence": {
+          "description": "How sure the source is that the finding is real",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/confidence"
+        },
+        "controlIds": {
+          "$ref": "#/$defs/controlIds"
+        },
+        "regulatoryRefs": {
+          "$ref": "#/$defs/regulatoryRefs",
+          "type": "array",
+          "minItems": 1
+        },
+        "target": {
+          "description": "The asset the finding is about; use type 'company' for company-wide gaps. Part of the fingerprint and the unit report and remediation workflows act on",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/assetRef"
+        },
+        "location": {
+          "description": "SARIF physicalLocation: where in the target the finding sits",
+          "type": "object",
+          "required": [ "path" ],
+          "properties": {
+            "path": {
+              "description": "SARIF artifactLocation.uri: path relative to the repo root or image filesystem (uriBaseId semantics), never absolute and never traversing upwards",
+              "type": "string",
+              "pattern": "^(?!/)(?!\\.\\./)(?!.*/\\.\\./).+$",
+              "maxLength": 1024,
+              "minLength": 1
+            },
+            "startLine": {
+              "description": "SARIF region.startLine, 1-based",
+              "type": "integer",
+              "minimum": 1
+            },
+            "endLine": {
+              "description": "SARIF region.endLine, 1-based, not less than startLine",
+              "type": "integer",
+              "minimum": 1
+            },
+            "url": {
+              "description": "Deep link to the location in the SCM or console",
+              "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/url"
+            }
+          },
+          "additionalProperties": false
+        },
+        "fingerprint": {
+          "description": "sha256 over (source.ruleId, target, location.path, normalised message) with SARIF partialFingerprints semantics: stable across runs so re-runs supersede rather than duplicate",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/sha256"
+        },
+        "source": {
+          "description": "Where the finding came from. sarif sources must name the tool and rule; ocsf sources must name the OCSF class",
+          "type": "object",
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "kind": {
+                    "const": "sarif"
+                  }
+                }
+              },
+              "then": {
+                "required": [ "tool", "ruleId" ]
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "kind": {
+                    "const": "ocsf"
+                  }
+                }
+              },
+              "then": {
+                "required": [ "ocsfClassUid" ]
+              }
+            }
+          ],
+          "required": [ "kind" ],
+          "properties": {
+            "kind": {
+              "description": "sarif for static or SCA tools, ocsf for security event feeds, runtime-probe for Maxwell live probes, agent-analysis for gaps an agent found by reading code, IaC, charts or policies without a scanner (probe-iac, probe-app-chart, probe-sdlc, refresh-vendor-ctx), manual for humans",
+              "enum": [
+                "sarif",
+                "ocsf",
+                "manual",
+                "runtime-probe",
+                "agent-analysis"
+              ]
+            },
+            "ruleId": {
+              "description": "SARIF rule id or OCSF finding type id as emitted by the tool",
+              "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+            },
+            "tool": {
+              "description": "SARIF tool.driver.name, e.g. 'semgrep', 'grype', 'trivy'",
+              "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+            },
+            "toolVersion": {
+              "description": "SARIF tool.driver.version",
+              "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+            },
+            "ocsfClassUid": {
+              "description": "OCSF Findings category class: 2002 Vulnerability, 2003 Compliance, 2004 Detection, 2005 Incident, 2006 Data Security, 2007 Application Security Posture",
+              "enum": [ 2002, 2003, 2004, 2005, 2006, 2007 ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "cvss": {
+          "description": "CVSS scoring when the finding is a vulnerability. The vector shape is common cvssVector (shared with cve/record); the version must agree with the vector prefix",
+          "type": "object",
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "version": {
+                    "const": "3.0"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "vector": {
+                    "type": "string",
+                    "pattern": "^CVSS:3\\.0/"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "version": {
+                    "const": "3.1"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "vector": {
+                    "type": "string",
+                    "pattern": "^CVSS:3\\.1/"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "version": {
+                    "const": "4.0"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "vector": {
+                    "type": "string",
+                    "pattern": "^CVSS:4\\.0/"
+                  }
+                }
+              }
+            }
+          ],
+          "required": [ "version", "vector", "score" ],
+          "properties": {
+            "version": {
+              "description": "CVSS specification version of the vector",
+              "enum": [ "3.0", "3.1", "4.0" ]
+            },
+            "vector": {
+              "description": "Full vector string beginning with 'CVSS:3.0/', 'CVSS:3.1/' or 'CVSS:4.0/'; CVSS 4.0 supplemental metrics such as U:Clear, U:Green, U:Amber and U:Red are allowed",
+              "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/cvssVector",
+              "type": "string",
+              "pattern": "^CVSS:(3\\.[01]|4\\.0)/"
+            },
+            "score": {
+              "description": "Base score 0.0-10.0 (same field name as cve/record cvss.score)",
+              "type": "number",
+              "maximum": 10,
+              "minimum": 0
+            }
+          },
+          "additionalProperties": false
+        },
+        "cveIds": {
+          "description": "CVE identifiers the finding corresponds to",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/cveId"
+          }
+        },
+        "status": {
+          "description": "Lifecycle status. risk-accepted, false-positive and duplicate require statusReason; resolved, risk-accepted, false-positive and duplicate require resolvedAt",
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/finding"
+        },
+        "statusReason": {
+          "description": "Why the status is what it is; required when status is risk-accepted, false-positive or duplicate",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "slaDueAt": {
+          "description": "firstSeenAt plus slaBasis.days; computed from the SLA table, never guessed",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "slaBasis": {
+          "description": "The SLA-table row (instrument, topic, severity) that set slaDueAt",
+          "type": "object",
+          "required": [ "instrument", "days" ],
+          "properties": {
+            "instrument": {
+              "description": "Instrument whose clause set the deadline",
+              "$ref": "https://maxwell.onfinance.ai/schemas/vocab/instruments.schema.json"
+            },
+            "controlId": {
+              "description": "Clause id within the instrument, when numbered",
+              "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/controlId"
+            },
+            "topic": {
+              "description": "SLA-table topic matched",
+              "$ref": "https://maxwell.onfinance.ai/schemas/vocab/sla-table.schema.json#/$defs/topic"
+            },
+            "severity": {
+              "description": "Severity column of the SLA-table row matched: a canonical severity, or 'any' when the clause does not distinguish severities",
+              "anyOf": [
+                {
+                  "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/severity"
+                },
+                {
+                  "const": "any"
+                }
+              ]
+            },
+            "days": {
+              "description": "Remediation days granted, copied from the row",
+              "$ref": "https://maxwell.onfinance.ai/schemas/vocab/sla-table.schema.json#/$defs/days"
+            }
+          },
+          "additionalProperties": false
+        },
+        "initiativeId": {
+          "description": "Change-management initiative remediating the finding",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/initiativeId"
+        },
+        "suggestionIds": {
+          "description": "Code suggestions proposed to fix the finding",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/suggestionId"
+          }
+        },
+        "relatedObservationIds": {
+          "description": "Observations that evidence the finding",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/observationId"
+          }
+        },
+        "firstSeenAt": {
+          "description": "When the fingerprint was first observed; preserved across supersessions",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "lastSeenAt": {
+          "description": "When the fingerprint was most recently observed",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "resolvedAt": {
+          "description": "When status moved to resolved, risk-accepted, false-positive or duplicate; required for those statuses",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence"
+        }
+      }
+    },
+    "risk": {
+      "description": "Risk-register entry: a potential loss event tied to findings, controls and threats, with likelihood and impact ratings",
+      "$ref": "#/$defs/base",
+      "type": "object",
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [ "accepted", "deviation-approved" ]
+          }
+        }
+      },
+      "then": {
+        "required": [ "acceptedBy", "acceptedUntil" ]
+      },
+      "required": [
+        "kind",
+        "id",
+        "title",
+        "statement",
+        "severity",
+        "likelihood",
+        "impact",
+        "status",
+        "regulatoryRefs"
+      ],
+      "properties": {
+        "kind": {
+          "const": "risk"
+        },
+        "id": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/riskId"
+        },
+        "supersedes": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/riskId"
+        },
+        "title": {
+          "description": "Short name of the risk",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "statement": {
+          "description": "Risk statement in the form 'Because <condition>, <event> may occur, causing <consequence>'",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+        },
+        "description": {
+          "description": "Context, affected processes and analysis behind the ratings",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+        },
+        "severity": {
+          "description": "Overall rating derived from likelihood and impact",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/severity"
+        },
+        "likelihood": {
+          "description": "Probability the event occurs within a year",
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/riskLikelihood"
+        },
+        "impact": {
+          "description": "Consequence if the event occurs, on customers, market integrity and the company",
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/riskImpact"
+        },
+        "status": {
+          "description": "Lifecycle status; accepted and deviation-approved require acceptedBy and acceptedUntil",
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/risk"
+        },
+        "owner": {
+          "$ref": "#/$defs/owner"
+        },
+        "relatedFindingIds": {
+          "$ref": "#/$defs/findingIds"
+        },
+        "controlIds": {
+          "$ref": "#/$defs/controlIds"
+        },
+        "regulatoryRefs": {
+          "$ref": "#/$defs/regulatoryRefs",
+          "type": "array",
+          "minItems": 1
+        },
+        "threatIds": {
+          "description": "MITRE ATT&CK technique ids (T1195.002) or ATLAS ids (AML.T0010) describing the threat",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/mitreTechniqueId"
+          }
+        },
+        "mitigations": {
+          "description": "Planned or running treatments, each optionally tracked as an initiative",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "required": [ "description" ],
+            "properties": {
+              "description": {
+                "description": "What will be done to reduce likelihood or impact",
+                "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+              },
+              "initiativeId": {
+                "description": "Change-management initiative delivering the mitigation",
+                "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/initiativeId"
+              },
+              "dueAt": {
+                "description": "When the mitigation is due",
+                "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "deadline": {
+          "description": "Date by which the risk must be closed or formally accepted",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "acceptedBy": {
+          "description": "Who accepted the risk; required when status is accepted or deviation-approved",
+          "$ref": "#/$defs/owner"
+        },
+        "acceptedUntil": {
+          "description": "Expiry of the acceptance, after which the risk reopens; required when status is accepted or deviation-approved",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        }
+      }
+    },
+    "incident": {
+      "description": "Security incident with response timestamps and regulator reporting clocks (CERT-In and RBI 6 hours, DPDP and NYDFS 72 hours). category and affectedDataClassifications decide which clocks apply; each regulatorReportRef names the instrument that set its deadline",
+      "$ref": "#/$defs/base",
+      "type": "object",
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [ "contained", "eradicated", "recovered", "closed" ]
+              }
+            }
+          },
+          "then": {
+            "required": [ "containedAt" ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [ "recovered", "closed" ]
+              }
+            }
+          },
+          "then": {
+            "required": [ "resolvedAt" ]
+          }
+        }
+      ],
+      "required": [
+        "kind",
+        "id",
+        "title",
+        "severity",
+        "status",
+        "dedupKey",
+        "detectedAt"
+      ],
+      "properties": {
+        "kind": {
+          "const": "incident"
+        },
+        "id": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/incidentId"
+        },
+        "supersedes": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/incidentId"
+        },
+        "title": {
+          "description": "Short name of the incident",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "description": {
+          "description": "What happened, what was affected and current understanding",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+        },
+        "severity": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/severity"
+        },
+        "status": {
+          "description": "Lifecycle status; contained and later statuses require containedAt, recovered and closed require resolvedAt",
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/incident"
+        },
+        "category": {
+          "description": "Incident type, mirroring the CERT-In Directions 2022 Annex I reportable incident types (SEBI CSCRF requires the same classification); 'other' only when no listed type fits",
+          "enum": [
+            "targeted-scanning",
+            "compromise-critical-system",
+            "unauthorised-access",
+            "website-defacement",
+            "malware",
+            "ransomware",
+            "ddos",
+            "data-breach",
+            "data-leak",
+            "identity-theft",
+            "phishing",
+            "supply-chain",
+            "other"
+          ]
+        },
+        "dedupKey": {
+          "description": "PagerDuty dedup_key (incident_key) of the incident, stored verbatim so it joins kpi/pagerduty-export incident_key by string equality (1-255 characters, the PagerDuty limit). Incidents Maxwell raises use the single format defined in kpi/pagerduty-export $defs/maxwellIncidentKey, 'maxwell:<controlId lower-cased>:<assetId>:<first 16 hex of the finding fingerprint>', which is enforced here for any key starting with 'maxwell:'; incidents ingested from PagerDuty, a SIEM or reported by a human keep whatever key the source set",
+          "type": "string",
+          "if": {
+            "pattern": "^maxwell:"
+          },
+          "then": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/kpi/pagerduty-export.schema.json#/$defs/maxwellIncidentKey"
+          },
+          "maxLength": 255,
+          "minLength": 1
+        },
+        "detectedAt": {
+          "description": "When the incident was noticed; regulator clocks start here",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "acknowledgedAt": {
+          "description": "When a responder took ownership",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "containedAt": {
+          "description": "When the attacker's ability to cause further harm was removed; required once status is contained or later",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "resolvedAt": {
+          "description": "When services were fully restored and the incident closed; required when status is recovered or closed",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "reportedToRegulatorAt": {
+          "description": "Earliest submittedAt across regulatorReportRefs",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "regulatorReportRefs": {
+          "description": "One entry per regulator that must be notified, with the instrument that set the deadline clock and the submission reference",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "required": [ "regulator", "instrument", "deadlineHours" ],
+            "properties": {
+              "regulator": {
+                "description": "Supervisory authority receiving the report; standards bodies never receive incident reports",
+                "$ref": "https://maxwell.onfinance.ai/schemas/vocab/regulators.schema.json",
+                "not": {
+                  "enum": [
+                    "NIST",
+                    "ISO",
+                    "AICPA",
+                    "CIS",
+                    "OWASP",
+                    "MITRE",
+                    "CSA",
+                    "PCI-SSC"
+                  ]
+                }
+              },
+              "instrument": {
+                "description": "Instrument whose clause sets the reporting clock, e.g. cert-in-directions-2022 for the 6-hour CERT-In report",
+                "$ref": "https://maxwell.onfinance.ai/schemas/vocab/instruments.schema.json"
+              },
+              "slaTopic": {
+                "description": "SLA-table topic of the row that set deadlineHours (incident-reporting, breach-notification, customer-notification)",
+                "$ref": "https://maxwell.onfinance.ai/schemas/vocab/sla-table.schema.json#/$defs/topic"
+              },
+              "deadlineHours": {
+                "description": "Hours from detectedAt within which the report is due, copied from the SLA table: 6 for CERT-In and RBI, 72 for DPDP and NYDFS",
+                "type": "integer",
+                "maximum": 720,
+                "minimum": 1
+              },
+              "reference": {
+                "description": "Acknowledgement or ticket number returned by the regulator; required once submittedAt is set",
+                "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+              },
+              "submittedAt": {
+                "description": "When the report was submitted; absent while still pending",
+                "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+              }
+            },
+            "additionalProperties": false,
+            "dependentRequired": {
+              "submittedAt": [ "reference" ]
+            }
+          }
+        },
+        "affectedAssets": {
+          "$ref": "#/$defs/assetRefs"
+        },
+        "affectedDataClassifications": {
+          "description": "Classes of data touched by the incident; pii or spdi start the DPDP 72-hour clock, cardholder triggers PCI DSS notification",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/dataClassification"
+          }
+        },
+        "relatedFindingIds": {
+          "$ref": "#/$defs/findingIds"
+        },
+        "rootCause": {
+          "description": "Root cause once known, from the postmortem",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+        },
+        "externalRefs": {
+          "description": "Identifiers in external incident tooling",
+          "type": "object",
+          "properties": {
+            "pagerdutyId": {
+              "description": "PagerDuty incident id (the P... or Q... alphanumeric key), same shape as kpi/pagerduty-export",
+              "$ref": "https://maxwell.onfinance.ai/schemas/v1/kpi/pagerduty-export.schema.json#/$defs/pagerdutyId"
+            },
+            "pagerdutyIncidentNumber": {
+              "description": "PagerDuty human-facing incident number",
+              "type": "integer",
+              "minimum": 1
+            },
+            "ticket": {
+              "description": "Issue-tracker key, e.g. 'SEC-2044'",
+              "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+            },
+            "postmortemUrl": {
+              "description": "Link to the postmortem document",
+              "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/url"
+            }
+          },
+          "additionalProperties": false
+        },
+        "timeline": {
+          "description": "Chronological log of response actions",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "required": [ "at", "note" ],
+            "properties": {
+              "at": {
+                "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+              },
+              "note": {
+                "description": "What happened or was done",
+                "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+              },
+              "actor": {
+                "description": "Who did it",
+                "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/actor"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,404 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/application/environment.schema.json",
+  "title": "Application environment",
+  "description": "One deployed environment of an application (applications/<app_id>/env/<env_id>.json): where it is hosted, how exposed it is, what data it handles, how Maxwell's read-only runtime probes may reach it and when changes are frozen. Written by refresh-ctx and the runtime-probe-* workflows, corrected by humans",
+  "examples": [
+    {
+      "schemaVersion": "1",
+      "kind": "maxwell.app.environment",
+      "appId": "ledger-core",
+      "envId": "prod-mumbai",
+      "name": "Production (Mumbai)",
+      "tier": "prod",
+      "exposure": "internet",
+      "hosting": {
+        "provider": "aws",
+        "region": "ap-south-1",
+        "accountRef": "arthanidhi-prod",
+        "cluster": "eks-prod-mumbai",
+        "namespace": "ledger-core",
+        "kubernetesVersion": "1.31"
+      },
+      "urls": [ "https://api.arthanidhi.example/ledger" ],
+      "iac": [
+        {
+          "repoId": "ledger-core-infra",
+          "path": "terraform/envs/prod-mumbai",
+          "tool": "terraform"
+        },
+        {
+          "repoId": "ledger-core-api",
+          "path": "deploy/helm/ledger-core",
+          "tool": "helm"
+        }
+      ],
+      "secretsBackend": "aws-secrets-manager",
+      "observability": {
+        "logsRetentionDays": 365,
+        "logsInIndia": true,
+        "siem": "Splunk Cloud (ap-south-1 tenant)",
+        "apm": "Datadog APM"
+      },
+      "alerting": {
+        "pagerdutyServiceIds": [ "PT4KHLK" ],
+        "escalationPolicyId": "PEP7XZ2"
+      },
+      "dataClassification": [ "pii", "financial", "regulatory" ],
+      "residency": [ "IN" ],
+      "probeAccess": {
+        "credentialKey": "prod-mumbai-kubeconfig-ro",
+        "method": "kubeconfig",
+        "readOnly": true,
+        "allowedWindows": [
+          {
+            "daysOfWeek": [ "mon", "tue", "wed", "thu", "fri" ],
+            "startUtc": "16:30",
+            "endUtc": "23:30"
+          }
+        ],
+        "rateLimitPerMinute": 60
+      },
+      "changeFreeze": [
+        {
+          "from": "2026-03-28T00:00:00Z",
+          "to": "2026-04-02T00:00:00Z",
+          "reason": "Financial year-end close; SEBI settlement cycle"
+        }
+      ],
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-13T06:15:00Z",
+        "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+        "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+        "workflow": "refresh-ctx",
+        "agent": "context-refresher"
+      }
+    }
+  ],
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "kind",
+    "appId",
+    "envId",
+    "tier",
+    "exposure",
+    "hosting",
+    "secretsBackend",
+    "observability",
+    "dataClassification",
+    "residency",
+    "probeAccess",
+    "provenance"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/schemaVersion"
+    },
+    "kind": {
+      "const": "maxwell.app.environment"
+    },
+    "appId": {
+      "description": "Slug of the owning application; equals the applications/<app_id> directory name",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+    },
+    "envId": {
+      "description": "Slug of this environment; must equal the file name without .json",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+    },
+    "name": {
+      "description": "Human display name, e.g. 'Production (Mumbai)'",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+    },
+    "tier": {
+      "description": "Lifecycle tier. Drives which runtime-probe-* workflow may touch it and the severity/SLA weighting of findings",
+      "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/environmentTier"
+    },
+    "exposure": {
+      "description": "Network reachability of the environment's ingress: internet, partner (B2B/VPN peered), internal (corporate network only) or isolated (air-gapped)",
+      "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/exposure"
+    },
+    "hosting": {
+      "$ref": "#/$defs/hosting"
+    },
+    "urls": {
+      "description": "Public or partner-facing base URLs served by this environment. Empty for internal-only workloads",
+      "type": "array",
+      "maxItems": 50,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/url"
+      }
+    },
+    "iac": {
+      "description": "Infrastructure-as-code roots that define this environment, so probe-iac can map drift back to source",
+      "type": "array",
+      "maxItems": 50,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/iacRoot"
+      }
+    },
+    "secretsBackend": {
+      "description": "Where the workload's runtime secrets live, from the shared secretStore vocabulary (also used by sdlc-policy secretsManagement.backend and mirrored by credentials entry.provider). Maxwell never reads values from it; the field feeds secrets-management controls",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/secretStore"
+    },
+    "observability": {
+      "$ref": "#/$defs/observability"
+    },
+    "alerting": {
+      "$ref": "#/$defs/alerting"
+    },
+    "dataClassification": {
+      "description": "Highest classifications of data processed or stored here. Drives DPDP, SPDI, PCI and RBI data-localisation checks",
+      "type": "array",
+      "maxItems": 9,
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/dataClassification"
+      }
+    },
+    "residency": {
+      "description": "ISO 3166-1 alpha-2 countries where this environment persists data (primary, replicas and backups). RBI payment-data localisation expects exactly ['IN'] for payment systems",
+      "type": "array",
+      "maxItems": 20,
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/countryCode"
+      }
+    },
+    "probeAccess": {
+      "$ref": "#/$defs/probeAccess"
+    },
+    "changeFreeze": {
+      "description": "Windows during which no change (and no runtime probe with side effects) may be made, e.g. financial year-end, settlement holidays, regulator-mandated freezes",
+      "type": "array",
+      "maxItems": 50,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/changeFreeze"
+      }
+    },
+    "provenance": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/provenance"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "hosting": {
+      "description": "Where the environment runs. References only: aliases and names, never keys or account numbers",
+      "type": "object",
+      "required": [ "provider", "region" ],
+      "properties": {
+        "provider": {
+          "description": "Cloud or hosting provider. 'meity-empanelled-cloud' is an Indian MeitY-empanelled CSP (e.g. NxtGen, ESDS, Yotta) when not one of the hyperscalers",
+          "enum": [
+            "aws",
+            "gcp",
+            "azure",
+            "oci",
+            "on-prem",
+            "meity-empanelled-cloud",
+            "other"
+          ]
+        },
+        "region": {
+          "description": "Provider region identifier (e.g. 'ap-south-1', 'asia-south1', 'centralindia') or data-centre name for on-prem",
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$",
+          "maxLength": 64
+        },
+        "accountRef": {
+          "description": "Human alias of the cloud account, subscription or project (e.g. 'arthanidhi-prod'). Never an access key or credential",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "cluster": {
+          "description": "Name of the Kubernetes cluster, VM pool or host group the workload runs on",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "namespace": {
+          "description": "Kubernetes namespace (RFC 1123 label) or equivalent isolation unit",
+          "type": "string",
+          "pattern": "^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$",
+          "maxLength": 63
+        },
+        "kubernetesVersion": {
+          "description": "Kubernetes control-plane version as reported by the API server, e.g. '1.31' or 'v1.31.4-eks-1'",
+          "type": "string",
+          "pattern": "^v?[0-9]+\\.[0-9]+(\\.[0-9]+)?([+-][0-9A-Za-z.-]+)?$",
+          "maxLength": 40
+        }
+      },
+      "additionalProperties": false
+    },
+    "iacRoot": {
+      "description": "One infrastructure-as-code root inside a registered repository",
+      "type": "object",
+      "required": [ "repoId", "path", "tool" ],
+      "properties": {
+        "repoId": {
+          "description": "Slug of the repo (applications/<app_id>/repos/<repo_id>.json) that holds the code",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+        },
+        "path": {
+          "description": "Path of the IaC root relative to the repository root, POSIX separators, no traversal; '.' is not allowed, use the directory name",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/workspacePath"
+        },
+        "tool": {
+          "description": "IaC tool that consumes the root",
+          "enum": [
+            "terraform",
+            "opentofu",
+            "pulumi",
+            "helm",
+            "kustomize",
+            "cloudformation",
+            "ansible",
+            "cdk",
+            "other"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "observability": {
+      "description": "Logging and monitoring posture used for CERT-In log retention and RBI/SEBI SOC-integration controls",
+      "type": "object",
+      "required": [ "logsRetentionDays", "logsInIndia" ],
+      "properties": {
+        "logsRetentionDays": {
+          "description": "Days security-relevant logs are retained. CERT-In Directions 2022 require at least 180; a lower value is recorded as-is and surfaced as a finding, not rejected here",
+          "type": "integer",
+          "maximum": 3650,
+          "minimum": 0
+        },
+        "logsInIndia": {
+          "description": "True when the log store itself is located within Indian jurisdiction, as CERT-In Directions 2022 require",
+          "type": "boolean"
+        },
+        "siem": {
+          "description": "SIEM product and tenant the environment ships security logs to, e.g. 'Splunk Cloud (ap-south-1 tenant)'",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "apm": {
+          "description": "Application performance monitoring / tracing product in use",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        }
+      },
+      "additionalProperties": false
+    },
+    "probeAccess": {
+      "description": "How Maxwell's runtime probes reach this environment. Probes are always read-only; access is time-boxed and rate-limited per the runtime-probe-rules-of-engagement skill",
+      "type": "object",
+      "if": {
+        "required": [ "method" ],
+        "properties": {
+          "method": {
+            "const": "none"
+          }
+        }
+      },
+      "then": {
+        "not": {
+          "required": [ "credentialKey" ]
+        }
+      },
+      "else": {
+        "if": {
+          "required": [ "method" ],
+          "properties": {
+            "method": {
+              "const": "http-only"
+            }
+          }
+        },
+        "else": {
+          "required": [ "credentialKey" ]
+        }
+      },
+      "required": [ "method", "readOnly" ],
+      "properties": {
+        "credentialKey": {
+          "description": "Key of the entry in applications/<app_id>/credentials.json that grants probe access. Required for kubeconfig, ssh, docker-socket and cloud-api; optional for http-only (only when the unauthenticated surface sits behind a WAF or basic-auth status page that needs a read-only probe header); forbidden for none",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/credentialKey"
+        },
+        "method": {
+          "description": "Transport the probe uses: kubeconfig (read-only Kubernetes RBAC), ssh (read-only shell), docker-socket, cloud-api (provider read-only role), http-only (unauthenticated HTTP surface only, no credential needed) or none (evidence is requested from humans instead)",
+          "enum": [
+            "kubeconfig",
+            "ssh",
+            "docker-socket",
+            "cloud-api",
+            "http-only",
+            "none"
+          ]
+        },
+        "readOnly": {
+          "description": "Always true: Maxwell probes never mutate target systems. Present so the invariant is explicit in every environment record",
+          "const": true
+        },
+        "allowedWindows": {
+          "description": "UTC windows during which probes may run. Absent means any time outside changeFreeze windows",
+          "type": "array",
+          "maxItems": 14,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/weeklyWindow"
+          }
+        },
+        "rateLimitPerMinute": {
+          "description": "Maximum probe requests per minute against this environment",
+          "type": "integer",
+          "maximum": 10000,
+          "minimum": 1
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "changeFreeze": {
+      "description": "A change-freeze window with its business or regulatory reason",
+      "type": "object",
+      "required": [ "from", "to", "reason" ],
+      "properties": {
+        "from": {
+          "description": "Freeze start (inclusive)",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "to": {
+          "description": "Freeze end (exclusive)",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "reason": {
+          "description": "Why changes are frozen, e.g. 'Financial year-end close'",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        }
+      },
+      "additionalProperties": false
+    },
+    "alerting": {
+      "description": "On-call routing for this environment. PagerDuty incidents raised outside Maxwell carry only service.id, so runtime-probe-* workflows and kpis/compute.mjs join PagerDuty exports (kpis/data/raw/pagerduty) to appId/envId through pagerdutyServiceIds when computing the per-app, per-environment incident_rate denominator",
+      "type": "object",
+      "required": [ "pagerdutyServiceIds" ],
+      "properties": {
+        "pagerdutyServiceIds": {
+          "description": "PagerDuty service ids whose incidents belong to this environment (the service.id field of a PagerDuty incident)",
+          "type": "array",
+          "maxItems": 20,
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/kpi/pagerduty-export.schema.json#/$defs/pagerdutyId"
+          }
+        },
+        "escalationPolicyId": {
+          "description": "PagerDuty escalation policy id that the services above escalate through",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/kpi/pagerduty-export.schema.json#/$defs/pagerdutyId"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

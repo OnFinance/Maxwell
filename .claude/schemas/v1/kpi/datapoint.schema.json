@@ -1,0 +1,365 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/kpi/datapoint.schema.json",
+  "title": "KPI datapoint",
+  "description": "One line of kpis/data/<kpiId>/series.jsonl: a single computed KPI value for one period, one series (the raw KPI or one of its registry normalisations) and one dimension tuple, with the numerator, denominator, sampling and inputs needed to reproduce it",
+  "examples": [
+    {
+      "schemaVersion": "1",
+      "kind": "maxwell.kpi.datapoint",
+      "kpiId": "cost_of_audit",
+      "series": "raw",
+      "periodStart": "2026-09-01T00:00:00Z",
+      "periodEnd": "2026-09-13T00:00:00Z",
+      "value": 312.48,
+      "unit": "usd",
+      "dimensions": {
+        "companyId": "zerodha-broking",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "model": "claude-opus-5",
+        "harness": "claude-code"
+      },
+      "sampleSize": 10,
+      "sampling": {
+        "mode": "bundle",
+        "sessionsConsidered": 48,
+        "sessionsSampled": 10,
+        "scaleFactor": 4.8
+      },
+      "inputsRef": {
+        "sessionIds": [
+          "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "ses_8KpQ2mN4vX"
+        ],
+        "runIds": [ "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4" ],
+        "files": [
+          "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.summary.json",
+          "kpis/data/raw/sessions/opencode/ses_8KpQ2mN4vX.summary.json"
+        ]
+      },
+      "computedAt": "2026-09-13T10:15:44Z",
+      "methodVersion": "1.0.0",
+      "notes": "Bundle sample of the first 10 sessions of the run; sampling.scaleFactor 4.8 applied to reach the run total",
+      "provenance": {
+        "harness": "script",
+        "generatedAt": "2026-09-13T10:15:44Z",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "kpis",
+        "agent": ".claude/scripts/kpis/compute.mjs",
+        "gitCommit": "9f3c2ab",
+        "inputsHash": "5b1e0a9c2d3f4e5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a"
+      }
+    }
+  ],
+  "type": "object",
+  "allOf": [
+    {
+      "if": {
+        "required": [ "kpiId" ],
+        "properties": {
+          "kpiId": {
+            "const": "cost_of_audit"
+          }
+        }
+      },
+      "then": {
+        "required": [ "sampling" ],
+        "properties": {
+          "series": {
+            "enum": [ "raw", "usd-per-control-observed", "usd-per-application" ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [ "kpiId" ],
+        "properties": {
+          "kpiId": {
+            "const": "cm_actionability"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "series": {
+            "const": "raw"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [ "kpiId" ],
+        "properties": {
+          "kpiId": {
+            "const": "cm_coverage"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "series": {
+            "const": "raw"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [ "kpiId" ],
+        "properties": {
+          "kpiId": {
+            "const": "cm_time_to_implementation"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "series": {
+            "enum": [ "raw", "sla-compliance-rate" ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [ "kpiId" ],
+        "properties": {
+          "kpiId": {
+            "const": "suggestion_acceptance_rate"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "series": {
+            "enum": [ "raw", "merge-rate", "revert-rate", "retention-30d" ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [ "kpiId" ],
+        "properties": {
+          "kpiId": {
+            "const": "incident_rate"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "series": {
+            "enum": [ "raw", "incidents-per-application" ]
+          }
+        }
+      }
+    }
+  ],
+  "required": [
+    "schemaVersion",
+    "kind",
+    "kpiId",
+    "series",
+    "periodStart",
+    "periodEnd",
+    "value",
+    "unit",
+    "dimensions",
+    "sampleSize",
+    "inputsRef",
+    "computedAt",
+    "methodVersion",
+    "provenance"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/schemaVersion"
+    },
+    "kind": {
+      "const": "maxwell.kpi.datapoint"
+    },
+    "kpiId": {
+      "description": "KPI this datapoint belongs to; must match the series folder name",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/kpiId"
+    },
+    "series": {
+      "description": "Which series of the KPI this value belongs to: 'raw' for the headline value in the registry unit, otherwise the name of one of the registry normalisations[] for this kpiId (the per-kpiId allOf branches enforce the names)",
+      "anyOf": [
+        {
+          "const": "raw"
+        },
+        {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/kpi/registry.schema.json#/$defs/normalisationName"
+        }
+      ]
+    },
+    "periodStart": {
+      "description": "Inclusive start of the period the value covers",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+    },
+    "periodEnd": {
+      "description": "Exclusive end of the period the value covers",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+    },
+    "value": {
+      "description": "The KPI value in the stated unit, after aggregation and any normalisation",
+      "type": "number"
+    },
+    "unit": {
+      "description": "Unit of value: the registry kpi unit when series is 'raw', otherwise the unit of the matching registry normalisation",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/kpi/registry.schema.json#/$defs/unit"
+    },
+    "dimensions": {
+      "$ref": "#/$defs/dimensions"
+    },
+    "sampleSize": {
+      "description": "Number of underlying records (sessions, findings, changes, incidents) the value was computed from",
+      "type": "integer",
+      "minimum": 0
+    },
+    "numerator": {
+      "description": "Numerator before division, for rate and normalised KPIs; omitted for sums and counts. Requires denominator",
+      "type": "number"
+    },
+    "denominator": {
+      "description": "Denominator before division, for rate and normalised KPIs; zero means the value is undefined and should be treated as missing",
+      "type": "number",
+      "minimum": 0
+    },
+    "sampling": {
+      "$ref": "#/$defs/sampling"
+    },
+    "inputsRef": {
+      "$ref": "#/$defs/inputsRef"
+    },
+    "computedAt": {
+      "description": "When the value was computed",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+    },
+    "methodVersion": {
+      "description": "Version of the measurement method (registry methodVersion) in force when computed. Values across different methodVersions are not comparable",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/semver"
+    },
+    "notes": {
+      "description": "Free-text caveats: excluded sessions, data-quality warnings. Anything that changes the value (scale factors, sample sizes) belongs in sampling, not here",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+    },
+    "provenance": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/provenance"
+    }
+  },
+  "additionalProperties": false,
+  "dependentRequired": {
+    "numerator": [ "denominator" ]
+  },
+  "$defs": {
+    "dimensions": {
+      "description": "Dimension tuple this datapoint is sliced by. Every key is optional; an empty object is the all-up value. Keys mirror registry dimensions except 'period', which is carried by periodStart/periodEnd",
+      "type": "object",
+      "properties": {
+        "companyId": {
+          "description": "Company the value is scoped to",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+        },
+        "runId": {
+          "description": "Headless run the value is scoped to (per-run cadence)",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/runId"
+        },
+        "workflow": {
+          "description": "Workflow that produced the underlying sessions or records",
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/workflows.schema.json"
+        },
+        "appId": {
+          "description": "Application the value is scoped to",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+        },
+        "envId": {
+          "description": "Environment the value is scoped to",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+        },
+        "severity": {
+          "description": "Severity bucket of the findings or incidents counted",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/severity"
+        },
+        "model": {
+          "description": "Model id (gen_ai.request.model) the sessions ran on",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "harness": {
+          "description": "Harness the sessions ran on",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/harness"
+        }
+      },
+      "additionalProperties": false
+    },
+    "inputsRef": {
+      "description": "Pointers to the inputs the value was computed from, so a datapoint can be recomputed or audited",
+      "type": "object",
+      "properties": {
+        "sessionIds": {
+          "description": "Harness sessions whose summaries fed the value",
+          "type": "array",
+          "maxItems": 10000,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/sessionId"
+          }
+        },
+        "runIds": {
+          "description": "Headless runs whose sessions fed the value",
+          "type": "array",
+          "maxItems": 1000,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/runId"
+          }
+        },
+        "files": {
+          "description": "Workspace files read (session summaries, ledgers, PagerDuty exports, masters)",
+          "type": "array",
+          "maxItems": 10000,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/workspacePath"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "sampling": {
+      "description": "How sessions were sampled and how the value was scaled back to the full population. Required for cost_of_audit, whose value is an extrapolation; scaleFactor = sessionsConsidered / sessionsSampled (1 under mode all) and value = measured value * scaleFactor",
+      "type": "object",
+      "required": [
+        "mode",
+        "sessionsConsidered",
+        "sessionsSampled",
+        "scaleFactor"
+      ],
+      "properties": {
+        "mode": {
+          "description": "Registry sampling mode in force when the value was computed",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/kpi/registry.schema.json#/$defs/samplingMode"
+        },
+        "sessionsConsidered": {
+          "description": "Sessions in the period and dimension tuple before sampling",
+          "type": "integer",
+          "minimum": 0
+        },
+        "sessionsSampled": {
+          "description": "Sessions actually measured; never exceeds sessionsConsidered",
+          "type": "integer",
+          "minimum": 0
+        },
+        "scaleFactor": {
+          "description": "Multiplier applied to the measured value to reach the population estimate; 1 when nothing was extrapolated",
+          "type": "number",
+          "minimum": 1
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

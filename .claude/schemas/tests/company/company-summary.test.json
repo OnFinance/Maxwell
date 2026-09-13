@@ -1,0 +1,489 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/company-summary.schema.json",
+  "tests": [
+    {
+      "description": "complete report frontmatter",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.summary",
+        "companyId": "zenith-securities",
+        "title": "Zenith Securities cyber resilience summary",
+        "version": "1.4.0",
+        "sections": [
+          "overview",
+          "regulatory-posture",
+          "applications",
+          "data-flows",
+          "vendors",
+          "control-summary",
+          "open-findings",
+          "risks",
+          "incidents",
+          "initiatives",
+          "suggestions",
+          "kpis"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T08:00:00Z",
+          "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XE",
+          "workflow": "report-audit-findings",
+          "agent": "report-writer",
+          "model": "claude-fable-5-1",
+          "gitCommit": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b",
+          "inputsHash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+        }
+      }
+    },
+    {
+      "description": "minimal frontmatter from a human edit",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.summary",
+        "companyId": "zenith-securities",
+        "version": "0.1.0",
+        "sections": [
+          "overview"
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T08:00:00Z",
+          "inputsHash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+        }
+      }
+    },
+    {
+      "description": "invented key is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.summary",
+        "companyId": "zenith-securities",
+        "title": "Zenith Securities cyber resilience summary",
+        "version": "1.4.0",
+        "sections": [
+          "overview",
+          "regulatory-posture",
+          "applications",
+          "data-flows",
+          "vendors",
+          "control-summary",
+          "open-findings",
+          "risks",
+          "incidents",
+          "initiatives",
+          "suggestions",
+          "kpis"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T08:00:00Z",
+          "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XE",
+          "workflow": "report-audit-findings",
+          "agent": "report-writer",
+          "model": "claude-fable-5-1",
+          "gitCommit": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b",
+          "inputsHash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+        },
+        "author": "x"
+      }
+    },
+    {
+      "description": "inputsHash must be sha256 hex",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.summary",
+        "companyId": "zenith-securities",
+        "title": "Zenith Securities cyber resilience summary",
+        "version": "1.4.0",
+        "sections": [
+          "overview",
+          "regulatory-posture",
+          "applications",
+          "data-flows",
+          "vendors",
+          "control-summary",
+          "open-findings",
+          "risks",
+          "incidents",
+          "initiatives",
+          "suggestions",
+          "kpis"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T08:00:00Z",
+          "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XE",
+          "workflow": "report-audit-findings",
+          "agent": "report-writer",
+          "model": "claude-fable-5-1",
+          "gitCommit": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b",
+          "inputsHash": "abc123"
+        }
+      }
+    },
+    {
+      "description": "provenance needs inputsHash",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.summary",
+        "companyId": "zenith-securities",
+        "title": "Zenith Securities cyber resilience summary",
+        "version": "1.4.0",
+        "sections": [
+          "overview",
+          "regulatory-posture",
+          "applications",
+          "data-flows",
+          "vendors",
+          "control-summary",
+          "open-findings",
+          "risks",
+          "incidents",
+          "initiatives",
+          "suggestions",
+          "kpis"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T08:00:00Z",
+          "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XE",
+          "workflow": "report-audit-findings",
+          "agent": "report-writer",
+          "model": "claude-fable-5-1",
+          "gitCommit": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b"
+        }
+      }
+    },
+    {
+      "description": "unknown section name is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.summary",
+        "companyId": "zenith-securities",
+        "title": "Zenith Securities cyber resilience summary",
+        "version": "1.4.0",
+        "sections": [
+          "overview",
+          "appendix"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T08:00:00Z",
+          "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XE",
+          "workflow": "report-audit-findings",
+          "agent": "report-writer",
+          "model": "claude-fable-5-1",
+          "gitCommit": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b",
+          "inputsHash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+        }
+      }
+    },
+    {
+      "description": "duplicate sections are rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.summary",
+        "companyId": "zenith-securities",
+        "title": "Zenith Securities cyber resilience summary",
+        "version": "1.4.0",
+        "sections": [
+          "overview",
+          "overview"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T08:00:00Z",
+          "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XE",
+          "workflow": "report-audit-findings",
+          "agent": "report-writer",
+          "model": "claude-fable-5-1",
+          "gitCommit": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b",
+          "inputsHash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+        }
+      }
+    },
+    {
+      "description": "risks, incidents and data-flows sections are accepted",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.summary",
+        "companyId": "zenith-securities",
+        "title": "Zenith Securities cyber resilience summary",
+        "version": "1.4.0",
+        "sections": [
+          "risks",
+          "incidents",
+          "data-flows"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T08:00:00Z",
+          "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XE",
+          "workflow": "report-audit-findings",
+          "agent": "report-writer",
+          "model": "claude-fable-5-1",
+          "gitCommit": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b",
+          "inputsHash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+        }
+      }
+    },
+    {
+      "description": "unknown harness is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.summary",
+        "companyId": "zenith-securities",
+        "title": "Zenith Securities cyber resilience summary",
+        "version": "1.4.0",
+        "sections": [
+          "overview",
+          "regulatory-posture",
+          "applications",
+          "data-flows",
+          "vendors",
+          "control-summary",
+          "open-findings",
+          "risks",
+          "incidents",
+          "initiatives",
+          "suggestions",
+          "kpis"
+        ],
+        "provenance": {
+          "harness": "gemini-cli",
+          "generatedAt": "2026-09-13T08:00:00Z",
+          "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XE",
+          "workflow": "report-audit-findings",
+          "agent": "report-writer",
+          "model": "claude-fable-5-1",
+          "gitCommit": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b",
+          "inputsHash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+        }
+      }
+    },
+    {
+      "description": "version must be semver",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.summary",
+        "companyId": "zenith-securities",
+        "title": "Zenith Securities cyber resilience summary",
+        "version": "v1",
+        "sections": [
+          "overview",
+          "regulatory-posture",
+          "applications",
+          "data-flows",
+          "vendors",
+          "control-summary",
+          "open-findings",
+          "risks",
+          "incidents",
+          "initiatives",
+          "suggestions",
+          "kpis"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T08:00:00Z",
+          "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XE",
+          "workflow": "report-audit-findings",
+          "agent": "report-writer",
+          "model": "claude-fable-5-1",
+          "gitCommit": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b",
+          "inputsHash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+        }
+      }
+    },
+    {
+      "description": "missing provenance generatedAt",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.summary",
+        "companyId": "zenith-securities",
+        "title": "Zenith Securities cyber resilience summary",
+        "version": "1.4.0",
+        "sections": [
+          "overview",
+          "regulatory-posture",
+          "applications",
+          "data-flows",
+          "vendors",
+          "control-summary",
+          "open-findings",
+          "risks",
+          "incidents",
+          "initiatives",
+          "suggestions",
+          "kpis"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XE",
+          "workflow": "report-audit-findings",
+          "agent": "report-writer",
+          "model": "claude-fable-5-1",
+          "gitCommit": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b",
+          "inputsHash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+        }
+      }
+    },
+    {
+      "description": "missing provenance harness",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.summary",
+        "companyId": "zenith-securities",
+        "title": "Zenith Securities cyber resilience summary",
+        "version": "1.4.0",
+        "sections": [
+          "overview",
+          "regulatory-posture",
+          "applications",
+          "data-flows",
+          "vendors",
+          "control-summary",
+          "open-findings",
+          "risks",
+          "incidents",
+          "initiatives",
+          "suggestions",
+          "kpis"
+        ],
+        "provenance": {
+          "generatedAt": "2026-09-13T08:00:00Z",
+          "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XE",
+          "workflow": "report-audit-findings",
+          "agent": "report-writer",
+          "model": "claude-fable-5-1",
+          "gitCommit": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b",
+          "inputsHash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+        }
+      }
+    },
+    {
+      "description": "missing provenance",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.summary",
+        "companyId": "zenith-securities",
+        "title": "Zenith Securities cyber resilience summary",
+        "version": "1.4.0",
+        "sections": [
+          "overview",
+          "regulatory-posture",
+          "applications",
+          "data-flows",
+          "vendors",
+          "control-summary",
+          "open-findings",
+          "risks",
+          "incidents",
+          "initiatives",
+          "suggestions",
+          "kpis"
+        ]
+      }
+    },
+    {
+      "description": "flat provenance fields at the top level are rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.summary",
+        "companyId": "zenith-securities",
+        "title": "Zenith Securities cyber resilience summary",
+        "version": "1.4.0",
+        "sections": [
+          "overview",
+          "regulatory-posture",
+          "applications",
+          "data-flows",
+          "vendors",
+          "control-summary",
+          "open-findings",
+          "risks",
+          "incidents",
+          "initiatives",
+          "suggestions",
+          "kpis"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T08:00:00Z",
+          "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XE",
+          "workflow": "report-audit-findings",
+          "agent": "report-writer",
+          "model": "claude-fable-5-1",
+          "gitCommit": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b",
+          "inputsHash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+        },
+        "harness": "claude-code",
+        "generatedAt": "2026-09-13T08:00:00Z",
+        "sourcesHash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+      }
+    },
+    {
+      "description": "invented key inside provenance is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.summary",
+        "companyId": "zenith-securities",
+        "title": "Zenith Securities cyber resilience summary",
+        "version": "1.4.0",
+        "sections": [
+          "overview",
+          "regulatory-posture",
+          "applications",
+          "data-flows",
+          "vendors",
+          "control-summary",
+          "open-findings",
+          "risks",
+          "incidents",
+          "initiatives",
+          "suggestions",
+          "kpis"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T08:00:00Z",
+          "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XE",
+          "workflow": "report-audit-findings",
+          "agent": "report-writer",
+          "model": "claude-fable-5-1",
+          "gitCommit": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b",
+          "inputsHash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+          "sourcesHash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+        }
+      }
+    }
+  ]
+}

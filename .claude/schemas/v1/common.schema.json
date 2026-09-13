@@ -14,6 +14,17 @@
       "type": "string",
       "pattern": "^[a-z0-9][a-z0-9-]{1,62}$"
     },
+    "kpiId": {
+      "description": "Identifier of one of the six Maxwell KPIs. Fixed vocabulary; kpis/data/<kpiId>/ and kpis/measurement/<kpiId>.md are named after it and kpi/registry, kpi/datapoint, kpi/run and the methodology frontmatter all reference this list",
+      "enum": [
+        "cost_of_audit",
+        "cm_actionability",
+        "cm_coverage",
+        "cm_time_to_implementation",
+        "suggestion_acceptance_rate",
+        "incident_rate"
+      ]
+    },
     "ulid": {
       "type": "string",
       "pattern": "^[0-7][0-9A-HJKMNP-TV-Z]{25}$"
@@ -50,6 +61,11 @@
       "type": "string",
       "pattern": "^q_[0-7][0-9A-HJKMNP-TV-Z]{25}$"
     },
+    "eventId": {
+      "description": "Sequential event id within one change-management timeline: evt_1, evt_2, ... in append order",
+      "type": "string",
+      "pattern": "^evt_[0-9]{1,6}$"
+    },
     "runId": {
       "description": "Identifier of one headless run (a bundle of harness sessions). Set via MAXWELL_RUN_ID",
       "type": "string",
@@ -76,6 +92,40 @@
       "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
       "format": "date"
     },
+    "timeOfDay": {
+      "description": "Time of day, 24h HH:MM",
+      "type": "string",
+      "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$"
+    },
+    "dayOfWeek": {
+      "enum": [ "mon", "tue", "wed", "thu", "fri", "sat", "sun" ]
+    },
+    "weeklyWindow": {
+      "description": "A recurring weekly window expressed in UTC. A window whose endUtc is earlier than startUtc wraps past midnight; startUtc equal to endUtc means the whole day. Shared by application/environment allowedWindows and mirrored (with a note) by company/sdlc-policy deploymentWindow",
+      "type": "object",
+      "required": [ "daysOfWeek", "startUtc", "endUtc" ],
+      "properties": {
+        "daysOfWeek": {
+          "description": "Days on which the window applies",
+          "type": "array",
+          "maxItems": 7,
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/dayOfWeek"
+          }
+        },
+        "startUtc": {
+          "description": "Window start, 24h HH:MM in UTC",
+          "$ref": "#/$defs/timeOfDay"
+        },
+        "endUtc": {
+          "description": "Window end, 24h HH:MM in UTC",
+          "$ref": "#/$defs/timeOfDay"
+        }
+      },
+      "additionalProperties": false
+    },
     "url": {
       "type": "string",
       "pattern": "^https?://",
@@ -85,9 +135,26 @@
       "type": "string",
       "pattern": "^[a-f0-9]{64}$"
     },
+    "ociDigest": {
+      "description": "Content-addressable OCI manifest digest: 'sha256:' followed by 64 lowercase hex characters",
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "ociReference": {
+      "description": "Fully-qualified OCI distribution reference: host[:port]/path[:tag][@sha256:hex]. The host must contain a dot or a port (or be localhost) so that registry-less shorthands such as node:22 or org/repo:1.0 are rejected; normalise them to docker.io/library/node:22 and docker.io/org/repo:1.0 before writing",
+      "type": "string",
+      "pattern": "^([a-z0-9]([a-z0-9-]*[a-z0-9])?(\\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+(:[0-9]{1,5})?|[a-z0-9]([a-z0-9-]*[a-z0-9])?:[0-9]{1,5}|localhost)(/[a-z0-9]+((\\.|_|__|-+)[a-z0-9]+)*)+(:[A-Za-z0-9_][A-Za-z0-9_.-]{0,127})?(@sha256:[a-f0-9]{64})?$",
+      "maxLength": 720
+    },
     "gitCommit": {
       "type": "string",
       "pattern": "^[a-f0-9]{7,40}$"
+    },
+    "gitUrl": {
+      "description": "Git remote URL: https://, ssh:// or scp-like git@host:path, optional .git suffix, no embedded credentials or traversal. Shared by application/repo and any schema that cites a repository",
+      "type": "string",
+      "pattern": "^(?!.*/\\.\\.(/|$))(?!.*\\.git\\.git$)(https://(?:[A-Za-z0-9._-]+@)?[A-Za-z0-9.-]+(:[0-9]{1,5})?/(?:[A-Za-z0-9._~-]|%[0-9A-Fa-f]{2})+(?:/(?:[A-Za-z0-9._~-]|%[0-9A-Fa-f]{2})+)*|ssh://(?:[A-Za-z0-9._-]+@)?[A-Za-z0-9.-]+(:[0-9]{1,5})?/(?:[A-Za-z0-9._~-]|%[0-9A-Fa-f]{2})+(?:/(?:[A-Za-z0-9._~-]|%[0-9A-Fa-f]{2})+)*|git@[A-Za-z0-9.-]+:(?:[A-Za-z0-9._~-]|%[0-9A-Fa-f]{2})+(?:/(?:[A-Za-z0-9._~-]|%[0-9A-Fa-f]{2})+)*)(\\.git)?$",
+      "maxLength": 500
     },
     "semver": {
       "type": "string",
@@ -97,6 +164,12 @@
       "description": "Path relative to the workspace root, POSIX separators, no traversal",
       "type": "string",
       "pattern": "^(?!\\.\\./)(?!/)([A-Za-z0-9._-]+/)*[A-Za-z0-9._-]+$"
+    },
+    "absolutePath": {
+      "description": "Absolute POSIX path (leading slash, no traversal segments). Used where a harness reports a machine-local location such as its working directory",
+      "type": "string",
+      "pattern": "^/([A-Za-z0-9._-]+/)*[A-Za-z0-9._-]*$",
+      "maxLength": 1024
     },
     "nonEmptyString": {
       "type": "string",
@@ -117,6 +190,36 @@
       "type": "string",
       "format": "email"
     },
+    "phoneE164": {
+      "description": "E.164 phone number: plus sign, country code and digits only",
+      "type": "string",
+      "pattern": "^\\+[1-9][0-9]{6,14}$"
+    },
+    "credentialKey": {
+      "description": "Stable handle of an entry in applications/<app_id>/credentials.json (lowercase, starts with a letter, 3-64 characters). Referenced by environment probeAccess.credentialKey, metastore catalog endpointRef and workflows; never a URL and never a secret value",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_-]{2,63}$",
+      "maxLength": 64
+    },
+    "contactRole": {
+      "description": "Closed list of governance roles a contact can hold. ceo is the MD/CEO who receives RBI board-level reporting; designated-officer is the SEBI CSCRF designated officer and the CERT-In Directions 2022 point of contact for incident reporting; grievance-officer is the DPDP Rules 2025 grievance officer; dpo is the data protection officer; the remaining roles are IT governance, audit and compliance functions",
+      "enum": [
+        "ceo",
+        "ciso",
+        "cto",
+        "cio",
+        "dpo",
+        "head-it",
+        "it-committee-chair",
+        "internal-auditor",
+        "external-auditor",
+        "soc-lead",
+        "compliance-officer",
+        "designated-officer",
+        "grievance-officer",
+        "board-liaison"
+      ]
+    },
     "countryCode": {
       "type": "string",
       "pattern": "^[A-Z]{2}$"
@@ -133,6 +236,23 @@
       "type": "string",
       "pattern": "^CVE-[0-9]{4}-[0-9]{4,}$"
     },
+    "vulnId": {
+      "description": "Vulnerability identifier as issued by its database. CVE and GHSA ids are checked strictly; any other OSV-style id is accepted as a prefix plus dash-separated segments that may contain ':' or '.' (PYSEC-2021-123, GO-2024-2687, RHSA-2024:1892, openSUSE-SU-2024:14017-1, CGA-8crc-r3gg-jr73, UBUNTU-CVE-2022-3169, BIT-golang-2023-45288). Shared by cve/record, cve/search and soc findings",
+      "type": "string",
+      "pattern": "^(CVE-[0-9]{4}-[0-9]{4,}|GHSA-[23456789cfghjmpqrvwx]{4}-[23456789cfghjmpqrvwx]{4}-[23456789cfghjmpqrvwx]{4}|(?![Cc][Vv][Ee]-|[Gg][Hh][Ss][Aa]-)[A-Za-z][A-Za-z0-9]*(-[A-Za-z0-9]+)*-[A-Za-z0-9:.]+(-[A-Za-z0-9]+)*)$",
+      "maxLength": 64
+    },
+    "cvssVector": {
+      "description": "CVSS vector string with optional CVSS:<major>.<minor>/ prefix, e.g. CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N or CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:N/VA:N/SC:N/SI:N/SA:N/U:Amber (CVSS 4.0 supplemental Provider Urgency values Clear, Green, Amber and Red are allowed). Shared by cve/record cvss.vector and soc finding.cvss.vector, which additionally require the version prefix",
+      "type": "string",
+      "pattern": "^(CVSS:[234]\\.[0-9]/)?[A-Za-z]{1,3}:[A-Za-z0-9.]{1,5}(/[A-Za-z]{1,3}:[A-Za-z0-9.]{1,5})*$",
+      "maxLength": 512
+    },
+    "mitreTechniqueId": {
+      "description": "MITRE ATT&CK technique or sub-technique id (T1195.002) or MITRE ATLAS technique id (AML.T0010)",
+      "type": "string",
+      "pattern": "^(T|AML\\.T)[0-9]{4}(\\.[0-9]{3})?$"
+    },
     "severity": {
       "description": "Maxwell canonical severity. Map CVSS 4.0/3.1 qualitative ratings 1:1; 'info' is for observations with no risk",
       "enum": [ "critical", "high", "medium", "low", "info" ]
@@ -142,6 +262,49 @@
     },
     "harness": {
       "enum": [ "claude-code", "opencode", "human", "script" ]
+    },
+    "genAiProvider": {
+      "description": "Generative-AI provider name: the OpenTelemetry gen_ai.provider.name well-known values plus 'other'. Claude Code sessions are 'anthropic' unless CLAUDE_CODE_USE_BEDROCK or CLAUDE_CODE_USE_VERTEX is set; OpenCode supplies providerID. session/summary models[].provider and vocab/pricing models[].provider both use this list so cost lookups join on it",
+      "enum": [
+        "anthropic",
+        "aws.bedrock",
+        "azure.ai.inference",
+        "azure.ai.openai",
+        "cohere",
+        "deepseek",
+        "gcp.gemini",
+        "gcp.gen_ai",
+        "gcp.vertex_ai",
+        "groq",
+        "ibm.watsonx.ai",
+        "mistral_ai",
+        "openai",
+        "perplexity",
+        "x_ai",
+        "other"
+      ]
+    },
+    "modelId": {
+      "description": "Model identifier as the harness requested it (gen_ai.request.model), e.g. 'claude-opus-5' or 'claude-haiku-4-5'; also the shape of vocab/pricing aliases so session usage joins the price table",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9./:_@\\[\\]-]{1,128}$"
+    },
+    "secretStore": {
+      "description": "Where secrets live. Union of the stores an environment can run against (application/environment secretsBackend) and the stores a policy may mandate (company/sdlc-policy secretsManagement.backend), so probe-sdlc compares the two by string equality; application/credentials entry.provider adds the locator kinds env and file on top of this list",
+      "enum": [
+        "vault",
+        "aws-secrets-manager",
+        "gcp-secret-manager",
+        "azure-key-vault",
+        "kubernetes-secrets",
+        "sops",
+        "1password",
+        "cyberark",
+        "doppler",
+        "ci-variables",
+        "env-files",
+        "other"
+      ]
     },
     "actor": {
       "description": "Who performed an action: a harness agent, a human, or a script",
@@ -157,6 +320,17 @@
         }
       },
       "additionalProperties": false
+    },
+    "owner": {
+      "description": "Accountable party: a full actor object, or simply the human's email",
+      "anyOf": [
+        {
+          "$ref": "#/$defs/actor"
+        },
+        {
+          "$ref": "#/$defs/email"
+        }
+      ]
     },
     "provenance": {
       "description": "How and by whom a document or record was produced. Links outputs to harness sessions for KPI attribution",
@@ -254,9 +428,71 @@
       "additionalProperties": false
     },
     "assetRef": {
-      "description": "Points at an asset in the workspace: an application, an environment, a repo, an image or a vendor",
+      "description": "Points at an asset in the workspace: an application, an environment, a repo, an image, a vendor or the company itself. appId is required for application, environment, repo and image (with envId, repoId or imageId respectively); vendorId is required for vendor; company needs no id beyond the enclosing document",
       "type": "object",
-      "required": [ "type", "appId" ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "enum": [ "application", "environment", "repo", "image" ]
+              }
+            }
+          },
+          "then": {
+            "required": [ "appId" ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "environment"
+              }
+            }
+          },
+          "then": {
+            "required": [ "envId" ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "repo"
+              }
+            }
+          },
+          "then": {
+            "required": [ "repoId" ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "image"
+              }
+            }
+          },
+          "then": {
+            "required": [ "imageId" ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "vendor"
+              }
+            }
+          },
+          "then": {
+            "required": [ "vendorId" ]
+          }
+        }
+      ],
+      "required": [ "type" ],
       "properties": {
         "type": {
           "enum": [

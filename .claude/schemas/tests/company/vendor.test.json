@@ -1,0 +1,3277 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/v1/company/vendor.schema.json",
+  "tests": [
+    {
+      "description": "material cloud vendor with SOC 2 assurance",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.vendor",
+        "companyId": "zenith-securities",
+        "vendorId": "aws",
+        "legalName": "Amazon Web Services, Inc.",
+        "lei": "549300DXHFVH5ZGTBK98",
+        "country": "US",
+        "website": "https://aws.amazon.com",
+        "intraGroup": false,
+        "ultimateParent": {
+          "legalName": "Amazon.com, Inc.",
+          "lei": "5493009NQRXG7AHTH046",
+          "country": "US"
+        },
+        "services": [
+          {
+            "serviceId": "aws-mumbai-compute",
+            "type": "cloud-iaas",
+            "description": "EC2, EKS and RDS hosting for the trading platform in ap-south-1 with DR in ap-south-2",
+            "criticality": "critical",
+            "supportsCriticalFunction": true,
+            "criticalFunctionRefs": [
+              "order-routing"
+            ],
+            "dataAccessed": [
+              "pii",
+              "financial",
+              "confidential"
+            ],
+            "hostingCountries": [
+              "IN"
+            ],
+            "subcontractors": [
+              {
+                "name": "Sify Technologies",
+                "country": "IN",
+                "role": "Direct Connect colocation"
+              }
+            ]
+          }
+        ],
+        "materiality": "material",
+        "substitutability": "highly-complex",
+        "contract": {
+          "type": "overarching",
+          "reference": "AWS-EA-2024-0173",
+          "startDate": "2024-04-01",
+          "endDate": "2027-03-31",
+          "noticePeriodDays": 90,
+          "exitPlanDocumented": true,
+          "governingLaw": "IN",
+          "rightToAudit": true,
+          "subcontractingAllowed": true,
+          "dataReturnAndDeletion": true,
+          "annualValue": {
+            "amount": 42000000,
+            "currency": "INR"
+          }
+        },
+        "assurance": [
+          {
+            "type": "soc2-type2",
+            "issuer": "Ernst & Young LLP",
+            "periodStart": "2025-04-01",
+            "periodEnd": "2026-03-31",
+            "expiresAt": "2027-03-31",
+            "scope": "AWS ap-south-1 in-scope services",
+            "exceptionsCount": 0,
+            "evidence": {
+              "type": "url",
+              "ref": "https://aws.amazon.com/artifact/",
+              "description": "SOC 2 Type II report downloaded via AWS Artifact"
+            }
+          },
+          {
+            "type": "iso22301",
+            "issuer": "BSI Group",
+            "periodEnd": "2026-01-15",
+            "expiresAt": "2029-01-14",
+            "scope": "Business continuity management system for AWS global infrastructure"
+          }
+        ],
+        "lastAssessment": {
+          "date": "2026-06-15",
+          "rating": "low",
+          "assessor": "vendor-risk@zenithsecurities.in",
+          "findingIds": [
+            "fnd_01J9Z6X3F8N2Q4R5S6T7V8W9XC"
+          ]
+        },
+        "regulatoryRefs": [
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S5"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S2"
+          }
+        ],
+        "status": "active",
+        "tags": [
+          "cloud",
+          "hyperscaler"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T07:10:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XD",
+          "workflow": "refresh-vendor-ctx",
+          "agent": "vendor-profiler"
+        }
+      }
+    },
+    {
+      "description": "non-critical service without criticalFunctionRefs is allowed",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.vendor",
+        "companyId": "zenith-securities",
+        "vendorId": "aws",
+        "legalName": "Amazon Web Services, Inc.",
+        "lei": "549300DXHFVH5ZGTBK98",
+        "country": "US",
+        "website": "https://aws.amazon.com",
+        "intraGroup": false,
+        "services": [
+          {
+            "serviceId": "aws-mumbai-compute",
+            "type": "cloud-iaas",
+            "description": "EC2, EKS and RDS hosting for the trading platform in ap-south-1 with DR in ap-south-2",
+            "criticality": "standard",
+            "supportsCriticalFunction": false,
+            "dataAccessed": [
+              "pii",
+              "financial",
+              "confidential"
+            ],
+            "hostingCountries": [
+              "IN"
+            ],
+            "subcontractors": [
+              {
+                "name": "Sify Technologies",
+                "country": "IN",
+                "role": "Direct Connect colocation"
+              }
+            ]
+          }
+        ],
+        "materiality": "material",
+        "contract": {
+          "reference": "AWS-EA-2024-0173",
+          "startDate": "2024-04-01",
+          "endDate": "2027-03-31",
+          "noticePeriodDays": 90,
+          "exitPlanDocumented": true,
+          "governingLaw": "IN",
+          "rightToAudit": true,
+          "subcontractingAllowed": true,
+          "dataReturnAndDeletion": true,
+          "annualValue": {
+            "amount": 42000000,
+            "currency": "INR"
+          }
+        },
+        "assurance": [
+          {
+            "type": "soc2-type2",
+            "issuer": "Ernst & Young LLP",
+            "periodStart": "2025-04-01",
+            "periodEnd": "2026-03-31",
+            "expiresAt": "2027-03-31",
+            "scope": "AWS ap-south-1 in-scope services",
+            "exceptionsCount": 0,
+            "evidence": {
+              "type": "url",
+              "ref": "https://aws.amazon.com/artifact/",
+              "description": "SOC 2 Type II report downloaded via AWS Artifact"
+            }
+          }
+        ],
+        "lastAssessment": {
+          "date": "2026-06-15",
+          "rating": "low",
+          "assessor": "vendor-risk@zenithsecurities.in",
+          "findingIds": [
+            "fnd_01J9Z6X3F8N2Q4R5S6T7V8W9XC"
+          ]
+        },
+        "regulatoryRefs": [
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S5"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S2"
+          }
+        ],
+        "status": "active",
+        "tags": [
+          "cloud",
+          "hyperscaler"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T07:10:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XD",
+          "workflow": "refresh-vendor-ctx",
+          "agent": "vendor-profiler"
+        }
+      }
+    },
+    {
+      "description": "invented top-level key is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.vendor",
+        "companyId": "zenith-securities",
+        "vendorId": "aws",
+        "legalName": "Amazon Web Services, Inc.",
+        "lei": "549300DXHFVH5ZGTBK98",
+        "country": "US",
+        "website": "https://aws.amazon.com",
+        "intraGroup": false,
+        "services": [
+          {
+            "serviceId": "aws-mumbai-compute",
+            "type": "cloud-iaas",
+            "description": "EC2, EKS and RDS hosting for the trading platform in ap-south-1 with DR in ap-south-2",
+            "criticality": "critical",
+            "supportsCriticalFunction": true,
+            "criticalFunctionRefs": [
+              "order-routing"
+            ],
+            "dataAccessed": [
+              "pii",
+              "financial",
+              "confidential"
+            ],
+            "hostingCountries": [
+              "IN"
+            ],
+            "subcontractors": [
+              {
+                "name": "Sify Technologies",
+                "country": "IN",
+                "role": "Direct Connect colocation"
+              }
+            ]
+          }
+        ],
+        "materiality": "material",
+        "contract": {
+          "reference": "AWS-EA-2024-0173",
+          "startDate": "2024-04-01",
+          "endDate": "2027-03-31",
+          "noticePeriodDays": 90,
+          "exitPlanDocumented": true,
+          "governingLaw": "IN",
+          "rightToAudit": true,
+          "subcontractingAllowed": true,
+          "dataReturnAndDeletion": true,
+          "annualValue": {
+            "amount": 42000000,
+            "currency": "INR"
+          }
+        },
+        "assurance": [
+          {
+            "type": "soc2-type2",
+            "issuer": "Ernst & Young LLP",
+            "periodStart": "2025-04-01",
+            "periodEnd": "2026-03-31",
+            "expiresAt": "2027-03-31",
+            "scope": "AWS ap-south-1 in-scope services",
+            "exceptionsCount": 0,
+            "evidence": {
+              "type": "url",
+              "ref": "https://aws.amazon.com/artifact/",
+              "description": "SOC 2 Type II report downloaded via AWS Artifact"
+            }
+          }
+        ],
+        "lastAssessment": {
+          "date": "2026-06-15",
+          "rating": "low",
+          "assessor": "vendor-risk@zenithsecurities.in",
+          "findingIds": [
+            "fnd_01J9Z6X3F8N2Q4R5S6T7V8W9XC"
+          ]
+        },
+        "regulatoryRefs": [
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S5"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S2"
+          }
+        ],
+        "status": "active",
+        "tags": [
+          "cloud",
+          "hyperscaler"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T07:10:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XD",
+          "workflow": "refresh-vendor-ctx",
+          "agent": "vendor-profiler"
+        },
+        "accountManager": "x"
+      }
+    },
+    {
+      "description": "invented service key is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.vendor",
+        "companyId": "zenith-securities",
+        "vendorId": "aws",
+        "legalName": "Amazon Web Services, Inc.",
+        "lei": "549300DXHFVH5ZGTBK98",
+        "country": "US",
+        "website": "https://aws.amazon.com",
+        "intraGroup": false,
+        "services": [
+          {
+            "serviceId": "aws-mumbai-compute",
+            "type": "cloud-iaas",
+            "description": "EC2, EKS and RDS hosting for the trading platform in ap-south-1 with DR in ap-south-2",
+            "criticality": "critical",
+            "supportsCriticalFunction": true,
+            "criticalFunctionRefs": [
+              "order-routing"
+            ],
+            "dataAccessed": [
+              "pii",
+              "financial",
+              "confidential"
+            ],
+            "hostingCountries": [
+              "IN"
+            ],
+            "subcontractors": [
+              {
+                "name": "Sify Technologies",
+                "country": "IN",
+                "role": "Direct Connect colocation"
+              }
+            ],
+            "sla": "99.9"
+          }
+        ],
+        "materiality": "material",
+        "contract": {
+          "reference": "AWS-EA-2024-0173",
+          "startDate": "2024-04-01",
+          "endDate": "2027-03-31",
+          "noticePeriodDays": 90,
+          "exitPlanDocumented": true,
+          "governingLaw": "IN",
+          "rightToAudit": true,
+          "subcontractingAllowed": true,
+          "dataReturnAndDeletion": true,
+          "annualValue": {
+            "amount": 42000000,
+            "currency": "INR"
+          }
+        },
+        "assurance": [
+          {
+            "type": "soc2-type2",
+            "issuer": "Ernst & Young LLP",
+            "periodStart": "2025-04-01",
+            "periodEnd": "2026-03-31",
+            "expiresAt": "2027-03-31",
+            "scope": "AWS ap-south-1 in-scope services",
+            "exceptionsCount": 0,
+            "evidence": {
+              "type": "url",
+              "ref": "https://aws.amazon.com/artifact/",
+              "description": "SOC 2 Type II report downloaded via AWS Artifact"
+            }
+          }
+        ],
+        "lastAssessment": {
+          "date": "2026-06-15",
+          "rating": "low",
+          "assessor": "vendor-risk@zenithsecurities.in",
+          "findingIds": [
+            "fnd_01J9Z6X3F8N2Q4R5S6T7V8W9XC"
+          ]
+        },
+        "regulatoryRefs": [
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S5"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S2"
+          }
+        ],
+        "status": "active",
+        "tags": [
+          "cloud",
+          "hyperscaler"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T07:10:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XD",
+          "workflow": "refresh-vendor-ctx",
+          "agent": "vendor-profiler"
+        }
+      }
+    },
+    {
+      "description": "vendorId must be a slug",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.vendor",
+        "companyId": "zenith-securities",
+        "vendorId": "AWS Inc",
+        "legalName": "Amazon Web Services, Inc.",
+        "lei": "549300DXHFVH5ZGTBK98",
+        "country": "US",
+        "website": "https://aws.amazon.com",
+        "intraGroup": false,
+        "services": [
+          {
+            "serviceId": "aws-mumbai-compute",
+            "type": "cloud-iaas",
+            "description": "EC2, EKS and RDS hosting for the trading platform in ap-south-1 with DR in ap-south-2",
+            "criticality": "critical",
+            "supportsCriticalFunction": true,
+            "criticalFunctionRefs": [
+              "order-routing"
+            ],
+            "dataAccessed": [
+              "pii",
+              "financial",
+              "confidential"
+            ],
+            "hostingCountries": [
+              "IN"
+            ],
+            "subcontractors": [
+              {
+                "name": "Sify Technologies",
+                "country": "IN",
+                "role": "Direct Connect colocation"
+              }
+            ]
+          }
+        ],
+        "materiality": "material",
+        "contract": {
+          "reference": "AWS-EA-2024-0173",
+          "startDate": "2024-04-01",
+          "endDate": "2027-03-31",
+          "noticePeriodDays": 90,
+          "exitPlanDocumented": true,
+          "governingLaw": "IN",
+          "rightToAudit": true,
+          "subcontractingAllowed": true,
+          "dataReturnAndDeletion": true,
+          "annualValue": {
+            "amount": 42000000,
+            "currency": "INR"
+          }
+        },
+        "assurance": [
+          {
+            "type": "soc2-type2",
+            "issuer": "Ernst & Young LLP",
+            "periodStart": "2025-04-01",
+            "periodEnd": "2026-03-31",
+            "expiresAt": "2027-03-31",
+            "scope": "AWS ap-south-1 in-scope services",
+            "exceptionsCount": 0,
+            "evidence": {
+              "type": "url",
+              "ref": "https://aws.amazon.com/artifact/",
+              "description": "SOC 2 Type II report downloaded via AWS Artifact"
+            }
+          }
+        ],
+        "lastAssessment": {
+          "date": "2026-06-15",
+          "rating": "low",
+          "assessor": "vendor-risk@zenithsecurities.in",
+          "findingIds": [
+            "fnd_01J9Z6X3F8N2Q4R5S6T7V8W9XC"
+          ]
+        },
+        "regulatoryRefs": [
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S5"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S2"
+          }
+        ],
+        "status": "active",
+        "tags": [
+          "cloud",
+          "hyperscaler"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T07:10:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XD",
+          "workflow": "refresh-vendor-ctx",
+          "agent": "vendor-profiler"
+        }
+      }
+    },
+    {
+      "description": "LEI must be 20 characters with check digits",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.vendor",
+        "companyId": "zenith-securities",
+        "vendorId": "aws",
+        "legalName": "Amazon Web Services, Inc.",
+        "lei": "549300DXHFVH5ZGTB",
+        "country": "US",
+        "website": "https://aws.amazon.com",
+        "intraGroup": false,
+        "services": [
+          {
+            "serviceId": "aws-mumbai-compute",
+            "type": "cloud-iaas",
+            "description": "EC2, EKS and RDS hosting for the trading platform in ap-south-1 with DR in ap-south-2",
+            "criticality": "critical",
+            "supportsCriticalFunction": true,
+            "criticalFunctionRefs": [
+              "order-routing"
+            ],
+            "dataAccessed": [
+              "pii",
+              "financial",
+              "confidential"
+            ],
+            "hostingCountries": [
+              "IN"
+            ],
+            "subcontractors": [
+              {
+                "name": "Sify Technologies",
+                "country": "IN",
+                "role": "Direct Connect colocation"
+              }
+            ]
+          }
+        ],
+        "materiality": "material",
+        "contract": {
+          "reference": "AWS-EA-2024-0173",
+          "startDate": "2024-04-01",
+          "endDate": "2027-03-31",
+          "noticePeriodDays": 90,
+          "exitPlanDocumented": true,
+          "governingLaw": "IN",
+          "rightToAudit": true,
+          "subcontractingAllowed": true,
+          "dataReturnAndDeletion": true,
+          "annualValue": {
+            "amount": 42000000,
+            "currency": "INR"
+          }
+        },
+        "assurance": [
+          {
+            "type": "soc2-type2",
+            "issuer": "Ernst & Young LLP",
+            "periodStart": "2025-04-01",
+            "periodEnd": "2026-03-31",
+            "expiresAt": "2027-03-31",
+            "scope": "AWS ap-south-1 in-scope services",
+            "exceptionsCount": 0,
+            "evidence": {
+              "type": "url",
+              "ref": "https://aws.amazon.com/artifact/",
+              "description": "SOC 2 Type II report downloaded via AWS Artifact"
+            }
+          }
+        ],
+        "lastAssessment": {
+          "date": "2026-06-15",
+          "rating": "low",
+          "assessor": "vendor-risk@zenithsecurities.in",
+          "findingIds": [
+            "fnd_01J9Z6X3F8N2Q4R5S6T7V8W9XC"
+          ]
+        },
+        "regulatoryRefs": [
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S5"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S2"
+          }
+        ],
+        "status": "active",
+        "tags": [
+          "cloud",
+          "hyperscaler"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T07:10:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XD",
+          "workflow": "refresh-vendor-ctx",
+          "agent": "vendor-profiler"
+        }
+      }
+    },
+    {
+      "description": "unknown service type is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.vendor",
+        "companyId": "zenith-securities",
+        "vendorId": "aws",
+        "legalName": "Amazon Web Services, Inc.",
+        "lei": "549300DXHFVH5ZGTBK98",
+        "country": "US",
+        "website": "https://aws.amazon.com",
+        "intraGroup": false,
+        "services": [
+          {
+            "serviceId": "aws-mumbai-compute",
+            "type": "hosting",
+            "description": "EC2, EKS and RDS hosting for the trading platform in ap-south-1 with DR in ap-south-2",
+            "criticality": "critical",
+            "supportsCriticalFunction": true,
+            "criticalFunctionRefs": [
+              "order-routing"
+            ],
+            "dataAccessed": [
+              "pii",
+              "financial",
+              "confidential"
+            ],
+            "hostingCountries": [
+              "IN"
+            ],
+            "subcontractors": [
+              {
+                "name": "Sify Technologies",
+                "country": "IN",
+                "role": "Direct Connect colocation"
+              }
+            ]
+          }
+        ],
+        "materiality": "material",
+        "contract": {
+          "reference": "AWS-EA-2024-0173",
+          "startDate": "2024-04-01",
+          "endDate": "2027-03-31",
+          "noticePeriodDays": 90,
+          "exitPlanDocumented": true,
+          "governingLaw": "IN",
+          "rightToAudit": true,
+          "subcontractingAllowed": true,
+          "dataReturnAndDeletion": true,
+          "annualValue": {
+            "amount": 42000000,
+            "currency": "INR"
+          }
+        },
+        "assurance": [
+          {
+            "type": "soc2-type2",
+            "issuer": "Ernst & Young LLP",
+            "periodStart": "2025-04-01",
+            "periodEnd": "2026-03-31",
+            "expiresAt": "2027-03-31",
+            "scope": "AWS ap-south-1 in-scope services",
+            "exceptionsCount": 0,
+            "evidence": {
+              "type": "url",
+              "ref": "https://aws.amazon.com/artifact/",
+              "description": "SOC 2 Type II report downloaded via AWS Artifact"
+            }
+          }
+        ],
+        "lastAssessment": {
+          "date": "2026-06-15",
+          "rating": "low",
+          "assessor": "vendor-risk@zenithsecurities.in",
+          "findingIds": [
+            "fnd_01J9Z6X3F8N2Q4R5S6T7V8W9XC"
+          ]
+        },
+        "regulatoryRefs": [
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S5"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S2"
+          }
+        ],
+        "status": "active",
+        "tags": [
+          "cloud",
+          "hyperscaler"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T07:10:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XD",
+          "workflow": "refresh-vendor-ctx",
+          "agent": "vendor-profiler"
+        }
+      }
+    },
+    {
+      "description": "unknown assurance type is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.vendor",
+        "companyId": "zenith-securities",
+        "vendorId": "aws",
+        "legalName": "Amazon Web Services, Inc.",
+        "lei": "549300DXHFVH5ZGTBK98",
+        "country": "US",
+        "website": "https://aws.amazon.com",
+        "intraGroup": false,
+        "services": [
+          {
+            "serviceId": "aws-mumbai-compute",
+            "type": "cloud-iaas",
+            "description": "EC2, EKS and RDS hosting for the trading platform in ap-south-1 with DR in ap-south-2",
+            "criticality": "critical",
+            "supportsCriticalFunction": true,
+            "criticalFunctionRefs": [
+              "order-routing"
+            ],
+            "dataAccessed": [
+              "pii",
+              "financial",
+              "confidential"
+            ],
+            "hostingCountries": [
+              "IN"
+            ],
+            "subcontractors": [
+              {
+                "name": "Sify Technologies",
+                "country": "IN",
+                "role": "Direct Connect colocation"
+              }
+            ]
+          }
+        ],
+        "materiality": "material",
+        "contract": {
+          "reference": "AWS-EA-2024-0173",
+          "startDate": "2024-04-01",
+          "endDate": "2027-03-31",
+          "noticePeriodDays": 90,
+          "exitPlanDocumented": true,
+          "governingLaw": "IN",
+          "rightToAudit": true,
+          "subcontractingAllowed": true,
+          "dataReturnAndDeletion": true,
+          "annualValue": {
+            "amount": 42000000,
+            "currency": "INR"
+          }
+        },
+        "assurance": [
+          {
+            "type": "iso9001",
+            "issuer": "Ernst & Young LLP",
+            "periodStart": "2025-04-01",
+            "periodEnd": "2026-03-31",
+            "expiresAt": "2027-03-31",
+            "scope": "AWS ap-south-1 in-scope services",
+            "exceptionsCount": 0,
+            "evidence": {
+              "type": "url",
+              "ref": "https://aws.amazon.com/artifact/",
+              "description": "SOC 2 Type II report downloaded via AWS Artifact"
+            }
+          }
+        ],
+        "lastAssessment": {
+          "date": "2026-06-15",
+          "rating": "low",
+          "assessor": "vendor-risk@zenithsecurities.in",
+          "findingIds": [
+            "fnd_01J9Z6X3F8N2Q4R5S6T7V8W9XC"
+          ]
+        },
+        "regulatoryRefs": [
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S5"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S2"
+          }
+        ],
+        "status": "active",
+        "tags": [
+          "cloud",
+          "hyperscaler"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T07:10:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XD",
+          "workflow": "refresh-vendor-ctx",
+          "agent": "vendor-profiler"
+        }
+      }
+    },
+    {
+      "description": "unknown status is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.vendor",
+        "companyId": "zenith-securities",
+        "vendorId": "aws",
+        "legalName": "Amazon Web Services, Inc.",
+        "lei": "549300DXHFVH5ZGTBK98",
+        "country": "US",
+        "website": "https://aws.amazon.com",
+        "intraGroup": false,
+        "services": [
+          {
+            "serviceId": "aws-mumbai-compute",
+            "type": "cloud-iaas",
+            "description": "EC2, EKS and RDS hosting for the trading platform in ap-south-1 with DR in ap-south-2",
+            "criticality": "critical",
+            "supportsCriticalFunction": true,
+            "criticalFunctionRefs": [
+              "order-routing"
+            ],
+            "dataAccessed": [
+              "pii",
+              "financial",
+              "confidential"
+            ],
+            "hostingCountries": [
+              "IN"
+            ],
+            "subcontractors": [
+              {
+                "name": "Sify Technologies",
+                "country": "IN",
+                "role": "Direct Connect colocation"
+              }
+            ]
+          }
+        ],
+        "materiality": "material",
+        "contract": {
+          "reference": "AWS-EA-2024-0173",
+          "startDate": "2024-04-01",
+          "endDate": "2027-03-31",
+          "noticePeriodDays": 90,
+          "exitPlanDocumented": true,
+          "governingLaw": "IN",
+          "rightToAudit": true,
+          "subcontractingAllowed": true,
+          "dataReturnAndDeletion": true,
+          "annualValue": {
+            "amount": 42000000,
+            "currency": "INR"
+          }
+        },
+        "assurance": [
+          {
+            "type": "soc2-type2",
+            "issuer": "Ernst & Young LLP",
+            "periodStart": "2025-04-01",
+            "periodEnd": "2026-03-31",
+            "expiresAt": "2027-03-31",
+            "scope": "AWS ap-south-1 in-scope services",
+            "exceptionsCount": 0,
+            "evidence": {
+              "type": "url",
+              "ref": "https://aws.amazon.com/artifact/",
+              "description": "SOC 2 Type II report downloaded via AWS Artifact"
+            }
+          }
+        ],
+        "lastAssessment": {
+          "date": "2026-06-15",
+          "rating": "low",
+          "assessor": "vendor-risk@zenithsecurities.in",
+          "findingIds": [
+            "fnd_01J9Z6X3F8N2Q4R5S6T7V8W9XC"
+          ]
+        },
+        "regulatoryRefs": [
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S5"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S2"
+          }
+        ],
+        "status": "suspended",
+        "tags": [
+          "cloud",
+          "hyperscaler"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T07:10:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XD",
+          "workflow": "refresh-vendor-ctx",
+          "agent": "vendor-profiler"
+        }
+      }
+    },
+    {
+      "description": "materiality must be material or non-material",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.vendor",
+        "companyId": "zenith-securities",
+        "vendorId": "aws",
+        "legalName": "Amazon Web Services, Inc.",
+        "lei": "549300DXHFVH5ZGTBK98",
+        "country": "US",
+        "website": "https://aws.amazon.com",
+        "intraGroup": false,
+        "services": [
+          {
+            "serviceId": "aws-mumbai-compute",
+            "type": "cloud-iaas",
+            "description": "EC2, EKS and RDS hosting for the trading platform in ap-south-1 with DR in ap-south-2",
+            "criticality": "critical",
+            "supportsCriticalFunction": true,
+            "criticalFunctionRefs": [
+              "order-routing"
+            ],
+            "dataAccessed": [
+              "pii",
+              "financial",
+              "confidential"
+            ],
+            "hostingCountries": [
+              "IN"
+            ],
+            "subcontractors": [
+              {
+                "name": "Sify Technologies",
+                "country": "IN",
+                "role": "Direct Connect colocation"
+              }
+            ]
+          }
+        ],
+        "materiality": "high",
+        "contract": {
+          "reference": "AWS-EA-2024-0173",
+          "startDate": "2024-04-01",
+          "endDate": "2027-03-31",
+          "noticePeriodDays": 90,
+          "exitPlanDocumented": true,
+          "governingLaw": "IN",
+          "rightToAudit": true,
+          "subcontractingAllowed": true,
+          "dataReturnAndDeletion": true,
+          "annualValue": {
+            "amount": 42000000,
+            "currency": "INR"
+          }
+        },
+        "assurance": [
+          {
+            "type": "soc2-type2",
+            "issuer": "Ernst & Young LLP",
+            "periodStart": "2025-04-01",
+            "periodEnd": "2026-03-31",
+            "expiresAt": "2027-03-31",
+            "scope": "AWS ap-south-1 in-scope services",
+            "exceptionsCount": 0,
+            "evidence": {
+              "type": "url",
+              "ref": "https://aws.amazon.com/artifact/",
+              "description": "SOC 2 Type II report downloaded via AWS Artifact"
+            }
+          }
+        ],
+        "lastAssessment": {
+          "date": "2026-06-15",
+          "rating": "low",
+          "assessor": "vendor-risk@zenithsecurities.in",
+          "findingIds": [
+            "fnd_01J9Z6X3F8N2Q4R5S6T7V8W9XC"
+          ]
+        },
+        "regulatoryRefs": [
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S5"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S2"
+          }
+        ],
+        "status": "active",
+        "tags": [
+          "cloud",
+          "hyperscaler"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T07:10:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XD",
+          "workflow": "refresh-vendor-ctx",
+          "agent": "vendor-profiler"
+        }
+      }
+    },
+    {
+      "description": "critical-function service must list criticalFunctionRefs",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.vendor",
+        "companyId": "zenith-securities",
+        "vendorId": "aws",
+        "legalName": "Amazon Web Services, Inc.",
+        "lei": "549300DXHFVH5ZGTBK98",
+        "country": "US",
+        "website": "https://aws.amazon.com",
+        "intraGroup": false,
+        "services": [
+          {
+            "serviceId": "aws-mumbai-compute",
+            "type": "cloud-iaas",
+            "description": "EC2, EKS and RDS hosting for the trading platform in ap-south-1 with DR in ap-south-2",
+            "criticality": "critical",
+            "supportsCriticalFunction": true,
+            "dataAccessed": [
+              "pii",
+              "financial",
+              "confidential"
+            ],
+            "hostingCountries": [
+              "IN"
+            ],
+            "subcontractors": [
+              {
+                "name": "Sify Technologies",
+                "country": "IN",
+                "role": "Direct Connect colocation"
+              }
+            ]
+          }
+        ],
+        "materiality": "material",
+        "contract": {
+          "reference": "AWS-EA-2024-0173",
+          "startDate": "2024-04-01",
+          "endDate": "2027-03-31",
+          "noticePeriodDays": 90,
+          "exitPlanDocumented": true,
+          "governingLaw": "IN",
+          "rightToAudit": true,
+          "subcontractingAllowed": true,
+          "dataReturnAndDeletion": true,
+          "annualValue": {
+            "amount": 42000000,
+            "currency": "INR"
+          }
+        },
+        "assurance": [
+          {
+            "type": "soc2-type2",
+            "issuer": "Ernst & Young LLP",
+            "periodStart": "2025-04-01",
+            "periodEnd": "2026-03-31",
+            "expiresAt": "2027-03-31",
+            "scope": "AWS ap-south-1 in-scope services",
+            "exceptionsCount": 0,
+            "evidence": {
+              "type": "url",
+              "ref": "https://aws.amazon.com/artifact/",
+              "description": "SOC 2 Type II report downloaded via AWS Artifact"
+            }
+          }
+        ],
+        "lastAssessment": {
+          "date": "2026-06-15",
+          "rating": "low",
+          "assessor": "vendor-risk@zenithsecurities.in",
+          "findingIds": [
+            "fnd_01J9Z6X3F8N2Q4R5S6T7V8W9XC"
+          ]
+        },
+        "regulatoryRefs": [
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S5"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S2"
+          }
+        ],
+        "status": "active",
+        "tags": [
+          "cloud",
+          "hyperscaler"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T07:10:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XD",
+          "workflow": "refresh-vendor-ctx",
+          "agent": "vendor-profiler"
+        }
+      }
+    },
+    {
+      "description": "critical-function service refs cannot be empty",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.vendor",
+        "companyId": "zenith-securities",
+        "vendorId": "aws",
+        "legalName": "Amazon Web Services, Inc.",
+        "lei": "549300DXHFVH5ZGTBK98",
+        "country": "US",
+        "website": "https://aws.amazon.com",
+        "intraGroup": false,
+        "services": [
+          {
+            "serviceId": "aws-mumbai-compute",
+            "type": "cloud-iaas",
+            "description": "EC2, EKS and RDS hosting for the trading platform in ap-south-1 with DR in ap-south-2",
+            "criticality": "critical",
+            "supportsCriticalFunction": true,
+            "criticalFunctionRefs": [],
+            "dataAccessed": [
+              "pii",
+              "financial",
+              "confidential"
+            ],
+            "hostingCountries": [
+              "IN"
+            ],
+            "subcontractors": [
+              {
+                "name": "Sify Technologies",
+                "country": "IN",
+                "role": "Direct Connect colocation"
+              }
+            ]
+          }
+        ],
+        "materiality": "material",
+        "contract": {
+          "reference": "AWS-EA-2024-0173",
+          "startDate": "2024-04-01",
+          "endDate": "2027-03-31",
+          "noticePeriodDays": 90,
+          "exitPlanDocumented": true,
+          "governingLaw": "IN",
+          "rightToAudit": true,
+          "subcontractingAllowed": true,
+          "dataReturnAndDeletion": true,
+          "annualValue": {
+            "amount": 42000000,
+            "currency": "INR"
+          }
+        },
+        "assurance": [
+          {
+            "type": "soc2-type2",
+            "issuer": "Ernst & Young LLP",
+            "periodStart": "2025-04-01",
+            "periodEnd": "2026-03-31",
+            "expiresAt": "2027-03-31",
+            "scope": "AWS ap-south-1 in-scope services",
+            "exceptionsCount": 0,
+            "evidence": {
+              "type": "url",
+              "ref": "https://aws.amazon.com/artifact/",
+              "description": "SOC 2 Type II report downloaded via AWS Artifact"
+            }
+          }
+        ],
+        "lastAssessment": {
+          "date": "2026-06-15",
+          "rating": "low",
+          "assessor": "vendor-risk@zenithsecurities.in",
+          "findingIds": [
+            "fnd_01J9Z6X3F8N2Q4R5S6T7V8W9XC"
+          ]
+        },
+        "regulatoryRefs": [
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S5"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S2"
+          }
+        ],
+        "status": "active",
+        "tags": [
+          "cloud",
+          "hyperscaler"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T07:10:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XD",
+          "workflow": "refresh-vendor-ctx",
+          "agent": "vendor-profiler"
+        }
+      }
+    },
+    {
+      "description": "missing required services",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.vendor",
+        "companyId": "zenith-securities",
+        "vendorId": "aws",
+        "legalName": "Amazon Web Services, Inc.",
+        "lei": "549300DXHFVH5ZGTBK98",
+        "country": "US",
+        "website": "https://aws.amazon.com",
+        "materiality": "material",
+        "contract": {
+          "reference": "AWS-EA-2024-0173",
+          "startDate": "2024-04-01",
+          "endDate": "2027-03-31",
+          "noticePeriodDays": 90,
+          "exitPlanDocumented": true,
+          "governingLaw": "IN",
+          "rightToAudit": true,
+          "subcontractingAllowed": true,
+          "dataReturnAndDeletion": true,
+          "annualValue": {
+            "amount": 42000000,
+            "currency": "INR"
+          }
+        },
+        "assurance": [
+          {
+            "type": "soc2-type2",
+            "issuer": "Ernst & Young LLP",
+            "periodStart": "2025-04-01",
+            "periodEnd": "2026-03-31",
+            "expiresAt": "2027-03-31",
+            "scope": "AWS ap-south-1 in-scope services",
+            "exceptionsCount": 0,
+            "evidence": {
+              "type": "url",
+              "ref": "https://aws.amazon.com/artifact/",
+              "description": "SOC 2 Type II report downloaded via AWS Artifact"
+            }
+          }
+        ],
+        "lastAssessment": {
+          "date": "2026-06-15",
+          "rating": "low",
+          "assessor": "vendor-risk@zenithsecurities.in",
+          "findingIds": [
+            "fnd_01J9Z6X3F8N2Q4R5S6T7V8W9XC"
+          ]
+        },
+        "regulatoryRefs": [
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S5"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S2"
+          }
+        ],
+        "status": "active",
+        "tags": [
+          "cloud",
+          "hyperscaler"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T07:10:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XD",
+          "workflow": "refresh-vendor-ctx",
+          "agent": "vendor-profiler"
+        },
+        "intraGroup": false
+      }
+    },
+    {
+      "description": "missing provenance",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.vendor",
+        "companyId": "zenith-securities",
+        "vendorId": "aws",
+        "legalName": "Amazon Web Services, Inc.",
+        "lei": "549300DXHFVH5ZGTBK98",
+        "country": "US",
+        "website": "https://aws.amazon.com",
+        "intraGroup": false,
+        "services": [
+          {
+            "serviceId": "aws-mumbai-compute",
+            "type": "cloud-iaas",
+            "description": "EC2, EKS and RDS hosting for the trading platform in ap-south-1 with DR in ap-south-2",
+            "criticality": "critical",
+            "supportsCriticalFunction": true,
+            "criticalFunctionRefs": [
+              "order-routing"
+            ],
+            "dataAccessed": [
+              "pii",
+              "financial",
+              "confidential"
+            ],
+            "hostingCountries": [
+              "IN"
+            ],
+            "subcontractors": [
+              {
+                "name": "Sify Technologies",
+                "country": "IN",
+                "role": "Direct Connect colocation"
+              }
+            ]
+          }
+        ],
+        "materiality": "material",
+        "contract": {
+          "reference": "AWS-EA-2024-0173",
+          "startDate": "2024-04-01",
+          "endDate": "2027-03-31",
+          "noticePeriodDays": 90,
+          "exitPlanDocumented": true,
+          "governingLaw": "IN",
+          "rightToAudit": true,
+          "subcontractingAllowed": true,
+          "dataReturnAndDeletion": true,
+          "annualValue": {
+            "amount": 42000000,
+            "currency": "INR"
+          }
+        },
+        "assurance": [
+          {
+            "type": "soc2-type2",
+            "issuer": "Ernst & Young LLP",
+            "periodStart": "2025-04-01",
+            "periodEnd": "2026-03-31",
+            "expiresAt": "2027-03-31",
+            "scope": "AWS ap-south-1 in-scope services",
+            "exceptionsCount": 0,
+            "evidence": {
+              "type": "url",
+              "ref": "https://aws.amazon.com/artifact/",
+              "description": "SOC 2 Type II report downloaded via AWS Artifact"
+            }
+          }
+        ],
+        "lastAssessment": {
+          "date": "2026-06-15",
+          "rating": "low",
+          "assessor": "vendor-risk@zenithsecurities.in",
+          "findingIds": [
+            "fnd_01J9Z6X3F8N2Q4R5S6T7V8W9XC"
+          ]
+        },
+        "regulatoryRefs": [
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S5"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S2"
+          }
+        ],
+        "status": "active",
+        "tags": [
+          "cloud",
+          "hyperscaler"
+        ]
+      }
+    },
+    {
+      "description": "findingIds must be fnd_ ULIDs",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.vendor",
+        "companyId": "zenith-securities",
+        "vendorId": "aws",
+        "legalName": "Amazon Web Services, Inc.",
+        "lei": "549300DXHFVH5ZGTBK98",
+        "country": "US",
+        "website": "https://aws.amazon.com",
+        "intraGroup": false,
+        "services": [
+          {
+            "serviceId": "aws-mumbai-compute",
+            "type": "cloud-iaas",
+            "description": "EC2, EKS and RDS hosting for the trading platform in ap-south-1 with DR in ap-south-2",
+            "criticality": "critical",
+            "supportsCriticalFunction": true,
+            "criticalFunctionRefs": [
+              "order-routing"
+            ],
+            "dataAccessed": [
+              "pii",
+              "financial",
+              "confidential"
+            ],
+            "hostingCountries": [
+              "IN"
+            ],
+            "subcontractors": [
+              {
+                "name": "Sify Technologies",
+                "country": "IN",
+                "role": "Direct Connect colocation"
+              }
+            ]
+          }
+        ],
+        "materiality": "material",
+        "contract": {
+          "reference": "AWS-EA-2024-0173",
+          "startDate": "2024-04-01",
+          "endDate": "2027-03-31",
+          "noticePeriodDays": 90,
+          "exitPlanDocumented": true,
+          "governingLaw": "IN",
+          "rightToAudit": true,
+          "subcontractingAllowed": true,
+          "dataReturnAndDeletion": true,
+          "annualValue": {
+            "amount": 42000000,
+            "currency": "INR"
+          }
+        },
+        "assurance": [
+          {
+            "type": "soc2-type2",
+            "issuer": "Ernst & Young LLP",
+            "periodStart": "2025-04-01",
+            "periodEnd": "2026-03-31",
+            "expiresAt": "2027-03-31",
+            "scope": "AWS ap-south-1 in-scope services",
+            "exceptionsCount": 0,
+            "evidence": {
+              "type": "url",
+              "ref": "https://aws.amazon.com/artifact/",
+              "description": "SOC 2 Type II report downloaded via AWS Artifact"
+            }
+          }
+        ],
+        "lastAssessment": {
+          "date": "2026-06-15",
+          "rating": "low",
+          "assessor": "vendor-risk@zenithsecurities.in",
+          "findingIds": [
+            "finding-1"
+          ]
+        },
+        "regulatoryRefs": [
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S5"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S2"
+          }
+        ],
+        "status": "active",
+        "tags": [
+          "cloud",
+          "hyperscaler"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T07:10:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XD",
+          "workflow": "refresh-vendor-ctx",
+          "agent": "vendor-profiler"
+        }
+      }
+    },
+    {
+      "description": "intraGroup is required",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.vendor",
+        "companyId": "zenith-securities",
+        "vendorId": "aws",
+        "legalName": "Amazon Web Services, Inc.",
+        "lei": "549300DXHFVH5ZGTBK98",
+        "country": "US",
+        "website": "https://aws.amazon.com",
+        "ultimateParent": {
+          "legalName": "Amazon.com, Inc.",
+          "lei": "5493009NQRXG7AHTH046",
+          "country": "US"
+        },
+        "services": [
+          {
+            "serviceId": "aws-mumbai-compute",
+            "type": "cloud-iaas",
+            "description": "EC2, EKS and RDS hosting for the trading platform in ap-south-1 with DR in ap-south-2",
+            "criticality": "critical",
+            "supportsCriticalFunction": true,
+            "criticalFunctionRefs": [
+              "order-routing"
+            ],
+            "dataAccessed": [
+              "pii",
+              "financial",
+              "confidential"
+            ],
+            "hostingCountries": [
+              "IN"
+            ],
+            "subcontractors": [
+              {
+                "name": "Sify Technologies",
+                "country": "IN",
+                "role": "Direct Connect colocation"
+              }
+            ]
+          }
+        ],
+        "materiality": "material",
+        "substitutability": "highly-complex",
+        "contract": {
+          "type": "overarching",
+          "reference": "AWS-EA-2024-0173",
+          "startDate": "2024-04-01",
+          "endDate": "2027-03-31",
+          "noticePeriodDays": 90,
+          "exitPlanDocumented": true,
+          "governingLaw": "IN",
+          "rightToAudit": true,
+          "subcontractingAllowed": true,
+          "dataReturnAndDeletion": true,
+          "annualValue": {
+            "amount": 42000000,
+            "currency": "INR"
+          }
+        },
+        "assurance": [
+          {
+            "type": "soc2-type2",
+            "issuer": "Ernst & Young LLP",
+            "periodStart": "2025-04-01",
+            "periodEnd": "2026-03-31",
+            "expiresAt": "2027-03-31",
+            "scope": "AWS ap-south-1 in-scope services",
+            "exceptionsCount": 0,
+            "evidence": {
+              "type": "url",
+              "ref": "https://aws.amazon.com/artifact/",
+              "description": "SOC 2 Type II report downloaded via AWS Artifact"
+            }
+          },
+          {
+            "type": "iso22301",
+            "issuer": "BSI Group",
+            "periodEnd": "2026-01-15",
+            "expiresAt": "2029-01-14",
+            "scope": "Business continuity management system for AWS global infrastructure"
+          }
+        ],
+        "lastAssessment": {
+          "date": "2026-06-15",
+          "rating": "low",
+          "assessor": "vendor-risk@zenithsecurities.in",
+          "findingIds": [
+            "fnd_01J9Z6X3F8N2Q4R5S6T7V8W9XC"
+          ]
+        },
+        "regulatoryRefs": [
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S5"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S2"
+          }
+        ],
+        "status": "active",
+        "tags": [
+          "cloud",
+          "hyperscaler"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T07:10:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XD",
+          "workflow": "refresh-vendor-ctx",
+          "agent": "vendor-profiler"
+        }
+      }
+    },
+    {
+      "description": "active material vendor needs contract terms",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.vendor",
+        "companyId": "zenith-securities",
+        "vendorId": "aws",
+        "legalName": "Amazon Web Services, Inc.",
+        "lei": "549300DXHFVH5ZGTBK98",
+        "country": "US",
+        "website": "https://aws.amazon.com",
+        "intraGroup": false,
+        "ultimateParent": {
+          "legalName": "Amazon.com, Inc.",
+          "lei": "5493009NQRXG7AHTH046",
+          "country": "US"
+        },
+        "services": [
+          {
+            "serviceId": "aws-mumbai-compute",
+            "type": "cloud-iaas",
+            "description": "EC2, EKS and RDS hosting for the trading platform in ap-south-1 with DR in ap-south-2",
+            "criticality": "critical",
+            "supportsCriticalFunction": true,
+            "criticalFunctionRefs": [
+              "order-routing"
+            ],
+            "dataAccessed": [
+              "pii",
+              "financial",
+              "confidential"
+            ],
+            "hostingCountries": [
+              "IN"
+            ],
+            "subcontractors": [
+              {
+                "name": "Sify Technologies",
+                "country": "IN",
+                "role": "Direct Connect colocation"
+              }
+            ]
+          }
+        ],
+        "materiality": "material",
+        "substitutability": "highly-complex",
+        "assurance": [
+          {
+            "type": "soc2-type2",
+            "issuer": "Ernst & Young LLP",
+            "periodStart": "2025-04-01",
+            "periodEnd": "2026-03-31",
+            "expiresAt": "2027-03-31",
+            "scope": "AWS ap-south-1 in-scope services",
+            "exceptionsCount": 0,
+            "evidence": {
+              "type": "url",
+              "ref": "https://aws.amazon.com/artifact/",
+              "description": "SOC 2 Type II report downloaded via AWS Artifact"
+            }
+          },
+          {
+            "type": "iso22301",
+            "issuer": "BSI Group",
+            "periodEnd": "2026-01-15",
+            "expiresAt": "2029-01-14",
+            "scope": "Business continuity management system for AWS global infrastructure"
+          }
+        ],
+        "lastAssessment": {
+          "date": "2026-06-15",
+          "rating": "low",
+          "assessor": "vendor-risk@zenithsecurities.in",
+          "findingIds": [
+            "fnd_01J9Z6X3F8N2Q4R5S6T7V8W9XC"
+          ]
+        },
+        "regulatoryRefs": [
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S5"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S2"
+          }
+        ],
+        "status": "active",
+        "tags": [
+          "cloud",
+          "hyperscaler"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T07:10:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XD",
+          "workflow": "refresh-vendor-ctx",
+          "agent": "vendor-profiler"
+        }
+      }
+    },
+    {
+      "description": "active material vendor needs a risk assessment",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.vendor",
+        "companyId": "zenith-securities",
+        "vendorId": "aws",
+        "legalName": "Amazon Web Services, Inc.",
+        "lei": "549300DXHFVH5ZGTBK98",
+        "country": "US",
+        "website": "https://aws.amazon.com",
+        "intraGroup": false,
+        "ultimateParent": {
+          "legalName": "Amazon.com, Inc.",
+          "lei": "5493009NQRXG7AHTH046",
+          "country": "US"
+        },
+        "services": [
+          {
+            "serviceId": "aws-mumbai-compute",
+            "type": "cloud-iaas",
+            "description": "EC2, EKS and RDS hosting for the trading platform in ap-south-1 with DR in ap-south-2",
+            "criticality": "critical",
+            "supportsCriticalFunction": true,
+            "criticalFunctionRefs": [
+              "order-routing"
+            ],
+            "dataAccessed": [
+              "pii",
+              "financial",
+              "confidential"
+            ],
+            "hostingCountries": [
+              "IN"
+            ],
+            "subcontractors": [
+              {
+                "name": "Sify Technologies",
+                "country": "IN",
+                "role": "Direct Connect colocation"
+              }
+            ]
+          }
+        ],
+        "materiality": "material",
+        "substitutability": "highly-complex",
+        "contract": {
+          "type": "overarching",
+          "reference": "AWS-EA-2024-0173",
+          "startDate": "2024-04-01",
+          "endDate": "2027-03-31",
+          "noticePeriodDays": 90,
+          "exitPlanDocumented": true,
+          "governingLaw": "IN",
+          "rightToAudit": true,
+          "subcontractingAllowed": true,
+          "dataReturnAndDeletion": true,
+          "annualValue": {
+            "amount": 42000000,
+            "currency": "INR"
+          }
+        },
+        "assurance": [
+          {
+            "type": "soc2-type2",
+            "issuer": "Ernst & Young LLP",
+            "periodStart": "2025-04-01",
+            "periodEnd": "2026-03-31",
+            "expiresAt": "2027-03-31",
+            "scope": "AWS ap-south-1 in-scope services",
+            "exceptionsCount": 0,
+            "evidence": {
+              "type": "url",
+              "ref": "https://aws.amazon.com/artifact/",
+              "description": "SOC 2 Type II report downloaded via AWS Artifact"
+            }
+          },
+          {
+            "type": "iso22301",
+            "issuer": "BSI Group",
+            "periodEnd": "2026-01-15",
+            "expiresAt": "2029-01-14",
+            "scope": "Business continuity management system for AWS global infrastructure"
+          }
+        ],
+        "regulatoryRefs": [
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S5"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S2"
+          }
+        ],
+        "status": "active",
+        "tags": [
+          "cloud",
+          "hyperscaler"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T07:10:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XD",
+          "workflow": "refresh-vendor-ctx",
+          "agent": "vendor-profiler"
+        }
+      }
+    },
+    {
+      "description": "exiting material vendor still needs contract terms",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.vendor",
+        "companyId": "zenith-securities",
+        "vendorId": "aws",
+        "legalName": "Amazon Web Services, Inc.",
+        "lei": "549300DXHFVH5ZGTBK98",
+        "country": "US",
+        "website": "https://aws.amazon.com",
+        "intraGroup": false,
+        "ultimateParent": {
+          "legalName": "Amazon.com, Inc.",
+          "lei": "5493009NQRXG7AHTH046",
+          "country": "US"
+        },
+        "services": [
+          {
+            "serviceId": "aws-mumbai-compute",
+            "type": "cloud-iaas",
+            "description": "EC2, EKS and RDS hosting for the trading platform in ap-south-1 with DR in ap-south-2",
+            "criticality": "critical",
+            "supportsCriticalFunction": true,
+            "criticalFunctionRefs": [
+              "order-routing"
+            ],
+            "dataAccessed": [
+              "pii",
+              "financial",
+              "confidential"
+            ],
+            "hostingCountries": [
+              "IN"
+            ],
+            "subcontractors": [
+              {
+                "name": "Sify Technologies",
+                "country": "IN",
+                "role": "Direct Connect colocation"
+              }
+            ]
+          }
+        ],
+        "materiality": "material",
+        "substitutability": "highly-complex",
+        "assurance": [
+          {
+            "type": "soc2-type2",
+            "issuer": "Ernst & Young LLP",
+            "periodStart": "2025-04-01",
+            "periodEnd": "2026-03-31",
+            "expiresAt": "2027-03-31",
+            "scope": "AWS ap-south-1 in-scope services",
+            "exceptionsCount": 0,
+            "evidence": {
+              "type": "url",
+              "ref": "https://aws.amazon.com/artifact/",
+              "description": "SOC 2 Type II report downloaded via AWS Artifact"
+            }
+          },
+          {
+            "type": "iso22301",
+            "issuer": "BSI Group",
+            "periodEnd": "2026-01-15",
+            "expiresAt": "2029-01-14",
+            "scope": "Business continuity management system for AWS global infrastructure"
+          }
+        ],
+        "lastAssessment": {
+          "date": "2026-06-15",
+          "rating": "low",
+          "assessor": "vendor-risk@zenithsecurities.in",
+          "findingIds": [
+            "fnd_01J9Z6X3F8N2Q4R5S6T7V8W9XC"
+          ]
+        },
+        "regulatoryRefs": [
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S5"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S2"
+          }
+        ],
+        "status": "exiting",
+        "tags": [
+          "cloud",
+          "hyperscaler"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T07:10:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XD",
+          "workflow": "refresh-vendor-ctx",
+          "agent": "vendor-profiler"
+        }
+      }
+    },
+    {
+      "description": "onboarding material vendor may lack contract and assessment",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.vendor",
+        "companyId": "zenith-securities",
+        "vendorId": "aws",
+        "legalName": "Amazon Web Services, Inc.",
+        "lei": "549300DXHFVH5ZGTBK98",
+        "country": "US",
+        "website": "https://aws.amazon.com",
+        "intraGroup": false,
+        "ultimateParent": {
+          "legalName": "Amazon.com, Inc.",
+          "lei": "5493009NQRXG7AHTH046",
+          "country": "US"
+        },
+        "services": [
+          {
+            "serviceId": "aws-mumbai-compute",
+            "type": "cloud-iaas",
+            "description": "EC2, EKS and RDS hosting for the trading platform in ap-south-1 with DR in ap-south-2",
+            "criticality": "critical",
+            "supportsCriticalFunction": true,
+            "criticalFunctionRefs": [
+              "order-routing"
+            ],
+            "dataAccessed": [
+              "pii",
+              "financial",
+              "confidential"
+            ],
+            "hostingCountries": [
+              "IN"
+            ],
+            "subcontractors": [
+              {
+                "name": "Sify Technologies",
+                "country": "IN",
+                "role": "Direct Connect colocation"
+              }
+            ]
+          }
+        ],
+        "materiality": "material",
+        "substitutability": "highly-complex",
+        "assurance": [
+          {
+            "type": "soc2-type2",
+            "issuer": "Ernst & Young LLP",
+            "periodStart": "2025-04-01",
+            "periodEnd": "2026-03-31",
+            "expiresAt": "2027-03-31",
+            "scope": "AWS ap-south-1 in-scope services",
+            "exceptionsCount": 0,
+            "evidence": {
+              "type": "url",
+              "ref": "https://aws.amazon.com/artifact/",
+              "description": "SOC 2 Type II report downloaded via AWS Artifact"
+            }
+          },
+          {
+            "type": "iso22301",
+            "issuer": "BSI Group",
+            "periodEnd": "2026-01-15",
+            "expiresAt": "2029-01-14",
+            "scope": "Business continuity management system for AWS global infrastructure"
+          }
+        ],
+        "regulatoryRefs": [
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S5"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S2"
+          }
+        ],
+        "status": "onboarding",
+        "tags": [
+          "cloud",
+          "hyperscaler"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T07:10:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XD",
+          "workflow": "refresh-vendor-ctx",
+          "agent": "vendor-profiler"
+        }
+      }
+    },
+    {
+      "description": "active non-material vendor may lack contract and assessment",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.vendor",
+        "companyId": "zenith-securities",
+        "vendorId": "aws",
+        "legalName": "Amazon Web Services, Inc.",
+        "lei": "549300DXHFVH5ZGTBK98",
+        "country": "US",
+        "website": "https://aws.amazon.com",
+        "intraGroup": false,
+        "ultimateParent": {
+          "legalName": "Amazon.com, Inc.",
+          "lei": "5493009NQRXG7AHTH046",
+          "country": "US"
+        },
+        "services": [
+          {
+            "serviceId": "aws-mumbai-compute",
+            "type": "cloud-iaas",
+            "description": "EC2, EKS and RDS hosting for the trading platform in ap-south-1 with DR in ap-south-2",
+            "criticality": "standard",
+            "supportsCriticalFunction": false,
+            "dataAccessed": [
+              "pii",
+              "financial",
+              "confidential"
+            ],
+            "hostingCountries": [
+              "IN"
+            ],
+            "subcontractors": [
+              {
+                "name": "Sify Technologies",
+                "country": "IN",
+                "role": "Direct Connect colocation"
+              }
+            ]
+          }
+        ],
+        "materiality": "non-material",
+        "substitutability": "highly-complex",
+        "assurance": [
+          {
+            "type": "soc2-type2",
+            "issuer": "Ernst & Young LLP",
+            "periodStart": "2025-04-01",
+            "periodEnd": "2026-03-31",
+            "expiresAt": "2027-03-31",
+            "scope": "AWS ap-south-1 in-scope services",
+            "exceptionsCount": 0,
+            "evidence": {
+              "type": "url",
+              "ref": "https://aws.amazon.com/artifact/",
+              "description": "SOC 2 Type II report downloaded via AWS Artifact"
+            }
+          },
+          {
+            "type": "iso22301",
+            "issuer": "BSI Group",
+            "periodEnd": "2026-01-15",
+            "expiresAt": "2029-01-14",
+            "scope": "Business continuity management system for AWS global infrastructure"
+          }
+        ],
+        "regulatoryRefs": [
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S5"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S2"
+          }
+        ],
+        "status": "active",
+        "tags": [
+          "cloud",
+          "hyperscaler"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T07:10:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XD",
+          "workflow": "refresh-vendor-ctx",
+          "agent": "vendor-profiler"
+        }
+      }
+    },
+    {
+      "description": "service not supporting a critical function cannot list criticalFunctionRefs",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.vendor",
+        "companyId": "zenith-securities",
+        "vendorId": "aws",
+        "legalName": "Amazon Web Services, Inc.",
+        "lei": "549300DXHFVH5ZGTBK98",
+        "country": "US",
+        "website": "https://aws.amazon.com",
+        "intraGroup": false,
+        "ultimateParent": {
+          "legalName": "Amazon.com, Inc.",
+          "lei": "5493009NQRXG7AHTH046",
+          "country": "US"
+        },
+        "services": [
+          {
+            "serviceId": "aws-mumbai-compute",
+            "type": "cloud-iaas",
+            "description": "EC2, EKS and RDS hosting for the trading platform in ap-south-1 with DR in ap-south-2",
+            "criticality": "standard",
+            "supportsCriticalFunction": false,
+            "criticalFunctionRefs": [
+              "order-routing"
+            ],
+            "dataAccessed": [
+              "pii",
+              "financial",
+              "confidential"
+            ],
+            "hostingCountries": [
+              "IN"
+            ],
+            "subcontractors": [
+              {
+                "name": "Sify Technologies",
+                "country": "IN",
+                "role": "Direct Connect colocation"
+              }
+            ]
+          }
+        ],
+        "materiality": "material",
+        "substitutability": "highly-complex",
+        "contract": {
+          "type": "overarching",
+          "reference": "AWS-EA-2024-0173",
+          "startDate": "2024-04-01",
+          "endDate": "2027-03-31",
+          "noticePeriodDays": 90,
+          "exitPlanDocumented": true,
+          "governingLaw": "IN",
+          "rightToAudit": true,
+          "subcontractingAllowed": true,
+          "dataReturnAndDeletion": true,
+          "annualValue": {
+            "amount": 42000000,
+            "currency": "INR"
+          }
+        },
+        "assurance": [
+          {
+            "type": "soc2-type2",
+            "issuer": "Ernst & Young LLP",
+            "periodStart": "2025-04-01",
+            "periodEnd": "2026-03-31",
+            "expiresAt": "2027-03-31",
+            "scope": "AWS ap-south-1 in-scope services",
+            "exceptionsCount": 0,
+            "evidence": {
+              "type": "url",
+              "ref": "https://aws.amazon.com/artifact/",
+              "description": "SOC 2 Type II report downloaded via AWS Artifact"
+            }
+          },
+          {
+            "type": "iso22301",
+            "issuer": "BSI Group",
+            "periodEnd": "2026-01-15",
+            "expiresAt": "2029-01-14",
+            "scope": "Business continuity management system for AWS global infrastructure"
+          }
+        ],
+        "lastAssessment": {
+          "date": "2026-06-15",
+          "rating": "low",
+          "assessor": "vendor-risk@zenithsecurities.in",
+          "findingIds": [
+            "fnd_01J9Z6X3F8N2Q4R5S6T7V8W9XC"
+          ]
+        },
+        "regulatoryRefs": [
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S5"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S2"
+          }
+        ],
+        "status": "active",
+        "tags": [
+          "cloud",
+          "hyperscaler"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T07:10:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XD",
+          "workflow": "refresh-vendor-ctx",
+          "agent": "vendor-profiler"
+        }
+      }
+    },
+    {
+      "description": "critical service must support a critical function",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.vendor",
+        "companyId": "zenith-securities",
+        "vendorId": "aws",
+        "legalName": "Amazon Web Services, Inc.",
+        "lei": "549300DXHFVH5ZGTBK98",
+        "country": "US",
+        "website": "https://aws.amazon.com",
+        "intraGroup": false,
+        "ultimateParent": {
+          "legalName": "Amazon.com, Inc.",
+          "lei": "5493009NQRXG7AHTH046",
+          "country": "US"
+        },
+        "services": [
+          {
+            "serviceId": "aws-mumbai-compute",
+            "type": "cloud-iaas",
+            "description": "EC2, EKS and RDS hosting for the trading platform in ap-south-1 with DR in ap-south-2",
+            "criticality": "critical",
+            "supportsCriticalFunction": false,
+            "dataAccessed": [
+              "pii",
+              "financial",
+              "confidential"
+            ],
+            "hostingCountries": [
+              "IN"
+            ],
+            "subcontractors": [
+              {
+                "name": "Sify Technologies",
+                "country": "IN",
+                "role": "Direct Connect colocation"
+              }
+            ]
+          }
+        ],
+        "materiality": "material",
+        "substitutability": "highly-complex",
+        "contract": {
+          "type": "overarching",
+          "reference": "AWS-EA-2024-0173",
+          "startDate": "2024-04-01",
+          "endDate": "2027-03-31",
+          "noticePeriodDays": 90,
+          "exitPlanDocumented": true,
+          "governingLaw": "IN",
+          "rightToAudit": true,
+          "subcontractingAllowed": true,
+          "dataReturnAndDeletion": true,
+          "annualValue": {
+            "amount": 42000000,
+            "currency": "INR"
+          }
+        },
+        "assurance": [
+          {
+            "type": "soc2-type2",
+            "issuer": "Ernst & Young LLP",
+            "periodStart": "2025-04-01",
+            "periodEnd": "2026-03-31",
+            "expiresAt": "2027-03-31",
+            "scope": "AWS ap-south-1 in-scope services",
+            "exceptionsCount": 0,
+            "evidence": {
+              "type": "url",
+              "ref": "https://aws.amazon.com/artifact/",
+              "description": "SOC 2 Type II report downloaded via AWS Artifact"
+            }
+          },
+          {
+            "type": "iso22301",
+            "issuer": "BSI Group",
+            "periodEnd": "2026-01-15",
+            "expiresAt": "2029-01-14",
+            "scope": "Business continuity management system for AWS global infrastructure"
+          }
+        ],
+        "lastAssessment": {
+          "date": "2026-06-15",
+          "rating": "low",
+          "assessor": "vendor-risk@zenithsecurities.in",
+          "findingIds": [
+            "fnd_01J9Z6X3F8N2Q4R5S6T7V8W9XC"
+          ]
+        },
+        "regulatoryRefs": [
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S5"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S2"
+          }
+        ],
+        "status": "active",
+        "tags": [
+          "cloud",
+          "hyperscaler"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T07:10:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XD",
+          "workflow": "refresh-vendor-ctx",
+          "agent": "vendor-profiler"
+        }
+      }
+    },
+    {
+      "description": "unknown substitutability is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.vendor",
+        "companyId": "zenith-securities",
+        "vendorId": "aws",
+        "legalName": "Amazon Web Services, Inc.",
+        "lei": "549300DXHFVH5ZGTBK98",
+        "country": "US",
+        "website": "https://aws.amazon.com",
+        "intraGroup": false,
+        "ultimateParent": {
+          "legalName": "Amazon.com, Inc.",
+          "lei": "5493009NQRXG7AHTH046",
+          "country": "US"
+        },
+        "services": [
+          {
+            "serviceId": "aws-mumbai-compute",
+            "type": "cloud-iaas",
+            "description": "EC2, EKS and RDS hosting for the trading platform in ap-south-1 with DR in ap-south-2",
+            "criticality": "critical",
+            "supportsCriticalFunction": true,
+            "criticalFunctionRefs": [
+              "order-routing"
+            ],
+            "dataAccessed": [
+              "pii",
+              "financial",
+              "confidential"
+            ],
+            "hostingCountries": [
+              "IN"
+            ],
+            "subcontractors": [
+              {
+                "name": "Sify Technologies",
+                "country": "IN",
+                "role": "Direct Connect colocation"
+              }
+            ]
+          }
+        ],
+        "materiality": "material",
+        "substitutability": "impossible",
+        "contract": {
+          "type": "overarching",
+          "reference": "AWS-EA-2024-0173",
+          "startDate": "2024-04-01",
+          "endDate": "2027-03-31",
+          "noticePeriodDays": 90,
+          "exitPlanDocumented": true,
+          "governingLaw": "IN",
+          "rightToAudit": true,
+          "subcontractingAllowed": true,
+          "dataReturnAndDeletion": true,
+          "annualValue": {
+            "amount": 42000000,
+            "currency": "INR"
+          }
+        },
+        "assurance": [
+          {
+            "type": "soc2-type2",
+            "issuer": "Ernst & Young LLP",
+            "periodStart": "2025-04-01",
+            "periodEnd": "2026-03-31",
+            "expiresAt": "2027-03-31",
+            "scope": "AWS ap-south-1 in-scope services",
+            "exceptionsCount": 0,
+            "evidence": {
+              "type": "url",
+              "ref": "https://aws.amazon.com/artifact/",
+              "description": "SOC 2 Type II report downloaded via AWS Artifact"
+            }
+          },
+          {
+            "type": "iso22301",
+            "issuer": "BSI Group",
+            "periodEnd": "2026-01-15",
+            "expiresAt": "2029-01-14",
+            "scope": "Business continuity management system for AWS global infrastructure"
+          }
+        ],
+        "lastAssessment": {
+          "date": "2026-06-15",
+          "rating": "low",
+          "assessor": "vendor-risk@zenithsecurities.in",
+          "findingIds": [
+            "fnd_01J9Z6X3F8N2Q4R5S6T7V8W9XC"
+          ]
+        },
+        "regulatoryRefs": [
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S5"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S2"
+          }
+        ],
+        "status": "active",
+        "tags": [
+          "cloud",
+          "hyperscaler"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T07:10:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XD",
+          "workflow": "refresh-vendor-ctx",
+          "agent": "vendor-profiler"
+        }
+      }
+    },
+    {
+      "description": "unknown contract type is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.vendor",
+        "companyId": "zenith-securities",
+        "vendorId": "aws",
+        "legalName": "Amazon Web Services, Inc.",
+        "lei": "549300DXHFVH5ZGTBK98",
+        "country": "US",
+        "website": "https://aws.amazon.com",
+        "intraGroup": false,
+        "ultimateParent": {
+          "legalName": "Amazon.com, Inc.",
+          "lei": "5493009NQRXG7AHTH046",
+          "country": "US"
+        },
+        "services": [
+          {
+            "serviceId": "aws-mumbai-compute",
+            "type": "cloud-iaas",
+            "description": "EC2, EKS and RDS hosting for the trading platform in ap-south-1 with DR in ap-south-2",
+            "criticality": "critical",
+            "supportsCriticalFunction": true,
+            "criticalFunctionRefs": [
+              "order-routing"
+            ],
+            "dataAccessed": [
+              "pii",
+              "financial",
+              "confidential"
+            ],
+            "hostingCountries": [
+              "IN"
+            ],
+            "subcontractors": [
+              {
+                "name": "Sify Technologies",
+                "country": "IN",
+                "role": "Direct Connect colocation"
+              }
+            ]
+          }
+        ],
+        "materiality": "material",
+        "substitutability": "highly-complex",
+        "contract": {
+          "type": "framework",
+          "reference": "AWS-EA-2024-0173",
+          "startDate": "2024-04-01",
+          "endDate": "2027-03-31",
+          "noticePeriodDays": 90,
+          "exitPlanDocumented": true,
+          "governingLaw": "IN",
+          "rightToAudit": true,
+          "subcontractingAllowed": true,
+          "dataReturnAndDeletion": true,
+          "annualValue": {
+            "amount": 42000000,
+            "currency": "INR"
+          }
+        },
+        "assurance": [
+          {
+            "type": "soc2-type2",
+            "issuer": "Ernst & Young LLP",
+            "periodStart": "2025-04-01",
+            "periodEnd": "2026-03-31",
+            "expiresAt": "2027-03-31",
+            "scope": "AWS ap-south-1 in-scope services",
+            "exceptionsCount": 0,
+            "evidence": {
+              "type": "url",
+              "ref": "https://aws.amazon.com/artifact/",
+              "description": "SOC 2 Type II report downloaded via AWS Artifact"
+            }
+          },
+          {
+            "type": "iso22301",
+            "issuer": "BSI Group",
+            "periodEnd": "2026-01-15",
+            "expiresAt": "2029-01-14",
+            "scope": "Business continuity management system for AWS global infrastructure"
+          }
+        ],
+        "lastAssessment": {
+          "date": "2026-06-15",
+          "rating": "low",
+          "assessor": "vendor-risk@zenithsecurities.in",
+          "findingIds": [
+            "fnd_01J9Z6X3F8N2Q4R5S6T7V8W9XC"
+          ]
+        },
+        "regulatoryRefs": [
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S5"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S2"
+          }
+        ],
+        "status": "active",
+        "tags": [
+          "cloud",
+          "hyperscaler"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T07:10:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XD",
+          "workflow": "refresh-vendor-ctx",
+          "agent": "vendor-profiler"
+        }
+      }
+    },
+    {
+      "description": "invented key inside contract is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.vendor",
+        "companyId": "zenith-securities",
+        "vendorId": "aws",
+        "legalName": "Amazon Web Services, Inc.",
+        "lei": "549300DXHFVH5ZGTBK98",
+        "country": "US",
+        "website": "https://aws.amazon.com",
+        "intraGroup": false,
+        "ultimateParent": {
+          "legalName": "Amazon.com, Inc.",
+          "lei": "5493009NQRXG7AHTH046",
+          "country": "US"
+        },
+        "services": [
+          {
+            "serviceId": "aws-mumbai-compute",
+            "type": "cloud-iaas",
+            "description": "EC2, EKS and RDS hosting for the trading platform in ap-south-1 with DR in ap-south-2",
+            "criticality": "critical",
+            "supportsCriticalFunction": true,
+            "criticalFunctionRefs": [
+              "order-routing"
+            ],
+            "dataAccessed": [
+              "pii",
+              "financial",
+              "confidential"
+            ],
+            "hostingCountries": [
+              "IN"
+            ],
+            "subcontractors": [
+              {
+                "name": "Sify Technologies",
+                "country": "IN",
+                "role": "Direct Connect colocation"
+              }
+            ]
+          }
+        ],
+        "materiality": "material",
+        "substitutability": "highly-complex",
+        "contract": {
+          "type": "overarching",
+          "reference": "AWS-EA-2024-0173",
+          "startDate": "2024-04-01",
+          "endDate": "2027-03-31",
+          "noticePeriodDays": 90,
+          "exitPlanDocumented": true,
+          "governingLaw": "IN",
+          "rightToAudit": true,
+          "subcontractingAllowed": true,
+          "dataReturnAndDeletion": true,
+          "annualValue": {
+            "amount": 42000000,
+            "currency": "INR"
+          },
+          "autoRenew": true
+        },
+        "assurance": [
+          {
+            "type": "soc2-type2",
+            "issuer": "Ernst & Young LLP",
+            "periodStart": "2025-04-01",
+            "periodEnd": "2026-03-31",
+            "expiresAt": "2027-03-31",
+            "scope": "AWS ap-south-1 in-scope services",
+            "exceptionsCount": 0,
+            "evidence": {
+              "type": "url",
+              "ref": "https://aws.amazon.com/artifact/",
+              "description": "SOC 2 Type II report downloaded via AWS Artifact"
+            }
+          },
+          {
+            "type": "iso22301",
+            "issuer": "BSI Group",
+            "periodEnd": "2026-01-15",
+            "expiresAt": "2029-01-14",
+            "scope": "Business continuity management system for AWS global infrastructure"
+          }
+        ],
+        "lastAssessment": {
+          "date": "2026-06-15",
+          "rating": "low",
+          "assessor": "vendor-risk@zenithsecurities.in",
+          "findingIds": [
+            "fnd_01J9Z6X3F8N2Q4R5S6T7V8W9XC"
+          ]
+        },
+        "regulatoryRefs": [
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S5"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S2"
+          }
+        ],
+        "status": "active",
+        "tags": [
+          "cloud",
+          "hyperscaler"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T07:10:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XD",
+          "workflow": "refresh-vendor-ctx",
+          "agent": "vendor-profiler"
+        }
+      }
+    },
+    {
+      "description": "invented key inside assurance is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.vendor",
+        "companyId": "zenith-securities",
+        "vendorId": "aws",
+        "legalName": "Amazon Web Services, Inc.",
+        "lei": "549300DXHFVH5ZGTBK98",
+        "country": "US",
+        "website": "https://aws.amazon.com",
+        "intraGroup": false,
+        "ultimateParent": {
+          "legalName": "Amazon.com, Inc.",
+          "lei": "5493009NQRXG7AHTH046",
+          "country": "US"
+        },
+        "services": [
+          {
+            "serviceId": "aws-mumbai-compute",
+            "type": "cloud-iaas",
+            "description": "EC2, EKS and RDS hosting for the trading platform in ap-south-1 with DR in ap-south-2",
+            "criticality": "critical",
+            "supportsCriticalFunction": true,
+            "criticalFunctionRefs": [
+              "order-routing"
+            ],
+            "dataAccessed": [
+              "pii",
+              "financial",
+              "confidential"
+            ],
+            "hostingCountries": [
+              "IN"
+            ],
+            "subcontractors": [
+              {
+                "name": "Sify Technologies",
+                "country": "IN",
+                "role": "Direct Connect colocation"
+              }
+            ]
+          }
+        ],
+        "materiality": "material",
+        "substitutability": "highly-complex",
+        "contract": {
+          "type": "overarching",
+          "reference": "AWS-EA-2024-0173",
+          "startDate": "2024-04-01",
+          "endDate": "2027-03-31",
+          "noticePeriodDays": 90,
+          "exitPlanDocumented": true,
+          "governingLaw": "IN",
+          "rightToAudit": true,
+          "subcontractingAllowed": true,
+          "dataReturnAndDeletion": true,
+          "annualValue": {
+            "amount": 42000000,
+            "currency": "INR"
+          }
+        },
+        "assurance": [
+          {
+            "type": "soc2-type2",
+            "issuer": "Ernst & Young LLP",
+            "periodStart": "2025-04-01",
+            "periodEnd": "2026-03-31",
+            "expiresAt": "2027-03-31",
+            "scope": "AWS ap-south-1 in-scope services",
+            "exceptionsCount": 0,
+            "evidence": {
+              "type": "url",
+              "ref": "https://aws.amazon.com/artifact/",
+              "description": "SOC 2 Type II report downloaded via AWS Artifact"
+            },
+            "reportUrl": "https://example.com"
+          },
+          {
+            "type": "iso22301",
+            "issuer": "BSI Group",
+            "periodEnd": "2026-01-15",
+            "expiresAt": "2029-01-14",
+            "scope": "Business continuity management system for AWS global infrastructure"
+          }
+        ],
+        "lastAssessment": {
+          "date": "2026-06-15",
+          "rating": "low",
+          "assessor": "vendor-risk@zenithsecurities.in",
+          "findingIds": [
+            "fnd_01J9Z6X3F8N2Q4R5S6T7V8W9XC"
+          ]
+        },
+        "regulatoryRefs": [
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S5"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S2"
+          }
+        ],
+        "status": "active",
+        "tags": [
+          "cloud",
+          "hyperscaler"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T07:10:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XD",
+          "workflow": "refresh-vendor-ctx",
+          "agent": "vendor-profiler"
+        }
+      }
+    },
+    {
+      "description": "invented key inside ultimateParent is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.vendor",
+        "companyId": "zenith-securities",
+        "vendorId": "aws",
+        "legalName": "Amazon Web Services, Inc.",
+        "lei": "549300DXHFVH5ZGTBK98",
+        "country": "US",
+        "website": "https://aws.amazon.com",
+        "intraGroup": false,
+        "ultimateParent": {
+          "legalName": "Amazon.com, Inc.",
+          "lei": "5493009NQRXG7AHTH046",
+          "country": "US",
+          "ticker": "AMZN"
+        },
+        "services": [
+          {
+            "serviceId": "aws-mumbai-compute",
+            "type": "cloud-iaas",
+            "description": "EC2, EKS and RDS hosting for the trading platform in ap-south-1 with DR in ap-south-2",
+            "criticality": "critical",
+            "supportsCriticalFunction": true,
+            "criticalFunctionRefs": [
+              "order-routing"
+            ],
+            "dataAccessed": [
+              "pii",
+              "financial",
+              "confidential"
+            ],
+            "hostingCountries": [
+              "IN"
+            ],
+            "subcontractors": [
+              {
+                "name": "Sify Technologies",
+                "country": "IN",
+                "role": "Direct Connect colocation"
+              }
+            ]
+          }
+        ],
+        "materiality": "material",
+        "substitutability": "highly-complex",
+        "contract": {
+          "type": "overarching",
+          "reference": "AWS-EA-2024-0173",
+          "startDate": "2024-04-01",
+          "endDate": "2027-03-31",
+          "noticePeriodDays": 90,
+          "exitPlanDocumented": true,
+          "governingLaw": "IN",
+          "rightToAudit": true,
+          "subcontractingAllowed": true,
+          "dataReturnAndDeletion": true,
+          "annualValue": {
+            "amount": 42000000,
+            "currency": "INR"
+          }
+        },
+        "assurance": [
+          {
+            "type": "soc2-type2",
+            "issuer": "Ernst & Young LLP",
+            "periodStart": "2025-04-01",
+            "periodEnd": "2026-03-31",
+            "expiresAt": "2027-03-31",
+            "scope": "AWS ap-south-1 in-scope services",
+            "exceptionsCount": 0,
+            "evidence": {
+              "type": "url",
+              "ref": "https://aws.amazon.com/artifact/",
+              "description": "SOC 2 Type II report downloaded via AWS Artifact"
+            }
+          },
+          {
+            "type": "iso22301",
+            "issuer": "BSI Group",
+            "periodEnd": "2026-01-15",
+            "expiresAt": "2029-01-14",
+            "scope": "Business continuity management system for AWS global infrastructure"
+          }
+        ],
+        "lastAssessment": {
+          "date": "2026-06-15",
+          "rating": "low",
+          "assessor": "vendor-risk@zenithsecurities.in",
+          "findingIds": [
+            "fnd_01J9Z6X3F8N2Q4R5S6T7V8W9XC"
+          ]
+        },
+        "regulatoryRefs": [
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S5"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S2"
+          }
+        ],
+        "status": "active",
+        "tags": [
+          "cloud",
+          "hyperscaler"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T07:10:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XD",
+          "workflow": "refresh-vendor-ctx",
+          "agent": "vendor-profiler"
+        }
+      }
+    },
+    {
+      "description": "assessment rating cannot be info",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.vendor",
+        "companyId": "zenith-securities",
+        "vendorId": "aws",
+        "legalName": "Amazon Web Services, Inc.",
+        "lei": "549300DXHFVH5ZGTBK98",
+        "country": "US",
+        "website": "https://aws.amazon.com",
+        "intraGroup": false,
+        "ultimateParent": {
+          "legalName": "Amazon.com, Inc.",
+          "lei": "5493009NQRXG7AHTH046",
+          "country": "US"
+        },
+        "services": [
+          {
+            "serviceId": "aws-mumbai-compute",
+            "type": "cloud-iaas",
+            "description": "EC2, EKS and RDS hosting for the trading platform in ap-south-1 with DR in ap-south-2",
+            "criticality": "critical",
+            "supportsCriticalFunction": true,
+            "criticalFunctionRefs": [
+              "order-routing"
+            ],
+            "dataAccessed": [
+              "pii",
+              "financial",
+              "confidential"
+            ],
+            "hostingCountries": [
+              "IN"
+            ],
+            "subcontractors": [
+              {
+                "name": "Sify Technologies",
+                "country": "IN",
+                "role": "Direct Connect colocation"
+              }
+            ]
+          }
+        ],
+        "materiality": "material",
+        "substitutability": "highly-complex",
+        "contract": {
+          "type": "overarching",
+          "reference": "AWS-EA-2024-0173",
+          "startDate": "2024-04-01",
+          "endDate": "2027-03-31",
+          "noticePeriodDays": 90,
+          "exitPlanDocumented": true,
+          "governingLaw": "IN",
+          "rightToAudit": true,
+          "subcontractingAllowed": true,
+          "dataReturnAndDeletion": true,
+          "annualValue": {
+            "amount": 42000000,
+            "currency": "INR"
+          }
+        },
+        "assurance": [
+          {
+            "type": "soc2-type2",
+            "issuer": "Ernst & Young LLP",
+            "periodStart": "2025-04-01",
+            "periodEnd": "2026-03-31",
+            "expiresAt": "2027-03-31",
+            "scope": "AWS ap-south-1 in-scope services",
+            "exceptionsCount": 0,
+            "evidence": {
+              "type": "url",
+              "ref": "https://aws.amazon.com/artifact/",
+              "description": "SOC 2 Type II report downloaded via AWS Artifact"
+            }
+          },
+          {
+            "type": "iso22301",
+            "issuer": "BSI Group",
+            "periodEnd": "2026-01-15",
+            "expiresAt": "2029-01-14",
+            "scope": "Business continuity management system for AWS global infrastructure"
+          }
+        ],
+        "lastAssessment": {
+          "date": "2026-06-15",
+          "rating": "info",
+          "assessor": "vendor-risk@zenithsecurities.in",
+          "findingIds": [
+            "fnd_01J9Z6X3F8N2Q4R5S6T7V8W9XC"
+          ]
+        },
+        "regulatoryRefs": [
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S5"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S2"
+          }
+        ],
+        "status": "active",
+        "tags": [
+          "cloud",
+          "hyperscaler"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T07:10:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XD",
+          "workflow": "refresh-vendor-ctx",
+          "agent": "vendor-profiler"
+        }
+      }
+    },
+    {
+      "description": "soc1-type2 assurance is accepted",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.vendor",
+        "companyId": "zenith-securities",
+        "vendorId": "aws",
+        "legalName": "Amazon Web Services, Inc.",
+        "lei": "549300DXHFVH5ZGTBK98",
+        "country": "US",
+        "website": "https://aws.amazon.com",
+        "intraGroup": false,
+        "ultimateParent": {
+          "legalName": "Amazon.com, Inc.",
+          "lei": "5493009NQRXG7AHTH046",
+          "country": "US"
+        },
+        "services": [
+          {
+            "serviceId": "aws-mumbai-compute",
+            "type": "cloud-iaas",
+            "description": "EC2, EKS and RDS hosting for the trading platform in ap-south-1 with DR in ap-south-2",
+            "criticality": "critical",
+            "supportsCriticalFunction": true,
+            "criticalFunctionRefs": [
+              "order-routing"
+            ],
+            "dataAccessed": [
+              "pii",
+              "financial",
+              "confidential"
+            ],
+            "hostingCountries": [
+              "IN"
+            ],
+            "subcontractors": [
+              {
+                "name": "Sify Technologies",
+                "country": "IN",
+                "role": "Direct Connect colocation"
+              }
+            ]
+          }
+        ],
+        "materiality": "material",
+        "substitutability": "highly-complex",
+        "contract": {
+          "type": "overarching",
+          "reference": "AWS-EA-2024-0173",
+          "startDate": "2024-04-01",
+          "endDate": "2027-03-31",
+          "noticePeriodDays": 90,
+          "exitPlanDocumented": true,
+          "governingLaw": "IN",
+          "rightToAudit": true,
+          "subcontractingAllowed": true,
+          "dataReturnAndDeletion": true,
+          "annualValue": {
+            "amount": 42000000,
+            "currency": "INR"
+          }
+        },
+        "assurance": [
+          {
+            "type": "soc1-type2",
+            "issuer": "Ernst & Young LLP",
+            "periodStart": "2025-04-01",
+            "periodEnd": "2026-03-31",
+            "expiresAt": "2027-03-31",
+            "scope": "AWS ap-south-1 in-scope services",
+            "exceptionsCount": 0,
+            "evidence": {
+              "type": "url",
+              "ref": "https://aws.amazon.com/artifact/",
+              "description": "SOC 2 Type II report downloaded via AWS Artifact"
+            }
+          },
+          {
+            "type": "iso22301",
+            "issuer": "BSI Group",
+            "periodEnd": "2026-01-15",
+            "expiresAt": "2029-01-14",
+            "scope": "Business continuity management system for AWS global infrastructure"
+          }
+        ],
+        "lastAssessment": {
+          "date": "2026-06-15",
+          "rating": "low",
+          "assessor": "vendor-risk@zenithsecurities.in",
+          "findingIds": [
+            "fnd_01J9Z6X3F8N2Q4R5S6T7V8W9XC"
+          ]
+        },
+        "regulatoryRefs": [
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S5"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S2"
+          }
+        ],
+        "status": "active",
+        "tags": [
+          "cloud",
+          "hyperscaler"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T07:10:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XD",
+          "workflow": "refresh-vendor-ctx",
+          "agent": "vendor-profiler"
+        }
+      }
+    }
+  ]
+}

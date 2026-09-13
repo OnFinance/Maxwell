@@ -1,0 +1,165 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/kpi-methodology.schema.json",
+  "tests": [
+    {
+      "description": "complete methodology frontmatter",
+      "valid": true,
+      "data": {
+        "kpiId": "cost_of_audit",
+        "methodVersion": "1.0.0",
+        "updatedAt": "2026-09-13",
+        "owner": {
+          "type": "human",
+          "id": "kpi-owner@example.in"
+        },
+        "inputs": [
+          "session-summary",
+          "soc-ledger"
+        ],
+        "status": "active"
+      }
+    },
+    {
+      "description": "draft owned by an agent",
+      "valid": true,
+      "data": {
+        "kpiId": "cost_of_audit",
+        "methodVersion": "1.0.0",
+        "updatedAt": "2026-09-13",
+        "owner": {
+          "type": "agent",
+          "id": "kpi-analyst"
+        },
+        "inputs": [
+          "session-summary",
+          "soc-ledger"
+        ],
+        "status": "draft"
+      }
+    },
+    {
+      "description": "invented extra key",
+      "valid": false,
+      "data": {
+        "kpiId": "cost_of_audit",
+        "methodVersion": "1.0.0",
+        "updatedAt": "2026-09-13",
+        "owner": {
+          "type": "human",
+          "id": "kpi-owner@example.in"
+        },
+        "inputs": [
+          "session-summary",
+          "soc-ledger"
+        ],
+        "status": "active",
+        "title": "Cost of audit"
+      }
+    },
+    {
+      "description": "unknown kpiId",
+      "valid": false,
+      "data": {
+        "kpiId": "mttr",
+        "methodVersion": "1.0.0",
+        "updatedAt": "2026-09-13",
+        "owner": {
+          "type": "human",
+          "id": "kpi-owner@example.in"
+        },
+        "inputs": [
+          "session-summary",
+          "soc-ledger"
+        ],
+        "status": "active"
+      }
+    },
+    {
+      "description": "bad status enum",
+      "valid": false,
+      "data": {
+        "kpiId": "cost_of_audit",
+        "methodVersion": "1.0.0",
+        "updatedAt": "2026-09-13",
+        "owner": {
+          "type": "human",
+          "id": "kpi-owner@example.in"
+        },
+        "inputs": [
+          "session-summary",
+          "soc-ledger"
+        ],
+        "status": "retired"
+      }
+    },
+    {
+      "description": "missing required owner",
+      "valid": false,
+      "data": {
+        "kpiId": "cost_of_audit",
+        "methodVersion": "1.0.0",
+        "updatedAt": "2026-09-13",
+        "inputs": [
+          "session-summary",
+          "soc-ledger"
+        ],
+        "status": "active"
+      }
+    },
+    {
+      "description": "unknown input source",
+      "valid": false,
+      "data": {
+        "kpiId": "cost_of_audit",
+        "methodVersion": "1.0.0",
+        "updatedAt": "2026-09-13",
+        "owner": {
+          "type": "human",
+          "id": "kpi-owner@example.in"
+        },
+        "inputs": [
+          "session-summary",
+          "soc-ledger",
+          "jira"
+        ],
+        "status": "active"
+      }
+    },
+    {
+      "description": "updatedAt as timestamp instead of date",
+      "valid": false,
+      "data": {
+        "kpiId": "cost_of_audit",
+        "methodVersion": "1.0.0",
+        "updatedAt": "2026-09-13T00:00:00Z",
+        "owner": {
+          "type": "human",
+          "id": "kpi-owner@example.in"
+        },
+        "inputs": [
+          "session-summary",
+          "soc-ledger"
+        ],
+        "status": "active"
+      }
+    },
+    {
+      "description": "methodVersion not semver",
+      "valid": false,
+      "data": {
+        "kpiId": "cost_of_audit",
+        "methodVersion": "1",
+        "updatedAt": "2026-09-13",
+        "owner": {
+          "type": "human",
+          "id": "kpi-owner@example.in"
+        },
+        "inputs": [
+          "session-summary",
+          "soc-ledger"
+        ],
+        "status": "active"
+      }
+    }
+  ]
+}

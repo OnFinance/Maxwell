@@ -1,0 +1,17 @@
+---
+description: Create the minimum valid company-profile skeleton for a new company_id (details, summary, sdlc policy, empty ledger, masters)
+argument-hint: <company_id> [legal name]
+allowed-tools: Bash(npm run *), Bash(node .claude/scripts/*), Read, Write
+x-maxwell:
+  workflow: seed-company
+  touches: ["company-profile/*/**"]
+  readsCredentials: false
+---
+Create `company-profile/$1/` with exactly the required files from `.claude/schemas/layout.json`
+(`requiredPerCompany`): `details.json`, `summary.md`, `sdlc/policy.json`, `soc/main.jsonl` (empty file),
+`change_management/master.json`, `suggestions/master.json`, plus `soc/versions/.gitkeep`,
+`vendors/.gitkeep`, `change_management/initiatives/.gitkeep` and `suggestions/suggestions/.gitkeep`.
+Use the schema `examples` as templates, set `companyId` to `$1`, legal name to `$2` if given, fill only fields
+you actually know and leave the rest at the schema minimum. Every document gets a `provenance` block with
+`harness` set to the current harness and `workflow: "seed-company"`. Finish with `npm run validate` and
+report the created paths. Refuse if `company-profile/$1` already exists.

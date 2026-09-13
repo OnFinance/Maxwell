@@ -1,0 +1,603 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/skill.schema.json",
+  "tests": [
+    {
+      "description": "soc-ledger convention skill",
+      "valid": true,
+      "data": {
+        "name": "soc-ledger",
+        "description": "How to read and append to the state-of-controls ledger company-profile/<company_id>/soc/main.jsonl: record kinds, fingerprints, supersession, and the append/version helper scripts. Use whenever a workflow records a control, observation, finding, risk or incident",
+        "license": "AGPL-3.0-only",
+        "compatibility": "Requires Node 22 and the Maxwell workspace layout; helper scripts live in .claude/scripts/soc",
+        "metadata": {
+          "author": "OnFinance",
+          "version": "1.0.0"
+        },
+        "allowed-tools": "Read Grep Bash(node .claude/scripts/soc/*)",
+        "when_to_use": "Before writing any line to soc/main.jsonl or producing a versions/commit_<n>.diff",
+        "user-invocable": false,
+        "disable-model-invocation": false,
+        "x-maxwell": {
+          "kind": "convention",
+          "workflows": [
+            "refresh-soc",
+            "probe-iac",
+            "runtime-probe-prod-env",
+            "report-audit-findings"
+          ]
+        }
+      }
+    },
+    {
+      "description": "regulatory-catalogs catalog skill with paths and fork context",
+      "valid": true,
+      "data": {
+        "name": "regulatory-catalogs",
+        "description": "Reference catalogs for SEBI CSCRF, RBI Directions 2026, IRDAI 2023, CERT-In 2022 and DPDP Rules 2025 with severity and SLA tables. Load before citing any regulatoryRef",
+        "paths": [
+          "company-profile/*/soc/**",
+          "cves/**"
+        ],
+        "context": "fork",
+        "agent": "regulatory-mapper",
+        "background": false,
+        "model": "haiku",
+        "effort": "medium",
+        "x-maxwell": {
+          "kind": "catalog",
+          "workflows": [
+            "report-audit-findings"
+          ]
+        }
+      }
+    },
+    {
+      "description": "agentskills.io minimum: name and description",
+      "valid": true,
+      "data": {
+        "name": "maxwell-conventions",
+        "description": "Naming, ids, timestamps and status transitions every Maxwell document must follow"
+      }
+    },
+    {
+      "description": "allowed-tools as a YAML list",
+      "valid": true,
+      "data": {
+        "name": "soc-ledger",
+        "description": "How to read and append to the state-of-controls ledger company-profile/<company_id>/soc/main.jsonl: record kinds, fingerprints, supersession, and the append/version helper scripts. Use whenever a workflow records a control, observation, finding, risk or incident",
+        "license": "AGPL-3.0-only",
+        "compatibility": "Requires Node 22 and the Maxwell workspace layout; helper scripts live in .claude/scripts/soc",
+        "metadata": {
+          "author": "OnFinance",
+          "version": "1.0.0"
+        },
+        "allowed-tools": [
+          "Read",
+          "Grep",
+          "Bash(node .claude/scripts/soc/*)"
+        ],
+        "when_to_use": "Before writing any line to soc/main.jsonl or producing a versions/commit_<n>.diff",
+        "user-invocable": false,
+        "disable-model-invocation": false,
+        "x-maxwell": {
+          "kind": "convention",
+          "workflows": [
+            "refresh-soc",
+            "probe-iac",
+            "runtime-probe-prod-env",
+            "report-audit-findings"
+          ]
+        }
+      }
+    },
+    {
+      "description": "allowed-tools comma separated with a nested-parenthesis specifier, plus disallowed-tools and arguments",
+      "valid": true,
+      "data": {
+        "name": "soc-ledger",
+        "description": "How to read and append to the state-of-controls ledger company-profile/<company_id>/soc/main.jsonl: record kinds, fingerprints, supersession, and the append/version helper scripts. Use whenever a workflow records a control, observation, finding, risk or incident",
+        "license": "AGPL-3.0-only",
+        "compatibility": "Requires Node 22 and the Maxwell workspace layout; helper scripts live in .claude/scripts/soc",
+        "metadata": {
+          "author": "OnFinance",
+          "version": "1.0.0"
+        },
+        "allowed-tools": "Read, Grep, Bash(git commit -m \"(x)\")",
+        "when_to_use": "Before writing any line to soc/main.jsonl or producing a versions/commit_<n>.diff",
+        "user-invocable": false,
+        "disable-model-invocation": false,
+        "x-maxwell": {
+          "kind": "convention",
+          "workflows": [
+            "refresh-soc",
+            "probe-iac",
+            "runtime-probe-prod-env",
+            "report-audit-findings"
+          ]
+        },
+        "disallowed-tools": "WebFetch WebSearch",
+        "arguments": "company_id app_id"
+      }
+    },
+    {
+      "description": "version belongs under metadata, not at top level",
+      "valid": false,
+      "data": {
+        "name": "soc-ledger",
+        "description": "How to read and append to the state-of-controls ledger company-profile/<company_id>/soc/main.jsonl: record kinds, fingerprints, supersession, and the append/version helper scripts. Use whenever a workflow records a control, observation, finding, risk or incident",
+        "license": "AGPL-3.0-only",
+        "compatibility": "Requires Node 22 and the Maxwell workspace layout; helper scripts live in .claude/scripts/soc",
+        "metadata": {
+          "author": "OnFinance",
+          "version": "1.0.0"
+        },
+        "allowed-tools": "Read Grep Bash(node .claude/scripts/soc/*)",
+        "when_to_use": "Before writing any line to soc/main.jsonl or producing a versions/commit_<n>.diff",
+        "user-invocable": false,
+        "disable-model-invocation": false,
+        "x-maxwell": {
+          "kind": "convention",
+          "workflows": [
+            "refresh-soc",
+            "probe-iac",
+            "runtime-probe-prod-env",
+            "report-audit-findings"
+          ]
+        },
+        "version": "1.0.0"
+      }
+    },
+    {
+      "description": "hooks are refused in skill files",
+      "valid": false,
+      "data": {
+        "name": "soc-ledger",
+        "description": "How to read and append to the state-of-controls ledger company-profile/<company_id>/soc/main.jsonl: record kinds, fingerprints, supersession, and the append/version helper scripts. Use whenever a workflow records a control, observation, finding, risk or incident",
+        "license": "AGPL-3.0-only",
+        "compatibility": "Requires Node 22 and the Maxwell workspace layout; helper scripts live in .claude/scripts/soc",
+        "metadata": {
+          "author": "OnFinance",
+          "version": "1.0.0"
+        },
+        "allowed-tools": "Read Grep Bash(node .claude/scripts/soc/*)",
+        "when_to_use": "Before writing any line to soc/main.jsonl or producing a versions/commit_<n>.diff",
+        "user-invocable": false,
+        "disable-model-invocation": false,
+        "x-maxwell": {
+          "kind": "convention",
+          "workflows": [
+            "refresh-soc",
+            "probe-iac",
+            "runtime-probe-prod-env",
+            "report-audit-findings"
+          ]
+        },
+        "hooks": {
+          "PreToolUse": []
+        }
+      }
+    },
+    {
+      "description": "name must be lower-case hyphenated",
+      "valid": false,
+      "data": {
+        "name": "SOC_Ledger",
+        "description": "How to read and append to the state-of-controls ledger company-profile/<company_id>/soc/main.jsonl: record kinds, fingerprints, supersession, and the append/version helper scripts. Use whenever a workflow records a control, observation, finding, risk or incident",
+        "license": "AGPL-3.0-only",
+        "compatibility": "Requires Node 22 and the Maxwell workspace layout; helper scripts live in .claude/scripts/soc",
+        "metadata": {
+          "author": "OnFinance",
+          "version": "1.0.0"
+        },
+        "allowed-tools": "Read Grep Bash(node .claude/scripts/soc/*)",
+        "when_to_use": "Before writing any line to soc/main.jsonl or producing a versions/commit_<n>.diff",
+        "user-invocable": false,
+        "disable-model-invocation": false,
+        "x-maxwell": {
+          "kind": "convention",
+          "workflows": [
+            "refresh-soc",
+            "probe-iac",
+            "runtime-probe-prod-env",
+            "report-audit-findings"
+          ]
+        }
+      }
+    },
+    {
+      "description": "name must not contain consecutive hyphens",
+      "valid": false,
+      "data": {
+        "name": "soc--ledger",
+        "description": "How to read and append to the state-of-controls ledger company-profile/<company_id>/soc/main.jsonl: record kinds, fingerprints, supersession, and the append/version helper scripts. Use whenever a workflow records a control, observation, finding, risk or incident",
+        "license": "AGPL-3.0-only",
+        "compatibility": "Requires Node 22 and the Maxwell workspace layout; helper scripts live in .claude/scripts/soc",
+        "metadata": {
+          "author": "OnFinance",
+          "version": "1.0.0"
+        },
+        "allowed-tools": "Read Grep Bash(node .claude/scripts/soc/*)",
+        "when_to_use": "Before writing any line to soc/main.jsonl or producing a versions/commit_<n>.diff",
+        "user-invocable": false,
+        "disable-model-invocation": false,
+        "x-maxwell": {
+          "kind": "convention",
+          "workflows": [
+            "refresh-soc",
+            "probe-iac",
+            "runtime-probe-prod-env",
+            "report-audit-findings"
+          ]
+        }
+      }
+    },
+    {
+      "description": "x-maxwell.kind outside the closed enum",
+      "valid": false,
+      "data": {
+        "name": "soc-ledger",
+        "description": "How to read and append to the state-of-controls ledger company-profile/<company_id>/soc/main.jsonl: record kinds, fingerprints, supersession, and the append/version helper scripts. Use whenever a workflow records a control, observation, finding, risk or incident",
+        "license": "AGPL-3.0-only",
+        "compatibility": "Requires Node 22 and the Maxwell workspace layout; helper scripts live in .claude/scripts/soc",
+        "metadata": {
+          "author": "OnFinance",
+          "version": "1.0.0"
+        },
+        "allowed-tools": "Read Grep Bash(node .claude/scripts/soc/*)",
+        "when_to_use": "Before writing any line to soc/main.jsonl or producing a versions/commit_<n>.diff",
+        "user-invocable": false,
+        "disable-model-invocation": false,
+        "x-maxwell": {
+          "kind": "tutorial",
+          "workflows": [
+            "refresh-soc",
+            "probe-iac",
+            "runtime-probe-prod-env",
+            "report-audit-findings"
+          ]
+        }
+      }
+    },
+    {
+      "description": "extra key inside x-maxwell is denied",
+      "valid": false,
+      "data": {
+        "name": "soc-ledger",
+        "description": "How to read and append to the state-of-controls ledger company-profile/<company_id>/soc/main.jsonl: record kinds, fingerprints, supersession, and the append/version helper scripts. Use whenever a workflow records a control, observation, finding, risk or incident",
+        "license": "AGPL-3.0-only",
+        "compatibility": "Requires Node 22 and the Maxwell workspace layout; helper scripts live in .claude/scripts/soc",
+        "metadata": {
+          "author": "OnFinance",
+          "version": "1.0.0"
+        },
+        "allowed-tools": "Read Grep Bash(node .claude/scripts/soc/*)",
+        "when_to_use": "Before writing any line to soc/main.jsonl or producing a versions/commit_<n>.diff",
+        "user-invocable": false,
+        "disable-model-invocation": false,
+        "x-maxwell": {
+          "kind": "convention",
+          "workflows": [
+            "refresh-soc",
+            "probe-iac",
+            "runtime-probe-prod-env",
+            "report-audit-findings"
+          ],
+          "owner": "secops"
+        }
+      }
+    },
+    {
+      "description": "description is required",
+      "valid": false,
+      "data": {
+        "name": "soc-ledger",
+        "license": "AGPL-3.0-only",
+        "compatibility": "Requires Node 22 and the Maxwell workspace layout; helper scripts live in .claude/scripts/soc",
+        "metadata": {
+          "author": "OnFinance",
+          "version": "1.0.0"
+        },
+        "allowed-tools": "Read Grep Bash(node .claude/scripts/soc/*)",
+        "when_to_use": "Before writing any line to soc/main.jsonl or producing a versions/commit_<n>.diff",
+        "user-invocable": false,
+        "disable-model-invocation": false,
+        "x-maxwell": {
+          "kind": "convention",
+          "workflows": [
+            "refresh-soc",
+            "probe-iac",
+            "runtime-probe-prod-env",
+            "report-audit-findings"
+          ]
+        }
+      }
+    },
+    {
+      "description": "description must not be whitespace only",
+      "valid": false,
+      "data": {
+        "name": "soc-ledger",
+        "description": "   ",
+        "license": "AGPL-3.0-only",
+        "compatibility": "Requires Node 22 and the Maxwell workspace layout; helper scripts live in .claude/scripts/soc",
+        "metadata": {
+          "author": "OnFinance",
+          "version": "1.0.0"
+        },
+        "allowed-tools": "Read Grep Bash(node .claude/scripts/soc/*)",
+        "when_to_use": "Before writing any line to soc/main.jsonl or producing a versions/commit_<n>.diff",
+        "user-invocable": false,
+        "disable-model-invocation": false,
+        "x-maxwell": {
+          "kind": "convention",
+          "workflows": [
+            "refresh-soc",
+            "probe-iac",
+            "runtime-probe-prod-env",
+            "report-audit-findings"
+          ]
+        }
+      }
+    },
+    {
+      "description": "description longer than 1024 characters",
+      "valid": false,
+      "data": {
+        "name": "soc-ledger",
+        "description": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "license": "AGPL-3.0-only",
+        "compatibility": "Requires Node 22 and the Maxwell workspace layout; helper scripts live in .claude/scripts/soc",
+        "metadata": {
+          "author": "OnFinance",
+          "version": "1.0.0"
+        },
+        "allowed-tools": "Read Grep Bash(node .claude/scripts/soc/*)",
+        "when_to_use": "Before writing any line to soc/main.jsonl or producing a versions/commit_<n>.diff",
+        "user-invocable": false,
+        "disable-model-invocation": false,
+        "x-maxwell": {
+          "kind": "convention",
+          "workflows": [
+            "refresh-soc",
+            "probe-iac",
+            "runtime-probe-prod-env",
+            "report-audit-findings"
+          ]
+        }
+      }
+    },
+    {
+      "description": "allowed-tools with a lower-case tool name is rejected",
+      "valid": false,
+      "data": {
+        "name": "soc-ledger",
+        "description": "How to read and append to the state-of-controls ledger company-profile/<company_id>/soc/main.jsonl: record kinds, fingerprints, supersession, and the append/version helper scripts. Use whenever a workflow records a control, observation, finding, risk or incident",
+        "license": "AGPL-3.0-only",
+        "compatibility": "Requires Node 22 and the Maxwell workspace layout; helper scripts live in .claude/scripts/soc",
+        "metadata": {
+          "author": "OnFinance",
+          "version": "1.0.0"
+        },
+        "allowed-tools": "read grep",
+        "when_to_use": "Before writing any line to soc/main.jsonl or producing a versions/commit_<n>.diff",
+        "user-invocable": false,
+        "disable-model-invocation": false,
+        "x-maxwell": {
+          "kind": "convention",
+          "workflows": [
+            "refresh-soc",
+            "probe-iac",
+            "runtime-probe-prod-env",
+            "report-audit-findings"
+          ]
+        }
+      }
+    },
+    {
+      "description": "allowed-tools list entry must be a tool spec",
+      "valid": false,
+      "data": {
+        "name": "soc-ledger",
+        "description": "How to read and append to the state-of-controls ledger company-profile/<company_id>/soc/main.jsonl: record kinds, fingerprints, supersession, and the append/version helper scripts. Use whenever a workflow records a control, observation, finding, risk or incident",
+        "license": "AGPL-3.0-only",
+        "compatibility": "Requires Node 22 and the Maxwell workspace layout; helper scripts live in .claude/scripts/soc",
+        "metadata": {
+          "author": "OnFinance",
+          "version": "1.0.0"
+        },
+        "allowed-tools": [
+          "Read",
+          "grep"
+        ],
+        "when_to_use": "Before writing any line to soc/main.jsonl or producing a versions/commit_<n>.diff",
+        "user-invocable": false,
+        "disable-model-invocation": false,
+        "x-maxwell": {
+          "kind": "convention",
+          "workflows": [
+            "refresh-soc",
+            "probe-iac",
+            "runtime-probe-prod-env",
+            "report-audit-findings"
+          ]
+        }
+      }
+    },
+    {
+      "description": "disallowed-tools with a blank specifier is rejected",
+      "valid": false,
+      "data": {
+        "name": "soc-ledger",
+        "description": "How to read and append to the state-of-controls ledger company-profile/<company_id>/soc/main.jsonl: record kinds, fingerprints, supersession, and the append/version helper scripts. Use whenever a workflow records a control, observation, finding, risk or incident",
+        "license": "AGPL-3.0-only",
+        "compatibility": "Requires Node 22 and the Maxwell workspace layout; helper scripts live in .claude/scripts/soc",
+        "metadata": {
+          "author": "OnFinance",
+          "version": "1.0.0"
+        },
+        "allowed-tools": "Read Grep Bash(node .claude/scripts/soc/*)",
+        "when_to_use": "Before writing any line to soc/main.jsonl or producing a versions/commit_<n>.diff",
+        "user-invocable": false,
+        "disable-model-invocation": false,
+        "x-maxwell": {
+          "kind": "convention",
+          "workflows": [
+            "refresh-soc",
+            "probe-iac",
+            "runtime-probe-prod-env",
+            "report-audit-findings"
+          ]
+        },
+        "disallowed-tools": "Bash( )"
+      }
+    },
+    {
+      "description": "metadata values must be strings",
+      "valid": false,
+      "data": {
+        "name": "soc-ledger",
+        "description": "How to read and append to the state-of-controls ledger company-profile/<company_id>/soc/main.jsonl: record kinds, fingerprints, supersession, and the append/version helper scripts. Use whenever a workflow records a control, observation, finding, risk or incident",
+        "license": "AGPL-3.0-only",
+        "compatibility": "Requires Node 22 and the Maxwell workspace layout; helper scripts live in .claude/scripts/soc",
+        "metadata": {
+          "author": "OnFinance",
+          "version": "1.0.0",
+          "tags": [
+            "a"
+          ]
+        },
+        "allowed-tools": "Read Grep Bash(node .claude/scripts/soc/*)",
+        "when_to_use": "Before writing any line to soc/main.jsonl or producing a versions/commit_<n>.diff",
+        "user-invocable": false,
+        "disable-model-invocation": false,
+        "x-maxwell": {
+          "kind": "convention",
+          "workflows": [
+            "refresh-soc",
+            "probe-iac",
+            "runtime-probe-prod-env",
+            "report-audit-findings"
+          ]
+        }
+      }
+    },
+    {
+      "description": "x-maxwell.workflows must use the workflows vocabulary",
+      "valid": false,
+      "data": {
+        "name": "soc-ledger",
+        "description": "How to read and append to the state-of-controls ledger company-profile/<company_id>/soc/main.jsonl: record kinds, fingerprints, supersession, and the append/version helper scripts. Use whenever a workflow records a control, observation, finding, risk or incident",
+        "license": "AGPL-3.0-only",
+        "compatibility": "Requires Node 22 and the Maxwell workspace layout; helper scripts live in .claude/scripts/soc",
+        "metadata": {
+          "author": "OnFinance",
+          "version": "1.0.0"
+        },
+        "allowed-tools": "Read Grep Bash(node .claude/scripts/soc/*)",
+        "when_to_use": "Before writing any line to soc/main.jsonl or producing a versions/commit_<n>.diff",
+        "user-invocable": false,
+        "disable-model-invocation": false,
+        "x-maxwell": {
+          "kind": "convention",
+          "workflows": [
+            "probe-nothing"
+          ]
+        }
+      }
+    },
+    {
+      "description": "paths must not traverse mid-path",
+      "valid": false,
+      "data": {
+        "name": "regulatory-catalogs",
+        "description": "Reference catalogs for SEBI CSCRF, RBI Directions 2026, IRDAI 2023, CERT-In 2022 and DPDP Rules 2025 with severity and SLA tables. Load before citing any regulatoryRef",
+        "paths": [
+          "cves/../../etc/**"
+        ],
+        "context": "fork",
+        "agent": "regulatory-mapper",
+        "background": false,
+        "model": "haiku",
+        "effort": "medium",
+        "x-maxwell": {
+          "kind": "catalog",
+          "workflows": [
+            "report-audit-findings"
+          ]
+        }
+      }
+    },
+    {
+      "description": "paths must not be a bare dot",
+      "valid": false,
+      "data": {
+        "name": "regulatory-catalogs",
+        "description": "Reference catalogs for SEBI CSCRF, RBI Directions 2026, IRDAI 2023, CERT-In 2022 and DPDP Rules 2025 with severity and SLA tables. Load before citing any regulatoryRef",
+        "paths": [
+          "."
+        ],
+        "context": "fork",
+        "agent": "regulatory-mapper",
+        "background": false,
+        "model": "haiku",
+        "effort": "medium",
+        "x-maxwell": {
+          "kind": "catalog",
+          "workflows": [
+            "report-audit-findings"
+          ]
+        }
+      }
+    },
+    {
+      "description": "agent requires context fork",
+      "valid": false,
+      "data": {
+        "name": "regulatory-catalogs",
+        "description": "Reference catalogs for SEBI CSCRF, RBI Directions 2026, IRDAI 2023, CERT-In 2022 and DPDP Rules 2025 with severity and SLA tables. Load before citing any regulatoryRef",
+        "paths": [
+          "company-profile/*/soc/**",
+          "cves/**"
+        ],
+        "agent": "regulatory-mapper",
+        "background": false,
+        "model": "haiku",
+        "effort": "medium",
+        "x-maxwell": {
+          "kind": "catalog",
+          "workflows": [
+            "report-audit-findings"
+          ]
+        }
+      }
+    },
+    {
+      "description": "background requires context fork",
+      "valid": false,
+      "data": {
+        "name": "soc-ledger",
+        "description": "How to read and append to the state-of-controls ledger company-profile/<company_id>/soc/main.jsonl: record kinds, fingerprints, supersession, and the append/version helper scripts. Use whenever a workflow records a control, observation, finding, risk or incident",
+        "license": "AGPL-3.0-only",
+        "compatibility": "Requires Node 22 and the Maxwell workspace layout; helper scripts live in .claude/scripts/soc",
+        "metadata": {
+          "author": "OnFinance",
+          "version": "1.0.0"
+        },
+        "allowed-tools": "Read Grep Bash(node .claude/scripts/soc/*)",
+        "when_to_use": "Before writing any line to soc/main.jsonl or producing a versions/commit_<n>.diff",
+        "user-invocable": false,
+        "disable-model-invocation": false,
+        "x-maxwell": {
+          "kind": "convention",
+          "workflows": [
+            "refresh-soc",
+            "probe-iac",
+            "runtime-probe-prod-env",
+            "report-audit-findings"
+          ]
+        },
+        "background": true
+      }
+    }
+  ]
+}

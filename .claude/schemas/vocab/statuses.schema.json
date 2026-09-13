@@ -119,6 +119,94 @@
         "financial",
         "regulatory"
       ]
+    },
+    "vendorStatus": {
+      "description": "Lifecycle of a third-party relationship (company/vendor status)",
+      "enum": [ "active", "onboarding", "exiting", "terminated" ]
+    },
+    "registrationStatus": {
+      "description": "Standing of a regulatory registration or licence with its regulator (company/details regulatoryRegistrations[].status)",
+      "enum": [ "active", "suspended", "surrendered", "expired", "applied" ]
+    },
+    "reCategory": {
+      "description": "Regulator's cyber-resilience or supervisory categorisation. mii, qualified-re, mid-size-re, small-size-re and self-certification-re are SEBI CSCRF RE categories; tier-1 to tier-4 are RBI urban co-operative bank regulatory tiers; level-1 to level-4 are RBI UCB cyber-security levels; nbfc-base-layer to nbfc-top-layer are RBI scale-based regulation layers for NBFCs; not-categorised is for regulators that do not tier. Shared by company/details regulatoryRegistrations[].category and catalog/instruments applicability.categories so workflows intersect them by string equality",
+      "enum": [
+        "mii",
+        "qualified-re",
+        "mid-size-re",
+        "small-size-re",
+        "self-certification-re",
+        "tier-1",
+        "tier-2",
+        "tier-3",
+        "tier-4",
+        "level-1",
+        "level-2",
+        "level-3",
+        "level-4",
+        "nbfc-base-layer",
+        "nbfc-middle-layer",
+        "nbfc-upper-layer",
+        "nbfc-top-layer",
+        "not-categorised"
+      ]
+    },
+    "observationMethod": {
+      "description": "OSCAL observation method: the Maxwell workflow that produced the observation, or 'manual', 'interview', 'document-review' for human collection. The utility entry points (validate, kpis, seed-company, status) are not observation methods",
+      "anyOf": [
+        {
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/workflows.schema.json"
+        },
+        {
+          "enum": [ "interview", "document-review" ]
+        }
+      ],
+      "not": {
+        "enum": [ "validate", "kpis", "seed-company", "status" ]
+      }
+    },
+    "observationResult": {
+      "description": "Assessment outcome for the listed controls: satisfied, not-satisfied, partial, not-applicable, or inconclusive when access or evidence was insufficient",
+      "enum": [
+        "satisfied",
+        "not-satisfied",
+        "partial",
+        "not-applicable",
+        "inconclusive"
+      ]
+    },
+    "riskLikelihood": {
+      "description": "Probability a risk event occurs within a year",
+      "enum": [ "rare", "unlikely", "possible", "likely", "almost-certain" ]
+    },
+    "riskImpact": {
+      "description": "Consequence if a risk event occurs, on customers, market integrity and the company",
+      "enum": [ "negligible", "minor", "moderate", "major", "severe" ]
+    },
+    "priority": {
+      "description": "Scheduling priority set by the change manager: p1 = start immediately (emergency or critical), p2 = next sprint, p3 = this quarter, p4 = backlog. Independent of severity. Shared by change-management initiatives and any finding or risk that carries a scheduling priority",
+      "enum": [ "p1", "p2", "p3", "p4" ]
+    },
+    "vexJustification": {
+      "description": "OpenVEX machine-readable justification for a not_affected statement",
+      "enum": [
+        "component_not_present",
+        "vulnerable_code_not_present",
+        "vulnerable_code_not_in_execute_path",
+        "vulnerable_code_cannot_be_controlled_by_adversary",
+        "inline_mitigations_already_exist"
+      ]
+    },
+    "cycloneDxAnalysisState": {
+      "description": "CycloneDX vulnerability analysis.state. Maps to vexStatus as: not_affected/false_positive -> not_affected, exploitable -> affected, resolved/resolved_with_pedigree -> fixed, in_triage -> under_investigation",
+      "enum": [
+        "resolved",
+        "resolved_with_pedigree",
+        "exploitable",
+        "in_triage",
+        "false_positive",
+        "not_affected"
+      ]
     }
   }
 }

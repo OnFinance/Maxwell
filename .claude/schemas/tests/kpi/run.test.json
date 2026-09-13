@@ -1,0 +1,605 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/v1/kpi/run.schema.json",
+  "tests": [
+    {
+      "description": "complete run record",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.run",
+        "runAt": "2026-09-13T10:15:42Z",
+        "kpiIds": [
+          "cost_of_audit",
+          "cm_coverage",
+          "incident_rate"
+        ],
+        "companyId": "zerodha-broking",
+        "sessionsConsidered": 48,
+        "sessionsSampled": 10,
+        "samplingMode": "bundle",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "outputs": [
+          "kpis/data/cost_of_audit/series.jsonl",
+          "kpis/data/cm_coverage/series.jsonl",
+          "kpis/data/incident_rate/series.jsonl"
+        ],
+        "status": "success",
+        "durationMs": 3412,
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:45Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab"
+        }
+      }
+    },
+    {
+      "description": "run without companyId (workspace-wide)",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.run",
+        "runAt": "2026-09-13T10:15:42Z",
+        "kpiIds": [
+          "cost_of_audit",
+          "cm_coverage",
+          "incident_rate"
+        ],
+        "sessionsConsidered": 48,
+        "sessionsSampled": 10,
+        "samplingMode": "bundle",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "outputs": [
+          "kpis/data/cost_of_audit/series.jsonl",
+          "kpis/data/cm_coverage/series.jsonl",
+          "kpis/data/incident_rate/series.jsonl"
+        ],
+        "status": "success",
+        "durationMs": 3412,
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:45Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab"
+        }
+      }
+    },
+    {
+      "description": "invented extra key",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.run",
+        "runAt": "2026-09-13T10:15:42Z",
+        "kpiIds": [
+          "cost_of_audit",
+          "cm_coverage",
+          "incident_rate"
+        ],
+        "companyId": "zerodha-broking",
+        "sessionsConsidered": 48,
+        "sessionsSampled": 10,
+        "samplingMode": "bundle",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "outputs": [
+          "kpis/data/cost_of_audit/series.jsonl",
+          "kpis/data/cm_coverage/series.jsonl",
+          "kpis/data/incident_rate/series.jsonl"
+        ],
+        "status": "success",
+        "durationMs": 3412,
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:45Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab"
+        },
+        "operator": "priyesh"
+      }
+    },
+    {
+      "description": "bad runId pattern in provenance",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.run",
+        "runAt": "2026-09-13T10:15:42Z",
+        "kpiIds": [
+          "cost_of_audit",
+          "cm_coverage",
+          "incident_rate"
+        ],
+        "companyId": "zerodha-broking",
+        "sessionsConsidered": 48,
+        "sessionsSampled": 10,
+        "samplingMode": "bundle",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "outputs": [
+          "kpis/data/cost_of_audit/series.jsonl",
+          "kpis/data/cm_coverage/series.jsonl",
+          "kpis/data/incident_rate/series.jsonl"
+        ],
+        "status": "success",
+        "durationMs": 3412,
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:45Z",
+          "runId": "run-123",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab"
+        }
+      }
+    },
+    {
+      "description": "unknown kpiId",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.run",
+        "runAt": "2026-09-13T10:15:42Z",
+        "kpiIds": [
+          "cost_of_audit",
+          "cm_coverage",
+          "incident_rate",
+          "mttr"
+        ],
+        "companyId": "zerodha-broking",
+        "sessionsConsidered": 48,
+        "sessionsSampled": 10,
+        "samplingMode": "bundle",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "outputs": [
+          "kpis/data/cost_of_audit/series.jsonl",
+          "kpis/data/cm_coverage/series.jsonl",
+          "kpis/data/incident_rate/series.jsonl"
+        ],
+        "status": "success",
+        "durationMs": 3412,
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:45Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab"
+        }
+      }
+    },
+    {
+      "description": "bad samplingMode enum",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.run",
+        "runAt": "2026-09-13T10:15:42Z",
+        "kpiIds": [
+          "cost_of_audit",
+          "cm_coverage",
+          "incident_rate"
+        ],
+        "companyId": "zerodha-broking",
+        "sessionsConsidered": 48,
+        "sessionsSampled": 10,
+        "samplingMode": "random",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "outputs": [
+          "kpis/data/cost_of_audit/series.jsonl",
+          "kpis/data/cm_coverage/series.jsonl",
+          "kpis/data/incident_rate/series.jsonl"
+        ],
+        "status": "success",
+        "durationMs": 3412,
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:45Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab"
+        }
+      }
+    },
+    {
+      "description": "missing required durationMs",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.run",
+        "runAt": "2026-09-13T10:15:42Z",
+        "kpiIds": [
+          "cost_of_audit",
+          "cm_coverage",
+          "incident_rate"
+        ],
+        "companyId": "zerodha-broking",
+        "sessionsConsidered": 48,
+        "sessionsSampled": 10,
+        "samplingMode": "bundle",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "outputs": [
+          "kpis/data/cost_of_audit/series.jsonl",
+          "kpis/data/cm_coverage/series.jsonl",
+          "kpis/data/incident_rate/series.jsonl"
+        ],
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:45Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab"
+        }
+      }
+    },
+    {
+      "description": "duplicate kpiIds",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.run",
+        "runAt": "2026-09-13T10:15:42Z",
+        "kpiIds": [
+          "cost_of_audit",
+          "cost_of_audit"
+        ],
+        "companyId": "zerodha-broking",
+        "sessionsConsidered": 48,
+        "sessionsSampled": 10,
+        "samplingMode": "bundle",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "outputs": [
+          "kpis/data/cost_of_audit/series.jsonl",
+          "kpis/data/cm_coverage/series.jsonl",
+          "kpis/data/incident_rate/series.jsonl"
+        ],
+        "status": "success",
+        "durationMs": 3412,
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:45Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab"
+        }
+      }
+    },
+    {
+      "description": "timestamp without Z suffix",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.run",
+        "runAt": "2026-09-13T10:15:42+05:30",
+        "kpiIds": [
+          "cost_of_audit",
+          "cm_coverage",
+          "incident_rate"
+        ],
+        "companyId": "zerodha-broking",
+        "sessionsConsidered": 48,
+        "sessionsSampled": 10,
+        "samplingMode": "bundle",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "outputs": [
+          "kpis/data/cost_of_audit/series.jsonl",
+          "kpis/data/cm_coverage/series.jsonl",
+          "kpis/data/incident_rate/series.jsonl"
+        ],
+        "status": "success",
+        "durationMs": 3412,
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:45Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab"
+        }
+      }
+    },
+    {
+      "description": "wrong kind",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.datapoint",
+        "runAt": "2026-09-13T10:15:42Z",
+        "kpiIds": [
+          "cost_of_audit",
+          "cm_coverage",
+          "incident_rate"
+        ],
+        "companyId": "zerodha-broking",
+        "sessionsConsidered": 48,
+        "sessionsSampled": 10,
+        "samplingMode": "bundle",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "outputs": [
+          "kpis/data/cost_of_audit/series.jsonl",
+          "kpis/data/cm_coverage/series.jsonl",
+          "kpis/data/incident_rate/series.jsonl"
+        ],
+        "status": "success",
+        "durationMs": 3412,
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:45Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab"
+        }
+      }
+    },
+    {
+      "description": "failed run with errors and no outputs",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.run",
+        "runAt": "2026-09-13T10:15:42Z",
+        "kpiIds": [
+          "cost_of_audit",
+          "cm_coverage",
+          "incident_rate"
+        ],
+        "companyId": "zerodha-broking",
+        "sessionsConsidered": 48,
+        "sessionsSampled": 10,
+        "samplingMode": "bundle",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "outputs": [],
+        "status": "failed",
+        "durationMs": 3412,
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:45Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab"
+        },
+        "errors": [
+          {
+            "message": "pagerduty export kpis/data/raw/pagerduty/2026-09-13.json missing",
+            "at": "2026-09-13T10:15:43Z"
+          }
+        ]
+      }
+    },
+    {
+      "description": "partial run listing the failed KPI",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.run",
+        "runAt": "2026-09-13T10:15:42Z",
+        "kpiIds": [
+          "cost_of_audit",
+          "cm_coverage",
+          "incident_rate"
+        ],
+        "companyId": "zerodha-broking",
+        "sessionsConsidered": 48,
+        "sessionsSampled": 10,
+        "samplingMode": "bundle",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "outputs": [
+          "kpis/data/cost_of_audit/series.jsonl",
+          "kpis/data/cm_coverage/series.jsonl"
+        ],
+        "status": "partial",
+        "durationMs": 3412,
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:45Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab"
+        },
+        "errors": [
+          {
+            "message": "incident_rate: pagerduty export missing for period"
+          }
+        ]
+      }
+    },
+    {
+      "description": "missing required status",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.run",
+        "runAt": "2026-09-13T10:15:42Z",
+        "kpiIds": [
+          "cost_of_audit",
+          "cm_coverage",
+          "incident_rate"
+        ],
+        "companyId": "zerodha-broking",
+        "sessionsConsidered": 48,
+        "sessionsSampled": 10,
+        "samplingMode": "bundle",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "outputs": [
+          "kpis/data/cost_of_audit/series.jsonl",
+          "kpis/data/cm_coverage/series.jsonl",
+          "kpis/data/incident_rate/series.jsonl"
+        ],
+        "durationMs": 3412,
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:45Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab"
+        }
+      }
+    },
+    {
+      "description": "bad status enum",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.run",
+        "runAt": "2026-09-13T10:15:42Z",
+        "kpiIds": [
+          "cost_of_audit",
+          "cm_coverage",
+          "incident_rate"
+        ],
+        "companyId": "zerodha-broking",
+        "sessionsConsidered": 48,
+        "sessionsSampled": 10,
+        "samplingMode": "bundle",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "outputs": [
+          "kpis/data/cost_of_audit/series.jsonl",
+          "kpis/data/cm_coverage/series.jsonl",
+          "kpis/data/incident_rate/series.jsonl"
+        ],
+        "status": "ok",
+        "durationMs": 3412,
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:45Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab"
+        }
+      }
+    },
+    {
+      "description": "failed run without errors",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.run",
+        "runAt": "2026-09-13T10:15:42Z",
+        "kpiIds": [
+          "cost_of_audit",
+          "cm_coverage",
+          "incident_rate"
+        ],
+        "companyId": "zerodha-broking",
+        "sessionsConsidered": 48,
+        "sessionsSampled": 10,
+        "samplingMode": "bundle",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "outputs": [],
+        "status": "failed",
+        "durationMs": 3412,
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:45Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab"
+        }
+      }
+    },
+    {
+      "description": "partial run with empty errors",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.run",
+        "runAt": "2026-09-13T10:15:42Z",
+        "kpiIds": [
+          "cost_of_audit",
+          "cm_coverage",
+          "incident_rate"
+        ],
+        "companyId": "zerodha-broking",
+        "sessionsConsidered": 48,
+        "sessionsSampled": 10,
+        "samplingMode": "bundle",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "outputs": [
+          "kpis/data/cost_of_audit/series.jsonl",
+          "kpis/data/cm_coverage/series.jsonl",
+          "kpis/data/incident_rate/series.jsonl"
+        ],
+        "status": "partial",
+        "durationMs": 3412,
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:45Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab"
+        },
+        "errors": []
+      }
+    },
+    {
+      "description": "error entry without message",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.run",
+        "runAt": "2026-09-13T10:15:42Z",
+        "kpiIds": [
+          "cost_of_audit",
+          "cm_coverage",
+          "incident_rate"
+        ],
+        "companyId": "zerodha-broking",
+        "sessionsConsidered": 48,
+        "sessionsSampled": 10,
+        "samplingMode": "bundle",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "outputs": [
+          "kpis/data/cost_of_audit/series.jsonl",
+          "kpis/data/cm_coverage/series.jsonl",
+          "kpis/data/incident_rate/series.jsonl"
+        ],
+        "status": "failed",
+        "durationMs": 3412,
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:45Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab"
+        },
+        "errors": [
+          {
+            "at": "2026-09-13T10:15:43Z"
+          }
+        ]
+      }
+    }
+  ]
+}

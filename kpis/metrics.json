@@ -1,0 +1,314 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.kpi.registry",
+  "kpis": [
+    {
+      "kpiId": "cost_of_audit",
+      "name": "Cost of audit",
+      "description": "Fully loaded USD cost of producing one audit cycle (one headless run) for a company: model tokens of the sampled sessions priced from the pricing table and scaled to the whole run, plus the human review allowance recorded in humanReview",
+      "unit": "usd",
+      "direction": "lower-is-better",
+      "formula": "sum(costUsd.computed over sampled sessions of the run) * (sessionsConsidered / sessionsSampled) + humanReview.hoursPerAuditCycle * humanReview.loadedHourlyRate.amount",
+      "rawInputs": [
+        {
+          "source": "session-summary",
+          "fields": [
+            "runId",
+            "costUsd.computed",
+            "models[].tokens",
+            "models[].costUsd",
+            "durationMs"
+          ]
+        },
+        {
+          "source": "soc-ledger",
+          "fields": [
+            "kind",
+            "provenance.sessionId",
+            "provenance.runId"
+          ]
+        },
+        {
+          "source": "registry",
+          "fields": [
+            "sampling.mode",
+            "humanReview.hoursPerAuditCycle",
+            "humanReview.loadedHourlyRate.amount"
+          ]
+        }
+      ],
+      "dimensions": [
+        "companyId",
+        "runId",
+        "workflow",
+        "model",
+        "harness"
+      ],
+      "aggregation": "sum",
+      "cadence": "per-run",
+      "normalisations": [
+        {
+          "name": "usd-per-control-observed",
+          "denominator": "controls-observed",
+          "unit": "usd-per-control"
+        },
+        {
+          "name": "usd-per-application",
+          "denominator": "applications",
+          "unit": "usd-per-application"
+        }
+      ],
+      "targets": {
+        "warn": 400,
+        "alert": 800
+      },
+      "methodologyDoc": "kpis/measurement/cost_of_audit.md",
+      "methodVersion": "1.0.0"
+    },
+    {
+      "kpiId": "cm_actionability",
+      "name": "Change-management actionability",
+      "description": "Share of initiatives created in the period that a human could start executing without asking a question: owner and dueAt on the initiative, a regulatory reference and a linked finding or control, and every task carrying an owner, acceptance criteria, a verification method and a root cause",
+      "unit": "ratio",
+      "direction": "higher-is-better",
+      "formula": "count(initiatives created in period whose master entry has owner and dueAt, that cite a regulatoryRef and a findingId or controlId, and whose every task has owner, acceptanceCriteria[0], verificationMethod and rootCause) / count(initiatives created in period)",
+      "rawInputs": [
+        {
+          "source": "change-management",
+          "fields": [
+            "tasks[].createdAt",
+            "tasks[].owner",
+            "tasks[].dueAt",
+            "tasks[].acceptanceCriteria",
+            "tasks[].verificationMethod",
+            "tasks[].rootCause",
+            "tasks[].provenance"
+          ]
+        }
+      ],
+      "dimensions": [
+        "companyId",
+        "runId",
+        "workflow",
+        "severity"
+      ],
+      "aggregation": "rate",
+      "cadence": "weekly",
+      "normalisations": [],
+      "targets": {
+        "warn": 0.6,
+        "alert": 0.4
+      },
+      "methodologyDoc": "kpis/measurement/cm_actionability.md",
+      "methodVersion": "1.0.0"
+    },
+    {
+      "kpiId": "cm_coverage",
+      "name": "Change-management coverage",
+      "description": "Share of applicable controls (implementationStatus other than not-applicable, scoped by applicableAssets) that Maxwell observed in the period, i.e. that are referenced by at least one ledger observation carrying a result",
+      "unit": "percent",
+      "direction": "higher-is-better",
+      "formula": "100 * count(applicable controls with an observation in period whose controlIds contains the control id and whose result is set) / count(controls with implementationStatus != not-applicable)",
+      "rawInputs": [
+        {
+          "source": "soc-ledger",
+          "fields": [
+            "control.id",
+            "control.implementationStatus",
+            "control.applicableAssets",
+            "observation.controlIds",
+            "observation.result",
+            "observation.collectedAt"
+          ]
+        }
+      ],
+      "dimensions": [
+        "companyId",
+        "appId",
+        "severity"
+      ],
+      "aggregation": "rate",
+      "cadence": "weekly",
+      "normalisations": [],
+      "targets": {
+        "warn": 85,
+        "alert": 70
+      },
+      "methodologyDoc": "kpis/measurement/cm_coverage.md",
+      "methodVersion": "1.0.0"
+    },
+    {
+      "kpiId": "cm_time_to_implementation",
+      "name": "Change-management time to implementation",
+      "description": "Median calendar days from an initiative being raised (createdAt) to its closure (closedAt) for initiatives closed in the period. The SLA comparison uses dueAt = createdAt + slaBasis.days and is published as the sla-compliance-rate series",
+      "unit": "days",
+      "direction": "lower-is-better",
+      "formula": "median((closedAt - createdAt) / 86400 for initiatives with status closed and closedAt in period); sla-compliance-rate = count(closed initiatives with closedAt <= dueAt) / count(closed initiatives)",
+      "rawInputs": [
+        {
+          "source": "change-management",
+          "fields": [
+            "initiatives[].status",
+            "initiatives[].createdAt",
+            "initiatives[].closedAt",
+            "initiatives[].dueAt",
+            "initiatives[].slaBasis.days"
+          ]
+        }
+      ],
+      "dimensions": [
+        "companyId",
+        "appId",
+        "severity"
+      ],
+      "aggregation": "median",
+      "cadence": "monthly",
+      "normalisations": [
+        {
+          "name": "sla-compliance-rate",
+          "denominator": "initiatives",
+          "unit": "ratio"
+        }
+      ],
+      "targets": {
+        "warn": 30,
+        "alert": 60
+      },
+      "methodologyDoc": "kpis/measurement/cm_time_to_implementation.md",
+      "methodVersion": "1.0.0"
+    },
+    {
+      "kpiId": "suggestion_acceptance_rate",
+      "name": "Suggestion acceptance rate",
+      "description": "Share of code suggestions surfaced to a human in the period (surfacedAt set) whose status is accepted or merged rather than rejected, reverted, superseded or expired. Merge rate, revert rate and 30-day retention are published as normalised series of this KPI",
+      "unit": "percent",
+      "direction": "higher-is-better",
+      "formula": "100 * count(suggestions with surfacedAt in period and status in [accepted, merged]) / count(suggestions with surfacedAt in period); merge-rate = merged / surfaced; revert-rate = reverted / merged; retention-30d = retained / merged with retentionCheckedAt set",
+      "rawInputs": [
+        {
+          "source": "suggestions",
+          "fields": [
+            "suggestions[].status",
+            "suggestions[].surfacedAt",
+            "suggestions[].mergedAt",
+            "suggestions[].revertedAt",
+            "suggestions[].retentionCheckedAt",
+            "suggestions[].retained"
+          ]
+        }
+      ],
+      "dimensions": [
+        "companyId",
+        "appId",
+        "model",
+        "harness"
+      ],
+      "aggregation": "rate",
+      "cadence": "weekly",
+      "normalisations": [
+        {
+          "name": "merge-rate",
+          "denominator": "suggestions-surfaced",
+          "unit": "percent"
+        },
+        {
+          "name": "revert-rate",
+          "denominator": "suggestions-merged",
+          "unit": "percent"
+        },
+        {
+          "name": "retention-30d",
+          "denominator": "suggestions-merged",
+          "unit": "percent"
+        }
+      ],
+      "targets": {
+        "warn": 50,
+        "alert": 30
+      },
+      "methodologyDoc": "kpis/measurement/suggestion_acceptance_rate.md",
+      "methodVersion": "1.0.0"
+    },
+    {
+      "kpiId": "incident_rate",
+      "name": "Incident rate",
+      "description": "PagerDuty incidents attributable to Maxwell-managed changes per 1000 initiatives closed in the period. An incident is attributed when its incident_key equals a ledger incident.dedupKey (maxwell:<controlId>:<assetId>:<fingerprint16>), which joins it to the ledger record and through it to the affected assets and severity",
+      "unit": "per-1000-changes",
+      "direction": "lower-is-better",
+      "formula": "1000 * count(pagerduty incidents with created_at in period whose incident_key equals a ledger incident.dedupKey) / count(initiatives with status closed and closedAt in period)",
+      "rawInputs": [
+        {
+          "source": "pagerduty",
+          "fields": [
+            "incidents[].incident_key",
+            "incidents[].created_at",
+            "incidents[].status",
+            "incidents[].urgency"
+          ]
+        },
+        {
+          "source": "soc-ledger",
+          "fields": [
+            "incident.dedupKey",
+            "incident.severity",
+            "incident.affectedAssets"
+          ]
+        },
+        {
+          "source": "change-management",
+          "fields": [
+            "initiatives[].status",
+            "initiatives[].closedAt"
+          ]
+        }
+      ],
+      "dimensions": [
+        "companyId",
+        "appId",
+        "envId",
+        "severity",
+        "period"
+      ],
+      "aggregation": "rate",
+      "cadence": "monthly",
+      "normalisations": [
+        {
+          "name": "incidents-per-application",
+          "denominator": "applications",
+          "unit": "count"
+        }
+      ],
+      "targets": {
+        "warn": 5,
+        "alert": 10
+      },
+      "methodologyDoc": "kpis/measurement/incident_rate.md",
+      "methodVersion": "1.0.0"
+    }
+  ],
+  "sampling": {
+    "mode": "bundle",
+    "bundleSize": 10,
+    "rate": 0.2,
+    "seed": "maxwell-2026-09"
+  },
+  "pricingRef": ".claude/skills/kpi-extraction/references/pricing.json",
+  "pagerduty": {
+    "enabled": true,
+    "exportPath": "kpis/data/raw/pagerduty",
+    "dedupKeyPrefix": "maxwell:"
+  },
+  "humanReview": {
+    "hoursPerAuditCycle": 2.5,
+    "loadedHourlyRate": {
+      "amount": 45,
+      "currency": "USD"
+    }
+  },
+  "provenance": {
+    "harness": "human",
+    "generatedAt": "2026-09-13T00:00:00Z",
+    "workflow": "manual",
+    "agent": "maxwell-maintainers"
+  }
+}

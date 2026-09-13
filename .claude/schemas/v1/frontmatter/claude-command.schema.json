@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/claude-command.schema.json",
+  "title": "Claude Code command frontmatter",
+  "description": "YAML frontmatter of .claude/commands/<name>.md (the legacy slash-command format: the skill fields minus name and paths; the command name is the file name). Human-authored: no schemaVersion, kind or provenance. x-maxwell records what the command touches so the write guard and KPI attribution can reason about it. Claude Code also accepts hooks, shell, metadata, license and compatibility in command files; Maxwell refuses them deliberately: commands are thin entry points over workflows (hooks stay in .claude/settings.json, the shell is always bash, and agentskills.io metadata belongs on skills)",
+  "examples": [
+    {
+      "description": "Run every Maxwell validator (layout, schemas, data, frontmatter, workflows, mirror) and report problems by path",
+      "argument-hint": "[path ...]",
+      "allowed-tools": [
+        "Bash(npm run validate*)",
+        "Bash(node .claude/scripts/*)",
+        "Read"
+      ],
+      "model": "sonnet",
+      "effort": "low",
+      "disable-model-invocation": false,
+      "user-invocable": true,
+      "x-maxwell": {
+        "workflow": "validate",
+        "touches": [],
+        "readsCredentials": false
+      }
+    }
+  ],
+  "type": "object",
+  "required": [ "description" ],
+  "properties": {
+    "description": {
+      "description": "One-line purpose shown in /help and used by the model to decide whether to invoke the command",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/skill.schema.json#/$defs/description"
+    },
+    "argument-hint": {
+      "description": "Argument placeholder shown during autocomplete, e.g. '<company_id> [--dry-run]'",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+    },
+    "arguments": {
+      "description": "Named positional arguments substituted as $<name> in the body; a space-separated string or a YAML list",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/skill.schema.json#/$defs/argumentNames"
+    },
+    "allowed-tools": {
+      "description": "Tools the command may use without prompting, as a comma or space separated string or an array of 'Tool' / 'Tool(specifier)' entries",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/skill.schema.json#/$defs/toolList"
+    },
+    "disallowed-tools": {
+      "description": "Tools removed from the inherited set while the command runs; same shape as allowed-tools",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/skill.schema.json#/$defs/toolList"
+    },
+    "model": {
+      "description": "Model the command runs with: an alias (opus, sonnet, haiku, fable, inherit) or a full claude-* model id",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/skill.schema.json#/$defs/claudeModel"
+    },
+    "effort": {
+      "description": "Reasoning effort for the command",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/skill.schema.json#/$defs/effort"
+    },
+    "disable-model-invocation": {
+      "description": "When true only a human can invoke the command; the model will not call it on its own",
+      "type": "boolean"
+    },
+    "user-invocable": {
+      "description": "When false the command is hidden from the / menu and only the model can invoke it",
+      "type": "boolean"
+    },
+    "context": {
+      "description": "fork runs the command in a forked subagent context instead of the main conversation; required whenever agent or background is set",
+      "const": "fork"
+    },
+    "agent": {
+      "description": "Subagent (from .claude/agents) that executes the command when context is fork",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/skill.schema.json#/$defs/agentName"
+    },
+    "background": {
+      "description": "When true the forked command runs in the background; only meaningful with context fork",
+      "type": "boolean"
+    },
+    "x-maxwell": {
+      "description": "Maxwell metadata not interpreted by Claude Code",
+      "$ref": "#/$defs/xMaxwell"
+    }
+  },
+  "additionalProperties": false,
+  "dependentRequired": {
+    "agent": [ "context" ],
+    "background": [ "context" ]
+  },
+  "$defs": {
+    "xMaxwell": {
+      "description": "Declares the workflow a command fronts, the workspace paths it may write and whether it needs decrypted credentials. touches is enforced by the write guard; readsCredentials true means SOPS_AGE_KEY_FILE must be present",
+      "type": "object",
+      "required": [ "touches", "readsCredentials" ],
+      "properties": {
+        "workflow": {
+          "description": "Workflow this command invokes or is the entry point for",
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/workflows.schema.json"
+        },
+        "touches": {
+          "description": "Workspace paths or globs the command may create or modify; empty means read-only",
+          "type": "array",
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/skill.schema.json#/$defs/pathGlob"
+          }
+        },
+        "readsCredentials": {
+          "description": "Whether the command decrypts applications/<app_id>/credentials.json",
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

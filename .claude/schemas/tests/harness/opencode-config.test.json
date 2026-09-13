@@ -1,0 +1,2582 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/v1/harness/opencode-config.schema.json",
+  "tests": [
+    {
+      "description": "full Maxwell opencode.json with agents, commands, permission and an MCP server",
+      "valid": true,
+      "data": {
+        "$schema": "https://opencode.ai/config.json",
+        "instructions": [
+          "AGENTS.md",
+          ".agents/skills/maxwell-conventions/SKILL.md"
+        ],
+        "model": "anthropic/claude-opus-5",
+        "small_model": "anthropic/claude-haiku-4-5-20251001",
+        "default_agent": "maxwell",
+        "share": "disabled",
+        "autoupdate": false,
+        "snapshot": true,
+        "agent": {
+          "maxwell": {
+            "description": "Primary Maxwell operator: runs /<workflow> <company_id> and coordinates the specialist subagents",
+            "mode": "primary",
+            "model": "anthropic/claude-opus-5",
+            "prompt": "{file:./AGENTS.md}",
+            "temperature": 0.1,
+            "permission": {
+              "edit": "allow",
+              "write": "allow",
+              "bash": {
+                "npm run validate*": "allow",
+                "node .claude/scripts/*": "allow",
+                "git push*": "ask",
+                "*": "deny"
+              },
+              "webfetch": "deny"
+            }
+          },
+          "iac-auditor": {
+            "description": "Static probe of Terraform, Pulumi and Kubernetes manifests for a target application; read-only against target systems",
+            "mode": "subagent",
+            "model": "anthropic/claude-sonnet-5",
+            "prompt": "{file:./.agents/agents/iac-auditor.prompt.md}",
+            "temperature": 0,
+            "permission": {
+              "read": "allow",
+              "grep": "allow",
+              "glob": "allow",
+              "bash": "deny",
+              "edit": "deny",
+              "write": "deny",
+              "webfetch": "deny"
+            }
+          },
+          "build": {
+            "disable": true
+          }
+        },
+        "command": {
+          "validate": {
+            "description": "Run every Maxwell validator and report problems by path",
+            "template": "Run `npm run validate` and report every problem by path. Do not edit schemas. $ARGUMENTS",
+            "agent": "maxwell",
+            "subtask": false
+          },
+          "status": {
+            "description": "Summarise the ledger, open initiatives and pending suggestions for a company",
+            "template": "Summarise the state of company-profile/$1: open findings by severity, initiatives in flight and pending suggestions",
+            "model": "anthropic/claude-haiku-4-5-20251001"
+          }
+        },
+        "plugin": [
+          "./.agents/hooks/maxwell-hooks.mjs"
+        ],
+        "permission": {
+          "*": "ask",
+          "edit": "allow",
+          "bash": {
+            "npm run *": "allow",
+            "node .claude/scripts/*": "allow",
+            "sops --decrypt*": "ask",
+            "*": "ask"
+          },
+          "webfetch": "deny",
+          "skill": "allow"
+        },
+        "mcp": {
+          "nvd": {
+            "type": "remote",
+            "url": "https://mcp.example.internal/nvd",
+            "enabled": true,
+            "headers": {
+              "X-Api-Key": "{env:NVD_API_KEY}",
+              "Accept": "application/json"
+            },
+            "timeout": 30000
+          }
+        },
+        "experimental": {}
+      }
+    },
+    {
+      "description": "minimal config with one primary agent",
+      "valid": true,
+      "data": {
+        "$schema": "https://opencode.ai/config.json",
+        "instructions": [
+          "AGENTS.md"
+        ],
+        "agent": {
+          "maxwell": {
+            "description": "Primary Maxwell operator",
+            "mode": "primary"
+          }
+        },
+        "permission": {
+          "edit": "ask"
+        }
+      }
+    },
+    {
+      "description": "local MCP server with command, cwd and environment references",
+      "valid": true,
+      "data": {
+        "$schema": "https://opencode.ai/config.json",
+        "instructions": [
+          "AGENTS.md",
+          ".agents/skills/maxwell-conventions/SKILL.md"
+        ],
+        "model": "anthropic/claude-opus-5",
+        "small_model": "anthropic/claude-haiku-4-5-20251001",
+        "default_agent": "maxwell",
+        "share": "disabled",
+        "autoupdate": false,
+        "snapshot": true,
+        "agent": {
+          "maxwell": {
+            "description": "Primary Maxwell operator: runs /<workflow> <company_id> and coordinates the specialist subagents",
+            "mode": "primary",
+            "model": "anthropic/claude-opus-5",
+            "prompt": "{file:./AGENTS.md}",
+            "temperature": 0.1,
+            "permission": {
+              "edit": "allow",
+              "write": "allow",
+              "bash": {
+                "npm run validate*": "allow",
+                "node .claude/scripts/*": "allow",
+                "git push*": "ask",
+                "*": "deny"
+              },
+              "webfetch": "deny"
+            }
+          },
+          "iac-auditor": {
+            "description": "Static probe of Terraform, Pulumi and Kubernetes manifests for a target application; read-only against target systems",
+            "mode": "subagent",
+            "model": "anthropic/claude-sonnet-5",
+            "prompt": "{file:./.agents/agents/iac-auditor.prompt.md}",
+            "temperature": 0,
+            "permission": {
+              "read": "allow",
+              "grep": "allow",
+              "glob": "allow",
+              "bash": "deny",
+              "edit": "deny",
+              "write": "deny",
+              "webfetch": "deny"
+            }
+          },
+          "build": {
+            "disable": true
+          }
+        },
+        "command": {
+          "validate": {
+            "description": "Run every Maxwell validator and report problems by path",
+            "template": "Run `npm run validate` and report every problem by path. Do not edit schemas. $ARGUMENTS",
+            "agent": "maxwell",
+            "subtask": false
+          },
+          "status": {
+            "description": "Summarise the ledger, open initiatives and pending suggestions for a company",
+            "template": "Summarise the state of company-profile/$1: open findings by severity, initiatives in flight and pending suggestions",
+            "model": "anthropic/claude-haiku-4-5-20251001"
+          }
+        },
+        "plugin": [
+          "./.agents/hooks/maxwell-hooks.mjs"
+        ],
+        "permission": {
+          "*": "ask",
+          "edit": "allow",
+          "bash": {
+            "npm run *": "allow",
+            "node .claude/scripts/*": "allow",
+            "sops --decrypt*": "ask",
+            "*": "ask"
+          },
+          "webfetch": "deny",
+          "skill": "allow"
+        },
+        "mcp": {
+          "nvd": {
+            "type": "remote",
+            "url": "https://mcp.example.internal/nvd",
+            "enabled": true,
+            "headers": {
+              "X-Api-Key": "{env:NVD_API_KEY}",
+              "Accept": "application/json"
+            },
+            "timeout": 30000
+          },
+          "ledger": {
+            "type": "local",
+            "command": [
+              "node",
+              ".claude/scripts/soc/mcp.mjs"
+            ],
+            "cwd": ".claude/scripts/soc",
+            "environment": {
+              "MAXWELL_WORKSPACE_ROOT": "{env:MAXWELL_WORKSPACE_ROOT}"
+            }
+          }
+        },
+        "experimental": {}
+      }
+    },
+    {
+      "description": "remote MCP server with oauth disabled, an MCP permission glob and a router model id",
+      "valid": true,
+      "data": {
+        "$schema": "https://opencode.ai/config.json",
+        "instructions": [
+          "AGENTS.md",
+          ".agents/skills/maxwell-conventions/SKILL.md"
+        ],
+        "model": "anthropic/claude-opus-5",
+        "small_model": "openrouter/anthropic/claude-haiku-4-5",
+        "default_agent": "maxwell",
+        "share": "disabled",
+        "autoupdate": false,
+        "snapshot": true,
+        "agent": {
+          "maxwell": {
+            "description": "Primary Maxwell operator: runs /<workflow> <company_id> and coordinates the specialist subagents",
+            "mode": "primary",
+            "model": "anthropic/claude-opus-5",
+            "prompt": "{file:./AGENTS.md}",
+            "temperature": 0.1,
+            "permission": {
+              "edit": "allow",
+              "write": "allow",
+              "bash": {
+                "npm run validate*": "allow",
+                "node .claude/scripts/*": "allow",
+                "git push*": "ask",
+                "*": "deny"
+              },
+              "webfetch": "deny"
+            }
+          },
+          "iac-auditor": {
+            "description": "Static probe of Terraform, Pulumi and Kubernetes manifests for a target application; read-only against target systems",
+            "mode": "subagent",
+            "model": "anthropic/claude-sonnet-5",
+            "prompt": "{file:./.agents/agents/iac-auditor.prompt.md}",
+            "temperature": 0,
+            "permission": {
+              "read": "allow",
+              "grep": "allow",
+              "glob": "allow",
+              "bash": "deny",
+              "edit": "deny",
+              "write": "deny",
+              "webfetch": "deny"
+            }
+          },
+          "build": {
+            "disable": true
+          }
+        },
+        "command": {
+          "validate": {
+            "description": "Run every Maxwell validator and report problems by path",
+            "template": "Run `npm run validate` and report every problem by path. Do not edit schemas. $ARGUMENTS",
+            "agent": "maxwell",
+            "subtask": false
+          },
+          "status": {
+            "description": "Summarise the ledger, open initiatives and pending suggestions for a company",
+            "template": "Summarise the state of company-profile/$1: open findings by severity, initiatives in flight and pending suggestions",
+            "model": "anthropic/claude-haiku-4-5-20251001"
+          }
+        },
+        "plugin": [
+          "./.agents/hooks/maxwell-hooks.mjs"
+        ],
+        "permission": {
+          "*": "ask",
+          "edit": "allow",
+          "bash": {
+            "npm run *": "allow",
+            "node .claude/scripts/*": "allow",
+            "sops --decrypt*": "ask",
+            "*": "ask"
+          },
+          "webfetch": "deny",
+          "skill": "allow",
+          "nvd_*": "allow"
+        },
+        "mcp": {
+          "nvd": {
+            "type": "remote",
+            "url": "https://mcp.example.internal/nvd",
+            "enabled": true,
+            "headers": {
+              "X-Api-Key": "{env:NVD_API_KEY}",
+              "Accept": "application/json"
+            },
+            "timeout": 30000,
+            "oauth": false
+          }
+        },
+        "experimental": {}
+      }
+    },
+    {
+      "description": "remote MCP server with an oauth client whose secret is an env reference",
+      "valid": true,
+      "data": {
+        "$schema": "https://opencode.ai/config.json",
+        "instructions": [
+          "AGENTS.md",
+          ".agents/skills/maxwell-conventions/SKILL.md"
+        ],
+        "model": "anthropic/claude-opus-5",
+        "small_model": "anthropic/claude-haiku-4-5-20251001",
+        "default_agent": "maxwell",
+        "share": "disabled",
+        "autoupdate": false,
+        "snapshot": true,
+        "agent": {
+          "maxwell": {
+            "description": "Primary Maxwell operator: runs /<workflow> <company_id> and coordinates the specialist subagents",
+            "mode": "primary",
+            "model": "anthropic/claude-opus-5",
+            "prompt": "{file:./AGENTS.md}",
+            "temperature": 0.1,
+            "permission": {
+              "edit": "allow",
+              "write": "allow",
+              "bash": {
+                "npm run validate*": "allow",
+                "node .claude/scripts/*": "allow",
+                "git push*": "ask",
+                "*": "deny"
+              },
+              "webfetch": "deny"
+            }
+          },
+          "iac-auditor": {
+            "description": "Static probe of Terraform, Pulumi and Kubernetes manifests for a target application; read-only against target systems",
+            "mode": "subagent",
+            "model": "anthropic/claude-sonnet-5",
+            "prompt": "{file:./.agents/agents/iac-auditor.prompt.md}",
+            "temperature": 0,
+            "permission": {
+              "read": "allow",
+              "grep": "allow",
+              "glob": "allow",
+              "bash": "deny",
+              "edit": "deny",
+              "write": "deny",
+              "webfetch": "deny"
+            }
+          },
+          "build": {
+            "disable": true
+          }
+        },
+        "command": {
+          "validate": {
+            "description": "Run every Maxwell validator and report problems by path",
+            "template": "Run `npm run validate` and report every problem by path. Do not edit schemas. $ARGUMENTS",
+            "agent": "maxwell",
+            "subtask": false
+          },
+          "status": {
+            "description": "Summarise the ledger, open initiatives and pending suggestions for a company",
+            "template": "Summarise the state of company-profile/$1: open findings by severity, initiatives in flight and pending suggestions",
+            "model": "anthropic/claude-haiku-4-5-20251001"
+          }
+        },
+        "plugin": [
+          "./.agents/hooks/maxwell-hooks.mjs"
+        ],
+        "permission": {
+          "*": "ask",
+          "edit": "allow",
+          "bash": {
+            "npm run *": "allow",
+            "node .claude/scripts/*": "allow",
+            "sops --decrypt*": "ask",
+            "*": "ask"
+          },
+          "webfetch": "deny",
+          "skill": "allow"
+        },
+        "mcp": {
+          "nvd": {
+            "type": "remote",
+            "url": "https://mcp.example.internal/nvd",
+            "enabled": true,
+            "headers": {
+              "X-Api-Key": "{env:NVD_API_KEY}",
+              "Accept": "application/json"
+            },
+            "timeout": 30000,
+            "oauth": {
+              "clientId": "maxwell",
+              "clientSecret": "{env:NVD_OAUTH_SECRET}",
+              "scope": "read"
+            }
+          }
+        },
+        "experimental": {}
+      }
+    },
+    {
+      "description": "$schema must be the OpenCode config URL",
+      "valid": false,
+      "data": {
+        "$schema": "https://opencode.ai/config-v2.json",
+        "instructions": [
+          "AGENTS.md",
+          ".agents/skills/maxwell-conventions/SKILL.md"
+        ],
+        "model": "anthropic/claude-opus-5",
+        "small_model": "anthropic/claude-haiku-4-5-20251001",
+        "default_agent": "maxwell",
+        "share": "disabled",
+        "autoupdate": false,
+        "snapshot": true,
+        "agent": {
+          "maxwell": {
+            "description": "Primary Maxwell operator: runs /<workflow> <company_id> and coordinates the specialist subagents",
+            "mode": "primary",
+            "model": "anthropic/claude-opus-5",
+            "prompt": "{file:./AGENTS.md}",
+            "temperature": 0.1,
+            "permission": {
+              "edit": "allow",
+              "write": "allow",
+              "bash": {
+                "npm run validate*": "allow",
+                "node .claude/scripts/*": "allow",
+                "git push*": "ask",
+                "*": "deny"
+              },
+              "webfetch": "deny"
+            }
+          },
+          "iac-auditor": {
+            "description": "Static probe of Terraform, Pulumi and Kubernetes manifests for a target application; read-only against target systems",
+            "mode": "subagent",
+            "model": "anthropic/claude-sonnet-5",
+            "prompt": "{file:./.agents/agents/iac-auditor.prompt.md}",
+            "temperature": 0,
+            "permission": {
+              "read": "allow",
+              "grep": "allow",
+              "glob": "allow",
+              "bash": "deny",
+              "edit": "deny",
+              "write": "deny",
+              "webfetch": "deny"
+            }
+          },
+          "build": {
+            "disable": true
+          }
+        },
+        "command": {
+          "validate": {
+            "description": "Run every Maxwell validator and report problems by path",
+            "template": "Run `npm run validate` and report every problem by path. Do not edit schemas. $ARGUMENTS",
+            "agent": "maxwell",
+            "subtask": false
+          },
+          "status": {
+            "description": "Summarise the ledger, open initiatives and pending suggestions for a company",
+            "template": "Summarise the state of company-profile/$1: open findings by severity, initiatives in flight and pending suggestions",
+            "model": "anthropic/claude-haiku-4-5-20251001"
+          }
+        },
+        "plugin": [
+          "./.agents/hooks/maxwell-hooks.mjs"
+        ],
+        "permission": {
+          "*": "ask",
+          "edit": "allow",
+          "bash": {
+            "npm run *": "allow",
+            "node .claude/scripts/*": "allow",
+            "sops --decrypt*": "ask",
+            "*": "ask"
+          },
+          "webfetch": "deny",
+          "skill": "allow"
+        },
+        "mcp": {
+          "nvd": {
+            "type": "remote",
+            "url": "https://mcp.example.internal/nvd",
+            "enabled": true,
+            "headers": {
+              "X-Api-Key": "{env:NVD_API_KEY}",
+              "Accept": "application/json"
+            },
+            "timeout": 30000
+          }
+        },
+        "experimental": {}
+      }
+    },
+    {
+      "description": "unknown top-level key theme is denied",
+      "valid": false,
+      "data": {
+        "$schema": "https://opencode.ai/config.json",
+        "instructions": [
+          "AGENTS.md",
+          ".agents/skills/maxwell-conventions/SKILL.md"
+        ],
+        "model": "anthropic/claude-opus-5",
+        "small_model": "anthropic/claude-haiku-4-5-20251001",
+        "default_agent": "maxwell",
+        "share": "disabled",
+        "autoupdate": false,
+        "snapshot": true,
+        "agent": {
+          "maxwell": {
+            "description": "Primary Maxwell operator: runs /<workflow> <company_id> and coordinates the specialist subagents",
+            "mode": "primary",
+            "model": "anthropic/claude-opus-5",
+            "prompt": "{file:./AGENTS.md}",
+            "temperature": 0.1,
+            "permission": {
+              "edit": "allow",
+              "write": "allow",
+              "bash": {
+                "npm run validate*": "allow",
+                "node .claude/scripts/*": "allow",
+                "git push*": "ask",
+                "*": "deny"
+              },
+              "webfetch": "deny"
+            }
+          },
+          "iac-auditor": {
+            "description": "Static probe of Terraform, Pulumi and Kubernetes manifests for a target application; read-only against target systems",
+            "mode": "subagent",
+            "model": "anthropic/claude-sonnet-5",
+            "prompt": "{file:./.agents/agents/iac-auditor.prompt.md}",
+            "temperature": 0,
+            "permission": {
+              "read": "allow",
+              "grep": "allow",
+              "glob": "allow",
+              "bash": "deny",
+              "edit": "deny",
+              "write": "deny",
+              "webfetch": "deny"
+            }
+          },
+          "build": {
+            "disable": true
+          }
+        },
+        "command": {
+          "validate": {
+            "description": "Run every Maxwell validator and report problems by path",
+            "template": "Run `npm run validate` and report every problem by path. Do not edit schemas. $ARGUMENTS",
+            "agent": "maxwell",
+            "subtask": false
+          },
+          "status": {
+            "description": "Summarise the ledger, open initiatives and pending suggestions for a company",
+            "template": "Summarise the state of company-profile/$1: open findings by severity, initiatives in flight and pending suggestions",
+            "model": "anthropic/claude-haiku-4-5-20251001"
+          }
+        },
+        "plugin": [
+          "./.agents/hooks/maxwell-hooks.mjs"
+        ],
+        "permission": {
+          "*": "ask",
+          "edit": "allow",
+          "bash": {
+            "npm run *": "allow",
+            "node .claude/scripts/*": "allow",
+            "sops --decrypt*": "ask",
+            "*": "ask"
+          },
+          "webfetch": "deny",
+          "skill": "allow"
+        },
+        "mcp": {
+          "nvd": {
+            "type": "remote",
+            "url": "https://mcp.example.internal/nvd",
+            "enabled": true,
+            "headers": {
+              "X-Api-Key": "{env:NVD_API_KEY}",
+              "Accept": "application/json"
+            },
+            "timeout": 30000
+          }
+        },
+        "experimental": {},
+        "theme": "dark"
+      }
+    },
+    {
+      "description": "agent names must be kebab-case",
+      "valid": false,
+      "data": {
+        "$schema": "https://opencode.ai/config.json",
+        "instructions": [
+          "AGENTS.md",
+          ".agents/skills/maxwell-conventions/SKILL.md"
+        ],
+        "model": "anthropic/claude-opus-5",
+        "small_model": "anthropic/claude-haiku-4-5-20251001",
+        "default_agent": "maxwell",
+        "share": "disabled",
+        "autoupdate": false,
+        "snapshot": true,
+        "agent": {
+          "maxwell": {
+            "description": "Primary Maxwell operator: runs /<workflow> <company_id> and coordinates the specialist subagents",
+            "mode": "primary",
+            "model": "anthropic/claude-opus-5",
+            "prompt": "{file:./AGENTS.md}",
+            "temperature": 0.1,
+            "permission": {
+              "edit": "allow",
+              "write": "allow",
+              "bash": {
+                "npm run validate*": "allow",
+                "node .claude/scripts/*": "allow",
+                "git push*": "ask",
+                "*": "deny"
+              },
+              "webfetch": "deny"
+            }
+          },
+          "iac-auditor": {
+            "description": "Static probe of Terraform, Pulumi and Kubernetes manifests for a target application; read-only against target systems",
+            "mode": "subagent",
+            "model": "anthropic/claude-sonnet-5",
+            "prompt": "{file:./.agents/agents/iac-auditor.prompt.md}",
+            "temperature": 0,
+            "permission": {
+              "read": "allow",
+              "grep": "allow",
+              "glob": "allow",
+              "bash": "deny",
+              "edit": "deny",
+              "write": "deny",
+              "webfetch": "deny"
+            }
+          },
+          "build": {
+            "disable": true
+          },
+          "IaC Auditor": {
+            "description": "bad name",
+            "mode": "subagent"
+          }
+        },
+        "command": {
+          "validate": {
+            "description": "Run every Maxwell validator and report problems by path",
+            "template": "Run `npm run validate` and report every problem by path. Do not edit schemas. $ARGUMENTS",
+            "agent": "maxwell",
+            "subtask": false
+          },
+          "status": {
+            "description": "Summarise the ledger, open initiatives and pending suggestions for a company",
+            "template": "Summarise the state of company-profile/$1: open findings by severity, initiatives in flight and pending suggestions",
+            "model": "anthropic/claude-haiku-4-5-20251001"
+          }
+        },
+        "plugin": [
+          "./.agents/hooks/maxwell-hooks.mjs"
+        ],
+        "permission": {
+          "*": "ask",
+          "edit": "allow",
+          "bash": {
+            "npm run *": "allow",
+            "node .claude/scripts/*": "allow",
+            "sops --decrypt*": "ask",
+            "*": "ask"
+          },
+          "webfetch": "deny",
+          "skill": "allow"
+        },
+        "mcp": {
+          "nvd": {
+            "type": "remote",
+            "url": "https://mcp.example.internal/nvd",
+            "enabled": true,
+            "headers": {
+              "X-Api-Key": "{env:NVD_API_KEY}",
+              "Accept": "application/json"
+            },
+            "timeout": 30000
+          }
+        },
+        "experimental": {}
+      }
+    },
+    {
+      "description": "agent mode outside primary/subagent/all",
+      "valid": false,
+      "data": {
+        "$schema": "https://opencode.ai/config.json",
+        "instructions": [
+          "AGENTS.md",
+          ".agents/skills/maxwell-conventions/SKILL.md"
+        ],
+        "model": "anthropic/claude-opus-5",
+        "small_model": "anthropic/claude-haiku-4-5-20251001",
+        "default_agent": "maxwell",
+        "share": "disabled",
+        "autoupdate": false,
+        "snapshot": true,
+        "agent": {
+          "maxwell": {
+            "description": "Primary Maxwell operator: runs /<workflow> <company_id> and coordinates the specialist subagents",
+            "mode": "primary",
+            "model": "anthropic/claude-opus-5",
+            "prompt": "{file:./AGENTS.md}",
+            "temperature": 0.1,
+            "permission": {
+              "edit": "allow",
+              "write": "allow",
+              "bash": {
+                "npm run validate*": "allow",
+                "node .claude/scripts/*": "allow",
+                "git push*": "ask",
+                "*": "deny"
+              },
+              "webfetch": "deny"
+            }
+          },
+          "iac-auditor": {
+            "description": "Static probe of Terraform, Pulumi and Kubernetes manifests for a target application; read-only against target systems",
+            "mode": "worker",
+            "model": "anthropic/claude-sonnet-5",
+            "prompt": "{file:./.agents/agents/iac-auditor.prompt.md}",
+            "temperature": 0,
+            "permission": {
+              "read": "allow",
+              "grep": "allow",
+              "glob": "allow",
+              "bash": "deny",
+              "edit": "deny",
+              "write": "deny",
+              "webfetch": "deny"
+            }
+          },
+          "build": {
+            "disable": true
+          }
+        },
+        "command": {
+          "validate": {
+            "description": "Run every Maxwell validator and report problems by path",
+            "template": "Run `npm run validate` and report every problem by path. Do not edit schemas. $ARGUMENTS",
+            "agent": "maxwell",
+            "subtask": false
+          },
+          "status": {
+            "description": "Summarise the ledger, open initiatives and pending suggestions for a company",
+            "template": "Summarise the state of company-profile/$1: open findings by severity, initiatives in flight and pending suggestions",
+            "model": "anthropic/claude-haiku-4-5-20251001"
+          }
+        },
+        "plugin": [
+          "./.agents/hooks/maxwell-hooks.mjs"
+        ],
+        "permission": {
+          "*": "ask",
+          "edit": "allow",
+          "bash": {
+            "npm run *": "allow",
+            "node .claude/scripts/*": "allow",
+            "sops --decrypt*": "ask",
+            "*": "ask"
+          },
+          "webfetch": "deny",
+          "skill": "allow"
+        },
+        "mcp": {
+          "nvd": {
+            "type": "remote",
+            "url": "https://mcp.example.internal/nvd",
+            "enabled": true,
+            "headers": {
+              "X-Api-Key": "{env:NVD_API_KEY}",
+              "Accept": "application/json"
+            },
+            "timeout": 30000
+          }
+        },
+        "experimental": {}
+      }
+    },
+    {
+      "description": "agent entry that is not disabled needs description and mode",
+      "valid": false,
+      "data": {
+        "$schema": "https://opencode.ai/config.json",
+        "instructions": [
+          "AGENTS.md",
+          ".agents/skills/maxwell-conventions/SKILL.md"
+        ],
+        "model": "anthropic/claude-opus-5",
+        "small_model": "anthropic/claude-haiku-4-5-20251001",
+        "default_agent": "maxwell",
+        "share": "disabled",
+        "autoupdate": false,
+        "snapshot": true,
+        "agent": {
+          "maxwell": {
+            "description": "Primary Maxwell operator: runs /<workflow> <company_id> and coordinates the specialist subagents",
+            "mode": "primary",
+            "model": "anthropic/claude-opus-5",
+            "prompt": "{file:./AGENTS.md}",
+            "temperature": 0.1,
+            "permission": {
+              "edit": "allow",
+              "write": "allow",
+              "bash": {
+                "npm run validate*": "allow",
+                "node .claude/scripts/*": "allow",
+                "git push*": "ask",
+                "*": "deny"
+              },
+              "webfetch": "deny"
+            }
+          },
+          "iac-auditor": {
+            "description": "Static probe of Terraform, Pulumi and Kubernetes manifests for a target application; read-only against target systems",
+            "mode": "subagent",
+            "model": "anthropic/claude-sonnet-5",
+            "prompt": "{file:./.agents/agents/iac-auditor.prompt.md}",
+            "temperature": 0,
+            "permission": {
+              "read": "allow",
+              "grep": "allow",
+              "glob": "allow",
+              "bash": "deny",
+              "edit": "deny",
+              "write": "deny",
+              "webfetch": "deny"
+            }
+          },
+          "build": {
+            "disable": false
+          }
+        },
+        "command": {
+          "validate": {
+            "description": "Run every Maxwell validator and report problems by path",
+            "template": "Run `npm run validate` and report every problem by path. Do not edit schemas. $ARGUMENTS",
+            "agent": "maxwell",
+            "subtask": false
+          },
+          "status": {
+            "description": "Summarise the ledger, open initiatives and pending suggestions for a company",
+            "template": "Summarise the state of company-profile/$1: open findings by severity, initiatives in flight and pending suggestions",
+            "model": "anthropic/claude-haiku-4-5-20251001"
+          }
+        },
+        "plugin": [
+          "./.agents/hooks/maxwell-hooks.mjs"
+        ],
+        "permission": {
+          "*": "ask",
+          "edit": "allow",
+          "bash": {
+            "npm run *": "allow",
+            "node .claude/scripts/*": "allow",
+            "sops --decrypt*": "ask",
+            "*": "ask"
+          },
+          "webfetch": "deny",
+          "skill": "allow"
+        },
+        "mcp": {
+          "nvd": {
+            "type": "remote",
+            "url": "https://mcp.example.internal/nvd",
+            "enabled": true,
+            "headers": {
+              "X-Api-Key": "{env:NVD_API_KEY}",
+              "Accept": "application/json"
+            },
+            "timeout": 30000
+          }
+        },
+        "experimental": {}
+      }
+    },
+    {
+      "description": "extra key inside an agent entry is denied",
+      "valid": false,
+      "data": {
+        "$schema": "https://opencode.ai/config.json",
+        "instructions": [
+          "AGENTS.md",
+          ".agents/skills/maxwell-conventions/SKILL.md"
+        ],
+        "model": "anthropic/claude-opus-5",
+        "small_model": "anthropic/claude-haiku-4-5-20251001",
+        "default_agent": "maxwell",
+        "share": "disabled",
+        "autoupdate": false,
+        "snapshot": true,
+        "agent": {
+          "maxwell": {
+            "description": "Primary Maxwell operator: runs /<workflow> <company_id> and coordinates the specialist subagents",
+            "mode": "primary",
+            "model": "anthropic/claude-opus-5",
+            "prompt": "{file:./AGENTS.md}",
+            "temperature": 0.1,
+            "permission": {
+              "edit": "allow",
+              "write": "allow",
+              "bash": {
+                "npm run validate*": "allow",
+                "node .claude/scripts/*": "allow",
+                "git push*": "ask",
+                "*": "deny"
+              },
+              "webfetch": "deny"
+            }
+          },
+          "iac-auditor": {
+            "description": "Static probe of Terraform, Pulumi and Kubernetes manifests for a target application; read-only against target systems",
+            "mode": "subagent",
+            "model": "anthropic/claude-sonnet-5",
+            "prompt": "{file:./.agents/agents/iac-auditor.prompt.md}",
+            "temperature": 0,
+            "permission": {
+              "read": "allow",
+              "grep": "allow",
+              "glob": "allow",
+              "bash": "deny",
+              "edit": "deny",
+              "write": "deny",
+              "webfetch": "deny"
+            },
+            "tools": [
+              "Read"
+            ]
+          },
+          "build": {
+            "disable": true
+          }
+        },
+        "command": {
+          "validate": {
+            "description": "Run every Maxwell validator and report problems by path",
+            "template": "Run `npm run validate` and report every problem by path. Do not edit schemas. $ARGUMENTS",
+            "agent": "maxwell",
+            "subtask": false
+          },
+          "status": {
+            "description": "Summarise the ledger, open initiatives and pending suggestions for a company",
+            "template": "Summarise the state of company-profile/$1: open findings by severity, initiatives in flight and pending suggestions",
+            "model": "anthropic/claude-haiku-4-5-20251001"
+          }
+        },
+        "plugin": [
+          "./.agents/hooks/maxwell-hooks.mjs"
+        ],
+        "permission": {
+          "*": "ask",
+          "edit": "allow",
+          "bash": {
+            "npm run *": "allow",
+            "node .claude/scripts/*": "allow",
+            "sops --decrypt*": "ask",
+            "*": "ask"
+          },
+          "webfetch": "deny",
+          "skill": "allow"
+        },
+        "mcp": {
+          "nvd": {
+            "type": "remote",
+            "url": "https://mcp.example.internal/nvd",
+            "enabled": true,
+            "headers": {
+              "X-Api-Key": "{env:NVD_API_KEY}",
+              "Accept": "application/json"
+            },
+            "timeout": 30000
+          }
+        },
+        "experimental": {}
+      }
+    },
+    {
+      "description": "command without a template",
+      "valid": false,
+      "data": {
+        "$schema": "https://opencode.ai/config.json",
+        "instructions": [
+          "AGENTS.md",
+          ".agents/skills/maxwell-conventions/SKILL.md"
+        ],
+        "model": "anthropic/claude-opus-5",
+        "small_model": "anthropic/claude-haiku-4-5-20251001",
+        "default_agent": "maxwell",
+        "share": "disabled",
+        "autoupdate": false,
+        "snapshot": true,
+        "agent": {
+          "maxwell": {
+            "description": "Primary Maxwell operator: runs /<workflow> <company_id> and coordinates the specialist subagents",
+            "mode": "primary",
+            "model": "anthropic/claude-opus-5",
+            "prompt": "{file:./AGENTS.md}",
+            "temperature": 0.1,
+            "permission": {
+              "edit": "allow",
+              "write": "allow",
+              "bash": {
+                "npm run validate*": "allow",
+                "node .claude/scripts/*": "allow",
+                "git push*": "ask",
+                "*": "deny"
+              },
+              "webfetch": "deny"
+            }
+          },
+          "iac-auditor": {
+            "description": "Static probe of Terraform, Pulumi and Kubernetes manifests for a target application; read-only against target systems",
+            "mode": "subagent",
+            "model": "anthropic/claude-sonnet-5",
+            "prompt": "{file:./.agents/agents/iac-auditor.prompt.md}",
+            "temperature": 0,
+            "permission": {
+              "read": "allow",
+              "grep": "allow",
+              "glob": "allow",
+              "bash": "deny",
+              "edit": "deny",
+              "write": "deny",
+              "webfetch": "deny"
+            }
+          },
+          "build": {
+            "disable": true
+          }
+        },
+        "command": {
+          "validate": {
+            "description": "Run every Maxwell validator and report problems by path",
+            "agent": "maxwell",
+            "subtask": false
+          },
+          "status": {
+            "description": "Summarise the ledger, open initiatives and pending suggestions for a company",
+            "template": "Summarise the state of company-profile/$1: open findings by severity, initiatives in flight and pending suggestions",
+            "model": "anthropic/claude-haiku-4-5-20251001"
+          }
+        },
+        "plugin": [
+          "./.agents/hooks/maxwell-hooks.mjs"
+        ],
+        "permission": {
+          "*": "ask",
+          "edit": "allow",
+          "bash": {
+            "npm run *": "allow",
+            "node .claude/scripts/*": "allow",
+            "sops --decrypt*": "ask",
+            "*": "ask"
+          },
+          "webfetch": "deny",
+          "skill": "allow"
+        },
+        "mcp": {
+          "nvd": {
+            "type": "remote",
+            "url": "https://mcp.example.internal/nvd",
+            "enabled": true,
+            "headers": {
+              "X-Api-Key": "{env:NVD_API_KEY}",
+              "Accept": "application/json"
+            },
+            "timeout": 30000
+          }
+        },
+        "experimental": {}
+      }
+    },
+    {
+      "description": "extra key inside a command entry is denied",
+      "valid": false,
+      "data": {
+        "$schema": "https://opencode.ai/config.json",
+        "instructions": [
+          "AGENTS.md",
+          ".agents/skills/maxwell-conventions/SKILL.md"
+        ],
+        "model": "anthropic/claude-opus-5",
+        "small_model": "anthropic/claude-haiku-4-5-20251001",
+        "default_agent": "maxwell",
+        "share": "disabled",
+        "autoupdate": false,
+        "snapshot": true,
+        "agent": {
+          "maxwell": {
+            "description": "Primary Maxwell operator: runs /<workflow> <company_id> and coordinates the specialist subagents",
+            "mode": "primary",
+            "model": "anthropic/claude-opus-5",
+            "prompt": "{file:./AGENTS.md}",
+            "temperature": 0.1,
+            "permission": {
+              "edit": "allow",
+              "write": "allow",
+              "bash": {
+                "npm run validate*": "allow",
+                "node .claude/scripts/*": "allow",
+                "git push*": "ask",
+                "*": "deny"
+              },
+              "webfetch": "deny"
+            }
+          },
+          "iac-auditor": {
+            "description": "Static probe of Terraform, Pulumi and Kubernetes manifests for a target application; read-only against target systems",
+            "mode": "subagent",
+            "model": "anthropic/claude-sonnet-5",
+            "prompt": "{file:./.agents/agents/iac-auditor.prompt.md}",
+            "temperature": 0,
+            "permission": {
+              "read": "allow",
+              "grep": "allow",
+              "glob": "allow",
+              "bash": "deny",
+              "edit": "deny",
+              "write": "deny",
+              "webfetch": "deny"
+            }
+          },
+          "build": {
+            "disable": true
+          }
+        },
+        "command": {
+          "validate": {
+            "description": "Run every Maxwell validator and report problems by path",
+            "template": "Run `npm run validate` and report every problem by path. Do not edit schemas. $ARGUMENTS",
+            "agent": "maxwell",
+            "subtask": false,
+            "argument-hint": "[path]"
+          },
+          "status": {
+            "description": "Summarise the ledger, open initiatives and pending suggestions for a company",
+            "template": "Summarise the state of company-profile/$1: open findings by severity, initiatives in flight and pending suggestions",
+            "model": "anthropic/claude-haiku-4-5-20251001"
+          }
+        },
+        "plugin": [
+          "./.agents/hooks/maxwell-hooks.mjs"
+        ],
+        "permission": {
+          "*": "ask",
+          "edit": "allow",
+          "bash": {
+            "npm run *": "allow",
+            "node .claude/scripts/*": "allow",
+            "sops --decrypt*": "ask",
+            "*": "ask"
+          },
+          "webfetch": "deny",
+          "skill": "allow"
+        },
+        "mcp": {
+          "nvd": {
+            "type": "remote",
+            "url": "https://mcp.example.internal/nvd",
+            "enabled": true,
+            "headers": {
+              "X-Api-Key": "{env:NVD_API_KEY}",
+              "Accept": "application/json"
+            },
+            "timeout": 30000
+          }
+        },
+        "experimental": {}
+      }
+    },
+    {
+      "description": "model must be provider/model",
+      "valid": false,
+      "data": {
+        "$schema": "https://opencode.ai/config.json",
+        "instructions": [
+          "AGENTS.md",
+          ".agents/skills/maxwell-conventions/SKILL.md"
+        ],
+        "model": "claude-opus-5",
+        "small_model": "anthropic/claude-haiku-4-5-20251001",
+        "default_agent": "maxwell",
+        "share": "disabled",
+        "autoupdate": false,
+        "snapshot": true,
+        "agent": {
+          "maxwell": {
+            "description": "Primary Maxwell operator: runs /<workflow> <company_id> and coordinates the specialist subagents",
+            "mode": "primary",
+            "model": "anthropic/claude-opus-5",
+            "prompt": "{file:./AGENTS.md}",
+            "temperature": 0.1,
+            "permission": {
+              "edit": "allow",
+              "write": "allow",
+              "bash": {
+                "npm run validate*": "allow",
+                "node .claude/scripts/*": "allow",
+                "git push*": "ask",
+                "*": "deny"
+              },
+              "webfetch": "deny"
+            }
+          },
+          "iac-auditor": {
+            "description": "Static probe of Terraform, Pulumi and Kubernetes manifests for a target application; read-only against target systems",
+            "mode": "subagent",
+            "model": "anthropic/claude-sonnet-5",
+            "prompt": "{file:./.agents/agents/iac-auditor.prompt.md}",
+            "temperature": 0,
+            "permission": {
+              "read": "allow",
+              "grep": "allow",
+              "glob": "allow",
+              "bash": "deny",
+              "edit": "deny",
+              "write": "deny",
+              "webfetch": "deny"
+            }
+          },
+          "build": {
+            "disable": true
+          }
+        },
+        "command": {
+          "validate": {
+            "description": "Run every Maxwell validator and report problems by path",
+            "template": "Run `npm run validate` and report every problem by path. Do not edit schemas. $ARGUMENTS",
+            "agent": "maxwell",
+            "subtask": false
+          },
+          "status": {
+            "description": "Summarise the ledger, open initiatives and pending suggestions for a company",
+            "template": "Summarise the state of company-profile/$1: open findings by severity, initiatives in flight and pending suggestions",
+            "model": "anthropic/claude-haiku-4-5-20251001"
+          }
+        },
+        "plugin": [
+          "./.agents/hooks/maxwell-hooks.mjs"
+        ],
+        "permission": {
+          "*": "ask",
+          "edit": "allow",
+          "bash": {
+            "npm run *": "allow",
+            "node .claude/scripts/*": "allow",
+            "sops --decrypt*": "ask",
+            "*": "ask"
+          },
+          "webfetch": "deny",
+          "skill": "allow"
+        },
+        "mcp": {
+          "nvd": {
+            "type": "remote",
+            "url": "https://mcp.example.internal/nvd",
+            "enabled": true,
+            "headers": {
+              "X-Api-Key": "{env:NVD_API_KEY}",
+              "Accept": "application/json"
+            },
+            "timeout": 30000
+          }
+        },
+        "experimental": {}
+      }
+    },
+    {
+      "description": "permission action outside allow/deny/ask",
+      "valid": false,
+      "data": {
+        "$schema": "https://opencode.ai/config.json",
+        "instructions": [
+          "AGENTS.md",
+          ".agents/skills/maxwell-conventions/SKILL.md"
+        ],
+        "model": "anthropic/claude-opus-5",
+        "small_model": "anthropic/claude-haiku-4-5-20251001",
+        "default_agent": "maxwell",
+        "share": "disabled",
+        "autoupdate": false,
+        "snapshot": true,
+        "agent": {
+          "maxwell": {
+            "description": "Primary Maxwell operator: runs /<workflow> <company_id> and coordinates the specialist subagents",
+            "mode": "primary",
+            "model": "anthropic/claude-opus-5",
+            "prompt": "{file:./AGENTS.md}",
+            "temperature": 0.1,
+            "permission": {
+              "edit": "allow",
+              "write": "allow",
+              "bash": {
+                "npm run validate*": "allow",
+                "node .claude/scripts/*": "allow",
+                "git push*": "ask",
+                "*": "deny"
+              },
+              "webfetch": "deny"
+            }
+          },
+          "iac-auditor": {
+            "description": "Static probe of Terraform, Pulumi and Kubernetes manifests for a target application; read-only against target systems",
+            "mode": "subagent",
+            "model": "anthropic/claude-sonnet-5",
+            "prompt": "{file:./.agents/agents/iac-auditor.prompt.md}",
+            "temperature": 0,
+            "permission": {
+              "read": "allow",
+              "grep": "allow",
+              "glob": "allow",
+              "bash": "deny",
+              "edit": "deny",
+              "write": "deny",
+              "webfetch": "deny"
+            }
+          },
+          "build": {
+            "disable": true
+          }
+        },
+        "command": {
+          "validate": {
+            "description": "Run every Maxwell validator and report problems by path",
+            "template": "Run `npm run validate` and report every problem by path. Do not edit schemas. $ARGUMENTS",
+            "agent": "maxwell",
+            "subtask": false
+          },
+          "status": {
+            "description": "Summarise the ledger, open initiatives and pending suggestions for a company",
+            "template": "Summarise the state of company-profile/$1: open findings by severity, initiatives in flight and pending suggestions",
+            "model": "anthropic/claude-haiku-4-5-20251001"
+          }
+        },
+        "plugin": [
+          "./.agents/hooks/maxwell-hooks.mjs"
+        ],
+        "permission": {
+          "*": "ask",
+          "edit": "allow",
+          "bash": {
+            "npm run *": "allow",
+            "node .claude/scripts/*": "allow",
+            "sops --decrypt*": "ask",
+            "*": "ask",
+            "git push*": "maybe"
+          },
+          "webfetch": "deny",
+          "skill": "allow"
+        },
+        "mcp": {
+          "nvd": {
+            "type": "remote",
+            "url": "https://mcp.example.internal/nvd",
+            "enabled": true,
+            "headers": {
+              "X-Api-Key": "{env:NVD_API_KEY}",
+              "Accept": "application/json"
+            },
+            "timeout": 30000
+          }
+        },
+        "experimental": {}
+      }
+    },
+    {
+      "description": "permission keys are lower-case OpenCode tool names, the wildcard or an MCP glob",
+      "valid": false,
+      "data": {
+        "$schema": "https://opencode.ai/config.json",
+        "instructions": [
+          "AGENTS.md",
+          ".agents/skills/maxwell-conventions/SKILL.md"
+        ],
+        "model": "anthropic/claude-opus-5",
+        "small_model": "anthropic/claude-haiku-4-5-20251001",
+        "default_agent": "maxwell",
+        "share": "disabled",
+        "autoupdate": false,
+        "snapshot": true,
+        "agent": {
+          "maxwell": {
+            "description": "Primary Maxwell operator: runs /<workflow> <company_id> and coordinates the specialist subagents",
+            "mode": "primary",
+            "model": "anthropic/claude-opus-5",
+            "prompt": "{file:./AGENTS.md}",
+            "temperature": 0.1,
+            "permission": {
+              "edit": "allow",
+              "write": "allow",
+              "bash": {
+                "npm run validate*": "allow",
+                "node .claude/scripts/*": "allow",
+                "git push*": "ask",
+                "*": "deny"
+              },
+              "webfetch": "deny"
+            }
+          },
+          "iac-auditor": {
+            "description": "Static probe of Terraform, Pulumi and Kubernetes manifests for a target application; read-only against target systems",
+            "mode": "subagent",
+            "model": "anthropic/claude-sonnet-5",
+            "prompt": "{file:./.agents/agents/iac-auditor.prompt.md}",
+            "temperature": 0,
+            "permission": {
+              "read": "allow",
+              "grep": "allow",
+              "glob": "allow",
+              "bash": "deny",
+              "edit": "deny",
+              "write": "deny",
+              "webfetch": "deny"
+            }
+          },
+          "build": {
+            "disable": true
+          }
+        },
+        "command": {
+          "validate": {
+            "description": "Run every Maxwell validator and report problems by path",
+            "template": "Run `npm run validate` and report every problem by path. Do not edit schemas. $ARGUMENTS",
+            "agent": "maxwell",
+            "subtask": false
+          },
+          "status": {
+            "description": "Summarise the ledger, open initiatives and pending suggestions for a company",
+            "template": "Summarise the state of company-profile/$1: open findings by severity, initiatives in flight and pending suggestions",
+            "model": "anthropic/claude-haiku-4-5-20251001"
+          }
+        },
+        "plugin": [
+          "./.agents/hooks/maxwell-hooks.mjs"
+        ],
+        "permission": {
+          "*": "ask",
+          "edit": "allow",
+          "bash": {
+            "npm run *": "allow",
+            "node .claude/scripts/*": "allow",
+            "sops --decrypt*": "ask",
+            "*": "ask"
+          },
+          "webfetch": "deny",
+          "skill": "allow",
+          "Bash": "deny"
+        },
+        "mcp": {
+          "nvd": {
+            "type": "remote",
+            "url": "https://mcp.example.internal/nvd",
+            "enabled": true,
+            "headers": {
+              "X-Api-Key": "{env:NVD_API_KEY}",
+              "Accept": "application/json"
+            },
+            "timeout": 30000
+          }
+        },
+        "experimental": {}
+      }
+    },
+    {
+      "description": "local MCP server requires command",
+      "valid": false,
+      "data": {
+        "$schema": "https://opencode.ai/config.json",
+        "instructions": [
+          "AGENTS.md",
+          ".agents/skills/maxwell-conventions/SKILL.md"
+        ],
+        "model": "anthropic/claude-opus-5",
+        "small_model": "anthropic/claude-haiku-4-5-20251001",
+        "default_agent": "maxwell",
+        "share": "disabled",
+        "autoupdate": false,
+        "snapshot": true,
+        "agent": {
+          "maxwell": {
+            "description": "Primary Maxwell operator: runs /<workflow> <company_id> and coordinates the specialist subagents",
+            "mode": "primary",
+            "model": "anthropic/claude-opus-5",
+            "prompt": "{file:./AGENTS.md}",
+            "temperature": 0.1,
+            "permission": {
+              "edit": "allow",
+              "write": "allow",
+              "bash": {
+                "npm run validate*": "allow",
+                "node .claude/scripts/*": "allow",
+                "git push*": "ask",
+                "*": "deny"
+              },
+              "webfetch": "deny"
+            }
+          },
+          "iac-auditor": {
+            "description": "Static probe of Terraform, Pulumi and Kubernetes manifests for a target application; read-only against target systems",
+            "mode": "subagent",
+            "model": "anthropic/claude-sonnet-5",
+            "prompt": "{file:./.agents/agents/iac-auditor.prompt.md}",
+            "temperature": 0,
+            "permission": {
+              "read": "allow",
+              "grep": "allow",
+              "glob": "allow",
+              "bash": "deny",
+              "edit": "deny",
+              "write": "deny",
+              "webfetch": "deny"
+            }
+          },
+          "build": {
+            "disable": true
+          }
+        },
+        "command": {
+          "validate": {
+            "description": "Run every Maxwell validator and report problems by path",
+            "template": "Run `npm run validate` and report every problem by path. Do not edit schemas. $ARGUMENTS",
+            "agent": "maxwell",
+            "subtask": false
+          },
+          "status": {
+            "description": "Summarise the ledger, open initiatives and pending suggestions for a company",
+            "template": "Summarise the state of company-profile/$1: open findings by severity, initiatives in flight and pending suggestions",
+            "model": "anthropic/claude-haiku-4-5-20251001"
+          }
+        },
+        "plugin": [
+          "./.agents/hooks/maxwell-hooks.mjs"
+        ],
+        "permission": {
+          "*": "ask",
+          "edit": "allow",
+          "bash": {
+            "npm run *": "allow",
+            "node .claude/scripts/*": "allow",
+            "sops --decrypt*": "ask",
+            "*": "ask"
+          },
+          "webfetch": "deny",
+          "skill": "allow"
+        },
+        "mcp": {
+          "nvd": {
+            "type": "local",
+            "url": "https://x.example"
+          }
+        },
+        "experimental": {}
+      }
+    },
+    {
+      "description": "remote MCP server requires url",
+      "valid": false,
+      "data": {
+        "$schema": "https://opencode.ai/config.json",
+        "instructions": [
+          "AGENTS.md",
+          ".agents/skills/maxwell-conventions/SKILL.md"
+        ],
+        "model": "anthropic/claude-opus-5",
+        "small_model": "anthropic/claude-haiku-4-5-20251001",
+        "default_agent": "maxwell",
+        "share": "disabled",
+        "autoupdate": false,
+        "snapshot": true,
+        "agent": {
+          "maxwell": {
+            "description": "Primary Maxwell operator: runs /<workflow> <company_id> and coordinates the specialist subagents",
+            "mode": "primary",
+            "model": "anthropic/claude-opus-5",
+            "prompt": "{file:./AGENTS.md}",
+            "temperature": 0.1,
+            "permission": {
+              "edit": "allow",
+              "write": "allow",
+              "bash": {
+                "npm run validate*": "allow",
+                "node .claude/scripts/*": "allow",
+                "git push*": "ask",
+                "*": "deny"
+              },
+              "webfetch": "deny"
+            }
+          },
+          "iac-auditor": {
+            "description": "Static probe of Terraform, Pulumi and Kubernetes manifests for a target application; read-only against target systems",
+            "mode": "subagent",
+            "model": "anthropic/claude-sonnet-5",
+            "prompt": "{file:./.agents/agents/iac-auditor.prompt.md}",
+            "temperature": 0,
+            "permission": {
+              "read": "allow",
+              "grep": "allow",
+              "glob": "allow",
+              "bash": "deny",
+              "edit": "deny",
+              "write": "deny",
+              "webfetch": "deny"
+            }
+          },
+          "build": {
+            "disable": true
+          }
+        },
+        "command": {
+          "validate": {
+            "description": "Run every Maxwell validator and report problems by path",
+            "template": "Run `npm run validate` and report every problem by path. Do not edit schemas. $ARGUMENTS",
+            "agent": "maxwell",
+            "subtask": false
+          },
+          "status": {
+            "description": "Summarise the ledger, open initiatives and pending suggestions for a company",
+            "template": "Summarise the state of company-profile/$1: open findings by severity, initiatives in flight and pending suggestions",
+            "model": "anthropic/claude-haiku-4-5-20251001"
+          }
+        },
+        "plugin": [
+          "./.agents/hooks/maxwell-hooks.mjs"
+        ],
+        "permission": {
+          "*": "ask",
+          "edit": "allow",
+          "bash": {
+            "npm run *": "allow",
+            "node .claude/scripts/*": "allow",
+            "sops --decrypt*": "ask",
+            "*": "ask"
+          },
+          "webfetch": "deny",
+          "skill": "allow"
+        },
+        "mcp": {
+          "nvd": {
+            "type": "remote",
+            "enabled": true
+          }
+        },
+        "experimental": {}
+      }
+    },
+    {
+      "description": "extra key on an MCP server is denied",
+      "valid": false,
+      "data": {
+        "$schema": "https://opencode.ai/config.json",
+        "instructions": [
+          "AGENTS.md",
+          ".agents/skills/maxwell-conventions/SKILL.md"
+        ],
+        "model": "anthropic/claude-opus-5",
+        "small_model": "anthropic/claude-haiku-4-5-20251001",
+        "default_agent": "maxwell",
+        "share": "disabled",
+        "autoupdate": false,
+        "snapshot": true,
+        "agent": {
+          "maxwell": {
+            "description": "Primary Maxwell operator: runs /<workflow> <company_id> and coordinates the specialist subagents",
+            "mode": "primary",
+            "model": "anthropic/claude-opus-5",
+            "prompt": "{file:./AGENTS.md}",
+            "temperature": 0.1,
+            "permission": {
+              "edit": "allow",
+              "write": "allow",
+              "bash": {
+                "npm run validate*": "allow",
+                "node .claude/scripts/*": "allow",
+                "git push*": "ask",
+                "*": "deny"
+              },
+              "webfetch": "deny"
+            }
+          },
+          "iac-auditor": {
+            "description": "Static probe of Terraform, Pulumi and Kubernetes manifests for a target application; read-only against target systems",
+            "mode": "subagent",
+            "model": "anthropic/claude-sonnet-5",
+            "prompt": "{file:./.agents/agents/iac-auditor.prompt.md}",
+            "temperature": 0,
+            "permission": {
+              "read": "allow",
+              "grep": "allow",
+              "glob": "allow",
+              "bash": "deny",
+              "edit": "deny",
+              "write": "deny",
+              "webfetch": "deny"
+            }
+          },
+          "build": {
+            "disable": true
+          }
+        },
+        "command": {
+          "validate": {
+            "description": "Run every Maxwell validator and report problems by path",
+            "template": "Run `npm run validate` and report every problem by path. Do not edit schemas. $ARGUMENTS",
+            "agent": "maxwell",
+            "subtask": false
+          },
+          "status": {
+            "description": "Summarise the ledger, open initiatives and pending suggestions for a company",
+            "template": "Summarise the state of company-profile/$1: open findings by severity, initiatives in flight and pending suggestions",
+            "model": "anthropic/claude-haiku-4-5-20251001"
+          }
+        },
+        "plugin": [
+          "./.agents/hooks/maxwell-hooks.mjs"
+        ],
+        "permission": {
+          "*": "ask",
+          "edit": "allow",
+          "bash": {
+            "npm run *": "allow",
+            "node .claude/scripts/*": "allow",
+            "sops --decrypt*": "ask",
+            "*": "ask"
+          },
+          "webfetch": "deny",
+          "skill": "allow"
+        },
+        "mcp": {
+          "nvd": {
+            "type": "remote",
+            "url": "https://mcp.example.internal/nvd",
+            "enabled": true,
+            "headers": {
+              "X-Api-Key": "{env:NVD_API_KEY}",
+              "Accept": "application/json"
+            },
+            "timeout": 30000,
+            "transport": "sse"
+          }
+        },
+        "experimental": {}
+      }
+    },
+    {
+      "description": "MCP header carrying a literal API key is refused",
+      "valid": false,
+      "data": {
+        "$schema": "https://opencode.ai/config.json",
+        "instructions": [
+          "AGENTS.md",
+          ".agents/skills/maxwell-conventions/SKILL.md"
+        ],
+        "model": "anthropic/claude-opus-5",
+        "small_model": "anthropic/claude-haiku-4-5-20251001",
+        "default_agent": "maxwell",
+        "share": "disabled",
+        "autoupdate": false,
+        "snapshot": true,
+        "agent": {
+          "maxwell": {
+            "description": "Primary Maxwell operator: runs /<workflow> <company_id> and coordinates the specialist subagents",
+            "mode": "primary",
+            "model": "anthropic/claude-opus-5",
+            "prompt": "{file:./AGENTS.md}",
+            "temperature": 0.1,
+            "permission": {
+              "edit": "allow",
+              "write": "allow",
+              "bash": {
+                "npm run validate*": "allow",
+                "node .claude/scripts/*": "allow",
+                "git push*": "ask",
+                "*": "deny"
+              },
+              "webfetch": "deny"
+            }
+          },
+          "iac-auditor": {
+            "description": "Static probe of Terraform, Pulumi and Kubernetes manifests for a target application; read-only against target systems",
+            "mode": "subagent",
+            "model": "anthropic/claude-sonnet-5",
+            "prompt": "{file:./.agents/agents/iac-auditor.prompt.md}",
+            "temperature": 0,
+            "permission": {
+              "read": "allow",
+              "grep": "allow",
+              "glob": "allow",
+              "bash": "deny",
+              "edit": "deny",
+              "write": "deny",
+              "webfetch": "deny"
+            }
+          },
+          "build": {
+            "disable": true
+          }
+        },
+        "command": {
+          "validate": {
+            "description": "Run every Maxwell validator and report problems by path",
+            "template": "Run `npm run validate` and report every problem by path. Do not edit schemas. $ARGUMENTS",
+            "agent": "maxwell",
+            "subtask": false
+          },
+          "status": {
+            "description": "Summarise the ledger, open initiatives and pending suggestions for a company",
+            "template": "Summarise the state of company-profile/$1: open findings by severity, initiatives in flight and pending suggestions",
+            "model": "anthropic/claude-haiku-4-5-20251001"
+          }
+        },
+        "plugin": [
+          "./.agents/hooks/maxwell-hooks.mjs"
+        ],
+        "permission": {
+          "*": "ask",
+          "edit": "allow",
+          "bash": {
+            "npm run *": "allow",
+            "node .claude/scripts/*": "allow",
+            "sops --decrypt*": "ask",
+            "*": "ask"
+          },
+          "webfetch": "deny",
+          "skill": "allow"
+        },
+        "mcp": {
+          "nvd": {
+            "type": "remote",
+            "url": "https://mcp.example.internal/nvd",
+            "enabled": true,
+            "headers": {
+              "X-Api-Key": "sk-live-1234567890abcdef",
+              "Accept": "application/json"
+            },
+            "timeout": 30000
+          }
+        },
+        "experimental": {}
+      }
+    },
+    {
+      "description": "MCP Authorization header must be an env reference",
+      "valid": false,
+      "data": {
+        "$schema": "https://opencode.ai/config.json",
+        "instructions": [
+          "AGENTS.md",
+          ".agents/skills/maxwell-conventions/SKILL.md"
+        ],
+        "model": "anthropic/claude-opus-5",
+        "small_model": "anthropic/claude-haiku-4-5-20251001",
+        "default_agent": "maxwell",
+        "share": "disabled",
+        "autoupdate": false,
+        "snapshot": true,
+        "agent": {
+          "maxwell": {
+            "description": "Primary Maxwell operator: runs /<workflow> <company_id> and coordinates the specialist subagents",
+            "mode": "primary",
+            "model": "anthropic/claude-opus-5",
+            "prompt": "{file:./AGENTS.md}",
+            "temperature": 0.1,
+            "permission": {
+              "edit": "allow",
+              "write": "allow",
+              "bash": {
+                "npm run validate*": "allow",
+                "node .claude/scripts/*": "allow",
+                "git push*": "ask",
+                "*": "deny"
+              },
+              "webfetch": "deny"
+            }
+          },
+          "iac-auditor": {
+            "description": "Static probe of Terraform, Pulumi and Kubernetes manifests for a target application; read-only against target systems",
+            "mode": "subagent",
+            "model": "anthropic/claude-sonnet-5",
+            "prompt": "{file:./.agents/agents/iac-auditor.prompt.md}",
+            "temperature": 0,
+            "permission": {
+              "read": "allow",
+              "grep": "allow",
+              "glob": "allow",
+              "bash": "deny",
+              "edit": "deny",
+              "write": "deny",
+              "webfetch": "deny"
+            }
+          },
+          "build": {
+            "disable": true
+          }
+        },
+        "command": {
+          "validate": {
+            "description": "Run every Maxwell validator and report problems by path",
+            "template": "Run `npm run validate` and report every problem by path. Do not edit schemas. $ARGUMENTS",
+            "agent": "maxwell",
+            "subtask": false
+          },
+          "status": {
+            "description": "Summarise the ledger, open initiatives and pending suggestions for a company",
+            "template": "Summarise the state of company-profile/$1: open findings by severity, initiatives in flight and pending suggestions",
+            "model": "anthropic/claude-haiku-4-5-20251001"
+          }
+        },
+        "plugin": [
+          "./.agents/hooks/maxwell-hooks.mjs"
+        ],
+        "permission": {
+          "*": "ask",
+          "edit": "allow",
+          "bash": {
+            "npm run *": "allow",
+            "node .claude/scripts/*": "allow",
+            "sops --decrypt*": "ask",
+            "*": "ask"
+          },
+          "webfetch": "deny",
+          "skill": "allow"
+        },
+        "mcp": {
+          "nvd": {
+            "type": "remote",
+            "url": "https://mcp.example.internal/nvd",
+            "enabled": true,
+            "headers": {
+              "X-Api-Key": "{env:NVD_API_KEY}",
+              "Accept": "application/json",
+              "Authorization": "Bearer abcdef123456"
+            },
+            "timeout": 30000
+          }
+        },
+        "experimental": {}
+      }
+    },
+    {
+      "description": "MCP environment values must be env references, never literals",
+      "valid": false,
+      "data": {
+        "$schema": "https://opencode.ai/config.json",
+        "instructions": [
+          "AGENTS.md",
+          ".agents/skills/maxwell-conventions/SKILL.md"
+        ],
+        "model": "anthropic/claude-opus-5",
+        "small_model": "anthropic/claude-haiku-4-5-20251001",
+        "default_agent": "maxwell",
+        "share": "disabled",
+        "autoupdate": false,
+        "snapshot": true,
+        "agent": {
+          "maxwell": {
+            "description": "Primary Maxwell operator: runs /<workflow> <company_id> and coordinates the specialist subagents",
+            "mode": "primary",
+            "model": "anthropic/claude-opus-5",
+            "prompt": "{file:./AGENTS.md}",
+            "temperature": 0.1,
+            "permission": {
+              "edit": "allow",
+              "write": "allow",
+              "bash": {
+                "npm run validate*": "allow",
+                "node .claude/scripts/*": "allow",
+                "git push*": "ask",
+                "*": "deny"
+              },
+              "webfetch": "deny"
+            }
+          },
+          "iac-auditor": {
+            "description": "Static probe of Terraform, Pulumi and Kubernetes manifests for a target application; read-only against target systems",
+            "mode": "subagent",
+            "model": "anthropic/claude-sonnet-5",
+            "prompt": "{file:./.agents/agents/iac-auditor.prompt.md}",
+            "temperature": 0,
+            "permission": {
+              "read": "allow",
+              "grep": "allow",
+              "glob": "allow",
+              "bash": "deny",
+              "edit": "deny",
+              "write": "deny",
+              "webfetch": "deny"
+            }
+          },
+          "build": {
+            "disable": true
+          }
+        },
+        "command": {
+          "validate": {
+            "description": "Run every Maxwell validator and report problems by path",
+            "template": "Run `npm run validate` and report every problem by path. Do not edit schemas. $ARGUMENTS",
+            "agent": "maxwell",
+            "subtask": false
+          },
+          "status": {
+            "description": "Summarise the ledger, open initiatives and pending suggestions for a company",
+            "template": "Summarise the state of company-profile/$1: open findings by severity, initiatives in flight and pending suggestions",
+            "model": "anthropic/claude-haiku-4-5-20251001"
+          }
+        },
+        "plugin": [
+          "./.agents/hooks/maxwell-hooks.mjs"
+        ],
+        "permission": {
+          "*": "ask",
+          "edit": "allow",
+          "bash": {
+            "npm run *": "allow",
+            "node .claude/scripts/*": "allow",
+            "sops --decrypt*": "ask",
+            "*": "ask"
+          },
+          "webfetch": "deny",
+          "skill": "allow"
+        },
+        "mcp": {
+          "nvd": {
+            "type": "remote",
+            "url": "https://mcp.example.internal/nvd",
+            "enabled": true,
+            "headers": {
+              "X-Api-Key": "{env:NVD_API_KEY}",
+              "Accept": "application/json"
+            },
+            "timeout": 30000
+          },
+          "ledger": {
+            "type": "local",
+            "command": [
+              "node",
+              ".claude/scripts/soc/mcp.mjs"
+            ],
+            "environment": {
+              "NVD_API_KEY": "literal-secret-value"
+            }
+          }
+        },
+        "experimental": {}
+      }
+    },
+    {
+      "description": "MCP oauth clientSecret must be an env reference",
+      "valid": false,
+      "data": {
+        "$schema": "https://opencode.ai/config.json",
+        "instructions": [
+          "AGENTS.md",
+          ".agents/skills/maxwell-conventions/SKILL.md"
+        ],
+        "model": "anthropic/claude-opus-5",
+        "small_model": "anthropic/claude-haiku-4-5-20251001",
+        "default_agent": "maxwell",
+        "share": "disabled",
+        "autoupdate": false,
+        "snapshot": true,
+        "agent": {
+          "maxwell": {
+            "description": "Primary Maxwell operator: runs /<workflow> <company_id> and coordinates the specialist subagents",
+            "mode": "primary",
+            "model": "anthropic/claude-opus-5",
+            "prompt": "{file:./AGENTS.md}",
+            "temperature": 0.1,
+            "permission": {
+              "edit": "allow",
+              "write": "allow",
+              "bash": {
+                "npm run validate*": "allow",
+                "node .claude/scripts/*": "allow",
+                "git push*": "ask",
+                "*": "deny"
+              },
+              "webfetch": "deny"
+            }
+          },
+          "iac-auditor": {
+            "description": "Static probe of Terraform, Pulumi and Kubernetes manifests for a target application; read-only against target systems",
+            "mode": "subagent",
+            "model": "anthropic/claude-sonnet-5",
+            "prompt": "{file:./.agents/agents/iac-auditor.prompt.md}",
+            "temperature": 0,
+            "permission": {
+              "read": "allow",
+              "grep": "allow",
+              "glob": "allow",
+              "bash": "deny",
+              "edit": "deny",
+              "write": "deny",
+              "webfetch": "deny"
+            }
+          },
+          "build": {
+            "disable": true
+          }
+        },
+        "command": {
+          "validate": {
+            "description": "Run every Maxwell validator and report problems by path",
+            "template": "Run `npm run validate` and report every problem by path. Do not edit schemas. $ARGUMENTS",
+            "agent": "maxwell",
+            "subtask": false
+          },
+          "status": {
+            "description": "Summarise the ledger, open initiatives and pending suggestions for a company",
+            "template": "Summarise the state of company-profile/$1: open findings by severity, initiatives in flight and pending suggestions",
+            "model": "anthropic/claude-haiku-4-5-20251001"
+          }
+        },
+        "plugin": [
+          "./.agents/hooks/maxwell-hooks.mjs"
+        ],
+        "permission": {
+          "*": "ask",
+          "edit": "allow",
+          "bash": {
+            "npm run *": "allow",
+            "node .claude/scripts/*": "allow",
+            "sops --decrypt*": "ask",
+            "*": "ask"
+          },
+          "webfetch": "deny",
+          "skill": "allow"
+        },
+        "mcp": {
+          "nvd": {
+            "type": "remote",
+            "url": "https://mcp.example.internal/nvd",
+            "enabled": true,
+            "headers": {
+              "X-Api-Key": "{env:NVD_API_KEY}",
+              "Accept": "application/json"
+            },
+            "timeout": 30000,
+            "oauth": {
+              "clientId": "maxwell",
+              "clientSecret": "plain-secret"
+            }
+          }
+        },
+        "experimental": {}
+      }
+    },
+    {
+      "description": "MCP cwd must not traverse outside the workspace",
+      "valid": false,
+      "data": {
+        "$schema": "https://opencode.ai/config.json",
+        "instructions": [
+          "AGENTS.md",
+          ".agents/skills/maxwell-conventions/SKILL.md"
+        ],
+        "model": "anthropic/claude-opus-5",
+        "small_model": "anthropic/claude-haiku-4-5-20251001",
+        "default_agent": "maxwell",
+        "share": "disabled",
+        "autoupdate": false,
+        "snapshot": true,
+        "agent": {
+          "maxwell": {
+            "description": "Primary Maxwell operator: runs /<workflow> <company_id> and coordinates the specialist subagents",
+            "mode": "primary",
+            "model": "anthropic/claude-opus-5",
+            "prompt": "{file:./AGENTS.md}",
+            "temperature": 0.1,
+            "permission": {
+              "edit": "allow",
+              "write": "allow",
+              "bash": {
+                "npm run validate*": "allow",
+                "node .claude/scripts/*": "allow",
+                "git push*": "ask",
+                "*": "deny"
+              },
+              "webfetch": "deny"
+            }
+          },
+          "iac-auditor": {
+            "description": "Static probe of Terraform, Pulumi and Kubernetes manifests for a target application; read-only against target systems",
+            "mode": "subagent",
+            "model": "anthropic/claude-sonnet-5",
+            "prompt": "{file:./.agents/agents/iac-auditor.prompt.md}",
+            "temperature": 0,
+            "permission": {
+              "read": "allow",
+              "grep": "allow",
+              "glob": "allow",
+              "bash": "deny",
+              "edit": "deny",
+              "write": "deny",
+              "webfetch": "deny"
+            }
+          },
+          "build": {
+            "disable": true
+          }
+        },
+        "command": {
+          "validate": {
+            "description": "Run every Maxwell validator and report problems by path",
+            "template": "Run `npm run validate` and report every problem by path. Do not edit schemas. $ARGUMENTS",
+            "agent": "maxwell",
+            "subtask": false
+          },
+          "status": {
+            "description": "Summarise the ledger, open initiatives and pending suggestions for a company",
+            "template": "Summarise the state of company-profile/$1: open findings by severity, initiatives in flight and pending suggestions",
+            "model": "anthropic/claude-haiku-4-5-20251001"
+          }
+        },
+        "plugin": [
+          "./.agents/hooks/maxwell-hooks.mjs"
+        ],
+        "permission": {
+          "*": "ask",
+          "edit": "allow",
+          "bash": {
+            "npm run *": "allow",
+            "node .claude/scripts/*": "allow",
+            "sops --decrypt*": "ask",
+            "*": "ask"
+          },
+          "webfetch": "deny",
+          "skill": "allow"
+        },
+        "mcp": {
+          "nvd": {
+            "type": "remote",
+            "url": "https://mcp.example.internal/nvd",
+            "enabled": true,
+            "headers": {
+              "X-Api-Key": "{env:NVD_API_KEY}",
+              "Accept": "application/json"
+            },
+            "timeout": 30000
+          },
+          "ledger": {
+            "type": "local",
+            "command": [
+              "node",
+              "mcp.mjs"
+            ],
+            "cwd": "../elsewhere"
+          }
+        },
+        "experimental": {}
+      }
+    },
+    {
+      "description": "share outside manual/auto/disabled",
+      "valid": false,
+      "data": {
+        "$schema": "https://opencode.ai/config.json",
+        "instructions": [
+          "AGENTS.md",
+          ".agents/skills/maxwell-conventions/SKILL.md"
+        ],
+        "model": "anthropic/claude-opus-5",
+        "small_model": "anthropic/claude-haiku-4-5-20251001",
+        "default_agent": "maxwell",
+        "share": "public",
+        "autoupdate": false,
+        "snapshot": true,
+        "agent": {
+          "maxwell": {
+            "description": "Primary Maxwell operator: runs /<workflow> <company_id> and coordinates the specialist subagents",
+            "mode": "primary",
+            "model": "anthropic/claude-opus-5",
+            "prompt": "{file:./AGENTS.md}",
+            "temperature": 0.1,
+            "permission": {
+              "edit": "allow",
+              "write": "allow",
+              "bash": {
+                "npm run validate*": "allow",
+                "node .claude/scripts/*": "allow",
+                "git push*": "ask",
+                "*": "deny"
+              },
+              "webfetch": "deny"
+            }
+          },
+          "iac-auditor": {
+            "description": "Static probe of Terraform, Pulumi and Kubernetes manifests for a target application; read-only against target systems",
+            "mode": "subagent",
+            "model": "anthropic/claude-sonnet-5",
+            "prompt": "{file:./.agents/agents/iac-auditor.prompt.md}",
+            "temperature": 0,
+            "permission": {
+              "read": "allow",
+              "grep": "allow",
+              "glob": "allow",
+              "bash": "deny",
+              "edit": "deny",
+              "write": "deny",
+              "webfetch": "deny"
+            }
+          },
+          "build": {
+            "disable": true
+          }
+        },
+        "command": {
+          "validate": {
+            "description": "Run every Maxwell validator and report problems by path",
+            "template": "Run `npm run validate` and report every problem by path. Do not edit schemas. $ARGUMENTS",
+            "agent": "maxwell",
+            "subtask": false
+          },
+          "status": {
+            "description": "Summarise the ledger, open initiatives and pending suggestions for a company",
+            "template": "Summarise the state of company-profile/$1: open findings by severity, initiatives in flight and pending suggestions",
+            "model": "anthropic/claude-haiku-4-5-20251001"
+          }
+        },
+        "plugin": [
+          "./.agents/hooks/maxwell-hooks.mjs"
+        ],
+        "permission": {
+          "*": "ask",
+          "edit": "allow",
+          "bash": {
+            "npm run *": "allow",
+            "node .claude/scripts/*": "allow",
+            "sops --decrypt*": "ask",
+            "*": "ask"
+          },
+          "webfetch": "deny",
+          "skill": "allow"
+        },
+        "mcp": {
+          "nvd": {
+            "type": "remote",
+            "url": "https://mcp.example.internal/nvd",
+            "enabled": true,
+            "headers": {
+              "X-Api-Key": "{env:NVD_API_KEY}",
+              "Accept": "application/json"
+            },
+            "timeout": 30000
+          }
+        },
+        "experimental": {}
+      }
+    },
+    {
+      "description": "temperature above 2",
+      "valid": false,
+      "data": {
+        "$schema": "https://opencode.ai/config.json",
+        "instructions": [
+          "AGENTS.md",
+          ".agents/skills/maxwell-conventions/SKILL.md"
+        ],
+        "model": "anthropic/claude-opus-5",
+        "small_model": "anthropic/claude-haiku-4-5-20251001",
+        "default_agent": "maxwell",
+        "share": "disabled",
+        "autoupdate": false,
+        "snapshot": true,
+        "agent": {
+          "maxwell": {
+            "description": "Primary Maxwell operator: runs /<workflow> <company_id> and coordinates the specialist subagents",
+            "mode": "primary",
+            "model": "anthropic/claude-opus-5",
+            "prompt": "{file:./AGENTS.md}",
+            "temperature": 0.1,
+            "permission": {
+              "edit": "allow",
+              "write": "allow",
+              "bash": {
+                "npm run validate*": "allow",
+                "node .claude/scripts/*": "allow",
+                "git push*": "ask",
+                "*": "deny"
+              },
+              "webfetch": "deny"
+            }
+          },
+          "iac-auditor": {
+            "description": "Static probe of Terraform, Pulumi and Kubernetes manifests for a target application; read-only against target systems",
+            "mode": "subagent",
+            "model": "anthropic/claude-sonnet-5",
+            "prompt": "{file:./.agents/agents/iac-auditor.prompt.md}",
+            "temperature": 2.5,
+            "permission": {
+              "read": "allow",
+              "grep": "allow",
+              "glob": "allow",
+              "bash": "deny",
+              "edit": "deny",
+              "write": "deny",
+              "webfetch": "deny"
+            }
+          },
+          "build": {
+            "disable": true
+          }
+        },
+        "command": {
+          "validate": {
+            "description": "Run every Maxwell validator and report problems by path",
+            "template": "Run `npm run validate` and report every problem by path. Do not edit schemas. $ARGUMENTS",
+            "agent": "maxwell",
+            "subtask": false
+          },
+          "status": {
+            "description": "Summarise the ledger, open initiatives and pending suggestions for a company",
+            "template": "Summarise the state of company-profile/$1: open findings by severity, initiatives in flight and pending suggestions",
+            "model": "anthropic/claude-haiku-4-5-20251001"
+          }
+        },
+        "plugin": [
+          "./.agents/hooks/maxwell-hooks.mjs"
+        ],
+        "permission": {
+          "*": "ask",
+          "edit": "allow",
+          "bash": {
+            "npm run *": "allow",
+            "node .claude/scripts/*": "allow",
+            "sops --decrypt*": "ask",
+            "*": "ask"
+          },
+          "webfetch": "deny",
+          "skill": "allow"
+        },
+        "mcp": {
+          "nvd": {
+            "type": "remote",
+            "url": "https://mcp.example.internal/nvd",
+            "enabled": true,
+            "headers": {
+              "X-Api-Key": "{env:NVD_API_KEY}",
+              "Accept": "application/json"
+            },
+            "timeout": 30000
+          }
+        },
+        "experimental": {}
+      }
+    },
+    {
+      "description": "instructions is required",
+      "valid": false,
+      "data": {
+        "$schema": "https://opencode.ai/config.json",
+        "model": "anthropic/claude-opus-5",
+        "small_model": "anthropic/claude-haiku-4-5-20251001",
+        "default_agent": "maxwell",
+        "share": "disabled",
+        "autoupdate": false,
+        "snapshot": true,
+        "agent": {
+          "maxwell": {
+            "description": "Primary Maxwell operator: runs /<workflow> <company_id> and coordinates the specialist subagents",
+            "mode": "primary",
+            "model": "anthropic/claude-opus-5",
+            "prompt": "{file:./AGENTS.md}",
+            "temperature": 0.1,
+            "permission": {
+              "edit": "allow",
+              "write": "allow",
+              "bash": {
+                "npm run validate*": "allow",
+                "node .claude/scripts/*": "allow",
+                "git push*": "ask",
+                "*": "deny"
+              },
+              "webfetch": "deny"
+            }
+          },
+          "iac-auditor": {
+            "description": "Static probe of Terraform, Pulumi and Kubernetes manifests for a target application; read-only against target systems",
+            "mode": "subagent",
+            "model": "anthropic/claude-sonnet-5",
+            "prompt": "{file:./.agents/agents/iac-auditor.prompt.md}",
+            "temperature": 0,
+            "permission": {
+              "read": "allow",
+              "grep": "allow",
+              "glob": "allow",
+              "bash": "deny",
+              "edit": "deny",
+              "write": "deny",
+              "webfetch": "deny"
+            }
+          },
+          "build": {
+            "disable": true
+          }
+        },
+        "command": {
+          "validate": {
+            "description": "Run every Maxwell validator and report problems by path",
+            "template": "Run `npm run validate` and report every problem by path. Do not edit schemas. $ARGUMENTS",
+            "agent": "maxwell",
+            "subtask": false
+          },
+          "status": {
+            "description": "Summarise the ledger, open initiatives and pending suggestions for a company",
+            "template": "Summarise the state of company-profile/$1: open findings by severity, initiatives in flight and pending suggestions",
+            "model": "anthropic/claude-haiku-4-5-20251001"
+          }
+        },
+        "plugin": [
+          "./.agents/hooks/maxwell-hooks.mjs"
+        ],
+        "permission": {
+          "*": "ask",
+          "edit": "allow",
+          "bash": {
+            "npm run *": "allow",
+            "node .claude/scripts/*": "allow",
+            "sops --decrypt*": "ask",
+            "*": "ask"
+          },
+          "webfetch": "deny",
+          "skill": "allow"
+        },
+        "mcp": {
+          "nvd": {
+            "type": "remote",
+            "url": "https://mcp.example.internal/nvd",
+            "enabled": true,
+            "headers": {
+              "X-Api-Key": "{env:NVD_API_KEY}",
+              "Accept": "application/json"
+            },
+            "timeout": 30000
+          }
+        },
+        "experimental": {}
+      }
+    }
+  ]
+}

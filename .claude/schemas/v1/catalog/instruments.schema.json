@@ -1,0 +1,249 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/catalog/instruments.schema.json",
+  "title": "Regulatory instruments registry",
+  "description": "Schema for .claude/skills/regulatory-catalogs/references/instruments.json: the registry of every regulatory instrument and framework Maxwell can cite, with titles, versions, applicability and the hard numeric requirements agents must not guess. The set of instrumentIds must equal the vocab/instruments enum exactly. Human-curated, so provenance is optional",
+  "examples": [
+    {
+      "schemaVersion": "1",
+      "kind": "maxwell.catalog.instruments",
+      "instruments": [
+        {
+          "instrumentId": "sebi-cscrf-2024",
+          "regulator": "SEBI",
+          "title": "Cybersecurity and Cyber Resilience Framework (CSCRF) for SEBI Regulated Entities",
+          "shortName": "SEBI CSCRF",
+          "version": "SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113",
+          "issuedOn": "2024-08-20",
+          "effectiveFrom": "2025-04-01",
+          "supersedes": [],
+          "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
+          "applicability": {
+            "entityTypes": [
+              "stock-broker",
+              "depository-participant",
+              "asset-management-company",
+              "market-infrastructure-institution"
+            ],
+            "jurisdictions": [ "IN" ],
+            "categories": [
+              "mii",
+              "qualified-re",
+              "mid-size-re",
+              "small-size-re",
+              "self-certification-re"
+            ]
+          },
+          "structure": "NIST CSF style: function (GV, ID, PR, DE, RS, RC) . category . S<n> standard, e.g. GV.SC.S5; guidelines suffixed G<n>",
+          "hardRequirements": [
+            {
+              "topic": "sbom",
+              "requirement": "REs shall obtain a Software Bill of Materials for all critical systems and their components",
+              "unit": "boolean",
+              "value": 1,
+              "controlId": "GV.SC.S5"
+            },
+            {
+              "topic": "vapt-cadence",
+              "requirement": "VAPT of critical systems at least twice a year for MIIs and Qualified REs",
+              "unit": "per-year",
+              "value": 2,
+              "controlId": "DE.CM.S2"
+            },
+            {
+              "topic": "incident-reporting",
+              "requirement": "Report cyber incidents to SEBI and CERT-In within 6 hours of noticing",
+              "unit": "hours",
+              "value": 6,
+              "controlId": "RS.CO.S1"
+            }
+          ],
+          "catalogFile": ".claude/skills/regulatory-catalogs/references/catalogs/sebi-cscrf-2024.catalog.json",
+          "lastReviewedAt": "2026-09-01"
+        }
+      ],
+      "provenance": {
+        "harness": "human",
+        "generatedAt": "2026-09-01T09:00:00Z"
+      }
+    }
+  ],
+  "type": "object",
+  "required": [ "schemaVersion", "kind", "instruments" ],
+  "properties": {
+    "schemaVersion": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/schemaVersion"
+    },
+    "kind": {
+      "const": "maxwell.catalog.instruments"
+    },
+    "instruments": {
+      "description": "One entry per instrument in the vocab. instrumentId must be unique across entries",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/instrument"
+      }
+    },
+    "provenance": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/provenance"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "instrument": {
+      "type": "object",
+      "required": [
+        "instrumentId",
+        "regulator",
+        "title",
+        "shortName",
+        "url",
+        "applicability"
+      ],
+      "properties": {
+        "instrumentId": {
+          "description": "Vocab identifier of the instrument; the catalog file, SLA table and every regulatoryRef use this id",
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/instruments.schema.json"
+        },
+        "regulator": {
+          "description": "Issuing regulator or standards body. Every regulatoryRef that cites this instrument must carry the same regulator; the schema cannot tie the pair, so loaders cross-check regulatoryRef.regulator against this entry",
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/regulators.schema.json"
+        },
+        "title": {
+          "description": "Official full title as printed on the instrument",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "shortName": {
+          "description": "Name used in reports and summary.md, e.g. 'SEBI CSCRF', 'RBI Directions 2026'",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "version": {
+          "description": "Circular or notification number, edition or revision as published by the regulator",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "issuedOn": {
+          "description": "Date the instrument was issued or published",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/date"
+        },
+        "effectiveFrom": {
+          "description": "Date compliance became or becomes mandatory; may be later than issuedOn when the regulator gave a glide path",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/date"
+        },
+        "supersedes": {
+          "description": "Instruments this one replaces in full; findings citing a superseded instrument should be re-mapped",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/vocab/instruments.schema.json"
+          }
+        },
+        "url": {
+          "description": "Canonical public URL of the instrument text",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/url"
+        },
+        "applicability": {
+          "description": "Who the instrument binds. Workflows intersect entityTypes with company details.entityTypes to select instruments",
+          "type": "object",
+          "required": [ "entityTypes", "jurisdictions" ],
+          "properties": {
+            "entityTypes": {
+              "description": "Regulated-entity types the instrument applies to; empty means voluntary framework applicable to anyone",
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "$ref": "https://maxwell.onfinance.ai/schemas/vocab/entity-types.schema.json"
+              }
+            },
+            "jurisdictions": {
+              "description": "ISO 3166-1 alpha-2 country codes, or 'EU' for union-wide law; empty means global",
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/countryCode"
+              }
+            },
+            "categories": {
+              "description": "Regulator-defined size or criticality tiers that change obligations, as slugs shared with company details.regulatoryRegistrations[].category (e.g. 'qualified-re'); omit when the instrument does not tier",
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "$ref": "#/$defs/reCategory"
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "structure": {
+          "description": "How controls are numbered in this instrument, so agents can form valid controlIds, e.g. 'Annex I clauses 1-40' or 'Function.Category.S<n>'",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "hardRequirements": {
+          "description": "Numeric obligations stated in the instrument (deadlines, cadences, retention periods, counts). Agents copy these values in the unit the clause states and never estimate or convert them",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/hardRequirement"
+          }
+        },
+        "catalogFile": {
+          "description": "Workspace path of the OSCAL-lite catalog for this instrument, when one has been extracted",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/workspacePath"
+        },
+        "lastReviewedAt": {
+          "description": "Date a human last verified this entry against the regulator's site",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/date"
+        }
+      },
+      "additionalProperties": false
+    },
+    "hardRequirement": {
+      "type": "object",
+      "required": [ "topic", "requirement", "value", "unit" ],
+      "properties": {
+        "topic": {
+          "description": "What the obligation is about; the SLA table uses the same vocabulary",
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/sla-table.schema.json#/$defs/topic"
+        },
+        "requirement": {
+          "description": "The obligation in the regulator's own words or a close paraphrase",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/nonEmptyString"
+        },
+        "value": {
+          "description": "The number the clause states, in 'unit', exactly as stated (never converted: 3 years stays years, 15 minutes stays minutes); 1 or 0 when unit is 'boolean'",
+          "type": "number",
+          "minimum": 0
+        },
+        "unit": {
+          "description": "Unit of value, as the clause states it",
+          "$ref": "#/$defs/unit"
+        },
+        "controlId": {
+          "description": "Control or clause id that states the obligation, when the instrument numbers it",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/controlId"
+        }
+      },
+      "additionalProperties": false
+    },
+    "reCategory": {
+      "description": "Alias of vocab statuses reCategory, kept for existing $refs",
+      "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/reCategory"
+    },
+    "unit": {
+      "description": "Unit of a stated obligation, exactly as the clause states it: minutes, hours, days, months or years for durations; per-quarter or per-year for cadences; count for plain numbers (minimum password length, number of DR drills, number of auditors); percent; boolean for yes/no obligations. Store the value as stated, never convert between units",
+      "enum": [
+        "minutes",
+        "hours",
+        "days",
+        "months",
+        "years",
+        "per-quarter",
+        "per-year",
+        "count",
+        "percent",
+        "boolean"
+      ]
+    }
+  }
+}

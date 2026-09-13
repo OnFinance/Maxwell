@@ -1,0 +1,570 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/company/sdlc-policy.schema.json",
+  "title": "SDLC policy",
+  "description": "Schema for company-profile/<company_id>/sdlc/policy.json, the company's secure software development lifecycle policy as Maxwell understands it: branching, review, CI gates, release, secrets, dependency, AI-coding rules and the mapping to NIST SSDF practices. probe-sdlc compares observed repository behaviour against this document",
+  "examples": [
+    {
+      "schemaVersion": "1",
+      "kind": "maxwell.company.sdlc",
+      "companyId": "zenith-securities",
+      "policyVersion": "2.1.0",
+      "effectiveFrom": "2026-04-01",
+      "reviewCadenceMonths": 12,
+      "owner": "cto",
+      "branching": {
+        "model": "trunk",
+        "protectedBranches": [ "main", "release/*" ],
+        "signedCommitsRequired": true
+      },
+      "codeReview": {
+        "required": true,
+        "minApprovers": 1,
+        "codeownersEnforced": true,
+        "aiReviewAllowed": true,
+        "selfApprovalAllowed": false
+      },
+      "ciGates": [
+        {
+          "gate": "sast",
+          "tool": "semgrep",
+          "blocking": true,
+          "minSeverityToBlock": "high"
+        },
+        {
+          "gate": "secrets",
+          "tool": "gitleaks",
+          "blocking": true,
+          "minSeverityToBlock": "low"
+        },
+        {
+          "gate": "sca",
+          "tool": "trivy",
+          "blocking": true,
+          "minSeverityToBlock": "critical"
+        },
+        {
+          "gate": "unit-tests",
+          "tool": "pytest",
+          "blocking": true
+        }
+      ],
+      "releaseProcess": {
+        "environmentsOrder": [ "dev", "qa", "uat", "prod" ],
+        "approvalsRequired": 2,
+        "changeTypeDefault": "normal",
+        "rollbackPlanRequired": true,
+        "emergencyChangeProcess": "CTO and CISO verbal approval, ticket raised within 4 hours, retrospective CAB review within 5 working days",
+        "deploymentWindows": [
+          {
+            "daysOfWeek": [ "mon", "tue", "wed", "thu", "fri" ],
+            "startUtc": "12:30",
+            "endUtc": "16:30",
+            "note": "Mon-Fri 18:00-22:00 IST, outside NSE/BSE market hours"
+          }
+        ]
+      },
+      "secretsManagement": {
+        "backend": "vault",
+        "rotationDays": 90,
+        "scanningInCi": true
+      },
+      "dependencyPolicy": {
+        "lockfilesRequired": true,
+        "allowedRegistries": [
+          "https://registry.npmjs.org",
+          "https://pypi.org/simple"
+        ],
+        "sbomRequired": true,
+        "sbomFormat": "cyclonedx",
+        "vulnerabilitySlaDays": {
+          "critical": 7,
+          "high": 30,
+          "medium": 90,
+          "low": 180,
+          "info": 365
+        }
+      },
+      "aiCodingPolicy": {
+        "harnessesAllowed": [ "claude-code", "copilot" ],
+        "humanReviewRequired": true,
+        "promptInjectionControls": [
+          "tool-allowlist",
+          "secrets-redaction",
+          "human-approval-for-writes"
+        ],
+        "allowedDataClasses": [ "public", "internal" ]
+      },
+      "ssdfMapping": [
+        {
+          "practice": "PO.3.2",
+          "status": "implemented",
+          "notes": "Branch protection and CI gates enforced on all repositories"
+        },
+        {
+          "practice": "PW.7",
+          "status": "partial",
+          "notes": "Code review mandatory; security-focused review checklist not yet adopted"
+        }
+      ],
+      "provenance": {
+        "harness": "human",
+        "generatedAt": "2026-09-13T06:45:00Z",
+        "workflow": "seed-company",
+        "agent": "cto@zenithsecurities.in"
+      }
+    }
+  ],
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "kind",
+    "branching",
+    "codeReview",
+    "ciGates",
+    "releaseProcess",
+    "secretsManagement",
+    "dependencyPolicy",
+    "aiCodingPolicy",
+    "provenance"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/schemaVersion"
+    },
+    "kind": {
+      "const": "maxwell.company.sdlc"
+    },
+    "companyId": {
+      "description": "Slug of the owning company; must equal the company-profile/<company_id> folder name when present",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+    },
+    "policyVersion": {
+      "description": "Semantic version of the policy document as approved by the IT committee",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/semver"
+    },
+    "effectiveFrom": {
+      "description": "Date from which this policy version applies",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/date"
+    },
+    "reviewCadenceMonths": {
+      "description": "Months between mandatory policy reviews; regulators typically expect at most 12",
+      "type": "integer",
+      "maximum": 36,
+      "minimum": 1
+    },
+    "owner": {
+      "description": "Governance role accountable for the policy, matching a contact role in details.json (common contactRole); narrowed to the roles that may own an SDLC policy",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/contactRole",
+      "enum": [ "ciso", "cto", "cio", "head-it", "it-committee-chair" ]
+    },
+    "branching": {
+      "description": "Source-control branching rules",
+      "type": "object",
+      "required": [ "model", "protectedBranches" ],
+      "properties": {
+        "model": {
+          "description": "Branching strategy in use",
+          "enum": [ "trunk", "gitflow", "github-flow", "release-branches" ]
+        },
+        "protectedBranches": {
+          "description": "Branch names or glob patterns that require review and passing CI before merge",
+          "type": "array",
+          "maxItems": 32,
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._/*-]+$",
+            "maxLength": 100,
+            "minLength": 1
+          }
+        },
+        "signedCommitsRequired": {
+          "description": "True when commits to protected branches must carry a verified GPG or SSH signature",
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "codeReview": {
+      "description": "Peer-review rules for changes to protected branches",
+      "type": "object",
+      "if": {
+        "required": [ "required" ],
+        "properties": {
+          "required": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "minApprovers": {
+            "minimum": 1
+          }
+        }
+      },
+      "required": [
+        "required",
+        "minApprovers",
+        "codeownersEnforced",
+        "aiReviewAllowed"
+      ],
+      "properties": {
+        "required": {
+          "description": "True when every change needs at least one human approval before merge",
+          "type": "boolean"
+        },
+        "minApprovers": {
+          "description": "Minimum number of human approvals required; at least 1 when required is true",
+          "type": "integer",
+          "maximum": 10,
+          "minimum": 0
+        },
+        "codeownersEnforced": {
+          "description": "True when CODEOWNERS review is enforced by the platform",
+          "type": "boolean"
+        },
+        "aiReviewAllowed": {
+          "description": "True when AI-generated reviews may be posted; they never count towards minApprovers",
+          "type": "boolean"
+        },
+        "selfApprovalAllowed": {
+          "description": "True when an author may approve their own change",
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ciGates": {
+      "description": "Automated checks run in CI for every change, and whether they block merge",
+      "type": "array",
+      "maxItems": 32,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/ciGate"
+      }
+    },
+    "releaseProcess": {
+      "description": "How a change moves from merge to production",
+      "type": "object",
+      "required": [
+        "environmentsOrder",
+        "approvalsRequired",
+        "changeTypeDefault",
+        "rollbackPlanRequired"
+      ],
+      "properties": {
+        "environmentsOrder": {
+          "description": "Environment tiers a release must pass through, in order; must include prod as the final tier",
+          "type": "array",
+          "maxItems": 9,
+          "minItems": 1,
+          "uniqueItems": true,
+          "contains": {
+            "const": "prod"
+          },
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/environmentTier"
+          }
+        },
+        "approvalsRequired": {
+          "description": "Number of change-advisory approvals required before a production deployment",
+          "type": "integer",
+          "maximum": 10,
+          "minimum": 0
+        },
+        "changeTypeDefault": {
+          "description": "ITIL change type assumed for a release when none is declared",
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/changeType"
+        },
+        "rollbackPlanRequired": {
+          "description": "True when every production change must document a tested rollback",
+          "type": "boolean"
+        },
+        "emergencyChangeProcess": {
+          "description": "How emergency changes are approved and reviewed after the fact",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+        },
+        "deploymentWindows": {
+          "description": "Permitted production deployment windows as recurring weekly UTC windows, typically outside market hours, so probe-cicd-env and runtime-probe-prod-env can check a deployment against them. Absent means deployments are permitted at any time outside change freezes",
+          "type": "array",
+          "maxItems": 16,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/deploymentWindow"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "secretsManagement": {
+      "description": "Where application secrets live and how they are rotated and scanned for",
+      "type": "object",
+      "required": [ "backend", "rotationDays", "scanningInCi" ],
+      "properties": {
+        "backend": {
+          "description": "Secret store of record for applications, from the shared secretStore vocabulary that application/environment secretsBackend also uses so probe-sdlc can compare policy with observed environments; ci-variables and env-files are normally policy-only values",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/secretStore"
+        },
+        "rotationDays": {
+          "description": "Maximum age of a credential before mandatory rotation",
+          "type": "integer",
+          "maximum": 730,
+          "minimum": 1
+        },
+        "scanningInCi": {
+          "description": "True when a secrets scanner runs in CI on every change",
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "dependencyPolicy": {
+      "description": "Third-party dependency and SBOM rules",
+      "type": "object",
+      "if": {
+        "required": [ "sbomRequired" ],
+        "properties": {
+          "sbomRequired": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "required": [ "sbomFormat" ]
+      },
+      "required": [
+        "lockfilesRequired",
+        "sbomRequired",
+        "vulnerabilitySlaDays"
+      ],
+      "properties": {
+        "lockfilesRequired": {
+          "description": "True when every repository must commit a lockfile and CI installs from it",
+          "type": "boolean"
+        },
+        "allowedRegistries": {
+          "description": "Package registries and proxies builds may fetch from",
+          "type": "array",
+          "maxItems": 32,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/url"
+          }
+        },
+        "sbomRequired": {
+          "description": "True when every release artefact must ship with a software bill of materials",
+          "type": "boolean"
+        },
+        "sbomFormat": {
+          "description": "SBOM format required; mandatory when sbomRequired is true",
+          "enum": [ "cyclonedx", "spdx" ]
+        },
+        "vulnerabilitySlaDays": {
+          "description": "Maximum days to remediate a known-vulnerable dependency by severity",
+          "type": "object",
+          "required": [ "critical", "high", "medium", "low" ],
+          "properties": {
+            "critical": {
+              "description": "Days to remediate critical-severity vulnerabilities",
+              "type": "integer",
+              "maximum": 365,
+              "minimum": 0
+            },
+            "high": {
+              "description": "Days to remediate high-severity vulnerabilities",
+              "type": "integer",
+              "maximum": 365,
+              "minimum": 0
+            },
+            "medium": {
+              "description": "Days to remediate medium-severity vulnerabilities",
+              "type": "integer",
+              "maximum": 365,
+              "minimum": 0
+            },
+            "low": {
+              "description": "Days to remediate low-severity vulnerabilities",
+              "type": "integer",
+              "maximum": 730,
+              "minimum": 0
+            },
+            "info": {
+              "description": "Days to remediate informational findings, when the company tracks them; mirrors the info row of the sla-table defaults",
+              "type": "integer",
+              "maximum": 730,
+              "minimum": 0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "aiCodingPolicy": {
+      "description": "Rules for AI coding assistants and agentic harnesses working on company code",
+      "type": "object",
+      "required": [
+        "harnessesAllowed",
+        "humanReviewRequired",
+        "promptInjectionControls",
+        "allowedDataClasses"
+      ],
+      "properties": {
+        "harnessesAllowed": {
+          "description": "AI coding tools engineers may use; empty means none are permitted",
+          "type": "array",
+          "maxItems": 8,
+          "uniqueItems": true,
+          "items": {
+            "enum": [ "claude-code", "opencode", "cursor", "copilot", "other" ]
+          }
+        },
+        "humanReviewRequired": {
+          "description": "True when AI-generated changes must be reviewed by a human before merge",
+          "type": "boolean"
+        },
+        "promptInjectionControls": {
+          "description": "Controls in place against prompt injection and unsafe tool use, aligned with OWASP LLM Top 10 and Agentic Top 10; use none, on its own, when nothing is in place",
+          "type": "array",
+          "if": {
+            "contains": {
+              "const": "none"
+            }
+          },
+          "then": {
+            "maxItems": 1
+          },
+          "maxItems": 10,
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "tool-allowlist",
+              "mcp-server-allowlist",
+              "sandboxed-execution",
+              "network-egress-restricted",
+              "secrets-redaction",
+              "content-filtering",
+              "human-approval-for-writes",
+              "session-logging",
+              "none"
+            ]
+          }
+        },
+        "allowedDataClasses": {
+          "description": "Data classifications that may be exposed to AI harnesses in prompts or context",
+          "type": "array",
+          "maxItems": 9,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/dataClassification"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "ssdfMapping": {
+      "description": "Implementation status of NIST SP 800-218 SSDF practices and tasks (PO, PS, PW, RV groups)",
+      "type": "array",
+      "maxItems": 128,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/ssdfEntry"
+      }
+    },
+    "provenance": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/provenance"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "ciGate": {
+      "type": "object",
+      "required": [ "gate", "tool", "blocking" ],
+      "properties": {
+        "gate": {
+          "description": "Category of automated check",
+          "enum": [
+            "sast",
+            "sca",
+            "secrets",
+            "iac",
+            "container",
+            "dast",
+            "sbom",
+            "license",
+            "unit-tests",
+            "integration-tests",
+            "policy-as-code"
+          ]
+        },
+        "tool": {
+          "description": "Tool implementing the gate, for example semgrep, trivy, gitleaks, checkov",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "blocking": {
+          "description": "True when a failing gate prevents merge or deployment",
+          "type": "boolean"
+        },
+        "minSeverityToBlock": {
+          "description": "Lowest finding severity that fails the gate; omit for pass/fail gates such as tests",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/severity"
+        }
+      },
+      "additionalProperties": false
+    },
+    "deploymentWindow": {
+      "description": "A recurring weekly window expressed in UTC: common weeklyWindow (daysOfWeek, startUtc, endUtc) plus an optional note. A window whose endUtc is earlier than startUtc wraps past midnight",
+      "type": "object",
+      "required": [ "daysOfWeek", "startUtc", "endUtc" ],
+      "properties": {
+        "daysOfWeek": {
+          "description": "Days on which the window applies",
+          "type": "array",
+          "maxItems": 7,
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/dayOfWeek"
+          }
+        },
+        "startUtc": {
+          "description": "Window start, 24h HH:MM in UTC",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timeOfDay"
+        },
+        "endUtc": {
+          "description": "Window end, 24h HH:MM in UTC",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timeOfDay"
+        },
+        "note": {
+          "description": "Rationale for the window in plain language, for example the local-time equivalent and market hours",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ssdfEntry": {
+      "type": "object",
+      "required": [ "practice", "status" ],
+      "properties": {
+        "practice": {
+          "description": "SSDF practice or task identifier such as PO.3.2, PW.7 or RV.1.1",
+          "type": "string",
+          "pattern": "^(PO|PS|PW|RV)\\.[0-9]+(\\.[0-9]+)?$"
+        },
+        "status": {
+          "description": "Implementation status of the practice",
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/controlImplementation"
+        },
+        "notes": {
+          "description": "How the practice is met or what is missing",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

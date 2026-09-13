@@ -1,0 +1,2233 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/v1/session/summary.schema.json",
+  "tests": [
+    {
+      "description": "complete claude-code session summary",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.summary",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "durationMs": 2507000,
+        "apiDurationMs": 1834210,
+        "turns": 142,
+        "inferenceCalls": 163,
+        "toolCalls": {
+          "total": 118,
+          "byTool": {
+            "Read": 41,
+            "Bash": 37,
+            "Grep": 19,
+            "Write": 12,
+            "Edit": 6,
+            "Task": 3
+          }
+        },
+        "subagentSessions": 3,
+        "permissionDenials": [
+          {
+            "toolName": "Bash",
+            "toolUseId": "toolu_01XkQ7mN2pR4sT6vW8yZ0aBc",
+            "reason": "command matched deny rule rm -rf"
+          }
+        ],
+        "models": [
+          {
+            "model": "claude-opus-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 18420,
+              "output": 96311,
+              "cacheWrite5m": 412880,
+              "cacheWrite1h": 0,
+              "cacheRead": 7812440,
+              "thinking": 21450
+            },
+            "webSearchRequests": 4,
+            "webFetchRequests": 2,
+            "costUsd": 9.35
+          },
+          {
+            "model": "claude-haiku-4-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 2210,
+              "output": 4180,
+              "cacheWrite5m": 18400,
+              "cacheWrite1h": 0,
+              "cacheRead": 96220,
+              "thinking": 0
+            },
+            "webSearchRequests": 0,
+            "webFetchRequests": 0,
+            "costUsd": 0.06
+          }
+        ],
+        "costUsd": {
+          "computed": 9.41,
+          "reported": 9.38,
+          "deltaPct": 0.32
+        },
+        "pricingVersion": "2026-09-13",
+        "dedup": {
+          "strategy": "requestId-max-total-tokens",
+          "duplicatesDropped": 21
+        },
+        "filesWritten": [
+          "company-profile/zerodha-broking/soc/main.jsonl",
+          "company-profile/zerodha-broking/summary.md"
+        ],
+        "linesAdded": 412,
+        "linesRemoved": 37,
+        "outcome": "success",
+        "errors": [],
+        "transcriptFormatVersion": "2.1.14",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-12T03:42:10Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": ".claude/scripts/sessions/ingest.mjs"
+        }
+      }
+    },
+    {
+      "description": "opencode summary with null reported cost and no errors key",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.summary",
+        "sessionId": "ses_8KpQ2mN4vX",
+        "harness": "opencode",
+        "harnessVersion": "1.0.150",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "durationMs": 2507000,
+        "turns": 142,
+        "inferenceCalls": 163,
+        "toolCalls": {
+          "total": 118,
+          "byTool": {
+            "Read": 41,
+            "Bash": 37,
+            "Grep": 19,
+            "Write": 12,
+            "Edit": 6,
+            "Task": 3
+          }
+        },
+        "subagentSessions": 3,
+        "permissionDenials": [],
+        "models": [
+          {
+            "model": "claude-sonnet-4-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 100,
+              "output": 200,
+              "cacheWrite5m": 300,
+              "cacheWrite1h": 0,
+              "cacheRead": 400,
+              "thinking": 50
+            },
+            "webSearchRequests": 0,
+            "costUsd": 1.2
+          }
+        ],
+        "costUsd": {
+          "computed": 1.2,
+          "reported": null,
+          "deltaPct": null
+        },
+        "pricingVersion": "2026-09-13",
+        "dedup": {
+          "strategy": "requestId-max-total-tokens",
+          "duplicatesDropped": 21
+        },
+        "filesWritten": [
+          "company-profile/zerodha-broking/soc/main.jsonl",
+          "company-profile/zerodha-broking/summary.md"
+        ],
+        "linesAdded": 412,
+        "linesRemoved": 37,
+        "outcome": "success",
+        "transcriptFormatVersion": "1.0.150",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-12T03:42:10Z",
+          "sessionId": "ses_8KpQ2mN4vX",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": ".claude/scripts/sessions/ingest.mjs"
+        }
+      }
+    },
+    {
+      "description": "invented extra key",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.summary",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "durationMs": 2507000,
+        "apiDurationMs": 1834210,
+        "turns": 142,
+        "inferenceCalls": 163,
+        "toolCalls": {
+          "total": 118,
+          "byTool": {
+            "Read": 41,
+            "Bash": 37,
+            "Grep": 19,
+            "Write": 12,
+            "Edit": 6,
+            "Task": 3
+          }
+        },
+        "subagentSessions": 3,
+        "permissionDenials": [
+          {
+            "toolName": "Bash",
+            "toolUseId": "toolu_01XkQ7mN2pR4sT6vW8yZ0aBc",
+            "reason": "command matched deny rule rm -rf"
+          }
+        ],
+        "models": [
+          {
+            "model": "claude-opus-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 18420,
+              "output": 96311,
+              "cacheWrite5m": 412880,
+              "cacheWrite1h": 0,
+              "cacheRead": 7812440,
+              "thinking": 21450
+            },
+            "webSearchRequests": 4,
+            "webFetchRequests": 2,
+            "costUsd": 9.35
+          },
+          {
+            "model": "claude-haiku-4-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 2210,
+              "output": 4180,
+              "cacheWrite5m": 18400,
+              "cacheWrite1h": 0,
+              "cacheRead": 96220,
+              "thinking": 0
+            },
+            "webSearchRequests": 0,
+            "webFetchRequests": 0,
+            "costUsd": 0.06
+          }
+        ],
+        "costUsd": {
+          "computed": 9.41,
+          "reported": 9.38,
+          "deltaPct": 0.32
+        },
+        "pricingVersion": "2026-09-13",
+        "dedup": {
+          "strategy": "requestId-max-total-tokens",
+          "duplicatesDropped": 21
+        },
+        "filesWritten": [
+          "company-profile/zerodha-broking/soc/main.jsonl",
+          "company-profile/zerodha-broking/summary.md"
+        ],
+        "linesAdded": 412,
+        "linesRemoved": 37,
+        "outcome": "success",
+        "errors": [],
+        "transcriptFormatVersion": "2.1.14",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-12T03:42:10Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": ".claude/scripts/sessions/ingest.mjs"
+        },
+        "promptTokens": 1
+      }
+    },
+    {
+      "description": "bad sessionId pattern",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.summary",
+        "sessionId": "abc",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "durationMs": 2507000,
+        "apiDurationMs": 1834210,
+        "turns": 142,
+        "inferenceCalls": 163,
+        "toolCalls": {
+          "total": 118,
+          "byTool": {
+            "Read": 41,
+            "Bash": 37,
+            "Grep": 19,
+            "Write": 12,
+            "Edit": 6,
+            "Task": 3
+          }
+        },
+        "subagentSessions": 3,
+        "permissionDenials": [
+          {
+            "toolName": "Bash",
+            "toolUseId": "toolu_01XkQ7mN2pR4sT6vW8yZ0aBc",
+            "reason": "command matched deny rule rm -rf"
+          }
+        ],
+        "models": [
+          {
+            "model": "claude-opus-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 18420,
+              "output": 96311,
+              "cacheWrite5m": 412880,
+              "cacheWrite1h": 0,
+              "cacheRead": 7812440,
+              "thinking": 21450
+            },
+            "webSearchRequests": 4,
+            "webFetchRequests": 2,
+            "costUsd": 9.35
+          },
+          {
+            "model": "claude-haiku-4-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 2210,
+              "output": 4180,
+              "cacheWrite5m": 18400,
+              "cacheWrite1h": 0,
+              "cacheRead": 96220,
+              "thinking": 0
+            },
+            "webSearchRequests": 0,
+            "webFetchRequests": 0,
+            "costUsd": 0.06
+          }
+        ],
+        "costUsd": {
+          "computed": 9.41,
+          "reported": 9.38,
+          "deltaPct": 0.32
+        },
+        "pricingVersion": "2026-09-13",
+        "dedup": {
+          "strategy": "requestId-max-total-tokens",
+          "duplicatesDropped": 21
+        },
+        "filesWritten": [
+          "company-profile/zerodha-broking/soc/main.jsonl",
+          "company-profile/zerodha-broking/summary.md"
+        ],
+        "linesAdded": 412,
+        "linesRemoved": 37,
+        "outcome": "success",
+        "errors": [],
+        "transcriptFormatVersion": "2.1.14",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-12T03:42:10Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": ".claude/scripts/sessions/ingest.mjs"
+        }
+      }
+    },
+    {
+      "description": "bad outcome enum",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.summary",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "durationMs": 2507000,
+        "apiDurationMs": 1834210,
+        "turns": 142,
+        "inferenceCalls": 163,
+        "toolCalls": {
+          "total": 118,
+          "byTool": {
+            "Read": 41,
+            "Bash": 37,
+            "Grep": 19,
+            "Write": 12,
+            "Edit": 6,
+            "Task": 3
+          }
+        },
+        "subagentSessions": 3,
+        "permissionDenials": [
+          {
+            "toolName": "Bash",
+            "toolUseId": "toolu_01XkQ7mN2pR4sT6vW8yZ0aBc",
+            "reason": "command matched deny rule rm -rf"
+          }
+        ],
+        "models": [
+          {
+            "model": "claude-opus-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 18420,
+              "output": 96311,
+              "cacheWrite5m": 412880,
+              "cacheWrite1h": 0,
+              "cacheRead": 7812440,
+              "thinking": 21450
+            },
+            "webSearchRequests": 4,
+            "webFetchRequests": 2,
+            "costUsd": 9.35
+          },
+          {
+            "model": "claude-haiku-4-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 2210,
+              "output": 4180,
+              "cacheWrite5m": 18400,
+              "cacheWrite1h": 0,
+              "cacheRead": 96220,
+              "thinking": 0
+            },
+            "webSearchRequests": 0,
+            "webFetchRequests": 0,
+            "costUsd": 0.06
+          }
+        ],
+        "costUsd": {
+          "computed": 9.41,
+          "reported": 9.38,
+          "deltaPct": 0.32
+        },
+        "pricingVersion": "2026-09-13",
+        "dedup": {
+          "strategy": "requestId-max-total-tokens",
+          "duplicatesDropped": 21
+        },
+        "filesWritten": [
+          "company-profile/zerodha-broking/soc/main.jsonl",
+          "company-profile/zerodha-broking/summary.md"
+        ],
+        "linesAdded": 412,
+        "linesRemoved": 37,
+        "outcome": "partial",
+        "errors": [],
+        "transcriptFormatVersion": "2.1.14",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-12T03:42:10Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": ".claude/scripts/sessions/ingest.mjs"
+        }
+      }
+    },
+    {
+      "description": "missing required dedup block",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.summary",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "durationMs": 2507000,
+        "apiDurationMs": 1834210,
+        "turns": 142,
+        "inferenceCalls": 163,
+        "toolCalls": {
+          "total": 118,
+          "byTool": {
+            "Read": 41,
+            "Bash": 37,
+            "Grep": 19,
+            "Write": 12,
+            "Edit": 6,
+            "Task": 3
+          }
+        },
+        "subagentSessions": 3,
+        "permissionDenials": [
+          {
+            "toolName": "Bash",
+            "toolUseId": "toolu_01XkQ7mN2pR4sT6vW8yZ0aBc",
+            "reason": "command matched deny rule rm -rf"
+          }
+        ],
+        "models": [
+          {
+            "model": "claude-opus-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 18420,
+              "output": 96311,
+              "cacheWrite5m": 412880,
+              "cacheWrite1h": 0,
+              "cacheRead": 7812440,
+              "thinking": 21450
+            },
+            "webSearchRequests": 4,
+            "webFetchRequests": 2,
+            "costUsd": 9.35
+          },
+          {
+            "model": "claude-haiku-4-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 2210,
+              "output": 4180,
+              "cacheWrite5m": 18400,
+              "cacheWrite1h": 0,
+              "cacheRead": 96220,
+              "thinking": 0
+            },
+            "webSearchRequests": 0,
+            "webFetchRequests": 0,
+            "costUsd": 0.06
+          }
+        ],
+        "costUsd": {
+          "computed": 9.41,
+          "reported": 9.38,
+          "deltaPct": 0.32
+        },
+        "pricingVersion": "2026-09-13",
+        "filesWritten": [
+          "company-profile/zerodha-broking/soc/main.jsonl",
+          "company-profile/zerodha-broking/summary.md"
+        ],
+        "linesAdded": 412,
+        "linesRemoved": 37,
+        "outcome": "success",
+        "errors": [],
+        "transcriptFormatVersion": "2.1.14",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-12T03:42:10Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": ".claude/scripts/sessions/ingest.mjs"
+        }
+      }
+    },
+    {
+      "description": "wrong dedup strategy",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.summary",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "durationMs": 2507000,
+        "apiDurationMs": 1834210,
+        "turns": 142,
+        "inferenceCalls": 163,
+        "toolCalls": {
+          "total": 118,
+          "byTool": {
+            "Read": 41,
+            "Bash": 37,
+            "Grep": 19,
+            "Write": 12,
+            "Edit": 6,
+            "Task": 3
+          }
+        },
+        "subagentSessions": 3,
+        "permissionDenials": [
+          {
+            "toolName": "Bash",
+            "toolUseId": "toolu_01XkQ7mN2pR4sT6vW8yZ0aBc",
+            "reason": "command matched deny rule rm -rf"
+          }
+        ],
+        "models": [
+          {
+            "model": "claude-opus-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 18420,
+              "output": 96311,
+              "cacheWrite5m": 412880,
+              "cacheWrite1h": 0,
+              "cacheRead": 7812440,
+              "thinking": 21450
+            },
+            "webSearchRequests": 4,
+            "webFetchRequests": 2,
+            "costUsd": 9.35
+          },
+          {
+            "model": "claude-haiku-4-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 2210,
+              "output": 4180,
+              "cacheWrite5m": 18400,
+              "cacheWrite1h": 0,
+              "cacheRead": 96220,
+              "thinking": 0
+            },
+            "webSearchRequests": 0,
+            "webFetchRequests": 0,
+            "costUsd": 0.06
+          }
+        ],
+        "costUsd": {
+          "computed": 9.41,
+          "reported": 9.38,
+          "deltaPct": 0.32
+        },
+        "pricingVersion": "2026-09-13",
+        "dedup": {
+          "strategy": "first-wins",
+          "duplicatesDropped": 21
+        },
+        "filesWritten": [
+          "company-profile/zerodha-broking/soc/main.jsonl",
+          "company-profile/zerodha-broking/summary.md"
+        ],
+        "linesAdded": 412,
+        "linesRemoved": 37,
+        "outcome": "success",
+        "errors": [],
+        "transcriptFormatVersion": "2.1.14",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-12T03:42:10Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": ".claude/scripts/sessions/ingest.mjs"
+        }
+      }
+    },
+    {
+      "description": "tokens object missing thinking",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.summary",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "durationMs": 2507000,
+        "apiDurationMs": 1834210,
+        "turns": 142,
+        "inferenceCalls": 163,
+        "toolCalls": {
+          "total": 118,
+          "byTool": {
+            "Read": 41,
+            "Bash": 37,
+            "Grep": 19,
+            "Write": 12,
+            "Edit": 6,
+            "Task": 3
+          }
+        },
+        "subagentSessions": 3,
+        "permissionDenials": [
+          {
+            "toolName": "Bash",
+            "toolUseId": "toolu_01XkQ7mN2pR4sT6vW8yZ0aBc",
+            "reason": "command matched deny rule rm -rf"
+          }
+        ],
+        "models": [
+          {
+            "model": "claude-opus-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 18420,
+              "output": 96311,
+              "cacheWrite5m": 412880,
+              "cacheWrite1h": 0,
+              "cacheRead": 7812440
+            },
+            "webSearchRequests": 4,
+            "webFetchRequests": 2,
+            "costUsd": 9.35
+          },
+          {
+            "model": "claude-haiku-4-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 2210,
+              "output": 4180,
+              "cacheWrite5m": 18400,
+              "cacheWrite1h": 0,
+              "cacheRead": 96220,
+              "thinking": 0
+            },
+            "webSearchRequests": 0,
+            "webFetchRequests": 0,
+            "costUsd": 0.06
+          }
+        ],
+        "costUsd": {
+          "computed": 9.41,
+          "reported": 9.38,
+          "deltaPct": 0.32
+        },
+        "pricingVersion": "2026-09-13",
+        "dedup": {
+          "strategy": "requestId-max-total-tokens",
+          "duplicatesDropped": 21
+        },
+        "filesWritten": [
+          "company-profile/zerodha-broking/soc/main.jsonl",
+          "company-profile/zerodha-broking/summary.md"
+        ],
+        "linesAdded": 412,
+        "linesRemoved": 37,
+        "outcome": "success",
+        "errors": [],
+        "transcriptFormatVersion": "2.1.14",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-12T03:42:10Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": ".claude/scripts/sessions/ingest.mjs"
+        }
+      }
+    },
+    {
+      "description": "negative token count",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.summary",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "durationMs": 2507000,
+        "apiDurationMs": 1834210,
+        "turns": 142,
+        "inferenceCalls": 163,
+        "toolCalls": {
+          "total": 118,
+          "byTool": {
+            "Read": 41,
+            "Bash": 37,
+            "Grep": 19,
+            "Write": 12,
+            "Edit": 6,
+            "Task": 3
+          }
+        },
+        "subagentSessions": 3,
+        "permissionDenials": [
+          {
+            "toolName": "Bash",
+            "toolUseId": "toolu_01XkQ7mN2pR4sT6vW8yZ0aBc",
+            "reason": "command matched deny rule rm -rf"
+          }
+        ],
+        "models": [
+          {
+            "model": "claude-opus-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": -5,
+              "output": 96311,
+              "cacheWrite5m": 412880,
+              "cacheWrite1h": 0,
+              "cacheRead": 7812440,
+              "thinking": 21450
+            },
+            "webSearchRequests": 4,
+            "webFetchRequests": 2,
+            "costUsd": 9.35
+          },
+          {
+            "model": "claude-haiku-4-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 2210,
+              "output": 4180,
+              "cacheWrite5m": 18400,
+              "cacheWrite1h": 0,
+              "cacheRead": 96220,
+              "thinking": 0
+            },
+            "webSearchRequests": 0,
+            "webFetchRequests": 0,
+            "costUsd": 0.06
+          }
+        ],
+        "costUsd": {
+          "computed": 9.41,
+          "reported": 9.38,
+          "deltaPct": 0.32
+        },
+        "pricingVersion": "2026-09-13",
+        "dedup": {
+          "strategy": "requestId-max-total-tokens",
+          "duplicatesDropped": 21
+        },
+        "filesWritten": [
+          "company-profile/zerodha-broking/soc/main.jsonl",
+          "company-profile/zerodha-broking/summary.md"
+        ],
+        "linesAdded": 412,
+        "linesRemoved": 37,
+        "outcome": "success",
+        "errors": [],
+        "transcriptFormatVersion": "2.1.14",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-12T03:42:10Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": ".claude/scripts/sessions/ingest.mjs"
+        }
+      }
+    },
+    {
+      "description": "byTool value not an integer",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.summary",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "durationMs": 2507000,
+        "apiDurationMs": 1834210,
+        "turns": 142,
+        "inferenceCalls": 163,
+        "toolCalls": {
+          "total": 118,
+          "byTool": {
+            "Read": 41,
+            "Bash": "many",
+            "Grep": 19,
+            "Write": 12,
+            "Edit": 6,
+            "Task": 3
+          }
+        },
+        "subagentSessions": 3,
+        "permissionDenials": [
+          {
+            "toolName": "Bash",
+            "toolUseId": "toolu_01XkQ7mN2pR4sT6vW8yZ0aBc",
+            "reason": "command matched deny rule rm -rf"
+          }
+        ],
+        "models": [
+          {
+            "model": "claude-opus-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 18420,
+              "output": 96311,
+              "cacheWrite5m": 412880,
+              "cacheWrite1h": 0,
+              "cacheRead": 7812440,
+              "thinking": 21450
+            },
+            "webSearchRequests": 4,
+            "webFetchRequests": 2,
+            "costUsd": 9.35
+          },
+          {
+            "model": "claude-haiku-4-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 2210,
+              "output": 4180,
+              "cacheWrite5m": 18400,
+              "cacheWrite1h": 0,
+              "cacheRead": 96220,
+              "thinking": 0
+            },
+            "webSearchRequests": 0,
+            "webFetchRequests": 0,
+            "costUsd": 0.06
+          }
+        ],
+        "costUsd": {
+          "computed": 9.41,
+          "reported": 9.38,
+          "deltaPct": 0.32
+        },
+        "pricingVersion": "2026-09-13",
+        "dedup": {
+          "strategy": "requestId-max-total-tokens",
+          "duplicatesDropped": 21
+        },
+        "filesWritten": [
+          "company-profile/zerodha-broking/soc/main.jsonl",
+          "company-profile/zerodha-broking/summary.md"
+        ],
+        "linesAdded": 412,
+        "linesRemoved": 37,
+        "outcome": "success",
+        "errors": [],
+        "transcriptFormatVersion": "2.1.14",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-12T03:42:10Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": ".claude/scripts/sessions/ingest.mjs"
+        }
+      }
+    },
+    {
+      "description": "byTool key with spaces",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.summary",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "durationMs": 2507000,
+        "apiDurationMs": 1834210,
+        "turns": 142,
+        "inferenceCalls": 163,
+        "toolCalls": {
+          "total": 118,
+          "byTool": {
+            "Read": 41,
+            "Bash": 37,
+            "Grep": 19,
+            "Write": 12,
+            "Edit": 6,
+            "Task": 3,
+            "Bash tool": 1
+          }
+        },
+        "subagentSessions": 3,
+        "permissionDenials": [
+          {
+            "toolName": "Bash",
+            "toolUseId": "toolu_01XkQ7mN2pR4sT6vW8yZ0aBc",
+            "reason": "command matched deny rule rm -rf"
+          }
+        ],
+        "models": [
+          {
+            "model": "claude-opus-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 18420,
+              "output": 96311,
+              "cacheWrite5m": 412880,
+              "cacheWrite1h": 0,
+              "cacheRead": 7812440,
+              "thinking": 21450
+            },
+            "webSearchRequests": 4,
+            "webFetchRequests": 2,
+            "costUsd": 9.35
+          },
+          {
+            "model": "claude-haiku-4-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 2210,
+              "output": 4180,
+              "cacheWrite5m": 18400,
+              "cacheWrite1h": 0,
+              "cacheRead": 96220,
+              "thinking": 0
+            },
+            "webSearchRequests": 0,
+            "webFetchRequests": 0,
+            "costUsd": 0.06
+          }
+        ],
+        "costUsd": {
+          "computed": 9.41,
+          "reported": 9.38,
+          "deltaPct": 0.32
+        },
+        "pricingVersion": "2026-09-13",
+        "dedup": {
+          "strategy": "requestId-max-total-tokens",
+          "duplicatesDropped": 21
+        },
+        "filesWritten": [
+          "company-profile/zerodha-broking/soc/main.jsonl",
+          "company-profile/zerodha-broking/summary.md"
+        ],
+        "linesAdded": 412,
+        "linesRemoved": 37,
+        "outcome": "success",
+        "errors": [],
+        "transcriptFormatVersion": "2.1.14",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-12T03:42:10Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": ".claude/scripts/sessions/ingest.mjs"
+        }
+      }
+    },
+    {
+      "description": "reported cost as string",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.summary",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "durationMs": 2507000,
+        "apiDurationMs": 1834210,
+        "turns": 142,
+        "inferenceCalls": 163,
+        "toolCalls": {
+          "total": 118,
+          "byTool": {
+            "Read": 41,
+            "Bash": 37,
+            "Grep": 19,
+            "Write": 12,
+            "Edit": 6,
+            "Task": 3
+          }
+        },
+        "subagentSessions": 3,
+        "permissionDenials": [
+          {
+            "toolName": "Bash",
+            "toolUseId": "toolu_01XkQ7mN2pR4sT6vW8yZ0aBc",
+            "reason": "command matched deny rule rm -rf"
+          }
+        ],
+        "models": [
+          {
+            "model": "claude-opus-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 18420,
+              "output": 96311,
+              "cacheWrite5m": 412880,
+              "cacheWrite1h": 0,
+              "cacheRead": 7812440,
+              "thinking": 21450
+            },
+            "webSearchRequests": 4,
+            "webFetchRequests": 2,
+            "costUsd": 9.35
+          },
+          {
+            "model": "claude-haiku-4-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 2210,
+              "output": 4180,
+              "cacheWrite5m": 18400,
+              "cacheWrite1h": 0,
+              "cacheRead": 96220,
+              "thinking": 0
+            },
+            "webSearchRequests": 0,
+            "webFetchRequests": 0,
+            "costUsd": 0.06
+          }
+        ],
+        "costUsd": {
+          "computed": 9.41,
+          "reported": "9.38",
+          "deltaPct": 0.32
+        },
+        "pricingVersion": "2026-09-13",
+        "dedup": {
+          "strategy": "requestId-max-total-tokens",
+          "duplicatesDropped": 21
+        },
+        "filesWritten": [
+          "company-profile/zerodha-broking/soc/main.jsonl",
+          "company-profile/zerodha-broking/summary.md"
+        ],
+        "linesAdded": 412,
+        "linesRemoved": 37,
+        "outcome": "success",
+        "errors": [],
+        "transcriptFormatVersion": "2.1.14",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-12T03:42:10Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": ".claude/scripts/sessions/ingest.mjs"
+        }
+      }
+    },
+    {
+      "description": "pricingVersion not a date",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.summary",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "durationMs": 2507000,
+        "apiDurationMs": 1834210,
+        "turns": 142,
+        "inferenceCalls": 163,
+        "toolCalls": {
+          "total": 118,
+          "byTool": {
+            "Read": 41,
+            "Bash": 37,
+            "Grep": 19,
+            "Write": 12,
+            "Edit": 6,
+            "Task": 3
+          }
+        },
+        "subagentSessions": 3,
+        "permissionDenials": [
+          {
+            "toolName": "Bash",
+            "toolUseId": "toolu_01XkQ7mN2pR4sT6vW8yZ0aBc",
+            "reason": "command matched deny rule rm -rf"
+          }
+        ],
+        "models": [
+          {
+            "model": "claude-opus-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 18420,
+              "output": 96311,
+              "cacheWrite5m": 412880,
+              "cacheWrite1h": 0,
+              "cacheRead": 7812440,
+              "thinking": 21450
+            },
+            "webSearchRequests": 4,
+            "webFetchRequests": 2,
+            "costUsd": 9.35
+          },
+          {
+            "model": "claude-haiku-4-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 2210,
+              "output": 4180,
+              "cacheWrite5m": 18400,
+              "cacheWrite1h": 0,
+              "cacheRead": 96220,
+              "thinking": 0
+            },
+            "webSearchRequests": 0,
+            "webFetchRequests": 0,
+            "costUsd": 0.06
+          }
+        ],
+        "costUsd": {
+          "computed": 9.41,
+          "reported": 9.38,
+          "deltaPct": 0.32
+        },
+        "pricingVersion": "2026-09",
+        "dedup": {
+          "strategy": "requestId-max-total-tokens",
+          "duplicatesDropped": 21
+        },
+        "filesWritten": [
+          "company-profile/zerodha-broking/soc/main.jsonl",
+          "company-profile/zerodha-broking/summary.md"
+        ],
+        "linesAdded": 412,
+        "linesRemoved": 37,
+        "outcome": "success",
+        "errors": [],
+        "transcriptFormatVersion": "2.1.14",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-12T03:42:10Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": ".claude/scripts/sessions/ingest.mjs"
+        }
+      }
+    },
+    {
+      "description": "provider with uppercase",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.summary",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "durationMs": 2507000,
+        "apiDurationMs": 1834210,
+        "turns": 142,
+        "inferenceCalls": 163,
+        "toolCalls": {
+          "total": 118,
+          "byTool": {
+            "Read": 41,
+            "Bash": 37,
+            "Grep": 19,
+            "Write": 12,
+            "Edit": 6,
+            "Task": 3
+          }
+        },
+        "subagentSessions": 3,
+        "permissionDenials": [
+          {
+            "toolName": "Bash",
+            "toolUseId": "toolu_01XkQ7mN2pR4sT6vW8yZ0aBc",
+            "reason": "command matched deny rule rm -rf"
+          }
+        ],
+        "models": [
+          {
+            "model": "claude-opus-5",
+            "provider": "Anthropic",
+            "tokens": {
+              "input": 18420,
+              "output": 96311,
+              "cacheWrite5m": 412880,
+              "cacheWrite1h": 0,
+              "cacheRead": 7812440,
+              "thinking": 21450
+            },
+            "webSearchRequests": 4,
+            "webFetchRequests": 2,
+            "costUsd": 9.35
+          },
+          {
+            "model": "claude-haiku-4-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 2210,
+              "output": 4180,
+              "cacheWrite5m": 18400,
+              "cacheWrite1h": 0,
+              "cacheRead": 96220,
+              "thinking": 0
+            },
+            "webSearchRequests": 0,
+            "webFetchRequests": 0,
+            "costUsd": 0.06
+          }
+        ],
+        "costUsd": {
+          "computed": 9.41,
+          "reported": 9.38,
+          "deltaPct": 0.32
+        },
+        "pricingVersion": "2026-09-13",
+        "dedup": {
+          "strategy": "requestId-max-total-tokens",
+          "duplicatesDropped": 21
+        },
+        "filesWritten": [
+          "company-profile/zerodha-broking/soc/main.jsonl",
+          "company-profile/zerodha-broking/summary.md"
+        ],
+        "linesAdded": 412,
+        "linesRemoved": 37,
+        "outcome": "success",
+        "errors": [],
+        "transcriptFormatVersion": "2.1.14",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-12T03:42:10Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": ".claude/scripts/sessions/ingest.mjs"
+        }
+      }
+    },
+    {
+      "description": "filesWritten with absolute path",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.summary",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "durationMs": 2507000,
+        "apiDurationMs": 1834210,
+        "turns": 142,
+        "inferenceCalls": 163,
+        "toolCalls": {
+          "total": 118,
+          "byTool": {
+            "Read": 41,
+            "Bash": 37,
+            "Grep": 19,
+            "Write": 12,
+            "Edit": 6,
+            "Task": 3
+          }
+        },
+        "subagentSessions": 3,
+        "permissionDenials": [
+          {
+            "toolName": "Bash",
+            "toolUseId": "toolu_01XkQ7mN2pR4sT6vW8yZ0aBc",
+            "reason": "command matched deny rule rm -rf"
+          }
+        ],
+        "models": [
+          {
+            "model": "claude-opus-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 18420,
+              "output": 96311,
+              "cacheWrite5m": 412880,
+              "cacheWrite1h": 0,
+              "cacheRead": 7812440,
+              "thinking": 21450
+            },
+            "webSearchRequests": 4,
+            "webFetchRequests": 2,
+            "costUsd": 9.35
+          },
+          {
+            "model": "claude-haiku-4-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 2210,
+              "output": 4180,
+              "cacheWrite5m": 18400,
+              "cacheWrite1h": 0,
+              "cacheRead": 96220,
+              "thinking": 0
+            },
+            "webSearchRequests": 0,
+            "webFetchRequests": 0,
+            "costUsd": 0.06
+          }
+        ],
+        "costUsd": {
+          "computed": 9.41,
+          "reported": 9.38,
+          "deltaPct": 0.32
+        },
+        "pricingVersion": "2026-09-13",
+        "dedup": {
+          "strategy": "requestId-max-total-tokens",
+          "duplicatesDropped": 21
+        },
+        "filesWritten": [
+          "company-profile/zerodha-broking/soc/main.jsonl",
+          "company-profile/zerodha-broking/summary.md",
+          "/etc/passwd"
+        ],
+        "linesAdded": 412,
+        "linesRemoved": 37,
+        "outcome": "success",
+        "errors": [],
+        "transcriptFormatVersion": "2.1.14",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-12T03:42:10Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": ".claude/scripts/sessions/ingest.mjs"
+        }
+      }
+    },
+    {
+      "description": "claude-code summary with thinking null",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.summary",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "durationMs": 2507000,
+        "apiDurationMs": 1834210,
+        "turns": 142,
+        "inferenceCalls": 163,
+        "toolCalls": {
+          "total": 118,
+          "byTool": {
+            "Read": 41,
+            "Bash": 37,
+            "Grep": 19,
+            "Write": 12,
+            "Edit": 6,
+            "Task": 3
+          }
+        },
+        "subagentSessions": 3,
+        "permissionDenials": [
+          {
+            "toolName": "Bash",
+            "toolUseId": "toolu_01XkQ7mN2pR4sT6vW8yZ0aBc",
+            "reason": "command matched deny rule rm -rf"
+          }
+        ],
+        "models": [
+          {
+            "model": "claude-opus-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 18420,
+              "output": 96311,
+              "cacheWrite5m": 412880,
+              "cacheWrite1h": 0,
+              "cacheRead": 7812440,
+              "thinking": null
+            },
+            "webSearchRequests": 4,
+            "webFetchRequests": 2,
+            "costUsd": 9.35
+          },
+          {
+            "model": "claude-haiku-4-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 2210,
+              "output": 4180,
+              "cacheWrite5m": 18400,
+              "cacheWrite1h": 0,
+              "cacheRead": 96220,
+              "thinking": null
+            },
+            "webSearchRequests": 0,
+            "webFetchRequests": 0,
+            "costUsd": 0.06
+          }
+        ],
+        "costUsd": {
+          "computed": 9.41,
+          "reported": 9.38,
+          "deltaPct": 0.32
+        },
+        "pricingVersion": "2026-09-13",
+        "dedup": {
+          "strategy": "requestId-max-total-tokens",
+          "duplicatesDropped": 21
+        },
+        "filesWritten": [
+          "company-profile/zerodha-broking/soc/main.jsonl",
+          "company-profile/zerodha-broking/summary.md"
+        ],
+        "linesAdded": 412,
+        "linesRemoved": 37,
+        "outcome": "success",
+        "errors": [],
+        "transcriptFormatVersion": "2.1.14",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-12T03:42:10Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": ".claude/scripts/sessions/ingest.mjs"
+        }
+      }
+    },
+    {
+      "description": "provider from the OTel well-known list",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.summary",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "durationMs": 2507000,
+        "apiDurationMs": 1834210,
+        "turns": 142,
+        "inferenceCalls": 163,
+        "toolCalls": {
+          "total": 118,
+          "byTool": {
+            "Read": 41,
+            "Bash": 37,
+            "Grep": 19,
+            "Write": 12,
+            "Edit": 6,
+            "Task": 3
+          }
+        },
+        "subagentSessions": 3,
+        "permissionDenials": [
+          {
+            "toolName": "Bash",
+            "toolUseId": "toolu_01XkQ7mN2pR4sT6vW8yZ0aBc",
+            "reason": "command matched deny rule rm -rf"
+          }
+        ],
+        "models": [
+          {
+            "model": "claude-opus-5",
+            "provider": "gcp.vertex_ai",
+            "tokens": {
+              "input": 18420,
+              "output": 96311,
+              "cacheWrite5m": 412880,
+              "cacheWrite1h": 0,
+              "cacheRead": 7812440,
+              "thinking": 21450
+            },
+            "webSearchRequests": 4,
+            "webFetchRequests": 2,
+            "costUsd": 9.35
+          },
+          {
+            "model": "claude-haiku-4-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 2210,
+              "output": 4180,
+              "cacheWrite5m": 18400,
+              "cacheWrite1h": 0,
+              "cacheRead": 96220,
+              "thinking": 0
+            },
+            "webSearchRequests": 0,
+            "webFetchRequests": 0,
+            "costUsd": 0.06
+          }
+        ],
+        "costUsd": {
+          "computed": 9.41,
+          "reported": 9.38,
+          "deltaPct": 0.32
+        },
+        "pricingVersion": "2026-09-13",
+        "dedup": {
+          "strategy": "requestId-max-total-tokens",
+          "duplicatesDropped": 21
+        },
+        "filesWritten": [
+          "company-profile/zerodha-broking/soc/main.jsonl",
+          "company-profile/zerodha-broking/summary.md"
+        ],
+        "linesAdded": 412,
+        "linesRemoved": 37,
+        "outcome": "success",
+        "errors": [],
+        "transcriptFormatVersion": "2.1.14",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-12T03:42:10Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": ".claude/scripts/sessions/ingest.mjs"
+        }
+      }
+    },
+    {
+      "description": "provider 'google' outside the OTel list",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.summary",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "durationMs": 2507000,
+        "apiDurationMs": 1834210,
+        "turns": 142,
+        "inferenceCalls": 163,
+        "toolCalls": {
+          "total": 118,
+          "byTool": {
+            "Read": 41,
+            "Bash": 37,
+            "Grep": 19,
+            "Write": 12,
+            "Edit": 6,
+            "Task": 3
+          }
+        },
+        "subagentSessions": 3,
+        "permissionDenials": [
+          {
+            "toolName": "Bash",
+            "toolUseId": "toolu_01XkQ7mN2pR4sT6vW8yZ0aBc",
+            "reason": "command matched deny rule rm -rf"
+          }
+        ],
+        "models": [
+          {
+            "model": "claude-opus-5",
+            "provider": "google",
+            "tokens": {
+              "input": 18420,
+              "output": 96311,
+              "cacheWrite5m": 412880,
+              "cacheWrite1h": 0,
+              "cacheRead": 7812440,
+              "thinking": 21450
+            },
+            "webSearchRequests": 4,
+            "webFetchRequests": 2,
+            "costUsd": 9.35
+          },
+          {
+            "model": "claude-haiku-4-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 2210,
+              "output": 4180,
+              "cacheWrite5m": 18400,
+              "cacheWrite1h": 0,
+              "cacheRead": 96220,
+              "thinking": 0
+            },
+            "webSearchRequests": 0,
+            "webFetchRequests": 0,
+            "costUsd": 0.06
+          }
+        ],
+        "costUsd": {
+          "computed": 9.41,
+          "reported": 9.38,
+          "deltaPct": 0.32
+        },
+        "pricingVersion": "2026-09-13",
+        "dedup": {
+          "strategy": "requestId-max-total-tokens",
+          "duplicatesDropped": 21
+        },
+        "filesWritten": [
+          "company-profile/zerodha-broking/soc/main.jsonl",
+          "company-profile/zerodha-broking/summary.md"
+        ],
+        "linesAdded": 412,
+        "linesRemoved": 37,
+        "outcome": "success",
+        "errors": [],
+        "transcriptFormatVersion": "2.1.14",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-12T03:42:10Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": ".claude/scripts/sessions/ingest.mjs"
+        }
+      }
+    },
+    {
+      "description": "thinking as string",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.summary",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "durationMs": 2507000,
+        "apiDurationMs": 1834210,
+        "turns": 142,
+        "inferenceCalls": 163,
+        "toolCalls": {
+          "total": 118,
+          "byTool": {
+            "Read": 41,
+            "Bash": 37,
+            "Grep": 19,
+            "Write": 12,
+            "Edit": 6,
+            "Task": 3
+          }
+        },
+        "subagentSessions": 3,
+        "permissionDenials": [
+          {
+            "toolName": "Bash",
+            "toolUseId": "toolu_01XkQ7mN2pR4sT6vW8yZ0aBc",
+            "reason": "command matched deny rule rm -rf"
+          }
+        ],
+        "models": [
+          {
+            "model": "claude-opus-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 18420,
+              "output": 96311,
+              "cacheWrite5m": 412880,
+              "cacheWrite1h": 0,
+              "cacheRead": 7812440,
+              "thinking": "none"
+            },
+            "webSearchRequests": 4,
+            "webFetchRequests": 2,
+            "costUsd": 9.35
+          },
+          {
+            "model": "claude-haiku-4-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 2210,
+              "output": 4180,
+              "cacheWrite5m": 18400,
+              "cacheWrite1h": 0,
+              "cacheRead": 96220,
+              "thinking": 0
+            },
+            "webSearchRequests": 0,
+            "webFetchRequests": 0,
+            "costUsd": 0.06
+          }
+        ],
+        "costUsd": {
+          "computed": 9.41,
+          "reported": 9.38,
+          "deltaPct": 0.32
+        },
+        "pricingVersion": "2026-09-13",
+        "dedup": {
+          "strategy": "requestId-max-total-tokens",
+          "duplicatesDropped": 21
+        },
+        "filesWritten": [
+          "company-profile/zerodha-broking/soc/main.jsonl",
+          "company-profile/zerodha-broking/summary.md"
+        ],
+        "linesAdded": 412,
+        "linesRemoved": 37,
+        "outcome": "success",
+        "errors": [],
+        "transcriptFormatVersion": "2.1.14",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-12T03:42:10Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": ".claude/scripts/sessions/ingest.mjs"
+        }
+      }
+    },
+    {
+      "description": "reported cost null with numeric deltaPct",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.summary",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "durationMs": 2507000,
+        "apiDurationMs": 1834210,
+        "turns": 142,
+        "inferenceCalls": 163,
+        "toolCalls": {
+          "total": 118,
+          "byTool": {
+            "Read": 41,
+            "Bash": 37,
+            "Grep": 19,
+            "Write": 12,
+            "Edit": 6,
+            "Task": 3
+          }
+        },
+        "subagentSessions": 3,
+        "permissionDenials": [
+          {
+            "toolName": "Bash",
+            "toolUseId": "toolu_01XkQ7mN2pR4sT6vW8yZ0aBc",
+            "reason": "command matched deny rule rm -rf"
+          }
+        ],
+        "models": [
+          {
+            "model": "claude-opus-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 18420,
+              "output": 96311,
+              "cacheWrite5m": 412880,
+              "cacheWrite1h": 0,
+              "cacheRead": 7812440,
+              "thinking": 21450
+            },
+            "webSearchRequests": 4,
+            "webFetchRequests": 2,
+            "costUsd": 9.35
+          },
+          {
+            "model": "claude-haiku-4-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 2210,
+              "output": 4180,
+              "cacheWrite5m": 18400,
+              "cacheWrite1h": 0,
+              "cacheRead": 96220,
+              "thinking": 0
+            },
+            "webSearchRequests": 0,
+            "webFetchRequests": 0,
+            "costUsd": 0.06
+          }
+        ],
+        "costUsd": {
+          "computed": 9.41,
+          "reported": null,
+          "deltaPct": 0.32
+        },
+        "pricingVersion": "2026-09-13",
+        "dedup": {
+          "strategy": "requestId-max-total-tokens",
+          "duplicatesDropped": 21
+        },
+        "filesWritten": [
+          "company-profile/zerodha-broking/soc/main.jsonl",
+          "company-profile/zerodha-broking/summary.md"
+        ],
+        "linesAdded": 412,
+        "linesRemoved": 37,
+        "outcome": "success",
+        "errors": [],
+        "transcriptFormatVersion": "2.1.14",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-12T03:42:10Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": ".claude/scripts/sessions/ingest.mjs"
+        }
+      }
+    },
+    {
+      "description": "reported cost zero with numeric deltaPct",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.summary",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "durationMs": 2507000,
+        "apiDurationMs": 1834210,
+        "turns": 142,
+        "inferenceCalls": 163,
+        "toolCalls": {
+          "total": 118,
+          "byTool": {
+            "Read": 41,
+            "Bash": 37,
+            "Grep": 19,
+            "Write": 12,
+            "Edit": 6,
+            "Task": 3
+          }
+        },
+        "subagentSessions": 3,
+        "permissionDenials": [
+          {
+            "toolName": "Bash",
+            "toolUseId": "toolu_01XkQ7mN2pR4sT6vW8yZ0aBc",
+            "reason": "command matched deny rule rm -rf"
+          }
+        ],
+        "models": [
+          {
+            "model": "claude-opus-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 18420,
+              "output": 96311,
+              "cacheWrite5m": 412880,
+              "cacheWrite1h": 0,
+              "cacheRead": 7812440,
+              "thinking": 21450
+            },
+            "webSearchRequests": 4,
+            "webFetchRequests": 2,
+            "costUsd": 9.35
+          },
+          {
+            "model": "claude-haiku-4-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 2210,
+              "output": 4180,
+              "cacheWrite5m": 18400,
+              "cacheWrite1h": 0,
+              "cacheRead": 96220,
+              "thinking": 0
+            },
+            "webSearchRequests": 0,
+            "webFetchRequests": 0,
+            "costUsd": 0.06
+          }
+        ],
+        "costUsd": {
+          "computed": 9.41,
+          "reported": 0,
+          "deltaPct": 100
+        },
+        "pricingVersion": "2026-09-13",
+        "dedup": {
+          "strategy": "requestId-max-total-tokens",
+          "duplicatesDropped": 21
+        },
+        "filesWritten": [
+          "company-profile/zerodha-broking/soc/main.jsonl",
+          "company-profile/zerodha-broking/summary.md"
+        ],
+        "linesAdded": 412,
+        "linesRemoved": 37,
+        "outcome": "success",
+        "errors": [],
+        "transcriptFormatVersion": "2.1.14",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-12T03:42:10Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": ".claude/scripts/sessions/ingest.mjs"
+        }
+      }
+    },
+    {
+      "description": "reported cost zero with null deltaPct",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.summary",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "durationMs": 2507000,
+        "apiDurationMs": 1834210,
+        "turns": 142,
+        "inferenceCalls": 163,
+        "toolCalls": {
+          "total": 118,
+          "byTool": {
+            "Read": 41,
+            "Bash": 37,
+            "Grep": 19,
+            "Write": 12,
+            "Edit": 6,
+            "Task": 3
+          }
+        },
+        "subagentSessions": 3,
+        "permissionDenials": [
+          {
+            "toolName": "Bash",
+            "toolUseId": "toolu_01XkQ7mN2pR4sT6vW8yZ0aBc",
+            "reason": "command matched deny rule rm -rf"
+          }
+        ],
+        "models": [
+          {
+            "model": "claude-opus-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 18420,
+              "output": 96311,
+              "cacheWrite5m": 412880,
+              "cacheWrite1h": 0,
+              "cacheRead": 7812440,
+              "thinking": 21450
+            },
+            "webSearchRequests": 4,
+            "webFetchRequests": 2,
+            "costUsd": 9.35
+          },
+          {
+            "model": "claude-haiku-4-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 2210,
+              "output": 4180,
+              "cacheWrite5m": 18400,
+              "cacheWrite1h": 0,
+              "cacheRead": 96220,
+              "thinking": 0
+            },
+            "webSearchRequests": 0,
+            "webFetchRequests": 0,
+            "costUsd": 0.06
+          }
+        ],
+        "costUsd": {
+          "computed": 9.41,
+          "reported": 0,
+          "deltaPct": null
+        },
+        "pricingVersion": "2026-09-13",
+        "dedup": {
+          "strategy": "requestId-max-total-tokens",
+          "duplicatesDropped": 21
+        },
+        "filesWritten": [
+          "company-profile/zerodha-broking/soc/main.jsonl",
+          "company-profile/zerodha-broking/summary.md"
+        ],
+        "linesAdded": 412,
+        "linesRemoved": 37,
+        "outcome": "success",
+        "errors": [],
+        "transcriptFormatVersion": "2.1.14",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-12T03:42:10Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": ".claude/scripts/sessions/ingest.mjs"
+        }
+      }
+    },
+    {
+      "description": "wrong kind",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.usage",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "durationMs": 2507000,
+        "apiDurationMs": 1834210,
+        "turns": 142,
+        "inferenceCalls": 163,
+        "toolCalls": {
+          "total": 118,
+          "byTool": {
+            "Read": 41,
+            "Bash": 37,
+            "Grep": 19,
+            "Write": 12,
+            "Edit": 6,
+            "Task": 3
+          }
+        },
+        "subagentSessions": 3,
+        "permissionDenials": [
+          {
+            "toolName": "Bash",
+            "toolUseId": "toolu_01XkQ7mN2pR4sT6vW8yZ0aBc",
+            "reason": "command matched deny rule rm -rf"
+          }
+        ],
+        "models": [
+          {
+            "model": "claude-opus-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 18420,
+              "output": 96311,
+              "cacheWrite5m": 412880,
+              "cacheWrite1h": 0,
+              "cacheRead": 7812440,
+              "thinking": 21450
+            },
+            "webSearchRequests": 4,
+            "webFetchRequests": 2,
+            "costUsd": 9.35
+          },
+          {
+            "model": "claude-haiku-4-5",
+            "provider": "anthropic",
+            "tokens": {
+              "input": 2210,
+              "output": 4180,
+              "cacheWrite5m": 18400,
+              "cacheWrite1h": 0,
+              "cacheRead": 96220,
+              "thinking": 0
+            },
+            "webSearchRequests": 0,
+            "webFetchRequests": 0,
+            "costUsd": 0.06
+          }
+        ],
+        "costUsd": {
+          "computed": 9.41,
+          "reported": 9.38,
+          "deltaPct": 0.32
+        },
+        "pricingVersion": "2026-09-13",
+        "dedup": {
+          "strategy": "requestId-max-total-tokens",
+          "duplicatesDropped": 21
+        },
+        "filesWritten": [
+          "company-profile/zerodha-broking/soc/main.jsonl",
+          "company-profile/zerodha-broking/summary.md"
+        ],
+        "linesAdded": 412,
+        "linesRemoved": 37,
+        "outcome": "success",
+        "errors": [],
+        "transcriptFormatVersion": "2.1.14",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-12T03:42:10Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": ".claude/scripts/sessions/ingest.mjs"
+        }
+      }
+    }
+  ]
+}

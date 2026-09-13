@@ -1,0 +1,304 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/application/repo.schema.json",
+  "title": "Application source repository",
+  "description": "One git repository of an application (applications/<app_id>/repos/<repo_id>.json): where it lives, what it contains (IaC, Helm charts, LLM agent code), how it is built and protected, and the commit Maxwell last inspected. Written by refresh-ctx and probe-sdlc",
+  "examples": [
+    {
+      "schemaVersion": "1",
+      "kind": "maxwell.app.repo",
+      "appId": "ledger-core",
+      "repoId": "ledger-core-api",
+      "url": "git@github.com:arthanidhi/ledger-core-api.git",
+      "host": "github",
+      "visibility": "private",
+      "defaultBranch": "main",
+      "pinnedCommit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+      "lastFetchedAt": "2026-09-13T05:40:12Z",
+      "languages": [ "typescript", "sql", "dockerfile", "hcl" ],
+      "buildSystem": "pnpm",
+      "ciSystem": "github-actions",
+      "packageManifests": [ "package.json", "services/settlement/package.json" ],
+      "containsIac": true,
+      "containsHelmChart": true,
+      "containsAgentCode": false,
+      "codeownersPresent": true,
+      "branchProtection": {
+        "required": true,
+        "minApprovers": 2,
+        "requireCodeOwnerReviews": true,
+        "dismissStaleReviews": true,
+        "statusChecks": [
+          "ci/build",
+          "ci/test",
+          "security/semgrep",
+          "security/trivy"
+        ],
+        "requireSignedCommits": true,
+        "requireLinearHistory": true,
+        "enforceAdmins": true
+      },
+      "localCheckout": "applications/ledger-core/repos/ledger-core-api",
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-13T05:41:00Z",
+        "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+        "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+        "workflow": "refresh-ctx",
+        "agent": "context-refresher"
+      }
+    }
+  ],
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "kind",
+    "appId",
+    "repoId",
+    "url",
+    "host",
+    "visibility",
+    "defaultBranch",
+    "languages",
+    "buildSystem",
+    "ciSystem",
+    "containsIac",
+    "containsHelmChart",
+    "containsAgentCode",
+    "codeownersPresent",
+    "provenance"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/schemaVersion"
+    },
+    "kind": {
+      "const": "maxwell.app.repo"
+    },
+    "appId": {
+      "description": "Slug of the owning application; equals the applications/<app_id> directory name",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+    },
+    "repoId": {
+      "description": "Slug of this repository; must equal the file name without .json and the localCheckout directory name",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+    },
+    "url": {
+      "description": "Clone URL in https://, ssh:// or scp-like git@host:org/repo(.git) form. A username without a password is allowed in https:// and ssh:// forms (Bitbucket Cloud, Gitea, Gerrit); percent-encoded path segments (Azure DevOps) are allowed; passwords, path traversal, trailing slashes and doubled .git suffixes are rejected",
+      "$ref": "#/$defs/gitUrl"
+    },
+    "host": {
+      "description": "Hosting platform, used to pick the right API for branch-protection and CODEOWNERS probes",
+      "enum": [
+        "github",
+        "gitlab",
+        "bitbucket",
+        "azure-devops",
+        "gitea",
+        "other"
+      ]
+    },
+    "visibility": {
+      "description": "Repository visibility as reported by the host. 'internal' is visible to the whole organisation but not the public",
+      "enum": [ "public", "private", "internal" ]
+    },
+    "defaultBranch": {
+      "description": "Default branch name, e.g. 'main'",
+      "$ref": "#/$defs/branchName"
+    },
+    "pinnedCommit": {
+      "description": "Full or abbreviated SHA of the commit Maxwell last analysed. Every probe result for this repo refers to this commit",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/gitCommit"
+    },
+    "lastFetchedAt": {
+      "description": "When the local checkout was last fetched from the remote",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+    },
+    "languages": {
+      "description": "Programming and configuration languages present, most significant first. Use 'other' for anything not listed and note the detail in the app README",
+      "type": "array",
+      "maxItems": 20,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/language"
+      }
+    },
+    "buildSystem": {
+      "description": "Primary build or dependency tool at the repository root; feeds the SBOM generation strategy. Required: write 'none' when the repository has no build tooling so that absence is never mistaken for 'not yet inspected'",
+      "enum": [
+        "npm",
+        "pnpm",
+        "yarn",
+        "bun",
+        "maven",
+        "gradle",
+        "pip",
+        "poetry",
+        "uv",
+        "cargo",
+        "go",
+        "dotnet",
+        "bazel",
+        "make",
+        "cmake",
+        "sbt",
+        "composer",
+        "bundler",
+        "mix",
+        "none",
+        "other"
+      ]
+    },
+    "ciSystem": {
+      "description": "CI/CD system that builds this repository, probed by probe-cicd-env. Required: write 'none' when no pipeline exists so that absence is never mistaken for 'not yet inspected'",
+      "enum": [
+        "github-actions",
+        "gitlab-ci",
+        "jenkins",
+        "azure-pipelines",
+        "circleci",
+        "buildkite",
+        "argo-workflows",
+        "argo-cd",
+        "tekton",
+        "aws-codepipeline",
+        "google-cloud-build",
+        "none",
+        "other"
+      ]
+    },
+    "packageManifests": {
+      "description": "Dependency manifests relative to the repository root (package.json, pom.xml, go.mod, requirements.txt, Cargo.toml and so on)",
+      "type": "array",
+      "maxItems": 200,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/workspacePath"
+      }
+    },
+    "containsIac": {
+      "description": "True when infrastructure-as-code (Terraform, CloudFormation, Pulumi, Ansible, CDK) is present",
+      "type": "boolean"
+    },
+    "containsHelmChart": {
+      "description": "True when a Helm chart (Chart.yaml) or Kustomize overlays are present",
+      "type": "boolean"
+    },
+    "containsAgentCode": {
+      "description": "True when LLM agent or harness code is present (prompt files, tool definitions, MCP servers, agent frameworks); routes the repo to probe-agent-graph and OWASP Agentic checks",
+      "type": "boolean"
+    },
+    "codeownersPresent": {
+      "description": "True when a CODEOWNERS file exists at a location the host honours",
+      "type": "boolean"
+    },
+    "branchProtection": {
+      "$ref": "#/$defs/branchProtection"
+    },
+    "localCheckout": {
+      "description": "Where the gitignored working copy lives inside the workspace; always applications/<app_id>/repos/<repo_id>",
+      "type": "string",
+      "pattern": "^applications/[a-z0-9][a-z0-9-]{1,62}/repos/[a-z0-9][a-z0-9-]{1,62}$"
+    },
+    "provenance": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/provenance"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "gitUrl": {
+      "description": "Alias of common gitUrl, kept for existing $refs",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/gitUrl"
+    },
+    "branchName": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._/-]{0,254}$",
+      "maxLength": 255
+    },
+    "language": {
+      "enum": [
+        "javascript",
+        "typescript",
+        "python",
+        "java",
+        "kotlin",
+        "scala",
+        "go",
+        "rust",
+        "csharp",
+        "fsharp",
+        "cpp",
+        "c",
+        "ruby",
+        "php",
+        "swift",
+        "dart",
+        "elixir",
+        "erlang",
+        "clojure",
+        "groovy",
+        "r",
+        "julia",
+        "cobol",
+        "shell",
+        "powershell",
+        "sql",
+        "plsql",
+        "hcl",
+        "yaml",
+        "dockerfile",
+        "html",
+        "css",
+        "solidity",
+        "other"
+      ]
+    },
+    "branchProtection": {
+      "description": "Protection rules on the default branch as reported by the host API",
+      "type": "object",
+      "required": [ "required" ],
+      "properties": {
+        "required": {
+          "description": "True when the default branch rejects direct pushes and requires pull requests",
+          "type": "boolean"
+        },
+        "minApprovers": {
+          "description": "Minimum number of approving reviews before merge (0 when reviews are not enforced)",
+          "type": "integer",
+          "maximum": 10,
+          "minimum": 0
+        },
+        "requireCodeOwnerReviews": {
+          "description": "True when a review from a CODEOWNERS owner is required for the paths a pull request touches; without it codeownersPresent is informational only (SSDF PW.2, SEBI CSCRF code review)",
+          "type": "boolean"
+        },
+        "dismissStaleReviews": {
+          "description": "True when approving reviews are dismissed by new commits pushed to the pull request",
+          "type": "boolean"
+        },
+        "statusChecks": {
+          "description": "Names of status checks that must pass before merge",
+          "type": "array",
+          "maxItems": 50,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+          }
+        },
+        "requireSignedCommits": {
+          "description": "True when commits on the default branch must be GPG/SSH signed",
+          "type": "boolean"
+        },
+        "requireLinearHistory": {
+          "description": "True when merge commits are forbidden on the default branch",
+          "type": "boolean"
+        },
+        "enforceAdmins": {
+          "description": "True when the rules also apply to repository administrators and bypass lists are empty",
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

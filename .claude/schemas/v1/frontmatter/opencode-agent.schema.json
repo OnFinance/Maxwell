@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/opencode-agent.schema.json",
+  "title": "OpenCode agent frontmatter",
+  "description": "YAML frontmatter of .agents/agents/<name>.md, generated from .claude/agents by sync-agents-mirror.mjs (never edited by hand). The markdown body is the agent's system prompt. Tool allow-lists become an OpenCode permission map; x-maxwell is copied verbatim",
+  "examples": [
+    {
+      "description": "Static probe of Terraform, Pulumi, Helm and Kubernetes manifests in a target application's repos. Use for probe-iac and probe-app-chart to find misconfigurations mapped to SEBI CSCRF, RBI Directions 2026 and CIS benchmarks. Read-only: never applies changes",
+      "mode": "subagent",
+      "model": "anthropic/claude-sonnet-5",
+      "temperature": 0,
+      "permission": {
+        "read": "allow",
+        "edit": "deny",
+        "bash": "allow",
+        "webfetch": "deny",
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow",
+        "write": "deny",
+        "patch": "deny",
+        "todowrite": "deny",
+        "todoread": "deny",
+        "skill": "deny",
+        "task": "deny"
+      },
+      "x-maxwell": {
+        "role": "static-probe",
+        "writes": [
+          "company-profile/*/soc/main.jsonl",
+          "company-profile/*/summary.md"
+        ],
+        "readOnlyTargets": true,
+        "regulatoryFocus": [
+          "sebi-cscrf-2024",
+          "rbi-cyber-tech-directions-2026",
+          "cis-controls-8.1"
+        ]
+      }
+    }
+  ],
+  "type": "object",
+  "required": [ "description", "mode" ],
+  "properties": {
+    "description": {
+      "description": "When to delegate to this agent and what it returns; copied from the Claude Code agent",
+      "type": "string",
+      "pattern": "\\S",
+      "maxLength": 2000,
+      "minLength": 20
+    },
+    "mode": {
+      "description": "primary agents are user-selectable, subagents are only invoked by other agents, all means both. Mirrored Maxwell agents are always subagent",
+      "enum": [ "primary", "subagent", "all" ]
+    },
+    "model": {
+      "description": "Model in provider/model form, mapped from the Claude Code alias by the mirror script",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/harness/opencode-config.schema.json#/$defs/modelId"
+    },
+    "temperature": {
+      "description": "Sampling temperature; probes and auditors use 0 for reproducibility",
+      "type": "number",
+      "maximum": 2,
+      "minimum": 0
+    },
+    "permission": {
+      "description": "OpenCode tool name to allow/deny/ask; bash, edit and skill may map command or path patterns to actions instead. Same shape as the opencode.json permission map",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/harness/opencode-config.schema.json#/$defs/permissionMap"
+    },
+    "disable": {
+      "description": "When true the agent is hidden and cannot be invoked",
+      "type": "boolean"
+    },
+    "x-maxwell": {
+      "description": "Maxwell metadata copied from the canonical Claude Code agent",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/claude-agent.schema.json#/$defs/xMaxwell"
+    }
+  },
+  "additionalProperties": false
+}

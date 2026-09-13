@@ -1,0 +1,2588 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/v1/company/details.schema.json",
+  "tests": [
+    {
+      "description": "complete SEBI mid-size RE broker profile",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.details",
+        "companyId": "zenith-securities",
+        "legalName": "Zenith Securities Private Limited",
+        "brandName": "Zenith",
+        "description": "Discount broking and depository participant serving retail investors across India via mobile and web trading platforms",
+        "website": "https://www.zenithsecurities.in",
+        "identifiers": {
+          "cin": "U67120MH2015PTC267890",
+          "pan": "AAACZ1234K",
+          "gstin": "27AAACZ1234K1ZV",
+          "lei": "335800ABCDEFGHIJKL45",
+          "sebiRegistrationNos": [
+            "INZ000123456",
+            "IN-DP-123-2016"
+          ],
+          "dunsNumber": "860123456"
+        },
+        "headquarters": {
+          "city": "Mumbai",
+          "state": "Maharashtra",
+          "country": "IN"
+        },
+        "jurisdictions": [
+          {
+            "country": "IN",
+            "state": "Maharashtra",
+            "primary": true
+          }
+        ],
+        "entityTypes": [
+          "stock-broker",
+          "depository-participant"
+        ],
+        "regulatoryRegistrations": [
+          {
+            "regulator": "SEBI",
+            "registrationNo": "INZ000123456",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-02-15",
+            "status": "active"
+          },
+          {
+            "regulator": "SEBI",
+            "registrationNo": "IN-DP-123-2016",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-08-10",
+            "status": "active"
+          }
+        ],
+        "frameworksInScope": [
+          "sebi-cscrf-2024",
+          "cert-in-directions-2022",
+          "dpdp-rules-2025",
+          "iso-27001-2022"
+        ],
+        "contacts": [
+          {
+            "role": "ciso",
+            "name": "Ananya Iyer",
+            "email": "ciso@zenithsecurities.in",
+            "phone": "+912261234567"
+          },
+          {
+            "role": "compliance-officer",
+            "name": "Rohit Menon",
+            "email": "compliance@zenithsecurities.in"
+          },
+          {
+            "role": "designated-officer",
+            "name": "Ananya Iyer",
+            "email": "ciso@zenithsecurities.in",
+            "phone": "+912261234567"
+          }
+        ],
+        "orgSize": {
+          "employees": 420,
+          "techHeadcount": 95,
+          "securityHeadcount": 6
+        },
+        "fiscalYearStart": "04-01",
+        "dataResidency": [
+          "IN"
+        ],
+        "criticalFunctions": [
+          {
+            "functionId": "order-routing",
+            "name": "Order routing to exchanges",
+            "description": "Acceptance, validation and routing of client orders to NSE and BSE during market hours",
+            "impactTolerance": {
+              "maxOutageMinutes": 30,
+              "maxDataLossMinutes": 0
+            },
+            "appIds": [
+              "trading-core"
+            ]
+          }
+        ],
+        "riskAppetite": {
+          "statement": "Zero tolerance for client data breaches or unapproved trading downtime during market hours; medium residual risk accepted for internal tooling",
+          "maxAcceptableSeverity": "medium"
+        },
+        "socModel": "m-soc-nse-bse",
+        "auditCadence": {
+          "vaptPerYear": 2,
+          "cyberAuditPerYear": 1,
+          "lastVaptAt": "2026-03-20",
+          "lastCyberAuditAt": "2026-05-30"
+        },
+        "tags": [
+          "retail-broking",
+          "sebi"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:30:00Z",
+          "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XA",
+          "workflow": "seed-company",
+          "agent": "company-profiler"
+        }
+      }
+    },
+    {
+      "description": "minimal profile with only required fields",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.details",
+        "companyId": "abc-nbfc",
+        "legalName": "ABC Finance Limited",
+        "jurisdictions": [
+          {
+            "country": "IN",
+            "primary": true
+          }
+        ],
+        "entityTypes": [
+          "nbfc"
+        ],
+        "regulatoryRegistrations": [
+          {
+            "regulator": "RBI",
+            "registrationNo": "N-14.03456",
+            "category": "tier-2"
+          }
+        ],
+        "frameworksInScope": [
+          "rbi-cyber-tech-directions-2026"
+        ],
+        "contacts": [
+          {
+            "role": "ciso",
+            "name": "Priya Nair",
+            "email": "ciso@abcfinance.in"
+          }
+        ],
+        "socModel": "managed-soc",
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:30:00Z"
+        }
+      }
+    },
+    {
+      "description": "invented top-level key is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.details",
+        "companyId": "zenith-securities",
+        "legalName": "Zenith Securities Private Limited",
+        "brandName": "Zenith",
+        "description": "Discount broking and depository participant serving retail investors across India via mobile and web trading platforms",
+        "website": "https://www.zenithsecurities.in",
+        "identifiers": {
+          "cin": "U67120MH2015PTC267890",
+          "pan": "AAACZ1234K",
+          "gstin": "27AAACZ1234K1ZV",
+          "lei": "335800ABCDEFGHIJKL45",
+          "sebiRegistrationNos": [
+            "INZ000123456",
+            "IN-DP-123-2016"
+          ],
+          "dunsNumber": "860123456"
+        },
+        "headquarters": {
+          "city": "Mumbai",
+          "state": "Maharashtra",
+          "country": "IN"
+        },
+        "jurisdictions": [
+          {
+            "country": "IN",
+            "state": "Maharashtra",
+            "primary": true
+          }
+        ],
+        "entityTypes": [
+          "stock-broker",
+          "depository-participant"
+        ],
+        "regulatoryRegistrations": [
+          {
+            "regulator": "SEBI",
+            "registrationNo": "INZ000123456",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-02-15",
+            "status": "active"
+          },
+          {
+            "regulator": "SEBI",
+            "registrationNo": "IN-DP-123-2016",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-08-10",
+            "status": "active"
+          }
+        ],
+        "frameworksInScope": [
+          "sebi-cscrf-2024",
+          "cert-in-directions-2022",
+          "dpdp-rules-2025",
+          "iso-27001-2022"
+        ],
+        "contacts": [
+          {
+            "role": "ciso",
+            "name": "Ananya Iyer",
+            "email": "ciso@zenithsecurities.in",
+            "phone": "+912261234567"
+          },
+          {
+            "role": "compliance-officer",
+            "name": "Rohit Menon",
+            "email": "compliance@zenithsecurities.in"
+          }
+        ],
+        "orgSize": {
+          "employees": 420,
+          "techHeadcount": 95,
+          "securityHeadcount": 6
+        },
+        "fiscalYearStart": "04-01",
+        "dataResidency": [
+          "IN"
+        ],
+        "criticalFunctions": [
+          {
+            "functionId": "order-routing",
+            "name": "Order routing to exchanges",
+            "description": "Acceptance, validation and routing of client orders to NSE and BSE during market hours",
+            "impactTolerance": {
+              "maxOutageMinutes": 30,
+              "maxDataLossMinutes": 0
+            },
+            "appIds": [
+              "trading-core"
+            ]
+          }
+        ],
+        "riskAppetite": {
+          "statement": "Zero tolerance for client data breaches or unapproved trading downtime during market hours; medium residual risk accepted for internal tooling",
+          "maxAcceptableSeverity": "medium"
+        },
+        "socModel": "m-soc-nse-bse",
+        "auditCadence": {
+          "vaptPerYear": 2,
+          "cyberAuditPerYear": 1,
+          "lastVaptAt": "2026-03-20",
+          "lastCyberAuditAt": "2026-05-30"
+        },
+        "tags": [
+          "retail-broking",
+          "sebi"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:30:00Z",
+          "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XA",
+          "workflow": "seed-company",
+          "agent": "company-profiler"
+        },
+        "ceoName": "Someone"
+      }
+    },
+    {
+      "description": "invented identifiers key is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.details",
+        "companyId": "zenith-securities",
+        "legalName": "Zenith Securities Private Limited",
+        "brandName": "Zenith",
+        "description": "Discount broking and depository participant serving retail investors across India via mobile and web trading platforms",
+        "website": "https://www.zenithsecurities.in",
+        "identifiers": {
+          "cin": "U67120MH2015PTC267890",
+          "pan": "AAACZ1234K",
+          "gstin": "27AAACZ1234K1ZV",
+          "lei": "335800ABCDEFGHIJKL45",
+          "sebiRegistrationNos": [
+            "INZ000123456",
+            "IN-DP-123-2016"
+          ],
+          "dunsNumber": "860123456",
+          "vatNumber": "X"
+        },
+        "headquarters": {
+          "city": "Mumbai",
+          "state": "Maharashtra",
+          "country": "IN"
+        },
+        "jurisdictions": [
+          {
+            "country": "IN",
+            "state": "Maharashtra",
+            "primary": true
+          }
+        ],
+        "entityTypes": [
+          "stock-broker",
+          "depository-participant"
+        ],
+        "regulatoryRegistrations": [
+          {
+            "regulator": "SEBI",
+            "registrationNo": "INZ000123456",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-02-15",
+            "status": "active"
+          },
+          {
+            "regulator": "SEBI",
+            "registrationNo": "IN-DP-123-2016",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-08-10",
+            "status": "active"
+          }
+        ],
+        "frameworksInScope": [
+          "sebi-cscrf-2024",
+          "cert-in-directions-2022",
+          "dpdp-rules-2025",
+          "iso-27001-2022"
+        ],
+        "contacts": [
+          {
+            "role": "ciso",
+            "name": "Ananya Iyer",
+            "email": "ciso@zenithsecurities.in",
+            "phone": "+912261234567"
+          },
+          {
+            "role": "compliance-officer",
+            "name": "Rohit Menon",
+            "email": "compliance@zenithsecurities.in"
+          }
+        ],
+        "orgSize": {
+          "employees": 420,
+          "techHeadcount": 95,
+          "securityHeadcount": 6
+        },
+        "fiscalYearStart": "04-01",
+        "dataResidency": [
+          "IN"
+        ],
+        "criticalFunctions": [
+          {
+            "functionId": "order-routing",
+            "name": "Order routing to exchanges",
+            "description": "Acceptance, validation and routing of client orders to NSE and BSE during market hours",
+            "impactTolerance": {
+              "maxOutageMinutes": 30,
+              "maxDataLossMinutes": 0
+            },
+            "appIds": [
+              "trading-core"
+            ]
+          }
+        ],
+        "riskAppetite": {
+          "statement": "Zero tolerance for client data breaches or unapproved trading downtime during market hours; medium residual risk accepted for internal tooling",
+          "maxAcceptableSeverity": "medium"
+        },
+        "socModel": "m-soc-nse-bse",
+        "auditCadence": {
+          "vaptPerYear": 2,
+          "cyberAuditPerYear": 1,
+          "lastVaptAt": "2026-03-20",
+          "lastCyberAuditAt": "2026-05-30"
+        },
+        "tags": [
+          "retail-broking",
+          "sebi"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:30:00Z",
+          "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XA",
+          "workflow": "seed-company",
+          "agent": "company-profiler"
+        }
+      }
+    },
+    {
+      "description": "companyId must be a slug",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.details",
+        "companyId": "Zenith Securities",
+        "legalName": "Zenith Securities Private Limited",
+        "brandName": "Zenith",
+        "description": "Discount broking and depository participant serving retail investors across India via mobile and web trading platforms",
+        "website": "https://www.zenithsecurities.in",
+        "identifiers": {
+          "cin": "U67120MH2015PTC267890",
+          "pan": "AAACZ1234K",
+          "gstin": "27AAACZ1234K1ZV",
+          "lei": "335800ABCDEFGHIJKL45",
+          "sebiRegistrationNos": [
+            "INZ000123456",
+            "IN-DP-123-2016"
+          ],
+          "dunsNumber": "860123456"
+        },
+        "headquarters": {
+          "city": "Mumbai",
+          "state": "Maharashtra",
+          "country": "IN"
+        },
+        "jurisdictions": [
+          {
+            "country": "IN",
+            "state": "Maharashtra",
+            "primary": true
+          }
+        ],
+        "entityTypes": [
+          "stock-broker",
+          "depository-participant"
+        ],
+        "regulatoryRegistrations": [
+          {
+            "regulator": "SEBI",
+            "registrationNo": "INZ000123456",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-02-15",
+            "status": "active"
+          },
+          {
+            "regulator": "SEBI",
+            "registrationNo": "IN-DP-123-2016",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-08-10",
+            "status": "active"
+          }
+        ],
+        "frameworksInScope": [
+          "sebi-cscrf-2024",
+          "cert-in-directions-2022",
+          "dpdp-rules-2025",
+          "iso-27001-2022"
+        ],
+        "contacts": [
+          {
+            "role": "ciso",
+            "name": "Ananya Iyer",
+            "email": "ciso@zenithsecurities.in",
+            "phone": "+912261234567"
+          },
+          {
+            "role": "compliance-officer",
+            "name": "Rohit Menon",
+            "email": "compliance@zenithsecurities.in"
+          }
+        ],
+        "orgSize": {
+          "employees": 420,
+          "techHeadcount": 95,
+          "securityHeadcount": 6
+        },
+        "fiscalYearStart": "04-01",
+        "dataResidency": [
+          "IN"
+        ],
+        "criticalFunctions": [
+          {
+            "functionId": "order-routing",
+            "name": "Order routing to exchanges",
+            "description": "Acceptance, validation and routing of client orders to NSE and BSE during market hours",
+            "impactTolerance": {
+              "maxOutageMinutes": 30,
+              "maxDataLossMinutes": 0
+            },
+            "appIds": [
+              "trading-core"
+            ]
+          }
+        ],
+        "riskAppetite": {
+          "statement": "Zero tolerance for client data breaches or unapproved trading downtime during market hours; medium residual risk accepted for internal tooling",
+          "maxAcceptableSeverity": "medium"
+        },
+        "socModel": "m-soc-nse-bse",
+        "auditCadence": {
+          "vaptPerYear": 2,
+          "cyberAuditPerYear": 1,
+          "lastVaptAt": "2026-03-20",
+          "lastCyberAuditAt": "2026-05-30"
+        },
+        "tags": [
+          "retail-broking",
+          "sebi"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:30:00Z",
+          "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XA",
+          "workflow": "seed-company",
+          "agent": "company-profiler"
+        }
+      }
+    },
+    {
+      "description": "CIN must match MCA pattern",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.details",
+        "companyId": "zenith-securities",
+        "legalName": "Zenith Securities Private Limited",
+        "brandName": "Zenith",
+        "description": "Discount broking and depository participant serving retail investors across India via mobile and web trading platforms",
+        "website": "https://www.zenithsecurities.in",
+        "identifiers": {
+          "cin": "ABC123",
+          "pan": "AAACZ1234K",
+          "gstin": "27AAACZ1234K1ZV",
+          "lei": "335800ABCDEFGHIJKL45",
+          "sebiRegistrationNos": [
+            "INZ000123456",
+            "IN-DP-123-2016"
+          ],
+          "dunsNumber": "860123456"
+        },
+        "headquarters": {
+          "city": "Mumbai",
+          "state": "Maharashtra",
+          "country": "IN"
+        },
+        "jurisdictions": [
+          {
+            "country": "IN",
+            "state": "Maharashtra",
+            "primary": true
+          }
+        ],
+        "entityTypes": [
+          "stock-broker",
+          "depository-participant"
+        ],
+        "regulatoryRegistrations": [
+          {
+            "regulator": "SEBI",
+            "registrationNo": "INZ000123456",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-02-15",
+            "status": "active"
+          },
+          {
+            "regulator": "SEBI",
+            "registrationNo": "IN-DP-123-2016",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-08-10",
+            "status": "active"
+          }
+        ],
+        "frameworksInScope": [
+          "sebi-cscrf-2024",
+          "cert-in-directions-2022",
+          "dpdp-rules-2025",
+          "iso-27001-2022"
+        ],
+        "contacts": [
+          {
+            "role": "ciso",
+            "name": "Ananya Iyer",
+            "email": "ciso@zenithsecurities.in",
+            "phone": "+912261234567"
+          },
+          {
+            "role": "compliance-officer",
+            "name": "Rohit Menon",
+            "email": "compliance@zenithsecurities.in"
+          }
+        ],
+        "orgSize": {
+          "employees": 420,
+          "techHeadcount": 95,
+          "securityHeadcount": 6
+        },
+        "fiscalYearStart": "04-01",
+        "dataResidency": [
+          "IN"
+        ],
+        "criticalFunctions": [
+          {
+            "functionId": "order-routing",
+            "name": "Order routing to exchanges",
+            "description": "Acceptance, validation and routing of client orders to NSE and BSE during market hours",
+            "impactTolerance": {
+              "maxOutageMinutes": 30,
+              "maxDataLossMinutes": 0
+            },
+            "appIds": [
+              "trading-core"
+            ]
+          }
+        ],
+        "riskAppetite": {
+          "statement": "Zero tolerance for client data breaches or unapproved trading downtime during market hours; medium residual risk accepted for internal tooling",
+          "maxAcceptableSeverity": "medium"
+        },
+        "socModel": "m-soc-nse-bse",
+        "auditCadence": {
+          "vaptPerYear": 2,
+          "cyberAuditPerYear": 1,
+          "lastVaptAt": "2026-03-20",
+          "lastCyberAuditAt": "2026-05-30"
+        },
+        "tags": [
+          "retail-broking",
+          "sebi"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:30:00Z",
+          "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XA",
+          "workflow": "seed-company",
+          "agent": "company-profiler"
+        }
+      }
+    },
+    {
+      "description": "unknown regulatory category is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.details",
+        "companyId": "zenith-securities",
+        "legalName": "Zenith Securities Private Limited",
+        "brandName": "Zenith",
+        "description": "Discount broking and depository participant serving retail investors across India via mobile and web trading platforms",
+        "website": "https://www.zenithsecurities.in",
+        "identifiers": {
+          "cin": "U67120MH2015PTC267890",
+          "pan": "AAACZ1234K",
+          "gstin": "27AAACZ1234K1ZV",
+          "lei": "335800ABCDEFGHIJKL45",
+          "sebiRegistrationNos": [
+            "INZ000123456",
+            "IN-DP-123-2016"
+          ],
+          "dunsNumber": "860123456"
+        },
+        "headquarters": {
+          "city": "Mumbai",
+          "state": "Maharashtra",
+          "country": "IN"
+        },
+        "jurisdictions": [
+          {
+            "country": "IN",
+            "state": "Maharashtra",
+            "primary": true
+          }
+        ],
+        "entityTypes": [
+          "stock-broker",
+          "depository-participant"
+        ],
+        "regulatoryRegistrations": [
+          {
+            "regulator": "SEBI",
+            "registrationNo": "INZ000123456",
+            "category": "large-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-02-15",
+            "status": "active"
+          },
+          {
+            "regulator": "SEBI",
+            "registrationNo": "IN-DP-123-2016",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-08-10",
+            "status": "active"
+          }
+        ],
+        "frameworksInScope": [
+          "sebi-cscrf-2024",
+          "cert-in-directions-2022",
+          "dpdp-rules-2025",
+          "iso-27001-2022"
+        ],
+        "contacts": [
+          {
+            "role": "ciso",
+            "name": "Ananya Iyer",
+            "email": "ciso@zenithsecurities.in",
+            "phone": "+912261234567"
+          },
+          {
+            "role": "compliance-officer",
+            "name": "Rohit Menon",
+            "email": "compliance@zenithsecurities.in"
+          }
+        ],
+        "orgSize": {
+          "employees": 420,
+          "techHeadcount": 95,
+          "securityHeadcount": 6
+        },
+        "fiscalYearStart": "04-01",
+        "dataResidency": [
+          "IN"
+        ],
+        "criticalFunctions": [
+          {
+            "functionId": "order-routing",
+            "name": "Order routing to exchanges",
+            "description": "Acceptance, validation and routing of client orders to NSE and BSE during market hours",
+            "impactTolerance": {
+              "maxOutageMinutes": 30,
+              "maxDataLossMinutes": 0
+            },
+            "appIds": [
+              "trading-core"
+            ]
+          }
+        ],
+        "riskAppetite": {
+          "statement": "Zero tolerance for client data breaches or unapproved trading downtime during market hours; medium residual risk accepted for internal tooling",
+          "maxAcceptableSeverity": "medium"
+        },
+        "socModel": "m-soc-nse-bse",
+        "auditCadence": {
+          "vaptPerYear": 2,
+          "cyberAuditPerYear": 1,
+          "lastVaptAt": "2026-03-20",
+          "lastCyberAuditAt": "2026-05-30"
+        },
+        "tags": [
+          "retail-broking",
+          "sebi"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:30:00Z",
+          "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XA",
+          "workflow": "seed-company",
+          "agent": "company-profiler"
+        }
+      }
+    },
+    {
+      "description": "unknown contact role is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.details",
+        "companyId": "zenith-securities",
+        "legalName": "Zenith Securities Private Limited",
+        "brandName": "Zenith",
+        "description": "Discount broking and depository participant serving retail investors across India via mobile and web trading platforms",
+        "website": "https://www.zenithsecurities.in",
+        "identifiers": {
+          "cin": "U67120MH2015PTC267890",
+          "pan": "AAACZ1234K",
+          "gstin": "27AAACZ1234K1ZV",
+          "lei": "335800ABCDEFGHIJKL45",
+          "sebiRegistrationNos": [
+            "INZ000123456",
+            "IN-DP-123-2016"
+          ],
+          "dunsNumber": "860123456"
+        },
+        "headquarters": {
+          "city": "Mumbai",
+          "state": "Maharashtra",
+          "country": "IN"
+        },
+        "jurisdictions": [
+          {
+            "country": "IN",
+            "state": "Maharashtra",
+            "primary": true
+          }
+        ],
+        "entityTypes": [
+          "stock-broker",
+          "depository-participant"
+        ],
+        "regulatoryRegistrations": [
+          {
+            "regulator": "SEBI",
+            "registrationNo": "INZ000123456",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-02-15",
+            "status": "active"
+          },
+          {
+            "regulator": "SEBI",
+            "registrationNo": "IN-DP-123-2016",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-08-10",
+            "status": "active"
+          }
+        ],
+        "frameworksInScope": [
+          "sebi-cscrf-2024",
+          "cert-in-directions-2022",
+          "dpdp-rules-2025",
+          "iso-27001-2022"
+        ],
+        "contacts": [
+          {
+            "role": "cfo",
+            "name": "Ananya Iyer",
+            "email": "ciso@zenithsecurities.in",
+            "phone": "+912261234567"
+          },
+          {
+            "role": "compliance-officer",
+            "name": "Rohit Menon",
+            "email": "compliance@zenithsecurities.in"
+          }
+        ],
+        "orgSize": {
+          "employees": 420,
+          "techHeadcount": 95,
+          "securityHeadcount": 6
+        },
+        "fiscalYearStart": "04-01",
+        "dataResidency": [
+          "IN"
+        ],
+        "criticalFunctions": [
+          {
+            "functionId": "order-routing",
+            "name": "Order routing to exchanges",
+            "description": "Acceptance, validation and routing of client orders to NSE and BSE during market hours",
+            "impactTolerance": {
+              "maxOutageMinutes": 30,
+              "maxDataLossMinutes": 0
+            },
+            "appIds": [
+              "trading-core"
+            ]
+          }
+        ],
+        "riskAppetite": {
+          "statement": "Zero tolerance for client data breaches or unapproved trading downtime during market hours; medium residual risk accepted for internal tooling",
+          "maxAcceptableSeverity": "medium"
+        },
+        "socModel": "m-soc-nse-bse",
+        "auditCadence": {
+          "vaptPerYear": 2,
+          "cyberAuditPerYear": 1,
+          "lastVaptAt": "2026-03-20",
+          "lastCyberAuditAt": "2026-05-30"
+        },
+        "tags": [
+          "retail-broking",
+          "sebi"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:30:00Z",
+          "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XA",
+          "workflow": "seed-company",
+          "agent": "company-profiler"
+        }
+      }
+    },
+    {
+      "description": "unknown socModel is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.details",
+        "companyId": "zenith-securities",
+        "legalName": "Zenith Securities Private Limited",
+        "brandName": "Zenith",
+        "description": "Discount broking and depository participant serving retail investors across India via mobile and web trading platforms",
+        "website": "https://www.zenithsecurities.in",
+        "identifiers": {
+          "cin": "U67120MH2015PTC267890",
+          "pan": "AAACZ1234K",
+          "gstin": "27AAACZ1234K1ZV",
+          "lei": "335800ABCDEFGHIJKL45",
+          "sebiRegistrationNos": [
+            "INZ000123456",
+            "IN-DP-123-2016"
+          ],
+          "dunsNumber": "860123456"
+        },
+        "headquarters": {
+          "city": "Mumbai",
+          "state": "Maharashtra",
+          "country": "IN"
+        },
+        "jurisdictions": [
+          {
+            "country": "IN",
+            "state": "Maharashtra",
+            "primary": true
+          }
+        ],
+        "entityTypes": [
+          "stock-broker",
+          "depository-participant"
+        ],
+        "regulatoryRegistrations": [
+          {
+            "regulator": "SEBI",
+            "registrationNo": "INZ000123456",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-02-15",
+            "status": "active"
+          },
+          {
+            "regulator": "SEBI",
+            "registrationNo": "IN-DP-123-2016",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-08-10",
+            "status": "active"
+          }
+        ],
+        "frameworksInScope": [
+          "sebi-cscrf-2024",
+          "cert-in-directions-2022",
+          "dpdp-rules-2025",
+          "iso-27001-2022"
+        ],
+        "contacts": [
+          {
+            "role": "ciso",
+            "name": "Ananya Iyer",
+            "email": "ciso@zenithsecurities.in",
+            "phone": "+912261234567"
+          },
+          {
+            "role": "compliance-officer",
+            "name": "Rohit Menon",
+            "email": "compliance@zenithsecurities.in"
+          }
+        ],
+        "orgSize": {
+          "employees": 420,
+          "techHeadcount": 95,
+          "securityHeadcount": 6
+        },
+        "fiscalYearStart": "04-01",
+        "dataResidency": [
+          "IN"
+        ],
+        "criticalFunctions": [
+          {
+            "functionId": "order-routing",
+            "name": "Order routing to exchanges",
+            "description": "Acceptance, validation and routing of client orders to NSE and BSE during market hours",
+            "impactTolerance": {
+              "maxOutageMinutes": 30,
+              "maxDataLossMinutes": 0
+            },
+            "appIds": [
+              "trading-core"
+            ]
+          }
+        ],
+        "riskAppetite": {
+          "statement": "Zero tolerance for client data breaches or unapproved trading downtime during market hours; medium residual risk accepted for internal tooling",
+          "maxAcceptableSeverity": "medium"
+        },
+        "socModel": "hybrid",
+        "auditCadence": {
+          "vaptPerYear": 2,
+          "cyberAuditPerYear": 1,
+          "lastVaptAt": "2026-03-20",
+          "lastCyberAuditAt": "2026-05-30"
+        },
+        "tags": [
+          "retail-broking",
+          "sebi"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:30:00Z",
+          "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XA",
+          "workflow": "seed-company",
+          "agent": "company-profiler"
+        }
+      }
+    },
+    {
+      "description": "entity type outside vocabulary is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.details",
+        "companyId": "zenith-securities",
+        "legalName": "Zenith Securities Private Limited",
+        "brandName": "Zenith",
+        "description": "Discount broking and depository participant serving retail investors across India via mobile and web trading platforms",
+        "website": "https://www.zenithsecurities.in",
+        "identifiers": {
+          "cin": "U67120MH2015PTC267890",
+          "pan": "AAACZ1234K",
+          "gstin": "27AAACZ1234K1ZV",
+          "lei": "335800ABCDEFGHIJKL45",
+          "sebiRegistrationNos": [
+            "INZ000123456",
+            "IN-DP-123-2016"
+          ],
+          "dunsNumber": "860123456"
+        },
+        "headquarters": {
+          "city": "Mumbai",
+          "state": "Maharashtra",
+          "country": "IN"
+        },
+        "jurisdictions": [
+          {
+            "country": "IN",
+            "state": "Maharashtra",
+            "primary": true
+          }
+        ],
+        "entityTypes": [
+          "crypto-exchange"
+        ],
+        "regulatoryRegistrations": [
+          {
+            "regulator": "SEBI",
+            "registrationNo": "INZ000123456",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-02-15",
+            "status": "active"
+          },
+          {
+            "regulator": "SEBI",
+            "registrationNo": "IN-DP-123-2016",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-08-10",
+            "status": "active"
+          }
+        ],
+        "frameworksInScope": [
+          "sebi-cscrf-2024",
+          "cert-in-directions-2022",
+          "dpdp-rules-2025",
+          "iso-27001-2022"
+        ],
+        "contacts": [
+          {
+            "role": "ciso",
+            "name": "Ananya Iyer",
+            "email": "ciso@zenithsecurities.in",
+            "phone": "+912261234567"
+          },
+          {
+            "role": "compliance-officer",
+            "name": "Rohit Menon",
+            "email": "compliance@zenithsecurities.in"
+          }
+        ],
+        "orgSize": {
+          "employees": 420,
+          "techHeadcount": 95,
+          "securityHeadcount": 6
+        },
+        "fiscalYearStart": "04-01",
+        "dataResidency": [
+          "IN"
+        ],
+        "criticalFunctions": [
+          {
+            "functionId": "order-routing",
+            "name": "Order routing to exchanges",
+            "description": "Acceptance, validation and routing of client orders to NSE and BSE during market hours",
+            "impactTolerance": {
+              "maxOutageMinutes": 30,
+              "maxDataLossMinutes": 0
+            },
+            "appIds": [
+              "trading-core"
+            ]
+          }
+        ],
+        "riskAppetite": {
+          "statement": "Zero tolerance for client data breaches or unapproved trading downtime during market hours; medium residual risk accepted for internal tooling",
+          "maxAcceptableSeverity": "medium"
+        },
+        "socModel": "m-soc-nse-bse",
+        "auditCadence": {
+          "vaptPerYear": 2,
+          "cyberAuditPerYear": 1,
+          "lastVaptAt": "2026-03-20",
+          "lastCyberAuditAt": "2026-05-30"
+        },
+        "tags": [
+          "retail-broking",
+          "sebi"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:30:00Z",
+          "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XA",
+          "workflow": "seed-company",
+          "agent": "company-profiler"
+        }
+      }
+    },
+    {
+      "description": "missing required entityTypes",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.details",
+        "companyId": "zenith-securities",
+        "legalName": "Zenith Securities Private Limited",
+        "brandName": "Zenith",
+        "description": "Discount broking and depository participant serving retail investors across India via mobile and web trading platforms",
+        "website": "https://www.zenithsecurities.in",
+        "identifiers": {
+          "cin": "U67120MH2015PTC267890",
+          "pan": "AAACZ1234K",
+          "gstin": "27AAACZ1234K1ZV",
+          "lei": "335800ABCDEFGHIJKL45",
+          "sebiRegistrationNos": [
+            "INZ000123456",
+            "IN-DP-123-2016"
+          ],
+          "dunsNumber": "860123456"
+        },
+        "headquarters": {
+          "city": "Mumbai",
+          "state": "Maharashtra",
+          "country": "IN"
+        },
+        "jurisdictions": [
+          {
+            "country": "IN",
+            "state": "Maharashtra",
+            "primary": true
+          }
+        ],
+        "regulatoryRegistrations": [
+          {
+            "regulator": "SEBI",
+            "registrationNo": "INZ000123456",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-02-15",
+            "status": "active"
+          },
+          {
+            "regulator": "SEBI",
+            "registrationNo": "IN-DP-123-2016",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-08-10",
+            "status": "active"
+          }
+        ],
+        "frameworksInScope": [
+          "sebi-cscrf-2024",
+          "cert-in-directions-2022",
+          "dpdp-rules-2025",
+          "iso-27001-2022"
+        ],
+        "contacts": [
+          {
+            "role": "ciso",
+            "name": "Ananya Iyer",
+            "email": "ciso@zenithsecurities.in",
+            "phone": "+912261234567"
+          },
+          {
+            "role": "compliance-officer",
+            "name": "Rohit Menon",
+            "email": "compliance@zenithsecurities.in"
+          }
+        ],
+        "orgSize": {
+          "employees": 420,
+          "techHeadcount": 95,
+          "securityHeadcount": 6
+        },
+        "fiscalYearStart": "04-01",
+        "dataResidency": [
+          "IN"
+        ],
+        "criticalFunctions": [
+          {
+            "functionId": "order-routing",
+            "name": "Order routing to exchanges",
+            "description": "Acceptance, validation and routing of client orders to NSE and BSE during market hours",
+            "impactTolerance": {
+              "maxOutageMinutes": 30,
+              "maxDataLossMinutes": 0
+            },
+            "appIds": [
+              "trading-core"
+            ]
+          }
+        ],
+        "riskAppetite": {
+          "statement": "Zero tolerance for client data breaches or unapproved trading downtime during market hours; medium residual risk accepted for internal tooling",
+          "maxAcceptableSeverity": "medium"
+        },
+        "socModel": "m-soc-nse-bse",
+        "auditCadence": {
+          "vaptPerYear": 2,
+          "cyberAuditPerYear": 1,
+          "lastVaptAt": "2026-03-20",
+          "lastCyberAuditAt": "2026-05-30"
+        },
+        "tags": [
+          "retail-broking",
+          "sebi"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:30:00Z",
+          "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XA",
+          "workflow": "seed-company",
+          "agent": "company-profiler"
+        }
+      }
+    },
+    {
+      "description": "missing provenance",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.details",
+        "companyId": "zenith-securities",
+        "legalName": "Zenith Securities Private Limited",
+        "brandName": "Zenith",
+        "description": "Discount broking and depository participant serving retail investors across India via mobile and web trading platforms",
+        "website": "https://www.zenithsecurities.in",
+        "identifiers": {
+          "cin": "U67120MH2015PTC267890",
+          "pan": "AAACZ1234K",
+          "gstin": "27AAACZ1234K1ZV",
+          "lei": "335800ABCDEFGHIJKL45",
+          "sebiRegistrationNos": [
+            "INZ000123456",
+            "IN-DP-123-2016"
+          ],
+          "dunsNumber": "860123456"
+        },
+        "headquarters": {
+          "city": "Mumbai",
+          "state": "Maharashtra",
+          "country": "IN"
+        },
+        "jurisdictions": [
+          {
+            "country": "IN",
+            "state": "Maharashtra",
+            "primary": true
+          }
+        ],
+        "entityTypes": [
+          "stock-broker",
+          "depository-participant"
+        ],
+        "regulatoryRegistrations": [
+          {
+            "regulator": "SEBI",
+            "registrationNo": "INZ000123456",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-02-15",
+            "status": "active"
+          },
+          {
+            "regulator": "SEBI",
+            "registrationNo": "IN-DP-123-2016",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-08-10",
+            "status": "active"
+          }
+        ],
+        "frameworksInScope": [
+          "sebi-cscrf-2024",
+          "cert-in-directions-2022",
+          "dpdp-rules-2025",
+          "iso-27001-2022"
+        ],
+        "contacts": [
+          {
+            "role": "ciso",
+            "name": "Ananya Iyer",
+            "email": "ciso@zenithsecurities.in",
+            "phone": "+912261234567"
+          },
+          {
+            "role": "compliance-officer",
+            "name": "Rohit Menon",
+            "email": "compliance@zenithsecurities.in"
+          }
+        ],
+        "orgSize": {
+          "employees": 420,
+          "techHeadcount": 95,
+          "securityHeadcount": 6
+        },
+        "fiscalYearStart": "04-01",
+        "dataResidency": [
+          "IN"
+        ],
+        "criticalFunctions": [
+          {
+            "functionId": "order-routing",
+            "name": "Order routing to exchanges",
+            "description": "Acceptance, validation and routing of client orders to NSE and BSE during market hours",
+            "impactTolerance": {
+              "maxOutageMinutes": 30,
+              "maxDataLossMinutes": 0
+            },
+            "appIds": [
+              "trading-core"
+            ]
+          }
+        ],
+        "riskAppetite": {
+          "statement": "Zero tolerance for client data breaches or unapproved trading downtime during market hours; medium residual risk accepted for internal tooling",
+          "maxAcceptableSeverity": "medium"
+        },
+        "socModel": "m-soc-nse-bse",
+        "auditCadence": {
+          "vaptPerYear": 2,
+          "cyberAuditPerYear": 1,
+          "lastVaptAt": "2026-03-20",
+          "lastCyberAuditAt": "2026-05-30"
+        },
+        "tags": [
+          "retail-broking",
+          "sebi"
+        ]
+      }
+    },
+    {
+      "description": "wrong kind const",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.vendor",
+        "companyId": "zenith-securities",
+        "legalName": "Zenith Securities Private Limited",
+        "brandName": "Zenith",
+        "description": "Discount broking and depository participant serving retail investors across India via mobile and web trading platforms",
+        "website": "https://www.zenithsecurities.in",
+        "identifiers": {
+          "cin": "U67120MH2015PTC267890",
+          "pan": "AAACZ1234K",
+          "gstin": "27AAACZ1234K1ZV",
+          "lei": "335800ABCDEFGHIJKL45",
+          "sebiRegistrationNos": [
+            "INZ000123456",
+            "IN-DP-123-2016"
+          ],
+          "dunsNumber": "860123456"
+        },
+        "headquarters": {
+          "city": "Mumbai",
+          "state": "Maharashtra",
+          "country": "IN"
+        },
+        "jurisdictions": [
+          {
+            "country": "IN",
+            "state": "Maharashtra",
+            "primary": true
+          }
+        ],
+        "entityTypes": [
+          "stock-broker",
+          "depository-participant"
+        ],
+        "regulatoryRegistrations": [
+          {
+            "regulator": "SEBI",
+            "registrationNo": "INZ000123456",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-02-15",
+            "status": "active"
+          },
+          {
+            "regulator": "SEBI",
+            "registrationNo": "IN-DP-123-2016",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-08-10",
+            "status": "active"
+          }
+        ],
+        "frameworksInScope": [
+          "sebi-cscrf-2024",
+          "cert-in-directions-2022",
+          "dpdp-rules-2025",
+          "iso-27001-2022"
+        ],
+        "contacts": [
+          {
+            "role": "ciso",
+            "name": "Ananya Iyer",
+            "email": "ciso@zenithsecurities.in",
+            "phone": "+912261234567"
+          },
+          {
+            "role": "compliance-officer",
+            "name": "Rohit Menon",
+            "email": "compliance@zenithsecurities.in"
+          }
+        ],
+        "orgSize": {
+          "employees": 420,
+          "techHeadcount": 95,
+          "securityHeadcount": 6
+        },
+        "fiscalYearStart": "04-01",
+        "dataResidency": [
+          "IN"
+        ],
+        "criticalFunctions": [
+          {
+            "functionId": "order-routing",
+            "name": "Order routing to exchanges",
+            "description": "Acceptance, validation and routing of client orders to NSE and BSE during market hours",
+            "impactTolerance": {
+              "maxOutageMinutes": 30,
+              "maxDataLossMinutes": 0
+            },
+            "appIds": [
+              "trading-core"
+            ]
+          }
+        ],
+        "riskAppetite": {
+          "statement": "Zero tolerance for client data breaches or unapproved trading downtime during market hours; medium residual risk accepted for internal tooling",
+          "maxAcceptableSeverity": "medium"
+        },
+        "socModel": "m-soc-nse-bse",
+        "auditCadence": {
+          "vaptPerYear": 2,
+          "cyberAuditPerYear": 1,
+          "lastVaptAt": "2026-03-20",
+          "lastCyberAuditAt": "2026-05-30"
+        },
+        "tags": [
+          "retail-broking",
+          "sebi"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:30:00Z",
+          "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XA",
+          "workflow": "seed-company",
+          "agent": "company-profiler"
+        }
+      }
+    },
+    {
+      "description": "fiscalYearStart must be MM-DD",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.details",
+        "companyId": "zenith-securities",
+        "legalName": "Zenith Securities Private Limited",
+        "brandName": "Zenith",
+        "description": "Discount broking and depository participant serving retail investors across India via mobile and web trading platforms",
+        "website": "https://www.zenithsecurities.in",
+        "identifiers": {
+          "cin": "U67120MH2015PTC267890",
+          "pan": "AAACZ1234K",
+          "gstin": "27AAACZ1234K1ZV",
+          "lei": "335800ABCDEFGHIJKL45",
+          "sebiRegistrationNos": [
+            "INZ000123456",
+            "IN-DP-123-2016"
+          ],
+          "dunsNumber": "860123456"
+        },
+        "headquarters": {
+          "city": "Mumbai",
+          "state": "Maharashtra",
+          "country": "IN"
+        },
+        "jurisdictions": [
+          {
+            "country": "IN",
+            "state": "Maharashtra",
+            "primary": true
+          }
+        ],
+        "entityTypes": [
+          "stock-broker",
+          "depository-participant"
+        ],
+        "regulatoryRegistrations": [
+          {
+            "regulator": "SEBI",
+            "registrationNo": "INZ000123456",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-02-15",
+            "status": "active"
+          },
+          {
+            "regulator": "SEBI",
+            "registrationNo": "IN-DP-123-2016",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-08-10",
+            "status": "active"
+          }
+        ],
+        "frameworksInScope": [
+          "sebi-cscrf-2024",
+          "cert-in-directions-2022",
+          "dpdp-rules-2025",
+          "iso-27001-2022"
+        ],
+        "contacts": [
+          {
+            "role": "ciso",
+            "name": "Ananya Iyer",
+            "email": "ciso@zenithsecurities.in",
+            "phone": "+912261234567"
+          },
+          {
+            "role": "compliance-officer",
+            "name": "Rohit Menon",
+            "email": "compliance@zenithsecurities.in"
+          }
+        ],
+        "orgSize": {
+          "employees": 420,
+          "techHeadcount": 95,
+          "securityHeadcount": 6
+        },
+        "fiscalYearStart": "2026-04-01",
+        "dataResidency": [
+          "IN"
+        ],
+        "criticalFunctions": [
+          {
+            "functionId": "order-routing",
+            "name": "Order routing to exchanges",
+            "description": "Acceptance, validation and routing of client orders to NSE and BSE during market hours",
+            "impactTolerance": {
+              "maxOutageMinutes": 30,
+              "maxDataLossMinutes": 0
+            },
+            "appIds": [
+              "trading-core"
+            ]
+          }
+        ],
+        "riskAppetite": {
+          "statement": "Zero tolerance for client data breaches or unapproved trading downtime during market hours; medium residual risk accepted for internal tooling",
+          "maxAcceptableSeverity": "medium"
+        },
+        "socModel": "m-soc-nse-bse",
+        "auditCadence": {
+          "vaptPerYear": 2,
+          "cyberAuditPerYear": 1,
+          "lastVaptAt": "2026-03-20",
+          "lastCyberAuditAt": "2026-05-30"
+        },
+        "tags": [
+          "retail-broking",
+          "sebi"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:30:00Z",
+          "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XA",
+          "workflow": "seed-company",
+          "agent": "company-profiler"
+        }
+      }
+    },
+    {
+      "description": "empty entityTypes violates minItems",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.details",
+        "companyId": "zenith-securities",
+        "legalName": "Zenith Securities Private Limited",
+        "brandName": "Zenith",
+        "description": "Discount broking and depository participant serving retail investors across India via mobile and web trading platforms",
+        "website": "https://www.zenithsecurities.in",
+        "identifiers": {
+          "cin": "U67120MH2015PTC267890",
+          "pan": "AAACZ1234K",
+          "gstin": "27AAACZ1234K1ZV",
+          "lei": "335800ABCDEFGHIJKL45",
+          "sebiRegistrationNos": [
+            "INZ000123456",
+            "IN-DP-123-2016"
+          ],
+          "dunsNumber": "860123456"
+        },
+        "headquarters": {
+          "city": "Mumbai",
+          "state": "Maharashtra",
+          "country": "IN"
+        },
+        "jurisdictions": [
+          {
+            "country": "IN",
+            "state": "Maharashtra",
+            "primary": true
+          }
+        ],
+        "entityTypes": [],
+        "regulatoryRegistrations": [
+          {
+            "regulator": "SEBI",
+            "registrationNo": "INZ000123456",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-02-15",
+            "status": "active"
+          },
+          {
+            "regulator": "SEBI",
+            "registrationNo": "IN-DP-123-2016",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-08-10",
+            "status": "active"
+          }
+        ],
+        "frameworksInScope": [
+          "sebi-cscrf-2024",
+          "cert-in-directions-2022",
+          "dpdp-rules-2025",
+          "iso-27001-2022"
+        ],
+        "contacts": [
+          {
+            "role": "ciso",
+            "name": "Ananya Iyer",
+            "email": "ciso@zenithsecurities.in",
+            "phone": "+912261234567"
+          },
+          {
+            "role": "compliance-officer",
+            "name": "Rohit Menon",
+            "email": "compliance@zenithsecurities.in"
+          }
+        ],
+        "orgSize": {
+          "employees": 420,
+          "techHeadcount": 95,
+          "securityHeadcount": 6
+        },
+        "fiscalYearStart": "04-01",
+        "dataResidency": [
+          "IN"
+        ],
+        "criticalFunctions": [
+          {
+            "functionId": "order-routing",
+            "name": "Order routing to exchanges",
+            "description": "Acceptance, validation and routing of client orders to NSE and BSE during market hours",
+            "impactTolerance": {
+              "maxOutageMinutes": 30,
+              "maxDataLossMinutes": 0
+            },
+            "appIds": [
+              "trading-core"
+            ]
+          }
+        ],
+        "riskAppetite": {
+          "statement": "Zero tolerance for client data breaches or unapproved trading downtime during market hours; medium residual risk accepted for internal tooling",
+          "maxAcceptableSeverity": "medium"
+        },
+        "socModel": "m-soc-nse-bse",
+        "auditCadence": {
+          "vaptPerYear": 2,
+          "cyberAuditPerYear": 1,
+          "lastVaptAt": "2026-03-20",
+          "lastCyberAuditAt": "2026-05-30"
+        },
+        "tags": [
+          "retail-broking",
+          "sebi"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:30:00Z",
+          "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XA",
+          "workflow": "seed-company",
+          "agent": "company-profiler"
+        }
+      }
+    },
+    {
+      "description": "phone must be E.164",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.details",
+        "companyId": "zenith-securities",
+        "legalName": "Zenith Securities Private Limited",
+        "brandName": "Zenith",
+        "description": "Discount broking and depository participant serving retail investors across India via mobile and web trading platforms",
+        "website": "https://www.zenithsecurities.in",
+        "identifiers": {
+          "cin": "U67120MH2015PTC267890",
+          "pan": "AAACZ1234K",
+          "gstin": "27AAACZ1234K1ZV",
+          "lei": "335800ABCDEFGHIJKL45",
+          "sebiRegistrationNos": [
+            "INZ000123456",
+            "IN-DP-123-2016"
+          ],
+          "dunsNumber": "860123456"
+        },
+        "headquarters": {
+          "city": "Mumbai",
+          "state": "Maharashtra",
+          "country": "IN"
+        },
+        "jurisdictions": [
+          {
+            "country": "IN",
+            "state": "Maharashtra",
+            "primary": true
+          }
+        ],
+        "entityTypes": [
+          "stock-broker",
+          "depository-participant"
+        ],
+        "regulatoryRegistrations": [
+          {
+            "regulator": "SEBI",
+            "registrationNo": "INZ000123456",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-02-15",
+            "status": "active"
+          },
+          {
+            "regulator": "SEBI",
+            "registrationNo": "IN-DP-123-2016",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-08-10",
+            "status": "active"
+          }
+        ],
+        "frameworksInScope": [
+          "sebi-cscrf-2024",
+          "cert-in-directions-2022",
+          "dpdp-rules-2025",
+          "iso-27001-2022"
+        ],
+        "contacts": [
+          {
+            "role": "ciso",
+            "name": "Ananya Iyer",
+            "email": "ciso@zenithsecurities.in",
+            "phone": "022-6123-4567"
+          },
+          {
+            "role": "compliance-officer",
+            "name": "Rohit Menon",
+            "email": "compliance@zenithsecurities.in"
+          }
+        ],
+        "orgSize": {
+          "employees": 420,
+          "techHeadcount": 95,
+          "securityHeadcount": 6
+        },
+        "fiscalYearStart": "04-01",
+        "dataResidency": [
+          "IN"
+        ],
+        "criticalFunctions": [
+          {
+            "functionId": "order-routing",
+            "name": "Order routing to exchanges",
+            "description": "Acceptance, validation and routing of client orders to NSE and BSE during market hours",
+            "impactTolerance": {
+              "maxOutageMinutes": 30,
+              "maxDataLossMinutes": 0
+            },
+            "appIds": [
+              "trading-core"
+            ]
+          }
+        ],
+        "riskAppetite": {
+          "statement": "Zero tolerance for client data breaches or unapproved trading downtime during market hours; medium residual risk accepted for internal tooling",
+          "maxAcceptableSeverity": "medium"
+        },
+        "socModel": "m-soc-nse-bse",
+        "auditCadence": {
+          "vaptPerYear": 2,
+          "cyberAuditPerYear": 1,
+          "lastVaptAt": "2026-03-20",
+          "lastCyberAuditAt": "2026-05-30"
+        },
+        "tags": [
+          "retail-broking",
+          "sebi"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:30:00Z",
+          "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XA",
+          "workflow": "seed-company",
+          "agent": "company-profiler"
+        }
+      }
+    },
+    {
+      "description": "regulated entity type with no regulatoryRegistrations is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.details",
+        "companyId": "abc-nbfc",
+        "legalName": "ABC Finance Limited",
+        "jurisdictions": [
+          {
+            "country": "IN",
+            "primary": true
+          }
+        ],
+        "entityTypes": [
+          "nbfc"
+        ],
+        "regulatoryRegistrations": [],
+        "frameworksInScope": [
+          "rbi-cyber-tech-directions-2026"
+        ],
+        "contacts": [
+          {
+            "role": "ciso",
+            "name": "Priya Nair",
+            "email": "ciso@abcfinance.in"
+          }
+        ],
+        "socModel": "managed-soc",
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:30:00Z"
+        }
+      }
+    },
+    {
+      "description": "unregulated entity type may have empty regulatoryRegistrations",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.details",
+        "companyId": "nimbus-tech",
+        "legalName": "Nimbus Technology Services Private Limited",
+        "jurisdictions": [
+          {
+            "country": "IN",
+            "primary": true
+          }
+        ],
+        "entityTypes": [
+          "technology-service-provider"
+        ],
+        "regulatoryRegistrations": [],
+        "frameworksInScope": [
+          "iso-27001-2022"
+        ],
+        "contacts": [
+          {
+            "role": "ciso",
+            "name": "Priya Nair",
+            "email": "ciso@abcfinance.in"
+          }
+        ],
+        "socModel": "managed-soc",
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:30:00Z"
+        }
+      }
+    },
+    {
+      "description": "mixed unregulated and regulated entity types still need a registration",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.details",
+        "companyId": "abc-nbfc",
+        "legalName": "ABC Finance Limited",
+        "jurisdictions": [
+          {
+            "country": "IN",
+            "primary": true
+          }
+        ],
+        "entityTypes": [
+          "fintech-unregulated",
+          "nbfc"
+        ],
+        "regulatoryRegistrations": [],
+        "frameworksInScope": [
+          "rbi-cyber-tech-directions-2026"
+        ],
+        "contacts": [
+          {
+            "role": "ciso",
+            "name": "Priya Nair",
+            "email": "ciso@abcfinance.in"
+          }
+        ],
+        "socModel": "managed-soc",
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:30:00Z"
+        }
+      }
+    },
+    {
+      "description": "jurisdictions need exactly one primary: none marked",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.details",
+        "companyId": "abc-nbfc",
+        "legalName": "ABC Finance Limited",
+        "jurisdictions": [
+          {
+            "country": "IN"
+          }
+        ],
+        "entityTypes": [
+          "nbfc"
+        ],
+        "regulatoryRegistrations": [
+          {
+            "regulator": "RBI",
+            "registrationNo": "N-14.03456",
+            "category": "tier-2"
+          }
+        ],
+        "frameworksInScope": [
+          "rbi-cyber-tech-directions-2026"
+        ],
+        "contacts": [
+          {
+            "role": "ciso",
+            "name": "Priya Nair",
+            "email": "ciso@abcfinance.in"
+          }
+        ],
+        "socModel": "managed-soc",
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:30:00Z"
+        }
+      }
+    },
+    {
+      "description": "jurisdictions need exactly one primary: two marked",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.details",
+        "companyId": "abc-nbfc",
+        "legalName": "ABC Finance Limited",
+        "jurisdictions": [
+          {
+            "country": "IN",
+            "primary": true
+          },
+          {
+            "country": "SG",
+            "primary": true
+          }
+        ],
+        "entityTypes": [
+          "nbfc"
+        ],
+        "regulatoryRegistrations": [
+          {
+            "regulator": "RBI",
+            "registrationNo": "N-14.03456",
+            "category": "tier-2"
+          }
+        ],
+        "frameworksInScope": [
+          "rbi-cyber-tech-directions-2026"
+        ],
+        "contacts": [
+          {
+            "role": "ciso",
+            "name": "Priya Nair",
+            "email": "ciso@abcfinance.in"
+          }
+        ],
+        "socModel": "managed-soc",
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:30:00Z"
+        }
+      }
+    },
+    {
+      "description": "secondary jurisdiction with primary false is allowed",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.details",
+        "companyId": "abc-nbfc",
+        "legalName": "ABC Finance Limited",
+        "jurisdictions": [
+          {
+            "country": "IN",
+            "primary": true
+          },
+          {
+            "country": "SG",
+            "primary": false
+          }
+        ],
+        "entityTypes": [
+          "nbfc"
+        ],
+        "regulatoryRegistrations": [
+          {
+            "regulator": "RBI",
+            "registrationNo": "N-14.03456",
+            "category": "tier-2"
+          }
+        ],
+        "frameworksInScope": [
+          "rbi-cyber-tech-directions-2026"
+        ],
+        "contacts": [
+          {
+            "role": "ciso",
+            "name": "Priya Nair",
+            "email": "ciso@abcfinance.in"
+          }
+        ],
+        "socModel": "managed-soc",
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:30:00Z"
+        }
+      }
+    },
+    {
+      "description": "NBFC scale-based layer is a valid category",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.details",
+        "companyId": "abc-nbfc",
+        "legalName": "ABC Finance Limited",
+        "jurisdictions": [
+          {
+            "country": "IN",
+            "primary": true
+          }
+        ],
+        "entityTypes": [
+          "nbfc"
+        ],
+        "regulatoryRegistrations": [
+          {
+            "regulator": "RBI",
+            "registrationNo": "N-14.03456",
+            "category": "nbfc-middle-layer"
+          }
+        ],
+        "frameworksInScope": [
+          "rbi-cyber-tech-directions-2026"
+        ],
+        "contacts": [
+          {
+            "role": "ciso",
+            "name": "Priya Nair",
+            "email": "ciso@abcfinance.in"
+          }
+        ],
+        "socModel": "managed-soc",
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:30:00Z"
+        }
+      }
+    },
+    {
+      "description": "grievance-officer and ceo contact roles are accepted",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.details",
+        "companyId": "abc-nbfc",
+        "legalName": "ABC Finance Limited",
+        "jurisdictions": [
+          {
+            "country": "IN",
+            "primary": true
+          }
+        ],
+        "entityTypes": [
+          "nbfc"
+        ],
+        "regulatoryRegistrations": [
+          {
+            "regulator": "RBI",
+            "registrationNo": "N-14.03456",
+            "category": "tier-2"
+          }
+        ],
+        "frameworksInScope": [
+          "rbi-cyber-tech-directions-2026"
+        ],
+        "contacts": [
+          {
+            "role": "ciso",
+            "name": "Priya Nair",
+            "email": "ciso@abcfinance.in"
+          },
+          {
+            "role": "grievance-officer",
+            "name": "Kiran Rao",
+            "email": "grievance@abcfinance.in"
+          },
+          {
+            "role": "ceo",
+            "name": "Meera Shah",
+            "email": "ceo@abcfinance.in"
+          }
+        ],
+        "socModel": "managed-soc",
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:30:00Z"
+        }
+      }
+    },
+    {
+      "description": "identifiers must hold at least one identifier when present",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.details",
+        "companyId": "zenith-securities",
+        "legalName": "Zenith Securities Private Limited",
+        "brandName": "Zenith",
+        "description": "Discount broking and depository participant serving retail investors across India via mobile and web trading platforms",
+        "website": "https://www.zenithsecurities.in",
+        "identifiers": {},
+        "headquarters": {
+          "city": "Mumbai",
+          "state": "Maharashtra",
+          "country": "IN"
+        },
+        "jurisdictions": [
+          {
+            "country": "IN",
+            "state": "Maharashtra",
+            "primary": true
+          }
+        ],
+        "entityTypes": [
+          "stock-broker",
+          "depository-participant"
+        ],
+        "regulatoryRegistrations": [
+          {
+            "regulator": "SEBI",
+            "registrationNo": "INZ000123456",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-02-15",
+            "status": "active"
+          },
+          {
+            "regulator": "SEBI",
+            "registrationNo": "IN-DP-123-2016",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-08-10",
+            "status": "active"
+          }
+        ],
+        "frameworksInScope": [
+          "sebi-cscrf-2024",
+          "cert-in-directions-2022",
+          "dpdp-rules-2025",
+          "iso-27001-2022"
+        ],
+        "contacts": [
+          {
+            "role": "ciso",
+            "name": "Ananya Iyer",
+            "email": "ciso@zenithsecurities.in",
+            "phone": "+912261234567"
+          },
+          {
+            "role": "compliance-officer",
+            "name": "Rohit Menon",
+            "email": "compliance@zenithsecurities.in"
+          },
+          {
+            "role": "designated-officer",
+            "name": "Ananya Iyer",
+            "email": "ciso@zenithsecurities.in",
+            "phone": "+912261234567"
+          }
+        ],
+        "orgSize": {
+          "employees": 420,
+          "techHeadcount": 95,
+          "securityHeadcount": 6
+        },
+        "fiscalYearStart": "04-01",
+        "dataResidency": [
+          "IN"
+        ],
+        "criticalFunctions": [
+          {
+            "functionId": "order-routing",
+            "name": "Order routing to exchanges",
+            "description": "Acceptance, validation and routing of client orders to NSE and BSE during market hours",
+            "impactTolerance": {
+              "maxOutageMinutes": 30,
+              "maxDataLossMinutes": 0
+            },
+            "appIds": [
+              "trading-core"
+            ]
+          }
+        ],
+        "riskAppetite": {
+          "statement": "Zero tolerance for client data breaches or unapproved trading downtime during market hours; medium residual risk accepted for internal tooling",
+          "maxAcceptableSeverity": "medium"
+        },
+        "socModel": "m-soc-nse-bse",
+        "auditCadence": {
+          "vaptPerYear": 2,
+          "cyberAuditPerYear": 1,
+          "lastVaptAt": "2026-03-20",
+          "lastCyberAuditAt": "2026-05-30"
+        },
+        "tags": [
+          "retail-broking",
+          "sebi"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:30:00Z",
+          "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XA",
+          "workflow": "seed-company",
+          "agent": "company-profiler"
+        }
+      }
+    },
+    {
+      "description": "fiscalYearStart rejects impossible calendar dates",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.details",
+        "companyId": "zenith-securities",
+        "legalName": "Zenith Securities Private Limited",
+        "brandName": "Zenith",
+        "description": "Discount broking and depository participant serving retail investors across India via mobile and web trading platforms",
+        "website": "https://www.zenithsecurities.in",
+        "identifiers": {
+          "cin": "U67120MH2015PTC267890",
+          "pan": "AAACZ1234K",
+          "gstin": "27AAACZ1234K1ZV",
+          "lei": "335800ABCDEFGHIJKL45",
+          "sebiRegistrationNos": [
+            "INZ000123456",
+            "IN-DP-123-2016"
+          ],
+          "dunsNumber": "860123456"
+        },
+        "headquarters": {
+          "city": "Mumbai",
+          "state": "Maharashtra",
+          "country": "IN"
+        },
+        "jurisdictions": [
+          {
+            "country": "IN",
+            "state": "Maharashtra",
+            "primary": true
+          }
+        ],
+        "entityTypes": [
+          "stock-broker",
+          "depository-participant"
+        ],
+        "regulatoryRegistrations": [
+          {
+            "regulator": "SEBI",
+            "registrationNo": "INZ000123456",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-02-15",
+            "status": "active"
+          },
+          {
+            "regulator": "SEBI",
+            "registrationNo": "IN-DP-123-2016",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-08-10",
+            "status": "active"
+          }
+        ],
+        "frameworksInScope": [
+          "sebi-cscrf-2024",
+          "cert-in-directions-2022",
+          "dpdp-rules-2025",
+          "iso-27001-2022"
+        ],
+        "contacts": [
+          {
+            "role": "ciso",
+            "name": "Ananya Iyer",
+            "email": "ciso@zenithsecurities.in",
+            "phone": "+912261234567"
+          },
+          {
+            "role": "compliance-officer",
+            "name": "Rohit Menon",
+            "email": "compliance@zenithsecurities.in"
+          },
+          {
+            "role": "designated-officer",
+            "name": "Ananya Iyer",
+            "email": "ciso@zenithsecurities.in",
+            "phone": "+912261234567"
+          }
+        ],
+        "orgSize": {
+          "employees": 420,
+          "techHeadcount": 95,
+          "securityHeadcount": 6
+        },
+        "fiscalYearStart": "02-31",
+        "dataResidency": [
+          "IN"
+        ],
+        "criticalFunctions": [
+          {
+            "functionId": "order-routing",
+            "name": "Order routing to exchanges",
+            "description": "Acceptance, validation and routing of client orders to NSE and BSE during market hours",
+            "impactTolerance": {
+              "maxOutageMinutes": 30,
+              "maxDataLossMinutes": 0
+            },
+            "appIds": [
+              "trading-core"
+            ]
+          }
+        ],
+        "riskAppetite": {
+          "statement": "Zero tolerance for client data breaches or unapproved trading downtime during market hours; medium residual risk accepted for internal tooling",
+          "maxAcceptableSeverity": "medium"
+        },
+        "socModel": "m-soc-nse-bse",
+        "auditCadence": {
+          "vaptPerYear": 2,
+          "cyberAuditPerYear": 1,
+          "lastVaptAt": "2026-03-20",
+          "lastCyberAuditAt": "2026-05-30"
+        },
+        "tags": [
+          "retail-broking",
+          "sebi"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:30:00Z",
+          "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XA",
+          "workflow": "seed-company",
+          "agent": "company-profiler"
+        }
+      }
+    },
+    {
+      "description": "fiscalYearStart rejects day 31 in a 30-day month",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.details",
+        "companyId": "zenith-securities",
+        "legalName": "Zenith Securities Private Limited",
+        "brandName": "Zenith",
+        "description": "Discount broking and depository participant serving retail investors across India via mobile and web trading platforms",
+        "website": "https://www.zenithsecurities.in",
+        "identifiers": {
+          "cin": "U67120MH2015PTC267890",
+          "pan": "AAACZ1234K",
+          "gstin": "27AAACZ1234K1ZV",
+          "lei": "335800ABCDEFGHIJKL45",
+          "sebiRegistrationNos": [
+            "INZ000123456",
+            "IN-DP-123-2016"
+          ],
+          "dunsNumber": "860123456"
+        },
+        "headquarters": {
+          "city": "Mumbai",
+          "state": "Maharashtra",
+          "country": "IN"
+        },
+        "jurisdictions": [
+          {
+            "country": "IN",
+            "state": "Maharashtra",
+            "primary": true
+          }
+        ],
+        "entityTypes": [
+          "stock-broker",
+          "depository-participant"
+        ],
+        "regulatoryRegistrations": [
+          {
+            "regulator": "SEBI",
+            "registrationNo": "INZ000123456",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-02-15",
+            "status": "active"
+          },
+          {
+            "regulator": "SEBI",
+            "registrationNo": "IN-DP-123-2016",
+            "category": "mid-size-re",
+            "categorisedAt": "2025-04-01",
+            "registeredAt": "2016-08-10",
+            "status": "active"
+          }
+        ],
+        "frameworksInScope": [
+          "sebi-cscrf-2024",
+          "cert-in-directions-2022",
+          "dpdp-rules-2025",
+          "iso-27001-2022"
+        ],
+        "contacts": [
+          {
+            "role": "ciso",
+            "name": "Ananya Iyer",
+            "email": "ciso@zenithsecurities.in",
+            "phone": "+912261234567"
+          },
+          {
+            "role": "compliance-officer",
+            "name": "Rohit Menon",
+            "email": "compliance@zenithsecurities.in"
+          },
+          {
+            "role": "designated-officer",
+            "name": "Ananya Iyer",
+            "email": "ciso@zenithsecurities.in",
+            "phone": "+912261234567"
+          }
+        ],
+        "orgSize": {
+          "employees": 420,
+          "techHeadcount": 95,
+          "securityHeadcount": 6
+        },
+        "fiscalYearStart": "04-31",
+        "dataResidency": [
+          "IN"
+        ],
+        "criticalFunctions": [
+          {
+            "functionId": "order-routing",
+            "name": "Order routing to exchanges",
+            "description": "Acceptance, validation and routing of client orders to NSE and BSE during market hours",
+            "impactTolerance": {
+              "maxOutageMinutes": 30,
+              "maxDataLossMinutes": 0
+            },
+            "appIds": [
+              "trading-core"
+            ]
+          }
+        ],
+        "riskAppetite": {
+          "statement": "Zero tolerance for client data breaches or unapproved trading downtime during market hours; medium residual risk accepted for internal tooling",
+          "maxAcceptableSeverity": "medium"
+        },
+        "socModel": "m-soc-nse-bse",
+        "auditCadence": {
+          "vaptPerYear": 2,
+          "cyberAuditPerYear": 1,
+          "lastVaptAt": "2026-03-20",
+          "lastCyberAuditAt": "2026-05-30"
+        },
+        "tags": [
+          "retail-broking",
+          "sebi"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:30:00Z",
+          "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XA",
+          "workflow": "seed-company",
+          "agent": "company-profiler"
+        }
+      }
+    }
+  ]
+}

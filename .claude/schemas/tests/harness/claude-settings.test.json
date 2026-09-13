@@ -1,0 +1,4162 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/v1/harness/claude-settings.schema.json",
+  "tests": [
+    {
+      "description": "full Maxwell settings.json with permissions, hooks, env and attribution",
+      "valid": true,
+      "data": {
+        "$schema": "https://json.schemastore.org/claude-code-settings.json",
+        "permissions": {
+          "defaultMode": "acceptEdits",
+          "disableBypassPermissionsMode": "disable",
+          "blockReadsOutsideWorkingDirectories": true,
+          "allow": [
+            "Read(./**)",
+            "Edit(./company-profile/**)",
+            "Write(./company-profile/**)",
+            "Edit(./applications/**)",
+            "Write(./applications/**)",
+            "Edit(./kpis/**)",
+            "Write(./kpis/**)",
+            "Edit(./cves/**)",
+            "Write(./cves/**)",
+            "Bash(npm run validate*)",
+            "Bash(npm run kpis*)",
+            "Bash(npm run sync:agents)",
+            "Bash(node .claude/scripts/*)",
+            "Bash(git status*)",
+            "Bash(git diff*)",
+            "Bash(git log*)",
+            "Workflow(refresh-ctx)",
+            "Workflow(refresh-soc)",
+            "Workflow(probe-iac)",
+            "Workflow(report-audit-findings)",
+            "Workflow(validate)"
+          ],
+          "ask": [
+            "Bash(git push*)",
+            "Bash(git commit*)",
+            "Bash(sops --decrypt*)"
+          ],
+          "deny": [
+            "Read(./applications/*/credentials.dec.json)",
+            "Read(./**/*.dec.json)",
+            "Edit(./.claude/schemas/**)",
+            "Write(./.claude/schemas/**)",
+            "Edit(./.agents/**)",
+            "Write(./.agents/**)",
+            "Bash(rm -rf*)",
+            "Bash(curl*)",
+            "WebFetch"
+          ]
+        },
+        "hooks": {
+          "SessionStart": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\"",
+                  "timeout": 30
+                }
+              ]
+            }
+          ],
+          "UserPromptSubmit": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/user-prompt.mjs\"",
+                  "timeout": 10
+                }
+              ]
+            }
+          ],
+          "PreToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-write.mjs\"",
+                  "timeout": 20,
+                  "statusMessage": "Checking layout and secrets"
+                }
+              ]
+            }
+          ],
+          "PostToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/validate-write.mjs\"",
+                  "timeout": 60,
+                  "statusMessage": "Validating against Maxwell schemas"
+                }
+              ]
+            }
+          ],
+          "SessionEnd": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-end.mjs\"",
+                  "timeout": 120,
+                  "async": true
+                }
+              ]
+            }
+          ]
+        },
+        "env": {
+          "MAXWELL_HARNESS": "claude-code",
+          "MAXWELL_WORKSPACE_ROOT": ".",
+          "SOPS_AGE_KEY_FILE": "/etc/maxwell/age.key",
+          "NODE_OPTIONS": "--max-old-space-size=2048"
+        },
+        "model": "opus",
+        "effortLevel": "high",
+        "disableWorkflows": false,
+        "attribution": {
+          "commit": "Co-Authored-By: Maxwell <maxwell@onfinance.ai>",
+          "pr": "",
+          "sessionUrl": false
+        },
+        "cleanupPeriodDays": 90,
+        "enabledPlugins": {}
+      }
+    },
+    {
+      "description": "minimal settings with empty allow/deny and no hooks configured",
+      "valid": true,
+      "data": {
+        "permissions": {
+          "allow": [],
+          "deny": []
+        },
+        "hooks": {}
+      }
+    },
+    {
+      "description": "prompt, agent, http, mcp_tool and exec-form command handlers with their payload fields",
+      "valid": true,
+      "data": {
+        "$schema": "https://json.schemastore.org/claude-code-settings.json",
+        "permissions": {
+          "defaultMode": "acceptEdits",
+          "disableBypassPermissionsMode": "disable",
+          "blockReadsOutsideWorkingDirectories": true,
+          "allow": [
+            "Read(./**)",
+            "Edit(./company-profile/**)",
+            "Write(./company-profile/**)",
+            "Edit(./applications/**)",
+            "Write(./applications/**)",
+            "Edit(./kpis/**)",
+            "Write(./kpis/**)",
+            "Edit(./cves/**)",
+            "Write(./cves/**)",
+            "Bash(npm run validate*)",
+            "Bash(npm run kpis*)",
+            "Bash(npm run sync:agents)",
+            "Bash(node .claude/scripts/*)",
+            "Bash(git status*)",
+            "Bash(git diff*)",
+            "Bash(git log*)",
+            "Workflow(refresh-ctx)",
+            "Workflow(refresh-soc)",
+            "Workflow(probe-iac)",
+            "Workflow(report-audit-findings)",
+            "Workflow(validate)"
+          ],
+          "ask": [
+            "Bash(git push*)",
+            "Bash(git commit*)",
+            "Bash(sops --decrypt*)"
+          ],
+          "deny": [
+            "Read(./applications/*/credentials.dec.json)",
+            "Read(./**/*.dec.json)",
+            "Edit(./.claude/schemas/**)",
+            "Write(./.claude/schemas/**)",
+            "Edit(./.agents/**)",
+            "Write(./.agents/**)",
+            "Bash(rm -rf*)",
+            "Bash(curl*)",
+            "WebFetch"
+          ]
+        },
+        "hooks": {
+          "SessionStart": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\"",
+                  "timeout": 30
+                }
+              ]
+            }
+          ],
+          "UserPromptSubmit": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/user-prompt.mjs\"",
+                  "timeout": 10
+                }
+              ]
+            }
+          ],
+          "PreToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-write.mjs\"",
+                  "timeout": 20,
+                  "statusMessage": "Checking layout and secrets"
+                },
+                {
+                  "type": "command",
+                  "if": "Bash(git push*)",
+                  "command": "node",
+                  "args": [
+                    ".claude/hooks/guard-write.mjs",
+                    "--push"
+                  ],
+                  "shell": "bash",
+                  "once": false,
+                  "asyncRewake": false
+                }
+              ]
+            }
+          ],
+          "PostToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/validate-write.mjs\"",
+                  "timeout": 60,
+                  "statusMessage": "Validating against Maxwell schemas"
+                }
+              ]
+            }
+          ],
+          "SessionEnd": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-end.mjs\"",
+                  "timeout": 120,
+                  "async": true
+                }
+              ]
+            }
+          ],
+          "Stop": [
+            {
+              "hooks": [
+                {
+                  "type": "prompt",
+                  "prompt": "Did every generated record get provenance? Answer yes or no.",
+                  "model": "haiku"
+                }
+              ]
+            }
+          ],
+          "SubagentStop": [
+            {
+              "matcher": "runtime-probe-.*",
+              "hooks": [
+                {
+                  "type": "agent",
+                  "prompt": "Confirm no target system was mutated: $ARGUMENTS",
+                  "timeout": 90
+                }
+              ]
+            }
+          ],
+          "Notification": [
+            {
+              "matcher": "permission_prompt",
+              "hooks": [
+                {
+                  "type": "http",
+                  "url": "https://alerts.example.internal/claude",
+                  "headers": {
+                    "Authorization": "Bearer $MAXWELL_ALERT_TOKEN",
+                    "Accept": "application/json"
+                  },
+                  "allowedEnvVars": [
+                    "MAXWELL_ALERT_TOKEN"
+                  ]
+                }
+              ]
+            }
+          ],
+          "PreCompact": [
+            {
+              "matcher": "auto",
+              "hooks": [
+                {
+                  "type": "mcp_tool",
+                  "server": "ledger",
+                  "tool": "snapshot",
+                  "input": {
+                    "company": "${company_id}"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "env": {
+          "MAXWELL_HARNESS": "claude-code",
+          "MAXWELL_WORKSPACE_ROOT": ".",
+          "SOPS_AGE_KEY_FILE": "/etc/maxwell/age.key",
+          "NODE_OPTIONS": "--max-old-space-size=2048"
+        },
+        "model": "opus",
+        "effortLevel": "high",
+        "disableWorkflows": false,
+        "attribution": {
+          "commit": "Co-Authored-By: Maxwell <maxwell@onfinance.ai>",
+          "pr": "",
+          "sessionUrl": false
+        },
+        "cleanupPeriodDays": 90,
+        "enabledPlugins": {}
+      }
+    },
+    {
+      "description": "legacy effort and includeCoAuthoredBy keys are still accepted",
+      "valid": true,
+      "data": {
+        "$schema": "https://json.schemastore.org/claude-code-settings.json",
+        "permissions": {
+          "defaultMode": "acceptEdits",
+          "disableBypassPermissionsMode": "disable",
+          "blockReadsOutsideWorkingDirectories": true,
+          "allow": [
+            "Read(./**)",
+            "Edit(./company-profile/**)",
+            "Write(./company-profile/**)",
+            "Edit(./applications/**)",
+            "Write(./applications/**)",
+            "Edit(./kpis/**)",
+            "Write(./kpis/**)",
+            "Edit(./cves/**)",
+            "Write(./cves/**)",
+            "Bash(npm run validate*)",
+            "Bash(npm run kpis*)",
+            "Bash(npm run sync:agents)",
+            "Bash(node .claude/scripts/*)",
+            "Bash(git status*)",
+            "Bash(git diff*)",
+            "Bash(git log*)",
+            "Workflow(refresh-ctx)",
+            "Workflow(refresh-soc)",
+            "Workflow(probe-iac)",
+            "Workflow(report-audit-findings)",
+            "Workflow(validate)"
+          ],
+          "ask": [
+            "Bash(git push*)",
+            "Bash(git commit*)",
+            "Bash(sops --decrypt*)"
+          ],
+          "deny": [
+            "Read(./applications/*/credentials.dec.json)",
+            "Read(./**/*.dec.json)",
+            "Edit(./.claude/schemas/**)",
+            "Write(./.claude/schemas/**)",
+            "Edit(./.agents/**)",
+            "Write(./.agents/**)",
+            "Bash(rm -rf*)",
+            "Bash(curl*)",
+            "WebFetch"
+          ]
+        },
+        "hooks": {
+          "SessionStart": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\"",
+                  "timeout": 30
+                }
+              ]
+            }
+          ],
+          "UserPromptSubmit": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/user-prompt.mjs\"",
+                  "timeout": 10
+                }
+              ]
+            }
+          ],
+          "PreToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-write.mjs\"",
+                  "timeout": 20,
+                  "statusMessage": "Checking layout and secrets"
+                }
+              ]
+            }
+          ],
+          "PostToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/validate-write.mjs\"",
+                  "timeout": 60,
+                  "statusMessage": "Validating against Maxwell schemas"
+                }
+              ]
+            }
+          ],
+          "SessionEnd": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-end.mjs\"",
+                  "timeout": 120,
+                  "async": true
+                }
+              ]
+            }
+          ]
+        },
+        "env": {
+          "MAXWELL_HARNESS": "claude-code",
+          "MAXWELL_WORKSPACE_ROOT": ".",
+          "SOPS_AGE_KEY_FILE": "/etc/maxwell/age.key",
+          "NODE_OPTIONS": "--max-old-space-size=2048"
+        },
+        "model": "opus",
+        "disableWorkflows": false,
+        "cleanupPeriodDays": 90,
+        "enabledPlugins": {},
+        "effort": "high",
+        "includeCoAuthoredBy": true
+      }
+    },
+    {
+      "description": "every documented hook event is permitted",
+      "valid": true,
+      "data": {
+        "$schema": "https://json.schemastore.org/claude-code-settings.json",
+        "permissions": {
+          "defaultMode": "acceptEdits",
+          "disableBypassPermissionsMode": "disable",
+          "blockReadsOutsideWorkingDirectories": true,
+          "allow": [
+            "Read(./**)",
+            "Edit(./company-profile/**)",
+            "Write(./company-profile/**)",
+            "Edit(./applications/**)",
+            "Write(./applications/**)",
+            "Edit(./kpis/**)",
+            "Write(./kpis/**)",
+            "Edit(./cves/**)",
+            "Write(./cves/**)",
+            "Bash(npm run validate*)",
+            "Bash(npm run kpis*)",
+            "Bash(npm run sync:agents)",
+            "Bash(node .claude/scripts/*)",
+            "Bash(git status*)",
+            "Bash(git diff*)",
+            "Bash(git log*)",
+            "Workflow(refresh-ctx)",
+            "Workflow(refresh-soc)",
+            "Workflow(probe-iac)",
+            "Workflow(report-audit-findings)",
+            "Workflow(validate)"
+          ],
+          "ask": [
+            "Bash(git push*)",
+            "Bash(git commit*)",
+            "Bash(sops --decrypt*)"
+          ],
+          "deny": [
+            "Read(./applications/*/credentials.dec.json)",
+            "Read(./**/*.dec.json)",
+            "Edit(./.claude/schemas/**)",
+            "Write(./.claude/schemas/**)",
+            "Edit(./.agents/**)",
+            "Write(./.agents/**)",
+            "Bash(rm -rf*)",
+            "Bash(curl*)",
+            "WebFetch"
+          ]
+        },
+        "hooks": {
+          "SessionStart": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\"",
+                  "timeout": 30
+                }
+              ]
+            }
+          ],
+          "UserPromptSubmit": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/user-prompt.mjs\"",
+                  "timeout": 10
+                }
+              ]
+            }
+          ],
+          "PreToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-write.mjs\"",
+                  "timeout": 20,
+                  "statusMessage": "Checking layout and secrets"
+                }
+              ]
+            }
+          ],
+          "PostToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/validate-write.mjs\"",
+                  "timeout": 60,
+                  "statusMessage": "Validating against Maxwell schemas"
+                }
+              ]
+            }
+          ],
+          "SessionEnd": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-end.mjs\"",
+                  "timeout": 120,
+                  "async": true
+                }
+              ]
+            }
+          ],
+          "Setup": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\""
+                }
+              ]
+            }
+          ],
+          "UserPromptExpansion": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\""
+                }
+              ]
+            }
+          ],
+          "PostToolUseFailure": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\""
+                }
+              ]
+            }
+          ],
+          "PostToolBatch": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\""
+                }
+              ]
+            }
+          ],
+          "PermissionRequest": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\""
+                }
+              ]
+            }
+          ],
+          "PermissionDenied": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\""
+                }
+              ]
+            }
+          ],
+          "SubagentStart": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\""
+                }
+              ]
+            }
+          ],
+          "SubagentStop": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\""
+                }
+              ]
+            }
+          ],
+          "Stop": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\""
+                }
+              ]
+            }
+          ],
+          "StopFailure": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\""
+                }
+              ]
+            }
+          ],
+          "TeammateIdle": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\""
+                }
+              ]
+            }
+          ],
+          "TaskCreated": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\""
+                }
+              ]
+            }
+          ],
+          "TaskCompleted": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\""
+                }
+              ]
+            }
+          ],
+          "MessageDisplay": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\""
+                }
+              ]
+            }
+          ],
+          "InstructionsLoaded": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\""
+                }
+              ]
+            }
+          ],
+          "ConfigChange": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\""
+                }
+              ]
+            }
+          ],
+          "CwdChanged": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\""
+                }
+              ]
+            }
+          ],
+          "DirectoryAdded": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\""
+                }
+              ]
+            }
+          ],
+          "WorktreeCreate": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\""
+                }
+              ]
+            }
+          ],
+          "WorktreeRemove": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\""
+                }
+              ]
+            }
+          ],
+          "PreModelSwitch": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\""
+                }
+              ]
+            }
+          ],
+          "PostModelSwitch": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\""
+                }
+              ]
+            }
+          ],
+          "PreCompact": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\""
+                }
+              ]
+            }
+          ],
+          "PostCompact": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\""
+                }
+              ]
+            }
+          ],
+          "Elicitation": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\""
+                }
+              ]
+            }
+          ],
+          "ElicitationResult": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\""
+                }
+              ]
+            }
+          ],
+          "Notification": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\""
+                }
+              ]
+            }
+          ],
+          "FileChanged": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\""
+                }
+              ]
+            }
+          ]
+        },
+        "env": {
+          "MAXWELL_HARNESS": "claude-code",
+          "MAXWELL_WORKSPACE_ROOT": ".",
+          "SOPS_AGE_KEY_FILE": "/etc/maxwell/age.key",
+          "NODE_OPTIONS": "--max-old-space-size=2048"
+        },
+        "model": "opus",
+        "effortLevel": "high",
+        "disableWorkflows": false,
+        "attribution": {
+          "commit": "Co-Authored-By: Maxwell <maxwell@onfinance.ai>",
+          "pr": "",
+          "sessionUrl": false
+        },
+        "cleanupPeriodDays": 90,
+        "enabledPlugins": {}
+      }
+    },
+    {
+      "description": "unknown top-level key apiKeyHelper is denied",
+      "valid": false,
+      "data": {
+        "$schema": "https://json.schemastore.org/claude-code-settings.json",
+        "permissions": {
+          "defaultMode": "acceptEdits",
+          "disableBypassPermissionsMode": "disable",
+          "blockReadsOutsideWorkingDirectories": true,
+          "allow": [
+            "Read(./**)",
+            "Edit(./company-profile/**)",
+            "Write(./company-profile/**)",
+            "Edit(./applications/**)",
+            "Write(./applications/**)",
+            "Edit(./kpis/**)",
+            "Write(./kpis/**)",
+            "Edit(./cves/**)",
+            "Write(./cves/**)",
+            "Bash(npm run validate*)",
+            "Bash(npm run kpis*)",
+            "Bash(npm run sync:agents)",
+            "Bash(node .claude/scripts/*)",
+            "Bash(git status*)",
+            "Bash(git diff*)",
+            "Bash(git log*)",
+            "Workflow(refresh-ctx)",
+            "Workflow(refresh-soc)",
+            "Workflow(probe-iac)",
+            "Workflow(report-audit-findings)",
+            "Workflow(validate)"
+          ],
+          "ask": [
+            "Bash(git push*)",
+            "Bash(git commit*)",
+            "Bash(sops --decrypt*)"
+          ],
+          "deny": [
+            "Read(./applications/*/credentials.dec.json)",
+            "Read(./**/*.dec.json)",
+            "Edit(./.claude/schemas/**)",
+            "Write(./.claude/schemas/**)",
+            "Edit(./.agents/**)",
+            "Write(./.agents/**)",
+            "Bash(rm -rf*)",
+            "Bash(curl*)",
+            "WebFetch"
+          ]
+        },
+        "hooks": {
+          "SessionStart": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\"",
+                  "timeout": 30
+                }
+              ]
+            }
+          ],
+          "UserPromptSubmit": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/user-prompt.mjs\"",
+                  "timeout": 10
+                }
+              ]
+            }
+          ],
+          "PreToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-write.mjs\"",
+                  "timeout": 20,
+                  "statusMessage": "Checking layout and secrets"
+                }
+              ]
+            }
+          ],
+          "PostToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/validate-write.mjs\"",
+                  "timeout": 60,
+                  "statusMessage": "Validating against Maxwell schemas"
+                }
+              ]
+            }
+          ],
+          "SessionEnd": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-end.mjs\"",
+                  "timeout": 120,
+                  "async": true
+                }
+              ]
+            }
+          ]
+        },
+        "env": {
+          "MAXWELL_HARNESS": "claude-code",
+          "MAXWELL_WORKSPACE_ROOT": ".",
+          "SOPS_AGE_KEY_FILE": "/etc/maxwell/age.key",
+          "NODE_OPTIONS": "--max-old-space-size=2048"
+        },
+        "model": "opus",
+        "effortLevel": "high",
+        "disableWorkflows": false,
+        "attribution": {
+          "commit": "Co-Authored-By: Maxwell <maxwell@onfinance.ai>",
+          "pr": "",
+          "sessionUrl": false
+        },
+        "cleanupPeriodDays": 90,
+        "enabledPlugins": {},
+        "apiKeyHelper": "/usr/local/bin/get-key"
+      }
+    },
+    {
+      "description": "permission rule must start with an upper-case tool name",
+      "valid": false,
+      "data": {
+        "$schema": "https://json.schemastore.org/claude-code-settings.json",
+        "permissions": {
+          "defaultMode": "acceptEdits",
+          "disableBypassPermissionsMode": "disable",
+          "blockReadsOutsideWorkingDirectories": true,
+          "allow": [
+            "Read(./**)",
+            "Edit(./company-profile/**)",
+            "Write(./company-profile/**)",
+            "Edit(./applications/**)",
+            "Write(./applications/**)",
+            "Edit(./kpis/**)",
+            "Write(./kpis/**)",
+            "Edit(./cves/**)",
+            "Write(./cves/**)",
+            "Bash(npm run validate*)",
+            "Bash(npm run kpis*)",
+            "Bash(npm run sync:agents)",
+            "Bash(node .claude/scripts/*)",
+            "Bash(git status*)",
+            "Bash(git diff*)",
+            "Bash(git log*)",
+            "Workflow(refresh-ctx)",
+            "Workflow(refresh-soc)",
+            "Workflow(probe-iac)",
+            "Workflow(report-audit-findings)",
+            "Workflow(validate)",
+            "bash(npm run *)"
+          ],
+          "ask": [
+            "Bash(git push*)",
+            "Bash(git commit*)",
+            "Bash(sops --decrypt*)"
+          ],
+          "deny": [
+            "Read(./applications/*/credentials.dec.json)",
+            "Read(./**/*.dec.json)",
+            "Edit(./.claude/schemas/**)",
+            "Write(./.claude/schemas/**)",
+            "Edit(./.agents/**)",
+            "Write(./.agents/**)",
+            "Bash(rm -rf*)",
+            "Bash(curl*)",
+            "WebFetch"
+          ]
+        },
+        "hooks": {
+          "SessionStart": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\"",
+                  "timeout": 30
+                }
+              ]
+            }
+          ],
+          "UserPromptSubmit": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/user-prompt.mjs\"",
+                  "timeout": 10
+                }
+              ]
+            }
+          ],
+          "PreToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-write.mjs\"",
+                  "timeout": 20,
+                  "statusMessage": "Checking layout and secrets"
+                }
+              ]
+            }
+          ],
+          "PostToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/validate-write.mjs\"",
+                  "timeout": 60,
+                  "statusMessage": "Validating against Maxwell schemas"
+                }
+              ]
+            }
+          ],
+          "SessionEnd": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-end.mjs\"",
+                  "timeout": 120,
+                  "async": true
+                }
+              ]
+            }
+          ]
+        },
+        "env": {
+          "MAXWELL_HARNESS": "claude-code",
+          "MAXWELL_WORKSPACE_ROOT": ".",
+          "SOPS_AGE_KEY_FILE": "/etc/maxwell/age.key",
+          "NODE_OPTIONS": "--max-old-space-size=2048"
+        },
+        "model": "opus",
+        "effortLevel": "high",
+        "disableWorkflows": false,
+        "attribution": {
+          "commit": "Co-Authored-By: Maxwell <maxwell@onfinance.ai>",
+          "pr": "",
+          "sessionUrl": false
+        },
+        "cleanupPeriodDays": 90,
+        "enabledPlugins": {}
+      }
+    },
+    {
+      "description": "permission rule specifier must not be blank",
+      "valid": false,
+      "data": {
+        "$schema": "https://json.schemastore.org/claude-code-settings.json",
+        "permissions": {
+          "defaultMode": "acceptEdits",
+          "disableBypassPermissionsMode": "disable",
+          "blockReadsOutsideWorkingDirectories": true,
+          "allow": [
+            "Read(./**)",
+            "Edit(./company-profile/**)",
+            "Write(./company-profile/**)",
+            "Edit(./applications/**)",
+            "Write(./applications/**)",
+            "Edit(./kpis/**)",
+            "Write(./kpis/**)",
+            "Edit(./cves/**)",
+            "Write(./cves/**)",
+            "Bash(npm run validate*)",
+            "Bash(npm run kpis*)",
+            "Bash(npm run sync:agents)",
+            "Bash(node .claude/scripts/*)",
+            "Bash(git status*)",
+            "Bash(git diff*)",
+            "Bash(git log*)",
+            "Workflow(refresh-ctx)",
+            "Workflow(refresh-soc)",
+            "Workflow(probe-iac)",
+            "Workflow(report-audit-findings)",
+            "Workflow(validate)",
+            "Bash( )"
+          ],
+          "ask": [
+            "Bash(git push*)",
+            "Bash(git commit*)",
+            "Bash(sops --decrypt*)"
+          ],
+          "deny": [
+            "Read(./applications/*/credentials.dec.json)",
+            "Read(./**/*.dec.json)",
+            "Edit(./.claude/schemas/**)",
+            "Write(./.claude/schemas/**)",
+            "Edit(./.agents/**)",
+            "Write(./.agents/**)",
+            "Bash(rm -rf*)",
+            "Bash(curl*)",
+            "WebFetch"
+          ]
+        },
+        "hooks": {
+          "SessionStart": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\"",
+                  "timeout": 30
+                }
+              ]
+            }
+          ],
+          "UserPromptSubmit": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/user-prompt.mjs\"",
+                  "timeout": 10
+                }
+              ]
+            }
+          ],
+          "PreToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-write.mjs\"",
+                  "timeout": 20,
+                  "statusMessage": "Checking layout and secrets"
+                }
+              ]
+            }
+          ],
+          "PostToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/validate-write.mjs\"",
+                  "timeout": 60,
+                  "statusMessage": "Validating against Maxwell schemas"
+                }
+              ]
+            }
+          ],
+          "SessionEnd": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-end.mjs\"",
+                  "timeout": 120,
+                  "async": true
+                }
+              ]
+            }
+          ]
+        },
+        "env": {
+          "MAXWELL_HARNESS": "claude-code",
+          "MAXWELL_WORKSPACE_ROOT": ".",
+          "SOPS_AGE_KEY_FILE": "/etc/maxwell/age.key",
+          "NODE_OPTIONS": "--max-old-space-size=2048"
+        },
+        "model": "opus",
+        "effortLevel": "high",
+        "disableWorkflows": false,
+        "attribution": {
+          "commit": "Co-Authored-By: Maxwell <maxwell@onfinance.ai>",
+          "pr": "",
+          "sessionUrl": false
+        },
+        "cleanupPeriodDays": 90,
+        "enabledPlugins": {}
+      }
+    },
+    {
+      "description": "defaultMode bypassPermissions is refused",
+      "valid": false,
+      "data": {
+        "$schema": "https://json.schemastore.org/claude-code-settings.json",
+        "permissions": {
+          "defaultMode": "bypassPermissions",
+          "disableBypassPermissionsMode": "disable",
+          "blockReadsOutsideWorkingDirectories": true,
+          "allow": [
+            "Read(./**)",
+            "Edit(./company-profile/**)",
+            "Write(./company-profile/**)",
+            "Edit(./applications/**)",
+            "Write(./applications/**)",
+            "Edit(./kpis/**)",
+            "Write(./kpis/**)",
+            "Edit(./cves/**)",
+            "Write(./cves/**)",
+            "Bash(npm run validate*)",
+            "Bash(npm run kpis*)",
+            "Bash(npm run sync:agents)",
+            "Bash(node .claude/scripts/*)",
+            "Bash(git status*)",
+            "Bash(git diff*)",
+            "Bash(git log*)",
+            "Workflow(refresh-ctx)",
+            "Workflow(refresh-soc)",
+            "Workflow(probe-iac)",
+            "Workflow(report-audit-findings)",
+            "Workflow(validate)"
+          ],
+          "ask": [
+            "Bash(git push*)",
+            "Bash(git commit*)",
+            "Bash(sops --decrypt*)"
+          ],
+          "deny": [
+            "Read(./applications/*/credentials.dec.json)",
+            "Read(./**/*.dec.json)",
+            "Edit(./.claude/schemas/**)",
+            "Write(./.claude/schemas/**)",
+            "Edit(./.agents/**)",
+            "Write(./.agents/**)",
+            "Bash(rm -rf*)",
+            "Bash(curl*)",
+            "WebFetch"
+          ]
+        },
+        "hooks": {
+          "SessionStart": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\"",
+                  "timeout": 30
+                }
+              ]
+            }
+          ],
+          "UserPromptSubmit": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/user-prompt.mjs\"",
+                  "timeout": 10
+                }
+              ]
+            }
+          ],
+          "PreToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-write.mjs\"",
+                  "timeout": 20,
+                  "statusMessage": "Checking layout and secrets"
+                }
+              ]
+            }
+          ],
+          "PostToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/validate-write.mjs\"",
+                  "timeout": 60,
+                  "statusMessage": "Validating against Maxwell schemas"
+                }
+              ]
+            }
+          ],
+          "SessionEnd": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-end.mjs\"",
+                  "timeout": 120,
+                  "async": true
+                }
+              ]
+            }
+          ]
+        },
+        "env": {
+          "MAXWELL_HARNESS": "claude-code",
+          "MAXWELL_WORKSPACE_ROOT": ".",
+          "SOPS_AGE_KEY_FILE": "/etc/maxwell/age.key",
+          "NODE_OPTIONS": "--max-old-space-size=2048"
+        },
+        "model": "opus",
+        "effortLevel": "high",
+        "disableWorkflows": false,
+        "attribution": {
+          "commit": "Co-Authored-By: Maxwell <maxwell@onfinance.ai>",
+          "pr": "",
+          "sessionUrl": false
+        },
+        "cleanupPeriodDays": 90,
+        "enabledPlugins": {}
+      }
+    },
+    {
+      "description": "defaultMode auto is refused in a project file",
+      "valid": false,
+      "data": {
+        "$schema": "https://json.schemastore.org/claude-code-settings.json",
+        "permissions": {
+          "defaultMode": "auto",
+          "disableBypassPermissionsMode": "disable",
+          "blockReadsOutsideWorkingDirectories": true,
+          "allow": [
+            "Read(./**)",
+            "Edit(./company-profile/**)",
+            "Write(./company-profile/**)",
+            "Edit(./applications/**)",
+            "Write(./applications/**)",
+            "Edit(./kpis/**)",
+            "Write(./kpis/**)",
+            "Edit(./cves/**)",
+            "Write(./cves/**)",
+            "Bash(npm run validate*)",
+            "Bash(npm run kpis*)",
+            "Bash(npm run sync:agents)",
+            "Bash(node .claude/scripts/*)",
+            "Bash(git status*)",
+            "Bash(git diff*)",
+            "Bash(git log*)",
+            "Workflow(refresh-ctx)",
+            "Workflow(refresh-soc)",
+            "Workflow(probe-iac)",
+            "Workflow(report-audit-findings)",
+            "Workflow(validate)"
+          ],
+          "ask": [
+            "Bash(git push*)",
+            "Bash(git commit*)",
+            "Bash(sops --decrypt*)"
+          ],
+          "deny": [
+            "Read(./applications/*/credentials.dec.json)",
+            "Read(./**/*.dec.json)",
+            "Edit(./.claude/schemas/**)",
+            "Write(./.claude/schemas/**)",
+            "Edit(./.agents/**)",
+            "Write(./.agents/**)",
+            "Bash(rm -rf*)",
+            "Bash(curl*)",
+            "WebFetch"
+          ]
+        },
+        "hooks": {
+          "SessionStart": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\"",
+                  "timeout": 30
+                }
+              ]
+            }
+          ],
+          "UserPromptSubmit": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/user-prompt.mjs\"",
+                  "timeout": 10
+                }
+              ]
+            }
+          ],
+          "PreToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-write.mjs\"",
+                  "timeout": 20,
+                  "statusMessage": "Checking layout and secrets"
+                }
+              ]
+            }
+          ],
+          "PostToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/validate-write.mjs\"",
+                  "timeout": 60,
+                  "statusMessage": "Validating against Maxwell schemas"
+                }
+              ]
+            }
+          ],
+          "SessionEnd": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-end.mjs\"",
+                  "timeout": 120,
+                  "async": true
+                }
+              ]
+            }
+          ]
+        },
+        "env": {
+          "MAXWELL_HARNESS": "claude-code",
+          "MAXWELL_WORKSPACE_ROOT": ".",
+          "SOPS_AGE_KEY_FILE": "/etc/maxwell/age.key",
+          "NODE_OPTIONS": "--max-old-space-size=2048"
+        },
+        "model": "opus",
+        "effortLevel": "high",
+        "disableWorkflows": false,
+        "attribution": {
+          "commit": "Co-Authored-By: Maxwell <maxwell@onfinance.ai>",
+          "pr": "",
+          "sessionUrl": false
+        },
+        "cleanupPeriodDays": 90,
+        "enabledPlugins": {}
+      }
+    },
+    {
+      "description": "disableBypassPermissionsMode takes the string disable, not a boolean",
+      "valid": false,
+      "data": {
+        "$schema": "https://json.schemastore.org/claude-code-settings.json",
+        "permissions": {
+          "defaultMode": "acceptEdits",
+          "disableBypassPermissionsMode": true,
+          "blockReadsOutsideWorkingDirectories": true,
+          "allow": [
+            "Read(./**)",
+            "Edit(./company-profile/**)",
+            "Write(./company-profile/**)",
+            "Edit(./applications/**)",
+            "Write(./applications/**)",
+            "Edit(./kpis/**)",
+            "Write(./kpis/**)",
+            "Edit(./cves/**)",
+            "Write(./cves/**)",
+            "Bash(npm run validate*)",
+            "Bash(npm run kpis*)",
+            "Bash(npm run sync:agents)",
+            "Bash(node .claude/scripts/*)",
+            "Bash(git status*)",
+            "Bash(git diff*)",
+            "Bash(git log*)",
+            "Workflow(refresh-ctx)",
+            "Workflow(refresh-soc)",
+            "Workflow(probe-iac)",
+            "Workflow(report-audit-findings)",
+            "Workflow(validate)"
+          ],
+          "ask": [
+            "Bash(git push*)",
+            "Bash(git commit*)",
+            "Bash(sops --decrypt*)"
+          ],
+          "deny": [
+            "Read(./applications/*/credentials.dec.json)",
+            "Read(./**/*.dec.json)",
+            "Edit(./.claude/schemas/**)",
+            "Write(./.claude/schemas/**)",
+            "Edit(./.agents/**)",
+            "Write(./.agents/**)",
+            "Bash(rm -rf*)",
+            "Bash(curl*)",
+            "WebFetch"
+          ]
+        },
+        "hooks": {
+          "SessionStart": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\"",
+                  "timeout": 30
+                }
+              ]
+            }
+          ],
+          "UserPromptSubmit": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/user-prompt.mjs\"",
+                  "timeout": 10
+                }
+              ]
+            }
+          ],
+          "PreToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-write.mjs\"",
+                  "timeout": 20,
+                  "statusMessage": "Checking layout and secrets"
+                }
+              ]
+            }
+          ],
+          "PostToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/validate-write.mjs\"",
+                  "timeout": 60,
+                  "statusMessage": "Validating against Maxwell schemas"
+                }
+              ]
+            }
+          ],
+          "SessionEnd": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-end.mjs\"",
+                  "timeout": 120,
+                  "async": true
+                }
+              ]
+            }
+          ]
+        },
+        "env": {
+          "MAXWELL_HARNESS": "claude-code",
+          "MAXWELL_WORKSPACE_ROOT": ".",
+          "SOPS_AGE_KEY_FILE": "/etc/maxwell/age.key",
+          "NODE_OPTIONS": "--max-old-space-size=2048"
+        },
+        "model": "opus",
+        "effortLevel": "high",
+        "disableWorkflows": false,
+        "attribution": {
+          "commit": "Co-Authored-By: Maxwell <maxwell@onfinance.ai>",
+          "pr": "",
+          "sessionUrl": false
+        },
+        "cleanupPeriodDays": 90,
+        "enabledPlugins": {}
+      }
+    },
+    {
+      "description": "extra key inside permissions is denied",
+      "valid": false,
+      "data": {
+        "$schema": "https://json.schemastore.org/claude-code-settings.json",
+        "permissions": {
+          "defaultMode": "acceptEdits",
+          "disableBypassPermissionsMode": "disable",
+          "blockReadsOutsideWorkingDirectories": true,
+          "allow": [
+            "Read(./**)",
+            "Edit(./company-profile/**)",
+            "Write(./company-profile/**)",
+            "Edit(./applications/**)",
+            "Write(./applications/**)",
+            "Edit(./kpis/**)",
+            "Write(./kpis/**)",
+            "Edit(./cves/**)",
+            "Write(./cves/**)",
+            "Bash(npm run validate*)",
+            "Bash(npm run kpis*)",
+            "Bash(npm run sync:agents)",
+            "Bash(node .claude/scripts/*)",
+            "Bash(git status*)",
+            "Bash(git diff*)",
+            "Bash(git log*)",
+            "Workflow(refresh-ctx)",
+            "Workflow(refresh-soc)",
+            "Workflow(probe-iac)",
+            "Workflow(report-audit-findings)",
+            "Workflow(validate)"
+          ],
+          "ask": [
+            "Bash(git push*)",
+            "Bash(git commit*)",
+            "Bash(sops --decrypt*)"
+          ],
+          "deny": [
+            "Read(./applications/*/credentials.dec.json)",
+            "Read(./**/*.dec.json)",
+            "Edit(./.claude/schemas/**)",
+            "Write(./.claude/schemas/**)",
+            "Edit(./.agents/**)",
+            "Write(./.agents/**)",
+            "Bash(rm -rf*)",
+            "Bash(curl*)",
+            "WebFetch"
+          ],
+          "disableAutoMode": "disable"
+        },
+        "hooks": {
+          "SessionStart": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\"",
+                  "timeout": 30
+                }
+              ]
+            }
+          ],
+          "UserPromptSubmit": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/user-prompt.mjs\"",
+                  "timeout": 10
+                }
+              ]
+            }
+          ],
+          "PreToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-write.mjs\"",
+                  "timeout": 20,
+                  "statusMessage": "Checking layout and secrets"
+                }
+              ]
+            }
+          ],
+          "PostToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/validate-write.mjs\"",
+                  "timeout": 60,
+                  "statusMessage": "Validating against Maxwell schemas"
+                }
+              ]
+            }
+          ],
+          "SessionEnd": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-end.mjs\"",
+                  "timeout": 120,
+                  "async": true
+                }
+              ]
+            }
+          ]
+        },
+        "env": {
+          "MAXWELL_HARNESS": "claude-code",
+          "MAXWELL_WORKSPACE_ROOT": ".",
+          "SOPS_AGE_KEY_FILE": "/etc/maxwell/age.key",
+          "NODE_OPTIONS": "--max-old-space-size=2048"
+        },
+        "model": "opus",
+        "effortLevel": "high",
+        "disableWorkflows": false,
+        "attribution": {
+          "commit": "Co-Authored-By: Maxwell <maxwell@onfinance.ai>",
+          "pr": "",
+          "sessionUrl": false
+        },
+        "cleanupPeriodDays": 90,
+        "enabledPlugins": {}
+      }
+    },
+    {
+      "description": "permissions.deny is required",
+      "valid": false,
+      "data": {
+        "$schema": "https://json.schemastore.org/claude-code-settings.json",
+        "permissions": {
+          "defaultMode": "acceptEdits",
+          "disableBypassPermissionsMode": "disable",
+          "blockReadsOutsideWorkingDirectories": true,
+          "allow": [
+            "Read(./**)",
+            "Edit(./company-profile/**)",
+            "Write(./company-profile/**)",
+            "Edit(./applications/**)",
+            "Write(./applications/**)",
+            "Edit(./kpis/**)",
+            "Write(./kpis/**)",
+            "Edit(./cves/**)",
+            "Write(./cves/**)",
+            "Bash(npm run validate*)",
+            "Bash(npm run kpis*)",
+            "Bash(npm run sync:agents)",
+            "Bash(node .claude/scripts/*)",
+            "Bash(git status*)",
+            "Bash(git diff*)",
+            "Bash(git log*)",
+            "Workflow(refresh-ctx)",
+            "Workflow(refresh-soc)",
+            "Workflow(probe-iac)",
+            "Workflow(report-audit-findings)",
+            "Workflow(validate)"
+          ],
+          "ask": [
+            "Bash(git push*)",
+            "Bash(git commit*)",
+            "Bash(sops --decrypt*)"
+          ]
+        },
+        "hooks": {
+          "SessionStart": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\"",
+                  "timeout": 30
+                }
+              ]
+            }
+          ],
+          "UserPromptSubmit": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/user-prompt.mjs\"",
+                  "timeout": 10
+                }
+              ]
+            }
+          ],
+          "PreToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-write.mjs\"",
+                  "timeout": 20,
+                  "statusMessage": "Checking layout and secrets"
+                }
+              ]
+            }
+          ],
+          "PostToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/validate-write.mjs\"",
+                  "timeout": 60,
+                  "statusMessage": "Validating against Maxwell schemas"
+                }
+              ]
+            }
+          ],
+          "SessionEnd": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-end.mjs\"",
+                  "timeout": 120,
+                  "async": true
+                }
+              ]
+            }
+          ]
+        },
+        "env": {
+          "MAXWELL_HARNESS": "claude-code",
+          "MAXWELL_WORKSPACE_ROOT": ".",
+          "SOPS_AGE_KEY_FILE": "/etc/maxwell/age.key",
+          "NODE_OPTIONS": "--max-old-space-size=2048"
+        },
+        "model": "opus",
+        "effortLevel": "high",
+        "disableWorkflows": false,
+        "attribution": {
+          "commit": "Co-Authored-By: Maxwell <maxwell@onfinance.ai>",
+          "pr": "",
+          "sessionUrl": false
+        },
+        "cleanupPeriodDays": 90,
+        "enabledPlugins": {}
+      }
+    },
+    {
+      "description": "unknown hook event name is denied",
+      "valid": false,
+      "data": {
+        "$schema": "https://json.schemastore.org/claude-code-settings.json",
+        "permissions": {
+          "defaultMode": "acceptEdits",
+          "disableBypassPermissionsMode": "disable",
+          "blockReadsOutsideWorkingDirectories": true,
+          "allow": [
+            "Read(./**)",
+            "Edit(./company-profile/**)",
+            "Write(./company-profile/**)",
+            "Edit(./applications/**)",
+            "Write(./applications/**)",
+            "Edit(./kpis/**)",
+            "Write(./kpis/**)",
+            "Edit(./cves/**)",
+            "Write(./cves/**)",
+            "Bash(npm run validate*)",
+            "Bash(npm run kpis*)",
+            "Bash(npm run sync:agents)",
+            "Bash(node .claude/scripts/*)",
+            "Bash(git status*)",
+            "Bash(git diff*)",
+            "Bash(git log*)",
+            "Workflow(refresh-ctx)",
+            "Workflow(refresh-soc)",
+            "Workflow(probe-iac)",
+            "Workflow(report-audit-findings)",
+            "Workflow(validate)"
+          ],
+          "ask": [
+            "Bash(git push*)",
+            "Bash(git commit*)",
+            "Bash(sops --decrypt*)"
+          ],
+          "deny": [
+            "Read(./applications/*/credentials.dec.json)",
+            "Read(./**/*.dec.json)",
+            "Edit(./.claude/schemas/**)",
+            "Write(./.claude/schemas/**)",
+            "Edit(./.agents/**)",
+            "Write(./.agents/**)",
+            "Bash(rm -rf*)",
+            "Bash(curl*)",
+            "WebFetch"
+          ]
+        },
+        "hooks": {
+          "SessionStart": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\"",
+                  "timeout": 30
+                }
+              ]
+            }
+          ],
+          "UserPromptSubmit": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/user-prompt.mjs\"",
+                  "timeout": 10
+                }
+              ]
+            }
+          ],
+          "PreToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-write.mjs\"",
+                  "timeout": 20,
+                  "statusMessage": "Checking layout and secrets"
+                }
+              ]
+            }
+          ],
+          "PostToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/validate-write.mjs\"",
+                  "timeout": 60,
+                  "statusMessage": "Validating against Maxwell schemas"
+                }
+              ]
+            }
+          ],
+          "SessionEnd": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-end.mjs\"",
+                  "timeout": 120,
+                  "async": true
+                }
+              ]
+            }
+          ],
+          "OnFileSave": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "echo hi"
+                }
+              ]
+            }
+          ]
+        },
+        "env": {
+          "MAXWELL_HARNESS": "claude-code",
+          "MAXWELL_WORKSPACE_ROOT": ".",
+          "SOPS_AGE_KEY_FILE": "/etc/maxwell/age.key",
+          "NODE_OPTIONS": "--max-old-space-size=2048"
+        },
+        "model": "opus",
+        "effortLevel": "high",
+        "disableWorkflows": false,
+        "attribution": {
+          "commit": "Co-Authored-By: Maxwell <maxwell@onfinance.ai>",
+          "pr": "",
+          "sessionUrl": false
+        },
+        "cleanupPeriodDays": 90,
+        "enabledPlugins": {}
+      }
+    },
+    {
+      "description": "hook handler type outside command/prompt/agent/http/mcp_tool",
+      "valid": false,
+      "data": {
+        "$schema": "https://json.schemastore.org/claude-code-settings.json",
+        "permissions": {
+          "defaultMode": "acceptEdits",
+          "disableBypassPermissionsMode": "disable",
+          "blockReadsOutsideWorkingDirectories": true,
+          "allow": [
+            "Read(./**)",
+            "Edit(./company-profile/**)",
+            "Write(./company-profile/**)",
+            "Edit(./applications/**)",
+            "Write(./applications/**)",
+            "Edit(./kpis/**)",
+            "Write(./kpis/**)",
+            "Edit(./cves/**)",
+            "Write(./cves/**)",
+            "Bash(npm run validate*)",
+            "Bash(npm run kpis*)",
+            "Bash(npm run sync:agents)",
+            "Bash(node .claude/scripts/*)",
+            "Bash(git status*)",
+            "Bash(git diff*)",
+            "Bash(git log*)",
+            "Workflow(refresh-ctx)",
+            "Workflow(refresh-soc)",
+            "Workflow(probe-iac)",
+            "Workflow(report-audit-findings)",
+            "Workflow(validate)"
+          ],
+          "ask": [
+            "Bash(git push*)",
+            "Bash(git commit*)",
+            "Bash(sops --decrypt*)"
+          ],
+          "deny": [
+            "Read(./applications/*/credentials.dec.json)",
+            "Read(./**/*.dec.json)",
+            "Edit(./.claude/schemas/**)",
+            "Write(./.claude/schemas/**)",
+            "Edit(./.agents/**)",
+            "Write(./.agents/**)",
+            "Bash(rm -rf*)",
+            "Bash(curl*)",
+            "WebFetch"
+          ]
+        },
+        "hooks": {
+          "SessionStart": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\"",
+                  "timeout": 30
+                }
+              ]
+            }
+          ],
+          "UserPromptSubmit": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/user-prompt.mjs\"",
+                  "timeout": 10
+                }
+              ]
+            }
+          ],
+          "PreToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "shell",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-write.mjs\"",
+                  "timeout": 20,
+                  "statusMessage": "Checking layout and secrets"
+                }
+              ]
+            }
+          ],
+          "PostToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/validate-write.mjs\"",
+                  "timeout": 60,
+                  "statusMessage": "Validating against Maxwell schemas"
+                }
+              ]
+            }
+          ],
+          "SessionEnd": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-end.mjs\"",
+                  "timeout": 120,
+                  "async": true
+                }
+              ]
+            }
+          ]
+        },
+        "env": {
+          "MAXWELL_HARNESS": "claude-code",
+          "MAXWELL_WORKSPACE_ROOT": ".",
+          "SOPS_AGE_KEY_FILE": "/etc/maxwell/age.key",
+          "NODE_OPTIONS": "--max-old-space-size=2048"
+        },
+        "model": "opus",
+        "effortLevel": "high",
+        "disableWorkflows": false,
+        "attribution": {
+          "commit": "Co-Authored-By: Maxwell <maxwell@onfinance.ai>",
+          "pr": "",
+          "sessionUrl": false
+        },
+        "cleanupPeriodDays": 90,
+        "enabledPlugins": {}
+      }
+    },
+    {
+      "description": "command hook without a command string",
+      "valid": false,
+      "data": {
+        "$schema": "https://json.schemastore.org/claude-code-settings.json",
+        "permissions": {
+          "defaultMode": "acceptEdits",
+          "disableBypassPermissionsMode": "disable",
+          "blockReadsOutsideWorkingDirectories": true,
+          "allow": [
+            "Read(./**)",
+            "Edit(./company-profile/**)",
+            "Write(./company-profile/**)",
+            "Edit(./applications/**)",
+            "Write(./applications/**)",
+            "Edit(./kpis/**)",
+            "Write(./kpis/**)",
+            "Edit(./cves/**)",
+            "Write(./cves/**)",
+            "Bash(npm run validate*)",
+            "Bash(npm run kpis*)",
+            "Bash(npm run sync:agents)",
+            "Bash(node .claude/scripts/*)",
+            "Bash(git status*)",
+            "Bash(git diff*)",
+            "Bash(git log*)",
+            "Workflow(refresh-ctx)",
+            "Workflow(refresh-soc)",
+            "Workflow(probe-iac)",
+            "Workflow(report-audit-findings)",
+            "Workflow(validate)"
+          ],
+          "ask": [
+            "Bash(git push*)",
+            "Bash(git commit*)",
+            "Bash(sops --decrypt*)"
+          ],
+          "deny": [
+            "Read(./applications/*/credentials.dec.json)",
+            "Read(./**/*.dec.json)",
+            "Edit(./.claude/schemas/**)",
+            "Write(./.claude/schemas/**)",
+            "Edit(./.agents/**)",
+            "Write(./.agents/**)",
+            "Bash(rm -rf*)",
+            "Bash(curl*)",
+            "WebFetch"
+          ]
+        },
+        "hooks": {
+          "SessionStart": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\"",
+                  "timeout": 30
+                }
+              ]
+            }
+          ],
+          "UserPromptSubmit": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/user-prompt.mjs\"",
+                  "timeout": 10
+                }
+              ]
+            }
+          ],
+          "PreToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "timeout": 20,
+                  "statusMessage": "Checking layout and secrets"
+                }
+              ]
+            }
+          ],
+          "PostToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/validate-write.mjs\"",
+                  "timeout": 60,
+                  "statusMessage": "Validating against Maxwell schemas"
+                }
+              ]
+            }
+          ],
+          "SessionEnd": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-end.mjs\"",
+                  "timeout": 120,
+                  "async": true
+                }
+              ]
+            }
+          ]
+        },
+        "env": {
+          "MAXWELL_HARNESS": "claude-code",
+          "MAXWELL_WORKSPACE_ROOT": ".",
+          "SOPS_AGE_KEY_FILE": "/etc/maxwell/age.key",
+          "NODE_OPTIONS": "--max-old-space-size=2048"
+        },
+        "model": "opus",
+        "effortLevel": "high",
+        "disableWorkflows": false,
+        "attribution": {
+          "commit": "Co-Authored-By: Maxwell <maxwell@onfinance.ai>",
+          "pr": "",
+          "sessionUrl": false
+        },
+        "cleanupPeriodDays": 90,
+        "enabledPlugins": {}
+      }
+    },
+    {
+      "description": "prompt hook without a prompt",
+      "valid": false,
+      "data": {
+        "$schema": "https://json.schemastore.org/claude-code-settings.json",
+        "permissions": {
+          "defaultMode": "acceptEdits",
+          "disableBypassPermissionsMode": "disable",
+          "blockReadsOutsideWorkingDirectories": true,
+          "allow": [
+            "Read(./**)",
+            "Edit(./company-profile/**)",
+            "Write(./company-profile/**)",
+            "Edit(./applications/**)",
+            "Write(./applications/**)",
+            "Edit(./kpis/**)",
+            "Write(./kpis/**)",
+            "Edit(./cves/**)",
+            "Write(./cves/**)",
+            "Bash(npm run validate*)",
+            "Bash(npm run kpis*)",
+            "Bash(npm run sync:agents)",
+            "Bash(node .claude/scripts/*)",
+            "Bash(git status*)",
+            "Bash(git diff*)",
+            "Bash(git log*)",
+            "Workflow(refresh-ctx)",
+            "Workflow(refresh-soc)",
+            "Workflow(probe-iac)",
+            "Workflow(report-audit-findings)",
+            "Workflow(validate)"
+          ],
+          "ask": [
+            "Bash(git push*)",
+            "Bash(git commit*)",
+            "Bash(sops --decrypt*)"
+          ],
+          "deny": [
+            "Read(./applications/*/credentials.dec.json)",
+            "Read(./**/*.dec.json)",
+            "Edit(./.claude/schemas/**)",
+            "Write(./.claude/schemas/**)",
+            "Edit(./.agents/**)",
+            "Write(./.agents/**)",
+            "Bash(rm -rf*)",
+            "Bash(curl*)",
+            "WebFetch"
+          ]
+        },
+        "hooks": {
+          "SessionStart": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\"",
+                  "timeout": 30
+                }
+              ]
+            }
+          ],
+          "UserPromptSubmit": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/user-prompt.mjs\"",
+                  "timeout": 10
+                }
+              ]
+            }
+          ],
+          "PreToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-write.mjs\"",
+                  "timeout": 20,
+                  "statusMessage": "Checking layout and secrets"
+                }
+              ]
+            }
+          ],
+          "PostToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/validate-write.mjs\"",
+                  "timeout": 60,
+                  "statusMessage": "Validating against Maxwell schemas"
+                }
+              ]
+            }
+          ],
+          "SessionEnd": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-end.mjs\"",
+                  "timeout": 120,
+                  "async": true
+                }
+              ]
+            }
+          ],
+          "Stop": [
+            {
+              "hooks": [
+                {
+                  "type": "prompt"
+                }
+              ]
+            }
+          ]
+        },
+        "env": {
+          "MAXWELL_HARNESS": "claude-code",
+          "MAXWELL_WORKSPACE_ROOT": ".",
+          "SOPS_AGE_KEY_FILE": "/etc/maxwell/age.key",
+          "NODE_OPTIONS": "--max-old-space-size=2048"
+        },
+        "model": "opus",
+        "effortLevel": "high",
+        "disableWorkflows": false,
+        "attribution": {
+          "commit": "Co-Authored-By: Maxwell <maxwell@onfinance.ai>",
+          "pr": "",
+          "sessionUrl": false
+        },
+        "cleanupPeriodDays": 90,
+        "enabledPlugins": {}
+      }
+    },
+    {
+      "description": "agent hook without a prompt",
+      "valid": false,
+      "data": {
+        "$schema": "https://json.schemastore.org/claude-code-settings.json",
+        "permissions": {
+          "defaultMode": "acceptEdits",
+          "disableBypassPermissionsMode": "disable",
+          "blockReadsOutsideWorkingDirectories": true,
+          "allow": [
+            "Read(./**)",
+            "Edit(./company-profile/**)",
+            "Write(./company-profile/**)",
+            "Edit(./applications/**)",
+            "Write(./applications/**)",
+            "Edit(./kpis/**)",
+            "Write(./kpis/**)",
+            "Edit(./cves/**)",
+            "Write(./cves/**)",
+            "Bash(npm run validate*)",
+            "Bash(npm run kpis*)",
+            "Bash(npm run sync:agents)",
+            "Bash(node .claude/scripts/*)",
+            "Bash(git status*)",
+            "Bash(git diff*)",
+            "Bash(git log*)",
+            "Workflow(refresh-ctx)",
+            "Workflow(refresh-soc)",
+            "Workflow(probe-iac)",
+            "Workflow(report-audit-findings)",
+            "Workflow(validate)"
+          ],
+          "ask": [
+            "Bash(git push*)",
+            "Bash(git commit*)",
+            "Bash(sops --decrypt*)"
+          ],
+          "deny": [
+            "Read(./applications/*/credentials.dec.json)",
+            "Read(./**/*.dec.json)",
+            "Edit(./.claude/schemas/**)",
+            "Write(./.claude/schemas/**)",
+            "Edit(./.agents/**)",
+            "Write(./.agents/**)",
+            "Bash(rm -rf*)",
+            "Bash(curl*)",
+            "WebFetch"
+          ]
+        },
+        "hooks": {
+          "SessionStart": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\"",
+                  "timeout": 30
+                }
+              ]
+            }
+          ],
+          "UserPromptSubmit": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/user-prompt.mjs\"",
+                  "timeout": 10
+                }
+              ]
+            }
+          ],
+          "PreToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-write.mjs\"",
+                  "timeout": 20,
+                  "statusMessage": "Checking layout and secrets"
+                }
+              ]
+            }
+          ],
+          "PostToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/validate-write.mjs\"",
+                  "timeout": 60,
+                  "statusMessage": "Validating against Maxwell schemas"
+                }
+              ]
+            }
+          ],
+          "SessionEnd": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-end.mjs\"",
+                  "timeout": 120,
+                  "async": true
+                }
+              ]
+            }
+          ],
+          "Stop": [
+            {
+              "hooks": [
+                {
+                  "type": "agent",
+                  "model": "sonnet"
+                }
+              ]
+            }
+          ]
+        },
+        "env": {
+          "MAXWELL_HARNESS": "claude-code",
+          "MAXWELL_WORKSPACE_ROOT": ".",
+          "SOPS_AGE_KEY_FILE": "/etc/maxwell/age.key",
+          "NODE_OPTIONS": "--max-old-space-size=2048"
+        },
+        "model": "opus",
+        "effortLevel": "high",
+        "disableWorkflows": false,
+        "attribution": {
+          "commit": "Co-Authored-By: Maxwell <maxwell@onfinance.ai>",
+          "pr": "",
+          "sessionUrl": false
+        },
+        "cleanupPeriodDays": 90,
+        "enabledPlugins": {}
+      }
+    },
+    {
+      "description": "http hook without a url",
+      "valid": false,
+      "data": {
+        "$schema": "https://json.schemastore.org/claude-code-settings.json",
+        "permissions": {
+          "defaultMode": "acceptEdits",
+          "disableBypassPermissionsMode": "disable",
+          "blockReadsOutsideWorkingDirectories": true,
+          "allow": [
+            "Read(./**)",
+            "Edit(./company-profile/**)",
+            "Write(./company-profile/**)",
+            "Edit(./applications/**)",
+            "Write(./applications/**)",
+            "Edit(./kpis/**)",
+            "Write(./kpis/**)",
+            "Edit(./cves/**)",
+            "Write(./cves/**)",
+            "Bash(npm run validate*)",
+            "Bash(npm run kpis*)",
+            "Bash(npm run sync:agents)",
+            "Bash(node .claude/scripts/*)",
+            "Bash(git status*)",
+            "Bash(git diff*)",
+            "Bash(git log*)",
+            "Workflow(refresh-ctx)",
+            "Workflow(refresh-soc)",
+            "Workflow(probe-iac)",
+            "Workflow(report-audit-findings)",
+            "Workflow(validate)"
+          ],
+          "ask": [
+            "Bash(git push*)",
+            "Bash(git commit*)",
+            "Bash(sops --decrypt*)"
+          ],
+          "deny": [
+            "Read(./applications/*/credentials.dec.json)",
+            "Read(./**/*.dec.json)",
+            "Edit(./.claude/schemas/**)",
+            "Write(./.claude/schemas/**)",
+            "Edit(./.agents/**)",
+            "Write(./.agents/**)",
+            "Bash(rm -rf*)",
+            "Bash(curl*)",
+            "WebFetch"
+          ]
+        },
+        "hooks": {
+          "SessionStart": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\"",
+                  "timeout": 30
+                }
+              ]
+            }
+          ],
+          "UserPromptSubmit": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/user-prompt.mjs\"",
+                  "timeout": 10
+                }
+              ]
+            }
+          ],
+          "PreToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-write.mjs\"",
+                  "timeout": 20,
+                  "statusMessage": "Checking layout and secrets"
+                }
+              ]
+            }
+          ],
+          "PostToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/validate-write.mjs\"",
+                  "timeout": 60,
+                  "statusMessage": "Validating against Maxwell schemas"
+                }
+              ]
+            }
+          ],
+          "SessionEnd": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-end.mjs\"",
+                  "timeout": 120,
+                  "async": true
+                }
+              ]
+            }
+          ],
+          "Notification": [
+            {
+              "hooks": [
+                {
+                  "type": "http",
+                  "allowedEnvVars": [
+                    "TOKEN"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "env": {
+          "MAXWELL_HARNESS": "claude-code",
+          "MAXWELL_WORKSPACE_ROOT": ".",
+          "SOPS_AGE_KEY_FILE": "/etc/maxwell/age.key",
+          "NODE_OPTIONS": "--max-old-space-size=2048"
+        },
+        "model": "opus",
+        "effortLevel": "high",
+        "disableWorkflows": false,
+        "attribution": {
+          "commit": "Co-Authored-By: Maxwell <maxwell@onfinance.ai>",
+          "pr": "",
+          "sessionUrl": false
+        },
+        "cleanupPeriodDays": 90,
+        "enabledPlugins": {}
+      }
+    },
+    {
+      "description": "mcp_tool hook without a tool",
+      "valid": false,
+      "data": {
+        "$schema": "https://json.schemastore.org/claude-code-settings.json",
+        "permissions": {
+          "defaultMode": "acceptEdits",
+          "disableBypassPermissionsMode": "disable",
+          "blockReadsOutsideWorkingDirectories": true,
+          "allow": [
+            "Read(./**)",
+            "Edit(./company-profile/**)",
+            "Write(./company-profile/**)",
+            "Edit(./applications/**)",
+            "Write(./applications/**)",
+            "Edit(./kpis/**)",
+            "Write(./kpis/**)",
+            "Edit(./cves/**)",
+            "Write(./cves/**)",
+            "Bash(npm run validate*)",
+            "Bash(npm run kpis*)",
+            "Bash(npm run sync:agents)",
+            "Bash(node .claude/scripts/*)",
+            "Bash(git status*)",
+            "Bash(git diff*)",
+            "Bash(git log*)",
+            "Workflow(refresh-ctx)",
+            "Workflow(refresh-soc)",
+            "Workflow(probe-iac)",
+            "Workflow(report-audit-findings)",
+            "Workflow(validate)"
+          ],
+          "ask": [
+            "Bash(git push*)",
+            "Bash(git commit*)",
+            "Bash(sops --decrypt*)"
+          ],
+          "deny": [
+            "Read(./applications/*/credentials.dec.json)",
+            "Read(./**/*.dec.json)",
+            "Edit(./.claude/schemas/**)",
+            "Write(./.claude/schemas/**)",
+            "Edit(./.agents/**)",
+            "Write(./.agents/**)",
+            "Bash(rm -rf*)",
+            "Bash(curl*)",
+            "WebFetch"
+          ]
+        },
+        "hooks": {
+          "SessionStart": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\"",
+                  "timeout": 30
+                }
+              ]
+            }
+          ],
+          "UserPromptSubmit": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/user-prompt.mjs\"",
+                  "timeout": 10
+                }
+              ]
+            }
+          ],
+          "PreToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-write.mjs\"",
+                  "timeout": 20,
+                  "statusMessage": "Checking layout and secrets"
+                }
+              ]
+            }
+          ],
+          "PostToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/validate-write.mjs\"",
+                  "timeout": 60,
+                  "statusMessage": "Validating against Maxwell schemas"
+                }
+              ]
+            }
+          ],
+          "SessionEnd": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-end.mjs\"",
+                  "timeout": 120,
+                  "async": true
+                }
+              ]
+            }
+          ],
+          "PreCompact": [
+            {
+              "hooks": [
+                {
+                  "type": "mcp_tool",
+                  "server": "ledger"
+                }
+              ]
+            }
+          ]
+        },
+        "env": {
+          "MAXWELL_HARNESS": "claude-code",
+          "MAXWELL_WORKSPACE_ROOT": ".",
+          "SOPS_AGE_KEY_FILE": "/etc/maxwell/age.key",
+          "NODE_OPTIONS": "--max-old-space-size=2048"
+        },
+        "model": "opus",
+        "effortLevel": "high",
+        "disableWorkflows": false,
+        "attribution": {
+          "commit": "Co-Authored-By: Maxwell <maxwell@onfinance.ai>",
+          "pr": "",
+          "sessionUrl": false
+        },
+        "cleanupPeriodDays": 90,
+        "enabledPlugins": {}
+      }
+    },
+    {
+      "description": "http hook Authorization header must interpolate an environment variable, never a literal secret",
+      "valid": false,
+      "data": {
+        "$schema": "https://json.schemastore.org/claude-code-settings.json",
+        "permissions": {
+          "defaultMode": "acceptEdits",
+          "disableBypassPermissionsMode": "disable",
+          "blockReadsOutsideWorkingDirectories": true,
+          "allow": [
+            "Read(./**)",
+            "Edit(./company-profile/**)",
+            "Write(./company-profile/**)",
+            "Edit(./applications/**)",
+            "Write(./applications/**)",
+            "Edit(./kpis/**)",
+            "Write(./kpis/**)",
+            "Edit(./cves/**)",
+            "Write(./cves/**)",
+            "Bash(npm run validate*)",
+            "Bash(npm run kpis*)",
+            "Bash(npm run sync:agents)",
+            "Bash(node .claude/scripts/*)",
+            "Bash(git status*)",
+            "Bash(git diff*)",
+            "Bash(git log*)",
+            "Workflow(refresh-ctx)",
+            "Workflow(refresh-soc)",
+            "Workflow(probe-iac)",
+            "Workflow(report-audit-findings)",
+            "Workflow(validate)"
+          ],
+          "ask": [
+            "Bash(git push*)",
+            "Bash(git commit*)",
+            "Bash(sops --decrypt*)"
+          ],
+          "deny": [
+            "Read(./applications/*/credentials.dec.json)",
+            "Read(./**/*.dec.json)",
+            "Edit(./.claude/schemas/**)",
+            "Write(./.claude/schemas/**)",
+            "Edit(./.agents/**)",
+            "Write(./.agents/**)",
+            "Bash(rm -rf*)",
+            "Bash(curl*)",
+            "WebFetch"
+          ]
+        },
+        "hooks": {
+          "SessionStart": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\"",
+                  "timeout": 30
+                }
+              ]
+            }
+          ],
+          "UserPromptSubmit": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/user-prompt.mjs\"",
+                  "timeout": 10
+                }
+              ]
+            }
+          ],
+          "PreToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-write.mjs\"",
+                  "timeout": 20,
+                  "statusMessage": "Checking layout and secrets"
+                }
+              ]
+            }
+          ],
+          "PostToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/validate-write.mjs\"",
+                  "timeout": 60,
+                  "statusMessage": "Validating against Maxwell schemas"
+                }
+              ]
+            }
+          ],
+          "SessionEnd": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-end.mjs\"",
+                  "timeout": 120,
+                  "async": true
+                }
+              ]
+            }
+          ],
+          "Notification": [
+            {
+              "hooks": [
+                {
+                  "type": "http",
+                  "url": "https://alerts.example.internal/claude",
+                  "headers": {
+                    "Authorization": "Bearer sk-live-1234567890abcdef"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "env": {
+          "MAXWELL_HARNESS": "claude-code",
+          "MAXWELL_WORKSPACE_ROOT": ".",
+          "SOPS_AGE_KEY_FILE": "/etc/maxwell/age.key",
+          "NODE_OPTIONS": "--max-old-space-size=2048"
+        },
+        "model": "opus",
+        "effortLevel": "high",
+        "disableWorkflows": false,
+        "attribution": {
+          "commit": "Co-Authored-By: Maxwell <maxwell@onfinance.ai>",
+          "pr": "",
+          "sessionUrl": false
+        },
+        "cleanupPeriodDays": 90,
+        "enabledPlugins": {}
+      }
+    },
+    {
+      "description": "extra key on a hook handler is denied",
+      "valid": false,
+      "data": {
+        "$schema": "https://json.schemastore.org/claude-code-settings.json",
+        "permissions": {
+          "defaultMode": "acceptEdits",
+          "disableBypassPermissionsMode": "disable",
+          "blockReadsOutsideWorkingDirectories": true,
+          "allow": [
+            "Read(./**)",
+            "Edit(./company-profile/**)",
+            "Write(./company-profile/**)",
+            "Edit(./applications/**)",
+            "Write(./applications/**)",
+            "Edit(./kpis/**)",
+            "Write(./kpis/**)",
+            "Edit(./cves/**)",
+            "Write(./cves/**)",
+            "Bash(npm run validate*)",
+            "Bash(npm run kpis*)",
+            "Bash(npm run sync:agents)",
+            "Bash(node .claude/scripts/*)",
+            "Bash(git status*)",
+            "Bash(git diff*)",
+            "Bash(git log*)",
+            "Workflow(refresh-ctx)",
+            "Workflow(refresh-soc)",
+            "Workflow(probe-iac)",
+            "Workflow(report-audit-findings)",
+            "Workflow(validate)"
+          ],
+          "ask": [
+            "Bash(git push*)",
+            "Bash(git commit*)",
+            "Bash(sops --decrypt*)"
+          ],
+          "deny": [
+            "Read(./applications/*/credentials.dec.json)",
+            "Read(./**/*.dec.json)",
+            "Edit(./.claude/schemas/**)",
+            "Write(./.claude/schemas/**)",
+            "Edit(./.agents/**)",
+            "Write(./.agents/**)",
+            "Bash(rm -rf*)",
+            "Bash(curl*)",
+            "WebFetch"
+          ]
+        },
+        "hooks": {
+          "SessionStart": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\"",
+                  "timeout": 30
+                }
+              ]
+            }
+          ],
+          "UserPromptSubmit": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/user-prompt.mjs\"",
+                  "timeout": 10
+                }
+              ]
+            }
+          ],
+          "PreToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-write.mjs\"",
+                  "timeout": 20,
+                  "statusMessage": "Checking layout and secrets"
+                }
+              ]
+            }
+          ],
+          "PostToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/validate-write.mjs\"",
+                  "timeout": 60,
+                  "statusMessage": "Validating against Maxwell schemas"
+                }
+              ]
+            }
+          ],
+          "SessionEnd": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-end.mjs\"",
+                  "timeout": 120,
+                  "async": true,
+                  "retries": 3
+                }
+              ]
+            }
+          ]
+        },
+        "env": {
+          "MAXWELL_HARNESS": "claude-code",
+          "MAXWELL_WORKSPACE_ROOT": ".",
+          "SOPS_AGE_KEY_FILE": "/etc/maxwell/age.key",
+          "NODE_OPTIONS": "--max-old-space-size=2048"
+        },
+        "model": "opus",
+        "effortLevel": "high",
+        "disableWorkflows": false,
+        "attribution": {
+          "commit": "Co-Authored-By: Maxwell <maxwell@onfinance.ai>",
+          "pr": "",
+          "sessionUrl": false
+        },
+        "cleanupPeriodDays": 90,
+        "enabledPlugins": {}
+      }
+    },
+    {
+      "description": "hook shell outside bash/powershell",
+      "valid": false,
+      "data": {
+        "$schema": "https://json.schemastore.org/claude-code-settings.json",
+        "permissions": {
+          "defaultMode": "acceptEdits",
+          "disableBypassPermissionsMode": "disable",
+          "blockReadsOutsideWorkingDirectories": true,
+          "allow": [
+            "Read(./**)",
+            "Edit(./company-profile/**)",
+            "Write(./company-profile/**)",
+            "Edit(./applications/**)",
+            "Write(./applications/**)",
+            "Edit(./kpis/**)",
+            "Write(./kpis/**)",
+            "Edit(./cves/**)",
+            "Write(./cves/**)",
+            "Bash(npm run validate*)",
+            "Bash(npm run kpis*)",
+            "Bash(npm run sync:agents)",
+            "Bash(node .claude/scripts/*)",
+            "Bash(git status*)",
+            "Bash(git diff*)",
+            "Bash(git log*)",
+            "Workflow(refresh-ctx)",
+            "Workflow(refresh-soc)",
+            "Workflow(probe-iac)",
+            "Workflow(report-audit-findings)",
+            "Workflow(validate)"
+          ],
+          "ask": [
+            "Bash(git push*)",
+            "Bash(git commit*)",
+            "Bash(sops --decrypt*)"
+          ],
+          "deny": [
+            "Read(./applications/*/credentials.dec.json)",
+            "Read(./**/*.dec.json)",
+            "Edit(./.claude/schemas/**)",
+            "Write(./.claude/schemas/**)",
+            "Edit(./.agents/**)",
+            "Write(./.agents/**)",
+            "Bash(rm -rf*)",
+            "Bash(curl*)",
+            "WebFetch"
+          ]
+        },
+        "hooks": {
+          "SessionStart": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\"",
+                  "timeout": 30
+                }
+              ]
+            }
+          ],
+          "UserPromptSubmit": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/user-prompt.mjs\"",
+                  "timeout": 10
+                }
+              ]
+            }
+          ],
+          "PreToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-write.mjs\"",
+                  "timeout": 20,
+                  "statusMessage": "Checking layout and secrets"
+                }
+              ]
+            }
+          ],
+          "PostToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/validate-write.mjs\"",
+                  "timeout": 60,
+                  "statusMessage": "Validating against Maxwell schemas"
+                }
+              ]
+            }
+          ],
+          "SessionEnd": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-end.mjs\"",
+                  "timeout": 120,
+                  "async": true,
+                  "shell": "zsh"
+                }
+              ]
+            }
+          ]
+        },
+        "env": {
+          "MAXWELL_HARNESS": "claude-code",
+          "MAXWELL_WORKSPACE_ROOT": ".",
+          "SOPS_AGE_KEY_FILE": "/etc/maxwell/age.key",
+          "NODE_OPTIONS": "--max-old-space-size=2048"
+        },
+        "model": "opus",
+        "effortLevel": "high",
+        "disableWorkflows": false,
+        "attribution": {
+          "commit": "Co-Authored-By: Maxwell <maxwell@onfinance.ai>",
+          "pr": "",
+          "sessionUrl": false
+        },
+        "cleanupPeriodDays": 90,
+        "enabledPlugins": {}
+      }
+    },
+    {
+      "description": "hook timeout must be at least 1 second",
+      "valid": false,
+      "data": {
+        "$schema": "https://json.schemastore.org/claude-code-settings.json",
+        "permissions": {
+          "defaultMode": "acceptEdits",
+          "disableBypassPermissionsMode": "disable",
+          "blockReadsOutsideWorkingDirectories": true,
+          "allow": [
+            "Read(./**)",
+            "Edit(./company-profile/**)",
+            "Write(./company-profile/**)",
+            "Edit(./applications/**)",
+            "Write(./applications/**)",
+            "Edit(./kpis/**)",
+            "Write(./kpis/**)",
+            "Edit(./cves/**)",
+            "Write(./cves/**)",
+            "Bash(npm run validate*)",
+            "Bash(npm run kpis*)",
+            "Bash(npm run sync:agents)",
+            "Bash(node .claude/scripts/*)",
+            "Bash(git status*)",
+            "Bash(git diff*)",
+            "Bash(git log*)",
+            "Workflow(refresh-ctx)",
+            "Workflow(refresh-soc)",
+            "Workflow(probe-iac)",
+            "Workflow(report-audit-findings)",
+            "Workflow(validate)"
+          ],
+          "ask": [
+            "Bash(git push*)",
+            "Bash(git commit*)",
+            "Bash(sops --decrypt*)"
+          ],
+          "deny": [
+            "Read(./applications/*/credentials.dec.json)",
+            "Read(./**/*.dec.json)",
+            "Edit(./.claude/schemas/**)",
+            "Write(./.claude/schemas/**)",
+            "Edit(./.agents/**)",
+            "Write(./.agents/**)",
+            "Bash(rm -rf*)",
+            "Bash(curl*)",
+            "WebFetch"
+          ]
+        },
+        "hooks": {
+          "SessionStart": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\"",
+                  "timeout": 30
+                }
+              ]
+            }
+          ],
+          "UserPromptSubmit": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/user-prompt.mjs\"",
+                  "timeout": 10
+                }
+              ]
+            }
+          ],
+          "PreToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-write.mjs\"",
+                  "timeout": 0,
+                  "statusMessage": "Checking layout and secrets"
+                }
+              ]
+            }
+          ],
+          "PostToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/validate-write.mjs\"",
+                  "timeout": 60,
+                  "statusMessage": "Validating against Maxwell schemas"
+                }
+              ]
+            }
+          ],
+          "SessionEnd": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-end.mjs\"",
+                  "timeout": 120,
+                  "async": true
+                }
+              ]
+            }
+          ]
+        },
+        "env": {
+          "MAXWELL_HARNESS": "claude-code",
+          "MAXWELL_WORKSPACE_ROOT": ".",
+          "SOPS_AGE_KEY_FILE": "/etc/maxwell/age.key",
+          "NODE_OPTIONS": "--max-old-space-size=2048"
+        },
+        "model": "opus",
+        "effortLevel": "high",
+        "disableWorkflows": false,
+        "attribution": {
+          "commit": "Co-Authored-By: Maxwell <maxwell@onfinance.ai>",
+          "pr": "",
+          "sessionUrl": false
+        },
+        "cleanupPeriodDays": 90,
+        "enabledPlugins": {}
+      }
+    },
+    {
+      "description": "env variable names must be upper snake case",
+      "valid": false,
+      "data": {
+        "$schema": "https://json.schemastore.org/claude-code-settings.json",
+        "permissions": {
+          "defaultMode": "acceptEdits",
+          "disableBypassPermissionsMode": "disable",
+          "blockReadsOutsideWorkingDirectories": true,
+          "allow": [
+            "Read(./**)",
+            "Edit(./company-profile/**)",
+            "Write(./company-profile/**)",
+            "Edit(./applications/**)",
+            "Write(./applications/**)",
+            "Edit(./kpis/**)",
+            "Write(./kpis/**)",
+            "Edit(./cves/**)",
+            "Write(./cves/**)",
+            "Bash(npm run validate*)",
+            "Bash(npm run kpis*)",
+            "Bash(npm run sync:agents)",
+            "Bash(node .claude/scripts/*)",
+            "Bash(git status*)",
+            "Bash(git diff*)",
+            "Bash(git log*)",
+            "Workflow(refresh-ctx)",
+            "Workflow(refresh-soc)",
+            "Workflow(probe-iac)",
+            "Workflow(report-audit-findings)",
+            "Workflow(validate)"
+          ],
+          "ask": [
+            "Bash(git push*)",
+            "Bash(git commit*)",
+            "Bash(sops --decrypt*)"
+          ],
+          "deny": [
+            "Read(./applications/*/credentials.dec.json)",
+            "Read(./**/*.dec.json)",
+            "Edit(./.claude/schemas/**)",
+            "Write(./.claude/schemas/**)",
+            "Edit(./.agents/**)",
+            "Write(./.agents/**)",
+            "Bash(rm -rf*)",
+            "Bash(curl*)",
+            "WebFetch"
+          ]
+        },
+        "hooks": {
+          "SessionStart": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\"",
+                  "timeout": 30
+                }
+              ]
+            }
+          ],
+          "UserPromptSubmit": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/user-prompt.mjs\"",
+                  "timeout": 10
+                }
+              ]
+            }
+          ],
+          "PreToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-write.mjs\"",
+                  "timeout": 20,
+                  "statusMessage": "Checking layout and secrets"
+                }
+              ]
+            }
+          ],
+          "PostToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/validate-write.mjs\"",
+                  "timeout": 60,
+                  "statusMessage": "Validating against Maxwell schemas"
+                }
+              ]
+            }
+          ],
+          "SessionEnd": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-end.mjs\"",
+                  "timeout": 120,
+                  "async": true
+                }
+              ]
+            }
+          ]
+        },
+        "env": {
+          "MAXWELL_HARNESS": "claude-code",
+          "MAXWELL_WORKSPACE_ROOT": ".",
+          "SOPS_AGE_KEY_FILE": "/etc/maxwell/age.key",
+          "NODE_OPTIONS": "--max-old-space-size=2048",
+          "maxwellHarness": "claude-code"
+        },
+        "model": "opus",
+        "effortLevel": "high",
+        "disableWorkflows": false,
+        "attribution": {
+          "commit": "Co-Authored-By: Maxwell <maxwell@onfinance.ai>",
+          "pr": "",
+          "sessionUrl": false
+        },
+        "cleanupPeriodDays": 90,
+        "enabledPlugins": {}
+      }
+    },
+    {
+      "description": "env values must not be empty",
+      "valid": false,
+      "data": {
+        "$schema": "https://json.schemastore.org/claude-code-settings.json",
+        "permissions": {
+          "defaultMode": "acceptEdits",
+          "disableBypassPermissionsMode": "disable",
+          "blockReadsOutsideWorkingDirectories": true,
+          "allow": [
+            "Read(./**)",
+            "Edit(./company-profile/**)",
+            "Write(./company-profile/**)",
+            "Edit(./applications/**)",
+            "Write(./applications/**)",
+            "Edit(./kpis/**)",
+            "Write(./kpis/**)",
+            "Edit(./cves/**)",
+            "Write(./cves/**)",
+            "Bash(npm run validate*)",
+            "Bash(npm run kpis*)",
+            "Bash(npm run sync:agents)",
+            "Bash(node .claude/scripts/*)",
+            "Bash(git status*)",
+            "Bash(git diff*)",
+            "Bash(git log*)",
+            "Workflow(refresh-ctx)",
+            "Workflow(refresh-soc)",
+            "Workflow(probe-iac)",
+            "Workflow(report-audit-findings)",
+            "Workflow(validate)"
+          ],
+          "ask": [
+            "Bash(git push*)",
+            "Bash(git commit*)",
+            "Bash(sops --decrypt*)"
+          ],
+          "deny": [
+            "Read(./applications/*/credentials.dec.json)",
+            "Read(./**/*.dec.json)",
+            "Edit(./.claude/schemas/**)",
+            "Write(./.claude/schemas/**)",
+            "Edit(./.agents/**)",
+            "Write(./.agents/**)",
+            "Bash(rm -rf*)",
+            "Bash(curl*)",
+            "WebFetch"
+          ]
+        },
+        "hooks": {
+          "SessionStart": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\"",
+                  "timeout": 30
+                }
+              ]
+            }
+          ],
+          "UserPromptSubmit": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/user-prompt.mjs\"",
+                  "timeout": 10
+                }
+              ]
+            }
+          ],
+          "PreToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-write.mjs\"",
+                  "timeout": 20,
+                  "statusMessage": "Checking layout and secrets"
+                }
+              ]
+            }
+          ],
+          "PostToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/validate-write.mjs\"",
+                  "timeout": 60,
+                  "statusMessage": "Validating against Maxwell schemas"
+                }
+              ]
+            }
+          ],
+          "SessionEnd": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-end.mjs\"",
+                  "timeout": 120,
+                  "async": true
+                }
+              ]
+            }
+          ]
+        },
+        "env": {
+          "MAXWELL_HARNESS": "claude-code",
+          "MAXWELL_WORKSPACE_ROOT": ".",
+          "SOPS_AGE_KEY_FILE": "/etc/maxwell/age.key",
+          "NODE_OPTIONS": "--max-old-space-size=2048",
+          "MAXWELL_RUN_ID": ""
+        },
+        "model": "opus",
+        "effortLevel": "high",
+        "disableWorkflows": false,
+        "attribution": {
+          "commit": "Co-Authored-By: Maxwell <maxwell@onfinance.ai>",
+          "pr": "",
+          "sessionUrl": false
+        },
+        "cleanupPeriodDays": 90,
+        "enabledPlugins": {}
+      }
+    },
+    {
+      "description": "effortLevel outside the closed enum",
+      "valid": false,
+      "data": {
+        "$schema": "https://json.schemastore.org/claude-code-settings.json",
+        "permissions": {
+          "defaultMode": "acceptEdits",
+          "disableBypassPermissionsMode": "disable",
+          "blockReadsOutsideWorkingDirectories": true,
+          "allow": [
+            "Read(./**)",
+            "Edit(./company-profile/**)",
+            "Write(./company-profile/**)",
+            "Edit(./applications/**)",
+            "Write(./applications/**)",
+            "Edit(./kpis/**)",
+            "Write(./kpis/**)",
+            "Edit(./cves/**)",
+            "Write(./cves/**)",
+            "Bash(npm run validate*)",
+            "Bash(npm run kpis*)",
+            "Bash(npm run sync:agents)",
+            "Bash(node .claude/scripts/*)",
+            "Bash(git status*)",
+            "Bash(git diff*)",
+            "Bash(git log*)",
+            "Workflow(refresh-ctx)",
+            "Workflow(refresh-soc)",
+            "Workflow(probe-iac)",
+            "Workflow(report-audit-findings)",
+            "Workflow(validate)"
+          ],
+          "ask": [
+            "Bash(git push*)",
+            "Bash(git commit*)",
+            "Bash(sops --decrypt*)"
+          ],
+          "deny": [
+            "Read(./applications/*/credentials.dec.json)",
+            "Read(./**/*.dec.json)",
+            "Edit(./.claude/schemas/**)",
+            "Write(./.claude/schemas/**)",
+            "Edit(./.agents/**)",
+            "Write(./.agents/**)",
+            "Bash(rm -rf*)",
+            "Bash(curl*)",
+            "WebFetch"
+          ]
+        },
+        "hooks": {
+          "SessionStart": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\"",
+                  "timeout": 30
+                }
+              ]
+            }
+          ],
+          "UserPromptSubmit": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/user-prompt.mjs\"",
+                  "timeout": 10
+                }
+              ]
+            }
+          ],
+          "PreToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-write.mjs\"",
+                  "timeout": 20,
+                  "statusMessage": "Checking layout and secrets"
+                }
+              ]
+            }
+          ],
+          "PostToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/validate-write.mjs\"",
+                  "timeout": 60,
+                  "statusMessage": "Validating against Maxwell schemas"
+                }
+              ]
+            }
+          ],
+          "SessionEnd": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-end.mjs\"",
+                  "timeout": 120,
+                  "async": true
+                }
+              ]
+            }
+          ]
+        },
+        "env": {
+          "MAXWELL_HARNESS": "claude-code",
+          "MAXWELL_WORKSPACE_ROOT": ".",
+          "SOPS_AGE_KEY_FILE": "/etc/maxwell/age.key",
+          "NODE_OPTIONS": "--max-old-space-size=2048"
+        },
+        "model": "opus",
+        "effortLevel": "extreme",
+        "disableWorkflows": false,
+        "attribution": {
+          "commit": "Co-Authored-By: Maxwell <maxwell@onfinance.ai>",
+          "pr": "",
+          "sessionUrl": false
+        },
+        "cleanupPeriodDays": 90,
+        "enabledPlugins": {}
+      }
+    },
+    {
+      "description": "model must be a Claude alias or claude-* id",
+      "valid": false,
+      "data": {
+        "$schema": "https://json.schemastore.org/claude-code-settings.json",
+        "permissions": {
+          "defaultMode": "acceptEdits",
+          "disableBypassPermissionsMode": "disable",
+          "blockReadsOutsideWorkingDirectories": true,
+          "allow": [
+            "Read(./**)",
+            "Edit(./company-profile/**)",
+            "Write(./company-profile/**)",
+            "Edit(./applications/**)",
+            "Write(./applications/**)",
+            "Edit(./kpis/**)",
+            "Write(./kpis/**)",
+            "Edit(./cves/**)",
+            "Write(./cves/**)",
+            "Bash(npm run validate*)",
+            "Bash(npm run kpis*)",
+            "Bash(npm run sync:agents)",
+            "Bash(node .claude/scripts/*)",
+            "Bash(git status*)",
+            "Bash(git diff*)",
+            "Bash(git log*)",
+            "Workflow(refresh-ctx)",
+            "Workflow(refresh-soc)",
+            "Workflow(probe-iac)",
+            "Workflow(report-audit-findings)",
+            "Workflow(validate)"
+          ],
+          "ask": [
+            "Bash(git push*)",
+            "Bash(git commit*)",
+            "Bash(sops --decrypt*)"
+          ],
+          "deny": [
+            "Read(./applications/*/credentials.dec.json)",
+            "Read(./**/*.dec.json)",
+            "Edit(./.claude/schemas/**)",
+            "Write(./.claude/schemas/**)",
+            "Edit(./.agents/**)",
+            "Write(./.agents/**)",
+            "Bash(rm -rf*)",
+            "Bash(curl*)",
+            "WebFetch"
+          ]
+        },
+        "hooks": {
+          "SessionStart": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\"",
+                  "timeout": 30
+                }
+              ]
+            }
+          ],
+          "UserPromptSubmit": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/user-prompt.mjs\"",
+                  "timeout": 10
+                }
+              ]
+            }
+          ],
+          "PreToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-write.mjs\"",
+                  "timeout": 20,
+                  "statusMessage": "Checking layout and secrets"
+                }
+              ]
+            }
+          ],
+          "PostToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/validate-write.mjs\"",
+                  "timeout": 60,
+                  "statusMessage": "Validating against Maxwell schemas"
+                }
+              ]
+            }
+          ],
+          "SessionEnd": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-end.mjs\"",
+                  "timeout": 120,
+                  "async": true
+                }
+              ]
+            }
+          ]
+        },
+        "env": {
+          "MAXWELL_HARNESS": "claude-code",
+          "MAXWELL_WORKSPACE_ROOT": ".",
+          "SOPS_AGE_KEY_FILE": "/etc/maxwell/age.key",
+          "NODE_OPTIONS": "--max-old-space-size=2048"
+        },
+        "model": "gpt-5",
+        "effortLevel": "high",
+        "disableWorkflows": false,
+        "attribution": {
+          "commit": "Co-Authored-By: Maxwell <maxwell@onfinance.ai>",
+          "pr": "",
+          "sessionUrl": false
+        },
+        "cleanupPeriodDays": 90,
+        "enabledPlugins": {}
+      }
+    },
+    {
+      "description": "model inherit is a subagent-only alias",
+      "valid": false,
+      "data": {
+        "$schema": "https://json.schemastore.org/claude-code-settings.json",
+        "permissions": {
+          "defaultMode": "acceptEdits",
+          "disableBypassPermissionsMode": "disable",
+          "blockReadsOutsideWorkingDirectories": true,
+          "allow": [
+            "Read(./**)",
+            "Edit(./company-profile/**)",
+            "Write(./company-profile/**)",
+            "Edit(./applications/**)",
+            "Write(./applications/**)",
+            "Edit(./kpis/**)",
+            "Write(./kpis/**)",
+            "Edit(./cves/**)",
+            "Write(./cves/**)",
+            "Bash(npm run validate*)",
+            "Bash(npm run kpis*)",
+            "Bash(npm run sync:agents)",
+            "Bash(node .claude/scripts/*)",
+            "Bash(git status*)",
+            "Bash(git diff*)",
+            "Bash(git log*)",
+            "Workflow(refresh-ctx)",
+            "Workflow(refresh-soc)",
+            "Workflow(probe-iac)",
+            "Workflow(report-audit-findings)",
+            "Workflow(validate)"
+          ],
+          "ask": [
+            "Bash(git push*)",
+            "Bash(git commit*)",
+            "Bash(sops --decrypt*)"
+          ],
+          "deny": [
+            "Read(./applications/*/credentials.dec.json)",
+            "Read(./**/*.dec.json)",
+            "Edit(./.claude/schemas/**)",
+            "Write(./.claude/schemas/**)",
+            "Edit(./.agents/**)",
+            "Write(./.agents/**)",
+            "Bash(rm -rf*)",
+            "Bash(curl*)",
+            "WebFetch"
+          ]
+        },
+        "hooks": {
+          "SessionStart": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\"",
+                  "timeout": 30
+                }
+              ]
+            }
+          ],
+          "UserPromptSubmit": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/user-prompt.mjs\"",
+                  "timeout": 10
+                }
+              ]
+            }
+          ],
+          "PreToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-write.mjs\"",
+                  "timeout": 20,
+                  "statusMessage": "Checking layout and secrets"
+                }
+              ]
+            }
+          ],
+          "PostToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/validate-write.mjs\"",
+                  "timeout": 60,
+                  "statusMessage": "Validating against Maxwell schemas"
+                }
+              ]
+            }
+          ],
+          "SessionEnd": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-end.mjs\"",
+                  "timeout": 120,
+                  "async": true
+                }
+              ]
+            }
+          ]
+        },
+        "env": {
+          "MAXWELL_HARNESS": "claude-code",
+          "MAXWELL_WORKSPACE_ROOT": ".",
+          "SOPS_AGE_KEY_FILE": "/etc/maxwell/age.key",
+          "NODE_OPTIONS": "--max-old-space-size=2048"
+        },
+        "model": "inherit",
+        "effortLevel": "high",
+        "disableWorkflows": false,
+        "attribution": {
+          "commit": "Co-Authored-By: Maxwell <maxwell@onfinance.ai>",
+          "pr": "",
+          "sessionUrl": false
+        },
+        "cleanupPeriodDays": 90,
+        "enabledPlugins": {}
+      }
+    },
+    {
+      "description": "extra key inside attribution is denied",
+      "valid": false,
+      "data": {
+        "$schema": "https://json.schemastore.org/claude-code-settings.json",
+        "permissions": {
+          "defaultMode": "acceptEdits",
+          "disableBypassPermissionsMode": "disable",
+          "blockReadsOutsideWorkingDirectories": true,
+          "allow": [
+            "Read(./**)",
+            "Edit(./company-profile/**)",
+            "Write(./company-profile/**)",
+            "Edit(./applications/**)",
+            "Write(./applications/**)",
+            "Edit(./kpis/**)",
+            "Write(./kpis/**)",
+            "Edit(./cves/**)",
+            "Write(./cves/**)",
+            "Bash(npm run validate*)",
+            "Bash(npm run kpis*)",
+            "Bash(npm run sync:agents)",
+            "Bash(node .claude/scripts/*)",
+            "Bash(git status*)",
+            "Bash(git diff*)",
+            "Bash(git log*)",
+            "Workflow(refresh-ctx)",
+            "Workflow(refresh-soc)",
+            "Workflow(probe-iac)",
+            "Workflow(report-audit-findings)",
+            "Workflow(validate)"
+          ],
+          "ask": [
+            "Bash(git push*)",
+            "Bash(git commit*)",
+            "Bash(sops --decrypt*)"
+          ],
+          "deny": [
+            "Read(./applications/*/credentials.dec.json)",
+            "Read(./**/*.dec.json)",
+            "Edit(./.claude/schemas/**)",
+            "Write(./.claude/schemas/**)",
+            "Edit(./.agents/**)",
+            "Write(./.agents/**)",
+            "Bash(rm -rf*)",
+            "Bash(curl*)",
+            "WebFetch"
+          ]
+        },
+        "hooks": {
+          "SessionStart": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\"",
+                  "timeout": 30
+                }
+              ]
+            }
+          ],
+          "UserPromptSubmit": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/user-prompt.mjs\"",
+                  "timeout": 10
+                }
+              ]
+            }
+          ],
+          "PreToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-write.mjs\"",
+                  "timeout": 20,
+                  "statusMessage": "Checking layout and secrets"
+                }
+              ]
+            }
+          ],
+          "PostToolUse": [
+            {
+              "matcher": "Write|Edit|MultiEdit",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/validate-write.mjs\"",
+                  "timeout": 60,
+                  "statusMessage": "Validating against Maxwell schemas"
+                }
+              ]
+            }
+          ],
+          "SessionEnd": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-end.mjs\"",
+                  "timeout": 120,
+                  "async": true
+                }
+              ]
+            }
+          ]
+        },
+        "env": {
+          "MAXWELL_HARNESS": "claude-code",
+          "MAXWELL_WORKSPACE_ROOT": ".",
+          "SOPS_AGE_KEY_FILE": "/etc/maxwell/age.key",
+          "NODE_OPTIONS": "--max-old-space-size=2048"
+        },
+        "model": "opus",
+        "effortLevel": "high",
+        "disableWorkflows": false,
+        "attribution": {
+          "commit": "Co-Authored-By: Maxwell <maxwell@onfinance.ai>",
+          "pr": "",
+          "sessionUrl": false,
+          "issue": ""
+        },
+        "cleanupPeriodDays": 90,
+        "enabledPlugins": {}
+      }
+    }
+  ]
+}

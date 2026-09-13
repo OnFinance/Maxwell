@@ -1,0 +1,46 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions": [
+    "AGENTS.md"
+  ],
+  "plugin": [
+    "./.agents/hooks/maxwell.plugin.mjs"
+  ],
+  "permission": {
+    "edit": "allow",
+    "bash": {
+      "*": "ask",
+      "npm run *": "allow",
+      "npm test*": "allow",
+      "node .claude/scripts/*": "allow",
+      "npx jsonschema *": "allow",
+      "git status*": "allow",
+      "git diff*": "allow",
+      "git log*": "allow",
+      "sops --decrypt *": "deny",
+      "sops -d *": "deny",
+      "rm -rf *": "deny",
+      "git push --force*": "deny"
+    },
+    "webfetch": "ask"
+  },
+  "agent": {},
+  "command": {
+    "kpis": {
+      "description": "Ingest any new harness sessions and recompute the six Maxwell KPIs, then summarise the latest datapoints",
+      "template": "Run `npm run kpis -- $ARGUMENTS` (arguments may be `--company <company_id>`, `--since <date>`, `--kpi <kpi_id>`).\nThen read the newest line of each `kpis/data/<kpi_id>/series.jsonl` and present a compact table: KPI, period,\nvalue with unit, sample size, and the dimension breakdown that matters most (workflow for cost, severity for\ntime-to-implementation). Flag any KPI whose value crosses the warn/alert targets in `kpis/metrics.json` and\npoint at the methodology document in `kpis/measurement/` for how it was computed. Do not edit any file."
+    },
+    "seed-company": {
+      "description": "Create the minimum valid company-profile skeleton for a new company_id (details, summary, sdlc policy, empty ledger, masters)",
+      "template": "Create `company-profile/$1/` with exactly the required files from `.claude/schemas/layout.json`\n(`requiredPerCompany`): `details.json`, `summary.md`, `sdlc/policy.json`, `soc/main.jsonl` (empty file),\n`change_management/master.json`, `suggestions/master.json`, plus `soc/versions/.gitkeep`,\n`vendors/.gitkeep`, `change_management/initiatives/.gitkeep` and `suggestions/suggestions/.gitkeep`.\nUse the schema `examples` as templates, set `companyId` to `$1`, legal name to `$2` if given, fill only fields\nyou actually know and leave the rest at the schema minimum. Every document gets a `provenance` block with\n`harness` set to the current harness and `workflow: \"seed-company\"`. Finish with `npm run validate` and\nreport the created paths. Refuse if `company-profile/$1` already exists."
+    },
+    "status": {
+      "description": "Summarise the workspace state for a company - open findings by severity, overdue initiatives, pending suggestions, last refresh times",
+      "template": "For company `$1`, read `company-profile/$1/soc/main.jsonl`, `change_management/master.json`,\n`suggestions/master.json` and `summary.md` frontmatter. Report, in this order and without editing anything:\n1. Open findings by severity and the three oldest past their `slaDueAt`.\n2. Initiatives that are overdue (`dueAt` in the past and status not closed/cancelled) with owner and task counts.\n3. Suggestions in `proposed` or `surfaced` state older than 14 days.\n4. Last `soc/versions/commit_<n>.diff` number and generation time, and the last `summary.md` `generatedAt`.\n5. Applications with an environment whose `observability.logsRetentionDays` is below 180 (CERT-In).\nKeep it to a screen of text."
+    },
+    "validate": {
+      "description": "Run the full Maxwell validation suite (schemas, layout, data, frontmatter, workflows, mirror) and report failures by file",
+      "template": "Run `npm run validate` in the workspace root. If it fails, group the failures by file, explain each in one line\nciting the schema rule that was violated, and propose the minimal content fix for each (never a schema change).\nDo not modify any file unless the user asked you to fix things; if they did, fix content only, re-run\n`npm run validate`, and report the final exit status. $ARGUMENTS"
+    }
+  }
+}

@@ -1,0 +1,382 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/change-management/timeline.schema.json",
+  "title": "Initiative timeline",
+  "description": "company-profile/<company_id>/change_management/initiatives/<init_id>/timeline.json: the append-only event log of one initiative. Every status transition in master.json and every task transition must have a matching event here, ordered by at ascending, and status-transition events carry toStatus so master.status can be reconciled against the log. The cm_time_to_implementation KPI reads the approved and closed events (their at equals approvedAt and closedAt in master.json); sla-breached and reopened events explain SLA outcomes",
+  "examples": [
+    {
+      "schemaVersion": "1",
+      "kind": "maxwell.cm.timeline",
+      "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+      "companyId": "arthveda-securities",
+      "events": [
+        {
+          "eventId": "evt_1",
+          "at": "2026-08-20T06:30:00Z",
+          "type": "created",
+          "toStatus": "proposed",
+          "actor": {
+            "type": "agent",
+            "id": "change-manager"
+          },
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "note": "Raised from finding fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2: no SBOM produced by trading-gateway-api CI (SEBI CSCRF GV.SC.S5)",
+          "refs": {
+            "findingId": "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+          }
+        },
+        {
+          "eventId": "evt_2",
+          "at": "2026-08-21T10:05:00Z",
+          "type": "approved",
+          "toStatus": "approved",
+          "actor": {
+            "type": "human",
+            "id": "ciso@arthveda.example"
+          },
+          "note": "Approved as a normal change at the weekly CAB; due 2026-09-19 under the 30-day SLA",
+          "refs": {}
+        },
+        {
+          "eventId": "evt_3",
+          "at": "2026-08-22T04:00:00Z",
+          "type": "started",
+          "toStatus": "in-progress",
+          "actor": {
+            "type": "agent",
+            "id": "change-manager"
+          },
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "note": "Work started: tasks being drafted from the finding and the CAB conditions",
+          "refs": {}
+        },
+        {
+          "eventId": "evt_4",
+          "at": "2026-08-22T04:10:00Z",
+          "type": "task-added",
+          "toStatus": "todo",
+          "actor": {
+            "type": "agent",
+            "id": "change-manager"
+          },
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "note": "task_1: add CycloneDX generation step to the GitHub Actions build workflow",
+          "refs": {
+            "taskId": "task_1",
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW"
+          }
+        },
+        {
+          "eventId": "evt_5",
+          "at": "2026-09-05T13:20:00Z",
+          "type": "task-done",
+          "toStatus": "done",
+          "actor": {
+            "type": "human",
+            "id": "platform-lead@arthveda.example"
+          },
+          "note": "task_1 merged via PR #482; SBOM artefact uploaded on the last three builds",
+          "refs": {
+            "taskId": "task_1",
+            "evidence": [
+              {
+                "type": "pull-request",
+                "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+                "collectedAt": "2026-09-05T13:20:00Z",
+                "description": "PR adding the sbom job to build.yml"
+              }
+            ]
+          }
+        }
+      ],
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-05T13:20:00Z",
+        "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+        "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+        "workflow": "impl-change-management",
+        "agent": "change-manager"
+      }
+    }
+  ],
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "kind",
+    "initiativeId",
+    "companyId",
+    "events",
+    "provenance"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/schemaVersion"
+    },
+    "kind": {
+      "const": "maxwell.cm.timeline"
+    },
+    "initiativeId": {
+      "description": "Initiative this timeline belongs to; must equal the parent directory name and an initiativeId in master.json",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/initiativeId"
+    },
+    "companyId": {
+      "description": "Slug of the owning company; must equal the company-profile directory name",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+    },
+    "events": {
+      "description": "Events in ascending order of at. Never edit or delete an event; append a correcting comment event instead. The first event is always type created",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/event"
+      }
+    },
+    "provenance": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/provenance"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "eventId": {
+      "description": "Sequential id within this timeline: evt_1, evt_2, ... in append order (common eventId)",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/eventId"
+    },
+    "eventType": {
+      "description": "What happened. Initiative status transitions (set toStatus): created (-> proposed), triaged (stays proposed; owner, priority or SLA basis settled), approved (-> approved), rejected (-> cancelled with closedAt), started (-> in-progress), blocked, unblocked (-> in-progress), verifying, verified (-> closed), verification-failed (-> in-progress), closed, reopened, cancelled. Task transitions (refs.taskId required, toStatus is the task status): task-added, task-started, task-done, task-blocked, task-unblocked, task-cancelled, task-edited (a human changed the task text; sets humanEdited). Links: incident-linked (refs.incidentId required), suggestion-linked (refs.suggestionId required). sla-breached is appended by the kpis workflow when dueAt passes while open. comment is free-form",
+      "enum": [
+        "created",
+        "triaged",
+        "approved",
+        "rejected",
+        "started",
+        "task-added",
+        "task-started",
+        "task-done",
+        "task-blocked",
+        "task-unblocked",
+        "task-cancelled",
+        "task-edited",
+        "blocked",
+        "unblocked",
+        "verifying",
+        "verified",
+        "verification-failed",
+        "closed",
+        "reopened",
+        "cancelled",
+        "sla-breached",
+        "incident-linked",
+        "suggestion-linked",
+        "comment"
+      ]
+    },
+    "refs": {
+      "description": "Records the event points at. All optional, but task-*, suggestion-linked and incident-linked events must carry the matching id",
+      "type": "object",
+      "properties": {
+        "taskId": {
+          "description": "Task under this initiative's tasks/ directory",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/taskId"
+        },
+        "suggestionId": {
+          "description": "Suggestion in suggestions/master.json",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/suggestionId"
+        },
+        "findingId": {
+          "description": "Finding in the soc ledger",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/findingId"
+        },
+        "incidentId": {
+          "description": "Incident in the soc ledger",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/incidentId"
+        },
+        "evidence": {
+          "description": "Evidence collected at this event, e.g. the PR that completed a task or the probe output that verified it",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/evidenceRef"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "event": {
+      "description": "One timeline entry",
+      "type": "object",
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "suggestion-linked"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "refs": {
+                "type": "object",
+                "required": [ "suggestionId" ],
+                "properties": {
+                  "suggestionId": true
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "incident-linked"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "refs": {
+                "type": "object",
+                "required": [ "incidentId" ],
+                "properties": {
+                  "incidentId": true
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "enum": [
+                  "task-added",
+                  "task-started",
+                  "task-done",
+                  "task-blocked",
+                  "task-unblocked",
+                  "task-cancelled",
+                  "task-edited"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [ "toStatus" ],
+            "properties": {
+              "toStatus": {
+                "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/task"
+              },
+              "refs": {
+                "type": "object",
+                "required": [ "taskId" ],
+                "properties": {
+                  "taskId": true
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "enum": [
+                  "created",
+                  "triaged",
+                  "approved",
+                  "rejected",
+                  "started",
+                  "blocked",
+                  "unblocked",
+                  "verifying",
+                  "verified",
+                  "verification-failed",
+                  "closed",
+                  "reopened",
+                  "cancelled"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [ "toStatus" ],
+            "properties": {
+              "toStatus": {
+                "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/initiative"
+              }
+            }
+          }
+        }
+      ],
+      "if": {
+        "properties": {
+          "type": {
+            "enum": [
+              "sla-breached",
+              "incident-linked",
+              "suggestion-linked",
+              "comment"
+            ]
+          }
+        }
+      },
+      "then": {
+        "not": {
+          "required": [ "toStatus" ]
+        }
+      },
+      "required": [ "eventId", "at", "type", "actor", "note", "refs" ],
+      "properties": {
+        "eventId": {
+          "$ref": "#/$defs/eventId"
+        },
+        "at": {
+          "description": "When the event happened (not when it was written)",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "type": {
+          "$ref": "#/$defs/eventType"
+        },
+        "toStatus": {
+          "$ref": "#/$defs/toStatus"
+        },
+        "actor": {
+          "description": "Who caused the event: the human approver, the agent that added a task, or the script that flagged an SLA breach",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/actor"
+        },
+        "sessionId": {
+          "description": "Harness session that produced the event, when actor.type is agent",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/sessionId"
+        },
+        "runId": {
+          "description": "Headless run that produced the event, when actor.type is agent or script",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/runId"
+        },
+        "note": {
+          "description": "Human-readable account of what happened and why; for rejected, blocked, verification-failed, cancelled and task-cancelled state the reason, for task-edited say which fields changed",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/nonEmptyString"
+        },
+        "refs": {
+          "$ref": "#/$defs/refs"
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "toStatus": {
+      "description": "Status of the initiative (or, for task-* events, of the task) after this event. Required on every status-transition event so master.json and task files can be reconciled against the log; omitted on link, sla-breached and comment events",
+      "anyOf": [
+        {
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/initiative"
+        },
+        {
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/task"
+        }
+      ]
+    }
+  }
+}

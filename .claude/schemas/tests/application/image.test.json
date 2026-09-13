@@ -1,0 +1,1852 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/v1/application/image.schema.json",
+  "tests": [
+    {
+      "description": "realistic complete instance (schema example)",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.image",
+        "appId": "ledger-core",
+        "imageId": "ledger-core-api",
+        "ref": "123456789012.dkr.ecr.ap-south-1.amazonaws.com/arthanidhi/ledger-core-api:2.14.3@sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "registry": "123456789012.dkr.ecr.ap-south-1.amazonaws.com",
+        "repository": "arthanidhi/ledger-core-api",
+        "tag": "2.14.3",
+        "digest": "sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "baseImage": "public.ecr.aws/docker/library/node:22.9.0-bookworm-slim",
+        "builtFrom": {
+          "repoId": "ledger-core-api",
+          "commit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+          "dockerfilePath": "Dockerfile"
+        },
+        "sbomPath": "applications/ledger-core/images/ledger-core-api.cdx.json",
+        "signing": {
+          "tool": "cosign",
+          "verified": true,
+          "keyRef": "awskms:///alias/arthanidhi-cosign-prod"
+        },
+        "provenanceAttestation": {
+          "slsaLevel": 3,
+          "attestationRef": "https://github.com/arthanidhi/ledger-core-api/attestations/1842"
+        },
+        "lastScan": {
+          "at": "2026-09-13T04:02:11Z",
+          "tool": "trivy",
+          "toolVersion": "0.65.0",
+          "critical": 0,
+          "high": 2,
+          "medium": 11,
+          "low": 27,
+          "unknown": 3,
+          "fixable": {
+            "critical": 0,
+            "high": 2,
+            "medium": 7,
+            "low": 12
+          },
+          "kevCount": 0
+        },
+        "envIds": [
+          "prod-mumbai",
+          "uat-mumbai"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T04:05:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "runtime-probe-appcontainers",
+          "agent": "container-prober"
+        }
+      }
+    },
+    {
+      "description": "ref without tag, digest only",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.image",
+        "appId": "ledger-core",
+        "imageId": "ledger-core-api",
+        "ref": "ghcr.io/arthanidhi/ledger-core-api@sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "registry": "ghcr.io",
+        "repository": "arthanidhi/ledger-core-api",
+        "digest": "sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "baseImage": "public.ecr.aws/docker/library/node:22.9.0-bookworm-slim",
+        "builtFrom": {
+          "repoId": "ledger-core-api",
+          "commit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+          "dockerfilePath": "Dockerfile"
+        },
+        "sbomPath": "applications/ledger-core/images/ledger-core-api.cdx.json",
+        "signing": {
+          "tool": "cosign",
+          "verified": true,
+          "keyRef": "awskms:///alias/arthanidhi-cosign-prod"
+        },
+        "provenanceAttestation": {
+          "slsaLevel": 3,
+          "attestationRef": "https://github.com/arthanidhi/ledger-core-api/attestations/1842"
+        },
+        "lastScan": {
+          "at": "2026-09-13T04:02:11Z",
+          "tool": "trivy",
+          "toolVersion": "0.65.0",
+          "critical": 0,
+          "high": 2,
+          "medium": 11,
+          "low": 27,
+          "unknown": 3,
+          "fixable": {
+            "critical": 0,
+            "high": 2,
+            "medium": 7,
+            "low": 12
+          },
+          "kevCount": 0
+        },
+        "envIds": [
+          "prod-mumbai",
+          "uat-mumbai"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T04:05:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "runtime-probe-appcontainers",
+          "agent": "container-prober"
+        }
+      }
+    },
+    {
+      "description": "registry with port",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.image",
+        "appId": "ledger-core",
+        "imageId": "ledger-core-api",
+        "ref": "harbor.arthanidhi.example:8443/ledger/ledger-core-api:2.14.3",
+        "registry": "harbor.arthanidhi.example:8443",
+        "repository": "ledger/ledger-core-api",
+        "tag": "2.14.3",
+        "digest": "sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "baseImage": "public.ecr.aws/docker/library/node:22.9.0-bookworm-slim",
+        "builtFrom": {
+          "repoId": "ledger-core-api",
+          "commit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+          "dockerfilePath": "Dockerfile"
+        },
+        "sbomPath": "applications/ledger-core/images/ledger-core-api.cdx.json",
+        "signing": {
+          "tool": "cosign",
+          "verified": true,
+          "keyRef": "awskms:///alias/arthanidhi-cosign-prod"
+        },
+        "provenanceAttestation": {
+          "slsaLevel": 3,
+          "attestationRef": "https://github.com/arthanidhi/ledger-core-api/attestations/1842"
+        },
+        "lastScan": {
+          "at": "2026-09-13T04:02:11Z",
+          "tool": "trivy",
+          "toolVersion": "0.65.0",
+          "critical": 0,
+          "high": 2,
+          "medium": 11,
+          "low": 27,
+          "unknown": 3,
+          "fixable": {
+            "critical": 0,
+            "high": 2,
+            "medium": 7,
+            "low": 12
+          },
+          "kevCount": 0
+        },
+        "envIds": [
+          "prod-mumbai",
+          "uat-mumbai"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T04:05:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "runtime-probe-appcontainers",
+          "agent": "container-prober"
+        }
+      }
+    },
+    {
+      "description": "invented extra top-level key",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.image",
+        "appId": "ledger-core",
+        "imageId": "ledger-core-api",
+        "ref": "123456789012.dkr.ecr.ap-south-1.amazonaws.com/arthanidhi/ledger-core-api:2.14.3@sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "registry": "123456789012.dkr.ecr.ap-south-1.amazonaws.com",
+        "repository": "arthanidhi/ledger-core-api",
+        "tag": "2.14.3",
+        "digest": "sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "baseImage": "public.ecr.aws/docker/library/node:22.9.0-bookworm-slim",
+        "builtFrom": {
+          "repoId": "ledger-core-api",
+          "commit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+          "dockerfilePath": "Dockerfile"
+        },
+        "sbomPath": "applications/ledger-core/images/ledger-core-api.cdx.json",
+        "signing": {
+          "tool": "cosign",
+          "verified": true,
+          "keyRef": "awskms:///alias/arthanidhi-cosign-prod"
+        },
+        "provenanceAttestation": {
+          "slsaLevel": 3,
+          "attestationRef": "https://github.com/arthanidhi/ledger-core-api/attestations/1842"
+        },
+        "lastScan": {
+          "at": "2026-09-13T04:02:11Z",
+          "tool": "trivy",
+          "toolVersion": "0.65.0",
+          "critical": 0,
+          "high": 2,
+          "medium": 11,
+          "low": 27,
+          "unknown": 3,
+          "fixable": {
+            "critical": 0,
+            "high": 2,
+            "medium": 7,
+            "low": 12
+          },
+          "kevCount": 0
+        },
+        "envIds": [
+          "prod-mumbai",
+          "uat-mumbai"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T04:05:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "runtime-probe-appcontainers",
+          "agent": "container-prober"
+        },
+        "pulledBy": "ops"
+      }
+    },
+    {
+      "description": "imageId with uppercase violates slug pattern",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.image",
+        "appId": "ledger-core",
+        "imageId": "LedgerCoreApi",
+        "ref": "123456789012.dkr.ecr.ap-south-1.amazonaws.com/arthanidhi/ledger-core-api:2.14.3@sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "registry": "123456789012.dkr.ecr.ap-south-1.amazonaws.com",
+        "repository": "arthanidhi/ledger-core-api",
+        "tag": "2.14.3",
+        "digest": "sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "baseImage": "public.ecr.aws/docker/library/node:22.9.0-bookworm-slim",
+        "builtFrom": {
+          "repoId": "ledger-core-api",
+          "commit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+          "dockerfilePath": "Dockerfile"
+        },
+        "sbomPath": "applications/ledger-core/images/ledger-core-api.cdx.json",
+        "signing": {
+          "tool": "cosign",
+          "verified": true,
+          "keyRef": "awskms:///alias/arthanidhi-cosign-prod"
+        },
+        "provenanceAttestation": {
+          "slsaLevel": 3,
+          "attestationRef": "https://github.com/arthanidhi/ledger-core-api/attestations/1842"
+        },
+        "lastScan": {
+          "at": "2026-09-13T04:02:11Z",
+          "tool": "trivy",
+          "toolVersion": "0.65.0",
+          "critical": 0,
+          "high": 2,
+          "medium": 11,
+          "low": 27,
+          "unknown": 3,
+          "fixable": {
+            "critical": 0,
+            "high": 2,
+            "medium": 7,
+            "low": 12
+          },
+          "kevCount": 0
+        },
+        "envIds": [
+          "prod-mumbai",
+          "uat-mumbai"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T04:05:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "runtime-probe-appcontainers",
+          "agent": "container-prober"
+        }
+      }
+    },
+    {
+      "description": "signing tool not in enum",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.image",
+        "appId": "ledger-core",
+        "imageId": "ledger-core-api",
+        "ref": "123456789012.dkr.ecr.ap-south-1.amazonaws.com/arthanidhi/ledger-core-api:2.14.3@sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "registry": "123456789012.dkr.ecr.ap-south-1.amazonaws.com",
+        "repository": "arthanidhi/ledger-core-api",
+        "tag": "2.14.3",
+        "digest": "sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "baseImage": "public.ecr.aws/docker/library/node:22.9.0-bookworm-slim",
+        "builtFrom": {
+          "repoId": "ledger-core-api",
+          "commit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+          "dockerfilePath": "Dockerfile"
+        },
+        "sbomPath": "applications/ledger-core/images/ledger-core-api.cdx.json",
+        "signing": {
+          "tool": "gpg",
+          "verified": true,
+          "keyRef": "awskms:///alias/arthanidhi-cosign-prod"
+        },
+        "provenanceAttestation": {
+          "slsaLevel": 3,
+          "attestationRef": "https://github.com/arthanidhi/ledger-core-api/attestations/1842"
+        },
+        "lastScan": {
+          "at": "2026-09-13T04:02:11Z",
+          "tool": "trivy",
+          "toolVersion": "0.65.0",
+          "critical": 0,
+          "high": 2,
+          "medium": 11,
+          "low": 27,
+          "unknown": 3,
+          "fixable": {
+            "critical": 0,
+            "high": 2,
+            "medium": 7,
+            "low": 12
+          },
+          "kevCount": 0
+        },
+        "envIds": [
+          "prod-mumbai",
+          "uat-mumbai"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T04:05:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "runtime-probe-appcontainers",
+          "agent": "container-prober"
+        }
+      }
+    },
+    {
+      "description": "missing required digest",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.image",
+        "appId": "ledger-core",
+        "imageId": "ledger-core-api",
+        "ref": "123456789012.dkr.ecr.ap-south-1.amazonaws.com/arthanidhi/ledger-core-api:2.14.3@sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "registry": "123456789012.dkr.ecr.ap-south-1.amazonaws.com",
+        "repository": "arthanidhi/ledger-core-api",
+        "tag": "2.14.3",
+        "baseImage": "public.ecr.aws/docker/library/node:22.9.0-bookworm-slim",
+        "builtFrom": {
+          "repoId": "ledger-core-api",
+          "commit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+          "dockerfilePath": "Dockerfile"
+        },
+        "sbomPath": "applications/ledger-core/images/ledger-core-api.cdx.json",
+        "signing": {
+          "tool": "cosign",
+          "verified": true,
+          "keyRef": "awskms:///alias/arthanidhi-cosign-prod"
+        },
+        "provenanceAttestation": {
+          "slsaLevel": 3,
+          "attestationRef": "https://github.com/arthanidhi/ledger-core-api/attestations/1842"
+        },
+        "lastScan": {
+          "at": "2026-09-13T04:02:11Z",
+          "tool": "trivy",
+          "toolVersion": "0.65.0",
+          "critical": 0,
+          "high": 2,
+          "medium": 11,
+          "low": 27,
+          "unknown": 3,
+          "fixable": {
+            "critical": 0,
+            "high": 2,
+            "medium": 7,
+            "low": 12
+          },
+          "kevCount": 0
+        },
+        "envIds": [
+          "prod-mumbai",
+          "uat-mumbai"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T04:05:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "runtime-probe-appcontainers",
+          "agent": "container-prober"
+        }
+      }
+    },
+    {
+      "description": "digest without sha256 prefix",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.image",
+        "appId": "ledger-core",
+        "imageId": "ledger-core-api",
+        "ref": "123456789012.dkr.ecr.ap-south-1.amazonaws.com/arthanidhi/ledger-core-api:2.14.3@sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "registry": "123456789012.dkr.ecr.ap-south-1.amazonaws.com",
+        "repository": "arthanidhi/ledger-core-api",
+        "tag": "2.14.3",
+        "digest": "7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "baseImage": "public.ecr.aws/docker/library/node:22.9.0-bookworm-slim",
+        "builtFrom": {
+          "repoId": "ledger-core-api",
+          "commit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+          "dockerfilePath": "Dockerfile"
+        },
+        "sbomPath": "applications/ledger-core/images/ledger-core-api.cdx.json",
+        "signing": {
+          "tool": "cosign",
+          "verified": true,
+          "keyRef": "awskms:///alias/arthanidhi-cosign-prod"
+        },
+        "provenanceAttestation": {
+          "slsaLevel": 3,
+          "attestationRef": "https://github.com/arthanidhi/ledger-core-api/attestations/1842"
+        },
+        "lastScan": {
+          "at": "2026-09-13T04:02:11Z",
+          "tool": "trivy",
+          "toolVersion": "0.65.0",
+          "critical": 0,
+          "high": 2,
+          "medium": 11,
+          "low": 27,
+          "unknown": 3,
+          "fixable": {
+            "critical": 0,
+            "high": 2,
+            "medium": 7,
+            "low": 12
+          },
+          "kevCount": 0
+        },
+        "envIds": [
+          "prod-mumbai",
+          "uat-mumbai"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T04:05:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "runtime-probe-appcontainers",
+          "agent": "container-prober"
+        }
+      }
+    },
+    {
+      "description": "digest with uppercase hex",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.image",
+        "appId": "ledger-core",
+        "imageId": "ledger-core-api",
+        "ref": "123456789012.dkr.ecr.ap-south-1.amazonaws.com/arthanidhi/ledger-core-api:2.14.3@sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "registry": "123456789012.dkr.ecr.ap-south-1.amazonaws.com",
+        "repository": "arthanidhi/ledger-core-api",
+        "tag": "2.14.3",
+        "digest": "sha256:7C9E6B1F4A2D3E5F8A0B1C2D3E4F5A6B7C8D9E0F1A2B3C4D5E6F7A8B9C0D1E2F",
+        "baseImage": "public.ecr.aws/docker/library/node:22.9.0-bookworm-slim",
+        "builtFrom": {
+          "repoId": "ledger-core-api",
+          "commit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+          "dockerfilePath": "Dockerfile"
+        },
+        "sbomPath": "applications/ledger-core/images/ledger-core-api.cdx.json",
+        "signing": {
+          "tool": "cosign",
+          "verified": true,
+          "keyRef": "awskms:///alias/arthanidhi-cosign-prod"
+        },
+        "provenanceAttestation": {
+          "slsaLevel": 3,
+          "attestationRef": "https://github.com/arthanidhi/ledger-core-api/attestations/1842"
+        },
+        "lastScan": {
+          "at": "2026-09-13T04:02:11Z",
+          "tool": "trivy",
+          "toolVersion": "0.65.0",
+          "critical": 0,
+          "high": 2,
+          "medium": 11,
+          "low": 27,
+          "unknown": 3,
+          "fixable": {
+            "critical": 0,
+            "high": 2,
+            "medium": 7,
+            "low": 12
+          },
+          "kevCount": 0
+        },
+        "envIds": [
+          "prod-mumbai",
+          "uat-mumbai"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T04:05:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "runtime-probe-appcontainers",
+          "agent": "container-prober"
+        }
+      }
+    },
+    {
+      "description": "ref with uppercase repository path",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.image",
+        "appId": "ledger-core",
+        "imageId": "ledger-core-api",
+        "ref": "ghcr.io/Arthanidhi/Ledger:1.0",
+        "registry": "123456789012.dkr.ecr.ap-south-1.amazonaws.com",
+        "repository": "arthanidhi/ledger-core-api",
+        "tag": "2.14.3",
+        "digest": "sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "baseImage": "public.ecr.aws/docker/library/node:22.9.0-bookworm-slim",
+        "builtFrom": {
+          "repoId": "ledger-core-api",
+          "commit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+          "dockerfilePath": "Dockerfile"
+        },
+        "sbomPath": "applications/ledger-core/images/ledger-core-api.cdx.json",
+        "signing": {
+          "tool": "cosign",
+          "verified": true,
+          "keyRef": "awskms:///alias/arthanidhi-cosign-prod"
+        },
+        "provenanceAttestation": {
+          "slsaLevel": 3,
+          "attestationRef": "https://github.com/arthanidhi/ledger-core-api/attestations/1842"
+        },
+        "lastScan": {
+          "at": "2026-09-13T04:02:11Z",
+          "tool": "trivy",
+          "toolVersion": "0.65.0",
+          "critical": 0,
+          "high": 2,
+          "medium": 11,
+          "low": 27,
+          "unknown": 3,
+          "fixable": {
+            "critical": 0,
+            "high": 2,
+            "medium": 7,
+            "low": 12
+          },
+          "kevCount": 0
+        },
+        "envIds": [
+          "prod-mumbai",
+          "uat-mumbai"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T04:05:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "runtime-probe-appcontainers",
+          "agent": "container-prober"
+        }
+      }
+    },
+    {
+      "description": "slsaLevel 4 out of range (SLSA v1.0 defines L0-L3)",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.image",
+        "appId": "ledger-core",
+        "imageId": "ledger-core-api",
+        "ref": "123456789012.dkr.ecr.ap-south-1.amazonaws.com/arthanidhi/ledger-core-api:2.14.3@sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "registry": "123456789012.dkr.ecr.ap-south-1.amazonaws.com",
+        "repository": "arthanidhi/ledger-core-api",
+        "tag": "2.14.3",
+        "digest": "sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "baseImage": "public.ecr.aws/docker/library/node:22.9.0-bookworm-slim",
+        "builtFrom": {
+          "repoId": "ledger-core-api",
+          "commit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+          "dockerfilePath": "Dockerfile"
+        },
+        "sbomPath": "applications/ledger-core/images/ledger-core-api.cdx.json",
+        "signing": {
+          "tool": "cosign",
+          "verified": true,
+          "keyRef": "awskms:///alias/arthanidhi-cosign-prod"
+        },
+        "provenanceAttestation": {
+          "slsaLevel": 4,
+          "attestationRef": "https://github.com/arthanidhi/ledger-core-api/attestations/1842"
+        },
+        "lastScan": {
+          "at": "2026-09-13T04:02:11Z",
+          "tool": "trivy",
+          "toolVersion": "0.65.0",
+          "critical": 0,
+          "high": 2,
+          "medium": 11,
+          "low": 27,
+          "unknown": 3,
+          "fixable": {
+            "critical": 0,
+            "high": 2,
+            "medium": 7,
+            "low": 12
+          },
+          "kevCount": 0
+        },
+        "envIds": [
+          "prod-mumbai",
+          "uat-mumbai"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T04:05:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "runtime-probe-appcontainers",
+          "agent": "container-prober"
+        }
+      }
+    },
+    {
+      "description": "slsaLevel as string",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.image",
+        "appId": "ledger-core",
+        "imageId": "ledger-core-api",
+        "ref": "123456789012.dkr.ecr.ap-south-1.amazonaws.com/arthanidhi/ledger-core-api:2.14.3@sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "registry": "123456789012.dkr.ecr.ap-south-1.amazonaws.com",
+        "repository": "arthanidhi/ledger-core-api",
+        "tag": "2.14.3",
+        "digest": "sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "baseImage": "public.ecr.aws/docker/library/node:22.9.0-bookworm-slim",
+        "builtFrom": {
+          "repoId": "ledger-core-api",
+          "commit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+          "dockerfilePath": "Dockerfile"
+        },
+        "sbomPath": "applications/ledger-core/images/ledger-core-api.cdx.json",
+        "signing": {
+          "tool": "cosign",
+          "verified": true,
+          "keyRef": "awskms:///alias/arthanidhi-cosign-prod"
+        },
+        "provenanceAttestation": {
+          "slsaLevel": "3",
+          "attestationRef": "https://github.com/arthanidhi/ledger-core-api/attestations/1842"
+        },
+        "lastScan": {
+          "at": "2026-09-13T04:02:11Z",
+          "tool": "trivy",
+          "toolVersion": "0.65.0",
+          "critical": 0,
+          "high": 2,
+          "medium": 11,
+          "low": 27,
+          "unknown": 3,
+          "fixable": {
+            "critical": 0,
+            "high": 2,
+            "medium": 7,
+            "low": 12
+          },
+          "kevCount": 0
+        },
+        "envIds": [
+          "prod-mumbai",
+          "uat-mumbai"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T04:05:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "runtime-probe-appcontainers",
+          "agent": "container-prober"
+        }
+      }
+    },
+    {
+      "description": "sbomPath not under images/ with .cdx.json",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.image",
+        "appId": "ledger-core",
+        "imageId": "ledger-core-api",
+        "ref": "123456789012.dkr.ecr.ap-south-1.amazonaws.com/arthanidhi/ledger-core-api:2.14.3@sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "registry": "123456789012.dkr.ecr.ap-south-1.amazonaws.com",
+        "repository": "arthanidhi/ledger-core-api",
+        "tag": "2.14.3",
+        "digest": "sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "baseImage": "public.ecr.aws/docker/library/node:22.9.0-bookworm-slim",
+        "builtFrom": {
+          "repoId": "ledger-core-api",
+          "commit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+          "dockerfilePath": "Dockerfile"
+        },
+        "sbomPath": "applications/ledger-core/images/ledger-core-api.json",
+        "signing": {
+          "tool": "cosign",
+          "verified": true,
+          "keyRef": "awskms:///alias/arthanidhi-cosign-prod"
+        },
+        "provenanceAttestation": {
+          "slsaLevel": 3,
+          "attestationRef": "https://github.com/arthanidhi/ledger-core-api/attestations/1842"
+        },
+        "lastScan": {
+          "at": "2026-09-13T04:02:11Z",
+          "tool": "trivy",
+          "toolVersion": "0.65.0",
+          "critical": 0,
+          "high": 2,
+          "medium": 11,
+          "low": 27,
+          "unknown": 3,
+          "fixable": {
+            "critical": 0,
+            "high": 2,
+            "medium": 7,
+            "low": 12
+          },
+          "kevCount": 0
+        },
+        "envIds": [
+          "prod-mumbai",
+          "uat-mumbai"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T04:05:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "runtime-probe-appcontainers",
+          "agent": "container-prober"
+        }
+      }
+    },
+    {
+      "description": "lastScan negative count",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.image",
+        "appId": "ledger-core",
+        "imageId": "ledger-core-api",
+        "ref": "123456789012.dkr.ecr.ap-south-1.amazonaws.com/arthanidhi/ledger-core-api:2.14.3@sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "registry": "123456789012.dkr.ecr.ap-south-1.amazonaws.com",
+        "repository": "arthanidhi/ledger-core-api",
+        "tag": "2.14.3",
+        "digest": "sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "baseImage": "public.ecr.aws/docker/library/node:22.9.0-bookworm-slim",
+        "builtFrom": {
+          "repoId": "ledger-core-api",
+          "commit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+          "dockerfilePath": "Dockerfile"
+        },
+        "sbomPath": "applications/ledger-core/images/ledger-core-api.cdx.json",
+        "signing": {
+          "tool": "cosign",
+          "verified": true,
+          "keyRef": "awskms:///alias/arthanidhi-cosign-prod"
+        },
+        "provenanceAttestation": {
+          "slsaLevel": 3,
+          "attestationRef": "https://github.com/arthanidhi/ledger-core-api/attestations/1842"
+        },
+        "lastScan": {
+          "at": "2026-09-13T04:02:11Z",
+          "tool": "trivy",
+          "toolVersion": "0.65.0",
+          "critical": -1,
+          "high": 2,
+          "medium": 11,
+          "low": 27,
+          "unknown": 3,
+          "fixable": {
+            "critical": 0,
+            "high": 2,
+            "medium": 7,
+            "low": 12
+          },
+          "kevCount": 0
+        },
+        "envIds": [
+          "prod-mumbai",
+          "uat-mumbai"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T04:05:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "runtime-probe-appcontainers",
+          "agent": "container-prober"
+        }
+      }
+    },
+    {
+      "description": "lastScan missing tool",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.image",
+        "appId": "ledger-core",
+        "imageId": "ledger-core-api",
+        "ref": "123456789012.dkr.ecr.ap-south-1.amazonaws.com/arthanidhi/ledger-core-api:2.14.3@sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "registry": "123456789012.dkr.ecr.ap-south-1.amazonaws.com",
+        "repository": "arthanidhi/ledger-core-api",
+        "tag": "2.14.3",
+        "digest": "sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "baseImage": "public.ecr.aws/docker/library/node:22.9.0-bookworm-slim",
+        "builtFrom": {
+          "repoId": "ledger-core-api",
+          "commit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+          "dockerfilePath": "Dockerfile"
+        },
+        "sbomPath": "applications/ledger-core/images/ledger-core-api.cdx.json",
+        "signing": {
+          "tool": "cosign",
+          "verified": true,
+          "keyRef": "awskms:///alias/arthanidhi-cosign-prod"
+        },
+        "provenanceAttestation": {
+          "slsaLevel": 3,
+          "attestationRef": "https://github.com/arthanidhi/ledger-core-api/attestations/1842"
+        },
+        "lastScan": {
+          "at": "2026-09-13T04:02:11Z",
+          "critical": 0,
+          "high": 2,
+          "medium": 11,
+          "low": 27,
+          "kevCount": 0
+        },
+        "envIds": [
+          "prod-mumbai",
+          "uat-mumbai"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T04:05:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "runtime-probe-appcontainers",
+          "agent": "container-prober"
+        }
+      }
+    },
+    {
+      "description": "builtFrom commit not hex",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.image",
+        "appId": "ledger-core",
+        "imageId": "ledger-core-api",
+        "ref": "123456789012.dkr.ecr.ap-south-1.amazonaws.com/arthanidhi/ledger-core-api:2.14.3@sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "registry": "123456789012.dkr.ecr.ap-south-1.amazonaws.com",
+        "repository": "arthanidhi/ledger-core-api",
+        "tag": "2.14.3",
+        "digest": "sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "baseImage": "public.ecr.aws/docker/library/node:22.9.0-bookworm-slim",
+        "builtFrom": {
+          "repoId": "ledger-core-api",
+          "commit": "main",
+          "dockerfilePath": "Dockerfile"
+        },
+        "sbomPath": "applications/ledger-core/images/ledger-core-api.cdx.json",
+        "signing": {
+          "tool": "cosign",
+          "verified": true,
+          "keyRef": "awskms:///alias/arthanidhi-cosign-prod"
+        },
+        "provenanceAttestation": {
+          "slsaLevel": 3,
+          "attestationRef": "https://github.com/arthanidhi/ledger-core-api/attestations/1842"
+        },
+        "lastScan": {
+          "at": "2026-09-13T04:02:11Z",
+          "tool": "trivy",
+          "toolVersion": "0.65.0",
+          "critical": 0,
+          "high": 2,
+          "medium": 11,
+          "low": 27,
+          "unknown": 3,
+          "fixable": {
+            "critical": 0,
+            "high": 2,
+            "medium": 7,
+            "low": 12
+          },
+          "kevCount": 0
+        },
+        "envIds": [
+          "prod-mumbai",
+          "uat-mumbai"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T04:05:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "runtime-probe-appcontainers",
+          "agent": "container-prober"
+        }
+      }
+    },
+    {
+      "description": "duplicate envIds",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.image",
+        "appId": "ledger-core",
+        "imageId": "ledger-core-api",
+        "ref": "123456789012.dkr.ecr.ap-south-1.amazonaws.com/arthanidhi/ledger-core-api:2.14.3@sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "registry": "123456789012.dkr.ecr.ap-south-1.amazonaws.com",
+        "repository": "arthanidhi/ledger-core-api",
+        "tag": "2.14.3",
+        "digest": "sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "baseImage": "public.ecr.aws/docker/library/node:22.9.0-bookworm-slim",
+        "builtFrom": {
+          "repoId": "ledger-core-api",
+          "commit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+          "dockerfilePath": "Dockerfile"
+        },
+        "sbomPath": "applications/ledger-core/images/ledger-core-api.cdx.json",
+        "signing": {
+          "tool": "cosign",
+          "verified": true,
+          "keyRef": "awskms:///alias/arthanidhi-cosign-prod"
+        },
+        "provenanceAttestation": {
+          "slsaLevel": 3,
+          "attestationRef": "https://github.com/arthanidhi/ledger-core-api/attestations/1842"
+        },
+        "lastScan": {
+          "at": "2026-09-13T04:02:11Z",
+          "tool": "trivy",
+          "toolVersion": "0.65.0",
+          "critical": 0,
+          "high": 2,
+          "medium": 11,
+          "low": 27,
+          "unknown": 3,
+          "fixable": {
+            "critical": 0,
+            "high": 2,
+            "medium": 7,
+            "low": 12
+          },
+          "kevCount": 0
+        },
+        "envIds": [
+          "prod-mumbai",
+          "prod-mumbai"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T04:05:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "runtime-probe-appcontainers",
+          "agent": "container-prober"
+        }
+      }
+    },
+    {
+      "description": "tag starting with a dash",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.image",
+        "appId": "ledger-core",
+        "imageId": "ledger-core-api",
+        "ref": "123456789012.dkr.ecr.ap-south-1.amazonaws.com/arthanidhi/ledger-core-api:2.14.3@sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "registry": "123456789012.dkr.ecr.ap-south-1.amazonaws.com",
+        "repository": "arthanidhi/ledger-core-api",
+        "tag": "-latest",
+        "digest": "sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "baseImage": "public.ecr.aws/docker/library/node:22.9.0-bookworm-slim",
+        "builtFrom": {
+          "repoId": "ledger-core-api",
+          "commit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+          "dockerfilePath": "Dockerfile"
+        },
+        "sbomPath": "applications/ledger-core/images/ledger-core-api.cdx.json",
+        "signing": {
+          "tool": "cosign",
+          "verified": true,
+          "keyRef": "awskms:///alias/arthanidhi-cosign-prod"
+        },
+        "provenanceAttestation": {
+          "slsaLevel": 3,
+          "attestationRef": "https://github.com/arthanidhi/ledger-core-api/attestations/1842"
+        },
+        "lastScan": {
+          "at": "2026-09-13T04:02:11Z",
+          "tool": "trivy",
+          "toolVersion": "0.65.0",
+          "critical": 0,
+          "high": 2,
+          "medium": 11,
+          "low": 27,
+          "unknown": 3,
+          "fixable": {
+            "critical": 0,
+            "high": 2,
+            "medium": 7,
+            "low": 12
+          },
+          "kevCount": 0
+        },
+        "envIds": [
+          "prod-mumbai",
+          "uat-mumbai"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T04:05:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "runtime-probe-appcontainers",
+          "agent": "container-prober"
+        }
+      }
+    },
+    {
+      "description": "slsaLevel 3 is the highest v1.0 build level",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.image",
+        "appId": "ledger-core",
+        "imageId": "ledger-core-api",
+        "ref": "123456789012.dkr.ecr.ap-south-1.amazonaws.com/arthanidhi/ledger-core-api:2.14.3@sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "registry": "123456789012.dkr.ecr.ap-south-1.amazonaws.com",
+        "repository": "arthanidhi/ledger-core-api",
+        "tag": "2.14.3",
+        "digest": "sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "baseImage": "public.ecr.aws/docker/library/node:22.9.0-bookworm-slim",
+        "builtFrom": {
+          "repoId": "ledger-core-api",
+          "commit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+          "dockerfilePath": "Dockerfile"
+        },
+        "sbomPath": "applications/ledger-core/images/ledger-core-api.cdx.json",
+        "signing": {
+          "tool": "cosign",
+          "verified": true,
+          "keyRef": "awskms:///alias/arthanidhi-cosign-prod"
+        },
+        "provenanceAttestation": {
+          "slsaLevel": 3,
+          "attestationRef": "https://github.com/arthanidhi/ledger-core-api/attestations/1842"
+        },
+        "lastScan": {
+          "at": "2026-09-13T04:02:11Z",
+          "tool": "trivy",
+          "toolVersion": "0.65.0",
+          "critical": 0,
+          "high": 2,
+          "medium": 11,
+          "low": 27,
+          "unknown": 3,
+          "fixable": {
+            "critical": 0,
+            "high": 2,
+            "medium": 7,
+            "low": 12
+          },
+          "kevCount": 0
+        },
+        "envIds": [
+          "prod-mumbai",
+          "uat-mumbai"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T04:05:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "runtime-probe-appcontainers",
+          "agent": "container-prober"
+        }
+      }
+    },
+    {
+      "description": "baseImage normalised Docker Hub official image",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.image",
+        "appId": "ledger-core",
+        "imageId": "ledger-core-api",
+        "ref": "123456789012.dkr.ecr.ap-south-1.amazonaws.com/arthanidhi/ledger-core-api:2.14.3@sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "registry": "123456789012.dkr.ecr.ap-south-1.amazonaws.com",
+        "repository": "arthanidhi/ledger-core-api",
+        "tag": "2.14.3",
+        "digest": "sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "baseImage": "docker.io/library/node:22-bookworm-slim",
+        "builtFrom": {
+          "repoId": "ledger-core-api",
+          "commit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+          "dockerfilePath": "Dockerfile"
+        },
+        "sbomPath": "applications/ledger-core/images/ledger-core-api.cdx.json",
+        "signing": {
+          "tool": "cosign",
+          "verified": true,
+          "keyRef": "awskms:///alias/arthanidhi-cosign-prod"
+        },
+        "provenanceAttestation": {
+          "slsaLevel": 3,
+          "attestationRef": "https://github.com/arthanidhi/ledger-core-api/attestations/1842"
+        },
+        "lastScan": {
+          "at": "2026-09-13T04:02:11Z",
+          "tool": "trivy",
+          "toolVersion": "0.65.0",
+          "critical": 0,
+          "high": 2,
+          "medium": 11,
+          "low": 27,
+          "unknown": 3,
+          "fixable": {
+            "critical": 0,
+            "high": 2,
+            "medium": 7,
+            "low": 12
+          },
+          "kevCount": 0
+        },
+        "envIds": [
+          "prod-mumbai",
+          "uat-mumbai"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T04:05:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "runtime-probe-appcontainers",
+          "agent": "container-prober"
+        }
+      }
+    },
+    {
+      "description": "baseImage Docker Hub user image normalised with registry",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.image",
+        "appId": "ledger-core",
+        "imageId": "ledger-core-api",
+        "ref": "123456789012.dkr.ecr.ap-south-1.amazonaws.com/arthanidhi/ledger-core-api:2.14.3@sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "registry": "123456789012.dkr.ecr.ap-south-1.amazonaws.com",
+        "repository": "arthanidhi/ledger-core-api",
+        "tag": "2.14.3",
+        "digest": "sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "baseImage": "docker.io/arthanidhi/ledger:1.0",
+        "builtFrom": {
+          "repoId": "ledger-core-api",
+          "commit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+          "dockerfilePath": "Dockerfile"
+        },
+        "sbomPath": "applications/ledger-core/images/ledger-core-api.cdx.json",
+        "signing": {
+          "tool": "cosign",
+          "verified": true,
+          "keyRef": "awskms:///alias/arthanidhi-cosign-prod"
+        },
+        "provenanceAttestation": {
+          "slsaLevel": 3,
+          "attestationRef": "https://github.com/arthanidhi/ledger-core-api/attestations/1842"
+        },
+        "lastScan": {
+          "at": "2026-09-13T04:02:11Z",
+          "tool": "trivy",
+          "toolVersion": "0.65.0",
+          "critical": 0,
+          "high": 2,
+          "medium": 11,
+          "low": 27,
+          "unknown": 3,
+          "fixable": {
+            "critical": 0,
+            "high": 2,
+            "medium": 7,
+            "low": 12
+          },
+          "kevCount": 0
+        },
+        "envIds": [
+          "prod-mumbai",
+          "uat-mumbai"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T04:05:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "runtime-probe-appcontainers",
+          "agent": "container-prober"
+        }
+      }
+    },
+    {
+      "description": "baseImage registry-less official shorthand node:22-bookworm-slim",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.image",
+        "appId": "ledger-core",
+        "imageId": "ledger-core-api",
+        "ref": "123456789012.dkr.ecr.ap-south-1.amazonaws.com/arthanidhi/ledger-core-api:2.14.3@sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "registry": "123456789012.dkr.ecr.ap-south-1.amazonaws.com",
+        "repository": "arthanidhi/ledger-core-api",
+        "tag": "2.14.3",
+        "digest": "sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "baseImage": "node:22-bookworm-slim",
+        "builtFrom": {
+          "repoId": "ledger-core-api",
+          "commit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+          "dockerfilePath": "Dockerfile"
+        },
+        "sbomPath": "applications/ledger-core/images/ledger-core-api.cdx.json",
+        "signing": {
+          "tool": "cosign",
+          "verified": true,
+          "keyRef": "awskms:///alias/arthanidhi-cosign-prod"
+        },
+        "provenanceAttestation": {
+          "slsaLevel": 3,
+          "attestationRef": "https://github.com/arthanidhi/ledger-core-api/attestations/1842"
+        },
+        "lastScan": {
+          "at": "2026-09-13T04:02:11Z",
+          "tool": "trivy",
+          "toolVersion": "0.65.0",
+          "critical": 0,
+          "high": 2,
+          "medium": 11,
+          "low": 27,
+          "unknown": 3,
+          "fixable": {
+            "critical": 0,
+            "high": 2,
+            "medium": 7,
+            "low": 12
+          },
+          "kevCount": 0
+        },
+        "envIds": [
+          "prod-mumbai",
+          "uat-mumbai"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T04:05:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "runtime-probe-appcontainers",
+          "agent": "container-prober"
+        }
+      }
+    },
+    {
+      "description": "baseImage registry-less Docker Hub shorthand org/repo:tag",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.image",
+        "appId": "ledger-core",
+        "imageId": "ledger-core-api",
+        "ref": "123456789012.dkr.ecr.ap-south-1.amazonaws.com/arthanidhi/ledger-core-api:2.14.3@sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "registry": "123456789012.dkr.ecr.ap-south-1.amazonaws.com",
+        "repository": "arthanidhi/ledger-core-api",
+        "tag": "2.14.3",
+        "digest": "sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "baseImage": "arthanidhi/ledger:1.0",
+        "builtFrom": {
+          "repoId": "ledger-core-api",
+          "commit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+          "dockerfilePath": "Dockerfile"
+        },
+        "sbomPath": "applications/ledger-core/images/ledger-core-api.cdx.json",
+        "signing": {
+          "tool": "cosign",
+          "verified": true,
+          "keyRef": "awskms:///alias/arthanidhi-cosign-prod"
+        },
+        "provenanceAttestation": {
+          "slsaLevel": 3,
+          "attestationRef": "https://github.com/arthanidhi/ledger-core-api/attestations/1842"
+        },
+        "lastScan": {
+          "at": "2026-09-13T04:02:11Z",
+          "tool": "trivy",
+          "toolVersion": "0.65.0",
+          "critical": 0,
+          "high": 2,
+          "medium": 11,
+          "low": 27,
+          "unknown": 3,
+          "fixable": {
+            "critical": 0,
+            "high": 2,
+            "medium": 7,
+            "low": 12
+          },
+          "kevCount": 0
+        },
+        "envIds": [
+          "prod-mumbai",
+          "uat-mumbai"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T04:05:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "runtime-probe-appcontainers",
+          "agent": "container-prober"
+        }
+      }
+    },
+    {
+      "description": "ref on localhost registry with port",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.image",
+        "appId": "ledger-core",
+        "imageId": "ledger-core-api",
+        "ref": "localhost:5000/ledger/ledger-core-api@sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "registry": "localhost:5000",
+        "repository": "ledger/ledger-core-api",
+        "digest": "sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "baseImage": "public.ecr.aws/docker/library/node:22.9.0-bookworm-slim",
+        "builtFrom": {
+          "repoId": "ledger-core-api",
+          "commit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+          "dockerfilePath": "Dockerfile"
+        },
+        "sbomPath": "applications/ledger-core/images/ledger-core-api.cdx.json",
+        "signing": {
+          "tool": "cosign",
+          "verified": true,
+          "keyRef": "awskms:///alias/arthanidhi-cosign-prod"
+        },
+        "provenanceAttestation": {
+          "slsaLevel": 3,
+          "attestationRef": "https://github.com/arthanidhi/ledger-core-api/attestations/1842"
+        },
+        "lastScan": {
+          "at": "2026-09-13T04:02:11Z",
+          "tool": "trivy",
+          "toolVersion": "0.65.0",
+          "critical": 0,
+          "high": 2,
+          "medium": 11,
+          "low": 27,
+          "unknown": 3,
+          "fixable": {
+            "critical": 0,
+            "high": 2,
+            "medium": 7,
+            "low": 12
+          },
+          "kevCount": 0
+        },
+        "envIds": [
+          "prod-mumbai",
+          "uat-mumbai"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T04:05:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "runtime-probe-appcontainers",
+          "agent": "container-prober"
+        }
+      }
+    },
+    {
+      "description": "registry without dot or port",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.image",
+        "appId": "ledger-core",
+        "imageId": "ledger-core-api",
+        "ref": "123456789012.dkr.ecr.ap-south-1.amazonaws.com/arthanidhi/ledger-core-api:2.14.3@sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "registry": "harbor",
+        "repository": "arthanidhi/ledger-core-api",
+        "tag": "2.14.3",
+        "digest": "sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "baseImage": "public.ecr.aws/docker/library/node:22.9.0-bookworm-slim",
+        "builtFrom": {
+          "repoId": "ledger-core-api",
+          "commit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+          "dockerfilePath": "Dockerfile"
+        },
+        "sbomPath": "applications/ledger-core/images/ledger-core-api.cdx.json",
+        "signing": {
+          "tool": "cosign",
+          "verified": true,
+          "keyRef": "awskms:///alias/arthanidhi-cosign-prod"
+        },
+        "provenanceAttestation": {
+          "slsaLevel": 3,
+          "attestationRef": "https://github.com/arthanidhi/ledger-core-api/attestations/1842"
+        },
+        "lastScan": {
+          "at": "2026-09-13T04:02:11Z",
+          "tool": "trivy",
+          "toolVersion": "0.65.0",
+          "critical": 0,
+          "high": 2,
+          "medium": 11,
+          "low": 27,
+          "unknown": 3,
+          "fixable": {
+            "critical": 0,
+            "high": 2,
+            "medium": 7,
+            "low": 12
+          },
+          "kevCount": 0
+        },
+        "envIds": [
+          "prod-mumbai",
+          "uat-mumbai"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T04:05:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "runtime-probe-appcontainers",
+          "agent": "container-prober"
+        }
+      }
+    },
+    {
+      "description": "lastScan tool not in enum",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.image",
+        "appId": "ledger-core",
+        "imageId": "ledger-core-api",
+        "ref": "123456789012.dkr.ecr.ap-south-1.amazonaws.com/arthanidhi/ledger-core-api:2.14.3@sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "registry": "123456789012.dkr.ecr.ap-south-1.amazonaws.com",
+        "repository": "arthanidhi/ledger-core-api",
+        "tag": "2.14.3",
+        "digest": "sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "baseImage": "public.ecr.aws/docker/library/node:22.9.0-bookworm-slim",
+        "builtFrom": {
+          "repoId": "ledger-core-api",
+          "commit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+          "dockerfilePath": "Dockerfile"
+        },
+        "sbomPath": "applications/ledger-core/images/ledger-core-api.cdx.json",
+        "signing": {
+          "tool": "cosign",
+          "verified": true,
+          "keyRef": "awskms:///alias/arthanidhi-cosign-prod"
+        },
+        "provenanceAttestation": {
+          "slsaLevel": 3,
+          "attestationRef": "https://github.com/arthanidhi/ledger-core-api/attestations/1842"
+        },
+        "lastScan": {
+          "at": "2026-09-13T04:02:11Z",
+          "tool": "trivy 0.65.0",
+          "toolVersion": "0.65.0",
+          "critical": 0,
+          "high": 2,
+          "medium": 11,
+          "low": 27,
+          "unknown": 3,
+          "fixable": {
+            "critical": 0,
+            "high": 2,
+            "medium": 7,
+            "low": 12
+          },
+          "kevCount": 0
+        },
+        "envIds": [
+          "prod-mumbai",
+          "uat-mumbai"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T04:05:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "runtime-probe-appcontainers",
+          "agent": "container-prober"
+        }
+      }
+    },
+    {
+      "description": "lastScan missing toolVersion",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.image",
+        "appId": "ledger-core",
+        "imageId": "ledger-core-api",
+        "ref": "123456789012.dkr.ecr.ap-south-1.amazonaws.com/arthanidhi/ledger-core-api:2.14.3@sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "registry": "123456789012.dkr.ecr.ap-south-1.amazonaws.com",
+        "repository": "arthanidhi/ledger-core-api",
+        "tag": "2.14.3",
+        "digest": "sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "baseImage": "public.ecr.aws/docker/library/node:22.9.0-bookworm-slim",
+        "builtFrom": {
+          "repoId": "ledger-core-api",
+          "commit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+          "dockerfilePath": "Dockerfile"
+        },
+        "sbomPath": "applications/ledger-core/images/ledger-core-api.cdx.json",
+        "signing": {
+          "tool": "cosign",
+          "verified": true,
+          "keyRef": "awskms:///alias/arthanidhi-cosign-prod"
+        },
+        "provenanceAttestation": {
+          "slsaLevel": 3,
+          "attestationRef": "https://github.com/arthanidhi/ledger-core-api/attestations/1842"
+        },
+        "lastScan": {
+          "at": "2026-09-13T04:02:11Z",
+          "tool": "trivy",
+          "critical": 0,
+          "high": 2,
+          "medium": 11,
+          "low": 27,
+          "unknown": 3,
+          "fixable": {
+            "critical": 0,
+            "high": 2,
+            "medium": 7,
+            "low": 12
+          },
+          "kevCount": 0
+        },
+        "envIds": [
+          "prod-mumbai",
+          "uat-mumbai"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T04:05:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "runtime-probe-appcontainers",
+          "agent": "container-prober"
+        }
+      }
+    },
+    {
+      "description": "lastScan toolVersion not version-shaped",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.image",
+        "appId": "ledger-core",
+        "imageId": "ledger-core-api",
+        "ref": "123456789012.dkr.ecr.ap-south-1.amazonaws.com/arthanidhi/ledger-core-api:2.14.3@sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "registry": "123456789012.dkr.ecr.ap-south-1.amazonaws.com",
+        "repository": "arthanidhi/ledger-core-api",
+        "tag": "2.14.3",
+        "digest": "sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "baseImage": "public.ecr.aws/docker/library/node:22.9.0-bookworm-slim",
+        "builtFrom": {
+          "repoId": "ledger-core-api",
+          "commit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+          "dockerfilePath": "Dockerfile"
+        },
+        "sbomPath": "applications/ledger-core/images/ledger-core-api.cdx.json",
+        "signing": {
+          "tool": "cosign",
+          "verified": true,
+          "keyRef": "awskms:///alias/arthanidhi-cosign-prod"
+        },
+        "provenanceAttestation": {
+          "slsaLevel": 3,
+          "attestationRef": "https://github.com/arthanidhi/ledger-core-api/attestations/1842"
+        },
+        "lastScan": {
+          "at": "2026-09-13T04:02:11Z",
+          "tool": "trivy",
+          "toolVersion": "latest",
+          "critical": 0,
+          "high": 2,
+          "medium": 11,
+          "low": 27,
+          "unknown": 3,
+          "fixable": {
+            "critical": 0,
+            "high": 2,
+            "medium": 7,
+            "low": 12
+          },
+          "kevCount": 0
+        },
+        "envIds": [
+          "prod-mumbai",
+          "uat-mumbai"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T04:05:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "runtime-probe-appcontainers",
+          "agent": "container-prober"
+        }
+      }
+    },
+    {
+      "description": "lastScan grype with unknown and fixable counts",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.image",
+        "appId": "ledger-core",
+        "imageId": "ledger-core-api",
+        "ref": "123456789012.dkr.ecr.ap-south-1.amazonaws.com/arthanidhi/ledger-core-api:2.14.3@sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "registry": "123456789012.dkr.ecr.ap-south-1.amazonaws.com",
+        "repository": "arthanidhi/ledger-core-api",
+        "tag": "2.14.3",
+        "digest": "sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "baseImage": "public.ecr.aws/docker/library/node:22.9.0-bookworm-slim",
+        "builtFrom": {
+          "repoId": "ledger-core-api",
+          "commit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+          "dockerfilePath": "Dockerfile"
+        },
+        "sbomPath": "applications/ledger-core/images/ledger-core-api.cdx.json",
+        "signing": {
+          "tool": "cosign",
+          "verified": true,
+          "keyRef": "awskms:///alias/arthanidhi-cosign-prod"
+        },
+        "provenanceAttestation": {
+          "slsaLevel": 3,
+          "attestationRef": "https://github.com/arthanidhi/ledger-core-api/attestations/1842"
+        },
+        "lastScan": {
+          "at": "2026-09-13T04:02:11Z",
+          "tool": "grype",
+          "toolVersion": "v0.92.0",
+          "critical": 1,
+          "high": 0,
+          "medium": 3,
+          "low": 4,
+          "unknown": 2,
+          "fixable": {
+            "critical": 1,
+            "high": 0,
+            "medium": 1,
+            "low": 0
+          }
+        },
+        "envIds": [
+          "prod-mumbai",
+          "uat-mumbai"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T04:05:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "runtime-probe-appcontainers",
+          "agent": "container-prober"
+        }
+      }
+    },
+    {
+      "description": "lastScan fixable missing low",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.image",
+        "appId": "ledger-core",
+        "imageId": "ledger-core-api",
+        "ref": "123456789012.dkr.ecr.ap-south-1.amazonaws.com/arthanidhi/ledger-core-api:2.14.3@sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "registry": "123456789012.dkr.ecr.ap-south-1.amazonaws.com",
+        "repository": "arthanidhi/ledger-core-api",
+        "tag": "2.14.3",
+        "digest": "sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "baseImage": "public.ecr.aws/docker/library/node:22.9.0-bookworm-slim",
+        "builtFrom": {
+          "repoId": "ledger-core-api",
+          "commit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+          "dockerfilePath": "Dockerfile"
+        },
+        "sbomPath": "applications/ledger-core/images/ledger-core-api.cdx.json",
+        "signing": {
+          "tool": "cosign",
+          "verified": true,
+          "keyRef": "awskms:///alias/arthanidhi-cosign-prod"
+        },
+        "provenanceAttestation": {
+          "slsaLevel": 3,
+          "attestationRef": "https://github.com/arthanidhi/ledger-core-api/attestations/1842"
+        },
+        "lastScan": {
+          "at": "2026-09-13T04:02:11Z",
+          "tool": "trivy",
+          "toolVersion": "0.65.0",
+          "critical": 0,
+          "high": 2,
+          "medium": 11,
+          "low": 27,
+          "unknown": 3,
+          "fixable": {
+            "critical": 0,
+            "high": 0,
+            "medium": 0
+          },
+          "kevCount": 0
+        },
+        "envIds": [
+          "prod-mumbai",
+          "uat-mumbai"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T04:05:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "runtime-probe-appcontainers",
+          "agent": "container-prober"
+        }
+      }
+    },
+    {
+      "description": "lastScan fixable extra key",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.image",
+        "appId": "ledger-core",
+        "imageId": "ledger-core-api",
+        "ref": "123456789012.dkr.ecr.ap-south-1.amazonaws.com/arthanidhi/ledger-core-api:2.14.3@sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "registry": "123456789012.dkr.ecr.ap-south-1.amazonaws.com",
+        "repository": "arthanidhi/ledger-core-api",
+        "tag": "2.14.3",
+        "digest": "sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+        "baseImage": "public.ecr.aws/docker/library/node:22.9.0-bookworm-slim",
+        "builtFrom": {
+          "repoId": "ledger-core-api",
+          "commit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+          "dockerfilePath": "Dockerfile"
+        },
+        "sbomPath": "applications/ledger-core/images/ledger-core-api.cdx.json",
+        "signing": {
+          "tool": "cosign",
+          "verified": true,
+          "keyRef": "awskms:///alias/arthanidhi-cosign-prod"
+        },
+        "provenanceAttestation": {
+          "slsaLevel": 3,
+          "attestationRef": "https://github.com/arthanidhi/ledger-core-api/attestations/1842"
+        },
+        "lastScan": {
+          "at": "2026-09-13T04:02:11Z",
+          "tool": "trivy",
+          "toolVersion": "0.65.0",
+          "critical": 0,
+          "high": 2,
+          "medium": 11,
+          "low": 27,
+          "unknown": 3,
+          "fixable": {
+            "critical": 0,
+            "high": 0,
+            "medium": 0,
+            "low": 0,
+            "unknown": 0
+          },
+          "kevCount": 0
+        },
+        "envIds": [
+          "prod-mumbai",
+          "uat-mumbai"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T04:05:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "runtime-probe-appcontainers",
+          "agent": "container-prober"
+        }
+      }
+    }
+  ]
+}

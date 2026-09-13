@@ -1,0 +1,809 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/vocab/sla-table.schema.json",
+  "tests": [
+    {
+      "description": "SLA table with CSCRF patch and CERT-In reporting rows",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.vocab.sla-table",
+        "lastReviewedAt": "2026-09-01",
+        "precedence": "most-strict-wins",
+        "defaults": {
+          "critical": 7,
+          "high": 30,
+          "medium": 90,
+          "low": 180,
+          "info": 365
+        },
+        "entries": [
+          {
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "PR.PS.S6",
+            "topic": "patch-sla",
+            "severity": "critical",
+            "days": 7,
+            "basis": "SEBI CSCRF 2024, PR.PS: critical vulnerabilities in internet-facing systems shall be patched within 7 days of publication",
+            "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
+          },
+          {
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "PR.PS.S6",
+            "topic": "patch-sla",
+            "severity": "high",
+            "days": 7,
+            "basis": "SEBI CSCRF 2024, PR.PS: high-severity vulnerabilities in critical systems shall be remediated within 7 days"
+          },
+          {
+            "instrument": "cert-in-directions-2022",
+            "topic": "incident-reporting",
+            "severity": "any",
+            "days": 1,
+            "hours": 6,
+            "basis": "CERT-In Directions of 28 April 2022, para (ii): report cyber incidents within 6 hours of noticing or being brought to notice",
+            "url": "https://www.cert-in.org.in/Directions70B.jsp"
+          },
+          {
+            "instrument": "dpdp-rules-2025",
+            "topic": "breach-notification",
+            "severity": "any",
+            "days": 3,
+            "hours": 72,
+            "basis": "DPDP Rules 2025, Rule 7: intimate the Data Protection Board within 72 hours of becoming aware of a personal data breach"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-01T09:00:00Z"
+        }
+      }
+    },
+    {
+      "description": "table without lastReviewedAt is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.vocab.sla-table",
+        "precedence": "most-strict-wins",
+        "defaults": {
+          "critical": 7,
+          "high": 30,
+          "medium": 90,
+          "low": 180,
+          "info": 365
+        },
+        "entries": [
+          {
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "PR.PS.S6",
+            "topic": "patch-sla",
+            "severity": "critical",
+            "days": 7,
+            "basis": "SEBI CSCRF 2024, PR.PS: critical vulnerabilities in internet-facing systems shall be patched within 7 days of publication",
+            "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
+          },
+          {
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "PR.PS.S6",
+            "topic": "patch-sla",
+            "severity": "high",
+            "days": 7,
+            "basis": "SEBI CSCRF 2024, PR.PS: high-severity vulnerabilities in critical systems shall be remediated within 7 days"
+          },
+          {
+            "instrument": "cert-in-directions-2022",
+            "topic": "incident-reporting",
+            "severity": "any",
+            "days": 1,
+            "hours": 6,
+            "basis": "CERT-In Directions of 28 April 2022, para (ii): report cyber incidents within 6 hours of noticing or being brought to notice",
+            "url": "https://www.cert-in.org.in/Directions70B.jsp"
+          },
+          {
+            "instrument": "dpdp-rules-2025",
+            "topic": "breach-notification",
+            "severity": "any",
+            "days": 3,
+            "hours": 72,
+            "basis": "DPDP Rules 2025, Rule 7: intimate the Data Protection Board within 72 hours of becoming aware of a personal data breach"
+          }
+        ]
+      }
+    },
+    {
+      "description": "invented extra key on an entry is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.vocab.sla-table",
+        "lastReviewedAt": "2026-09-01",
+        "precedence": "most-strict-wins",
+        "defaults": {
+          "critical": 7,
+          "high": 30,
+          "medium": 90,
+          "low": 180,
+          "info": 365
+        },
+        "entries": [
+          {
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "PR.PS.S6",
+            "topic": "patch-sla",
+            "severity": "critical",
+            "days": 7,
+            "basis": "SEBI CSCRF 2024, PR.PS: critical vulnerabilities in internet-facing systems shall be patched within 7 days of publication",
+            "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
+            "weeks": 1
+          },
+          {
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "PR.PS.S6",
+            "topic": "patch-sla",
+            "severity": "high",
+            "days": 7,
+            "basis": "SEBI CSCRF 2024, PR.PS: high-severity vulnerabilities in critical systems shall be remediated within 7 days"
+          },
+          {
+            "instrument": "cert-in-directions-2022",
+            "topic": "incident-reporting",
+            "severity": "any",
+            "days": 1,
+            "hours": 6,
+            "basis": "CERT-In Directions of 28 April 2022, para (ii): report cyber incidents within 6 hours of noticing or being brought to notice",
+            "url": "https://www.cert-in.org.in/Directions70B.jsp"
+          },
+          {
+            "instrument": "dpdp-rules-2025",
+            "topic": "breach-notification",
+            "severity": "any",
+            "days": 3,
+            "hours": 72,
+            "basis": "DPDP Rules 2025, Rule 7: intimate the Data Protection Board within 72 hours of becoming aware of a personal data breach"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-01T09:00:00Z"
+        }
+      }
+    },
+    {
+      "description": "entry controlId with illegal characters",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.vocab.sla-table",
+        "lastReviewedAt": "2026-09-01",
+        "precedence": "most-strict-wins",
+        "defaults": {
+          "critical": 7,
+          "high": 30,
+          "medium": 90,
+          "low": 180,
+          "info": 365
+        },
+        "entries": [
+          {
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "PR/PS/S6",
+            "topic": "patch-sla",
+            "severity": "critical",
+            "days": 7,
+            "basis": "SEBI CSCRF 2024, PR.PS: critical vulnerabilities in internet-facing systems shall be patched within 7 days of publication",
+            "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
+          },
+          {
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "PR.PS.S6",
+            "topic": "patch-sla",
+            "severity": "high",
+            "days": 7,
+            "basis": "SEBI CSCRF 2024, PR.PS: high-severity vulnerabilities in critical systems shall be remediated within 7 days"
+          },
+          {
+            "instrument": "cert-in-directions-2022",
+            "topic": "incident-reporting",
+            "severity": "any",
+            "days": 1,
+            "hours": 6,
+            "basis": "CERT-In Directions of 28 April 2022, para (ii): report cyber incidents within 6 hours of noticing or being brought to notice",
+            "url": "https://www.cert-in.org.in/Directions70B.jsp"
+          },
+          {
+            "instrument": "dpdp-rules-2025",
+            "topic": "breach-notification",
+            "severity": "any",
+            "days": 3,
+            "hours": 72,
+            "basis": "DPDP Rules 2025, Rule 7: intimate the Data Protection Board within 72 hours of becoming aware of a personal data breach"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-01T09:00:00Z"
+        }
+      }
+    },
+    {
+      "description": "severity outside the enum plus any",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.vocab.sla-table",
+        "lastReviewedAt": "2026-09-01",
+        "precedence": "most-strict-wins",
+        "defaults": {
+          "critical": 7,
+          "high": 30,
+          "medium": 90,
+          "low": 180,
+          "info": 365
+        },
+        "entries": [
+          {
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "PR.PS.S6",
+            "topic": "patch-sla",
+            "severity": "urgent",
+            "days": 7,
+            "basis": "SEBI CSCRF 2024, PR.PS: critical vulnerabilities in internet-facing systems shall be patched within 7 days of publication",
+            "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
+          },
+          {
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "PR.PS.S6",
+            "topic": "patch-sla",
+            "severity": "high",
+            "days": 7,
+            "basis": "SEBI CSCRF 2024, PR.PS: high-severity vulnerabilities in critical systems shall be remediated within 7 days"
+          },
+          {
+            "instrument": "cert-in-directions-2022",
+            "topic": "incident-reporting",
+            "severity": "any",
+            "days": 1,
+            "hours": 6,
+            "basis": "CERT-In Directions of 28 April 2022, para (ii): report cyber incidents within 6 hours of noticing or being brought to notice",
+            "url": "https://www.cert-in.org.in/Directions70B.jsp"
+          },
+          {
+            "instrument": "dpdp-rules-2025",
+            "topic": "breach-notification",
+            "severity": "any",
+            "days": 3,
+            "hours": 72,
+            "basis": "DPDP Rules 2025, Rule 7: intimate the Data Protection Board within 72 hours of becoming aware of a personal data breach"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-01T09:00:00Z"
+        }
+      }
+    },
+    {
+      "description": "topic outside the enum",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.vocab.sla-table",
+        "lastReviewedAt": "2026-09-01",
+        "precedence": "most-strict-wins",
+        "defaults": {
+          "critical": 7,
+          "high": 30,
+          "medium": 90,
+          "low": 180,
+          "info": 365
+        },
+        "entries": [
+          {
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "PR.PS.S6",
+            "topic": "password-policy",
+            "severity": "critical",
+            "days": 7,
+            "basis": "SEBI CSCRF 2024, PR.PS: critical vulnerabilities in internet-facing systems shall be patched within 7 days of publication",
+            "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
+          },
+          {
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "PR.PS.S6",
+            "topic": "patch-sla",
+            "severity": "high",
+            "days": 7,
+            "basis": "SEBI CSCRF 2024, PR.PS: high-severity vulnerabilities in critical systems shall be remediated within 7 days"
+          },
+          {
+            "instrument": "cert-in-directions-2022",
+            "topic": "incident-reporting",
+            "severity": "any",
+            "days": 1,
+            "hours": 6,
+            "basis": "CERT-In Directions of 28 April 2022, para (ii): report cyber incidents within 6 hours of noticing or being brought to notice",
+            "url": "https://www.cert-in.org.in/Directions70B.jsp"
+          },
+          {
+            "instrument": "dpdp-rules-2025",
+            "topic": "breach-notification",
+            "severity": "any",
+            "days": 3,
+            "hours": 72,
+            "basis": "DPDP Rules 2025, Rule 7: intimate the Data Protection Board within 72 hours of becoming aware of a personal data breach"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-01T09:00:00Z"
+        }
+      }
+    },
+    {
+      "description": "precedence outside the enum",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.vocab.sla-table",
+        "lastReviewedAt": "2026-09-01",
+        "precedence": "regulator-wins",
+        "defaults": {
+          "critical": 7,
+          "high": 30,
+          "medium": 90,
+          "low": 180,
+          "info": 365
+        },
+        "entries": [
+          {
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "PR.PS.S6",
+            "topic": "patch-sla",
+            "severity": "critical",
+            "days": 7,
+            "basis": "SEBI CSCRF 2024, PR.PS: critical vulnerabilities in internet-facing systems shall be patched within 7 days of publication",
+            "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
+          },
+          {
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "PR.PS.S6",
+            "topic": "patch-sla",
+            "severity": "high",
+            "days": 7,
+            "basis": "SEBI CSCRF 2024, PR.PS: high-severity vulnerabilities in critical systems shall be remediated within 7 days"
+          },
+          {
+            "instrument": "cert-in-directions-2022",
+            "topic": "incident-reporting",
+            "severity": "any",
+            "days": 1,
+            "hours": 6,
+            "basis": "CERT-In Directions of 28 April 2022, para (ii): report cyber incidents within 6 hours of noticing or being brought to notice",
+            "url": "https://www.cert-in.org.in/Directions70B.jsp"
+          },
+          {
+            "instrument": "dpdp-rules-2025",
+            "topic": "breach-notification",
+            "severity": "any",
+            "days": 3,
+            "hours": 72,
+            "basis": "DPDP Rules 2025, Rule 7: intimate the Data Protection Board within 72 hours of becoming aware of a personal data breach"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-01T09:00:00Z"
+        }
+      }
+    },
+    {
+      "description": "entry missing basis",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.vocab.sla-table",
+        "lastReviewedAt": "2026-09-01",
+        "precedence": "most-strict-wins",
+        "defaults": {
+          "critical": 7,
+          "high": 30,
+          "medium": 90,
+          "low": 180,
+          "info": 365
+        },
+        "entries": [
+          {
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "PR.PS.S6",
+            "topic": "patch-sla",
+            "severity": "critical",
+            "days": 7,
+            "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
+          },
+          {
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "PR.PS.S6",
+            "topic": "patch-sla",
+            "severity": "high",
+            "days": 7,
+            "basis": "SEBI CSCRF 2024, PR.PS: high-severity vulnerabilities in critical systems shall be remediated within 7 days"
+          },
+          {
+            "instrument": "cert-in-directions-2022",
+            "topic": "incident-reporting",
+            "severity": "any",
+            "days": 1,
+            "hours": 6,
+            "basis": "CERT-In Directions of 28 April 2022, para (ii): report cyber incidents within 6 hours of noticing or being brought to notice",
+            "url": "https://www.cert-in.org.in/Directions70B.jsp"
+          },
+          {
+            "instrument": "dpdp-rules-2025",
+            "topic": "breach-notification",
+            "severity": "any",
+            "days": 3,
+            "hours": 72,
+            "basis": "DPDP Rules 2025, Rule 7: intimate the Data Protection Board within 72 hours of becoming aware of a personal data breach"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-01T09:00:00Z"
+        }
+      }
+    },
+    {
+      "description": "defaults missing info",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.vocab.sla-table",
+        "lastReviewedAt": "2026-09-01",
+        "precedence": "most-strict-wins",
+        "defaults": {
+          "critical": 7,
+          "high": 30,
+          "medium": 90,
+          "low": 180
+        },
+        "entries": [
+          {
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "PR.PS.S6",
+            "topic": "patch-sla",
+            "severity": "critical",
+            "days": 7,
+            "basis": "SEBI CSCRF 2024, PR.PS: critical vulnerabilities in internet-facing systems shall be patched within 7 days of publication",
+            "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
+          },
+          {
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "PR.PS.S6",
+            "topic": "patch-sla",
+            "severity": "high",
+            "days": 7,
+            "basis": "SEBI CSCRF 2024, PR.PS: high-severity vulnerabilities in critical systems shall be remediated within 7 days"
+          },
+          {
+            "instrument": "cert-in-directions-2022",
+            "topic": "incident-reporting",
+            "severity": "any",
+            "days": 1,
+            "hours": 6,
+            "basis": "CERT-In Directions of 28 April 2022, para (ii): report cyber incidents within 6 hours of noticing or being brought to notice",
+            "url": "https://www.cert-in.org.in/Directions70B.jsp"
+          },
+          {
+            "instrument": "dpdp-rules-2025",
+            "topic": "breach-notification",
+            "severity": "any",
+            "days": 3,
+            "hours": 72,
+            "basis": "DPDP Rules 2025, Rule 7: intimate the Data Protection Board within 72 hours of becoming aware of a personal data breach"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-01T09:00:00Z"
+        }
+      }
+    },
+    {
+      "description": "days as a fraction",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.vocab.sla-table",
+        "lastReviewedAt": "2026-09-01",
+        "precedence": "most-strict-wins",
+        "defaults": {
+          "critical": 7,
+          "high": 30,
+          "medium": 90,
+          "low": 180,
+          "info": 365
+        },
+        "entries": [
+          {
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "PR.PS.S6",
+            "topic": "patch-sla",
+            "severity": "critical",
+            "days": 7.5,
+            "basis": "SEBI CSCRF 2024, PR.PS: critical vulnerabilities in internet-facing systems shall be patched within 7 days of publication",
+            "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
+          },
+          {
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "PR.PS.S6",
+            "topic": "patch-sla",
+            "severity": "high",
+            "days": 7,
+            "basis": "SEBI CSCRF 2024, PR.PS: high-severity vulnerabilities in critical systems shall be remediated within 7 days"
+          },
+          {
+            "instrument": "cert-in-directions-2022",
+            "topic": "incident-reporting",
+            "severity": "any",
+            "days": 1,
+            "hours": 6,
+            "basis": "CERT-In Directions of 28 April 2022, para (ii): report cyber incidents within 6 hours of noticing or being brought to notice",
+            "url": "https://www.cert-in.org.in/Directions70B.jsp"
+          },
+          {
+            "instrument": "dpdp-rules-2025",
+            "topic": "breach-notification",
+            "severity": "any",
+            "days": 3,
+            "hours": 72,
+            "basis": "DPDP Rules 2025, Rule 7: intimate the Data Protection Board within 72 hours of becoming aware of a personal data breach"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-01T09:00:00Z"
+        }
+      }
+    },
+    {
+      "description": "duplicate entries",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.vocab.sla-table",
+        "lastReviewedAt": "2026-09-01",
+        "precedence": "most-strict-wins",
+        "defaults": {
+          "critical": 7,
+          "high": 30,
+          "medium": 90,
+          "low": 180,
+          "info": 365
+        },
+        "entries": [
+          {
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "PR.PS.S6",
+            "topic": "patch-sla",
+            "severity": "critical",
+            "days": 7,
+            "basis": "SEBI CSCRF 2024, PR.PS: critical vulnerabilities in internet-facing systems shall be patched within 7 days of publication",
+            "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
+          },
+          {
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "PR.PS.S6",
+            "topic": "patch-sla",
+            "severity": "high",
+            "days": 7,
+            "basis": "SEBI CSCRF 2024, PR.PS: high-severity vulnerabilities in critical systems shall be remediated within 7 days"
+          },
+          {
+            "instrument": "cert-in-directions-2022",
+            "topic": "incident-reporting",
+            "severity": "any",
+            "days": 1,
+            "hours": 6,
+            "basis": "CERT-In Directions of 28 April 2022, para (ii): report cyber incidents within 6 hours of noticing or being brought to notice",
+            "url": "https://www.cert-in.org.in/Directions70B.jsp"
+          },
+          {
+            "instrument": "dpdp-rules-2025",
+            "topic": "breach-notification",
+            "severity": "any",
+            "days": 3,
+            "hours": 72,
+            "basis": "DPDP Rules 2025, Rule 7: intimate the Data Protection Board within 72 hours of becoming aware of a personal data breach"
+          },
+          {
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "PR.PS.S6",
+            "topic": "patch-sla",
+            "severity": "critical",
+            "days": 7,
+            "basis": "SEBI CSCRF 2024, PR.PS: critical vulnerabilities in internet-facing systems shall be patched within 7 days of publication",
+            "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-01T09:00:00Z"
+        }
+      }
+    },
+    {
+      "description": "table without optional provenance",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.vocab.sla-table",
+        "lastReviewedAt": "2026-09-01",
+        "precedence": "most-strict-wins",
+        "defaults": {
+          "critical": 7,
+          "high": 30,
+          "medium": 90,
+          "low": 180,
+          "info": 365
+        },
+        "entries": [
+          {
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "PR.PS.S6",
+            "topic": "patch-sla",
+            "severity": "critical",
+            "days": 7,
+            "basis": "SEBI CSCRF 2024, PR.PS: critical vulnerabilities in internet-facing systems shall be patched within 7 days of publication",
+            "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
+          },
+          {
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "PR.PS.S6",
+            "topic": "patch-sla",
+            "severity": "high",
+            "days": 7,
+            "basis": "SEBI CSCRF 2024, PR.PS: high-severity vulnerabilities in critical systems shall be remediated within 7 days"
+          },
+          {
+            "instrument": "cert-in-directions-2022",
+            "topic": "incident-reporting",
+            "severity": "any",
+            "days": 1,
+            "hours": 6,
+            "basis": "CERT-In Directions of 28 April 2022, para (ii): report cyber incidents within 6 hours of noticing or being brought to notice",
+            "url": "https://www.cert-in.org.in/Directions70B.jsp"
+          },
+          {
+            "instrument": "dpdp-rules-2025",
+            "topic": "breach-notification",
+            "severity": "any",
+            "days": 3,
+            "hours": 72,
+            "basis": "DPDP Rules 2025, Rule 7: intimate the Data Protection Board within 72 hours of becoming aware of a personal data breach"
+          }
+        ]
+      }
+    },
+    {
+      "description": "row for a topic added in the extended vocabulary",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.vocab.sla-table",
+        "lastReviewedAt": "2026-09-01",
+        "precedence": "most-strict-wins",
+        "defaults": {
+          "critical": 7,
+          "high": 30,
+          "medium": 90,
+          "low": 180,
+          "info": 365
+        },
+        "entries": [
+          {
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "PR.PS.S6",
+            "topic": "patch-sla",
+            "severity": "critical",
+            "days": 7,
+            "basis": "SEBI CSCRF 2024, PR.PS: critical vulnerabilities in internet-facing systems shall be patched within 7 days of publication",
+            "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
+          },
+          {
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "PR.PS.S6",
+            "topic": "patch-sla",
+            "severity": "high",
+            "days": 7,
+            "basis": "SEBI CSCRF 2024, PR.PS: high-severity vulnerabilities in critical systems shall be remediated within 7 days"
+          },
+          {
+            "instrument": "cert-in-directions-2022",
+            "topic": "incident-reporting",
+            "severity": "any",
+            "days": 1,
+            "hours": 6,
+            "basis": "CERT-In Directions of 28 April 2022, para (ii): report cyber incidents within 6 hours of noticing or being brought to notice",
+            "url": "https://www.cert-in.org.in/Directions70B.jsp"
+          },
+          {
+            "instrument": "dpdp-rules-2025",
+            "topic": "breach-notification",
+            "severity": "any",
+            "days": 3,
+            "hours": 72,
+            "basis": "DPDP Rules 2025, Rule 7: intimate the Data Protection Board within 72 hours of becoming aware of a personal data breach"
+          },
+          {
+            "instrument": "rbi-cyber-tech-directions-2026",
+            "topic": "access-review",
+            "severity": "any",
+            "days": 90,
+            "basis": "RBI Cyber and Technology Directions 2026: privileged access rights shall be reviewed at least quarterly"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-01T09:00:00Z"
+        }
+      }
+    },
+    {
+      "description": "company-override precedence",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.vocab.sla-table",
+        "lastReviewedAt": "2026-09-01",
+        "precedence": "company-override",
+        "defaults": {
+          "critical": 7,
+          "high": 30,
+          "medium": 90,
+          "low": 180,
+          "info": 365
+        },
+        "entries": [
+          {
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "PR.PS.S6",
+            "topic": "patch-sla",
+            "severity": "critical",
+            "days": 7,
+            "basis": "SEBI CSCRF 2024, PR.PS: critical vulnerabilities in internet-facing systems shall be patched within 7 days of publication",
+            "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
+          },
+          {
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "PR.PS.S6",
+            "topic": "patch-sla",
+            "severity": "high",
+            "days": 7,
+            "basis": "SEBI CSCRF 2024, PR.PS: high-severity vulnerabilities in critical systems shall be remediated within 7 days"
+          },
+          {
+            "instrument": "cert-in-directions-2022",
+            "topic": "incident-reporting",
+            "severity": "any",
+            "days": 1,
+            "hours": 6,
+            "basis": "CERT-In Directions of 28 April 2022, para (ii): report cyber incidents within 6 hours of noticing or being brought to notice",
+            "url": "https://www.cert-in.org.in/Directions70B.jsp"
+          },
+          {
+            "instrument": "dpdp-rules-2025",
+            "topic": "breach-notification",
+            "severity": "any",
+            "days": 3,
+            "hours": 72,
+            "basis": "DPDP Rules 2025, Rule 7: intimate the Data Protection Board within 72 hours of becoming aware of a personal data breach"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-01T09:00:00Z"
+        }
+      }
+    }
+  ]
+}

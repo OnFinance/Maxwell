@@ -1,0 +1,1361 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/v1/kpi/pagerduty-export.schema.json",
+  "tests": [
+    {
+      "description": "complete export with one resolved incident",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.pagerduty-export",
+        "exportedAt": "2026-09-13T09:00:12Z",
+        "source": {
+          "apiVersion": "v2",
+          "serviceIds": [
+            "PQ7X2LM"
+          ],
+          "since": "2026-09-01T00:00:00Z",
+          "until": "2026-09-13T00:00:00Z"
+        },
+        "incidents": [
+          {
+            "id": "Q1R2S3T4U5V6W7",
+            "incident_number": 4182,
+            "title": "UPI collect callback latency above 2s on kite-payments prod",
+            "description": "p95 latency on /v1/upi/callback exceeded 2000ms for 10 minutes after rollout of the SBOM gating change for GV.SC.S5 on kite-payments-prod",
+            "status": "resolved",
+            "urgency": "high",
+            "priority": {
+              "id": "P53ZZH5",
+              "summary": "P2"
+            },
+            "created_at": "2026-09-08T14:02:31Z",
+            "updated_at": "2026-09-08T15:20:04Z",
+            "resolved_at": "2026-09-08T15:20:04Z",
+            "last_status_change_at": "2026-09-08T15:20:04Z",
+            "incident_key": "maxwell:gv.sc.s5:kite-payments-prod:3f7a1c2e9b4d4e6f",
+            "service": {
+              "id": "PQ7X2LM",
+              "summary": "kite-payments-prod"
+            },
+            "escalation_policy": {
+              "id": "PA1B2C3",
+              "summary": "Payments on-call"
+            },
+            "teams": [
+              {
+                "id": "PT4KHLK",
+                "summary": "Payments platform"
+              }
+            ],
+            "alert_counts": {
+              "all": 3,
+              "triggered": 0,
+              "resolved": 3
+            },
+            "html_url": "https://zerodha.pagerduty.com/incidents/Q1R2S3T4U5V6W7",
+            "raw": {
+              "type": "incident",
+              "is_mergeable": true
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T09:00:12Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/pagerduty-export.mjs"
+        }
+      }
+    },
+    {
+      "description": "export with no incidents in window",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.pagerduty-export",
+        "exportedAt": "2026-09-13T09:00:12Z",
+        "source": {
+          "apiVersion": "v2",
+          "since": "2026-09-01T00:00:00Z",
+          "until": "2026-09-13T00:00:00Z"
+        },
+        "incidents": [],
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T09:00:12Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/pagerduty-export.mjs"
+        }
+      }
+    },
+    {
+      "description": "incident with only required fields and a non-maxwell key",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.pagerduty-export",
+        "exportedAt": "2026-09-13T09:00:12Z",
+        "source": {
+          "apiVersion": "v2",
+          "serviceIds": [
+            "PQ7X2LM"
+          ],
+          "since": "2026-09-01T00:00:00Z",
+          "until": "2026-09-13T00:00:00Z"
+        },
+        "incidents": [
+          {
+            "id": "PABC123",
+            "incident_number": 1,
+            "title": "Disk full on kite-web-03",
+            "status": "triggered",
+            "urgency": "low",
+            "created_at": "2026-09-10T01:00:00Z",
+            "incident_key": "datadog:disk:kite-web-03",
+            "service": {
+              "id": "PQ7X2LM",
+              "summary": "kite-web-prod"
+            },
+            "html_url": "https://zerodha.pagerduty.com/incidents/PABC123"
+          }
+        ],
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T09:00:12Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/pagerduty-export.mjs"
+        }
+      }
+    },
+    {
+      "description": "invented camelCase key on incident",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.pagerduty-export",
+        "exportedAt": "2026-09-13T09:00:12Z",
+        "source": {
+          "apiVersion": "v2",
+          "serviceIds": [
+            "PQ7X2LM"
+          ],
+          "since": "2026-09-01T00:00:00Z",
+          "until": "2026-09-13T00:00:00Z"
+        },
+        "incidents": [
+          {
+            "id": "Q1R2S3T4U5V6W7",
+            "incident_number": 4182,
+            "title": "UPI collect callback latency above 2s on kite-payments prod",
+            "description": "p95 latency on /v1/upi/callback exceeded 2000ms for 10 minutes after rollout of the SBOM gating change for GV.SC.S5 on kite-payments-prod",
+            "status": "resolved",
+            "urgency": "high",
+            "priority": {
+              "id": "P53ZZH5",
+              "summary": "P2"
+            },
+            "created_at": "2026-09-08T14:02:31Z",
+            "updated_at": "2026-09-08T15:20:04Z",
+            "resolved_at": "2026-09-08T15:20:04Z",
+            "last_status_change_at": "2026-09-08T15:20:04Z",
+            "incident_key": "maxwell:gv.sc.s5:kite-payments-prod:3f7a1c2e9b4d4e6f",
+            "service": {
+              "id": "PQ7X2LM",
+              "summary": "kite-payments-prod"
+            },
+            "escalation_policy": {
+              "id": "PA1B2C3",
+              "summary": "Payments on-call"
+            },
+            "teams": [
+              {
+                "id": "PT4KHLK",
+                "summary": "Payments platform"
+              }
+            ],
+            "alert_counts": {
+              "all": 3,
+              "triggered": 0,
+              "resolved": 3
+            },
+            "html_url": "https://zerodha.pagerduty.com/incidents/Q1R2S3T4U5V6W7",
+            "raw": {
+              "type": "incident",
+              "is_mergeable": true
+            },
+            "createdAt": "2026-09-08T14:02:31Z"
+          }
+        ],
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T09:00:12Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/pagerduty-export.mjs"
+        }
+      }
+    },
+    {
+      "description": "bad PagerDuty id pattern",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.pagerduty-export",
+        "exportedAt": "2026-09-13T09:00:12Z",
+        "source": {
+          "apiVersion": "v2",
+          "serviceIds": [
+            "PQ7X2LM"
+          ],
+          "since": "2026-09-01T00:00:00Z",
+          "until": "2026-09-13T00:00:00Z"
+        },
+        "incidents": [
+          {
+            "id": "Q1R2S3T4U5V6W7",
+            "incident_number": 4182,
+            "title": "UPI collect callback latency above 2s on kite-payments prod",
+            "description": "p95 latency on /v1/upi/callback exceeded 2000ms for 10 minutes after rollout of the SBOM gating change for GV.SC.S5 on kite-payments-prod",
+            "status": "resolved",
+            "urgency": "high",
+            "priority": {
+              "id": "P53ZZH5",
+              "summary": "P2"
+            },
+            "created_at": "2026-09-08T14:02:31Z",
+            "updated_at": "2026-09-08T15:20:04Z",
+            "resolved_at": "2026-09-08T15:20:04Z",
+            "last_status_change_at": "2026-09-08T15:20:04Z",
+            "incident_key": "maxwell:gv.sc.s5:kite-payments-prod:3f7a1c2e9b4d4e6f",
+            "service": {
+              "id": "svc-1",
+              "summary": "kite-payments-prod"
+            },
+            "escalation_policy": {
+              "id": "PA1B2C3",
+              "summary": "Payments on-call"
+            },
+            "teams": [
+              {
+                "id": "PT4KHLK",
+                "summary": "Payments platform"
+              }
+            ],
+            "alert_counts": {
+              "all": 3,
+              "triggered": 0,
+              "resolved": 3
+            },
+            "html_url": "https://zerodha.pagerduty.com/incidents/Q1R2S3T4U5V6W7",
+            "raw": {
+              "type": "incident",
+              "is_mergeable": true
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T09:00:12Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/pagerduty-export.mjs"
+        }
+      }
+    },
+    {
+      "description": "bad status enum",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.pagerduty-export",
+        "exportedAt": "2026-09-13T09:00:12Z",
+        "source": {
+          "apiVersion": "v2",
+          "serviceIds": [
+            "PQ7X2LM"
+          ],
+          "since": "2026-09-01T00:00:00Z",
+          "until": "2026-09-13T00:00:00Z"
+        },
+        "incidents": [
+          {
+            "id": "Q1R2S3T4U5V6W7",
+            "incident_number": 4182,
+            "title": "UPI collect callback latency above 2s on kite-payments prod",
+            "description": "p95 latency on /v1/upi/callback exceeded 2000ms for 10 minutes after rollout of the SBOM gating change for GV.SC.S5 on kite-payments-prod",
+            "status": "closed",
+            "urgency": "high",
+            "priority": {
+              "id": "P53ZZH5",
+              "summary": "P2"
+            },
+            "created_at": "2026-09-08T14:02:31Z",
+            "updated_at": "2026-09-08T15:20:04Z",
+            "resolved_at": "2026-09-08T15:20:04Z",
+            "last_status_change_at": "2026-09-08T15:20:04Z",
+            "incident_key": "maxwell:gv.sc.s5:kite-payments-prod:3f7a1c2e9b4d4e6f",
+            "service": {
+              "id": "PQ7X2LM",
+              "summary": "kite-payments-prod"
+            },
+            "escalation_policy": {
+              "id": "PA1B2C3",
+              "summary": "Payments on-call"
+            },
+            "teams": [
+              {
+                "id": "PT4KHLK",
+                "summary": "Payments platform"
+              }
+            ],
+            "alert_counts": {
+              "all": 3,
+              "triggered": 0,
+              "resolved": 3
+            },
+            "html_url": "https://zerodha.pagerduty.com/incidents/Q1R2S3T4U5V6W7",
+            "raw": {
+              "type": "incident",
+              "is_mergeable": true
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T09:00:12Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/pagerduty-export.mjs"
+        }
+      }
+    },
+    {
+      "description": "missing required incident_key",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.pagerduty-export",
+        "exportedAt": "2026-09-13T09:00:12Z",
+        "source": {
+          "apiVersion": "v2",
+          "serviceIds": [
+            "PQ7X2LM"
+          ],
+          "since": "2026-09-01T00:00:00Z",
+          "until": "2026-09-13T00:00:00Z"
+        },
+        "incidents": [
+          {
+            "id": "Q1R2S3T4U5V6W7",
+            "incident_number": 4182,
+            "title": "UPI collect callback latency above 2s on kite-payments prod",
+            "description": "p95 latency on /v1/upi/callback exceeded 2000ms for 10 minutes after rollout of the SBOM gating change for GV.SC.S5 on kite-payments-prod",
+            "status": "resolved",
+            "urgency": "high",
+            "priority": {
+              "id": "P53ZZH5",
+              "summary": "P2"
+            },
+            "created_at": "2026-09-08T14:02:31Z",
+            "updated_at": "2026-09-08T15:20:04Z",
+            "resolved_at": "2026-09-08T15:20:04Z",
+            "last_status_change_at": "2026-09-08T15:20:04Z",
+            "service": {
+              "id": "PQ7X2LM",
+              "summary": "kite-payments-prod"
+            },
+            "escalation_policy": {
+              "id": "PA1B2C3",
+              "summary": "Payments on-call"
+            },
+            "teams": [
+              {
+                "id": "PT4KHLK",
+                "summary": "Payments platform"
+              }
+            ],
+            "alert_counts": {
+              "all": 3,
+              "triggered": 0,
+              "resolved": 3
+            },
+            "html_url": "https://zerodha.pagerduty.com/incidents/Q1R2S3T4U5V6W7",
+            "raw": {
+              "type": "incident",
+              "is_mergeable": true
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T09:00:12Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/pagerduty-export.mjs"
+        }
+      }
+    },
+    {
+      "description": "apiVersion other than v2",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.pagerduty-export",
+        "exportedAt": "2026-09-13T09:00:12Z",
+        "source": {
+          "apiVersion": "v1",
+          "serviceIds": [
+            "PQ7X2LM"
+          ],
+          "since": "2026-09-01T00:00:00Z",
+          "until": "2026-09-13T00:00:00Z"
+        },
+        "incidents": [
+          {
+            "id": "Q1R2S3T4U5V6W7",
+            "incident_number": 4182,
+            "title": "UPI collect callback latency above 2s on kite-payments prod",
+            "description": "p95 latency on /v1/upi/callback exceeded 2000ms for 10 minutes after rollout of the SBOM gating change for GV.SC.S5 on kite-payments-prod",
+            "status": "resolved",
+            "urgency": "high",
+            "priority": {
+              "id": "P53ZZH5",
+              "summary": "P2"
+            },
+            "created_at": "2026-09-08T14:02:31Z",
+            "updated_at": "2026-09-08T15:20:04Z",
+            "resolved_at": "2026-09-08T15:20:04Z",
+            "last_status_change_at": "2026-09-08T15:20:04Z",
+            "incident_key": "maxwell:gv.sc.s5:kite-payments-prod:3f7a1c2e9b4d4e6f",
+            "service": {
+              "id": "PQ7X2LM",
+              "summary": "kite-payments-prod"
+            },
+            "escalation_policy": {
+              "id": "PA1B2C3",
+              "summary": "Payments on-call"
+            },
+            "teams": [
+              {
+                "id": "PT4KHLK",
+                "summary": "Payments platform"
+              }
+            ],
+            "alert_counts": {
+              "all": 3,
+              "triggered": 0,
+              "resolved": 3
+            },
+            "html_url": "https://zerodha.pagerduty.com/incidents/Q1R2S3T4U5V6W7",
+            "raw": {
+              "type": "incident",
+              "is_mergeable": true
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T09:00:12Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/pagerduty-export.mjs"
+        }
+      }
+    },
+    {
+      "description": "raw passthrough exceeding cap",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.pagerduty-export",
+        "exportedAt": "2026-09-13T09:00:12Z",
+        "source": {
+          "apiVersion": "v2",
+          "serviceIds": [
+            "PQ7X2LM"
+          ],
+          "since": "2026-09-01T00:00:00Z",
+          "until": "2026-09-13T00:00:00Z"
+        },
+        "incidents": [
+          {
+            "id": "Q1R2S3T4U5V6W7",
+            "incident_number": 4182,
+            "title": "UPI collect callback latency above 2s on kite-payments prod",
+            "description": "p95 latency on /v1/upi/callback exceeded 2000ms for 10 minutes after rollout of the SBOM gating change for GV.SC.S5 on kite-payments-prod",
+            "status": "resolved",
+            "urgency": "high",
+            "priority": {
+              "id": "P53ZZH5",
+              "summary": "P2"
+            },
+            "created_at": "2026-09-08T14:02:31Z",
+            "updated_at": "2026-09-08T15:20:04Z",
+            "resolved_at": "2026-09-08T15:20:04Z",
+            "last_status_change_at": "2026-09-08T15:20:04Z",
+            "incident_key": "maxwell:gv.sc.s5:kite-payments-prod:3f7a1c2e9b4d4e6f",
+            "service": {
+              "id": "PQ7X2LM",
+              "summary": "kite-payments-prod"
+            },
+            "escalation_policy": {
+              "id": "PA1B2C3",
+              "summary": "Payments on-call"
+            },
+            "teams": [
+              {
+                "id": "PT4KHLK",
+                "summary": "Payments platform"
+              }
+            ],
+            "alert_counts": {
+              "all": 3,
+              "triggered": 0,
+              "resolved": 3
+            },
+            "html_url": "https://zerodha.pagerduty.com/incidents/Q1R2S3T4U5V6W7",
+            "raw": {
+              "k0": 0,
+              "k1": 1,
+              "k2": 2,
+              "k3": 3,
+              "k4": 4,
+              "k5": 5,
+              "k6": 6,
+              "k7": 7,
+              "k8": 8,
+              "k9": 9,
+              "k10": 10,
+              "k11": 11,
+              "k12": 12,
+              "k13": 13,
+              "k14": 14,
+              "k15": 15,
+              "k16": 16,
+              "k17": 17,
+              "k18": 18,
+              "k19": 19,
+              "k20": 20,
+              "k21": 21,
+              "k22": 22,
+              "k23": 23,
+              "k24": 24,
+              "k25": 25,
+              "k26": 26,
+              "k27": 27,
+              "k28": 28,
+              "k29": 29,
+              "k30": 30,
+              "k31": 31,
+              "k32": 32
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T09:00:12Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/pagerduty-export.mjs"
+        }
+      }
+    },
+    {
+      "description": "html_url not http(s)",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.pagerduty-export",
+        "exportedAt": "2026-09-13T09:00:12Z",
+        "source": {
+          "apiVersion": "v2",
+          "serviceIds": [
+            "PQ7X2LM"
+          ],
+          "since": "2026-09-01T00:00:00Z",
+          "until": "2026-09-13T00:00:00Z"
+        },
+        "incidents": [
+          {
+            "id": "Q1R2S3T4U5V6W7",
+            "incident_number": 4182,
+            "title": "UPI collect callback latency above 2s on kite-payments prod",
+            "description": "p95 latency on /v1/upi/callback exceeded 2000ms for 10 minutes after rollout of the SBOM gating change for GV.SC.S5 on kite-payments-prod",
+            "status": "resolved",
+            "urgency": "high",
+            "priority": {
+              "id": "P53ZZH5",
+              "summary": "P2"
+            },
+            "created_at": "2026-09-08T14:02:31Z",
+            "updated_at": "2026-09-08T15:20:04Z",
+            "resolved_at": "2026-09-08T15:20:04Z",
+            "last_status_change_at": "2026-09-08T15:20:04Z",
+            "incident_key": "maxwell:gv.sc.s5:kite-payments-prod:3f7a1c2e9b4d4e6f",
+            "service": {
+              "id": "PQ7X2LM",
+              "summary": "kite-payments-prod"
+            },
+            "escalation_policy": {
+              "id": "PA1B2C3",
+              "summary": "Payments on-call"
+            },
+            "teams": [
+              {
+                "id": "PT4KHLK",
+                "summary": "Payments platform"
+              }
+            ],
+            "alert_counts": {
+              "all": 3,
+              "triggered": 0,
+              "resolved": 3
+            },
+            "html_url": "ftp://x",
+            "raw": {
+              "type": "incident",
+              "is_mergeable": true
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T09:00:12Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/pagerduty-export.mjs"
+        }
+      }
+    },
+    {
+      "description": "missing provenance",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.pagerduty-export",
+        "exportedAt": "2026-09-13T09:00:12Z",
+        "source": {
+          "apiVersion": "v2",
+          "serviceIds": [
+            "PQ7X2LM"
+          ],
+          "since": "2026-09-01T00:00:00Z",
+          "until": "2026-09-13T00:00:00Z"
+        },
+        "incidents": [
+          {
+            "id": "Q1R2S3T4U5V6W7",
+            "incident_number": 4182,
+            "title": "UPI collect callback latency above 2s on kite-payments prod",
+            "description": "p95 latency on /v1/upi/callback exceeded 2000ms for 10 minutes after rollout of the SBOM gating change for GV.SC.S5 on kite-payments-prod",
+            "status": "resolved",
+            "urgency": "high",
+            "priority": {
+              "id": "P53ZZH5",
+              "summary": "P2"
+            },
+            "created_at": "2026-09-08T14:02:31Z",
+            "updated_at": "2026-09-08T15:20:04Z",
+            "resolved_at": "2026-09-08T15:20:04Z",
+            "last_status_change_at": "2026-09-08T15:20:04Z",
+            "incident_key": "maxwell:gv.sc.s5:kite-payments-prod:3f7a1c2e9b4d4e6f",
+            "service": {
+              "id": "PQ7X2LM",
+              "summary": "kite-payments-prod"
+            },
+            "escalation_policy": {
+              "id": "PA1B2C3",
+              "summary": "Payments on-call"
+            },
+            "teams": [
+              {
+                "id": "PT4KHLK",
+                "summary": "Payments platform"
+              }
+            ],
+            "alert_counts": {
+              "all": 3,
+              "triggered": 0,
+              "resolved": 3
+            },
+            "html_url": "https://zerodha.pagerduty.com/incidents/Q1R2S3T4U5V6W7",
+            "raw": {
+              "type": "incident",
+              "is_mergeable": true
+            }
+          }
+        ]
+      }
+    },
+    {
+      "description": "maxwell incident_key in the ledger dedupKey convention",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.pagerduty-export",
+        "exportedAt": "2026-09-13T09:00:12Z",
+        "source": {
+          "apiVersion": "v2",
+          "serviceIds": [
+            "PQ7X2LM"
+          ],
+          "since": "2026-09-01T00:00:00Z",
+          "until": "2026-09-13T00:00:00Z"
+        },
+        "incidents": [
+          {
+            "id": "Q1R2S3T4U5V6W7",
+            "incident_number": 4182,
+            "title": "UPI collect callback latency above 2s on kite-payments prod",
+            "description": "p95 latency on /v1/upi/callback exceeded 2000ms for 10 minutes after rollout of the SBOM gating change for GV.SC.S5 on kite-payments-prod",
+            "status": "resolved",
+            "urgency": "high",
+            "priority": {
+              "id": "P53ZZH5",
+              "summary": "P2"
+            },
+            "created_at": "2026-09-08T14:02:31Z",
+            "updated_at": "2026-09-08T15:20:04Z",
+            "resolved_at": "2026-09-08T15:20:04Z",
+            "last_status_change_at": "2026-09-08T15:20:04Z",
+            "incident_key": "maxwell:gv.sc.s5:batch-settlement:c5d3c5d3c5d3c5d3",
+            "service": {
+              "id": "PQ7X2LM",
+              "summary": "kite-payments-prod"
+            },
+            "escalation_policy": {
+              "id": "PA1B2C3",
+              "summary": "Payments on-call"
+            },
+            "teams": [
+              {
+                "id": "PT4KHLK",
+                "summary": "Payments platform"
+              }
+            ],
+            "alert_counts": {
+              "all": 3,
+              "triggered": 0,
+              "resolved": 3
+            },
+            "html_url": "https://zerodha.pagerduty.com/incidents/Q1R2S3T4U5V6W7",
+            "raw": {
+              "type": "incident",
+              "is_mergeable": true
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T09:00:12Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/pagerduty-export.mjs"
+        }
+      }
+    },
+    {
+      "description": "maxwell incident_key with the old companyId:initiativeId:appId:envId segments",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.pagerduty-export",
+        "exportedAt": "2026-09-13T09:00:12Z",
+        "source": {
+          "apiVersion": "v2",
+          "serviceIds": [
+            "PQ7X2LM"
+          ],
+          "since": "2026-09-01T00:00:00Z",
+          "until": "2026-09-13T00:00:00Z"
+        },
+        "incidents": [
+          {
+            "id": "Q1R2S3T4U5V6W7",
+            "incident_number": 4182,
+            "title": "UPI collect callback latency above 2s on kite-payments prod",
+            "description": "p95 latency on /v1/upi/callback exceeded 2000ms for 10 minutes after rollout of the SBOM gating change for GV.SC.S5 on kite-payments-prod",
+            "status": "resolved",
+            "urgency": "high",
+            "priority": {
+              "id": "P53ZZH5",
+              "summary": "P2"
+            },
+            "created_at": "2026-09-08T14:02:31Z",
+            "updated_at": "2026-09-08T15:20:04Z",
+            "resolved_at": "2026-09-08T15:20:04Z",
+            "last_status_change_at": "2026-09-08T15:20:04Z",
+            "incident_key": "maxwell:zerodha-broking:init_01J9Z2Q7M4K8N2P6R0T4V8X2A6:kite-payments:prod",
+            "service": {
+              "id": "PQ7X2LM",
+              "summary": "kite-payments-prod"
+            },
+            "escalation_policy": {
+              "id": "PA1B2C3",
+              "summary": "Payments on-call"
+            },
+            "teams": [
+              {
+                "id": "PT4KHLK",
+                "summary": "Payments platform"
+              }
+            ],
+            "alert_counts": {
+              "all": 3,
+              "triggered": 0,
+              "resolved": 3
+            },
+            "html_url": "https://zerodha.pagerduty.com/incidents/Q1R2S3T4U5V6W7",
+            "raw": {
+              "type": "incident",
+              "is_mergeable": true
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T09:00:12Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/pagerduty-export.mjs"
+        }
+      }
+    },
+    {
+      "description": "maxwell incident_key with an upper-case control id",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.pagerduty-export",
+        "exportedAt": "2026-09-13T09:00:12Z",
+        "source": {
+          "apiVersion": "v2",
+          "serviceIds": [
+            "PQ7X2LM"
+          ],
+          "since": "2026-09-01T00:00:00Z",
+          "until": "2026-09-13T00:00:00Z"
+        },
+        "incidents": [
+          {
+            "id": "Q1R2S3T4U5V6W7",
+            "incident_number": 4182,
+            "title": "UPI collect callback latency above 2s on kite-payments prod",
+            "description": "p95 latency on /v1/upi/callback exceeded 2000ms for 10 minutes after rollout of the SBOM gating change for GV.SC.S5 on kite-payments-prod",
+            "status": "resolved",
+            "urgency": "high",
+            "priority": {
+              "id": "P53ZZH5",
+              "summary": "P2"
+            },
+            "created_at": "2026-09-08T14:02:31Z",
+            "updated_at": "2026-09-08T15:20:04Z",
+            "resolved_at": "2026-09-08T15:20:04Z",
+            "last_status_change_at": "2026-09-08T15:20:04Z",
+            "incident_key": "maxwell:GV.SC.S5:kite-payments-prod:3f7a1c2e9b4d4e6f",
+            "service": {
+              "id": "PQ7X2LM",
+              "summary": "kite-payments-prod"
+            },
+            "escalation_policy": {
+              "id": "PA1B2C3",
+              "summary": "Payments on-call"
+            },
+            "teams": [
+              {
+                "id": "PT4KHLK",
+                "summary": "Payments platform"
+              }
+            ],
+            "alert_counts": {
+              "all": 3,
+              "triggered": 0,
+              "resolved": 3
+            },
+            "html_url": "https://zerodha.pagerduty.com/incidents/Q1R2S3T4U5V6W7",
+            "raw": {
+              "type": "incident",
+              "is_mergeable": true
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T09:00:12Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/pagerduty-export.mjs"
+        }
+      }
+    },
+    {
+      "description": "maxwell incident_key with a short fingerprint",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.pagerduty-export",
+        "exportedAt": "2026-09-13T09:00:12Z",
+        "source": {
+          "apiVersion": "v2",
+          "serviceIds": [
+            "PQ7X2LM"
+          ],
+          "since": "2026-09-01T00:00:00Z",
+          "until": "2026-09-13T00:00:00Z"
+        },
+        "incidents": [
+          {
+            "id": "Q1R2S3T4U5V6W7",
+            "incident_number": 4182,
+            "title": "UPI collect callback latency above 2s on kite-payments prod",
+            "description": "p95 latency on /v1/upi/callback exceeded 2000ms for 10 minutes after rollout of the SBOM gating change for GV.SC.S5 on kite-payments-prod",
+            "status": "resolved",
+            "urgency": "high",
+            "priority": {
+              "id": "P53ZZH5",
+              "summary": "P2"
+            },
+            "created_at": "2026-09-08T14:02:31Z",
+            "updated_at": "2026-09-08T15:20:04Z",
+            "resolved_at": "2026-09-08T15:20:04Z",
+            "last_status_change_at": "2026-09-08T15:20:04Z",
+            "incident_key": "maxwell:gv.sc.s5:kite-payments-prod:3f7a1c2e",
+            "service": {
+              "id": "PQ7X2LM",
+              "summary": "kite-payments-prod"
+            },
+            "escalation_policy": {
+              "id": "PA1B2C3",
+              "summary": "Payments on-call"
+            },
+            "teams": [
+              {
+                "id": "PT4KHLK",
+                "summary": "Payments platform"
+              }
+            ],
+            "alert_counts": {
+              "all": 3,
+              "triggered": 0,
+              "resolved": 3
+            },
+            "html_url": "https://zerodha.pagerduty.com/incidents/Q1R2S3T4U5V6W7",
+            "raw": {
+              "type": "incident",
+              "is_mergeable": true
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T09:00:12Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/pagerduty-export.mjs"
+        }
+      }
+    },
+    {
+      "description": "manually created incident with null incident_key",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.pagerduty-export",
+        "exportedAt": "2026-09-13T09:00:12Z",
+        "source": {
+          "apiVersion": "v2",
+          "serviceIds": [
+            "PQ7X2LM"
+          ],
+          "since": "2026-09-01T00:00:00Z",
+          "until": "2026-09-13T00:00:00Z"
+        },
+        "incidents": [
+          {
+            "id": "Q1R2S3T4U5V6W7",
+            "incident_number": 4182,
+            "title": "UPI collect callback latency above 2s on kite-payments prod",
+            "description": null,
+            "status": "acknowledged",
+            "urgency": "high",
+            "priority": {
+              "id": "P53ZZH5",
+              "summary": "P2"
+            },
+            "created_at": "2026-09-08T14:02:31Z",
+            "updated_at": "2026-09-08T15:20:04Z",
+            "last_status_change_at": "2026-09-08T14:10:00Z",
+            "incident_key": null,
+            "service": {
+              "id": "PQ7X2LM",
+              "summary": "kite-payments-prod"
+            },
+            "escalation_policy": {
+              "id": "PA1B2C3",
+              "summary": "Payments on-call"
+            },
+            "teams": [
+              {
+                "id": "PT4KHLK",
+                "summary": "Payments platform"
+              }
+            ],
+            "alert_counts": {
+              "all": 1,
+              "triggered": 1,
+              "resolved": 0
+            },
+            "html_url": "https://zerodha.pagerduty.com/incidents/Q1R2S3T4U5V6W7",
+            "raw": {
+              "type": "incident",
+              "is_mergeable": true
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T09:00:12Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/pagerduty-export.mjs"
+        }
+      }
+    },
+    {
+      "description": "empty-string description is rejected (exporter must write null)",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.pagerduty-export",
+        "exportedAt": "2026-09-13T09:00:12Z",
+        "source": {
+          "apiVersion": "v2",
+          "serviceIds": [
+            "PQ7X2LM"
+          ],
+          "since": "2026-09-01T00:00:00Z",
+          "until": "2026-09-13T00:00:00Z"
+        },
+        "incidents": [
+          {
+            "id": "Q1R2S3T4U5V6W7",
+            "incident_number": 4182,
+            "title": "UPI collect callback latency above 2s on kite-payments prod",
+            "description": "",
+            "status": "resolved",
+            "urgency": "high",
+            "priority": {
+              "id": "P53ZZH5",
+              "summary": "P2"
+            },
+            "created_at": "2026-09-08T14:02:31Z",
+            "updated_at": "2026-09-08T15:20:04Z",
+            "resolved_at": "2026-09-08T15:20:04Z",
+            "last_status_change_at": "2026-09-08T15:20:04Z",
+            "incident_key": "maxwell:gv.sc.s5:kite-payments-prod:3f7a1c2e9b4d4e6f",
+            "service": {
+              "id": "PQ7X2LM",
+              "summary": "kite-payments-prod"
+            },
+            "escalation_policy": {
+              "id": "PA1B2C3",
+              "summary": "Payments on-call"
+            },
+            "teams": [
+              {
+                "id": "PT4KHLK",
+                "summary": "Payments platform"
+              }
+            ],
+            "alert_counts": {
+              "all": 3,
+              "triggered": 0,
+              "resolved": 3
+            },
+            "html_url": "https://zerodha.pagerduty.com/incidents/Q1R2S3T4U5V6W7",
+            "raw": {
+              "type": "incident",
+              "is_mergeable": true
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T09:00:12Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/pagerduty-export.mjs"
+        }
+      }
+    },
+    {
+      "description": "resolved incident without resolved_at",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.pagerduty-export",
+        "exportedAt": "2026-09-13T09:00:12Z",
+        "source": {
+          "apiVersion": "v2",
+          "serviceIds": [
+            "PQ7X2LM"
+          ],
+          "since": "2026-09-01T00:00:00Z",
+          "until": "2026-09-13T00:00:00Z"
+        },
+        "incidents": [
+          {
+            "id": "Q1R2S3T4U5V6W7",
+            "incident_number": 4182,
+            "title": "UPI collect callback latency above 2s on kite-payments prod",
+            "description": "p95 latency on /v1/upi/callback exceeded 2000ms for 10 minutes after rollout of the SBOM gating change for GV.SC.S5 on kite-payments-prod",
+            "status": "resolved",
+            "urgency": "high",
+            "priority": {
+              "id": "P53ZZH5",
+              "summary": "P2"
+            },
+            "created_at": "2026-09-08T14:02:31Z",
+            "updated_at": "2026-09-08T15:20:04Z",
+            "last_status_change_at": "2026-09-08T15:20:04Z",
+            "incident_key": "maxwell:gv.sc.s5:kite-payments-prod:3f7a1c2e9b4d4e6f",
+            "service": {
+              "id": "PQ7X2LM",
+              "summary": "kite-payments-prod"
+            },
+            "escalation_policy": {
+              "id": "PA1B2C3",
+              "summary": "Payments on-call"
+            },
+            "teams": [
+              {
+                "id": "PT4KHLK",
+                "summary": "Payments platform"
+              }
+            ],
+            "alert_counts": {
+              "all": 3,
+              "triggered": 0,
+              "resolved": 3
+            },
+            "html_url": "https://zerodha.pagerduty.com/incidents/Q1R2S3T4U5V6W7",
+            "raw": {
+              "type": "incident",
+              "is_mergeable": true
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T09:00:12Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/pagerduty-export.mjs"
+        }
+      }
+    },
+    {
+      "description": "triggered incident with resolved_at",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.pagerduty-export",
+        "exportedAt": "2026-09-13T09:00:12Z",
+        "source": {
+          "apiVersion": "v2",
+          "serviceIds": [
+            "PQ7X2LM"
+          ],
+          "since": "2026-09-01T00:00:00Z",
+          "until": "2026-09-13T00:00:00Z"
+        },
+        "incidents": [
+          {
+            "id": "Q1R2S3T4U5V6W7",
+            "incident_number": 4182,
+            "title": "UPI collect callback latency above 2s on kite-payments prod",
+            "description": "p95 latency on /v1/upi/callback exceeded 2000ms for 10 minutes after rollout of the SBOM gating change for GV.SC.S5 on kite-payments-prod",
+            "status": "triggered",
+            "urgency": "high",
+            "priority": {
+              "id": "P53ZZH5",
+              "summary": "P2"
+            },
+            "created_at": "2026-09-08T14:02:31Z",
+            "updated_at": "2026-09-08T15:20:04Z",
+            "resolved_at": "2026-09-08T15:20:04Z",
+            "last_status_change_at": "2026-09-08T15:20:04Z",
+            "incident_key": "maxwell:gv.sc.s5:kite-payments-prod:3f7a1c2e9b4d4e6f",
+            "service": {
+              "id": "PQ7X2LM",
+              "summary": "kite-payments-prod"
+            },
+            "escalation_policy": {
+              "id": "PA1B2C3",
+              "summary": "Payments on-call"
+            },
+            "teams": [
+              {
+                "id": "PT4KHLK",
+                "summary": "Payments platform"
+              }
+            ],
+            "alert_counts": {
+              "all": 3,
+              "triggered": 0,
+              "resolved": 3
+            },
+            "html_url": "https://zerodha.pagerduty.com/incidents/Q1R2S3T4U5V6W7",
+            "raw": {
+              "type": "incident",
+              "is_mergeable": true
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T09:00:12Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/pagerduty-export.mjs"
+        }
+      }
+    },
+    {
+      "description": "acknowledged incident without resolved_at",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.pagerduty-export",
+        "exportedAt": "2026-09-13T09:00:12Z",
+        "source": {
+          "apiVersion": "v2",
+          "serviceIds": [
+            "PQ7X2LM"
+          ],
+          "since": "2026-09-01T00:00:00Z",
+          "until": "2026-09-13T00:00:00Z"
+        },
+        "incidents": [
+          {
+            "id": "Q1R2S3T4U5V6W7",
+            "incident_number": 4182,
+            "title": "UPI collect callback latency above 2s on kite-payments prod",
+            "description": "p95 latency on /v1/upi/callback exceeded 2000ms for 10 minutes after rollout of the SBOM gating change for GV.SC.S5 on kite-payments-prod",
+            "status": "acknowledged",
+            "urgency": "high",
+            "priority": {
+              "id": "P53ZZH5",
+              "summary": "P2"
+            },
+            "created_at": "2026-09-08T14:02:31Z",
+            "updated_at": "2026-09-08T15:20:04Z",
+            "last_status_change_at": "2026-09-08T15:20:04Z",
+            "incident_key": "maxwell:gv.sc.s5:kite-payments-prod:3f7a1c2e9b4d4e6f",
+            "service": {
+              "id": "PQ7X2LM",
+              "summary": "kite-payments-prod"
+            },
+            "escalation_policy": {
+              "id": "PA1B2C3",
+              "summary": "Payments on-call"
+            },
+            "teams": [
+              {
+                "id": "PT4KHLK",
+                "summary": "Payments platform"
+              }
+            ],
+            "alert_counts": {
+              "all": 3,
+              "triggered": 3,
+              "resolved": 0
+            },
+            "html_url": "https://zerodha.pagerduty.com/incidents/Q1R2S3T4U5V6W7",
+            "raw": {
+              "type": "incident",
+              "is_mergeable": true
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T09:00:12Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/pagerduty-export.mjs"
+        }
+      }
+    },
+    {
+      "description": "PagerDuty id longer than the ledger externalRefs pattern allows",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.pagerduty-export",
+        "exportedAt": "2026-09-13T09:00:12Z",
+        "source": {
+          "apiVersion": "v2",
+          "serviceIds": [
+            "PQ7X2LM"
+          ],
+          "since": "2026-09-01T00:00:00Z",
+          "until": "2026-09-13T00:00:00Z"
+        },
+        "incidents": [
+          {
+            "id": "Q1R2S3T4U5V6W7X8Y9Z0A1B2C",
+            "incident_number": 4182,
+            "title": "UPI collect callback latency above 2s on kite-payments prod",
+            "description": "p95 latency on /v1/upi/callback exceeded 2000ms for 10 minutes after rollout of the SBOM gating change for GV.SC.S5 on kite-payments-prod",
+            "status": "resolved",
+            "urgency": "high",
+            "priority": {
+              "id": "P53ZZH5",
+              "summary": "P2"
+            },
+            "created_at": "2026-09-08T14:02:31Z",
+            "updated_at": "2026-09-08T15:20:04Z",
+            "resolved_at": "2026-09-08T15:20:04Z",
+            "last_status_change_at": "2026-09-08T15:20:04Z",
+            "incident_key": "maxwell:gv.sc.s5:kite-payments-prod:3f7a1c2e9b4d4e6f",
+            "service": {
+              "id": "PQ7X2LM",
+              "summary": "kite-payments-prod"
+            },
+            "escalation_policy": {
+              "id": "PA1B2C3",
+              "summary": "Payments on-call"
+            },
+            "teams": [
+              {
+                "id": "PT4KHLK",
+                "summary": "Payments platform"
+              }
+            ],
+            "alert_counts": {
+              "all": 3,
+              "triggered": 0,
+              "resolved": 3
+            },
+            "html_url": "https://zerodha.pagerduty.com/incidents/Q1R2S3T4U5V6W7",
+            "raw": {
+              "type": "incident",
+              "is_mergeable": true
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T09:00:12Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/pagerduty-export.mjs"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,2324 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/v1/change-management/timeline.schema.json",
+  "tests": [
+    {
+      "description": "realistic five-event timeline",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.timeline",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "events": [
+          {
+            "eventId": "evt_1",
+            "at": "2026-08-20T06:30:00Z",
+            "type": "created",
+            "toStatus": "proposed",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Raised from finding fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2: no SBOM produced by trading-gateway-api CI (SEBI CSCRF GV.SC.S5)",
+            "refs": {
+              "findingId": "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            }
+          },
+          {
+            "eventId": "evt_2",
+            "at": "2026-08-21T10:05:00Z",
+            "type": "approved",
+            "toStatus": "approved",
+            "actor": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "note": "Approved as a normal change at the weekly CAB; due 2026-09-19 under the 30-day SLA",
+            "refs": {}
+          },
+          {
+            "eventId": "evt_3",
+            "at": "2026-08-22T04:00:00Z",
+            "type": "started",
+            "toStatus": "in-progress",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Work started: tasks being drafted from the finding and the CAB conditions",
+            "refs": {}
+          },
+          {
+            "eventId": "evt_4",
+            "at": "2026-08-22T04:10:00Z",
+            "type": "task-added",
+            "toStatus": "todo",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "task_1: add CycloneDX generation step to the GitHub Actions build workflow",
+            "refs": {
+              "taskId": "task_1",
+              "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            }
+          },
+          {
+            "eventId": "evt_5",
+            "at": "2026-09-05T13:20:00Z",
+            "type": "task-done",
+            "toStatus": "done",
+            "actor": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "note": "task_1 merged via PR #482; SBOM artefact uploaded on the last three builds",
+            "refs": {
+              "taskId": "task_1",
+              "evidence": [
+                {
+                  "type": "pull-request",
+                  "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+                  "collectedAt": "2026-09-05T13:20:00Z",
+                  "description": "PR adding the sbom job to build.yml"
+                }
+              ]
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "single created event",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.timeline",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "events": [
+          {
+            "eventId": "evt_1",
+            "at": "2026-08-20T06:30:00Z",
+            "type": "created",
+            "toStatus": "proposed",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Raised from finding fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2: no SBOM produced by trading-gateway-api CI (SEBI CSCRF GV.SC.S5)",
+            "refs": {
+              "findingId": "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "invented top-level key",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.timeline",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "events": [
+          {
+            "eventId": "evt_1",
+            "at": "2026-08-20T06:30:00Z",
+            "type": "created",
+            "toStatus": "proposed",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Raised from finding fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2: no SBOM produced by trading-gateway-api CI (SEBI CSCRF GV.SC.S5)",
+            "refs": {
+              "findingId": "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            }
+          },
+          {
+            "eventId": "evt_2",
+            "at": "2026-08-21T10:05:00Z",
+            "type": "approved",
+            "toStatus": "approved",
+            "actor": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "note": "Approved as a normal change at the weekly CAB; due 2026-09-19 under the 30-day SLA",
+            "refs": {}
+          },
+          {
+            "eventId": "evt_3",
+            "at": "2026-08-22T04:10:00Z",
+            "type": "task-added",
+            "toStatus": "todo",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "task_1: add CycloneDX generation step to the GitHub Actions build workflow",
+            "refs": {
+              "taskId": "task_1",
+              "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            }
+          },
+          {
+            "eventId": "evt_4",
+            "at": "2026-09-05T13:20:00Z",
+            "type": "task-done",
+            "toStatus": "done",
+            "actor": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "note": "task_1 merged via PR #482; SBOM artefact uploaded on the last three builds",
+            "refs": {
+              "taskId": "task_1",
+              "evidence": [
+                {
+                  "type": "pull-request",
+                  "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+                  "collectedAt": "2026-09-05T13:20:00Z",
+                  "description": "PR adding the sbom job to build.yml"
+                }
+              ]
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        },
+        "summary": "x"
+      }
+    },
+    {
+      "description": "invented event key",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.timeline",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "events": [
+          {
+            "eventId": "evt_1",
+            "at": "2026-08-20T06:30:00Z",
+            "type": "created",
+            "toStatus": "proposed",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Raised from finding fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2: no SBOM produced by trading-gateway-api CI (SEBI CSCRF GV.SC.S5)",
+            "refs": {
+              "findingId": "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            },
+            "who": "me"
+          },
+          {
+            "eventId": "evt_2",
+            "at": "2026-08-21T10:05:00Z",
+            "type": "approved",
+            "toStatus": "approved",
+            "actor": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "note": "Approved as a normal change at the weekly CAB; due 2026-09-19 under the 30-day SLA",
+            "refs": {}
+          },
+          {
+            "eventId": "evt_3",
+            "at": "2026-08-22T04:10:00Z",
+            "type": "task-added",
+            "toStatus": "todo",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "task_1: add CycloneDX generation step to the GitHub Actions build workflow",
+            "refs": {
+              "taskId": "task_1",
+              "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            }
+          },
+          {
+            "eventId": "evt_4",
+            "at": "2026-09-05T13:20:00Z",
+            "type": "task-done",
+            "toStatus": "done",
+            "actor": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "note": "task_1 merged via PR #482; SBOM artefact uploaded on the last three builds",
+            "refs": {
+              "taskId": "task_1",
+              "evidence": [
+                {
+                  "type": "pull-request",
+                  "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+                  "collectedAt": "2026-09-05T13:20:00Z",
+                  "description": "PR adding the sbom job to build.yml"
+                }
+              ]
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "invented refs key",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.timeline",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "events": [
+          {
+            "eventId": "evt_1",
+            "at": "2026-08-20T06:30:00Z",
+            "type": "created",
+            "toStatus": "proposed",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Raised from finding fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2: no SBOM produced by trading-gateway-api CI (SEBI CSCRF GV.SC.S5)",
+            "refs": {
+              "findingId": "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2",
+              "riskId": "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            }
+          },
+          {
+            "eventId": "evt_2",
+            "at": "2026-08-21T10:05:00Z",
+            "type": "approved",
+            "toStatus": "approved",
+            "actor": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "note": "Approved as a normal change at the weekly CAB; due 2026-09-19 under the 30-day SLA",
+            "refs": {}
+          },
+          {
+            "eventId": "evt_3",
+            "at": "2026-08-22T04:10:00Z",
+            "type": "task-added",
+            "toStatus": "todo",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "task_1: add CycloneDX generation step to the GitHub Actions build workflow",
+            "refs": {
+              "taskId": "task_1",
+              "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            }
+          },
+          {
+            "eventId": "evt_4",
+            "at": "2026-09-05T13:20:00Z",
+            "type": "task-done",
+            "toStatus": "done",
+            "actor": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "note": "task_1 merged via PR #482; SBOM artefact uploaded on the last three builds",
+            "refs": {
+              "taskId": "task_1",
+              "evidence": [
+                {
+                  "type": "pull-request",
+                  "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+                  "collectedAt": "2026-09-05T13:20:00Z",
+                  "description": "PR adding the sbom job to build.yml"
+                }
+              ]
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "bad eventId pattern",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.timeline",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "events": [
+          {
+            "eventId": "event-1",
+            "at": "2026-08-20T06:30:00Z",
+            "type": "created",
+            "toStatus": "proposed",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Raised from finding fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2: no SBOM produced by trading-gateway-api CI (SEBI CSCRF GV.SC.S5)",
+            "refs": {
+              "findingId": "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            }
+          },
+          {
+            "eventId": "evt_2",
+            "at": "2026-08-21T10:05:00Z",
+            "type": "approved",
+            "toStatus": "approved",
+            "actor": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "note": "Approved as a normal change at the weekly CAB; due 2026-09-19 under the 30-day SLA",
+            "refs": {}
+          },
+          {
+            "eventId": "evt_3",
+            "at": "2026-08-22T04:10:00Z",
+            "type": "task-added",
+            "toStatus": "todo",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "task_1: add CycloneDX generation step to the GitHub Actions build workflow",
+            "refs": {
+              "taskId": "task_1",
+              "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            }
+          },
+          {
+            "eventId": "evt_4",
+            "at": "2026-09-05T13:20:00Z",
+            "type": "task-done",
+            "toStatus": "done",
+            "actor": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "note": "task_1 merged via PR #482; SBOM artefact uploaded on the last three builds",
+            "refs": {
+              "taskId": "task_1",
+              "evidence": [
+                {
+                  "type": "pull-request",
+                  "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+                  "collectedAt": "2026-09-05T13:20:00Z",
+                  "description": "PR adding the sbom job to build.yml"
+                }
+              ]
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "bad event type enum",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.timeline",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "events": [
+          {
+            "eventId": "evt_1",
+            "at": "2026-08-20T06:30:00Z",
+            "type": "created",
+            "toStatus": "proposed",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Raised from finding fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2: no SBOM produced by trading-gateway-api CI (SEBI CSCRF GV.SC.S5)",
+            "refs": {
+              "findingId": "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            }
+          },
+          {
+            "eventId": "evt_2",
+            "at": "2026-08-21T10:05:00Z",
+            "type": "signed-off",
+            "actor": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "note": "Approved as a normal change at the weekly CAB; due 2026-09-19 under the 30-day SLA",
+            "refs": {}
+          },
+          {
+            "eventId": "evt_3",
+            "at": "2026-08-22T04:10:00Z",
+            "type": "task-added",
+            "toStatus": "todo",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "task_1: add CycloneDX generation step to the GitHub Actions build workflow",
+            "refs": {
+              "taskId": "task_1",
+              "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            }
+          },
+          {
+            "eventId": "evt_4",
+            "at": "2026-09-05T13:20:00Z",
+            "type": "task-done",
+            "toStatus": "done",
+            "actor": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "note": "task_1 merged via PR #482; SBOM artefact uploaded on the last three builds",
+            "refs": {
+              "taskId": "task_1",
+              "evidence": [
+                {
+                  "type": "pull-request",
+                  "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+                  "collectedAt": "2026-09-05T13:20:00Z",
+                  "description": "PR adding the sbom job to build.yml"
+                }
+              ]
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "missing required note",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.timeline",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "events": [
+          {
+            "eventId": "evt_1",
+            "at": "2026-08-20T06:30:00Z",
+            "type": "created",
+            "toStatus": "proposed",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Raised from finding fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2: no SBOM produced by trading-gateway-api CI (SEBI CSCRF GV.SC.S5)",
+            "refs": {
+              "findingId": "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            }
+          },
+          {
+            "eventId": "evt_2",
+            "at": "2026-08-21T10:05:00Z",
+            "type": "approved",
+            "toStatus": "approved",
+            "actor": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "refs": {}
+          },
+          {
+            "eventId": "evt_3",
+            "at": "2026-08-22T04:10:00Z",
+            "type": "task-added",
+            "toStatus": "todo",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "task_1: add CycloneDX generation step to the GitHub Actions build workflow",
+            "refs": {
+              "taskId": "task_1",
+              "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            }
+          },
+          {
+            "eventId": "evt_4",
+            "at": "2026-09-05T13:20:00Z",
+            "type": "task-done",
+            "toStatus": "done",
+            "actor": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "note": "task_1 merged via PR #482; SBOM artefact uploaded on the last three builds",
+            "refs": {
+              "taskId": "task_1",
+              "evidence": [
+                {
+                  "type": "pull-request",
+                  "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+                  "collectedAt": "2026-09-05T13:20:00Z",
+                  "description": "PR adding the sbom job to build.yml"
+                }
+              ]
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "missing required refs",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.timeline",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "events": [
+          {
+            "eventId": "evt_1",
+            "at": "2026-08-20T06:30:00Z",
+            "type": "created",
+            "toStatus": "proposed",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Raised from finding fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2: no SBOM produced by trading-gateway-api CI (SEBI CSCRF GV.SC.S5)",
+            "refs": {
+              "findingId": "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            }
+          },
+          {
+            "eventId": "evt_2",
+            "at": "2026-08-21T10:05:00Z",
+            "type": "approved",
+            "toStatus": "approved",
+            "actor": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "note": "Approved as a normal change at the weekly CAB; due 2026-09-19 under the 30-day SLA"
+          },
+          {
+            "eventId": "evt_3",
+            "at": "2026-08-22T04:10:00Z",
+            "type": "task-added",
+            "toStatus": "todo",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "task_1: add CycloneDX generation step to the GitHub Actions build workflow",
+            "refs": {
+              "taskId": "task_1",
+              "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            }
+          },
+          {
+            "eventId": "evt_4",
+            "at": "2026-09-05T13:20:00Z",
+            "type": "task-done",
+            "toStatus": "done",
+            "actor": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "note": "task_1 merged via PR #482; SBOM artefact uploaded on the last three builds",
+            "refs": {
+              "taskId": "task_1",
+              "evidence": [
+                {
+                  "type": "pull-request",
+                  "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+                  "collectedAt": "2026-09-05T13:20:00Z",
+                  "description": "PR adding the sbom job to build.yml"
+                }
+              ]
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "events must not be empty",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.timeline",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "events": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "task-done event without refs.taskId",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.timeline",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "events": [
+          {
+            "eventId": "evt_1",
+            "at": "2026-08-20T06:30:00Z",
+            "type": "created",
+            "toStatus": "proposed",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Raised from finding fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2: no SBOM produced by trading-gateway-api CI (SEBI CSCRF GV.SC.S5)",
+            "refs": {
+              "findingId": "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            }
+          },
+          {
+            "eventId": "evt_2",
+            "at": "2026-08-21T10:05:00Z",
+            "type": "approved",
+            "toStatus": "approved",
+            "actor": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "note": "Approved as a normal change at the weekly CAB; due 2026-09-19 under the 30-day SLA",
+            "refs": {}
+          },
+          {
+            "eventId": "evt_3",
+            "at": "2026-08-22T04:10:00Z",
+            "type": "task-added",
+            "toStatus": "todo",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "task_1: add CycloneDX generation step to the GitHub Actions build workflow",
+            "refs": {
+              "taskId": "task_1",
+              "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            }
+          },
+          {
+            "eventId": "evt_4",
+            "at": "2026-09-05T13:20:00Z",
+            "type": "task-done",
+            "toStatus": "done",
+            "actor": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "note": "task_1 merged via PR #482; SBOM artefact uploaded on the last three builds",
+            "refs": {
+              "evidence": [
+                {
+                  "type": "pull-request",
+                  "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+                  "collectedAt": "2026-09-05T13:20:00Z",
+                  "description": "PR adding the sbom job to build.yml"
+                }
+              ]
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "suggestion-linked event without refs.suggestionId",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.timeline",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "events": [
+          {
+            "eventId": "evt_1",
+            "at": "2026-08-20T06:30:00Z",
+            "type": "created",
+            "toStatus": "proposed",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Raised from finding fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2: no SBOM produced by trading-gateway-api CI (SEBI CSCRF GV.SC.S5)",
+            "refs": {
+              "findingId": "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            }
+          },
+          {
+            "eventId": "evt_2",
+            "at": "2026-08-21T10:05:00Z",
+            "type": "suggestion-linked",
+            "actor": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "note": "Approved as a normal change at the weekly CAB; due 2026-09-19 under the 30-day SLA",
+            "refs": {}
+          },
+          {
+            "eventId": "evt_3",
+            "at": "2026-08-22T04:10:00Z",
+            "type": "task-added",
+            "toStatus": "todo",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "task_1: add CycloneDX generation step to the GitHub Actions build workflow",
+            "refs": {
+              "taskId": "task_1",
+              "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            }
+          },
+          {
+            "eventId": "evt_4",
+            "at": "2026-09-05T13:20:00Z",
+            "type": "task-done",
+            "toStatus": "done",
+            "actor": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "note": "task_1 merged via PR #482; SBOM artefact uploaded on the last three builds",
+            "refs": {
+              "taskId": "task_1",
+              "evidence": [
+                {
+                  "type": "pull-request",
+                  "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+                  "collectedAt": "2026-09-05T13:20:00Z",
+                  "description": "PR adding the sbom job to build.yml"
+                }
+              ]
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "incident-linked event with incidentId",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.timeline",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "events": [
+          {
+            "eventId": "evt_1",
+            "at": "2026-08-20T06:30:00Z",
+            "type": "created",
+            "toStatus": "proposed",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Raised from finding fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2: no SBOM produced by trading-gateway-api CI (SEBI CSCRF GV.SC.S5)",
+            "refs": {
+              "findingId": "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            }
+          },
+          {
+            "eventId": "evt_2",
+            "at": "2026-08-21T10:05:00Z",
+            "type": "incident-linked",
+            "actor": {
+              "type": "script",
+              "id": ".claude/scripts/kpis/compute.mjs"
+            },
+            "note": "Linked to inc_01M1T73980XQSYW2XQ0E04P43T: the SBOM job failed the production build on 2026-09-06 and paged the on-call; the change is attributed under the maxwell: dedup key",
+            "refs": {
+              "incidentId": "inc_01M1T73980XQSYW2XQ0E04P43T"
+            }
+          },
+          {
+            "eventId": "evt_3",
+            "at": "2026-08-22T04:10:00Z",
+            "type": "task-added",
+            "toStatus": "todo",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "task_1: add CycloneDX generation step to the GitHub Actions build workflow",
+            "refs": {
+              "taskId": "task_1",
+              "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            }
+          },
+          {
+            "eventId": "evt_4",
+            "at": "2026-09-05T13:20:00Z",
+            "type": "task-done",
+            "toStatus": "done",
+            "actor": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "note": "task_1 merged via PR #482; SBOM artefact uploaded on the last three builds",
+            "refs": {
+              "taskId": "task_1",
+              "evidence": [
+                {
+                  "type": "pull-request",
+                  "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+                  "collectedAt": "2026-09-05T13:20:00Z",
+                  "description": "PR adding the sbom job to build.yml"
+                }
+              ]
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "bad initiativeId pattern",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.timeline",
+        "initiativeId": "INIT-1",
+        "companyId": "arthveda-securities",
+        "events": [
+          {
+            "eventId": "evt_1",
+            "at": "2026-08-20T06:30:00Z",
+            "type": "created",
+            "toStatus": "proposed",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Raised from finding fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2: no SBOM produced by trading-gateway-api CI (SEBI CSCRF GV.SC.S5)",
+            "refs": {
+              "findingId": "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            }
+          },
+          {
+            "eventId": "evt_2",
+            "at": "2026-08-21T10:05:00Z",
+            "type": "approved",
+            "toStatus": "approved",
+            "actor": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "note": "Approved as a normal change at the weekly CAB; due 2026-09-19 under the 30-day SLA",
+            "refs": {}
+          },
+          {
+            "eventId": "evt_3",
+            "at": "2026-08-22T04:10:00Z",
+            "type": "task-added",
+            "toStatus": "todo",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "task_1: add CycloneDX generation step to the GitHub Actions build workflow",
+            "refs": {
+              "taskId": "task_1",
+              "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            }
+          },
+          {
+            "eventId": "evt_4",
+            "at": "2026-09-05T13:20:00Z",
+            "type": "task-done",
+            "toStatus": "done",
+            "actor": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "note": "task_1 merged via PR #482; SBOM artefact uploaded on the last three builds",
+            "refs": {
+              "taskId": "task_1",
+              "evidence": [
+                {
+                  "type": "pull-request",
+                  "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+                  "collectedAt": "2026-09-05T13:20:00Z",
+                  "description": "PR adding the sbom job to build.yml"
+                }
+              ]
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "wrong kind const",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "events": [
+          {
+            "eventId": "evt_1",
+            "at": "2026-08-20T06:30:00Z",
+            "type": "created",
+            "toStatus": "proposed",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Raised from finding fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2: no SBOM produced by trading-gateway-api CI (SEBI CSCRF GV.SC.S5)",
+            "refs": {
+              "findingId": "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            }
+          },
+          {
+            "eventId": "evt_2",
+            "at": "2026-08-21T10:05:00Z",
+            "type": "approved",
+            "toStatus": "approved",
+            "actor": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "note": "Approved as a normal change at the weekly CAB; due 2026-09-19 under the 30-day SLA",
+            "refs": {}
+          },
+          {
+            "eventId": "evt_3",
+            "at": "2026-08-22T04:10:00Z",
+            "type": "task-added",
+            "toStatus": "todo",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "task_1: add CycloneDX generation step to the GitHub Actions build workflow",
+            "refs": {
+              "taskId": "task_1",
+              "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            }
+          },
+          {
+            "eventId": "evt_4",
+            "at": "2026-09-05T13:20:00Z",
+            "type": "task-done",
+            "toStatus": "done",
+            "actor": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "note": "task_1 merged via PR #482; SBOM artefact uploaded on the last three builds",
+            "refs": {
+              "taskId": "task_1",
+              "evidence": [
+                {
+                  "type": "pull-request",
+                  "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+                  "collectedAt": "2026-09-05T13:20:00Z",
+                  "description": "PR adding the sbom job to build.yml"
+                }
+              ]
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "incident-linked event without refs.incidentId",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.timeline",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "events": [
+          {
+            "eventId": "evt_1",
+            "at": "2026-08-20T06:30:00Z",
+            "type": "created",
+            "toStatus": "proposed",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Raised from finding fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2: no SBOM produced by trading-gateway-api CI (SEBI CSCRF GV.SC.S5)",
+            "refs": {
+              "findingId": "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            }
+          },
+          {
+            "eventId": "evt_2",
+            "at": "2026-08-21T10:05:00Z",
+            "type": "approved",
+            "toStatus": "approved",
+            "actor": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "note": "Approved as a normal change at the weekly CAB; due 2026-09-19 under the 30-day SLA",
+            "refs": {}
+          },
+          {
+            "eventId": "evt_3",
+            "at": "2026-08-22T04:00:00Z",
+            "type": "started",
+            "toStatus": "in-progress",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Work started: tasks being drafted from the finding and the CAB conditions",
+            "refs": {}
+          },
+          {
+            "eventId": "evt_4",
+            "at": "2026-08-22T04:10:00Z",
+            "type": "task-added",
+            "toStatus": "todo",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "task_1: add CycloneDX generation step to the GitHub Actions build workflow",
+            "refs": {
+              "taskId": "task_1",
+              "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            }
+          },
+          {
+            "eventId": "evt_5",
+            "at": "2026-09-05T13:20:00Z",
+            "type": "task-done",
+            "toStatus": "done",
+            "actor": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "note": "task_1 merged via PR #482; SBOM artefact uploaded on the last three builds",
+            "refs": {
+              "taskId": "task_1",
+              "evidence": [
+                {
+                  "type": "pull-request",
+                  "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+                  "collectedAt": "2026-09-05T13:20:00Z",
+                  "description": "PR adding the sbom job to build.yml"
+                }
+              ]
+            }
+          },
+          {
+            "eventId": "evt_6",
+            "at": "2026-09-06T02:15:00Z",
+            "type": "incident-linked",
+            "actor": {
+              "type": "script",
+              "id": ".claude/scripts/kpis/compute.mjs"
+            },
+            "note": "Linked to an incident but the id was dropped",
+            "refs": {}
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "duplicate events",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.timeline",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "events": [
+          {
+            "eventId": "evt_1",
+            "at": "2026-08-20T06:30:00Z",
+            "type": "created",
+            "toStatus": "proposed",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Raised from finding fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2: no SBOM produced by trading-gateway-api CI (SEBI CSCRF GV.SC.S5)",
+            "refs": {
+              "findingId": "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            }
+          },
+          {
+            "eventId": "evt_2",
+            "at": "2026-08-21T10:05:00Z",
+            "type": "approved",
+            "toStatus": "approved",
+            "actor": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "note": "Approved as a normal change at the weekly CAB; due 2026-09-19 under the 30-day SLA",
+            "refs": {}
+          },
+          {
+            "eventId": "evt_3",
+            "at": "2026-08-22T04:00:00Z",
+            "type": "started",
+            "toStatus": "in-progress",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Work started: tasks being drafted from the finding and the CAB conditions",
+            "refs": {}
+          },
+          {
+            "eventId": "evt_4",
+            "at": "2026-08-22T04:10:00Z",
+            "type": "task-added",
+            "toStatus": "todo",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "task_1: add CycloneDX generation step to the GitHub Actions build workflow",
+            "refs": {
+              "taskId": "task_1",
+              "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            }
+          },
+          {
+            "eventId": "evt_5",
+            "at": "2026-09-05T13:20:00Z",
+            "type": "task-done",
+            "toStatus": "done",
+            "actor": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "note": "task_1 merged via PR #482; SBOM artefact uploaded on the last three builds",
+            "refs": {
+              "taskId": "task_1",
+              "evidence": [
+                {
+                  "type": "pull-request",
+                  "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+                  "collectedAt": "2026-09-05T13:20:00Z",
+                  "description": "PR adding the sbom job to build.yml"
+                }
+              ]
+            }
+          },
+          {
+            "eventId": "evt_5",
+            "at": "2026-09-05T13:20:00Z",
+            "type": "task-done",
+            "toStatus": "done",
+            "actor": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "note": "task_1 merged via PR #482; SBOM artefact uploaded on the last three builds",
+            "refs": {
+              "taskId": "task_1",
+              "evidence": [
+                {
+                  "type": "pull-request",
+                  "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+                  "collectedAt": "2026-09-05T13:20:00Z",
+                  "description": "PR adding the sbom job to build.yml"
+                }
+              ]
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "at without trailing Z",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.timeline",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "events": [
+          {
+            "eventId": "evt_1",
+            "at": "2026-08-20T06:30:00+05:30",
+            "type": "created",
+            "toStatus": "proposed",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Raised from finding fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2: no SBOM produced by trading-gateway-api CI (SEBI CSCRF GV.SC.S5)",
+            "refs": {
+              "findingId": "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            }
+          },
+          {
+            "eventId": "evt_2",
+            "at": "2026-08-21T10:05:00Z",
+            "type": "approved",
+            "toStatus": "approved",
+            "actor": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "note": "Approved as a normal change at the weekly CAB; due 2026-09-19 under the 30-day SLA",
+            "refs": {}
+          },
+          {
+            "eventId": "evt_3",
+            "at": "2026-08-22T04:00:00Z",
+            "type": "started",
+            "toStatus": "in-progress",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Work started: tasks being drafted from the finding and the CAB conditions",
+            "refs": {}
+          },
+          {
+            "eventId": "evt_4",
+            "at": "2026-08-22T04:10:00Z",
+            "type": "task-added",
+            "toStatus": "todo",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "task_1: add CycloneDX generation step to the GitHub Actions build workflow",
+            "refs": {
+              "taskId": "task_1",
+              "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            }
+          },
+          {
+            "eventId": "evt_5",
+            "at": "2026-09-05T13:20:00Z",
+            "type": "task-done",
+            "toStatus": "done",
+            "actor": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "note": "task_1 merged via PR #482; SBOM artefact uploaded on the last three builds",
+            "refs": {
+              "taskId": "task_1",
+              "evidence": [
+                {
+                  "type": "pull-request",
+                  "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+                  "collectedAt": "2026-09-05T13:20:00Z",
+                  "description": "PR adding the sbom job to build.yml"
+                }
+              ]
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "started event without toStatus",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.timeline",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "events": [
+          {
+            "eventId": "evt_1",
+            "at": "2026-08-20T06:30:00Z",
+            "type": "created",
+            "toStatus": "proposed",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Raised from finding fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2: no SBOM produced by trading-gateway-api CI (SEBI CSCRF GV.SC.S5)",
+            "refs": {
+              "findingId": "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            }
+          },
+          {
+            "eventId": "evt_2",
+            "at": "2026-08-21T10:05:00Z",
+            "type": "approved",
+            "toStatus": "approved",
+            "actor": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "note": "Approved as a normal change at the weekly CAB; due 2026-09-19 under the 30-day SLA",
+            "refs": {}
+          },
+          {
+            "eventId": "evt_3",
+            "at": "2026-08-22T04:00:00Z",
+            "type": "started",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Work started: tasks being drafted from the finding and the CAB conditions",
+            "refs": {}
+          },
+          {
+            "eventId": "evt_4",
+            "at": "2026-08-22T04:10:00Z",
+            "type": "task-added",
+            "toStatus": "todo",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "task_1: add CycloneDX generation step to the GitHub Actions build workflow",
+            "refs": {
+              "taskId": "task_1",
+              "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            }
+          },
+          {
+            "eventId": "evt_5",
+            "at": "2026-09-05T13:20:00Z",
+            "type": "task-done",
+            "toStatus": "done",
+            "actor": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "note": "task_1 merged via PR #482; SBOM artefact uploaded on the last three builds",
+            "refs": {
+              "taskId": "task_1",
+              "evidence": [
+                {
+                  "type": "pull-request",
+                  "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+                  "collectedAt": "2026-09-05T13:20:00Z",
+                  "description": "PR adding the sbom job to build.yml"
+                }
+              ]
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "approved event with a task status",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.timeline",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "events": [
+          {
+            "eventId": "evt_1",
+            "at": "2026-08-20T06:30:00Z",
+            "type": "created",
+            "toStatus": "proposed",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Raised from finding fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2: no SBOM produced by trading-gateway-api CI (SEBI CSCRF GV.SC.S5)",
+            "refs": {
+              "findingId": "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            }
+          },
+          {
+            "eventId": "evt_2",
+            "at": "2026-08-21T10:05:00Z",
+            "type": "approved",
+            "toStatus": "todo",
+            "actor": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "note": "Approved as a normal change at the weekly CAB; due 2026-09-19 under the 30-day SLA",
+            "refs": {}
+          },
+          {
+            "eventId": "evt_3",
+            "at": "2026-08-22T04:00:00Z",
+            "type": "started",
+            "toStatus": "in-progress",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Work started: tasks being drafted from the finding and the CAB conditions",
+            "refs": {}
+          },
+          {
+            "eventId": "evt_4",
+            "at": "2026-08-22T04:10:00Z",
+            "type": "task-added",
+            "toStatus": "todo",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "task_1: add CycloneDX generation step to the GitHub Actions build workflow",
+            "refs": {
+              "taskId": "task_1",
+              "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            }
+          },
+          {
+            "eventId": "evt_5",
+            "at": "2026-09-05T13:20:00Z",
+            "type": "task-done",
+            "toStatus": "done",
+            "actor": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "note": "task_1 merged via PR #482; SBOM artefact uploaded on the last three builds",
+            "refs": {
+              "taskId": "task_1",
+              "evidence": [
+                {
+                  "type": "pull-request",
+                  "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+                  "collectedAt": "2026-09-05T13:20:00Z",
+                  "description": "PR adding the sbom job to build.yml"
+                }
+              ]
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "task-done event with an initiative status",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.timeline",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "events": [
+          {
+            "eventId": "evt_1",
+            "at": "2026-08-20T06:30:00Z",
+            "type": "created",
+            "toStatus": "proposed",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Raised from finding fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2: no SBOM produced by trading-gateway-api CI (SEBI CSCRF GV.SC.S5)",
+            "refs": {
+              "findingId": "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            }
+          },
+          {
+            "eventId": "evt_2",
+            "at": "2026-08-21T10:05:00Z",
+            "type": "approved",
+            "toStatus": "approved",
+            "actor": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "note": "Approved as a normal change at the weekly CAB; due 2026-09-19 under the 30-day SLA",
+            "refs": {}
+          },
+          {
+            "eventId": "evt_3",
+            "at": "2026-08-22T04:00:00Z",
+            "type": "started",
+            "toStatus": "in-progress",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Work started: tasks being drafted from the finding and the CAB conditions",
+            "refs": {}
+          },
+          {
+            "eventId": "evt_4",
+            "at": "2026-08-22T04:10:00Z",
+            "type": "task-added",
+            "toStatus": "todo",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "task_1: add CycloneDX generation step to the GitHub Actions build workflow",
+            "refs": {
+              "taskId": "task_1",
+              "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            }
+          },
+          {
+            "eventId": "evt_5",
+            "at": "2026-09-05T13:20:00Z",
+            "type": "task-done",
+            "toStatus": "closed",
+            "actor": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "note": "task_1 merged via PR #482; SBOM artefact uploaded on the last three builds",
+            "refs": {
+              "taskId": "task_1",
+              "evidence": [
+                {
+                  "type": "pull-request",
+                  "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+                  "collectedAt": "2026-09-05T13:20:00Z",
+                  "description": "PR adding the sbom job to build.yml"
+                }
+              ]
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "comment event must not carry toStatus",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.timeline",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "events": [
+          {
+            "eventId": "evt_1",
+            "at": "2026-08-20T06:30:00Z",
+            "type": "created",
+            "toStatus": "proposed",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Raised from finding fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2: no SBOM produced by trading-gateway-api CI (SEBI CSCRF GV.SC.S5)",
+            "refs": {
+              "findingId": "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            }
+          },
+          {
+            "eventId": "evt_2",
+            "at": "2026-08-21T10:05:00Z",
+            "type": "approved",
+            "toStatus": "approved",
+            "actor": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "note": "Approved as a normal change at the weekly CAB; due 2026-09-19 under the 30-day SLA",
+            "refs": {}
+          },
+          {
+            "eventId": "evt_3",
+            "at": "2026-08-22T04:00:00Z",
+            "type": "started",
+            "toStatus": "in-progress",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Work started: tasks being drafted from the finding and the CAB conditions",
+            "refs": {}
+          },
+          {
+            "eventId": "evt_4",
+            "at": "2026-08-22T04:10:00Z",
+            "type": "task-added",
+            "toStatus": "todo",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "task_1: add CycloneDX generation step to the GitHub Actions build workflow",
+            "refs": {
+              "taskId": "task_1",
+              "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            }
+          },
+          {
+            "eventId": "evt_5",
+            "at": "2026-09-05T13:20:00Z",
+            "type": "task-done",
+            "toStatus": "done",
+            "actor": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "note": "task_1 merged via PR #482; SBOM artefact uploaded on the last three builds",
+            "refs": {
+              "taskId": "task_1",
+              "evidence": [
+                {
+                  "type": "pull-request",
+                  "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+                  "collectedAt": "2026-09-05T13:20:00Z",
+                  "description": "PR adding the sbom job to build.yml"
+                }
+              ]
+            }
+          },
+          {
+            "eventId": "evt_6",
+            "at": "2026-09-06T02:15:00Z",
+            "type": "comment",
+            "toStatus": "in-progress",
+            "actor": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "note": "Waiting on the artefact retention setting",
+            "refs": {}
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "task-cancelled event without refs.taskId",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.timeline",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "events": [
+          {
+            "eventId": "evt_1",
+            "at": "2026-08-20T06:30:00Z",
+            "type": "created",
+            "toStatus": "proposed",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Raised from finding fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2: no SBOM produced by trading-gateway-api CI (SEBI CSCRF GV.SC.S5)",
+            "refs": {
+              "findingId": "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            }
+          },
+          {
+            "eventId": "evt_2",
+            "at": "2026-08-21T10:05:00Z",
+            "type": "approved",
+            "toStatus": "approved",
+            "actor": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "note": "Approved as a normal change at the weekly CAB; due 2026-09-19 under the 30-day SLA",
+            "refs": {}
+          },
+          {
+            "eventId": "evt_3",
+            "at": "2026-08-22T04:00:00Z",
+            "type": "started",
+            "toStatus": "in-progress",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Work started: tasks being drafted from the finding and the CAB conditions",
+            "refs": {}
+          },
+          {
+            "eventId": "evt_4",
+            "at": "2026-08-22T04:10:00Z",
+            "type": "task-added",
+            "toStatus": "todo",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "task_1: add CycloneDX generation step to the GitHub Actions build workflow",
+            "refs": {
+              "taskId": "task_1",
+              "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            }
+          },
+          {
+            "eventId": "evt_5",
+            "at": "2026-09-05T13:20:00Z",
+            "type": "task-done",
+            "toStatus": "done",
+            "actor": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "note": "task_1 merged via PR #482; SBOM artefact uploaded on the last three builds",
+            "refs": {
+              "taskId": "task_1",
+              "evidence": [
+                {
+                  "type": "pull-request",
+                  "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+                  "collectedAt": "2026-09-05T13:20:00Z",
+                  "description": "PR adding the sbom job to build.yml"
+                }
+              ]
+            }
+          },
+          {
+            "eventId": "evt_6",
+            "at": "2026-09-06T02:15:00Z",
+            "type": "task-cancelled",
+            "toStatus": "cancelled",
+            "actor": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "note": "task_2 dropped: retention is enforced by the org-level setting",
+            "refs": {}
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "task-edited and task-cancelled events",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.timeline",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "events": [
+          {
+            "eventId": "evt_1",
+            "at": "2026-08-20T06:30:00Z",
+            "type": "created",
+            "toStatus": "proposed",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Raised from finding fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2: no SBOM produced by trading-gateway-api CI (SEBI CSCRF GV.SC.S5)",
+            "refs": {
+              "findingId": "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            }
+          },
+          {
+            "eventId": "evt_2",
+            "at": "2026-08-21T10:05:00Z",
+            "type": "approved",
+            "toStatus": "approved",
+            "actor": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "note": "Approved as a normal change at the weekly CAB; due 2026-09-19 under the 30-day SLA",
+            "refs": {}
+          },
+          {
+            "eventId": "evt_3",
+            "at": "2026-08-22T04:00:00Z",
+            "type": "started",
+            "toStatus": "in-progress",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Work started: tasks being drafted from the finding and the CAB conditions",
+            "refs": {}
+          },
+          {
+            "eventId": "evt_4",
+            "at": "2026-08-22T04:10:00Z",
+            "type": "task-added",
+            "toStatus": "todo",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "task_1: add CycloneDX generation step to the GitHub Actions build workflow",
+            "refs": {
+              "taskId": "task_1",
+              "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            }
+          },
+          {
+            "eventId": "evt_5",
+            "at": "2026-09-05T13:20:00Z",
+            "type": "task-done",
+            "toStatus": "done",
+            "actor": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "note": "task_1 merged via PR #482; SBOM artefact uploaded on the last three builds",
+            "refs": {
+              "taskId": "task_1",
+              "evidence": [
+                {
+                  "type": "pull-request",
+                  "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+                  "collectedAt": "2026-09-05T13:20:00Z",
+                  "description": "PR adding the sbom job to build.yml"
+                }
+              ]
+            }
+          },
+          {
+            "eventId": "evt_6",
+            "at": "2026-09-05T14:00:00Z",
+            "type": "task-edited",
+            "toStatus": "todo",
+            "actor": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "note": "task_2: acceptanceCriteria rewritten to name the org retention setting",
+            "refs": {
+              "taskId": "task_2"
+            }
+          },
+          {
+            "eventId": "evt_7",
+            "at": "2026-09-06T02:15:00Z",
+            "type": "task-cancelled",
+            "toStatus": "cancelled",
+            "actor": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "note": "task_2 dropped: retention is enforced by the org-level setting",
+            "refs": {
+              "taskId": "task_2"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "verifying then closed",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.timeline",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "events": [
+          {
+            "eventId": "evt_1",
+            "at": "2026-08-20T06:30:00Z",
+            "type": "created",
+            "toStatus": "proposed",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Raised from finding fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2: no SBOM produced by trading-gateway-api CI (SEBI CSCRF GV.SC.S5)",
+            "refs": {
+              "findingId": "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            }
+          },
+          {
+            "eventId": "evt_2",
+            "at": "2026-08-21T10:05:00Z",
+            "type": "approved",
+            "toStatus": "approved",
+            "actor": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "note": "Approved as a normal change at the weekly CAB; due 2026-09-19 under the 30-day SLA",
+            "refs": {}
+          },
+          {
+            "eventId": "evt_3",
+            "at": "2026-08-22T04:00:00Z",
+            "type": "started",
+            "toStatus": "in-progress",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "Work started: tasks being drafted from the finding and the CAB conditions",
+            "refs": {}
+          },
+          {
+            "eventId": "evt_4",
+            "at": "2026-08-22T04:10:00Z",
+            "type": "task-added",
+            "toStatus": "todo",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "task_1: add CycloneDX generation step to the GitHub Actions build workflow",
+            "refs": {
+              "taskId": "task_1",
+              "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            }
+          },
+          {
+            "eventId": "evt_5",
+            "at": "2026-09-05T13:20:00Z",
+            "type": "task-done",
+            "toStatus": "done",
+            "actor": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "note": "task_1 merged via PR #482; SBOM artefact uploaded on the last three builds",
+            "refs": {
+              "taskId": "task_1",
+              "evidence": [
+                {
+                  "type": "pull-request",
+                  "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+                  "collectedAt": "2026-09-05T13:20:00Z",
+                  "description": "PR adding the sbom job to build.yml"
+                }
+              ]
+            }
+          },
+          {
+            "eventId": "evt_6",
+            "at": "2026-09-06T02:15:00Z",
+            "type": "verifying",
+            "toStatus": "verifying",
+            "actor": {
+              "type": "agent",
+              "id": "change-manager"
+            },
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "note": "All tasks done; re-running probe-cicd-env",
+            "refs": {}
+          },
+          {
+            "eventId": "evt_7",
+            "at": "2026-09-08T10:00:00Z",
+            "type": "closed",
+            "toStatus": "closed",
+            "actor": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "note": "Verified: SBOM artefact present on the last three builds",
+            "refs": {}
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    }
+  ]
+}

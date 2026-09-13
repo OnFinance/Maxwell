@@ -1,0 +1,3516 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/v1/suggestions/master.schema.json",
+  "tests": [
+    {
+      "description": "realistic merged GitHub Actions SBOM suggestion",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "merged",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "mergedAt": "2026-09-05T13:20:00Z",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482"
+            ],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "mergeCommit": "4c1d9e7b2a6f5083b1c2d3e4f5a6b7c8d9e0f1a2",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener",
+              "model": "claude-opus-4-1"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "proposed suggestion with no lifecycle timestamps",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "proposed",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "prUrls": [],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "reverted suggestion",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "reverted",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "mergedAt": "2026-09-05T13:20:00Z",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482"
+            ],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "mergeCommit": "4c1d9e7b2a6f5083b1c2d3e4f5a6b7c8d9e0f1a2",
+                "revertCommit": "b7e2f4a19c3d5e6f708192a3b4c5d6e7f8091a2b",
+                "revertPrUrl": "https://github.com/arthveda/trading-gateway-api/pull/490",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener"
+            },
+            "revertedAt": "2026-09-07T08:00:00Z"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "merged suggestion with 30-day retention check",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "merged",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "mergedAt": "2026-09-05T13:20:00Z",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482"
+            ],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "mergeCommit": "4c1d9e7b2a6f5083b1c2d3e4f5a6b7c8d9e0f1a2",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener"
+            },
+            "retentionCheckedAt": "2026-10-05T13:20:00Z",
+            "retained": true
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "rejected suggestion",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "rejected",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Duplicate of an in-house SBOM initiative",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482"
+            ],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "empty index for a freshly seeded company",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "invented top-level key",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "merged",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "mergedAt": "2026-09-05T13:20:00Z",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482"
+            ],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "mergeCommit": "4c1d9e7b2a6f5083b1c2d3e4f5a6b7c8d9e0f1a2",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        },
+        "counters": {}
+      }
+    },
+    {
+      "description": "invented suggestion key",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "merged",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "mergedAt": "2026-09-05T13:20:00Z",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482"
+            ],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "mergeCommit": "4c1d9e7b2a6f5083b1c2d3e4f5a6b7c8d9e0f1a2",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener"
+            },
+            "branch": "feat/sbom"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "invented repo change key",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "merged",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "mergedAt": "2026-09-05T13:20:00Z",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482"
+            ],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "mergeCommit": "4c1d9e7b2a6f5083b1c2d3e4f5a6b7c8d9e0f1a2",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1,
+                "branch": "main"
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "bad suggestionId pattern",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug-1",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "merged",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "mergedAt": "2026-09-05T13:20:00Z",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482"
+            ],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "mergeCommit": "4c1d9e7b2a6f5083b1c2d3e4f5a6b7c8d9e0f1a2",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "bad category enum value",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "refactor",
+            "severity": "high",
+            "status": "merged",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "mergedAt": "2026-09-05T13:20:00Z",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482"
+            ],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "mergeCommit": "4c1d9e7b2a6f5083b1c2d3e4f5a6b7c8d9e0f1a2",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "bad status enum value",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "approved",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "mergedAt": "2026-09-05T13:20:00Z",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482"
+            ],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "missing required rationale",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "merged",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "mergedAt": "2026-09-05T13:20:00Z",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482"
+            ],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "mergeCommit": "4c1d9e7b2a6f5083b1c2d3e4f5a6b7c8d9e0f1a2",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "missing required repos",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "merged",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "mergedAt": "2026-09-05T13:20:00Z",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482"
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "repos must not be empty",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "merged",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "mergedAt": "2026-09-05T13:20:00Z",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482"
+            ],
+            "repos": [],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "diffPath outside the suggestion directory",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "merged",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "mergedAt": "2026-09-05T13:20:00Z",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482"
+            ],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/build.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "mergeCommit": "4c1d9e7b2a6f5083b1c2d3e4f5a6b7c8d9e0f1a2",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "bad baseCommit",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "merged",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "mergedAt": "2026-09-05T13:20:00Z",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482"
+            ],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "main",
+                "mergeCommit": "4c1d9e7b2a6f5083b1c2d3e4f5a6b7c8d9e0f1a2",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "merged without mergedAt",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "merged",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482"
+            ],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "mergeCommit": "4c1d9e7b2a6f5083b1c2d3e4f5a6b7c8d9e0f1a2",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "accepted without decidedAt",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "accepted",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482"
+            ],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "mergedAt present while accepted",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "accepted",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "mergedAt": "2026-09-05T13:20:00Z",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482"
+            ],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "revertedAt present while merged",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "merged",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "mergedAt": "2026-09-05T13:20:00Z",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482"
+            ],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "mergeCommit": "4c1d9e7b2a6f5083b1c2d3e4f5a6b7c8d9e0f1a2",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener"
+            },
+            "revertedAt": "2026-09-07T08:00:00Z"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "reverted without revertedAt",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "reverted",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "mergedAt": "2026-09-05T13:20:00Z",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482"
+            ],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "mergeCommit": "4c1d9e7b2a6f5083b1c2d3e4f5a6b7c8d9e0f1a2",
+                "revertCommit": "b7e2f4a19c3d5e6f708192a3b4c5d6e7f8091a2b",
+                "revertPrUrl": "https://github.com/arthveda/trading-gateway-api/pull/490",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "retained without retentionCheckedAt",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "merged",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "mergedAt": "2026-09-05T13:20:00Z",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482"
+            ],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "mergeCommit": "4c1d9e7b2a6f5083b1c2d3e4f5a6b7c8d9e0f1a2",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener"
+            },
+            "retained": true
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "decidedAt without decidedBy",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "merged",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "mergedAt": "2026-09-05T13:20:00Z",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482"
+            ],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "mergeCommit": "4c1d9e7b2a6f5083b1c2d3e4f5a6b7c8d9e0f1a2",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "bad prUrl",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "merged",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "mergedAt": "2026-09-05T13:20:00Z",
+            "prUrls": [
+              "git@github.com:arthveda/x.git"
+            ],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "mergeCommit": "4c1d9e7b2a6f5083b1c2d3e4f5a6b7c8d9e0f1a2",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "wrong kind const",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.suggestions.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "merged",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "mergedAt": "2026-09-05T13:20:00Z",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482"
+            ],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "mergeCommit": "4c1d9e7b2a6f5083b1c2d3e4f5a6b7c8d9e0f1a2",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "retentionCheckedAt without mergedAt",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "accepted",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "prUrls": [],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener",
+              "model": "claude-opus-4-1"
+            },
+            "retentionCheckedAt": "2026-10-06T00:00:00Z",
+            "retained": true
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "merged without surfacedAt",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "merged",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "mergedAt": "2026-09-05T13:20:00Z",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482"
+            ],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "mergeCommit": "4c1d9e7b2a6f5083b1c2d3e4f5a6b7c8d9e0f1a2",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener",
+              "model": "claude-opus-4-1"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "merged without decidedBy",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "merged",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "mergedAt": "2026-09-05T13:20:00Z",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482"
+            ],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "mergeCommit": "4c1d9e7b2a6f5083b1c2d3e4f5a6b7c8d9e0f1a2",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener",
+              "model": "claude-opus-4-1"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "createdAt without trailing Z",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "merged",
+            "createdAt": "2026-08-22T04:12:00",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "mergedAt": "2026-09-05T13:20:00Z",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482"
+            ],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "mergeCommit": "4c1d9e7b2a6f5083b1c2d3e4f5a6b7c8d9e0f1a2",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener",
+              "model": "claude-opus-4-1"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "accepted suggestion awaiting merge",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "accepted",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "prUrls": [],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener",
+              "model": "claude-opus-4-1"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "decidedBy must not be an agent",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "merged",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "agent",
+              "id": "cicd-hardener"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "mergedAt": "2026-09-05T13:20:00Z",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482"
+            ],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "mergeCommit": "4c1d9e7b2a6f5083b1c2d3e4f5a6b7c8d9e0f1a2",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener",
+              "model": "claude-opus-4-1"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "merged without mergeCommit",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "merged",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "mergedAt": "2026-09-05T13:20:00Z",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482"
+            ],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener",
+              "model": "claude-opus-4-1"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "mergeCommit present while accepted",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "accepted",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "prUrls": [],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1,
+                "mergeCommit": "4c1d9e7b2a6f5083b1c2d3e4f5a6b7c8d9e0f1a2"
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener",
+              "model": "claude-opus-4-1"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "reverted with revert commit and PR",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "reverted",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "mergedAt": "2026-09-05T13:20:00Z",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482",
+              "https://github.com/arthveda/trading-gateway-api/pull/490"
+            ],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "mergeCommit": "4c1d9e7b2a6f5083b1c2d3e4f5a6b7c8d9e0f1a2",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1,
+                "revertCommit": "b7e2f4a19c3d5e6f708192a3b4c5d6e7f8091a2b",
+                "revertPrUrl": "https://github.com/arthveda/trading-gateway-api/pull/490"
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener",
+              "model": "claude-opus-4-1"
+            },
+            "revertedAt": "2026-09-07T08:00:00Z"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "reverted without revertCommit",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "reverted",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "mergedAt": "2026-09-05T13:20:00Z",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482"
+            ],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "mergeCommit": "4c1d9e7b2a6f5083b1c2d3e4f5a6b7c8d9e0f1a2",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener",
+              "model": "claude-opus-4-1"
+            },
+            "revertedAt": "2026-09-07T08:00:00Z"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "superseded with supersededBy and closedAt",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "superseded",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "prUrls": [],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener",
+              "model": "claude-opus-4-1"
+            },
+            "supersededBy": "sug_01M15VF7M0G1FE3CRS4RXS2Q1E",
+            "closedAt": "2026-08-29T04:12:00Z"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "superseded without supersededBy",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "superseded",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "prUrls": [],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener",
+              "model": "claude-opus-4-1"
+            },
+            "closedAt": "2026-08-29T04:12:00Z"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "superseded without closedAt",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "superseded",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "prUrls": [],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener",
+              "model": "claude-opus-4-1"
+            },
+            "supersededBy": "sug_01M15VF7M0G1FE3CRS4RXS2Q1E"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "expired with closedAt",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "expired",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482"
+            ],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener",
+              "model": "claude-opus-4-1"
+            },
+            "closedAt": "2026-09-21T04:15:00Z"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "expired without closedAt",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "expired",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482"
+            ],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener",
+              "model": "claude-opus-4-1"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "closedAt present while merged",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "merged",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "mergedAt": "2026-09-05T13:20:00Z",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482"
+            ],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "mergeCommit": "4c1d9e7b2a6f5083b1c2d3e4f5a6b7c8d9e0f1a2",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener",
+              "model": "claude-opus-4-1"
+            },
+            "closedAt": "2026-09-05T13:20:00Z"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "supersededBy present while accepted",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "accepted",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "prUrls": [],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener",
+              "model": "claude-opus-4-1"
+            },
+            "supersededBy": "sug_01M15VF7M0G1FE3CRS4RXS2Q1E"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "cicd-gate suggestion without regulatoryRefs",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "cicd-gate",
+            "severity": "high",
+            "status": "merged",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "mergedAt": "2026-09-05T13:20:00Z",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482"
+            ],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "mergeCommit": "4c1d9e7b2a6f5083b1c2d3e4f5a6b7c8d9e0f1a2",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener",
+              "model": "claude-opus-4-1"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    },
+    {
+      "description": "category other may omit regulatoryRefs",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.sug.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "suggestions": [
+          {
+            "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+            "title": "Add CycloneDX SBOM generation job to build.yml",
+            "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+            "category": "other",
+            "severity": "high",
+            "status": "merged",
+            "createdAt": "2026-08-22T04:12:00Z",
+            "surfacedAt": "2026-08-22T04:15:00Z",
+            "decidedAt": "2026-08-25T09:40:00Z",
+            "decidedBy": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+            "mergedAt": "2026-09-05T13:20:00Z",
+            "prUrls": [
+              "https://github.com/arthveda/trading-gateway-api/pull/482"
+            ],
+            "repos": [
+              {
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api",
+                "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+                "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+                "mergeCommit": "4c1d9e7b2a6f5083b1c2d3e4f5a6b7c8d9e0f1a2",
+                "linesAdded": 27,
+                "linesRemoved": 1,
+                "filesChanged": 1
+              }
+            ],
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [],
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "sourceWorkflow": "impl-auto-improvement",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-22T04:12:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-auto-improvement",
+              "agent": "cicd-hardener",
+              "model": "claude-opus-4-1"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-auto-improvement",
+          "agent": "cicd-hardener"
+        }
+      }
+    }
+  ]
+}

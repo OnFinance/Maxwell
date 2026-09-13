@@ -1,0 +1,466 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/session/summary.schema.json",
+  "title": "Harness session summary",
+  "description": "Schema for kpis/data/raw/sessions/<harness>/<sessionId>.summary.json: per-session usage, cost and outcome derived from the transcript by the ingest script. Field names follow OpenTelemetry GenAI semantic conventions (gen_ai.*) where one exists and say so; counts without an OTel attribute are Maxwell-specific. Claude Code message.usage and OpenCode tokens objects are both mapped onto the same tokens shape",
+  "examples": [
+    {
+      "schemaVersion": "1",
+      "kind": "maxwell.session.summary",
+      "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+      "harness": "claude-code",
+      "harnessVersion": "2.1.14",
+      "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+      "workflow": "refresh-soc",
+      "companyId": "zerodha-broking",
+      "startedAt": "2026-09-12T03:00:05Z",
+      "endedAt": "2026-09-12T03:41:52Z",
+      "durationMs": 2507000,
+      "apiDurationMs": 1834210,
+      "turns": 142,
+      "inferenceCalls": 163,
+      "toolCalls": {
+        "total": 118,
+        "byTool": {
+          "Read": 41,
+          "Bash": 37,
+          "Grep": 19,
+          "Write": 12,
+          "Edit": 6,
+          "Task": 3
+        }
+      },
+      "subagentSessions": 3,
+      "permissionDenials": [
+        {
+          "toolName": "Bash",
+          "toolUseId": "toolu_01XkQ7mN2pR4sT6vW8yZ0aBc",
+          "reason": "command matched deny rule rm -rf"
+        }
+      ],
+      "models": [
+        {
+          "model": "claude-opus-5",
+          "provider": "anthropic",
+          "tokens": {
+            "input": 18420,
+            "output": 96311,
+            "cacheWrite5m": 412880,
+            "cacheWrite1h": 0,
+            "cacheRead": 7812440,
+            "thinking": null
+          },
+          "webSearchRequests": 4,
+          "webFetchRequests": 2,
+          "costUsd": 9.35
+        },
+        {
+          "model": "claude-haiku-4-5",
+          "provider": "anthropic",
+          "tokens": {
+            "input": 2210,
+            "output": 4180,
+            "cacheWrite5m": 18400,
+            "cacheWrite1h": 0,
+            "cacheRead": 96220,
+            "thinking": null
+          },
+          "webSearchRequests": 0,
+          "webFetchRequests": 0,
+          "costUsd": 0.06
+        }
+      ],
+      "costUsd": {
+        "computed": 9.41,
+        "reported": 9.38,
+        "deltaPct": 0.32
+      },
+      "pricingVersion": "2026-09-13",
+      "dedup": {
+        "strategy": "requestId-max-total-tokens",
+        "duplicatesDropped": 21
+      },
+      "filesWritten": [
+        "company-profile/zerodha-broking/soc/main.jsonl",
+        "company-profile/zerodha-broking/summary.md"
+      ],
+      "linesAdded": 412,
+      "linesRemoved": 37,
+      "outcome": "success",
+      "errors": [],
+      "transcriptFormatVersion": "2.1.14",
+      "provenance": {
+        "harness": "script",
+        "generatedAt": "2026-09-12T03:42:10Z",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "agent": ".claude/scripts/sessions/ingest.mjs"
+      }
+    }
+  ],
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "kind",
+    "sessionId",
+    "harness",
+    "harnessVersion",
+    "workflow",
+    "startedAt",
+    "endedAt",
+    "durationMs",
+    "turns",
+    "inferenceCalls",
+    "toolCalls",
+    "subagentSessions",
+    "permissionDenials",
+    "models",
+    "costUsd",
+    "pricingVersion",
+    "dedup",
+    "filesWritten",
+    "linesAdded",
+    "linesRemoved",
+    "outcome",
+    "transcriptFormatVersion",
+    "provenance"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/schemaVersion"
+    },
+    "kind": {
+      "const": "maxwell.session.summary"
+    },
+    "sessionId": {
+      "description": "Harness session id; matches the sibling .meta.json",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/sessionId"
+    },
+    "harness": {
+      "description": "Harness that ran the session and whose transcript format was parsed",
+      "enum": [ "claude-code", "opencode" ]
+    },
+    "harnessVersion": {
+      "description": "Harness release the session ran on (copied from the sibling .meta.json when it carries one, else from the transcript)",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/semver"
+    },
+    "runId": {
+      "description": "Headless run the session belongs to; omitted for interactive sessions",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/runId"
+    },
+    "workflow": {
+      "description": "Workflow the session executed",
+      "$ref": "https://maxwell.onfinance.ai/schemas/vocab/workflows.schema.json"
+    },
+    "companyId": {
+      "description": "Company the workflow ran for, when any",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+    },
+    "startedAt": {
+      "description": "Timestamp of the first transcript record",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+    },
+    "endedAt": {
+      "description": "Timestamp of the last transcript record",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+    },
+    "durationMs": {
+      "description": "endedAt minus startedAt in milliseconds (Claude Code cost-state totalDuration when present)",
+      "$ref": "#/$defs/count"
+    },
+    "apiDurationMs": {
+      "description": "Time spent waiting on model API calls (Claude Code cost-state totalAPIDuration); omitted when the harness does not report it",
+      "$ref": "#/$defs/count"
+    },
+    "turns": {
+      "description": "Assistant messages after dedup, i.e. distinct assistant turns in the main session",
+      "$ref": "#/$defs/count"
+    },
+    "inferenceCalls": {
+      "description": "Distinct model invocations after dedup, including subagents. No OTel attribute; Maxwell-specific count",
+      "$ref": "#/$defs/count"
+    },
+    "toolCalls": {
+      "description": "Tool invocations across the session with a per-tool breakdown. No OTel attribute; Maxwell-specific count",
+      "type": "object",
+      "required": [ "total", "byTool" ],
+      "properties": {
+        "total": {
+          "description": "Total tool_use blocks after dedup; equals the sum of byTool values",
+          "$ref": "#/$defs/count"
+        },
+        "byTool": {
+          "description": "Map of tool name to call count. Keys are tool names as they appear in tool_use blocks; capped at 256 distinct tools",
+          "type": "object",
+          "maxProperties": 256,
+          "propertyNames": {
+            "pattern": "^[A-Za-z0-9_.:-]{1,128}$"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/count"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "subagentSessions": {
+      "description": "Number of distinct sidechain agents (Claude Code isSidechain records grouped by agent, OpenCode child sessions) spawned by the session",
+      "$ref": "#/$defs/count"
+    },
+    "permissionDenials": {
+      "description": "Tool calls refused by the harness permission system; empty when none",
+      "type": "array",
+      "maxItems": 1000,
+      "items": {
+        "$ref": "#/$defs/permissionDenial"
+      }
+    },
+    "models": {
+      "description": "Usage per model observed in the session (Claude Code message.model; OpenCode modelID and providerID on the assistant message); at least one entry. The model + provider pair is unique across entries: one entry aggregates every call of that pair",
+      "type": "array",
+      "maxItems": 32,
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/modelUsage"
+      }
+    },
+    "costUsd": {
+      "description": "Session cost in USD: what Maxwell computed from the pricing table versus what the harness itself reported. deltaPct is null exactly when reported is null or zero",
+      "type": "object",
+      "if": {
+        "required": [ "reported" ],
+        "properties": {
+          "reported": {
+            "enum": [ null, 0 ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "deltaPct": {
+            "const": null
+          }
+        }
+      },
+      "required": [ "computed", "reported", "deltaPct" ],
+      "properties": {
+        "computed": {
+          "description": "Sum of models[].costUsd, computed from token counts and the pricing table",
+          "type": "number",
+          "minimum": 0
+        },
+        "reported": {
+          "description": "Harness-reported total (Claude Code total_cost_usd or cost-state totalCostUSD; OpenCode sum of message cost); null when the harness reported none",
+          "type": [ "number", "null" ],
+          "minimum": 0
+        },
+        "deltaPct": {
+          "description": "100 * (computed - reported) / reported; null when reported is null or zero",
+          "type": [ "number", "null" ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "pricingVersion": {
+      "description": "asOf date of the pricing table used to compute costs",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/date"
+    },
+    "dedup": {
+      "description": "How duplicate transcript records were collapsed before counting. Claude Code writes several records per requestId (streaming); the one with the largest total token count is kept",
+      "type": "object",
+      "required": [ "strategy", "duplicatesDropped" ],
+      "properties": {
+        "strategy": {
+          "description": "Dedup algorithm identifier; only one is defined",
+          "const": "requestId-max-total-tokens"
+        },
+        "duplicatesDropped": {
+          "description": "Number of assistant records discarded as duplicates",
+          "$ref": "#/$defs/count"
+        }
+      },
+      "additionalProperties": false
+    },
+    "filesWritten": {
+      "description": "Workspace files created or modified by Write/Edit tool calls during the session",
+      "type": "array",
+      "maxItems": 10000,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/workspacePath"
+      }
+    },
+    "linesAdded": {
+      "description": "Lines added across filesWritten (Claude Code cost-state totalLinesAdded)",
+      "$ref": "#/$defs/count"
+    },
+    "linesRemoved": {
+      "description": "Lines removed across filesWritten (Claude Code cost-state totalLinesRemoved)",
+      "$ref": "#/$defs/count"
+    },
+    "outcome": {
+      "description": "How the session ended: normal completion, an unrecoverable error, the max-turns or max-budget limit, or an operator abort",
+      "enum": [ "success", "error", "max-turns", "max-budget", "aborted" ]
+    },
+    "errors": {
+      "description": "Errors surfaced during the session; may be empty or omitted",
+      "type": "array",
+      "maxItems": 1000,
+      "items": {
+        "$ref": "#/$defs/error"
+      }
+    },
+    "transcriptFormatVersion": {
+      "description": "Transcript format version parsed. Claude Code: the 'version' field on transcript records, which equals harnessVersion because the CLI writes its own version on every record. OpenCode: the version of the `opencode export` format, which can lag the CLI release in harnessVersion",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/semver"
+    },
+    "provenance": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/provenance"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "count": {
+      "description": "Non-negative integer count",
+      "type": "integer",
+      "minimum": 0
+    },
+    "modelId": {
+      "description": "Alias of common modelId, kept for existing $refs",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/modelId"
+    },
+    "provider": {
+      "description": "Alias of common genAiProvider, kept for existing $refs",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/genAiProvider"
+    },
+    "toolName": {
+      "description": "Tool name as it appears in tool_use blocks, e.g. 'Bash', 'Read', 'mcp__github__create_issue'",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.:-]{1,128}$"
+    },
+    "tokens": {
+      "description": "Token usage summed over all inference calls for one model after dedup. Claude Code message.usage: input_tokens, output_tokens, cache_creation.ephemeral_5m_input_tokens, cache_creation.ephemeral_1h_input_tokens, cache_read_input_tokens; older records that only carry an undifferentiated cache_creation_input_tokens are booked as cacheWrite5m; the Anthropic usage object has no reasoning breakdown, so thinking is null. OpenCode tokens: input, output, cache.write (as cacheWrite5m, cacheWrite1h = 0), cache.read, reasoning (as thinking)",
+      "type": "object",
+      "required": [
+        "input",
+        "output",
+        "cacheWrite5m",
+        "cacheWrite1h",
+        "cacheRead",
+        "thinking"
+      ],
+      "properties": {
+        "input": {
+          "description": "Uncached input tokens (gen_ai.usage.input_tokens)",
+          "$ref": "#/$defs/count"
+        },
+        "output": {
+          "description": "Output tokens including thinking (gen_ai.usage.output_tokens)",
+          "$ref": "#/$defs/count"
+        },
+        "cacheWrite5m": {
+          "description": "Prompt-cache write tokens billed at the 5-minute TTL rate",
+          "$ref": "#/$defs/count"
+        },
+        "cacheWrite1h": {
+          "description": "Prompt-cache write tokens billed at the 1-hour TTL rate",
+          "$ref": "#/$defs/count"
+        },
+        "cacheRead": {
+          "description": "Prompt-cache read tokens (gen_ai.usage.cache_read.input_tokens)",
+          "$ref": "#/$defs/count"
+        },
+        "thinking": {
+          "description": "Reasoning tokens, a subset of output (gen_ai.usage.reasoning.output_tokens when the harness reports them: OpenCode tokens.reasoning). null when the harness does not report reasoning tokens (Claude Code), which is distinct from 0 (reported and none used)",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/count"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "modelUsage": {
+      "description": "Usage and cost for one model within the session",
+      "type": "object",
+      "required": [
+        "model",
+        "provider",
+        "tokens",
+        "webSearchRequests",
+        "costUsd"
+      ],
+      "properties": {
+        "model": {
+          "$ref": "#/$defs/modelId"
+        },
+        "provider": {
+          "$ref": "#/$defs/provider"
+        },
+        "tokens": {
+          "$ref": "#/$defs/tokens"
+        },
+        "webSearchRequests": {
+          "description": "Server-side web search requests (message.usage.server_tool_use.web_search_requests), billed per request",
+          "$ref": "#/$defs/count"
+        },
+        "webFetchRequests": {
+          "description": "Server-side web fetch requests (message.usage.server_tool_use.web_fetch_requests), when the harness reports them",
+          "$ref": "#/$defs/count"
+        },
+        "costUsd": {
+          "description": "USD cost for this model computed from the pricing table at pricingVersion",
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "permissionDenial": {
+      "description": "A tool call the harness refused under its permission rules",
+      "type": "object",
+      "required": [ "toolName" ],
+      "properties": {
+        "toolName": {
+          "$ref": "#/$defs/toolName"
+        },
+        "toolUseId": {
+          "description": "Id of the denied tool_use block (Claude Code 'toolu_' ids or OpenCode part ids)",
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,128}$"
+        },
+        "reason": {
+          "description": "Denial reason as reported by the harness",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        }
+      },
+      "additionalProperties": false
+    },
+    "error": {
+      "description": "An error surfaced during the session (API error, tool failure, abort)",
+      "type": "object",
+      "required": [ "message" ],
+      "properties": {
+        "message": {
+          "description": "Error text as recorded in the transcript",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/nonEmptyString"
+        },
+        "at": {
+          "description": "Timestamp of the transcript record carrying the error",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "toolName": {
+          "description": "Tool whose call failed, when the error came from a tool result",
+          "$ref": "#/$defs/toolName"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

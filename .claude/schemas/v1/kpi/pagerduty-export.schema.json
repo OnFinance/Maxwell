@@ -1,0 +1,329 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/kpi/pagerduty-export.schema.json",
+  "title": "PagerDuty incident export",
+  "description": "Schema for kpis/data/raw/pagerduty/<export>.json: a mirror of the PagerDuty REST API v2 GET /incidents response used by the incident_rate KPI. Incident fields keep PagerDuty's snake_case names because this is an upstream payload; incidents raised for Maxwell-managed changes carry an incident_key equal to the ledger incident.dedupKey ('maxwell:<controlId lower-cased>:<assetId>:<first 16 hex of the finding fingerprint>'), which is how an export line is joined to the soc ledger. Other incidents keep whatever key their source set, or null",
+  "examples": [
+    {
+      "schemaVersion": "1",
+      "kind": "maxwell.kpi.pagerduty-export",
+      "exportedAt": "2026-09-13T09:00:12Z",
+      "source": {
+        "apiVersion": "v2",
+        "serviceIds": [ "PQ7X2LM" ],
+        "since": "2026-09-01T00:00:00Z",
+        "until": "2026-09-13T00:00:00Z"
+      },
+      "incidents": [
+        {
+          "id": "Q1R2S3T4U5V6W7",
+          "incident_number": 4182,
+          "title": "UPI collect callback latency above 2s on kite-payments prod",
+          "description": "p95 latency on /v1/upi/callback exceeded 2000ms for 10 minutes after rollout of the SBOM gating change for GV.SC.S5 on kite-payments-prod",
+          "status": "resolved",
+          "urgency": "high",
+          "priority": {
+            "id": "P53ZZH5",
+            "summary": "P2"
+          },
+          "created_at": "2026-09-08T14:02:31Z",
+          "updated_at": "2026-09-08T15:20:04Z",
+          "resolved_at": "2026-09-08T15:20:04Z",
+          "last_status_change_at": "2026-09-08T15:20:04Z",
+          "incident_key": "maxwell:gv.sc.s5:kite-payments-prod:3f7a1c2e9b4d4e6f",
+          "service": {
+            "id": "PQ7X2LM",
+            "summary": "kite-payments-prod"
+          },
+          "escalation_policy": {
+            "id": "PA1B2C3",
+            "summary": "Payments on-call"
+          },
+          "teams": [
+            {
+              "id": "PT4KHLK",
+              "summary": "Payments platform"
+            }
+          ],
+          "alert_counts": {
+            "all": 3,
+            "triggered": 0,
+            "resolved": 3
+          },
+          "html_url": "https://zerodha.pagerduty.com/incidents/Q1R2S3T4U5V6W7",
+          "raw": {
+            "type": "incident",
+            "is_mergeable": true
+          }
+        }
+      ],
+      "provenance": {
+        "harness": "script",
+        "generatedAt": "2026-09-13T09:00:12Z",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "kpis",
+        "agent": ".claude/scripts/kpis/pagerduty-export.mjs"
+      }
+    }
+  ],
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "kind",
+    "exportedAt",
+    "source",
+    "incidents",
+    "provenance"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/schemaVersion"
+    },
+    "kind": {
+      "const": "maxwell.kpi.pagerduty-export"
+    },
+    "exportedAt": {
+      "description": "When the export was fetched from PagerDuty",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+    },
+    "source": {
+      "description": "Query the export was produced with",
+      "type": "object",
+      "required": [ "apiVersion", "since", "until" ],
+      "properties": {
+        "apiVersion": {
+          "description": "PagerDuty REST API version; only v2 is supported",
+          "const": "v2"
+        },
+        "serviceIds": {
+          "description": "PagerDuty service ids the query was filtered to (service_ids[] parameter); omitted when all services were exported",
+          "type": "array",
+          "maxItems": 256,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/pagerdutyId"
+          }
+        },
+        "since": {
+          "description": "Start of the queried window (since parameter)",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "until": {
+          "description": "End of the queried window (until parameter)",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        }
+      },
+      "additionalProperties": false
+    },
+    "incidents": {
+      "description": "Incidents returned by the query, one object per incident, already paginated together",
+      "type": "array",
+      "maxItems": 10000,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/incident"
+      }
+    },
+    "provenance": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/provenance"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "pagerdutyId": {
+      "description": "PagerDuty resource id: 5 to 20 upper-case alphanumerics, e.g. 'PT4KHLK'. Same pattern as soc record incident.externalRefs.pagerdutyId so ids round-trip into the ledger",
+      "type": "string",
+      "pattern": "^[A-Z0-9]{5,20}$"
+    },
+    "maxwellIncidentKey": {
+      "description": "incident_key of an incident Maxwell raised: the ledger incident.dedupKey convention maxwell:<controlId lower-cased>:<assetId>:<first 16 hex of the finding fingerprint>, e.g. maxwell:gv.sc.s5:kite-payments-prod:3f7a1c2e9b4d4e6f. This is the single definition of the format; soc incident.dedupKey stores the same string verbatim so the two join by equality",
+      "type": "string",
+      "pattern": "^maxwell:[a-z0-9._-]+:[a-z0-9._-]+:[a-f0-9]{16}$"
+    },
+    "reference": {
+      "description": "PagerDuty reference object (service_reference, team_reference, escalation_policy_reference, priority_reference) reduced to id and summary",
+      "type": "object",
+      "required": [ "id", "summary" ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/pagerdutyId"
+        },
+        "summary": {
+          "description": "Human-readable name of the referenced resource as PagerDuty returns it",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "type": {
+          "description": "PagerDuty reference type string, e.g. 'service_reference'",
+          "type": "string",
+          "pattern": "^[a-z_]{1,64}$"
+        },
+        "html_url": {
+          "description": "Link to the referenced resource in the PagerDuty web app",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/url"
+        }
+      },
+      "additionalProperties": false
+    },
+    "incident": {
+      "description": "One incident as returned by GET /incidents (PagerDuty REST API v2), field names verbatim. Lifecycle: resolved_at is required for status 'resolved' and forbidden otherwise; an incident_key starting with 'maxwell:' must be a ledger dedupKey",
+      "type": "object",
+      "allOf": [
+        {
+          "if": {
+            "required": [ "incident_key" ],
+            "properties": {
+              "incident_key": {
+                "type": "string",
+                "pattern": "^maxwell:"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "incident_key": {
+                "$ref": "#/$defs/maxwellIncidentKey"
+              }
+            }
+          }
+        }
+      ],
+      "if": {
+        "required": [ "status" ],
+        "properties": {
+          "status": {
+            "const": "resolved"
+          }
+        }
+      },
+      "then": {
+        "required": [ "resolved_at" ]
+      },
+      "else": {
+        "not": {
+          "required": [ "resolved_at" ]
+        }
+      },
+      "required": [
+        "id",
+        "incident_number",
+        "title",
+        "status",
+        "urgency",
+        "created_at",
+        "incident_key",
+        "service",
+        "html_url"
+      ],
+      "properties": {
+        "id": {
+          "description": "PagerDuty incident id",
+          "$ref": "#/$defs/pagerdutyId"
+        },
+        "incident_number": {
+          "description": "Sequential incident number within the PagerDuty account",
+          "type": "integer",
+          "minimum": 1
+        },
+        "title": {
+          "description": "Incident title (PagerDuty 'title', historically 'summary')",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/nonEmptyString"
+        },
+        "description": {
+          "description": "Longer incident description when set. PagerDuty returns an empty string for many incidents; the exporter writes null (or omits the field) in that case because empty strings are rejected",
+          "anyOf": [
+            {
+              "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "description": "PagerDuty incident lifecycle status",
+          "enum": [ "triggered", "acknowledged", "resolved" ]
+        },
+        "urgency": {
+          "description": "PagerDuty urgency; high urgency pages, low urgency notifies",
+          "enum": [ "high", "low" ]
+        },
+        "priority": {
+          "description": "Account-defined priority (P1..P5) when assigned",
+          "$ref": "#/$defs/reference"
+        },
+        "created_at": {
+          "description": "When the incident was triggered",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "updated_at": {
+          "description": "When the incident was last modified",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "resolved_at": {
+          "description": "When the incident was resolved; required for status 'resolved' and absent for 'triggered' and 'acknowledged'",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "last_status_change_at": {
+          "description": "When status last changed",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "incident_key": {
+          "description": "Deduplication key supplied by the triggering integration; null for incidents PagerDuty returns without one (manually created incidents). Incidents attributable to Maxwell carry the ledger incident.dedupKey 'maxwell:<controlId lower-cased>:<assetId>:<first 16 hex of the finding fingerprint>', e.g. 'maxwell:gv.sc.s5:kite-payments-prod:3f7a1c2e9b4d4e6f'; any other key is passed through and ignored by incident_rate",
+          "type": [ "string", "null" ],
+          "maxLength": 255,
+          "minLength": 1
+        },
+        "service": {
+          "description": "Service the incident was raised on",
+          "$ref": "#/$defs/reference"
+        },
+        "escalation_policy": {
+          "description": "Escalation policy that handled the incident",
+          "$ref": "#/$defs/reference"
+        },
+        "teams": {
+          "description": "Teams associated with the service",
+          "type": "array",
+          "maxItems": 32,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/reference"
+          }
+        },
+        "alert_counts": {
+          "description": "Counts of alerts grouped into this incident by state",
+          "type": "object",
+          "required": [ "all", "triggered", "resolved" ],
+          "properties": {
+            "all": {
+              "description": "Total alerts on the incident",
+              "type": "integer",
+              "minimum": 0
+            },
+            "triggered": {
+              "description": "Alerts still in triggered state",
+              "type": "integer",
+              "minimum": 0
+            },
+            "resolved": {
+              "description": "Alerts already resolved",
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "additionalProperties": false
+        },
+        "html_url": {
+          "description": "Link to the incident in the PagerDuty web app",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/url"
+        },
+        "raw": {
+          "description": "Capped passthrough of any other top-level PagerDuty incident fields (type, self, is_mergeable, assignments, acknowledgements, body, ...) copied verbatim so nothing is lost when the upstream payload grows. Capped at 32 keys because the KPI never reads these; anything the KPI needs must be promoted to a named property",
+          "type": "object",
+          "maxProperties": 32
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

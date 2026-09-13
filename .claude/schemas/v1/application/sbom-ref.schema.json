@@ -1,0 +1,1148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/application/sbom-ref.schema.json",
+  "title": "CycloneDX image SBOM",
+  "description": "Validates applications/<app_id>/images/<image_id>.cdx.json, a CycloneDX 1.5, 1.6 or 1.7 JSON BOM produced by syft, trivy, cdxgen or a build plugin. This is a structural profile, not a re-implementation of the CycloneDX schema: it pins the fields Maxwell reads (bomFormat, specVersion, serialNumber, metadata.component, components, dependencies, vulnerabilities with VEX analysis) and closes the objects it defines. The remaining CycloneDX top-level sections (services, externalReferences, compositions, annotations, formulation, declarations, definitions, properties, signature, $schema) are enumerated with loose, size-capped subschemas because generators emit them and stripping them would break the BOM's own signature and downstream tooling; anything else is rejected. The BOM is an upstream format without a Maxwell provenance block, so the workflow that stores it must attribute it by adding metadata.properties entries named maxwell:runId, maxwell:sessionId, maxwell:workflow and maxwell:imageId (see the example); without them the SBOM cannot be tied to an audit run and KPIs are silently corrupted",
+  "examples": [
+    {
+      "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
+      "bomFormat": "CycloneDX",
+      "specVersion": "1.6",
+      "serialNumber": "urn:uuid:3e671687-395b-41f5-a30f-a58921a69b79",
+      "version": 1,
+      "metadata": {
+        "timestamp": "2026-09-13T04:01:30Z",
+        "tools": {
+          "components": [
+            {
+              "type": "application",
+              "name": "syft",
+              "version": "1.30.0",
+              "bom-ref": "tool:syft"
+            }
+          ]
+        },
+        "component": {
+          "type": "container",
+          "name": "123456789012.dkr.ecr.ap-south-1.amazonaws.com/arthanidhi/ledger-core-api",
+          "version": "sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+          "bom-ref": "image:ledger-core-api",
+          "purl": "pkg:oci/ledger-core-api@sha256%3A7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f?repository_url=123456789012.dkr.ecr.ap-south-1.amazonaws.com/arthanidhi/ledger-core-api&tag=2.14.3"
+        },
+        "properties": [
+          {
+            "name": "maxwell:runId",
+            "value": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1"
+          },
+          {
+            "name": "maxwell:sessionId",
+            "value": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60"
+          },
+          {
+            "name": "maxwell:workflow",
+            "value": "runtime-probe-appcontainers"
+          },
+          {
+            "name": "maxwell:imageId",
+            "value": "ledger-core-api"
+          }
+        ]
+      },
+      "components": [
+        {
+          "type": "operating-system",
+          "name": "debian",
+          "version": "12.7",
+          "bom-ref": "os:debian@12.7",
+          "cpe": "cpe:2.3:o:debian:debian_linux:12.7:*:*:*:*:*:*:*"
+        },
+        {
+          "type": "library",
+          "name": "express",
+          "version": "4.21.2",
+          "bom-ref": "pkg:npm/express@4.21.2",
+          "purl": "pkg:npm/express@4.21.2",
+          "licenses": [
+            {
+              "license": {
+                "id": "MIT"
+              }
+            }
+          ],
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e"
+            }
+          ],
+          "properties": [
+            {
+              "name": "syft:package:foundBy",
+              "value": "javascript-lock-cataloger"
+            }
+          ]
+        },
+        {
+          "type": "library",
+          "name": "libssl3",
+          "version": "3.0.14-1~deb12u2",
+          "bom-ref": "pkg:deb/debian/libssl3@3.0.14-1~deb12u2?arch=amd64&distro=debian-12",
+          "purl": "pkg:deb/debian/libssl3@3.0.14-1~deb12u2?arch=amd64&distro=debian-12",
+          "supplier": {
+            "name": "Debian OpenSSL Team"
+          }
+        }
+      ],
+      "dependencies": [
+        {
+          "ref": "image:ledger-core-api",
+          "dependsOn": [ "pkg:npm/express@4.21.2", "os:debian@12.7" ]
+        },
+        {
+          "ref": "pkg:npm/express@4.21.2",
+          "dependsOn": []
+        }
+      ],
+      "vulnerabilities": [
+        {
+          "id": "CVE-2024-5535",
+          "bom-ref": "vuln:CVE-2024-5535",
+          "source": {
+            "name": "NVD",
+            "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-5535"
+          },
+          "ratings": [
+            {
+              "source": {
+                "name": "NVD"
+              },
+              "score": 9.1,
+              "severity": "critical",
+              "method": "CVSSv31",
+              "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:H"
+            }
+          ],
+          "cwes": [ 200 ],
+          "description": "SSL_select_next_proto buffer overread in OpenSSL",
+          "published": "2024-06-27T00:00:00Z",
+          "affects": [
+            {
+              "ref": "pkg:deb/debian/libssl3@3.0.14-1~deb12u2?arch=amd64&distro=debian-12",
+              "versions": [
+                {
+                  "version": "3.0.14-1~deb12u2",
+                  "status": "affected"
+                }
+              ]
+            }
+          ],
+          "analysis": {
+            "state": "not_affected",
+            "justification": "code_not_reachable",
+            "response": [ "will_not_fix", "update" ],
+            "detail": "Application never negotiates ALPN via SSL_select_next_proto; Node's TLS stack is statically linked and unaffected",
+            "firstIssued": "2026-09-13T04:30:00Z",
+            "lastUpdated": "2026-09-13T04:30:00Z"
+          }
+        }
+      ]
+    }
+  ],
+  "type": "object",
+  "required": [
+    "bomFormat",
+    "specVersion",
+    "serialNumber",
+    "version",
+    "metadata",
+    "components"
+  ],
+  "properties": {
+    "$schema": {
+      "description": "CycloneDX JSON schema URL the generator targeted",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/url"
+    },
+    "bomFormat": {
+      "description": "Always 'CycloneDX'; SPDX documents must be converted before being stored here",
+      "const": "CycloneDX"
+    },
+    "specVersion": {
+      "description": "CycloneDX specification version. 1.6 preferred; 1.7 (released 2025-10-21) accepted for current syft/trivy/cdxgen releases and 1.5 for older generators",
+      "enum": [ "1.5", "1.6", "1.7" ]
+    },
+    "serialNumber": {
+      "description": "Unique BOM identifier as a UUID URN; regenerated for each new BOM, unchanged across versions of the same BOM",
+      "type": "string",
+      "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+    },
+    "version": {
+      "description": "Monotonic version of this BOM for the same serialNumber, starting at 1",
+      "type": "integer",
+      "minimum": 1
+    },
+    "metadata": {
+      "$ref": "#/$defs/metadata"
+    },
+    "components": {
+      "description": "Inventory of software components in the image. Maxwell matches purl values against cves/ and the KEV catalogue",
+      "type": "array",
+      "maxItems": 50000,
+      "items": {
+        "$ref": "#/$defs/component"
+      }
+    },
+    "dependencies": {
+      "description": "Dependency graph over bom-ref values; the metadata.component ref is normally the root",
+      "type": "array",
+      "maxItems": 50000,
+      "items": {
+        "$ref": "#/$defs/dependency"
+      }
+    },
+    "vulnerabilities": {
+      "description": "Vulnerabilities affecting listed components, optionally with VEX analysis. Populated by the scanner or by Maxwell's triage",
+      "type": "array",
+      "maxItems": 20000,
+      "items": {
+        "$ref": "#/$defs/vulnerability"
+      }
+    },
+    "services": {
+      "description": "CycloneDX services section; retained verbatim, Maxwell does not read it",
+      "type": "array",
+      "maxItems": 5000,
+      "items": {
+        "type": "object",
+        "maxProperties": 32
+      }
+    },
+    "externalReferences": {
+      "description": "BOM-level external references",
+      "$ref": "#/$defs/externalReferences"
+    },
+    "compositions": {
+      "description": "CycloneDX compositions (completeness assertions); retained verbatim",
+      "type": "array",
+      "maxItems": 1000,
+      "items": {
+        "type": "object",
+        "maxProperties": 16
+      }
+    },
+    "annotations": {
+      "description": "CycloneDX annotations; retained verbatim",
+      "type": "array",
+      "maxItems": 1000,
+      "items": {
+        "type": "object",
+        "maxProperties": 16
+      }
+    },
+    "formulation": {
+      "description": "CycloneDX formulation (how the BOM subject was built); retained verbatim",
+      "type": "array",
+      "maxItems": 1000,
+      "items": {
+        "type": "object",
+        "maxProperties": 16
+      }
+    },
+    "declarations": {
+      "description": "CycloneDX 1.6 declarations (attestations, claims, evidence); retained verbatim",
+      "type": "object",
+      "maxProperties": 16
+    },
+    "definitions": {
+      "description": "CycloneDX 1.6 definitions (standards); retained verbatim",
+      "type": "object",
+      "maxProperties": 8
+    },
+    "properties": {
+      "description": "BOM-level name/value properties",
+      "$ref": "#/$defs/properties"
+    },
+    "signature": {
+      "description": "JSON Signature Format (JSF) signature over the BOM; never altered, which is why the top-level sections above are retained",
+      "type": "object",
+      "maxProperties": 16
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "bomRef": {
+      "description": "Identifier unique within the BOM used to link components, dependencies and vulnerabilities",
+      "type": "string",
+      "maxLength": 1000,
+      "minLength": 1
+    },
+    "metadata": {
+      "description": "Who produced the BOM, when, and which component it describes",
+      "type": "object",
+      "required": [ "timestamp", "component" ],
+      "properties": {
+        "timestamp": {
+          "description": "When the BOM was generated",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "lifecycles": {
+          "description": "Lifecycle phases the BOM describes (cdxgen emits build by default)",
+          "type": "array",
+          "maxItems": 10,
+          "items": {
+            "$ref": "#/$defs/lifecycle"
+          }
+        },
+        "tools": {
+          "description": "Generator tooling. CycloneDX 1.5+ object form {components, services} or the legacy array of {vendor, name, version}",
+          "oneOf": [
+            {
+              "$ref": "#/$defs/toolsObject"
+            },
+            {
+              "type": "array",
+              "maxItems": 50,
+              "items": {
+                "$ref": "#/$defs/legacyTool"
+              }
+            }
+          ]
+        },
+        "authors": {
+          "description": "People who created the BOM (cdxgen emits the invoking tool identity here)",
+          "type": "array",
+          "maxItems": 50,
+          "items": {
+            "$ref": "#/$defs/contact"
+          }
+        },
+        "component": {
+          "description": "The subject of the BOM: for Maxwell always the container image, with type 'container'",
+          "$ref": "#/$defs/component",
+          "properties": {
+            "type": {
+              "const": "container"
+            }
+          }
+        },
+        "supplier": {
+          "$ref": "#/$defs/organization"
+        },
+        "manufacturer": {
+          "description": "Organisation that manufactured the BOM subject (CycloneDX 1.6)",
+          "$ref": "#/$defs/organization"
+        },
+        "licenses": {
+          "$ref": "#/$defs/licenses"
+        },
+        "properties": {
+          "description": "BOM-level name/value properties. Maxwell requires the storing workflow to add maxwell:runId (run_ ULID from MAXWELL_RUN_ID), maxwell:sessionId, maxwell:workflow and maxwell:imageId so the BOM is attributable to an audit run; generator properties are kept alongside",
+          "$ref": "#/$defs/properties"
+        }
+      },
+      "additionalProperties": false
+    },
+    "lifecycle": {
+      "description": "CycloneDX lifecycle: a pre-defined phase or a named custom phase",
+      "type": "object",
+      "properties": {
+        "phase": {
+          "enum": [
+            "design",
+            "pre-build",
+            "build",
+            "post-build",
+            "operations",
+            "discovery",
+            "decommission"
+          ]
+        },
+        "name": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "description": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/nonEmptyString"
+        }
+      },
+      "additionalProperties": false
+    },
+    "contact": {
+      "description": "CycloneDX organizationalContact",
+      "type": "object",
+      "properties": {
+        "bom-ref": {
+          "$ref": "#/$defs/bomRef"
+        },
+        "name": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "email": {
+          "type": "string",
+          "maxLength": 254
+        },
+        "phone": {
+          "type": "string",
+          "maxLength": 40
+        }
+      },
+      "additionalProperties": false
+    },
+    "postalAddress": {
+      "description": "CycloneDX postalAddress",
+      "type": "object",
+      "properties": {
+        "bom-ref": {
+          "$ref": "#/$defs/bomRef"
+        },
+        "country": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "region": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "locality": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "postOfficeBoxNumber": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "postalCode": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "streetAddress": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        }
+      },
+      "additionalProperties": false
+    },
+    "toolsObject": {
+      "type": "object",
+      "properties": {
+        "components": {
+          "description": "Tools expressed as components (CycloneDX 1.5+)",
+          "type": "array",
+          "maxItems": 50,
+          "items": {
+            "$ref": "#/$defs/component"
+          }
+        },
+        "services": {
+          "description": "Tools expressed as services; only name, version and bom-ref are retained",
+          "type": "array",
+          "maxItems": 50,
+          "items": {
+            "$ref": "#/$defs/legacyTool"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "legacyTool": {
+      "description": "CycloneDX <=1.4 tool entry",
+      "type": "object",
+      "properties": {
+        "vendor": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "name": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "version": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "bom-ref": {
+          "$ref": "#/$defs/bomRef"
+        },
+        "hashes": {
+          "$ref": "#/$defs/hashes"
+        }
+      },
+      "additionalProperties": false
+    },
+    "organization": {
+      "description": "CycloneDX organizationalEntity",
+      "type": "object",
+      "properties": {
+        "bom-ref": {
+          "$ref": "#/$defs/bomRef"
+        },
+        "name": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "url": {
+          "type": "array",
+          "maxItems": 20,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/url"
+          }
+        },
+        "address": {
+          "$ref": "#/$defs/postalAddress"
+        },
+        "contact": {
+          "type": "array",
+          "maxItems": 20,
+          "items": {
+            "$ref": "#/$defs/contact"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "component": {
+      "description": "CycloneDX component. purl is the key Maxwell uses for vulnerability matching; bom-ref for graph edges",
+      "type": "object",
+      "required": [ "type", "name" ],
+      "properties": {
+        "type": {
+          "description": "Component classification per CycloneDX",
+          "enum": [
+            "application",
+            "library",
+            "framework",
+            "container",
+            "operating-system",
+            "device",
+            "firmware",
+            "file",
+            "platform",
+            "data",
+            "machine-learning-model",
+            "device-driver",
+            "cryptographic-asset"
+          ]
+        },
+        "bom-ref": {
+          "$ref": "#/$defs/bomRef"
+        },
+        "name": {
+          "description": "Component name without group or version",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/nonEmptyString"
+        },
+        "version": {
+          "description": "Component version string; for the root container this is the image digest",
+          "type": "string",
+          "maxLength": 1024
+        },
+        "group": {
+          "description": "Namespace, vendor or organisation, e.g. Maven groupId or npm scope",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "purl": {
+          "description": "Package URL; required for anything vulnerability matching should cover",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/purl"
+        },
+        "cpe": {
+          "description": "CPE 2.3 formatted string, mainly for operating-system components",
+          "type": "string",
+          "pattern": "^cpe:2\\.3:[aho*-]",
+          "maxLength": 1024
+        },
+        "omniborId": {
+          "description": "OmniBOR artifact identifiers (CycloneDX 1.6)",
+          "type": "array",
+          "maxItems": 20,
+          "items": {
+            "type": "string",
+            "maxLength": 200
+          }
+        },
+        "swhid": {
+          "description": "Software Heritage identifiers (CycloneDX 1.6)",
+          "type": "array",
+          "maxItems": 20,
+          "items": {
+            "type": "string",
+            "maxLength": 200
+          }
+        },
+        "mime-type": {
+          "type": "string",
+          "pattern": "^[-+a-z0-9.]+/[-+a-z0-9.]+$",
+          "maxLength": 128
+        },
+        "description": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/nonEmptyString"
+        },
+        "scope": {
+          "description": "required (runtime), optional (dev/test only) or excluded",
+          "enum": [ "required", "optional", "excluded" ]
+        },
+        "author": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "authors": {
+          "description": "Component authors (CycloneDX 1.6 replaces the author string)",
+          "type": "array",
+          "maxItems": 50,
+          "items": {
+            "$ref": "#/$defs/contact"
+          }
+        },
+        "publisher": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "supplier": {
+          "$ref": "#/$defs/organization"
+        },
+        "hashes": {
+          "$ref": "#/$defs/hashes"
+        },
+        "licenses": {
+          "$ref": "#/$defs/licenses"
+        },
+        "copyright": {
+          "type": "string",
+          "maxLength": 4000
+        },
+        "modified": {
+          "description": "True when the component has been modified from its original form (deprecated in CycloneDX, still emitted)",
+          "type": "boolean"
+        },
+        "pedigree": {
+          "$ref": "#/$defs/pedigree"
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence"
+        },
+        "tags": {
+          "type": "array",
+          "maxItems": 50,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+          }
+        },
+        "externalReferences": {
+          "$ref": "#/$defs/externalReferences"
+        },
+        "properties": {
+          "$ref": "#/$defs/properties"
+        },
+        "components": {
+          "description": "Nested sub-components (e.g. files inside a package)",
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/component"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "pedigree": {
+      "description": "CycloneDX pedigree (ancestors, descendants, variants, commits, patches, notes); retained verbatim with a size cap",
+      "type": "object",
+      "maxProperties": 6,
+      "propertyNames": {
+        "enum": [
+          "ancestors",
+          "descendants",
+          "variants",
+          "commits",
+          "patches",
+          "notes"
+        ]
+      }
+    },
+    "evidence": {
+      "description": "CycloneDX component evidence (cdxgen emits identity by default). identity is an object in 1.5 and an array in 1.6; each member is retained with a size cap",
+      "type": "object",
+      "properties": {
+        "identity": {
+          "type": [ "array", "object" ],
+          "maxItems": 100,
+          "maxProperties": 16
+        },
+        "occurrences": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "type": "object",
+            "maxProperties": 16
+          }
+        },
+        "callstack": {
+          "type": "object",
+          "maxProperties": 4
+        },
+        "licenses": {
+          "$ref": "#/$defs/licenses"
+        },
+        "copyright": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "type": "object",
+            "maxProperties": 2
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "hashes": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "required": [ "alg", "content" ],
+        "properties": {
+          "alg": {
+            "enum": [
+              "MD5",
+              "SHA-1",
+              "SHA-256",
+              "SHA-384",
+              "SHA-512",
+              "SHA3-256",
+              "SHA3-384",
+              "SHA3-512",
+              "BLAKE2b-256",
+              "BLAKE2b-384",
+              "BLAKE2b-512",
+              "BLAKE3"
+            ]
+          },
+          "content": {
+            "type": "string",
+            "pattern": "^([a-fA-F0-9]{32}|[a-fA-F0-9]{40}|[a-fA-F0-9]{64}|[a-fA-F0-9]{96}|[a-fA-F0-9]{128})$"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "licenses": {
+      "description": "CycloneDX licenseChoice array: each item carries either a license object (SPDX id or name) or an SPDX expression",
+      "type": "array",
+      "maxItems": 50,
+      "items": {
+        "type": "object",
+        "properties": {
+          "license": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "description": "SPDX license identifier, e.g. 'MIT', 'Apache-2.0'",
+                "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+              },
+              "name": {
+                "description": "License name when no SPDX id applies",
+                "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+              },
+              "text": {
+                "description": "Full licence text for non-SPDX licences, as CycloneDX attachment",
+                "type": "object",
+                "required": [ "content" ],
+                "properties": {
+                  "content": {
+                    "type": "string",
+                    "maxLength": 200000
+                  },
+                  "contentType": {
+                    "type": "string",
+                    "maxLength": 128
+                  },
+                  "encoding": {
+                    "const": "base64"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "url": {
+                "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/url"
+              },
+              "bom-ref": {
+                "$ref": "#/$defs/bomRef"
+              },
+              "acknowledgement": {
+                "enum": [ "declared", "concluded" ]
+              }
+            },
+            "additionalProperties": false
+          },
+          "expression": {
+            "description": "SPDX license expression, e.g. '(MIT OR Apache-2.0)'",
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+          },
+          "acknowledgement": {
+            "enum": [ "declared", "concluded" ]
+          },
+          "bom-ref": {
+            "$ref": "#/$defs/bomRef"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "externalReferences": {
+      "type": "array",
+      "maxItems": 100,
+      "items": {
+        "type": "object",
+        "required": [ "url", "type" ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "maxLength": 2048
+          },
+          "type": {
+            "description": "CycloneDX 1.6 externalReferenceType",
+            "enum": [
+              "vcs",
+              "issue-tracker",
+              "website",
+              "advisories",
+              "bom",
+              "mailing-list",
+              "social",
+              "chat",
+              "documentation",
+              "support",
+              "source-distribution",
+              "distribution",
+              "distribution-intake",
+              "license",
+              "build-meta",
+              "build-system",
+              "release-notes",
+              "security-contact",
+              "model-card",
+              "log",
+              "configuration",
+              "evidence",
+              "formulation",
+              "attestation",
+              "threat-model",
+              "adversary-model",
+              "risk-assessment",
+              "vulnerability-assertion",
+              "exploitability-statement",
+              "pentest-report",
+              "static-analysis-report",
+              "dynamic-analysis-report",
+              "runtime-analysis-report",
+              "component-analysis-report",
+              "maturity-report",
+              "certification-report",
+              "codified-infrastructure",
+              "quality-metrics",
+              "poam",
+              "electronic-signature",
+              "digital-signature",
+              "rfc-9116",
+              "other"
+            ]
+          },
+          "comment": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/nonEmptyString"
+          },
+          "hashes": {
+            "$ref": "#/$defs/hashes"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "properties": {
+      "description": "Name/value pairs carrying generator-specific metadata (e.g. syft:package:foundBy, aquasecurity:trivy:PkgType)",
+      "type": "array",
+      "maxItems": 500,
+      "items": {
+        "type": "object",
+        "required": [ "name" ],
+        "properties": {
+          "name": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+          },
+          "value": {
+            "type": "string",
+            "maxLength": 4000
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "dependency": {
+      "description": "One node of the dependency graph",
+      "type": "object",
+      "required": [ "ref" ],
+      "properties": {
+        "ref": {
+          "description": "bom-ref of the dependent component",
+          "$ref": "#/$defs/bomRef"
+        },
+        "dependsOn": {
+          "description": "bom-ref values this component directly depends on",
+          "type": "array",
+          "maxItems": 10000,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/bomRef"
+          }
+        },
+        "provides": {
+          "description": "bom-ref values of components or services this component provides (CycloneDX 1.6)",
+          "type": "array",
+          "maxItems": 10000,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/bomRef"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "vulnSource": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Source name, e.g. 'NVD', 'GHSA', 'OSV', 'debian'",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "url": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/url"
+        }
+      },
+      "additionalProperties": false
+    },
+    "rating": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/vulnSource"
+        },
+        "score": {
+          "type": "number",
+          "maximum": 10,
+          "minimum": 0
+        },
+        "severity": {
+          "description": "CycloneDX severity; Maxwell maps 'none'/'unknown' to 'info'",
+          "enum": [
+            "critical",
+            "high",
+            "medium",
+            "low",
+            "info",
+            "none",
+            "unknown"
+          ]
+        },
+        "method": {
+          "enum": [
+            "CVSSv2",
+            "CVSSv3",
+            "CVSSv31",
+            "CVSSv4",
+            "OWASP",
+            "SSVC",
+            "other"
+          ]
+        },
+        "vector": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "justification": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/nonEmptyString"
+        }
+      },
+      "additionalProperties": false
+    },
+    "affects": {
+      "type": "object",
+      "required": [ "ref" ],
+      "properties": {
+        "ref": {
+          "description": "bom-ref of the affected component",
+          "$ref": "#/$defs/bomRef"
+        },
+        "versions": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "type": "object",
+            "properties": {
+              "version": {
+                "type": "string",
+                "maxLength": 1024
+              },
+              "range": {
+                "description": "vers range expression",
+                "type": "string",
+                "maxLength": 4096
+              },
+              "status": {
+                "enum": [ "affected", "unaffected", "unknown" ]
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "analysis": {
+      "description": "CycloneDX VEX analysis. state uses CycloneDX's impactAnalysisState; Maxwell maps it to the OpenVEX statuses in vocab/statuses vexStatus as resolved/resolved_with_pedigree->fixed, exploitable->affected, in_triage->under_investigation, false_positive/not_affected->not_affected. detail is required for every state other than in_triage and justification is required for not_affected",
+      "type": "object",
+      "allOf": [
+        {
+          "if": {
+            "required": [ "state" ],
+            "properties": {
+              "state": {
+                "not": {
+                  "const": "in_triage"
+                }
+              }
+            }
+          },
+          "then": {
+            "required": [ "detail" ]
+          }
+        },
+        {
+          "if": {
+            "required": [ "state" ],
+            "properties": {
+              "state": {
+                "const": "not_affected"
+              }
+            }
+          },
+          "then": {
+            "required": [ "justification" ]
+          }
+        }
+      ],
+      "required": [ "state" ],
+      "properties": {
+        "state": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/cycloneDxAnalysisState"
+        },
+        "justification": {
+          "description": "Why the vulnerability is not_affected, per CycloneDX impactAnalysisJustification; required when state is not_affected",
+          "enum": [
+            "code_not_present",
+            "code_not_reachable",
+            "requires_configuration",
+            "requires_dependency",
+            "requires_environment",
+            "protected_by_compiler",
+            "protected_at_runtime",
+            "protected_at_perimeter",
+            "protected_by_mitigating_control"
+          ]
+        },
+        "response": {
+          "description": "Vendor or operator responses",
+          "type": "array",
+          "maxItems": 5,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "can_not_fix",
+              "will_not_fix",
+              "update",
+              "rollback",
+              "workaround_available"
+            ]
+          }
+        },
+        "detail": {
+          "description": "Free-text rationale; required when state is not in_triage",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+        },
+        "firstIssued": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "lastUpdated": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        }
+      },
+      "additionalProperties": false
+    },
+    "vulnerability": {
+      "description": "One vulnerability record, keyed by id (CVE, GHSA or vendor advisory id)",
+      "type": "object",
+      "required": [ "id" ],
+      "properties": {
+        "bom-ref": {
+          "$ref": "#/$defs/bomRef"
+        },
+        "id": {
+          "description": "Vulnerability identifier as issued by source, e.g. 'CVE-2024-5535' or 'GHSA-xxxx-xxxx-xxxx'",
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9:._-]*$",
+          "maxLength": 128,
+          "minLength": 3
+        },
+        "source": {
+          "$ref": "#/$defs/vulnSource"
+        },
+        "ratings": {
+          "type": "array",
+          "maxItems": 20,
+          "items": {
+            "$ref": "#/$defs/rating"
+          }
+        },
+        "cwes": {
+          "type": "array",
+          "maxItems": 50,
+          "uniqueItems": true,
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "description": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+        },
+        "detail": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+        },
+        "recommendation": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+        },
+        "advisories": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "type": "object",
+            "required": [ "url" ],
+            "properties": {
+              "title": {
+                "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+              },
+              "url": {
+                "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/url"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "created": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "published": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "updated": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "affects": {
+          "type": "array",
+          "maxItems": 1000,
+          "items": {
+            "$ref": "#/$defs/affects"
+          }
+        },
+        "analysis": {
+          "$ref": "#/$defs/analysis"
+        },
+        "properties": {
+          "$ref": "#/$defs/properties"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,393 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/cve/search.schema.json",
+  "title": "Vulnerability intelligence search",
+  "description": "One query issued to an upstream vulnerability source (NVD, OSV, GHSA, cve.org, CISA KEV, EPSS or a vendor advisory feed) and the hits it returned, stored at cves/search/<q_id>.json. Search files are the audit trail that explains why a cves/data/<vuln_id>.json record exists and which workspace assets it was fetched for. Failed calls (HTTP error, timeout, rate limit) are recorded too, with status and error set and no results, so pacing and retries can be reasoned about later",
+  "examples": [
+    {
+      "schemaVersion": "1",
+      "kind": "maxwell.cve.search",
+      "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+      "createdAt": "2026-09-12T04:15:22Z",
+      "source": "osv",
+      "query": {
+        "type": "purl",
+        "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12"
+      },
+      "forAssets": [
+        {
+          "type": "repo",
+          "appId": "nse-order-gateway",
+          "repoId": "order-gateway-java"
+        },
+        {
+          "type": "environment",
+          "appId": "nse-order-gateway",
+          "envId": "prod-mumbai"
+        }
+      ],
+      "status": "ok",
+      "resultCount": 1,
+      "results": [
+        {
+          "vulnId": "GHSA-c3hp-fjw2-8w9m",
+          "aliases": [ "CVE-2024-38816" ],
+          "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+          "severity": "high",
+          "cvssScore": 7.5,
+          "published": "2024-09-13T06:30:11Z",
+          "modified": "2025-11-02T18:02:44Z",
+          "recordPath": "cves/data/CVE-2024-38816.json"
+        }
+      ],
+      "rateLimit": {
+        "remaining": 998,
+        "resetAt": "2026-09-12T05:00:00Z"
+      },
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-12T04:15:23Z",
+        "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+        "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+        "workflow": "probe-app-chart",
+        "agent": "vuln-intel",
+        "model": "claude-fable-5-1"
+      }
+    }
+  ],
+  "type": "object",
+  "if": {
+    "properties": {
+      "status": {
+        "const": "ok"
+      }
+    }
+  },
+  "then": {
+    "required": [ "resultCount", "results" ],
+    "properties": {
+      "error": false
+    }
+  },
+  "else": {
+    "required": [ "error" ]
+  },
+  "required": [
+    "schemaVersion",
+    "kind",
+    "queryId",
+    "createdAt",
+    "source",
+    "query",
+    "status",
+    "provenance"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/schemaVersion"
+    },
+    "kind": {
+      "description": "Document discriminator; always maxwell.cve.search for files under cves/search/",
+      "const": "maxwell.cve.search"
+    },
+    "queryId": {
+      "description": "Prefixed ULID naming this search; the file is stored at cves/search/<queryId>.json",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/queryId"
+    },
+    "createdAt": {
+      "description": "When the upstream request was issued",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+    },
+    "source": {
+      "description": "Upstream service that answered the query",
+      "$ref": "#/$defs/upstreamSource"
+    },
+    "query": {
+      "$ref": "#/$defs/query"
+    },
+    "forAssets": {
+      "description": "Workspace assets the search was run on behalf of (the applications, repos, images or environments that use the queried component). Empty or absent for ad-hoc lookups",
+      "type": "array",
+      "maxItems": 256,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/assetRef"
+      }
+    },
+    "status": {
+      "description": "Outcome of the upstream call: ok (response parsed; resultCount and results required), error (HTTP or parse failure), rate-limited (HTTP 429 or quota exhausted; record rateLimit so later runs pace themselves) or timeout. error text is required for every status other than ok",
+      "enum": [ "ok", "error", "rate-limited", "timeout" ]
+    },
+    "error": {
+      "description": "Why the call failed: HTTP status and upstream message, trimmed. Only present when status is not ok",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+    },
+    "resultCount": {
+      "description": "Total matches reported by the upstream source. May exceed the length of results when the response was paginated or truncated",
+      "type": "integer",
+      "minimum": 0
+    },
+    "results": {
+      "description": "Hits returned, in upstream order. Each hit is a lightweight summary; the full OSV-shaped record lives at recordPath once fetched",
+      "type": "array",
+      "maxItems": 1000,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/result"
+      }
+    },
+    "rateLimit": {
+      "$ref": "#/$defs/rateLimit"
+    },
+    "provenance": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/provenance"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "upstreamSource": {
+      "description": "Upstream vulnerability source: nvd (NVD API), osv (api.osv.dev), ghsa (GitHub Advisory Database), cve-org (the CNA record from cve.org / CVE Services), kev (CISA Known Exploited Vulnerabilities), epss (FIRST EPSS) or vendor-advisory (a vendor security feed such as Red Hat, Ubuntu or Oracle rather than a public aggregator). Shared by search.source and record.maxwell.sources",
+      "enum": [
+        "nvd",
+        "osv",
+        "ghsa",
+        "cve-org",
+        "kev",
+        "epss",
+        "vendor-advisory"
+      ]
+    },
+    "vulnId": {
+      "description": "Alias of common vulnId, kept for existing $refs",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/vulnId"
+    },
+    "cpe": {
+      "description": "CPE 2.3 formatted string (13 colon-separated components, e.g. cpe:2.3:a:vmware:spring_framework:6.1.12:*:*:*:*:*:*:*). A component may contain an escaped colon (\\:) per the CPE 2.3 formatted-string grammar",
+      "type": "string",
+      "pattern": "^cpe:2\\.3:[aho](:([^:\\\\]|\\\\.)+){10}$",
+      "maxLength": 512
+    },
+    "osvEcosystem": {
+      "description": "OSV ecosystem name exactly as OSV spells it, optionally followed by ':'-separated release suffixes (Debian:12, Ubuntu:22.04:LTS, Red Hat:enterprise_linux:9::appstream). Base names include AlmaLinux, Alpine, Android, Bitnami, CRAN, Chainguard, Debian, Go, Hackage, Hex, Linux, Maven, NuGet, Packagist, Pub, PyPI, Red Hat, Rocky Linux, RubyGems, SUSE, Ubuntu, Wolfi, crates.io, npm, openSUSE. Case matters: 'maven' is not 'Maven'",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText",
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9 ._-]*(:[A-Za-z0-9 ._-]*)*$"
+    },
+    "query": {
+      "description": "What was asked of the upstream source. Exactly the selector fields implied by type may be present and no others: purl for purl, cpe for cpe, keyword for keyword, cveIds for cve-ids, and ecosystem plus package (optionally version) for ecosystem-package",
+      "type": "object",
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "purl"
+              }
+            }
+          },
+          "then": {
+            "required": [ "purl" ],
+            "properties": {
+              "cpe": false,
+              "keyword": false,
+              "cveIds": false,
+              "ecosystem": false,
+              "package": false,
+              "version": false
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "cpe"
+              }
+            }
+          },
+          "then": {
+            "required": [ "cpe" ],
+            "properties": {
+              "purl": false,
+              "keyword": false,
+              "cveIds": false,
+              "ecosystem": false,
+              "package": false,
+              "version": false
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "keyword"
+              }
+            }
+          },
+          "then": {
+            "required": [ "keyword" ],
+            "properties": {
+              "purl": false,
+              "cpe": false,
+              "cveIds": false,
+              "ecosystem": false,
+              "package": false,
+              "version": false
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "cve-ids"
+              }
+            }
+          },
+          "then": {
+            "required": [ "cveIds" ],
+            "properties": {
+              "purl": false,
+              "cpe": false,
+              "keyword": false,
+              "ecosystem": false,
+              "package": false,
+              "version": false
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "ecosystem-package"
+              }
+            }
+          },
+          "then": {
+            "required": [ "ecosystem", "package" ],
+            "properties": {
+              "purl": false,
+              "cpe": false,
+              "keyword": false,
+              "cveIds": false
+            }
+          }
+        }
+      ],
+      "required": [ "type" ],
+      "properties": {
+        "type": {
+          "description": "Selector style: purl (package URL), cpe (CPE 2.3 string, NVD), keyword (free-text search), cve-ids (batch lookup by id) or ecosystem-package (OSV ecosystem + package name, optional exact version)",
+          "enum": [ "purl", "cpe", "keyword", "cve-ids", "ecosystem-package" ]
+        },
+        "purl": {
+          "description": "Package URL queried, including the version when the lookup was for one exact release",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/purl"
+        },
+        "cpe": {
+          "$ref": "#/$defs/cpe"
+        },
+        "keyword": {
+          "description": "Free-text search terms sent verbatim to the upstream source",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "cveIds": {
+          "description": "CVE ids looked up in one batch request",
+          "type": "array",
+          "maxItems": 500,
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/cveId"
+          }
+        },
+        "ecosystem": {
+          "$ref": "#/$defs/osvEcosystem"
+        },
+        "package": {
+          "description": "Package name within the ecosystem (e.g. org.springframework:spring-webmvc for Maven, requests for PyPI)",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "version": {
+          "description": "Exact version string queried; omit to search all versions of the package",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "result": {
+      "description": "One hit from the upstream source, summarised in Maxwell's canonical shape",
+      "type": "object",
+      "required": [
+        "vulnId",
+        "aliases",
+        "summary",
+        "severity",
+        "published",
+        "modified"
+      ],
+      "properties": {
+        "vulnId": {
+          "$ref": "#/$defs/vulnId"
+        },
+        "aliases": {
+          "description": "Other ids for the same vulnerability (e.g. the CVE for a GHSA hit). Empty array when none are known",
+          "type": "array",
+          "maxItems": 32,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/vulnId"
+          }
+        },
+        "summary": {
+          "description": "One-line description of the vulnerability as given by the source, trimmed",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/nonEmptyString"
+        },
+        "severity": {
+          "description": "Maxwell severity derived from the CVSS qualitative rating; use info when the source reports no severity",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/severity"
+        },
+        "cvssScore": {
+          "description": "Highest CVSS base score reported by the source (v4.0 preferred over v3.x over v2.0), 0.0 to 10.0",
+          "type": "number",
+          "maximum": 10,
+          "minimum": 0
+        },
+        "published": {
+          "description": "When the source first published the entry",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "modified": {
+          "description": "When the source last modified the entry; drives re-fetch decisions",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "recordPath": {
+          "description": "Workspace path of the full record once it has been fetched and written: cves/data/<id>.json where <id> is the id of the entry actually stored with every ':' replaced by '_' (RHSA-2024:0387 -> cves/data/RHSA-2024_0387.json). When the hit has a CVE alias the CVE entry is what gets fetched and stored, so a GHSA hit points at cves/data/CVE-....json",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/workspacePath",
+          "type": "string",
+          "pattern": "^cves/data/[A-Za-z0-9._-]+\\.json$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "rateLimit": {
+      "description": "Upstream quota state observed on the response, so later runs can pace themselves. Always write it for a rate-limited call",
+      "type": "object",
+      "required": [ "remaining" ],
+      "properties": {
+        "remaining": {
+          "description": "Requests left in the current window as reported by the source; 0 when the call was rate-limited",
+          "type": "integer",
+          "minimum": 0
+        },
+        "resetAt": {
+          "description": "When the quota window resets",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

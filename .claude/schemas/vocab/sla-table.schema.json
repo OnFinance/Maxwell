@@ -1,0 +1,205 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/vocab/sla-table.schema.json",
+  "title": "Remediation SLA table",
+  "description": "Schema for .claude/skills/regulatory-catalogs/references/sla-table.json, the single source of truth for finding remediation deadlines. Workflows look up (instrument, topic, severity) here to compute finding.slaDueAt and never invent SLA days. Human-curated, so provenance is optional",
+  "examples": [
+    {
+      "schemaVersion": "1",
+      "kind": "maxwell.vocab.sla-table",
+      "lastReviewedAt": "2026-09-01",
+      "precedence": "most-strict-wins",
+      "defaults": {
+        "critical": 7,
+        "high": 30,
+        "medium": 90,
+        "low": 180,
+        "info": 365
+      },
+      "entries": [
+        {
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "PR.PS.S6",
+          "topic": "patch-sla",
+          "severity": "critical",
+          "days": 7,
+          "basis": "SEBI CSCRF 2024, PR.PS: critical vulnerabilities in internet-facing systems shall be patched within 7 days of publication",
+          "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
+        },
+        {
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "PR.PS.S6",
+          "topic": "patch-sla",
+          "severity": "high",
+          "days": 7,
+          "basis": "SEBI CSCRF 2024, PR.PS: high-severity vulnerabilities in critical systems shall be remediated within 7 days"
+        },
+        {
+          "instrument": "cert-in-directions-2022",
+          "topic": "incident-reporting",
+          "severity": "any",
+          "days": 1,
+          "hours": 6,
+          "basis": "CERT-In Directions of 28 April 2022, para (ii): report cyber incidents within 6 hours of noticing or being brought to notice",
+          "url": "https://www.cert-in.org.in/Directions70B.jsp"
+        },
+        {
+          "instrument": "dpdp-rules-2025",
+          "topic": "breach-notification",
+          "severity": "any",
+          "days": 3,
+          "hours": 72,
+          "basis": "DPDP Rules 2025, Rule 7: intimate the Data Protection Board within 72 hours of becoming aware of a personal data breach"
+        }
+      ],
+      "provenance": {
+        "harness": "human",
+        "generatedAt": "2026-09-01T09:00:00Z"
+      }
+    }
+  ],
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "kind",
+    "lastReviewedAt",
+    "precedence",
+    "defaults",
+    "entries"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/schemaVersion"
+    },
+    "kind": {
+      "const": "maxwell.vocab.sla-table"
+    },
+    "lastReviewedAt": {
+      "description": "Date a human last checked every entry against the cited clauses; required because this table is the single source of truth for deadlines",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/date"
+    },
+    "precedence": {
+      "description": "How to resolve several matching entries. 'most-strict-wins' takes the shortest deadline across all applicable instruments. 'company-override' additionally lets company-profile sdlc/policy.json dependencyPolicy.vulnerabilitySlaDays (per severity) replace the days of patch-sla rows and of the defaults for that company; no other topic has an override field in sdlc-policy yet, so every other row is applied as written",
+      "enum": [ "most-strict-wins", "company-override" ]
+    },
+    "defaults": {
+      "description": "Fallback remediation deadlines in days by severity, used only when no entry matches the finding's instruments and topic",
+      "type": "object",
+      "required": [ "critical", "high", "medium", "low", "info" ],
+      "properties": {
+        "critical": {
+          "$ref": "#/$defs/days"
+        },
+        "high": {
+          "$ref": "#/$defs/days"
+        },
+        "medium": {
+          "$ref": "#/$defs/days"
+        },
+        "low": {
+          "$ref": "#/$defs/days"
+        },
+        "info": {
+          "$ref": "#/$defs/days"
+        }
+      },
+      "additionalProperties": false
+    },
+    "entries": {
+      "description": "One row per (instrument, topic, severity) deadline stated or implied by a regulatory clause. Rows must be unique by that key; uniqueItems only rejects byte-identical rows, so the loader that reads the table must reject two rows sharing (instrument, topic, severity)",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/entry"
+      }
+    },
+    "provenance": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/provenance"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "topic": {
+      "description": "Closed vocabulary of hard-requirement topics that carry a numeric obligation (deadline, cadence, retention, count). Shared by the instruments registry, finding.slaBasis and incident.regulatorReportRefs. 'other' is a last resort for a one-off clause: add a topic here before 'other' is used a second time",
+      "enum": [
+        "incident-reporting",
+        "breach-notification",
+        "customer-notification",
+        "log-retention",
+        "data-retention",
+        "vapt-cadence",
+        "red-team-cadence",
+        "patch-sla",
+        "vendor-due-diligence",
+        "sbom",
+        "mfa",
+        "encryption",
+        "key-rotation",
+        "session-timeout",
+        "access-review",
+        "backup-rto-rpo",
+        "awareness-training",
+        "grievance-redressal",
+        "data-localisation",
+        "board-reporting",
+        "compliance-reporting",
+        "audit-cadence",
+        "dr-drill",
+        "other"
+      ]
+    },
+    "days": {
+      "description": "Deadline in whole calendar days from the moment the obligation starts (finding firstSeenAt, incident detectedAt)",
+      "type": "integer",
+      "maximum": 3650,
+      "minimum": 0
+    },
+    "entry": {
+      "type": "object",
+      "required": [ "instrument", "topic", "severity", "days", "basis" ],
+      "properties": {
+        "instrument": {
+          "description": "Instrument whose clause sets this deadline",
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/instruments.schema.json"
+        },
+        "controlId": {
+          "description": "Control or clause id within the instrument that states the deadline, when the instrument numbers it",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/controlId"
+        },
+        "topic": {
+          "$ref": "#/$defs/topic"
+        },
+        "severity": {
+          "description": "Maxwell severity the row applies to, or 'any' when the clause does not distinguish severities",
+          "anyOf": [
+            {
+              "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/severity"
+            },
+            {
+              "const": "any"
+            }
+          ]
+        },
+        "days": {
+          "$ref": "#/$defs/days"
+        },
+        "hours": {
+          "description": "Deadline in hours when the clause is stated in hours (6 for CERT-In, 72 for DPDP). days must then be the ceiling in calendar days",
+          "type": "integer",
+          "maximum": 87600,
+          "minimum": 1
+        },
+        "basis": {
+          "description": "The clause quoted or closely paraphrased, prefixed with the instrument name and clause number, so a reviewer can verify the number without opening the source",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/nonEmptyString"
+        },
+        "url": {
+          "description": "Deep link to the clause or the instrument text",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/url"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

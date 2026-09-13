@@ -1,0 +1,940 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/cve/record.schema.json",
+  "title": "Vulnerability record",
+  "description": "One vulnerability stored at cves/data/<vuln_id>.json. The top level is an OSV schema 1.x entry (field names and shapes follow https://ossf.github.io/osv-schema/ exactly so upstream OSV JSON can be stored unchanged; only id and modified are mandatory upstream, so every other OSV field is absent when upstream omits it and is never synthesised), plus a Maxwell enrichment block carrying CVSS, CISA KEV, EPSS, NVD analysis state and one OpenVEX-style statement per workspace asset that uses the affected component. File name rule: the id with every ':' replaced by '_' (RHSA-2024:0387 is stored at cves/data/RHSA-2024_0387.json)",
+  "examples": [
+    {
+      "schemaVersion": "1",
+      "kind": "maxwell.cve.record",
+      "schema_version": "1.7.5",
+      "id": "CVE-2024-38816",
+      "modified": "2025-11-02T18:02:44Z",
+      "published": "2024-09-13T06:30:11Z",
+      "aliases": [ "GHSA-c3hp-fjw2-8w9m" ],
+      "related": [ "CGA-jfvw-f67x-xrrh" ],
+      "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources",
+      "details": "Applications that serve static resources through the functional web frameworks WebMvc.fn or WebFlux.fn are vulnerable to path traversal attacks. An attacker can craft malicious HTTP requests and obtain any file on the file system that is also accessible to the process in which the Spring application is running. Fixed in 6.1.13, 6.0.24 and 5.3.40",
+      "severity": [
+        {
+          "type": "CVSS_V3",
+          "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"
+        }
+      ],
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "Maven",
+            "name": "org.springframework:spring-webmvc",
+            "purl": "pkg:maven/org.springframework/spring-webmvc"
+          },
+          "ranges": [
+            {
+              "type": "ECOSYSTEM",
+              "events": [
+                {
+                  "introduced": "6.1.0"
+                },
+                {
+                  "fixed": "6.1.13"
+                }
+              ]
+            }
+          ],
+          "versions": [ "6.1.12" ],
+          "database_specific": {
+            "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/09/GHSA-c3hp-fjw2-8w9m/GHSA-c3hp-fjw2-8w9m.json"
+          }
+        }
+      ],
+      "references": [
+        {
+          "type": "ADVISORY",
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-38816"
+        },
+        {
+          "type": "WEB",
+          "url": "https://spring.io/security/cve-2024-38816"
+        }
+      ],
+      "database_specific": {
+        "cwe_ids": [ "CWE-22" ],
+        "github_reviewed": true
+      },
+      "maxwell": {
+        "severity": "high",
+        "cvss": {
+          "version": "3.1",
+          "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+          "score": 7.5
+        },
+        "kev": {
+          "inKev": false
+        },
+        "epss": {
+          "score": 0.00341,
+          "percentile": 0.71852,
+          "date": "2026-09-11"
+        },
+        "nvd": {
+          "vulnStatus": "Analyzed",
+          "cwes": [ "CWE-22" ]
+        },
+        "affectedAssets": [
+          {
+            "asset": {
+              "type": "repo",
+              "appId": "nse-order-gateway",
+              "repoId": "order-gateway-java"
+            },
+            "component": {
+              "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12",
+              "version": "6.1.12"
+            },
+            "vexStatus": "affected",
+            "statementAt": "2026-09-12T04:15:22Z",
+            "impactStatement": "Order gateway serves static assets through RouterFunctions.resources on the internet-facing prod-mumbai environment; SEBI CSCRF critical system",
+            "actionStatement": "Upgrade org.springframework:spring-webmvc to 6.1.13 in order-gateway-java and redeploy prod-mumbai",
+            "actionStatementAt": "2026-09-12T04:15:22Z",
+            "evidence": [
+              {
+                "type": "sbom",
+                "ref": "applications/nse-order-gateway/repos/order-gateway-java.cdx.json"
+              }
+            ],
+            "slaDueAt": "2026-09-19T04:15:22Z",
+            "slaBasis": {
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "PR.PS.S6",
+              "topic": "patch-sla",
+              "days": 7
+            },
+            "findingId": "fnd_01J7Q5Z3X8C4NB2H9KRM6VWT0C"
+          }
+        ],
+        "slaDueAt": "2026-09-19T04:15:22Z",
+        "slaBasis": {
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "PR.PS.S6",
+          "topic": "patch-sla",
+          "days": 7
+        },
+        "fetchedAt": "2026-09-12T04:15:22Z",
+        "sources": [ "osv", "nvd", "epss", "kev" ]
+      },
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-12T04:15:23Z",
+        "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+        "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+        "workflow": "probe-app-chart",
+        "agent": "vuln-intel",
+        "model": "claude-fable-5-1"
+      }
+    }
+  ],
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "kind",
+    "schema_version",
+    "id",
+    "modified",
+    "maxwell",
+    "provenance"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/schemaVersion"
+    },
+    "kind": {
+      "description": "Document discriminator; always maxwell.cve.record for files under cves/data/",
+      "const": "maxwell.cve.record"
+    },
+    "schema_version": {
+      "description": "OSV schema_version as reported upstream (1.x, OSV field, snake_case). Copy it verbatim; upstream currently serves 1.7.0 and later (1.7.0 added the upstream array)",
+      "type": "string",
+      "pattern": "^1\\.[0-9]+\\.[0-9]+$",
+      "maxLength": 16
+    },
+    "id": {
+      "description": "Primary vulnerability id (OSV field), never rewritten: the file is keyed by the id of the OSV entry actually fetched. When the same vulnerability has a CVE id, fetch the CVE entry (from OSV or NVD) and store that one, recording GHSA/OSV ids in aliases; never rename a GHSA/OSV entry to its CVE alias. Stored at cves/data/<id with ':' replaced by '_'>.json",
+      "$ref": "#/$defs/vulnId"
+    },
+    "modified": {
+      "description": "When the upstream entry was last modified (OSV field). Compare with maxwell.fetchedAt to decide whether to re-fetch",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+    },
+    "published": {
+      "description": "When the upstream entry was first published (OSV field). Absent when upstream omits it; never synthesise",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+    },
+    "withdrawn": {
+      "description": "When the entry was withdrawn or rejected by its database (OSV field); records with this set must not raise new findings",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+    },
+    "aliases": {
+      "description": "Other ids that describe the same vulnerability (OSV field). Absent when upstream omits it; never synthesise. An empty array is stored only when upstream sends one",
+      "$ref": "#/$defs/vulnIdList"
+    },
+    "related": {
+      "description": "Ids of closely related but distinct vulnerabilities, e.g. the same bug in a fork or a vendor advisory (OSV field). Absent when upstream omits it; never synthesise",
+      "$ref": "#/$defs/vulnIdList"
+    },
+    "upstream": {
+      "description": "Ids of the upstream vulnerabilities this entry is a downstream re-report of (OSV 1.7.0 field). Absent when upstream omits it; never synthesise",
+      "$ref": "#/$defs/vulnIdList"
+    },
+    "summary": {
+      "description": "One-line, plain-text headline (OSV field). Absent when upstream omits it; never synthesise one from details or from an NVD description",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/nonEmptyString"
+    },
+    "details": {
+      "description": "Full description, CommonMark allowed (OSV field). Absent when upstream omits it; never synthesise",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+    },
+    "severity": {
+      "description": "Severity vectors as published upstream (OSV field). Absent when upstream omits it; never synthesise. Maxwell's canonical rating lives in maxwell.severity",
+      "$ref": "#/$defs/severityList"
+    },
+    "affected": {
+      "description": "Affected packages and version ranges (OSV field). Absent when upstream omits it; never synthesise. Empty array is allowed for entries that only describe a product by CPE in database_specific",
+      "type": "array",
+      "maxItems": 500,
+      "items": {
+        "$ref": "#/$defs/affected"
+      }
+    },
+    "references": {
+      "description": "Links to advisories, fixes, articles and detection artefacts (OSV field). Absent when upstream omits it; never synthesise",
+      "type": "array",
+      "maxItems": 200,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/reference"
+      }
+    },
+    "credits": {
+      "description": "People and organisations credited with finding, reporting or fixing the vulnerability (OSV field). Absent when upstream omits it; never synthesise",
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "$ref": "#/$defs/credit"
+      }
+    },
+    "database_specific": {
+      "$ref": "#/$defs/opaqueObject"
+    },
+    "maxwell": {
+      "$ref": "#/$defs/enrichment"
+    },
+    "provenance": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/provenance"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "vulnId": {
+      "description": "Alias of common vulnId, kept for existing $refs",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/vulnId"
+    },
+    "vulnIdList": {
+      "type": "array",
+      "maxItems": 64,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/vulnId"
+      }
+    },
+    "versionString": {
+      "description": "Version string exactly as the ecosystem spells it (semver, PEP 440, Maven, Debian EVR or a git tag); 0 denotes the start of history in OSV range events",
+      "type": "string",
+      "maxLength": 128,
+      "minLength": 1
+    },
+    "osvEcosystem": {
+      "description": "OSV ecosystem name exactly as OSV spells it, optionally followed by ':'-separated release suffixes (Debian:12, Ubuntu:22.04:LTS, Red Hat:enterprise_linux:9::appstream). Base names OSV publishes include AlmaLinux, Alpine, Android, Bitnami, CRAN, Chainguard, ConanCenter, Debian, GIT, GHC, GSD, GitHub Actions, Go, Hackage, Hex, Linux, Mageia, Maven, NuGet, OSS-Fuzz, Packagist, Pub, PyPI, Red Hat, Rocky Linux, RubyGems, SUSE, SwiftURL, Ubuntu, Wolfi, crates.io, npm, openSUSE. Case matters: 'maven' is not 'Maven' and will not join against SBOM purls",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText",
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9 ._-]*(:[A-Za-z0-9 ._-]*)*$"
+    },
+    "opaqueObject": {
+      "description": "Raw upstream passthrough (OSV database_specific / ecosystem_specific). Kept as-is because each database defines its own keys; capped at 64 top-level keys, but nested values are not bounded, so agents must never enrich or add to it and should drop database_specific entirely when a record would exceed 1 MB. Never read these for decisions, use the maxwell block instead",
+      "type": "object",
+      "maxProperties": 64
+    },
+    "cvssVector": {
+      "description": "Alias of common cvssVector, kept for existing $refs",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/cvssVector"
+    },
+    "severityEntry": {
+      "description": "One upstream severity vector (OSV severity[] item). The score prefix must agree with type: CVSS_V2 has no CVSS: prefix (or CVSS:2.0/), CVSS_V3 starts with CVSS:3.0/ or CVSS:3.1/, CVSS_V4 with CVSS:4.0/",
+      "type": "object",
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "CVSS_V2"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "score": {
+                "$ref": "#/$defs/cvssVector",
+                "type": "string",
+                "pattern": "^(CVSS:2\\.0/)?AV:"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "CVSS_V3"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "score": {
+                "$ref": "#/$defs/cvssVector",
+                "type": "string",
+                "pattern": "^CVSS:3\\.[01]/"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "CVSS_V4"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "score": {
+                "$ref": "#/$defs/cvssVector",
+                "type": "string",
+                "pattern": "^CVSS:4\\.0/"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "Ubuntu"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "score": {
+                "enum": [ "Negligible", "Low", "Medium", "High", "Critical" ]
+              }
+            }
+          }
+        }
+      ],
+      "required": [ "type", "score" ],
+      "properties": {
+        "type": {
+          "description": "Scoring system: CVSS_V2, CVSS_V3 (covers 3.0 and 3.1), CVSS_V4 or the Ubuntu priority scale",
+          "enum": [ "CVSS_V2", "CVSS_V3", "CVSS_V4", "Ubuntu" ]
+        },
+        "score": {
+          "description": "Vector string for CVSS types (not the numeric score), or the priority word for Ubuntu",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "severityList": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "$ref": "#/$defs/severityEntry"
+      }
+    },
+    "package": {
+      "description": "Package identity within an OSV ecosystem",
+      "type": "object",
+      "required": [ "ecosystem", "name" ],
+      "properties": {
+        "ecosystem": {
+          "$ref": "#/$defs/osvEcosystem"
+        },
+        "name": {
+          "description": "Package name in the ecosystem's canonical form (e.g. org.springframework:spring-webmvc, github.com/gin-gonic/gin)",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "purl": {
+          "description": "Package URL without a version qualifier, used to join against SBOM components",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/purl"
+        }
+      },
+      "additionalProperties": false
+    },
+    "rangeEvent": {
+      "description": "One boundary in an OSV version range. Exactly one of introduced, fixed, last_affected or limit is set",
+      "type": "object",
+      "oneOf": [
+        {
+          "required": [ "introduced" ]
+        },
+        {
+          "required": [ "fixed" ]
+        },
+        {
+          "required": [ "last_affected" ]
+        },
+        {
+          "required": [ "limit" ]
+        }
+      ],
+      "properties": {
+        "introduced": {
+          "description": "First affected version; 0 means from the beginning of history",
+          "$ref": "#/$defs/versionString"
+        },
+        "fixed": {
+          "description": "First version that contains the fix",
+          "$ref": "#/$defs/versionString"
+        },
+        "last_affected": {
+          "description": "Last known affected version when no fix exists yet",
+          "$ref": "#/$defs/versionString"
+        },
+        "limit": {
+          "description": "Upper bound for GIT ranges that stops enumeration at this commit or ref",
+          "$ref": "#/$defs/versionString"
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "range": {
+      "description": "One OSV range: how to interpret the events (SEMVER, ECOSYSTEM ordering or GIT commits)",
+      "type": "object",
+      "if": {
+        "properties": {
+          "type": {
+            "const": "GIT"
+          }
+        }
+      },
+      "then": {
+        "required": [ "repo" ]
+      },
+      "required": [ "type", "events" ],
+      "properties": {
+        "type": {
+          "description": "SEMVER for semantic-versioned events, ECOSYSTEM for ecosystem-native ordering, GIT for commit hashes in repo",
+          "enum": [ "SEMVER", "ECOSYSTEM", "GIT" ]
+        },
+        "repo": {
+          "description": "Git repository URL the commit events refer to; required when type is GIT",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/url"
+        },
+        "events": {
+          "description": "Ordered boundary events; the first is always introduced",
+          "type": "array",
+          "maxItems": 256,
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/rangeEvent"
+          }
+        },
+        "database_specific": {
+          "$ref": "#/$defs/opaqueObject"
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "affected": {
+      "description": "One affected package with its vulnerable ranges and enumerated versions (OSV affected[] item)",
+      "type": "object",
+      "properties": {
+        "package": {
+          "$ref": "#/$defs/package"
+        },
+        "severity": {
+          "description": "Package-specific severity overriding the top-level severity for this package only",
+          "$ref": "#/$defs/severityList"
+        },
+        "ranges": {
+          "description": "Vulnerable version ranges; absent when only versions is populated",
+          "type": "array",
+          "maxItems": 64,
+          "items": {
+            "$ref": "#/$defs/range"
+          }
+        },
+        "versions": {
+          "description": "Explicit list of affected versions as enumerated upstream",
+          "type": "array",
+          "maxItems": 2000,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/versionString"
+          }
+        },
+        "ecosystem_specific": {
+          "$ref": "#/$defs/opaqueObject"
+        },
+        "database_specific": {
+          "$ref": "#/$defs/opaqueObject"
+        }
+      },
+      "additionalProperties": false
+    },
+    "reference": {
+      "description": "External link (OSV references[] item)",
+      "type": "object",
+      "required": [ "type", "url" ],
+      "properties": {
+        "type": {
+          "description": "OSV reference type: ADVISORY, ARTICLE, DETECTION (scanner rule), DISCUSSION, REPORT (bug tracker), FIX, INTRODUCED, GIT (repo), PACKAGE (registry page), EVIDENCE or WEB",
+          "enum": [
+            "ADVISORY",
+            "ARTICLE",
+            "DETECTION",
+            "DISCUSSION",
+            "REPORT",
+            "FIX",
+            "INTRODUCED",
+            "GIT",
+            "PACKAGE",
+            "EVIDENCE",
+            "WEB"
+          ]
+        },
+        "url": {
+          "description": "Fully qualified URL of the reference",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/url"
+        }
+      },
+      "additionalProperties": false
+    },
+    "credit": {
+      "description": "Acknowledgement (OSV credits[] item)",
+      "type": "object",
+      "required": [ "name" ],
+      "properties": {
+        "name": {
+          "description": "Person or organisation name as they wish to be credited",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "contact": {
+          "description": "Fully qualified contact URLs or mailto links",
+          "type": "array",
+          "maxItems": 8,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+          }
+        },
+        "type": {
+          "description": "OSV credit role",
+          "enum": [
+            "FINDER",
+            "REPORTER",
+            "ANALYST",
+            "COORDINATOR",
+            "REMEDIATION_DEVELOPER",
+            "REMEDIATION_REVIEWER",
+            "REMEDIATION_VERIFIER",
+            "TOOL",
+            "SPONSOR",
+            "OTHER"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "cvss": {
+      "description": "Authoritative CVSS score Maxwell uses for prioritisation: the highest-version vector available, NVD primary source preferred over the CNA record (cve-org) over OSV. Shape mirrors soc finding.cvss (version, vector, score) so it can be copied into a finding verbatim, but finding.cvss accepts only 3.1 and 4.0 vectors with the CVSS: prefix: when raising a finding from a 2.0 or 3.0 record, re-score under 3.1 from the vector if a 3.1/4.0 vector exists upstream, otherwise omit finding.cvss and cite this record in evidence",
+      "type": "object",
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "version": {
+                "const": "2.0"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "vector": {
+                "type": "string",
+                "pattern": "^(CVSS:2\\.0/)?AV:"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "version": {
+                "const": "3.0"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "vector": {
+                "type": "string",
+                "pattern": "^CVSS:3\\.0/"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "version": {
+                "const": "3.1"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "vector": {
+                "type": "string",
+                "pattern": "^CVSS:3\\.1/"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "version": {
+                "const": "4.0"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "vector": {
+                "type": "string",
+                "pattern": "^CVSS:4\\.0/"
+              }
+            }
+          }
+        }
+      ],
+      "required": [ "version", "vector", "score" ],
+      "properties": {
+        "version": {
+          "description": "CVSS specification version of the vector; the vector prefix must agree (2.0 vectors carry no prefix or CVSS:2.0/)",
+          "enum": [ "2.0", "3.0", "3.1", "4.0" ]
+        },
+        "vector": {
+          "$ref": "#/$defs/cvssVector"
+        },
+        "score": {
+          "description": "Numeric base score 0.0 to 10.0 as computed for the vector (same field name as soc finding.cvss.score)",
+          "type": "number",
+          "maximum": 10,
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "kev": {
+      "description": "CISA Known Exploited Vulnerabilities catalog status. When inKev is true the KEV due date becomes the remediation ceiling regardless of CVSS; when false no catalog field may be present",
+      "type": "object",
+      "if": {
+        "properties": {
+          "inKev": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "required": [ "dateAdded", "dueDate" ]
+      },
+      "else": {
+        "properties": {
+          "dateAdded": false,
+          "dueDate": false,
+          "knownRansomwareCampaignUse": false,
+          "requiredAction": false
+        }
+      },
+      "required": [ "inKev" ],
+      "properties": {
+        "inKev": {
+          "description": "Whether the vulnerability is listed in the CISA KEV catalog at fetch time",
+          "type": "boolean"
+        },
+        "dateAdded": {
+          "description": "KEV catalog dateAdded field",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/date"
+        },
+        "dueDate": {
+          "description": "KEV catalog dueDate field (BOD 22-01 deadline)",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/date"
+        },
+        "knownRansomwareCampaignUse": {
+          "description": "KEV catalog knownRansomwareCampaignUse field",
+          "enum": [ "Known", "Unknown" ]
+        },
+        "requiredAction": {
+          "description": "KEV catalog requiredAction text",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/nonEmptyString"
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "epss": {
+      "description": "FIRST Exploit Prediction Scoring System values for the CVE on the given date",
+      "type": "object",
+      "required": [ "score", "percentile", "date" ],
+      "properties": {
+        "score": {
+          "description": "Probability of exploitation in the next 30 days, 0 to 1",
+          "type": "number",
+          "maximum": 1,
+          "minimum": 0
+        },
+        "percentile": {
+          "description": "Fraction of all scored CVEs with an EPSS score at or below this one, 0 to 1",
+          "type": "number",
+          "maximum": 1,
+          "minimum": 0
+        },
+        "date": {
+          "description": "EPSS model date the values were published for",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/date"
+        }
+      },
+      "additionalProperties": false
+    },
+    "nvd": {
+      "description": "NVD analysis state and weakness classification",
+      "type": "object",
+      "required": [ "vulnStatus", "cwes" ],
+      "properties": {
+        "vulnStatus": {
+          "description": "NVD vulnStatus lifecycle value; Rejected and Deferred entries should not raise findings",
+          "enum": [
+            "Received",
+            "Awaiting Analysis",
+            "Undergoing Analysis",
+            "Analyzed",
+            "Modified",
+            "Deferred",
+            "Rejected"
+          ]
+        },
+        "cwes": {
+          "description": "CWE ids assigned by NVD or the CNA (weaknesses[].description[].value). Drop NVD-CWE-noinfo and NVD-CWE-Other; they are placeholders, not weaknesses. Empty array when NVD has not classified the weakness or only emitted those placeholders; never invent a CWE",
+          "type": "array",
+          "maxItems": 16,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^CWE-[0-9]+$"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "slaBasis": {
+      "description": "The sla-table row that set a slaDueAt, same shape as soc finding.slaBasis so an auditor can trace the deadline to a clause",
+      "type": "object",
+      "required": [ "instrument", "days" ],
+      "properties": {
+        "instrument": {
+          "description": "Instrument whose clause set the deadline",
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/instruments.schema.json"
+        },
+        "controlId": {
+          "description": "Clause id within the instrument, when numbered",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/controlId"
+        },
+        "topic": {
+          "description": "SLA-table topic matched",
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/sla-table.schema.json#/$defs/topic"
+        },
+        "days": {
+          "description": "Remediation days granted",
+          "type": "integer",
+          "maximum": 3650,
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "affectedAsset": {
+      "description": "OpenVEX-style statement for one workspace asset that contains the affected component. Every statement carries statementAt (OpenVEX timestamp). not_affected statements must carry a justification or an impactStatement; affected statements must carry an actionStatement (OpenVEX action_statement); justification is forbidden on any other status. SLA fields are per asset because each asset's company resolves the sla-table with its own instruments and overrides",
+      "type": "object",
+      "if": {
+        "properties": {
+          "vexStatus": {
+            "const": "not_affected"
+          }
+        }
+      },
+      "then": {
+        "anyOf": [
+          {
+            "required": [ "justification" ]
+          },
+          {
+            "required": [ "impactStatement" ]
+          }
+        ]
+      },
+      "else": {
+        "if": {
+          "properties": {
+            "vexStatus": {
+              "const": "affected"
+            }
+          }
+        },
+        "then": {
+          "required": [ "actionStatement" ]
+        },
+        "properties": {
+          "justification": false
+        }
+      },
+      "required": [ "asset", "component", "vexStatus", "statementAt" ],
+      "properties": {
+        "asset": {
+          "description": "Workspace asset (application, environment, repo, image or vendor) where the component was observed",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/assetRef"
+        },
+        "component": {
+          "$ref": "#/$defs/component"
+        },
+        "vexStatus": {
+          "description": "OpenVEX status of this asset with respect to the vulnerability",
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/vexStatus"
+        },
+        "statementAt": {
+          "description": "When this VEX statement was made or last changed status (OpenVEX timestamp / last_updated). Time-to-remediate for an asset is the gap between its affected and fixed statements",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "justification": {
+          "description": "OpenVEX machine-readable justification, allowed only with vexStatus not_affected",
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/vexJustification"
+        },
+        "impactStatement": {
+          "description": "Free-text explanation of impact or of why the asset is not affected (OpenVEX impact_statement)",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/nonEmptyString"
+        },
+        "actionStatement": {
+          "description": "Remediation guidance for this asset: the upgrade, patch or mitigation to apply (OpenVEX action_statement). Required when vexStatus is affected",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/nonEmptyString"
+        },
+        "actionStatementAt": {
+          "description": "When actionStatement was issued or last revised (OpenVEX action_statement_timestamp)",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "evidence": {
+          "description": "What showed the component in this asset: the SBOM (.cdx.json), lockfile, image scan or SARIF that observed it",
+          "type": "array",
+          "maxItems": 16,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/evidenceRef"
+          }
+        },
+        "slaDueAt": {
+          "description": "Remediation deadline for this asset, computed from its company's profile via the sla-table for (instrument, topic, severity) with per-company override; the KEV dueDate if earlier",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "slaBasis": {
+          "$ref": "#/$defs/slaBasis"
+        },
+        "findingId": {
+          "description": "Id of the soc ledger finding raised for this asset, once one exists",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/findingId"
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "component": {
+      "description": "Exact component instance found in the asset (from its SBOM, lockfile or image scan)",
+      "type": "object",
+      "required": [ "purl", "version" ],
+      "properties": {
+        "purl": {
+          "description": "Package URL of the installed component including its version qualifier",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/purl"
+        },
+        "version": {
+          "description": "Installed version, repeated from the purl for convenient comparison against affected ranges",
+          "$ref": "#/$defs/versionString"
+        }
+      },
+      "additionalProperties": false
+    },
+    "enrichment": {
+      "description": "Maxwell-computed prioritisation data layered on top of the OSV entry. Everything an agent needs to decide severity and SLA lives here, never in database_specific",
+      "type": "object",
+      "required": [ "severity", "fetchedAt", "sources" ],
+      "properties": {
+        "severity": {
+          "description": "Canonical Maxwell severity after applying CVSS rating, KEV membership and EPSS uplift per the regulatory-catalogs sla-table",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/severity"
+        },
+        "cvss": {
+          "$ref": "#/$defs/cvss"
+        },
+        "kev": {
+          "$ref": "#/$defs/kev"
+        },
+        "epss": {
+          "$ref": "#/$defs/epss"
+        },
+        "nvd": {
+          "$ref": "#/$defs/nvd"
+        },
+        "affectedAssets": {
+          "description": "One VEX statement per workspace asset and component instance. Empty array when the record was fetched but no asset uses the package",
+          "type": "array",
+          "maxItems": 500,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/affectedAsset"
+          }
+        },
+        "slaDueAt": {
+          "description": "Earliest slaDueAt across affectedAssets (a convenience for sorting); the per-asset values are authoritative. Absent when no asset carries a deadline",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "slaBasis": {
+          "description": "The sla-table row behind the record-level slaDueAt, i.e. the basis of the earliest per-asset deadline",
+          "$ref": "#/$defs/slaBasis"
+        },
+        "fetchedAt": {
+          "description": "When Maxwell last pulled the upstream sources merged into this record",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "sources": {
+          "description": "Upstream sources merged into this record, in the order they were consulted (same vocabulary as search.source)",
+          "type": "array",
+          "maxItems": 7,
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/cve/search.schema.json#/$defs/upstreamSource"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -61,19 +61,12 @@
             "type": "array",
             "uniqueItems": true,
             "items": {
-              "type": "string",
-              "pattern": "^[A-Za-z0-9./:_@\\[\\]-]+$"
+              "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/modelId"
             }
           },
           "provider": {
-            "enum": [
-              "anthropic",
-              "openai",
-              "google",
-              "aws.bedrock",
-              "gcp.vertex_ai",
-              "other"
-            ]
+            "description": "Provider the price applies to (common genAiProvider, the same value session/summary models[].provider carries so the cost join cannot miss); omit for anthropic list prices",
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/genAiProvider"
           },
           "inputPerMTok": {
             "type": "number",

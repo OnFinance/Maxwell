@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/kpi-methodology.schema.json",
+  "title": "KPI methodology frontmatter",
+  "description": "YAML frontmatter of kpis/measurement/<kpiId>.md, the human-authored methodology document for one KPI. Human-authored, so it carries no provenance block. Quote date values in YAML so they parse as strings",
+  "examples": [
+    {
+      "kpiId": "cost_of_audit",
+      "methodVersion": "1.0.0",
+      "updatedAt": "2026-09-13",
+      "owner": {
+        "type": "human",
+        "id": "kpi-owner@example.in"
+      },
+      "inputs": [ "session-summary", "soc-ledger" ],
+      "status": "active"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "kpiId",
+    "methodVersion",
+    "updatedAt",
+    "owner",
+    "inputs",
+    "status"
+  ],
+  "properties": {
+    "kpiId": {
+      "description": "KPI this document defines; must equal the file stem",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/kpiId"
+    },
+    "methodVersion": {
+      "description": "Semantic version of the method described; must equal the registry methodVersion for this kpiId. Bump the major on any change that makes old datapoints incomparable",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/semver"
+    },
+    "updatedAt": {
+      "description": "Date the document was last revised, quoted as a YAML string",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/date"
+    },
+    "owner": {
+      "description": "Person or agent accountable for the method",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/actor"
+    },
+    "inputs": {
+      "description": "Raw input sources the method reads; should match the registry rawInputs sources",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "https://maxwell.onfinance.ai/schemas/v1/kpi/registry.schema.json#/$defs/rawInputSource"
+      }
+    },
+    "status": {
+      "description": "Lifecycle of the method: 'draft' is not yet computed, 'active' is in use, 'deprecated' is kept for historical datapoints only",
+      "enum": [ "draft", "active", "deprecated" ]
+    }
+  },
+  "additionalProperties": false
+}

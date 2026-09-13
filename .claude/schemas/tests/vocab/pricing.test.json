@@ -1,0 +1,150 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/vocab/pricing.schema.json",
+  "tests": [
+    {
+      "description": "schema example",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.vocab.pricing",
+        "asOf": "2026-09-13",
+        "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+        "models": [
+          {
+            "model": "claude-opus-5",
+            "aliases": [
+              "opus"
+            ],
+            "provider": "anthropic",
+            "inputPerMTok": 5,
+            "outputPerMTok": 25,
+            "cacheWrite5mPerMTok": 6.25,
+            "cacheWrite1hPerMTok": 10,
+            "cacheReadPerMTok": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "description": "provider 'google' is not an OTel gen_ai.provider.name value so it could never join session/summary",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.vocab.pricing",
+        "asOf": "2026-09-13",
+        "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+        "models": [
+          {
+            "model": "claude-opus-5",
+            "aliases": [
+              "opus"
+            ],
+            "provider": "google",
+            "inputPerMTok": 5,
+            "outputPerMTok": 25,
+            "cacheWrite5mPerMTok": 6.25,
+            "cacheWrite1hPerMTok": 10,
+            "cacheReadPerMTok": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "description": "provider gcp.vertex_ai joins session/summary models[].provider",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.vocab.pricing",
+        "asOf": "2026-09-13",
+        "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+        "models": [
+          {
+            "model": "claude-opus-5",
+            "aliases": [
+              "opus"
+            ],
+            "provider": "gcp.vertex_ai",
+            "inputPerMTok": 5,
+            "outputPerMTok": 25,
+            "cacheWrite5mPerMTok": 6.25,
+            "cacheWrite1hPerMTok": 10,
+            "cacheReadPerMTok": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "description": "alias longer than a modelId (128) is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.vocab.pricing",
+        "asOf": "2026-09-13",
+        "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+        "models": [
+          {
+            "model": "claude-opus-5",
+            "aliases": [
+              "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+            ],
+            "provider": "anthropic",
+            "inputPerMTok": 5,
+            "outputPerMTok": 25,
+            "cacheWrite5mPerMTok": 6.25,
+            "cacheWrite1hPerMTok": 10,
+            "cacheReadPerMTok": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "description": "bedrock-style alias is a valid modelId",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.vocab.pricing",
+        "asOf": "2026-09-13",
+        "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+        "models": [
+          {
+            "model": "claude-opus-5",
+            "aliases": [
+              "opus",
+              "us.anthropic.claude-opus-5-v1:0"
+            ],
+            "provider": "anthropic",
+            "inputPerMTok": 5,
+            "outputPerMTok": 25,
+            "cacheWrite5mPerMTok": 6.25,
+            "cacheWrite1hPerMTok": 10,
+            "cacheReadPerMTok": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "description": "model must be lowercase",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.vocab.pricing",
+        "asOf": "2026-09-13",
+        "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+        "models": [
+          {
+            "model": "Claude-Opus-5",
+            "aliases": [
+              "opus"
+            ],
+            "provider": "anthropic",
+            "inputPerMTok": 5,
+            "outputPerMTok": 25,
+            "cacheWrite5mPerMTok": 6.25,
+            "cacheWrite1hPerMTok": 10,
+            "cacheReadPerMTok": 0.5
+          }
+        ]
+      }
+    }
+  ]
+}

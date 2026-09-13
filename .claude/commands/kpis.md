@@ -1,0 +1,13 @@
+---
+description: Ingest any new harness sessions and recompute the six Maxwell KPIs, then summarise the latest datapoints
+allowed-tools: Bash(npm run *), Bash(node .claude/scripts/*), Read
+x-maxwell:
+  workflow: kpis
+  touches: ["kpis/data/**", "kpis/measurement/runs.jsonl"]
+  readsCredentials: false
+---
+Run `npm run kpis -- $ARGUMENTS` (arguments may be `--company <company_id>`, `--since <date>`, `--kpi <kpi_id>`).
+Then read the newest line of each `kpis/data/<kpi_id>/series.jsonl` and present a compact table: KPI, period,
+value with unit, sample size, and the dimension breakdown that matters most (workflow for cost, severity for
+time-to-implementation). Flag any KPI whose value crosses the warn/alert targets in `kpis/metrics.json` and
+point at the methodology document in `kpis/measurement/` for how it was computed. Do not edit any file.

@@ -1,0 +1,1120 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/v1/kpi/datapoint.schema.json",
+  "tests": [
+    {
+      "description": "complete raw cost_of_audit datapoint",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.datapoint",
+        "kpiId": "cost_of_audit",
+        "series": "raw",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "value": 312.48,
+        "unit": "usd",
+        "dimensions": {
+          "companyId": "zerodha-broking",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "model": "claude-opus-5",
+          "harness": "claude-code"
+        },
+        "sampleSize": 10,
+        "sampling": {
+          "mode": "bundle",
+          "sessionsConsidered": 48,
+          "sessionsSampled": 10,
+          "scaleFactor": 4.8
+        },
+        "inputsRef": {
+          "sessionIds": [
+            "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+            "ses_8KpQ2mN4vX"
+          ],
+          "runIds": [
+            "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4"
+          ],
+          "files": [
+            "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.summary.json",
+            "kpis/data/raw/sessions/opencode/ses_8KpQ2mN4vX.summary.json"
+          ]
+        },
+        "computedAt": "2026-09-13T10:15:44Z",
+        "methodVersion": "1.0.0",
+        "notes": "Bundle sample of the first 10 sessions of the run; sampling.scaleFactor 4.8 applied to reach the run total",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:44Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab",
+          "inputsHash": "5b1e0a9c2d3f4e5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a"
+        }
+      }
+    },
+    {
+      "description": "normalised datapoint of a registry series",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.datapoint",
+        "kpiId": "cost_of_audit",
+        "series": "usd-per-control-observed",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "value": 2.6,
+        "unit": "usd-per-control",
+        "dimensions": {
+          "companyId": "zerodha-broking",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "model": "claude-opus-5",
+          "harness": "claude-code"
+        },
+        "sampleSize": 10,
+        "sampling": {
+          "mode": "bundle",
+          "sessionsConsidered": 48,
+          "sessionsSampled": 10,
+          "scaleFactor": 4.8
+        },
+        "inputsRef": {
+          "sessionIds": [
+            "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+            "ses_8KpQ2mN4vX"
+          ],
+          "runIds": [
+            "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4"
+          ],
+          "files": [
+            "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.summary.json",
+            "kpis/data/raw/sessions/opencode/ses_8KpQ2mN4vX.summary.json"
+          ]
+        },
+        "computedAt": "2026-09-13T10:15:44Z",
+        "methodVersion": "1.0.0",
+        "notes": "Bundle sample of the first 10 sessions of the run; sampling.scaleFactor 4.8 applied to reach the run total",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:44Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab",
+          "inputsHash": "5b1e0a9c2d3f4e5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a"
+        },
+        "numerator": 312.48,
+        "denominator": 120
+      }
+    },
+    {
+      "description": "suggestion sub-metric series with numerator and denominator",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.datapoint",
+        "kpiId": "suggestion_acceptance_rate",
+        "series": "revert-rate",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "value": 4.2,
+        "unit": "percent",
+        "dimensions": {
+          "companyId": "zerodha-broking",
+          "appId": "kite-payments"
+        },
+        "sampleSize": 10,
+        "inputsRef": {
+          "files": [
+            "company-profile/zerodha-broking/suggestions/master.json"
+          ]
+        },
+        "computedAt": "2026-09-13T10:15:44Z",
+        "methodVersion": "1.0.0",
+        "notes": "Bundle sample of the first 10 sessions of the run; sampling.scaleFactor 4.8 applied to reach the run total",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:44Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab",
+          "inputsHash": "5b1e0a9c2d3f4e5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a"
+        },
+        "numerator": 2,
+        "denominator": 48
+      }
+    },
+    {
+      "description": "all-up datapoint with empty dimensions and no numerator",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.datapoint",
+        "kpiId": "cm_coverage",
+        "series": "raw",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "value": 87.5,
+        "unit": "percent",
+        "dimensions": {},
+        "sampleSize": 10,
+        "inputsRef": {},
+        "computedAt": "2026-09-13T10:15:44Z",
+        "methodVersion": "1.0.0",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:44Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab",
+          "inputsHash": "5b1e0a9c2d3f4e5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a"
+        }
+      }
+    },
+    {
+      "description": "invented extra key",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.datapoint",
+        "kpiId": "cost_of_audit",
+        "series": "raw",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "value": 312.48,
+        "unit": "usd",
+        "dimensions": {
+          "companyId": "zerodha-broking",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "model": "claude-opus-5",
+          "harness": "claude-code"
+        },
+        "sampleSize": 10,
+        "sampling": {
+          "mode": "bundle",
+          "sessionsConsidered": 48,
+          "sessionsSampled": 10,
+          "scaleFactor": 4.8
+        },
+        "inputsRef": {
+          "sessionIds": [
+            "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+            "ses_8KpQ2mN4vX"
+          ],
+          "runIds": [
+            "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4"
+          ],
+          "files": [
+            "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.summary.json",
+            "kpis/data/raw/sessions/opencode/ses_8KpQ2mN4vX.summary.json"
+          ]
+        },
+        "computedAt": "2026-09-13T10:15:44Z",
+        "methodVersion": "1.0.0",
+        "notes": "Bundle sample of the first 10 sessions of the run; sampling.scaleFactor 4.8 applied to reach the run total",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:44Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab",
+          "inputsHash": "5b1e0a9c2d3f4e5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a"
+        },
+        "extrapolationFactor": 4.8
+      }
+    },
+    {
+      "description": "missing series",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.datapoint",
+        "kpiId": "cost_of_audit",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "value": 312.48,
+        "unit": "usd",
+        "dimensions": {
+          "companyId": "zerodha-broking",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "model": "claude-opus-5",
+          "harness": "claude-code"
+        },
+        "sampleSize": 10,
+        "sampling": {
+          "mode": "bundle",
+          "sessionsConsidered": 48,
+          "sessionsSampled": 10,
+          "scaleFactor": 4.8
+        },
+        "inputsRef": {
+          "sessionIds": [
+            "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+            "ses_8KpQ2mN4vX"
+          ],
+          "runIds": [
+            "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4"
+          ],
+          "files": [
+            "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.summary.json",
+            "kpis/data/raw/sessions/opencode/ses_8KpQ2mN4vX.summary.json"
+          ]
+        },
+        "computedAt": "2026-09-13T10:15:44Z",
+        "methodVersion": "1.0.0",
+        "notes": "Bundle sample of the first 10 sessions of the run; sampling.scaleFactor 4.8 applied to reach the run total",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:44Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab",
+          "inputsHash": "5b1e0a9c2d3f4e5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a"
+        }
+      }
+    },
+    {
+      "description": "series slug not defined for this kpiId",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.datapoint",
+        "kpiId": "cost_of_audit",
+        "series": "merge-rate",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "value": 312.48,
+        "unit": "usd",
+        "dimensions": {
+          "companyId": "zerodha-broking",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "model": "claude-opus-5",
+          "harness": "claude-code"
+        },
+        "sampleSize": 10,
+        "sampling": {
+          "mode": "bundle",
+          "sessionsConsidered": 48,
+          "sessionsSampled": 10,
+          "scaleFactor": 4.8
+        },
+        "inputsRef": {
+          "sessionIds": [
+            "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+            "ses_8KpQ2mN4vX"
+          ],
+          "runIds": [
+            "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4"
+          ],
+          "files": [
+            "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.summary.json",
+            "kpis/data/raw/sessions/opencode/ses_8KpQ2mN4vX.summary.json"
+          ]
+        },
+        "computedAt": "2026-09-13T10:15:44Z",
+        "methodVersion": "1.0.0",
+        "notes": "Bundle sample of the first 10 sessions of the run; sampling.scaleFactor 4.8 applied to reach the run total",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:44Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab",
+          "inputsHash": "5b1e0a9c2d3f4e5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a"
+        }
+      }
+    },
+    {
+      "description": "series slug outside the registry list",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.datapoint",
+        "kpiId": "cost_of_audit",
+        "series": "usd-per-finding",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "value": 312.48,
+        "unit": "usd",
+        "dimensions": {
+          "companyId": "zerodha-broking",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "model": "claude-opus-5",
+          "harness": "claude-code"
+        },
+        "sampleSize": 10,
+        "sampling": {
+          "mode": "bundle",
+          "sessionsConsidered": 48,
+          "sessionsSampled": 10,
+          "scaleFactor": 4.8
+        },
+        "inputsRef": {
+          "sessionIds": [
+            "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+            "ses_8KpQ2mN4vX"
+          ],
+          "runIds": [
+            "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4"
+          ],
+          "files": [
+            "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.summary.json",
+            "kpis/data/raw/sessions/opencode/ses_8KpQ2mN4vX.summary.json"
+          ]
+        },
+        "computedAt": "2026-09-13T10:15:44Z",
+        "methodVersion": "1.0.0",
+        "notes": "Bundle sample of the first 10 sessions of the run; sampling.scaleFactor 4.8 applied to reach the run total",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:44Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab",
+          "inputsHash": "5b1e0a9c2d3f4e5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a"
+        }
+      }
+    },
+    {
+      "description": "missing provenance",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.datapoint",
+        "kpiId": "cost_of_audit",
+        "series": "raw",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "value": 312.48,
+        "unit": "usd",
+        "dimensions": {
+          "companyId": "zerodha-broking",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "model": "claude-opus-5",
+          "harness": "claude-code"
+        },
+        "sampleSize": 10,
+        "sampling": {
+          "mode": "bundle",
+          "sessionsConsidered": 48,
+          "sessionsSampled": 10,
+          "scaleFactor": 4.8
+        },
+        "inputsRef": {
+          "sessionIds": [
+            "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+            "ses_8KpQ2mN4vX"
+          ],
+          "runIds": [
+            "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4"
+          ],
+          "files": [
+            "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.summary.json",
+            "kpis/data/raw/sessions/opencode/ses_8KpQ2mN4vX.summary.json"
+          ]
+        },
+        "computedAt": "2026-09-13T10:15:44Z",
+        "methodVersion": "1.0.0",
+        "notes": "Bundle sample of the first 10 sessions of the run; sampling.scaleFactor 4.8 applied to reach the run total"
+      }
+    },
+    {
+      "description": "cost_of_audit without sampling",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.datapoint",
+        "kpiId": "cost_of_audit",
+        "series": "raw",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "value": 312.48,
+        "unit": "usd",
+        "dimensions": {
+          "companyId": "zerodha-broking",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "model": "claude-opus-5",
+          "harness": "claude-code"
+        },
+        "sampleSize": 10,
+        "inputsRef": {
+          "sessionIds": [
+            "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+            "ses_8KpQ2mN4vX"
+          ],
+          "runIds": [
+            "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4"
+          ],
+          "files": [
+            "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.summary.json",
+            "kpis/data/raw/sessions/opencode/ses_8KpQ2mN4vX.summary.json"
+          ]
+        },
+        "computedAt": "2026-09-13T10:15:44Z",
+        "methodVersion": "1.0.0",
+        "notes": "Bundle sample of the first 10 sessions of the run; sampling.scaleFactor 4.8 applied to reach the run total",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:44Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab",
+          "inputsHash": "5b1e0a9c2d3f4e5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a"
+        }
+      }
+    },
+    {
+      "description": "sampling scaleFactor below 1",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.datapoint",
+        "kpiId": "cost_of_audit",
+        "series": "raw",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "value": 312.48,
+        "unit": "usd",
+        "dimensions": {
+          "companyId": "zerodha-broking",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "model": "claude-opus-5",
+          "harness": "claude-code"
+        },
+        "sampleSize": 10,
+        "sampling": {
+          "mode": "bundle",
+          "sessionsConsidered": 48,
+          "sessionsSampled": 10,
+          "scaleFactor": 0.5
+        },
+        "inputsRef": {
+          "sessionIds": [
+            "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+            "ses_8KpQ2mN4vX"
+          ],
+          "runIds": [
+            "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4"
+          ],
+          "files": [
+            "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.summary.json",
+            "kpis/data/raw/sessions/opencode/ses_8KpQ2mN4vX.summary.json"
+          ]
+        },
+        "computedAt": "2026-09-13T10:15:44Z",
+        "methodVersion": "1.0.0",
+        "notes": "Bundle sample of the first 10 sessions of the run; sampling.scaleFactor 4.8 applied to reach the run total",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:44Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab",
+          "inputsHash": "5b1e0a9c2d3f4e5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a"
+        }
+      }
+    },
+    {
+      "description": "sampling with unknown mode",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.datapoint",
+        "kpiId": "cost_of_audit",
+        "series": "raw",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "value": 312.48,
+        "unit": "usd",
+        "dimensions": {
+          "companyId": "zerodha-broking",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "model": "claude-opus-5",
+          "harness": "claude-code"
+        },
+        "sampleSize": 10,
+        "sampling": {
+          "mode": "random",
+          "sessionsConsidered": 48,
+          "sessionsSampled": 10,
+          "scaleFactor": 4.8
+        },
+        "inputsRef": {
+          "sessionIds": [
+            "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+            "ses_8KpQ2mN4vX"
+          ],
+          "runIds": [
+            "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4"
+          ],
+          "files": [
+            "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.summary.json",
+            "kpis/data/raw/sessions/opencode/ses_8KpQ2mN4vX.summary.json"
+          ]
+        },
+        "computedAt": "2026-09-13T10:15:44Z",
+        "methodVersion": "1.0.0",
+        "notes": "Bundle sample of the first 10 sessions of the run; sampling.scaleFactor 4.8 applied to reach the run total",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:44Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab",
+          "inputsHash": "5b1e0a9c2d3f4e5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a"
+        }
+      }
+    },
+    {
+      "description": "numerator without denominator",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.datapoint",
+        "kpiId": "cost_of_audit",
+        "series": "usd-per-control-observed",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "value": 2.6,
+        "unit": "usd-per-control",
+        "dimensions": {
+          "companyId": "zerodha-broking",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "model": "claude-opus-5",
+          "harness": "claude-code"
+        },
+        "sampleSize": 10,
+        "sampling": {
+          "mode": "bundle",
+          "sessionsConsidered": 48,
+          "sessionsSampled": 10,
+          "scaleFactor": 4.8
+        },
+        "inputsRef": {
+          "sessionIds": [
+            "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+            "ses_8KpQ2mN4vX"
+          ],
+          "runIds": [
+            "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4"
+          ],
+          "files": [
+            "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.summary.json",
+            "kpis/data/raw/sessions/opencode/ses_8KpQ2mN4vX.summary.json"
+          ]
+        },
+        "computedAt": "2026-09-13T10:15:44Z",
+        "methodVersion": "1.0.0",
+        "notes": "Bundle sample of the first 10 sessions of the run; sampling.scaleFactor 4.8 applied to reach the run total",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:44Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab",
+          "inputsHash": "5b1e0a9c2d3f4e5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a"
+        },
+        "numerator": 312.48
+      }
+    },
+    {
+      "description": "unknown dimension key",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.datapoint",
+        "kpiId": "cost_of_audit",
+        "series": "raw",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "value": 312.48,
+        "unit": "usd",
+        "dimensions": {
+          "companyId": "zerodha-broking",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "model": "claude-opus-5",
+          "harness": "claude-code",
+          "region": "ap-south-1"
+        },
+        "sampleSize": 10,
+        "sampling": {
+          "mode": "bundle",
+          "sessionsConsidered": 48,
+          "sessionsSampled": 10,
+          "scaleFactor": 4.8
+        },
+        "inputsRef": {
+          "sessionIds": [
+            "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+            "ses_8KpQ2mN4vX"
+          ],
+          "runIds": [
+            "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4"
+          ],
+          "files": [
+            "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.summary.json",
+            "kpis/data/raw/sessions/opencode/ses_8KpQ2mN4vX.summary.json"
+          ]
+        },
+        "computedAt": "2026-09-13T10:15:44Z",
+        "methodVersion": "1.0.0",
+        "notes": "Bundle sample of the first 10 sessions of the run; sampling.scaleFactor 4.8 applied to reach the run total",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:44Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab",
+          "inputsHash": "5b1e0a9c2d3f4e5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a"
+        }
+      }
+    },
+    {
+      "description": "bad sessionId pattern in inputsRef",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.datapoint",
+        "kpiId": "cost_of_audit",
+        "series": "raw",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "value": 312.48,
+        "unit": "usd",
+        "dimensions": {
+          "companyId": "zerodha-broking",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "model": "claude-opus-5",
+          "harness": "claude-code"
+        },
+        "sampleSize": 10,
+        "sampling": {
+          "mode": "bundle",
+          "sessionsConsidered": 48,
+          "sessionsSampled": 10,
+          "scaleFactor": 4.8
+        },
+        "inputsRef": {
+          "sessionIds": [
+            "not-a-session"
+          ],
+          "runIds": [
+            "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4"
+          ],
+          "files": [
+            "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.summary.json",
+            "kpis/data/raw/sessions/opencode/ses_8KpQ2mN4vX.summary.json"
+          ]
+        },
+        "computedAt": "2026-09-13T10:15:44Z",
+        "methodVersion": "1.0.0",
+        "notes": "Bundle sample of the first 10 sessions of the run; sampling.scaleFactor 4.8 applied to reach the run total",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:44Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab",
+          "inputsHash": "5b1e0a9c2d3f4e5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a"
+        }
+      }
+    },
+    {
+      "description": "bad unit enum",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.datapoint",
+        "kpiId": "cost_of_audit",
+        "series": "raw",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "value": 312.48,
+        "unit": "inr",
+        "dimensions": {
+          "companyId": "zerodha-broking",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "model": "claude-opus-5",
+          "harness": "claude-code"
+        },
+        "sampleSize": 10,
+        "sampling": {
+          "mode": "bundle",
+          "sessionsConsidered": 48,
+          "sessionsSampled": 10,
+          "scaleFactor": 4.8
+        },
+        "inputsRef": {
+          "sessionIds": [
+            "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+            "ses_8KpQ2mN4vX"
+          ],
+          "runIds": [
+            "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4"
+          ],
+          "files": [
+            "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.summary.json",
+            "kpis/data/raw/sessions/opencode/ses_8KpQ2mN4vX.summary.json"
+          ]
+        },
+        "computedAt": "2026-09-13T10:15:44Z",
+        "methodVersion": "1.0.0",
+        "notes": "Bundle sample of the first 10 sessions of the run; sampling.scaleFactor 4.8 applied to reach the run total",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:44Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab",
+          "inputsHash": "5b1e0a9c2d3f4e5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a"
+        }
+      }
+    },
+    {
+      "description": "missing required computedAt",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.datapoint",
+        "kpiId": "cost_of_audit",
+        "series": "raw",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "value": 312.48,
+        "unit": "usd",
+        "dimensions": {
+          "companyId": "zerodha-broking",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "model": "claude-opus-5",
+          "harness": "claude-code"
+        },
+        "sampleSize": 10,
+        "sampling": {
+          "mode": "bundle",
+          "sessionsConsidered": 48,
+          "sessionsSampled": 10,
+          "scaleFactor": 4.8
+        },
+        "inputsRef": {
+          "sessionIds": [
+            "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+            "ses_8KpQ2mN4vX"
+          ],
+          "runIds": [
+            "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4"
+          ],
+          "files": [
+            "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.summary.json",
+            "kpis/data/raw/sessions/opencode/ses_8KpQ2mN4vX.summary.json"
+          ]
+        },
+        "methodVersion": "1.0.0",
+        "notes": "Bundle sample of the first 10 sessions of the run; sampling.scaleFactor 4.8 applied to reach the run total",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:44Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab",
+          "inputsHash": "5b1e0a9c2d3f4e5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a"
+        }
+      }
+    },
+    {
+      "description": "negative denominator",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.datapoint",
+        "kpiId": "cost_of_audit",
+        "series": "usd-per-control-observed",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "value": 2.6,
+        "unit": "usd-per-control",
+        "dimensions": {
+          "companyId": "zerodha-broking",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "model": "claude-opus-5",
+          "harness": "claude-code"
+        },
+        "sampleSize": 10,
+        "sampling": {
+          "mode": "bundle",
+          "sessionsConsidered": 48,
+          "sessionsSampled": 10,
+          "scaleFactor": 4.8
+        },
+        "inputsRef": {
+          "sessionIds": [
+            "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+            "ses_8KpQ2mN4vX"
+          ],
+          "runIds": [
+            "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4"
+          ],
+          "files": [
+            "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.summary.json",
+            "kpis/data/raw/sessions/opencode/ses_8KpQ2mN4vX.summary.json"
+          ]
+        },
+        "computedAt": "2026-09-13T10:15:44Z",
+        "methodVersion": "1.0.0",
+        "notes": "Bundle sample of the first 10 sessions of the run; sampling.scaleFactor 4.8 applied to reach the run total",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:44Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab",
+          "inputsHash": "5b1e0a9c2d3f4e5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a"
+        },
+        "numerator": 312.48,
+        "denominator": -1
+      }
+    },
+    {
+      "description": "value as string",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.datapoint",
+        "kpiId": "cost_of_audit",
+        "series": "raw",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "value": "312.48",
+        "unit": "usd",
+        "dimensions": {
+          "companyId": "zerodha-broking",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "model": "claude-opus-5",
+          "harness": "claude-code"
+        },
+        "sampleSize": 10,
+        "sampling": {
+          "mode": "bundle",
+          "sessionsConsidered": 48,
+          "sessionsSampled": 10,
+          "scaleFactor": 4.8
+        },
+        "inputsRef": {
+          "sessionIds": [
+            "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+            "ses_8KpQ2mN4vX"
+          ],
+          "runIds": [
+            "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4"
+          ],
+          "files": [
+            "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.summary.json",
+            "kpis/data/raw/sessions/opencode/ses_8KpQ2mN4vX.summary.json"
+          ]
+        },
+        "computedAt": "2026-09-13T10:15:44Z",
+        "methodVersion": "1.0.0",
+        "notes": "Bundle sample of the first 10 sessions of the run; sampling.scaleFactor 4.8 applied to reach the run total",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:44Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab",
+          "inputsHash": "5b1e0a9c2d3f4e5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a"
+        }
+      }
+    },
+    {
+      "description": "bad workflow dimension",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.datapoint",
+        "kpiId": "cost_of_audit",
+        "series": "raw",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "value": 312.48,
+        "unit": "usd",
+        "dimensions": {
+          "companyId": "zerodha-broking",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "not-a-workflow",
+          "model": "claude-opus-5",
+          "harness": "claude-code"
+        },
+        "sampleSize": 10,
+        "sampling": {
+          "mode": "bundle",
+          "sessionsConsidered": 48,
+          "sessionsSampled": 10,
+          "scaleFactor": 4.8
+        },
+        "inputsRef": {
+          "sessionIds": [
+            "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+            "ses_8KpQ2mN4vX"
+          ],
+          "runIds": [
+            "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4"
+          ],
+          "files": [
+            "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.summary.json",
+            "kpis/data/raw/sessions/opencode/ses_8KpQ2mN4vX.summary.json"
+          ]
+        },
+        "computedAt": "2026-09-13T10:15:44Z",
+        "methodVersion": "1.0.0",
+        "notes": "Bundle sample of the first 10 sessions of the run; sampling.scaleFactor 4.8 applied to reach the run total",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:44Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab",
+          "inputsHash": "5b1e0a9c2d3f4e5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a"
+        }
+      }
+    },
+    {
+      "description": "unknown kpiId",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.datapoint",
+        "kpiId": "cost_of_everything",
+        "series": "raw",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "value": 312.48,
+        "unit": "usd",
+        "dimensions": {
+          "companyId": "zerodha-broking",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "model": "claude-opus-5",
+          "harness": "claude-code"
+        },
+        "sampleSize": 10,
+        "sampling": {
+          "mode": "bundle",
+          "sessionsConsidered": 48,
+          "sessionsSampled": 10,
+          "scaleFactor": 4.8
+        },
+        "inputsRef": {
+          "sessionIds": [
+            "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+            "ses_8KpQ2mN4vX"
+          ],
+          "runIds": [
+            "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4"
+          ],
+          "files": [
+            "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.summary.json",
+            "kpis/data/raw/sessions/opencode/ses_8KpQ2mN4vX.summary.json"
+          ]
+        },
+        "computedAt": "2026-09-13T10:15:44Z",
+        "methodVersion": "1.0.0",
+        "notes": "Bundle sample of the first 10 sessions of the run; sampling.scaleFactor 4.8 applied to reach the run total",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:44Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab",
+          "inputsHash": "5b1e0a9c2d3f4e5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a"
+        }
+      }
+    },
+    {
+      "description": "wrong kind",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.kpi.point",
+        "kpiId": "cost_of_audit",
+        "series": "raw",
+        "periodStart": "2026-09-01T00:00:00Z",
+        "periodEnd": "2026-09-13T00:00:00Z",
+        "value": 312.48,
+        "unit": "usd",
+        "dimensions": {
+          "companyId": "zerodha-broking",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "model": "claude-opus-5",
+          "harness": "claude-code"
+        },
+        "sampleSize": 10,
+        "sampling": {
+          "mode": "bundle",
+          "sessionsConsidered": 48,
+          "sessionsSampled": 10,
+          "scaleFactor": 4.8
+        },
+        "inputsRef": {
+          "sessionIds": [
+            "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+            "ses_8KpQ2mN4vX"
+          ],
+          "runIds": [
+            "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4"
+          ],
+          "files": [
+            "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.summary.json",
+            "kpis/data/raw/sessions/opencode/ses_8KpQ2mN4vX.summary.json"
+          ]
+        },
+        "computedAt": "2026-09-13T10:15:44Z",
+        "methodVersion": "1.0.0",
+        "notes": "Bundle sample of the first 10 sessions of the run; sampling.scaleFactor 4.8 applied to reach the run total",
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-09-13T10:15:44Z",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "kpis",
+          "agent": ".claude/scripts/kpis/compute.mjs",
+          "gitCommit": "9f3c2ab",
+          "inputsHash": "5b1e0a9c2d3f4e5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a"
+        }
+      }
+    }
+  ]
+}

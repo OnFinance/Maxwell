@@ -1,0 +1,283 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/claude-agent.schema.json",
+  "title": "Claude Code subagent frontmatter",
+  "description": "YAML frontmatter of .claude/agents/<name>.md, the canonical definition of every Maxwell subagent (the OpenCode mirror is generated from it). Human-authored: no schemaVersion, kind or provenance. x-maxwell is mandatory: role and workflows record which workflows may spawn the agent, and the AGENTS.md rule that runtime probes are read-only is enforced three ways: a name starting with runtime-probe- must carry role runtime-probe, role runtime-probe must use such a name, and role runtime-probe requires readOnlyTargets true and only runtime-probe-* workflows. Claude Code also accepts an experimental block; Maxwell refuses it so audit runs stay reproducible",
+  "examples": [
+    {
+      "name": "iac-auditor",
+      "description": "Static probe of Terraform, Pulumi, Helm and Kubernetes manifests in a target application's repos. Use for probe-iac and probe-app-chart to find misconfigurations mapped to SEBI CSCRF, RBI Directions 2026 and CIS benchmarks. Read-only: never applies changes",
+      "tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash(npm run validate*)",
+        "Bash(node .claude/scripts/soc/*)"
+      ],
+      "disallowedTools": [ "WebFetch", "WebSearch" ],
+      "model": "sonnet",
+      "permissionMode": "acceptEdits",
+      "maxTurns": 60,
+      "skills": [
+        "maxwell-conventions",
+        "soc-ledger",
+        "regulatory-catalogs",
+        "iac-misconfig-patterns"
+      ],
+      "effort": "high",
+      "memory": "project",
+      "background": false,
+      "color": "cyan",
+      "x-maxwell": {
+        "role": "static-probe",
+        "workflows": [ "probe-iac", "probe-app-chart" ],
+        "writes": [
+          "company-profile/*/soc/main.jsonl",
+          "company-profile/*/summary.md"
+        ],
+        "readOnlyTargets": true,
+        "regulatoryFocus": [
+          "sebi-cscrf-2024",
+          "rbi-cyber-tech-directions-2026",
+          "cis-controls-8.1"
+        ]
+      }
+    }
+  ],
+  "type": "object",
+  "allOf": [
+    {
+      "if": {
+        "required": [ "name" ],
+        "properties": {
+          "name": {
+            "pattern": "^runtime-probe-"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "x-maxwell": {
+            "properties": {
+              "role": {
+                "const": "runtime-probe"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [ "x-maxwell" ],
+        "properties": {
+          "x-maxwell": {
+            "required": [ "role" ],
+            "properties": {
+              "role": {
+                "const": "runtime-probe"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "name": {
+            "pattern": "^runtime-probe-"
+          }
+        }
+      }
+    }
+  ],
+  "required": [ "name", "description", "x-maxwell" ],
+  "properties": {
+    "name": {
+      "description": "Agent identifier; must equal the file name without .md and is the name workflows use to spawn it. Names starting with runtime-probe- are reserved for role runtime-probe",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/skill.schema.json#/$defs/agentName"
+    },
+    "description": {
+      "description": "When to delegate to this agent and what it returns. The main agent reads this to choose subagents, so state the workflows it serves and whether it is read-only",
+      "type": "string",
+      "pattern": "\\S",
+      "maxLength": 2000,
+      "minLength": 20
+    },
+    "tools": {
+      "description": "Allow-list of tools as a comma-separated string or a YAML list of 'Tool' / 'Tool(specifier)' entries. Omit to inherit every tool; Maxwell agents always list tools explicitly so the mirror can derive an OpenCode permission map",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/skill.schema.json#/$defs/toolList"
+    },
+    "disallowedTools": {
+      "description": "Tools removed from the inherited or listed set; same shape as tools",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/skill.schema.json#/$defs/toolList"
+    },
+    "model": {
+      "description": "Model alias (sonnet, opus, haiku, fable, inherit) or a full claude-* model id; the mirror maps aliases to provider/model ids",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/skill.schema.json#/$defs/claudeModel"
+    },
+    "permissionMode": {
+      "description": "Permission mode the subagent runs under. bypassPermissions skips the Maxwell hooks and is reserved for validators that never write",
+      "enum": [
+        "default",
+        "acceptEdits",
+        "auto",
+        "dontAsk",
+        "bypassPermissions",
+        "plan",
+        "manual"
+      ]
+    },
+    "maxTurns": {
+      "description": "Upper bound on agentic turns before the subagent is stopped",
+      "type": "integer",
+      "maximum": 1000,
+      "minimum": 1
+    },
+    "skills": {
+      "description": "Skills (directory names under .claude/skills) preloaded into the agent's context",
+      "type": "array",
+      "maxItems": 32,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/skill.schema.json#/$defs/agentName"
+      }
+    },
+    "mcpServers": {
+      "description": "MCP servers connected while the agent runs, by reference to servers configured in opencode.json / .mcp.json. Inline server definitions are refused because server commands and {env:} secret references must live in one reviewed place",
+      "type": "array",
+      "maxItems": 16,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/skill.schema.json#/$defs/agentName"
+      }
+    },
+    "hooks": {
+      "description": "Agent-level hooks; Claude Code supports PreToolUse, PostToolUse and Stop (converted to SubagentStop) here, each with the same matcher groups as settings.json",
+      "type": "object",
+      "properties": {
+        "PreToolUse": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/harness/claude-settings.schema.json#/$defs/hookMatchers"
+        },
+        "PostToolUse": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/harness/claude-settings.schema.json#/$defs/hookMatchers"
+        },
+        "Stop": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/harness/claude-settings.schema.json#/$defs/hookMatchers"
+        }
+      },
+      "additionalProperties": false
+    },
+    "effort": {
+      "description": "Reasoning effort for the subagent",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/skill.schema.json#/$defs/effort"
+    },
+    "memory": {
+      "description": "Scope of the agent's persistent memory directory: user (~/.claude), project (.claude, committed) or local (.claude, git-ignored)",
+      "enum": [ "user", "project", "local" ]
+    },
+    "background": {
+      "description": "When true the agent runs in the background and the caller is notified on completion",
+      "type": "boolean"
+    },
+    "isolation": {
+      "description": "worktree runs the agent in a separate git worktree so its edits cannot touch the caller's tree",
+      "const": "worktree"
+    },
+    "color": {
+      "description": "Colour used for the agent in the terminal UI",
+      "enum": [
+        "red",
+        "blue",
+        "green",
+        "yellow",
+        "purple",
+        "orange",
+        "pink",
+        "cyan"
+      ]
+    },
+    "initialPrompt": {
+      "description": "First user turn submitted automatically when the agent runs as the main session (claude --agent <name>); workflows pass the task in the spawn call instead, so this is only for interactive use",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+    },
+    "x-maxwell": {
+      "description": "Maxwell metadata not interpreted by Claude Code",
+      "$ref": "#/$defs/xMaxwell"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "xMaxwell": {
+      "description": "Role of the agent in the Maxwell pipeline, the workflows that may spawn it, the workspace paths it may write, whether it is read-only against target systems, and the instruments it specialises in. Agents with role runtime-probe must set readOnlyTargets true and may only serve runtime-probe-* workflows",
+      "type": "object",
+      "if": {
+        "properties": {
+          "role": {
+            "const": "runtime-probe"
+          }
+        }
+      },
+      "then": {
+        "required": [ "readOnlyTargets" ],
+        "properties": {
+          "readOnlyTargets": {
+            "const": true
+          },
+          "workflows": {
+            "items": {
+              "pattern": "^runtime-probe-"
+            }
+          }
+        }
+      },
+      "required": [ "role", "writes" ],
+      "properties": {
+        "role": {
+          "description": "context gathers company/app facts; static-probe reads repos and manifests; runtime-probe queries live systems read-only; planner drafts initiatives; author writes suggestion diffs; reviewer critiques; reporter writes summary sections; validator checks outputs",
+          "enum": [
+            "context",
+            "static-probe",
+            "runtime-probe",
+            "planner",
+            "author",
+            "reviewer",
+            "reporter",
+            "validator"
+          ]
+        },
+        "workflows": {
+          "description": "Workflows allowed to spawn this agent; probe-agent-graph builds the agent graph from it and the KPI scripts reconcile it with provenance.workflow/agent. Empty or absent means any workflow may spawn the agent",
+          "type": "array",
+          "maxItems": 32,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/vocab/workflows.schema.json"
+          }
+        },
+        "writes": {
+          "description": "Workspace paths or globs the agent may create or modify; empty means the agent only returns text to its caller",
+          "type": "array",
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/skill.schema.json#/$defs/pathGlob"
+          }
+        },
+        "readOnlyTargets": {
+          "description": "True when the agent never mutates target systems or repositories (required true for runtime probes)",
+          "type": "boolean"
+        },
+        "regulatoryFocus": {
+          "description": "Instruments the agent maps its findings to first",
+          "type": "array",
+          "maxItems": 16,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/vocab/instruments.schema.json"
+          }
+        }
+      },
+      "unevaluatedProperties": false
+    }
+  }
+}

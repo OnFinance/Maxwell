@@ -1,0 +1,316 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/application/image.schema.json",
+  "title": "Application container image",
+  "description": "One container image of an application (applications/<app_id>/images/<image_id>.json): its immutable OCI reference, build lineage, SBOM location, signature and SLSA provenance status, latest vulnerability scan and the environments it is deployed to. Written by runtime-probe-appcontainers and probe-cicd-env",
+  "examples": [
+    {
+      "schemaVersion": "1",
+      "kind": "maxwell.app.image",
+      "appId": "ledger-core",
+      "imageId": "ledger-core-api",
+      "ref": "123456789012.dkr.ecr.ap-south-1.amazonaws.com/arthanidhi/ledger-core-api:2.14.3@sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+      "registry": "123456789012.dkr.ecr.ap-south-1.amazonaws.com",
+      "repository": "arthanidhi/ledger-core-api",
+      "tag": "2.14.3",
+      "digest": "sha256:7c9e6b1f4a2d3e5f8a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+      "baseImage": "public.ecr.aws/docker/library/node:22.9.0-bookworm-slim",
+      "builtFrom": {
+        "repoId": "ledger-core-api",
+        "commit": "9f2c4d1e7a3b5c6d8e0f1a2b3c4d5e6f7a8b9c0d",
+        "dockerfilePath": "Dockerfile"
+      },
+      "sbomPath": "applications/ledger-core/images/ledger-core-api.cdx.json",
+      "signing": {
+        "tool": "cosign",
+        "verified": true,
+        "keyRef": "awskms:///alias/arthanidhi-cosign-prod"
+      },
+      "provenanceAttestation": {
+        "slsaLevel": 3,
+        "attestationRef": "https://github.com/arthanidhi/ledger-core-api/attestations/1842"
+      },
+      "lastScan": {
+        "at": "2026-09-13T04:02:11Z",
+        "tool": "trivy",
+        "toolVersion": "0.65.0",
+        "critical": 0,
+        "high": 2,
+        "medium": 11,
+        "low": 27,
+        "unknown": 3,
+        "fixable": {
+          "critical": 0,
+          "high": 2,
+          "medium": 7,
+          "low": 12
+        },
+        "kevCount": 0
+      },
+      "envIds": [ "prod-mumbai", "uat-mumbai" ],
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-13T04:05:00Z",
+        "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+        "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+        "workflow": "runtime-probe-appcontainers",
+        "agent": "container-prober"
+      }
+    }
+  ],
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "kind",
+    "appId",
+    "imageId",
+    "ref",
+    "registry",
+    "repository",
+    "digest",
+    "envIds",
+    "provenance"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/schemaVersion"
+    },
+    "kind": {
+      "const": "maxwell.app.image"
+    },
+    "appId": {
+      "description": "Slug of the owning application; equals the applications/<app_id> directory name",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+    },
+    "imageId": {
+      "description": "Slug of this image; must equal the file name without .json and the SBOM file name without .cdx.json",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+    },
+    "ref": {
+      "description": "Full OCI reference as pulled: registry/repository[:tag][@sha256:digest]. Should carry the digest so the record is immutable",
+      "$ref": "#/$defs/ociReference"
+    },
+    "registry": {
+      "description": "Registry host (with optional port) part of ref, e.g. '123456789012.dkr.ecr.ap-south-1.amazonaws.com', 'ghcr.io' or 'docker.io'. Must contain a dot or a port (or be localhost)",
+      "type": "string",
+      "pattern": "^([a-z0-9]([a-z0-9-]*[a-z0-9])?(\\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+(:[0-9]{1,5})?|[a-z0-9]([a-z0-9-]*[a-z0-9])?:[0-9]{1,5}|localhost)$",
+      "maxLength": 253
+    },
+    "repository": {
+      "description": "Repository path part of ref, e.g. 'arthanidhi/ledger-core-api'",
+      "type": "string",
+      "pattern": "^[a-z0-9]+((\\.|_|__|-+)[a-z0-9]+)*(/[a-z0-9]+((\\.|_|__|-+)[a-z0-9]+)*)*$",
+      "maxLength": 255
+    },
+    "tag": {
+      "description": "Mutable tag the image was pulled by, if any. The digest is authoritative",
+      "$ref": "#/$defs/ociTag"
+    },
+    "digest": {
+      "description": "Content-addressable manifest digest, 'sha256:' followed by 64 lowercase hex characters",
+      "$ref": "#/$defs/ociDigest"
+    },
+    "baseImage": {
+      "description": "Base image reference from the final FROM line (or the OCI base-image annotation), used for end-of-life and upstream CVE checks. Normalise to fully-qualified form before writing: FROM node:22-bookworm-slim becomes docker.io/library/node:22-bookworm-slim and FROM arthanidhi/ledger:1.0 becomes docker.io/arthanidhi/ledger:1.0",
+      "$ref": "#/$defs/ociReference"
+    },
+    "builtFrom": {
+      "$ref": "#/$defs/buildSource"
+    },
+    "sbomPath": {
+      "description": "Workspace path of the CycloneDX SBOM for this image, always applications/<app_id>/images/<image_id>.cdx.json",
+      "type": "string",
+      "pattern": "^applications/[a-z0-9][a-z0-9-]{1,62}/images/[a-z0-9][a-z0-9-]{1,62}\\.cdx\\.json$"
+    },
+    "signing": {
+      "$ref": "#/$defs/signing"
+    },
+    "provenanceAttestation": {
+      "$ref": "#/$defs/provenanceAttestation"
+    },
+    "lastScan": {
+      "$ref": "#/$defs/scanSummary"
+    },
+    "envIds": {
+      "description": "Environments (applications/<app_id>/env/<env_id>.json) where this exact digest is currently running. Empty when the image is built but not deployed",
+      "type": "array",
+      "maxItems": 50,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+      }
+    },
+    "provenance": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/provenance"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "ociReference": {
+      "description": "Alias of common ociReference, kept for existing $refs",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/ociReference"
+    },
+    "ociTag": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_][A-Za-z0-9_.-]{0,127}$",
+      "maxLength": 128
+    },
+    "ociDigest": {
+      "description": "Alias of common ociDigest, kept for existing $refs",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/ociDigest"
+    },
+    "buildSource": {
+      "description": "Source lineage of the image: which registered repo, commit and Dockerfile produced it",
+      "type": "object",
+      "required": [ "repoId", "commit" ],
+      "properties": {
+        "repoId": {
+          "description": "Slug of the repo (applications/<app_id>/repos/<repo_id>.json) the image was built from",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+        },
+        "commit": {
+          "description": "Commit the build checked out",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/gitCommit"
+        },
+        "dockerfilePath": {
+          "description": "Dockerfile or Containerfile path relative to the repository root",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/workspacePath"
+        }
+      },
+      "additionalProperties": false
+    },
+    "signing": {
+      "description": "Image signature status. 'verified' is the result of Maxwell's own verification, not the registry's claim",
+      "type": "object",
+      "required": [ "tool", "verified" ],
+      "properties": {
+        "tool": {
+          "description": "Signing tool: cosign (Sigstore), notation (Notary v2) or none",
+          "enum": [ "cosign", "notation", "none" ]
+        },
+        "verified": {
+          "description": "True when the signature was verified against the expected key or identity during the last probe",
+          "type": "boolean"
+        },
+        "keyRef": {
+          "description": "Locator of the public key or identity the signature was verified against (KMS alias URI, Fulcio identity, trust-store name). Never key material",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        }
+      },
+      "additionalProperties": false
+    },
+    "provenanceAttestation": {
+      "description": "SLSA build provenance status of the image",
+      "type": "object",
+      "required": [ "slsaLevel" ],
+      "properties": {
+        "slsaLevel": {
+          "description": "Highest SLSA v1.0 Build Track level (L0-L3) demonstrated by an attestation Maxwell could verify; 0 when none",
+          "enum": [ 0, 1, 2, 3 ]
+        },
+        "attestationRef": {
+          "description": "Where the attestation lives: URL, Rekor log index (as 'rekor:<index>') or registry referrer digest",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        }
+      },
+      "additionalProperties": false
+    },
+    "scanSummary": {
+      "description": "Severity counts from the most recent vulnerability scan of this digest. Full results live in the SBOM's vulnerabilities array and in cves/",
+      "type": "object",
+      "required": [
+        "at",
+        "tool",
+        "toolVersion",
+        "critical",
+        "high",
+        "medium",
+        "low"
+      ],
+      "properties": {
+        "at": {
+          "description": "When the scan ran",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "tool": {
+          "description": "Scanner that produced the counts; keyed on by KPI slicing and scanner-specific severity mapping",
+          "enum": [
+            "trivy",
+            "grype",
+            "snyk",
+            "clair",
+            "ecr-inspector",
+            "docker-scout",
+            "prisma",
+            "wiz",
+            "aqua",
+            "other"
+          ]
+        },
+        "toolVersion": {
+          "description": "Scanner version as reported by the tool, e.g. '0.65.0' or 'v0.92.0'",
+          "type": "string",
+          "pattern": "^v?[0-9]+(\\.[0-9]+){0,3}([+-][0-9A-Za-z.-]+)?$",
+          "maxLength": 64
+        },
+        "critical": {
+          "description": "Count of critical-severity vulnerabilities",
+          "$ref": "#/$defs/count"
+        },
+        "high": {
+          "description": "Count of high-severity vulnerabilities",
+          "$ref": "#/$defs/count"
+        },
+        "medium": {
+          "description": "Count of medium-severity vulnerabilities",
+          "$ref": "#/$defs/count"
+        },
+        "low": {
+          "description": "Count of low-severity vulnerabilities",
+          "$ref": "#/$defs/count"
+        },
+        "unknown": {
+          "description": "Count of vulnerabilities whose severity the scanner could not rate (trivy UNKNOWN, grype Negligible/Unknown); Maxwell maps them to 'info'",
+          "$ref": "#/$defs/count"
+        },
+        "fixable": {
+          "$ref": "#/$defs/fixableCounts"
+        },
+        "kevCount": {
+          "description": "Count of vulnerabilities listed in the CISA Known Exploited Vulnerabilities catalogue, regardless of severity",
+          "$ref": "#/$defs/count"
+        }
+      },
+      "additionalProperties": false
+    },
+    "fixableCounts": {
+      "description": "Subset of the severity counts for which the scanner reports a fixed version; the patch-SLA logic treats the remainder as unpatchable exposure that needs a compensating control or VEX statement",
+      "type": "object",
+      "required": [ "critical", "high", "medium", "low" ],
+      "properties": {
+        "critical": {
+          "description": "Critical-severity vulnerabilities with a fix available",
+          "$ref": "#/$defs/count"
+        },
+        "high": {
+          "description": "High-severity vulnerabilities with a fix available",
+          "$ref": "#/$defs/count"
+        },
+        "medium": {
+          "description": "Medium-severity vulnerabilities with a fix available",
+          "$ref": "#/$defs/count"
+        },
+        "low": {
+          "description": "Low-severity vulnerabilities with a fix available",
+          "$ref": "#/$defs/count"
+        }
+      },
+      "additionalProperties": false
+    },
+    "count": {
+      "type": "integer",
+      "maximum": 1000000,
+      "minimum": 0
+    }
+  }
+}

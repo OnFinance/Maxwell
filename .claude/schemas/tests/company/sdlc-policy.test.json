@@ -1,0 +1,3583 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/v1/company/sdlc-policy.schema.json",
+  "tests": [
+    {
+      "description": "complete SDLC policy with SSDF mapping",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.sdlc",
+        "companyId": "zenith-securities",
+        "policyVersion": "2.1.0",
+        "effectiveFrom": "2026-04-01",
+        "reviewCadenceMonths": 12,
+        "owner": "cto",
+        "branching": {
+          "model": "trunk",
+          "protectedBranches": [
+            "main",
+            "release/*"
+          ],
+          "signedCommitsRequired": true
+        },
+        "codeReview": {
+          "required": true,
+          "minApprovers": 1,
+          "codeownersEnforced": true,
+          "aiReviewAllowed": true,
+          "selfApprovalAllowed": false
+        },
+        "ciGates": [
+          {
+            "gate": "sast",
+            "tool": "semgrep",
+            "blocking": true,
+            "minSeverityToBlock": "high"
+          },
+          {
+            "gate": "secrets",
+            "tool": "gitleaks",
+            "blocking": true,
+            "minSeverityToBlock": "low"
+          },
+          {
+            "gate": "sca",
+            "tool": "trivy",
+            "blocking": true,
+            "minSeverityToBlock": "critical"
+          },
+          {
+            "gate": "unit-tests",
+            "tool": "pytest",
+            "blocking": true
+          }
+        ],
+        "releaseProcess": {
+          "environmentsOrder": [
+            "dev",
+            "qa",
+            "uat",
+            "prod"
+          ],
+          "approvalsRequired": 2,
+          "changeTypeDefault": "normal",
+          "rollbackPlanRequired": true,
+          "emergencyChangeProcess": "CTO and CISO verbal approval, ticket raised within 4 hours, retrospective CAB review within 5 working days",
+          "deploymentWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "12:30",
+              "endUtc": "16:30",
+              "note": "Mon-Fri 18:00-22:00 IST, outside NSE/BSE market hours"
+            }
+          ]
+        },
+        "secretsManagement": {
+          "backend": "vault",
+          "rotationDays": 90,
+          "scanningInCi": true
+        },
+        "dependencyPolicy": {
+          "lockfilesRequired": true,
+          "allowedRegistries": [
+            "https://registry.npmjs.org",
+            "https://pypi.org/simple"
+          ],
+          "sbomRequired": true,
+          "sbomFormat": "cyclonedx",
+          "vulnerabilitySlaDays": {
+            "critical": 7,
+            "high": 30,
+            "medium": 90,
+            "low": 180,
+            "info": 365
+          }
+        },
+        "aiCodingPolicy": {
+          "harnessesAllowed": [
+            "claude-code",
+            "copilot"
+          ],
+          "humanReviewRequired": true,
+          "promptInjectionControls": [
+            "tool-allowlist",
+            "secrets-redaction",
+            "human-approval-for-writes"
+          ],
+          "allowedDataClasses": [
+            "public",
+            "internal"
+          ]
+        },
+        "ssdfMapping": [
+          {
+            "practice": "PO.3.2",
+            "status": "implemented",
+            "notes": "Branch protection and CI gates enforced on all repositories"
+          },
+          {
+            "practice": "PW.7",
+            "status": "partial",
+            "notes": "Code review mandatory; security-focused review checklist not yet adopted"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:45:00Z",
+          "workflow": "seed-company",
+          "agent": "cto@zenithsecurities.in"
+        }
+      }
+    },
+    {
+      "description": "invented top-level key is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.sdlc",
+        "companyId": "zenith-securities",
+        "policyVersion": "2.1.0",
+        "effectiveFrom": "2026-04-01",
+        "reviewCadenceMonths": 12,
+        "owner": "cto",
+        "branching": {
+          "model": "trunk",
+          "protectedBranches": [
+            "main",
+            "release/*"
+          ],
+          "signedCommitsRequired": true
+        },
+        "codeReview": {
+          "required": true,
+          "minApprovers": 1,
+          "codeownersEnforced": true,
+          "aiReviewAllowed": true,
+          "selfApprovalAllowed": false
+        },
+        "ciGates": [
+          {
+            "gate": "sast",
+            "tool": "semgrep",
+            "blocking": true,
+            "minSeverityToBlock": "high"
+          },
+          {
+            "gate": "secrets",
+            "tool": "gitleaks",
+            "blocking": true,
+            "minSeverityToBlock": "low"
+          },
+          {
+            "gate": "sca",
+            "tool": "trivy",
+            "blocking": true,
+            "minSeverityToBlock": "critical"
+          },
+          {
+            "gate": "unit-tests",
+            "tool": "pytest",
+            "blocking": true
+          }
+        ],
+        "releaseProcess": {
+          "environmentsOrder": [
+            "dev",
+            "qa",
+            "uat",
+            "prod"
+          ],
+          "approvalsRequired": 2,
+          "changeTypeDefault": "normal",
+          "rollbackPlanRequired": true,
+          "emergencyChangeProcess": "CTO and CISO verbal approval, ticket raised within 4 hours, retrospective CAB review within 5 working days",
+          "deploymentWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "12:30",
+              "endUtc": "16:30",
+              "note": "Mon-Fri 18:00-22:00 IST, outside NSE/BSE market hours"
+            }
+          ]
+        },
+        "secretsManagement": {
+          "backend": "vault",
+          "rotationDays": 90,
+          "scanningInCi": true
+        },
+        "dependencyPolicy": {
+          "lockfilesRequired": true,
+          "allowedRegistries": [
+            "https://registry.npmjs.org",
+            "https://pypi.org/simple"
+          ],
+          "sbomRequired": true,
+          "sbomFormat": "cyclonedx",
+          "vulnerabilitySlaDays": {
+            "critical": 7,
+            "high": 30,
+            "medium": 90,
+            "low": 180
+          }
+        },
+        "aiCodingPolicy": {
+          "harnessesAllowed": [
+            "claude-code",
+            "copilot"
+          ],
+          "humanReviewRequired": true,
+          "promptInjectionControls": [
+            "tool-allowlist",
+            "secrets-redaction",
+            "human-approval-for-writes"
+          ],
+          "allowedDataClasses": [
+            "public",
+            "internal"
+          ]
+        },
+        "ssdfMapping": [
+          {
+            "practice": "PO.3.2",
+            "status": "implemented",
+            "notes": "Branch protection and CI gates enforced on all repositories"
+          },
+          {
+            "practice": "PW.7",
+            "status": "partial",
+            "notes": "Code review mandatory; security-focused review checklist not yet adopted"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:45:00Z",
+          "workflow": "seed-company",
+          "agent": "cto@zenithsecurities.in"
+        },
+        "pairProgramming": true
+      }
+    },
+    {
+      "description": "invented key inside codeReview is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.sdlc",
+        "companyId": "zenith-securities",
+        "policyVersion": "2.1.0",
+        "effectiveFrom": "2026-04-01",
+        "reviewCadenceMonths": 12,
+        "owner": "cto",
+        "branching": {
+          "model": "trunk",
+          "protectedBranches": [
+            "main",
+            "release/*"
+          ],
+          "signedCommitsRequired": true
+        },
+        "codeReview": {
+          "required": true,
+          "minApprovers": 1,
+          "codeownersEnforced": true,
+          "aiReviewAllowed": true,
+          "selfApprovalAllowed": false,
+          "maxApprovers": 3
+        },
+        "ciGates": [
+          {
+            "gate": "sast",
+            "tool": "semgrep",
+            "blocking": true,
+            "minSeverityToBlock": "high"
+          },
+          {
+            "gate": "secrets",
+            "tool": "gitleaks",
+            "blocking": true,
+            "minSeverityToBlock": "low"
+          },
+          {
+            "gate": "sca",
+            "tool": "trivy",
+            "blocking": true,
+            "minSeverityToBlock": "critical"
+          },
+          {
+            "gate": "unit-tests",
+            "tool": "pytest",
+            "blocking": true
+          }
+        ],
+        "releaseProcess": {
+          "environmentsOrder": [
+            "dev",
+            "qa",
+            "uat",
+            "prod"
+          ],
+          "approvalsRequired": 2,
+          "changeTypeDefault": "normal",
+          "rollbackPlanRequired": true,
+          "emergencyChangeProcess": "CTO and CISO verbal approval, ticket raised within 4 hours, retrospective CAB review within 5 working days",
+          "deploymentWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "12:30",
+              "endUtc": "16:30",
+              "note": "Mon-Fri 18:00-22:00 IST, outside NSE/BSE market hours"
+            }
+          ]
+        },
+        "secretsManagement": {
+          "backend": "vault",
+          "rotationDays": 90,
+          "scanningInCi": true
+        },
+        "dependencyPolicy": {
+          "lockfilesRequired": true,
+          "allowedRegistries": [
+            "https://registry.npmjs.org",
+            "https://pypi.org/simple"
+          ],
+          "sbomRequired": true,
+          "sbomFormat": "cyclonedx",
+          "vulnerabilitySlaDays": {
+            "critical": 7,
+            "high": 30,
+            "medium": 90,
+            "low": 180
+          }
+        },
+        "aiCodingPolicy": {
+          "harnessesAllowed": [
+            "claude-code",
+            "copilot"
+          ],
+          "humanReviewRequired": true,
+          "promptInjectionControls": [
+            "tool-allowlist",
+            "secrets-redaction",
+            "human-approval-for-writes"
+          ],
+          "allowedDataClasses": [
+            "public",
+            "internal"
+          ]
+        },
+        "ssdfMapping": [
+          {
+            "practice": "PO.3.2",
+            "status": "implemented",
+            "notes": "Branch protection and CI gates enforced on all repositories"
+          },
+          {
+            "practice": "PW.7",
+            "status": "partial",
+            "notes": "Code review mandatory; security-focused review checklist not yet adopted"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:45:00Z",
+          "workflow": "seed-company",
+          "agent": "cto@zenithsecurities.in"
+        }
+      }
+    },
+    {
+      "description": "SSDF practice id must match PO/PS/PW/RV pattern",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.sdlc",
+        "companyId": "zenith-securities",
+        "policyVersion": "2.1.0",
+        "effectiveFrom": "2026-04-01",
+        "reviewCadenceMonths": 12,
+        "owner": "cto",
+        "branching": {
+          "model": "trunk",
+          "protectedBranches": [
+            "main",
+            "release/*"
+          ],
+          "signedCommitsRequired": true
+        },
+        "codeReview": {
+          "required": true,
+          "minApprovers": 1,
+          "codeownersEnforced": true,
+          "aiReviewAllowed": true,
+          "selfApprovalAllowed": false
+        },
+        "ciGates": [
+          {
+            "gate": "sast",
+            "tool": "semgrep",
+            "blocking": true,
+            "minSeverityToBlock": "high"
+          },
+          {
+            "gate": "secrets",
+            "tool": "gitleaks",
+            "blocking": true,
+            "minSeverityToBlock": "low"
+          },
+          {
+            "gate": "sca",
+            "tool": "trivy",
+            "blocking": true,
+            "minSeverityToBlock": "critical"
+          },
+          {
+            "gate": "unit-tests",
+            "tool": "pytest",
+            "blocking": true
+          }
+        ],
+        "releaseProcess": {
+          "environmentsOrder": [
+            "dev",
+            "qa",
+            "uat",
+            "prod"
+          ],
+          "approvalsRequired": 2,
+          "changeTypeDefault": "normal",
+          "rollbackPlanRequired": true,
+          "emergencyChangeProcess": "CTO and CISO verbal approval, ticket raised within 4 hours, retrospective CAB review within 5 working days",
+          "deploymentWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "12:30",
+              "endUtc": "16:30",
+              "note": "Mon-Fri 18:00-22:00 IST, outside NSE/BSE market hours"
+            }
+          ]
+        },
+        "secretsManagement": {
+          "backend": "vault",
+          "rotationDays": 90,
+          "scanningInCi": true
+        },
+        "dependencyPolicy": {
+          "lockfilesRequired": true,
+          "allowedRegistries": [
+            "https://registry.npmjs.org",
+            "https://pypi.org/simple"
+          ],
+          "sbomRequired": true,
+          "sbomFormat": "cyclonedx",
+          "vulnerabilitySlaDays": {
+            "critical": 7,
+            "high": 30,
+            "medium": 90,
+            "low": 180
+          }
+        },
+        "aiCodingPolicy": {
+          "harnessesAllowed": [
+            "claude-code",
+            "copilot"
+          ],
+          "humanReviewRequired": true,
+          "promptInjectionControls": [
+            "tool-allowlist",
+            "secrets-redaction",
+            "human-approval-for-writes"
+          ],
+          "allowedDataClasses": [
+            "public",
+            "internal"
+          ]
+        },
+        "ssdfMapping": [
+          {
+            "practice": "AC-2",
+            "status": "implemented",
+            "notes": "Branch protection and CI gates enforced on all repositories"
+          },
+          {
+            "practice": "PW.7",
+            "status": "partial",
+            "notes": "Code review mandatory; security-focused review checklist not yet adopted"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:45:00Z",
+          "workflow": "seed-company",
+          "agent": "cto@zenithsecurities.in"
+        }
+      }
+    },
+    {
+      "description": "unknown branching model is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.sdlc",
+        "companyId": "zenith-securities",
+        "policyVersion": "2.1.0",
+        "effectiveFrom": "2026-04-01",
+        "reviewCadenceMonths": 12,
+        "owner": "cto",
+        "branching": {
+          "model": "svn",
+          "protectedBranches": [
+            "main",
+            "release/*"
+          ],
+          "signedCommitsRequired": true
+        },
+        "codeReview": {
+          "required": true,
+          "minApprovers": 1,
+          "codeownersEnforced": true,
+          "aiReviewAllowed": true,
+          "selfApprovalAllowed": false
+        },
+        "ciGates": [
+          {
+            "gate": "sast",
+            "tool": "semgrep",
+            "blocking": true,
+            "minSeverityToBlock": "high"
+          },
+          {
+            "gate": "secrets",
+            "tool": "gitleaks",
+            "blocking": true,
+            "minSeverityToBlock": "low"
+          },
+          {
+            "gate": "sca",
+            "tool": "trivy",
+            "blocking": true,
+            "minSeverityToBlock": "critical"
+          },
+          {
+            "gate": "unit-tests",
+            "tool": "pytest",
+            "blocking": true
+          }
+        ],
+        "releaseProcess": {
+          "environmentsOrder": [
+            "dev",
+            "qa",
+            "uat",
+            "prod"
+          ],
+          "approvalsRequired": 2,
+          "changeTypeDefault": "normal",
+          "rollbackPlanRequired": true,
+          "emergencyChangeProcess": "CTO and CISO verbal approval, ticket raised within 4 hours, retrospective CAB review within 5 working days",
+          "deploymentWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "12:30",
+              "endUtc": "16:30",
+              "note": "Mon-Fri 18:00-22:00 IST, outside NSE/BSE market hours"
+            }
+          ]
+        },
+        "secretsManagement": {
+          "backend": "vault",
+          "rotationDays": 90,
+          "scanningInCi": true
+        },
+        "dependencyPolicy": {
+          "lockfilesRequired": true,
+          "allowedRegistries": [
+            "https://registry.npmjs.org",
+            "https://pypi.org/simple"
+          ],
+          "sbomRequired": true,
+          "sbomFormat": "cyclonedx",
+          "vulnerabilitySlaDays": {
+            "critical": 7,
+            "high": 30,
+            "medium": 90,
+            "low": 180
+          }
+        },
+        "aiCodingPolicy": {
+          "harnessesAllowed": [
+            "claude-code",
+            "copilot"
+          ],
+          "humanReviewRequired": true,
+          "promptInjectionControls": [
+            "tool-allowlist",
+            "secrets-redaction",
+            "human-approval-for-writes"
+          ],
+          "allowedDataClasses": [
+            "public",
+            "internal"
+          ]
+        },
+        "ssdfMapping": [
+          {
+            "practice": "PO.3.2",
+            "status": "implemented",
+            "notes": "Branch protection and CI gates enforced on all repositories"
+          },
+          {
+            "practice": "PW.7",
+            "status": "partial",
+            "notes": "Code review mandatory; security-focused review checklist not yet adopted"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:45:00Z",
+          "workflow": "seed-company",
+          "agent": "cto@zenithsecurities.in"
+        }
+      }
+    },
+    {
+      "description": "unknown CI gate is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.sdlc",
+        "companyId": "zenith-securities",
+        "policyVersion": "2.1.0",
+        "effectiveFrom": "2026-04-01",
+        "reviewCadenceMonths": 12,
+        "owner": "cto",
+        "branching": {
+          "model": "trunk",
+          "protectedBranches": [
+            "main",
+            "release/*"
+          ],
+          "signedCommitsRequired": true
+        },
+        "codeReview": {
+          "required": true,
+          "minApprovers": 1,
+          "codeownersEnforced": true,
+          "aiReviewAllowed": true,
+          "selfApprovalAllowed": false
+        },
+        "ciGates": [
+          {
+            "gate": "lint",
+            "tool": "semgrep",
+            "blocking": true,
+            "minSeverityToBlock": "high"
+          },
+          {
+            "gate": "secrets",
+            "tool": "gitleaks",
+            "blocking": true,
+            "minSeverityToBlock": "low"
+          },
+          {
+            "gate": "sca",
+            "tool": "trivy",
+            "blocking": true,
+            "minSeverityToBlock": "critical"
+          },
+          {
+            "gate": "unit-tests",
+            "tool": "pytest",
+            "blocking": true
+          }
+        ],
+        "releaseProcess": {
+          "environmentsOrder": [
+            "dev",
+            "qa",
+            "uat",
+            "prod"
+          ],
+          "approvalsRequired": 2,
+          "changeTypeDefault": "normal",
+          "rollbackPlanRequired": true,
+          "emergencyChangeProcess": "CTO and CISO verbal approval, ticket raised within 4 hours, retrospective CAB review within 5 working days",
+          "deploymentWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "12:30",
+              "endUtc": "16:30",
+              "note": "Mon-Fri 18:00-22:00 IST, outside NSE/BSE market hours"
+            }
+          ]
+        },
+        "secretsManagement": {
+          "backend": "vault",
+          "rotationDays": 90,
+          "scanningInCi": true
+        },
+        "dependencyPolicy": {
+          "lockfilesRequired": true,
+          "allowedRegistries": [
+            "https://registry.npmjs.org",
+            "https://pypi.org/simple"
+          ],
+          "sbomRequired": true,
+          "sbomFormat": "cyclonedx",
+          "vulnerabilitySlaDays": {
+            "critical": 7,
+            "high": 30,
+            "medium": 90,
+            "low": 180
+          }
+        },
+        "aiCodingPolicy": {
+          "harnessesAllowed": [
+            "claude-code",
+            "copilot"
+          ],
+          "humanReviewRequired": true,
+          "promptInjectionControls": [
+            "tool-allowlist",
+            "secrets-redaction",
+            "human-approval-for-writes"
+          ],
+          "allowedDataClasses": [
+            "public",
+            "internal"
+          ]
+        },
+        "ssdfMapping": [
+          {
+            "practice": "PO.3.2",
+            "status": "implemented",
+            "notes": "Branch protection and CI gates enforced on all repositories"
+          },
+          {
+            "practice": "PW.7",
+            "status": "partial",
+            "notes": "Code review mandatory; security-focused review checklist not yet adopted"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:45:00Z",
+          "workflow": "seed-company",
+          "agent": "cto@zenithsecurities.in"
+        }
+      }
+    },
+    {
+      "description": "unknown harness in aiCodingPolicy is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.sdlc",
+        "companyId": "zenith-securities",
+        "policyVersion": "2.1.0",
+        "effectiveFrom": "2026-04-01",
+        "reviewCadenceMonths": 12,
+        "owner": "cto",
+        "branching": {
+          "model": "trunk",
+          "protectedBranches": [
+            "main",
+            "release/*"
+          ],
+          "signedCommitsRequired": true
+        },
+        "codeReview": {
+          "required": true,
+          "minApprovers": 1,
+          "codeownersEnforced": true,
+          "aiReviewAllowed": true,
+          "selfApprovalAllowed": false
+        },
+        "ciGates": [
+          {
+            "gate": "sast",
+            "tool": "semgrep",
+            "blocking": true,
+            "minSeverityToBlock": "high"
+          },
+          {
+            "gate": "secrets",
+            "tool": "gitleaks",
+            "blocking": true,
+            "minSeverityToBlock": "low"
+          },
+          {
+            "gate": "sca",
+            "tool": "trivy",
+            "blocking": true,
+            "minSeverityToBlock": "critical"
+          },
+          {
+            "gate": "unit-tests",
+            "tool": "pytest",
+            "blocking": true
+          }
+        ],
+        "releaseProcess": {
+          "environmentsOrder": [
+            "dev",
+            "qa",
+            "uat",
+            "prod"
+          ],
+          "approvalsRequired": 2,
+          "changeTypeDefault": "normal",
+          "rollbackPlanRequired": true,
+          "emergencyChangeProcess": "CTO and CISO verbal approval, ticket raised within 4 hours, retrospective CAB review within 5 working days",
+          "deploymentWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "12:30",
+              "endUtc": "16:30",
+              "note": "Mon-Fri 18:00-22:00 IST, outside NSE/BSE market hours"
+            }
+          ]
+        },
+        "secretsManagement": {
+          "backend": "vault",
+          "rotationDays": 90,
+          "scanningInCi": true
+        },
+        "dependencyPolicy": {
+          "lockfilesRequired": true,
+          "allowedRegistries": [
+            "https://registry.npmjs.org",
+            "https://pypi.org/simple"
+          ],
+          "sbomRequired": true,
+          "sbomFormat": "cyclonedx",
+          "vulnerabilitySlaDays": {
+            "critical": 7,
+            "high": 30,
+            "medium": 90,
+            "low": 180
+          }
+        },
+        "aiCodingPolicy": {
+          "harnessesAllowed": [
+            "chatgpt"
+          ],
+          "humanReviewRequired": true,
+          "promptInjectionControls": [
+            "tool-allowlist",
+            "secrets-redaction",
+            "human-approval-for-writes"
+          ],
+          "allowedDataClasses": [
+            "public",
+            "internal"
+          ]
+        },
+        "ssdfMapping": [
+          {
+            "practice": "PO.3.2",
+            "status": "implemented",
+            "notes": "Branch protection and CI gates enforced on all repositories"
+          },
+          {
+            "practice": "PW.7",
+            "status": "partial",
+            "notes": "Code review mandatory; security-focused review checklist not yet adopted"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:45:00Z",
+          "workflow": "seed-company",
+          "agent": "cto@zenithsecurities.in"
+        }
+      }
+    },
+    {
+      "description": "changeTypeDefault must be an ITIL change type",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.sdlc",
+        "companyId": "zenith-securities",
+        "policyVersion": "2.1.0",
+        "effectiveFrom": "2026-04-01",
+        "reviewCadenceMonths": 12,
+        "owner": "cto",
+        "branching": {
+          "model": "trunk",
+          "protectedBranches": [
+            "main",
+            "release/*"
+          ],
+          "signedCommitsRequired": true
+        },
+        "codeReview": {
+          "required": true,
+          "minApprovers": 1,
+          "codeownersEnforced": true,
+          "aiReviewAllowed": true,
+          "selfApprovalAllowed": false
+        },
+        "ciGates": [
+          {
+            "gate": "sast",
+            "tool": "semgrep",
+            "blocking": true,
+            "minSeverityToBlock": "high"
+          },
+          {
+            "gate": "secrets",
+            "tool": "gitleaks",
+            "blocking": true,
+            "minSeverityToBlock": "low"
+          },
+          {
+            "gate": "sca",
+            "tool": "trivy",
+            "blocking": true,
+            "minSeverityToBlock": "critical"
+          },
+          {
+            "gate": "unit-tests",
+            "tool": "pytest",
+            "blocking": true
+          }
+        ],
+        "releaseProcess": {
+          "environmentsOrder": [
+            "dev",
+            "qa",
+            "uat",
+            "prod"
+          ],
+          "approvalsRequired": 2,
+          "changeTypeDefault": "hotfix",
+          "rollbackPlanRequired": true,
+          "emergencyChangeProcess": "CTO and CISO verbal approval, ticket raised within 4 hours, retrospective CAB review within 5 working days",
+          "deploymentWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "12:30",
+              "endUtc": "16:30",
+              "note": "Mon-Fri 18:00-22:00 IST, outside NSE/BSE market hours"
+            }
+          ]
+        },
+        "secretsManagement": {
+          "backend": "vault",
+          "rotationDays": 90,
+          "scanningInCi": true
+        },
+        "dependencyPolicy": {
+          "lockfilesRequired": true,
+          "allowedRegistries": [
+            "https://registry.npmjs.org",
+            "https://pypi.org/simple"
+          ],
+          "sbomRequired": true,
+          "sbomFormat": "cyclonedx",
+          "vulnerabilitySlaDays": {
+            "critical": 7,
+            "high": 30,
+            "medium": 90,
+            "low": 180
+          }
+        },
+        "aiCodingPolicy": {
+          "harnessesAllowed": [
+            "claude-code",
+            "copilot"
+          ],
+          "humanReviewRequired": true,
+          "promptInjectionControls": [
+            "tool-allowlist",
+            "secrets-redaction",
+            "human-approval-for-writes"
+          ],
+          "allowedDataClasses": [
+            "public",
+            "internal"
+          ]
+        },
+        "ssdfMapping": [
+          {
+            "practice": "PO.3.2",
+            "status": "implemented",
+            "notes": "Branch protection and CI gates enforced on all repositories"
+          },
+          {
+            "practice": "PW.7",
+            "status": "partial",
+            "notes": "Code review mandatory; security-focused review checklist not yet adopted"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:45:00Z",
+          "workflow": "seed-company",
+          "agent": "cto@zenithsecurities.in"
+        }
+      }
+    },
+    {
+      "description": "missing required secretsManagement",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.sdlc",
+        "companyId": "zenith-securities",
+        "policyVersion": "2.1.0",
+        "effectiveFrom": "2026-04-01",
+        "reviewCadenceMonths": 12,
+        "owner": "cto",
+        "branching": {
+          "model": "trunk",
+          "protectedBranches": [
+            "main",
+            "release/*"
+          ],
+          "signedCommitsRequired": true
+        },
+        "codeReview": {
+          "required": true,
+          "minApprovers": 1,
+          "codeownersEnforced": true,
+          "aiReviewAllowed": true,
+          "selfApprovalAllowed": false
+        },
+        "ciGates": [
+          {
+            "gate": "sast",
+            "tool": "semgrep",
+            "blocking": true,
+            "minSeverityToBlock": "high"
+          },
+          {
+            "gate": "secrets",
+            "tool": "gitleaks",
+            "blocking": true,
+            "minSeverityToBlock": "low"
+          },
+          {
+            "gate": "sca",
+            "tool": "trivy",
+            "blocking": true,
+            "minSeverityToBlock": "critical"
+          },
+          {
+            "gate": "unit-tests",
+            "tool": "pytest",
+            "blocking": true
+          }
+        ],
+        "releaseProcess": {
+          "environmentsOrder": [
+            "dev",
+            "qa",
+            "uat",
+            "prod"
+          ],
+          "approvalsRequired": 2,
+          "changeTypeDefault": "normal",
+          "rollbackPlanRequired": true,
+          "emergencyChangeProcess": "CTO and CISO verbal approval, ticket raised within 4 hours, retrospective CAB review within 5 working days",
+          "deploymentWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "12:30",
+              "endUtc": "16:30",
+              "note": "Mon-Fri 18:00-22:00 IST, outside NSE/BSE market hours"
+            }
+          ]
+        },
+        "dependencyPolicy": {
+          "lockfilesRequired": true,
+          "allowedRegistries": [
+            "https://registry.npmjs.org",
+            "https://pypi.org/simple"
+          ],
+          "sbomRequired": true,
+          "sbomFormat": "cyclonedx",
+          "vulnerabilitySlaDays": {
+            "critical": 7,
+            "high": 30,
+            "medium": 90,
+            "low": 180
+          }
+        },
+        "aiCodingPolicy": {
+          "harnessesAllowed": [
+            "claude-code",
+            "copilot"
+          ],
+          "humanReviewRequired": true,
+          "promptInjectionControls": [
+            "tool-allowlist",
+            "secrets-redaction",
+            "human-approval-for-writes"
+          ],
+          "allowedDataClasses": [
+            "public",
+            "internal"
+          ]
+        },
+        "ssdfMapping": [
+          {
+            "practice": "PO.3.2",
+            "status": "implemented",
+            "notes": "Branch protection and CI gates enforced on all repositories"
+          },
+          {
+            "practice": "PW.7",
+            "status": "partial",
+            "notes": "Code review mandatory; security-focused review checklist not yet adopted"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:45:00Z",
+          "workflow": "seed-company",
+          "agent": "cto@zenithsecurities.in"
+        }
+      }
+    },
+    {
+      "description": "missing provenance",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.sdlc",
+        "companyId": "zenith-securities",
+        "policyVersion": "2.1.0",
+        "effectiveFrom": "2026-04-01",
+        "reviewCadenceMonths": 12,
+        "owner": "cto",
+        "branching": {
+          "model": "trunk",
+          "protectedBranches": [
+            "main",
+            "release/*"
+          ],
+          "signedCommitsRequired": true
+        },
+        "codeReview": {
+          "required": true,
+          "minApprovers": 1,
+          "codeownersEnforced": true,
+          "aiReviewAllowed": true,
+          "selfApprovalAllowed": false
+        },
+        "ciGates": [
+          {
+            "gate": "sast",
+            "tool": "semgrep",
+            "blocking": true,
+            "minSeverityToBlock": "high"
+          },
+          {
+            "gate": "secrets",
+            "tool": "gitleaks",
+            "blocking": true,
+            "minSeverityToBlock": "low"
+          },
+          {
+            "gate": "sca",
+            "tool": "trivy",
+            "blocking": true,
+            "minSeverityToBlock": "critical"
+          },
+          {
+            "gate": "unit-tests",
+            "tool": "pytest",
+            "blocking": true
+          }
+        ],
+        "releaseProcess": {
+          "environmentsOrder": [
+            "dev",
+            "qa",
+            "uat",
+            "prod"
+          ],
+          "approvalsRequired": 2,
+          "changeTypeDefault": "normal",
+          "rollbackPlanRequired": true,
+          "emergencyChangeProcess": "CTO and CISO verbal approval, ticket raised within 4 hours, retrospective CAB review within 5 working days",
+          "deploymentWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "12:30",
+              "endUtc": "16:30",
+              "note": "Mon-Fri 18:00-22:00 IST, outside NSE/BSE market hours"
+            }
+          ]
+        },
+        "secretsManagement": {
+          "backend": "vault",
+          "rotationDays": 90,
+          "scanningInCi": true
+        },
+        "dependencyPolicy": {
+          "lockfilesRequired": true,
+          "allowedRegistries": [
+            "https://registry.npmjs.org",
+            "https://pypi.org/simple"
+          ],
+          "sbomRequired": true,
+          "sbomFormat": "cyclonedx",
+          "vulnerabilitySlaDays": {
+            "critical": 7,
+            "high": 30,
+            "medium": 90,
+            "low": 180
+          }
+        },
+        "aiCodingPolicy": {
+          "harnessesAllowed": [
+            "claude-code",
+            "copilot"
+          ],
+          "humanReviewRequired": true,
+          "promptInjectionControls": [
+            "tool-allowlist",
+            "secrets-redaction",
+            "human-approval-for-writes"
+          ],
+          "allowedDataClasses": [
+            "public",
+            "internal"
+          ]
+        },
+        "ssdfMapping": [
+          {
+            "practice": "PO.3.2",
+            "status": "implemented",
+            "notes": "Branch protection and CI gates enforced on all repositories"
+          },
+          {
+            "practice": "PW.7",
+            "status": "partial",
+            "notes": "Code review mandatory; security-focused review checklist not yet adopted"
+          }
+        ]
+      }
+    },
+    {
+      "description": "vulnerabilitySlaDays needs all four severities",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.sdlc",
+        "companyId": "zenith-securities",
+        "policyVersion": "2.1.0",
+        "effectiveFrom": "2026-04-01",
+        "reviewCadenceMonths": 12,
+        "owner": "cto",
+        "branching": {
+          "model": "trunk",
+          "protectedBranches": [
+            "main",
+            "release/*"
+          ],
+          "signedCommitsRequired": true
+        },
+        "codeReview": {
+          "required": true,
+          "minApprovers": 1,
+          "codeownersEnforced": true,
+          "aiReviewAllowed": true,
+          "selfApprovalAllowed": false
+        },
+        "ciGates": [
+          {
+            "gate": "sast",
+            "tool": "semgrep",
+            "blocking": true,
+            "minSeverityToBlock": "high"
+          },
+          {
+            "gate": "secrets",
+            "tool": "gitleaks",
+            "blocking": true,
+            "minSeverityToBlock": "low"
+          },
+          {
+            "gate": "sca",
+            "tool": "trivy",
+            "blocking": true,
+            "minSeverityToBlock": "critical"
+          },
+          {
+            "gate": "unit-tests",
+            "tool": "pytest",
+            "blocking": true
+          }
+        ],
+        "releaseProcess": {
+          "environmentsOrder": [
+            "dev",
+            "qa",
+            "uat",
+            "prod"
+          ],
+          "approvalsRequired": 2,
+          "changeTypeDefault": "normal",
+          "rollbackPlanRequired": true,
+          "emergencyChangeProcess": "CTO and CISO verbal approval, ticket raised within 4 hours, retrospective CAB review within 5 working days",
+          "deploymentWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "12:30",
+              "endUtc": "16:30",
+              "note": "Mon-Fri 18:00-22:00 IST, outside NSE/BSE market hours"
+            }
+          ]
+        },
+        "secretsManagement": {
+          "backend": "vault",
+          "rotationDays": 90,
+          "scanningInCi": true
+        },
+        "dependencyPolicy": {
+          "lockfilesRequired": true,
+          "allowedRegistries": [
+            "https://registry.npmjs.org",
+            "https://pypi.org/simple"
+          ],
+          "sbomRequired": true,
+          "sbomFormat": "cyclonedx",
+          "vulnerabilitySlaDays": {
+            "critical": 7,
+            "high": 30,
+            "medium": 90
+          }
+        },
+        "aiCodingPolicy": {
+          "harnessesAllowed": [
+            "claude-code",
+            "copilot"
+          ],
+          "humanReviewRequired": true,
+          "promptInjectionControls": [
+            "tool-allowlist",
+            "secrets-redaction",
+            "human-approval-for-writes"
+          ],
+          "allowedDataClasses": [
+            "public",
+            "internal"
+          ]
+        },
+        "ssdfMapping": [
+          {
+            "practice": "PO.3.2",
+            "status": "implemented",
+            "notes": "Branch protection and CI gates enforced on all repositories"
+          },
+          {
+            "practice": "PW.7",
+            "status": "partial",
+            "notes": "Code review mandatory; security-focused review checklist not yet adopted"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:45:00Z",
+          "workflow": "seed-company",
+          "agent": "cto@zenithsecurities.in"
+        }
+      }
+    },
+    {
+      "description": "wrong kind const",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.details",
+        "companyId": "zenith-securities",
+        "policyVersion": "2.1.0",
+        "effectiveFrom": "2026-04-01",
+        "reviewCadenceMonths": 12,
+        "owner": "cto",
+        "branching": {
+          "model": "trunk",
+          "protectedBranches": [
+            "main",
+            "release/*"
+          ],
+          "signedCommitsRequired": true
+        },
+        "codeReview": {
+          "required": true,
+          "minApprovers": 1,
+          "codeownersEnforced": true,
+          "aiReviewAllowed": true,
+          "selfApprovalAllowed": false
+        },
+        "ciGates": [
+          {
+            "gate": "sast",
+            "tool": "semgrep",
+            "blocking": true,
+            "minSeverityToBlock": "high"
+          },
+          {
+            "gate": "secrets",
+            "tool": "gitleaks",
+            "blocking": true,
+            "minSeverityToBlock": "low"
+          },
+          {
+            "gate": "sca",
+            "tool": "trivy",
+            "blocking": true,
+            "minSeverityToBlock": "critical"
+          },
+          {
+            "gate": "unit-tests",
+            "tool": "pytest",
+            "blocking": true
+          }
+        ],
+        "releaseProcess": {
+          "environmentsOrder": [
+            "dev",
+            "qa",
+            "uat",
+            "prod"
+          ],
+          "approvalsRequired": 2,
+          "changeTypeDefault": "normal",
+          "rollbackPlanRequired": true,
+          "emergencyChangeProcess": "CTO and CISO verbal approval, ticket raised within 4 hours, retrospective CAB review within 5 working days",
+          "deploymentWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "12:30",
+              "endUtc": "16:30",
+              "note": "Mon-Fri 18:00-22:00 IST, outside NSE/BSE market hours"
+            }
+          ]
+        },
+        "secretsManagement": {
+          "backend": "vault",
+          "rotationDays": 90,
+          "scanningInCi": true
+        },
+        "dependencyPolicy": {
+          "lockfilesRequired": true,
+          "allowedRegistries": [
+            "https://registry.npmjs.org",
+            "https://pypi.org/simple"
+          ],
+          "sbomRequired": true,
+          "sbomFormat": "cyclonedx",
+          "vulnerabilitySlaDays": {
+            "critical": 7,
+            "high": 30,
+            "medium": 90,
+            "low": 180
+          }
+        },
+        "aiCodingPolicy": {
+          "harnessesAllowed": [
+            "claude-code",
+            "copilot"
+          ],
+          "humanReviewRequired": true,
+          "promptInjectionControls": [
+            "tool-allowlist",
+            "secrets-redaction",
+            "human-approval-for-writes"
+          ],
+          "allowedDataClasses": [
+            "public",
+            "internal"
+          ]
+        },
+        "ssdfMapping": [
+          {
+            "practice": "PO.3.2",
+            "status": "implemented",
+            "notes": "Branch protection and CI gates enforced on all repositories"
+          },
+          {
+            "practice": "PW.7",
+            "status": "partial",
+            "notes": "Code review mandatory; security-focused review checklist not yet adopted"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:45:00Z",
+          "workflow": "seed-company",
+          "agent": "cto@zenithsecurities.in"
+        }
+      }
+    },
+    {
+      "description": "companyId must be a slug",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.sdlc",
+        "companyId": "Zenith Securities",
+        "policyVersion": "2.1.0",
+        "effectiveFrom": "2026-04-01",
+        "reviewCadenceMonths": 12,
+        "owner": "cto",
+        "branching": {
+          "model": "trunk",
+          "protectedBranches": [
+            "main",
+            "release/*"
+          ],
+          "signedCommitsRequired": true
+        },
+        "codeReview": {
+          "required": true,
+          "minApprovers": 1,
+          "codeownersEnforced": true,
+          "aiReviewAllowed": true,
+          "selfApprovalAllowed": false
+        },
+        "ciGates": [
+          {
+            "gate": "sast",
+            "tool": "semgrep",
+            "blocking": true,
+            "minSeverityToBlock": "high"
+          },
+          {
+            "gate": "secrets",
+            "tool": "gitleaks",
+            "blocking": true,
+            "minSeverityToBlock": "low"
+          },
+          {
+            "gate": "sca",
+            "tool": "trivy",
+            "blocking": true,
+            "minSeverityToBlock": "critical"
+          },
+          {
+            "gate": "unit-tests",
+            "tool": "pytest",
+            "blocking": true
+          }
+        ],
+        "releaseProcess": {
+          "environmentsOrder": [
+            "dev",
+            "qa",
+            "uat",
+            "prod"
+          ],
+          "approvalsRequired": 2,
+          "changeTypeDefault": "normal",
+          "rollbackPlanRequired": true,
+          "emergencyChangeProcess": "CTO and CISO verbal approval, ticket raised within 4 hours, retrospective CAB review within 5 working days",
+          "deploymentWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "12:30",
+              "endUtc": "16:30",
+              "note": "Mon-Fri 18:00-22:00 IST, outside NSE/BSE market hours"
+            }
+          ]
+        },
+        "secretsManagement": {
+          "backend": "vault",
+          "rotationDays": 90,
+          "scanningInCi": true
+        },
+        "dependencyPolicy": {
+          "lockfilesRequired": true,
+          "allowedRegistries": [
+            "https://registry.npmjs.org",
+            "https://pypi.org/simple"
+          ],
+          "sbomRequired": true,
+          "sbomFormat": "cyclonedx",
+          "vulnerabilitySlaDays": {
+            "critical": 7,
+            "high": 30,
+            "medium": 90,
+            "low": 180,
+            "info": 365
+          }
+        },
+        "aiCodingPolicy": {
+          "harnessesAllowed": [
+            "claude-code",
+            "copilot"
+          ],
+          "humanReviewRequired": true,
+          "promptInjectionControls": [
+            "tool-allowlist",
+            "secrets-redaction",
+            "human-approval-for-writes"
+          ],
+          "allowedDataClasses": [
+            "public",
+            "internal"
+          ]
+        },
+        "ssdfMapping": [
+          {
+            "practice": "PO.3.2",
+            "status": "implemented",
+            "notes": "Branch protection and CI gates enforced on all repositories"
+          },
+          {
+            "practice": "PW.7",
+            "status": "partial",
+            "notes": "Code review mandatory; security-focused review checklist not yet adopted"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:45:00Z",
+          "workflow": "seed-company",
+          "agent": "cto@zenithsecurities.in"
+        }
+      }
+    },
+    {
+      "description": "policyVersion must be semver",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.sdlc",
+        "companyId": "zenith-securities",
+        "policyVersion": "v2",
+        "effectiveFrom": "2026-04-01",
+        "reviewCadenceMonths": 12,
+        "owner": "cto",
+        "branching": {
+          "model": "trunk",
+          "protectedBranches": [
+            "main",
+            "release/*"
+          ],
+          "signedCommitsRequired": true
+        },
+        "codeReview": {
+          "required": true,
+          "minApprovers": 1,
+          "codeownersEnforced": true,
+          "aiReviewAllowed": true,
+          "selfApprovalAllowed": false
+        },
+        "ciGates": [
+          {
+            "gate": "sast",
+            "tool": "semgrep",
+            "blocking": true,
+            "minSeverityToBlock": "high"
+          },
+          {
+            "gate": "secrets",
+            "tool": "gitleaks",
+            "blocking": true,
+            "minSeverityToBlock": "low"
+          },
+          {
+            "gate": "sca",
+            "tool": "trivy",
+            "blocking": true,
+            "minSeverityToBlock": "critical"
+          },
+          {
+            "gate": "unit-tests",
+            "tool": "pytest",
+            "blocking": true
+          }
+        ],
+        "releaseProcess": {
+          "environmentsOrder": [
+            "dev",
+            "qa",
+            "uat",
+            "prod"
+          ],
+          "approvalsRequired": 2,
+          "changeTypeDefault": "normal",
+          "rollbackPlanRequired": true,
+          "emergencyChangeProcess": "CTO and CISO verbal approval, ticket raised within 4 hours, retrospective CAB review within 5 working days",
+          "deploymentWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "12:30",
+              "endUtc": "16:30",
+              "note": "Mon-Fri 18:00-22:00 IST, outside NSE/BSE market hours"
+            }
+          ]
+        },
+        "secretsManagement": {
+          "backend": "vault",
+          "rotationDays": 90,
+          "scanningInCi": true
+        },
+        "dependencyPolicy": {
+          "lockfilesRequired": true,
+          "allowedRegistries": [
+            "https://registry.npmjs.org",
+            "https://pypi.org/simple"
+          ],
+          "sbomRequired": true,
+          "sbomFormat": "cyclonedx",
+          "vulnerabilitySlaDays": {
+            "critical": 7,
+            "high": 30,
+            "medium": 90,
+            "low": 180,
+            "info": 365
+          }
+        },
+        "aiCodingPolicy": {
+          "harnessesAllowed": [
+            "claude-code",
+            "copilot"
+          ],
+          "humanReviewRequired": true,
+          "promptInjectionControls": [
+            "tool-allowlist",
+            "secrets-redaction",
+            "human-approval-for-writes"
+          ],
+          "allowedDataClasses": [
+            "public",
+            "internal"
+          ]
+        },
+        "ssdfMapping": [
+          {
+            "practice": "PO.3.2",
+            "status": "implemented",
+            "notes": "Branch protection and CI gates enforced on all repositories"
+          },
+          {
+            "practice": "PW.7",
+            "status": "partial",
+            "notes": "Code review mandatory; security-focused review checklist not yet adopted"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:45:00Z",
+          "workflow": "seed-company",
+          "agent": "cto@zenithsecurities.in"
+        }
+      }
+    },
+    {
+      "description": "sbomRequired true needs sbomFormat",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.sdlc",
+        "companyId": "zenith-securities",
+        "policyVersion": "2.1.0",
+        "effectiveFrom": "2026-04-01",
+        "reviewCadenceMonths": 12,
+        "owner": "cto",
+        "branching": {
+          "model": "trunk",
+          "protectedBranches": [
+            "main",
+            "release/*"
+          ],
+          "signedCommitsRequired": true
+        },
+        "codeReview": {
+          "required": true,
+          "minApprovers": 1,
+          "codeownersEnforced": true,
+          "aiReviewAllowed": true,
+          "selfApprovalAllowed": false
+        },
+        "ciGates": [
+          {
+            "gate": "sast",
+            "tool": "semgrep",
+            "blocking": true,
+            "minSeverityToBlock": "high"
+          },
+          {
+            "gate": "secrets",
+            "tool": "gitleaks",
+            "blocking": true,
+            "minSeverityToBlock": "low"
+          },
+          {
+            "gate": "sca",
+            "tool": "trivy",
+            "blocking": true,
+            "minSeverityToBlock": "critical"
+          },
+          {
+            "gate": "unit-tests",
+            "tool": "pytest",
+            "blocking": true
+          }
+        ],
+        "releaseProcess": {
+          "environmentsOrder": [
+            "dev",
+            "qa",
+            "uat",
+            "prod"
+          ],
+          "approvalsRequired": 2,
+          "changeTypeDefault": "normal",
+          "rollbackPlanRequired": true,
+          "emergencyChangeProcess": "CTO and CISO verbal approval, ticket raised within 4 hours, retrospective CAB review within 5 working days",
+          "deploymentWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "12:30",
+              "endUtc": "16:30",
+              "note": "Mon-Fri 18:00-22:00 IST, outside NSE/BSE market hours"
+            }
+          ]
+        },
+        "secretsManagement": {
+          "backend": "vault",
+          "rotationDays": 90,
+          "scanningInCi": true
+        },
+        "dependencyPolicy": {
+          "lockfilesRequired": true,
+          "allowedRegistries": [
+            "https://registry.npmjs.org",
+            "https://pypi.org/simple"
+          ],
+          "sbomRequired": true,
+          "vulnerabilitySlaDays": {
+            "critical": 7,
+            "high": 30,
+            "medium": 90,
+            "low": 180,
+            "info": 365
+          }
+        },
+        "aiCodingPolicy": {
+          "harnessesAllowed": [
+            "claude-code",
+            "copilot"
+          ],
+          "humanReviewRequired": true,
+          "promptInjectionControls": [
+            "tool-allowlist",
+            "secrets-redaction",
+            "human-approval-for-writes"
+          ],
+          "allowedDataClasses": [
+            "public",
+            "internal"
+          ]
+        },
+        "ssdfMapping": [
+          {
+            "practice": "PO.3.2",
+            "status": "implemented",
+            "notes": "Branch protection and CI gates enforced on all repositories"
+          },
+          {
+            "practice": "PW.7",
+            "status": "partial",
+            "notes": "Code review mandatory; security-focused review checklist not yet adopted"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:45:00Z",
+          "workflow": "seed-company",
+          "agent": "cto@zenithsecurities.in"
+        }
+      }
+    },
+    {
+      "description": "sbomRequired false may omit sbomFormat",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.sdlc",
+        "companyId": "zenith-securities",
+        "policyVersion": "2.1.0",
+        "effectiveFrom": "2026-04-01",
+        "reviewCadenceMonths": 12,
+        "owner": "cto",
+        "branching": {
+          "model": "trunk",
+          "protectedBranches": [
+            "main",
+            "release/*"
+          ],
+          "signedCommitsRequired": true
+        },
+        "codeReview": {
+          "required": true,
+          "minApprovers": 1,
+          "codeownersEnforced": true,
+          "aiReviewAllowed": true,
+          "selfApprovalAllowed": false
+        },
+        "ciGates": [
+          {
+            "gate": "sast",
+            "tool": "semgrep",
+            "blocking": true,
+            "minSeverityToBlock": "high"
+          },
+          {
+            "gate": "secrets",
+            "tool": "gitleaks",
+            "blocking": true,
+            "minSeverityToBlock": "low"
+          },
+          {
+            "gate": "sca",
+            "tool": "trivy",
+            "blocking": true,
+            "minSeverityToBlock": "critical"
+          },
+          {
+            "gate": "unit-tests",
+            "tool": "pytest",
+            "blocking": true
+          }
+        ],
+        "releaseProcess": {
+          "environmentsOrder": [
+            "dev",
+            "qa",
+            "uat",
+            "prod"
+          ],
+          "approvalsRequired": 2,
+          "changeTypeDefault": "normal",
+          "rollbackPlanRequired": true,
+          "emergencyChangeProcess": "CTO and CISO verbal approval, ticket raised within 4 hours, retrospective CAB review within 5 working days",
+          "deploymentWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "12:30",
+              "endUtc": "16:30",
+              "note": "Mon-Fri 18:00-22:00 IST, outside NSE/BSE market hours"
+            }
+          ]
+        },
+        "secretsManagement": {
+          "backend": "vault",
+          "rotationDays": 90,
+          "scanningInCi": true
+        },
+        "dependencyPolicy": {
+          "lockfilesRequired": true,
+          "allowedRegistries": [
+            "https://registry.npmjs.org",
+            "https://pypi.org/simple"
+          ],
+          "sbomRequired": false,
+          "vulnerabilitySlaDays": {
+            "critical": 7,
+            "high": 30,
+            "medium": 90,
+            "low": 180,
+            "info": 365
+          }
+        },
+        "aiCodingPolicy": {
+          "harnessesAllowed": [
+            "claude-code",
+            "copilot"
+          ],
+          "humanReviewRequired": true,
+          "promptInjectionControls": [
+            "tool-allowlist",
+            "secrets-redaction",
+            "human-approval-for-writes"
+          ],
+          "allowedDataClasses": [
+            "public",
+            "internal"
+          ]
+        },
+        "ssdfMapping": [
+          {
+            "practice": "PO.3.2",
+            "status": "implemented",
+            "notes": "Branch protection and CI gates enforced on all repositories"
+          },
+          {
+            "practice": "PW.7",
+            "status": "partial",
+            "notes": "Code review mandatory; security-focused review checklist not yet adopted"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:45:00Z",
+          "workflow": "seed-company",
+          "agent": "cto@zenithsecurities.in"
+        }
+      }
+    },
+    {
+      "description": "codeReview required true needs at least one approver",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.sdlc",
+        "companyId": "zenith-securities",
+        "policyVersion": "2.1.0",
+        "effectiveFrom": "2026-04-01",
+        "reviewCadenceMonths": 12,
+        "owner": "cto",
+        "branching": {
+          "model": "trunk",
+          "protectedBranches": [
+            "main",
+            "release/*"
+          ],
+          "signedCommitsRequired": true
+        },
+        "codeReview": {
+          "required": true,
+          "minApprovers": 0,
+          "codeownersEnforced": true,
+          "aiReviewAllowed": true,
+          "selfApprovalAllowed": false
+        },
+        "ciGates": [
+          {
+            "gate": "sast",
+            "tool": "semgrep",
+            "blocking": true,
+            "minSeverityToBlock": "high"
+          },
+          {
+            "gate": "secrets",
+            "tool": "gitleaks",
+            "blocking": true,
+            "minSeverityToBlock": "low"
+          },
+          {
+            "gate": "sca",
+            "tool": "trivy",
+            "blocking": true,
+            "minSeverityToBlock": "critical"
+          },
+          {
+            "gate": "unit-tests",
+            "tool": "pytest",
+            "blocking": true
+          }
+        ],
+        "releaseProcess": {
+          "environmentsOrder": [
+            "dev",
+            "qa",
+            "uat",
+            "prod"
+          ],
+          "approvalsRequired": 2,
+          "changeTypeDefault": "normal",
+          "rollbackPlanRequired": true,
+          "emergencyChangeProcess": "CTO and CISO verbal approval, ticket raised within 4 hours, retrospective CAB review within 5 working days",
+          "deploymentWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "12:30",
+              "endUtc": "16:30",
+              "note": "Mon-Fri 18:00-22:00 IST, outside NSE/BSE market hours"
+            }
+          ]
+        },
+        "secretsManagement": {
+          "backend": "vault",
+          "rotationDays": 90,
+          "scanningInCi": true
+        },
+        "dependencyPolicy": {
+          "lockfilesRequired": true,
+          "allowedRegistries": [
+            "https://registry.npmjs.org",
+            "https://pypi.org/simple"
+          ],
+          "sbomRequired": true,
+          "sbomFormat": "cyclonedx",
+          "vulnerabilitySlaDays": {
+            "critical": 7,
+            "high": 30,
+            "medium": 90,
+            "low": 180,
+            "info": 365
+          }
+        },
+        "aiCodingPolicy": {
+          "harnessesAllowed": [
+            "claude-code",
+            "copilot"
+          ],
+          "humanReviewRequired": true,
+          "promptInjectionControls": [
+            "tool-allowlist",
+            "secrets-redaction",
+            "human-approval-for-writes"
+          ],
+          "allowedDataClasses": [
+            "public",
+            "internal"
+          ]
+        },
+        "ssdfMapping": [
+          {
+            "practice": "PO.3.2",
+            "status": "implemented",
+            "notes": "Branch protection and CI gates enforced on all repositories"
+          },
+          {
+            "practice": "PW.7",
+            "status": "partial",
+            "notes": "Code review mandatory; security-focused review checklist not yet adopted"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:45:00Z",
+          "workflow": "seed-company",
+          "agent": "cto@zenithsecurities.in"
+        }
+      }
+    },
+    {
+      "description": "codeReview not required may have zero approvers",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.sdlc",
+        "companyId": "zenith-securities",
+        "policyVersion": "2.1.0",
+        "effectiveFrom": "2026-04-01",
+        "reviewCadenceMonths": 12,
+        "owner": "cto",
+        "branching": {
+          "model": "trunk",
+          "protectedBranches": [
+            "main",
+            "release/*"
+          ],
+          "signedCommitsRequired": true
+        },
+        "codeReview": {
+          "required": false,
+          "minApprovers": 0,
+          "codeownersEnforced": true,
+          "aiReviewAllowed": true,
+          "selfApprovalAllowed": false
+        },
+        "ciGates": [
+          {
+            "gate": "sast",
+            "tool": "semgrep",
+            "blocking": true,
+            "minSeverityToBlock": "high"
+          },
+          {
+            "gate": "secrets",
+            "tool": "gitleaks",
+            "blocking": true,
+            "minSeverityToBlock": "low"
+          },
+          {
+            "gate": "sca",
+            "tool": "trivy",
+            "blocking": true,
+            "minSeverityToBlock": "critical"
+          },
+          {
+            "gate": "unit-tests",
+            "tool": "pytest",
+            "blocking": true
+          }
+        ],
+        "releaseProcess": {
+          "environmentsOrder": [
+            "dev",
+            "qa",
+            "uat",
+            "prod"
+          ],
+          "approvalsRequired": 2,
+          "changeTypeDefault": "normal",
+          "rollbackPlanRequired": true,
+          "emergencyChangeProcess": "CTO and CISO verbal approval, ticket raised within 4 hours, retrospective CAB review within 5 working days",
+          "deploymentWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "12:30",
+              "endUtc": "16:30",
+              "note": "Mon-Fri 18:00-22:00 IST, outside NSE/BSE market hours"
+            }
+          ]
+        },
+        "secretsManagement": {
+          "backend": "vault",
+          "rotationDays": 90,
+          "scanningInCi": true
+        },
+        "dependencyPolicy": {
+          "lockfilesRequired": true,
+          "allowedRegistries": [
+            "https://registry.npmjs.org",
+            "https://pypi.org/simple"
+          ],
+          "sbomRequired": true,
+          "sbomFormat": "cyclonedx",
+          "vulnerabilitySlaDays": {
+            "critical": 7,
+            "high": 30,
+            "medium": 90,
+            "low": 180,
+            "info": 365
+          }
+        },
+        "aiCodingPolicy": {
+          "harnessesAllowed": [
+            "claude-code",
+            "copilot"
+          ],
+          "humanReviewRequired": true,
+          "promptInjectionControls": [
+            "tool-allowlist",
+            "secrets-redaction",
+            "human-approval-for-writes"
+          ],
+          "allowedDataClasses": [
+            "public",
+            "internal"
+          ]
+        },
+        "ssdfMapping": [
+          {
+            "practice": "PO.3.2",
+            "status": "implemented",
+            "notes": "Branch protection and CI gates enforced on all repositories"
+          },
+          {
+            "practice": "PW.7",
+            "status": "partial",
+            "notes": "Code review mandatory; security-focused review checklist not yet adopted"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:45:00Z",
+          "workflow": "seed-company",
+          "agent": "cto@zenithsecurities.in"
+        }
+      }
+    },
+    {
+      "description": "promptInjectionControls none cannot be combined with other controls",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.sdlc",
+        "companyId": "zenith-securities",
+        "policyVersion": "2.1.0",
+        "effectiveFrom": "2026-04-01",
+        "reviewCadenceMonths": 12,
+        "owner": "cto",
+        "branching": {
+          "model": "trunk",
+          "protectedBranches": [
+            "main",
+            "release/*"
+          ],
+          "signedCommitsRequired": true
+        },
+        "codeReview": {
+          "required": true,
+          "minApprovers": 1,
+          "codeownersEnforced": true,
+          "aiReviewAllowed": true,
+          "selfApprovalAllowed": false
+        },
+        "ciGates": [
+          {
+            "gate": "sast",
+            "tool": "semgrep",
+            "blocking": true,
+            "minSeverityToBlock": "high"
+          },
+          {
+            "gate": "secrets",
+            "tool": "gitleaks",
+            "blocking": true,
+            "minSeverityToBlock": "low"
+          },
+          {
+            "gate": "sca",
+            "tool": "trivy",
+            "blocking": true,
+            "minSeverityToBlock": "critical"
+          },
+          {
+            "gate": "unit-tests",
+            "tool": "pytest",
+            "blocking": true
+          }
+        ],
+        "releaseProcess": {
+          "environmentsOrder": [
+            "dev",
+            "qa",
+            "uat",
+            "prod"
+          ],
+          "approvalsRequired": 2,
+          "changeTypeDefault": "normal",
+          "rollbackPlanRequired": true,
+          "emergencyChangeProcess": "CTO and CISO verbal approval, ticket raised within 4 hours, retrospective CAB review within 5 working days",
+          "deploymentWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "12:30",
+              "endUtc": "16:30",
+              "note": "Mon-Fri 18:00-22:00 IST, outside NSE/BSE market hours"
+            }
+          ]
+        },
+        "secretsManagement": {
+          "backend": "vault",
+          "rotationDays": 90,
+          "scanningInCi": true
+        },
+        "dependencyPolicy": {
+          "lockfilesRequired": true,
+          "allowedRegistries": [
+            "https://registry.npmjs.org",
+            "https://pypi.org/simple"
+          ],
+          "sbomRequired": true,
+          "sbomFormat": "cyclonedx",
+          "vulnerabilitySlaDays": {
+            "critical": 7,
+            "high": 30,
+            "medium": 90,
+            "low": 180,
+            "info": 365
+          }
+        },
+        "aiCodingPolicy": {
+          "harnessesAllowed": [
+            "claude-code",
+            "copilot"
+          ],
+          "humanReviewRequired": true,
+          "promptInjectionControls": [
+            "none",
+            "tool-allowlist"
+          ],
+          "allowedDataClasses": [
+            "public",
+            "internal"
+          ]
+        },
+        "ssdfMapping": [
+          {
+            "practice": "PO.3.2",
+            "status": "implemented",
+            "notes": "Branch protection and CI gates enforced on all repositories"
+          },
+          {
+            "practice": "PW.7",
+            "status": "partial",
+            "notes": "Code review mandatory; security-focused review checklist not yet adopted"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:45:00Z",
+          "workflow": "seed-company",
+          "agent": "cto@zenithsecurities.in"
+        }
+      }
+    },
+    {
+      "description": "promptInjectionControls none on its own is allowed",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.sdlc",
+        "companyId": "zenith-securities",
+        "policyVersion": "2.1.0",
+        "effectiveFrom": "2026-04-01",
+        "reviewCadenceMonths": 12,
+        "owner": "cto",
+        "branching": {
+          "model": "trunk",
+          "protectedBranches": [
+            "main",
+            "release/*"
+          ],
+          "signedCommitsRequired": true
+        },
+        "codeReview": {
+          "required": true,
+          "minApprovers": 1,
+          "codeownersEnforced": true,
+          "aiReviewAllowed": true,
+          "selfApprovalAllowed": false
+        },
+        "ciGates": [
+          {
+            "gate": "sast",
+            "tool": "semgrep",
+            "blocking": true,
+            "minSeverityToBlock": "high"
+          },
+          {
+            "gate": "secrets",
+            "tool": "gitleaks",
+            "blocking": true,
+            "minSeverityToBlock": "low"
+          },
+          {
+            "gate": "sca",
+            "tool": "trivy",
+            "blocking": true,
+            "minSeverityToBlock": "critical"
+          },
+          {
+            "gate": "unit-tests",
+            "tool": "pytest",
+            "blocking": true
+          }
+        ],
+        "releaseProcess": {
+          "environmentsOrder": [
+            "dev",
+            "qa",
+            "uat",
+            "prod"
+          ],
+          "approvalsRequired": 2,
+          "changeTypeDefault": "normal",
+          "rollbackPlanRequired": true,
+          "emergencyChangeProcess": "CTO and CISO verbal approval, ticket raised within 4 hours, retrospective CAB review within 5 working days",
+          "deploymentWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "12:30",
+              "endUtc": "16:30",
+              "note": "Mon-Fri 18:00-22:00 IST, outside NSE/BSE market hours"
+            }
+          ]
+        },
+        "secretsManagement": {
+          "backend": "vault",
+          "rotationDays": 90,
+          "scanningInCi": true
+        },
+        "dependencyPolicy": {
+          "lockfilesRequired": true,
+          "allowedRegistries": [
+            "https://registry.npmjs.org",
+            "https://pypi.org/simple"
+          ],
+          "sbomRequired": true,
+          "sbomFormat": "cyclonedx",
+          "vulnerabilitySlaDays": {
+            "critical": 7,
+            "high": 30,
+            "medium": 90,
+            "low": 180,
+            "info": 365
+          }
+        },
+        "aiCodingPolicy": {
+          "harnessesAllowed": [
+            "claude-code",
+            "copilot"
+          ],
+          "humanReviewRequired": true,
+          "promptInjectionControls": [
+            "none"
+          ],
+          "allowedDataClasses": [
+            "public",
+            "internal"
+          ]
+        },
+        "ssdfMapping": [
+          {
+            "practice": "PO.3.2",
+            "status": "implemented",
+            "notes": "Branch protection and CI gates enforced on all repositories"
+          },
+          {
+            "practice": "PW.7",
+            "status": "partial",
+            "notes": "Code review mandatory; security-focused review checklist not yet adopted"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:45:00Z",
+          "workflow": "seed-company",
+          "agent": "cto@zenithsecurities.in"
+        }
+      }
+    },
+    {
+      "description": "environmentsOrder must include prod",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.sdlc",
+        "companyId": "zenith-securities",
+        "policyVersion": "2.1.0",
+        "effectiveFrom": "2026-04-01",
+        "reviewCadenceMonths": 12,
+        "owner": "cto",
+        "branching": {
+          "model": "trunk",
+          "protectedBranches": [
+            "main",
+            "release/*"
+          ],
+          "signedCommitsRequired": true
+        },
+        "codeReview": {
+          "required": true,
+          "minApprovers": 1,
+          "codeownersEnforced": true,
+          "aiReviewAllowed": true,
+          "selfApprovalAllowed": false
+        },
+        "ciGates": [
+          {
+            "gate": "sast",
+            "tool": "semgrep",
+            "blocking": true,
+            "minSeverityToBlock": "high"
+          },
+          {
+            "gate": "secrets",
+            "tool": "gitleaks",
+            "blocking": true,
+            "minSeverityToBlock": "low"
+          },
+          {
+            "gate": "sca",
+            "tool": "trivy",
+            "blocking": true,
+            "minSeverityToBlock": "critical"
+          },
+          {
+            "gate": "unit-tests",
+            "tool": "pytest",
+            "blocking": true
+          }
+        ],
+        "releaseProcess": {
+          "environmentsOrder": [
+            "dev",
+            "qa"
+          ],
+          "approvalsRequired": 2,
+          "changeTypeDefault": "normal",
+          "rollbackPlanRequired": true,
+          "emergencyChangeProcess": "CTO and CISO verbal approval, ticket raised within 4 hours, retrospective CAB review within 5 working days",
+          "deploymentWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "12:30",
+              "endUtc": "16:30",
+              "note": "Mon-Fri 18:00-22:00 IST, outside NSE/BSE market hours"
+            }
+          ]
+        },
+        "secretsManagement": {
+          "backend": "vault",
+          "rotationDays": 90,
+          "scanningInCi": true
+        },
+        "dependencyPolicy": {
+          "lockfilesRequired": true,
+          "allowedRegistries": [
+            "https://registry.npmjs.org",
+            "https://pypi.org/simple"
+          ],
+          "sbomRequired": true,
+          "sbomFormat": "cyclonedx",
+          "vulnerabilitySlaDays": {
+            "critical": 7,
+            "high": 30,
+            "medium": 90,
+            "low": 180,
+            "info": 365
+          }
+        },
+        "aiCodingPolicy": {
+          "harnessesAllowed": [
+            "claude-code",
+            "copilot"
+          ],
+          "humanReviewRequired": true,
+          "promptInjectionControls": [
+            "tool-allowlist",
+            "secrets-redaction",
+            "human-approval-for-writes"
+          ],
+          "allowedDataClasses": [
+            "public",
+            "internal"
+          ]
+        },
+        "ssdfMapping": [
+          {
+            "practice": "PO.3.2",
+            "status": "implemented",
+            "notes": "Branch protection and CI gates enforced on all repositories"
+          },
+          {
+            "practice": "PW.7",
+            "status": "partial",
+            "notes": "Code review mandatory; security-focused review checklist not yet adopted"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:45:00Z",
+          "workflow": "seed-company",
+          "agent": "cto@zenithsecurities.in"
+        }
+      }
+    },
+    {
+      "description": "deploymentWindows must be structured windows, not free text",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.sdlc",
+        "companyId": "zenith-securities",
+        "policyVersion": "2.1.0",
+        "effectiveFrom": "2026-04-01",
+        "reviewCadenceMonths": 12,
+        "owner": "cto",
+        "branching": {
+          "model": "trunk",
+          "protectedBranches": [
+            "main",
+            "release/*"
+          ],
+          "signedCommitsRequired": true
+        },
+        "codeReview": {
+          "required": true,
+          "minApprovers": 1,
+          "codeownersEnforced": true,
+          "aiReviewAllowed": true,
+          "selfApprovalAllowed": false
+        },
+        "ciGates": [
+          {
+            "gate": "sast",
+            "tool": "semgrep",
+            "blocking": true,
+            "minSeverityToBlock": "high"
+          },
+          {
+            "gate": "secrets",
+            "tool": "gitleaks",
+            "blocking": true,
+            "minSeverityToBlock": "low"
+          },
+          {
+            "gate": "sca",
+            "tool": "trivy",
+            "blocking": true,
+            "minSeverityToBlock": "critical"
+          },
+          {
+            "gate": "unit-tests",
+            "tool": "pytest",
+            "blocking": true
+          }
+        ],
+        "releaseProcess": {
+          "environmentsOrder": [
+            "dev",
+            "qa",
+            "uat",
+            "prod"
+          ],
+          "approvalsRequired": 2,
+          "changeTypeDefault": "normal",
+          "rollbackPlanRequired": true,
+          "emergencyChangeProcess": "CTO and CISO verbal approval, ticket raised within 4 hours, retrospective CAB review within 5 working days",
+          "deploymentWindows": [
+            "Mon-Fri 18:00-22:00 IST outside market hours"
+          ]
+        },
+        "secretsManagement": {
+          "backend": "vault",
+          "rotationDays": 90,
+          "scanningInCi": true
+        },
+        "dependencyPolicy": {
+          "lockfilesRequired": true,
+          "allowedRegistries": [
+            "https://registry.npmjs.org",
+            "https://pypi.org/simple"
+          ],
+          "sbomRequired": true,
+          "sbomFormat": "cyclonedx",
+          "vulnerabilitySlaDays": {
+            "critical": 7,
+            "high": 30,
+            "medium": 90,
+            "low": 180,
+            "info": 365
+          }
+        },
+        "aiCodingPolicy": {
+          "harnessesAllowed": [
+            "claude-code",
+            "copilot"
+          ],
+          "humanReviewRequired": true,
+          "promptInjectionControls": [
+            "tool-allowlist",
+            "secrets-redaction",
+            "human-approval-for-writes"
+          ],
+          "allowedDataClasses": [
+            "public",
+            "internal"
+          ]
+        },
+        "ssdfMapping": [
+          {
+            "practice": "PO.3.2",
+            "status": "implemented",
+            "notes": "Branch protection and CI gates enforced on all repositories"
+          },
+          {
+            "practice": "PW.7",
+            "status": "partial",
+            "notes": "Code review mandatory; security-focused review checklist not yet adopted"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:45:00Z",
+          "workflow": "seed-company",
+          "agent": "cto@zenithsecurities.in"
+        }
+      }
+    },
+    {
+      "description": "deploymentWindow startUtc must be HH:MM",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.sdlc",
+        "companyId": "zenith-securities",
+        "policyVersion": "2.1.0",
+        "effectiveFrom": "2026-04-01",
+        "reviewCadenceMonths": 12,
+        "owner": "cto",
+        "branching": {
+          "model": "trunk",
+          "protectedBranches": [
+            "main",
+            "release/*"
+          ],
+          "signedCommitsRequired": true
+        },
+        "codeReview": {
+          "required": true,
+          "minApprovers": 1,
+          "codeownersEnforced": true,
+          "aiReviewAllowed": true,
+          "selfApprovalAllowed": false
+        },
+        "ciGates": [
+          {
+            "gate": "sast",
+            "tool": "semgrep",
+            "blocking": true,
+            "minSeverityToBlock": "high"
+          },
+          {
+            "gate": "secrets",
+            "tool": "gitleaks",
+            "blocking": true,
+            "minSeverityToBlock": "low"
+          },
+          {
+            "gate": "sca",
+            "tool": "trivy",
+            "blocking": true,
+            "minSeverityToBlock": "critical"
+          },
+          {
+            "gate": "unit-tests",
+            "tool": "pytest",
+            "blocking": true
+          }
+        ],
+        "releaseProcess": {
+          "environmentsOrder": [
+            "dev",
+            "qa",
+            "uat",
+            "prod"
+          ],
+          "approvalsRequired": 2,
+          "changeTypeDefault": "normal",
+          "rollbackPlanRequired": true,
+          "emergencyChangeProcess": "CTO and CISO verbal approval, ticket raised within 4 hours, retrospective CAB review within 5 working days",
+          "deploymentWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "25:00",
+              "endUtc": "16:30",
+              "note": "Mon-Fri 18:00-22:00 IST, outside NSE/BSE market hours"
+            }
+          ]
+        },
+        "secretsManagement": {
+          "backend": "vault",
+          "rotationDays": 90,
+          "scanningInCi": true
+        },
+        "dependencyPolicy": {
+          "lockfilesRequired": true,
+          "allowedRegistries": [
+            "https://registry.npmjs.org",
+            "https://pypi.org/simple"
+          ],
+          "sbomRequired": true,
+          "sbomFormat": "cyclonedx",
+          "vulnerabilitySlaDays": {
+            "critical": 7,
+            "high": 30,
+            "medium": 90,
+            "low": 180,
+            "info": 365
+          }
+        },
+        "aiCodingPolicy": {
+          "harnessesAllowed": [
+            "claude-code",
+            "copilot"
+          ],
+          "humanReviewRequired": true,
+          "promptInjectionControls": [
+            "tool-allowlist",
+            "secrets-redaction",
+            "human-approval-for-writes"
+          ],
+          "allowedDataClasses": [
+            "public",
+            "internal"
+          ]
+        },
+        "ssdfMapping": [
+          {
+            "practice": "PO.3.2",
+            "status": "implemented",
+            "notes": "Branch protection and CI gates enforced on all repositories"
+          },
+          {
+            "practice": "PW.7",
+            "status": "partial",
+            "notes": "Code review mandatory; security-focused review checklist not yet adopted"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:45:00Z",
+          "workflow": "seed-company",
+          "agent": "cto@zenithsecurities.in"
+        }
+      }
+    },
+    {
+      "description": "owner must be a policy-owning governance role",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.sdlc",
+        "companyId": "zenith-securities",
+        "policyVersion": "2.1.0",
+        "effectiveFrom": "2026-04-01",
+        "reviewCadenceMonths": 12,
+        "owner": "compliance-officer",
+        "branching": {
+          "model": "trunk",
+          "protectedBranches": [
+            "main",
+            "release/*"
+          ],
+          "signedCommitsRequired": true
+        },
+        "codeReview": {
+          "required": true,
+          "minApprovers": 1,
+          "codeownersEnforced": true,
+          "aiReviewAllowed": true,
+          "selfApprovalAllowed": false
+        },
+        "ciGates": [
+          {
+            "gate": "sast",
+            "tool": "semgrep",
+            "blocking": true,
+            "minSeverityToBlock": "high"
+          },
+          {
+            "gate": "secrets",
+            "tool": "gitleaks",
+            "blocking": true,
+            "minSeverityToBlock": "low"
+          },
+          {
+            "gate": "sca",
+            "tool": "trivy",
+            "blocking": true,
+            "minSeverityToBlock": "critical"
+          },
+          {
+            "gate": "unit-tests",
+            "tool": "pytest",
+            "blocking": true
+          }
+        ],
+        "releaseProcess": {
+          "environmentsOrder": [
+            "dev",
+            "qa",
+            "uat",
+            "prod"
+          ],
+          "approvalsRequired": 2,
+          "changeTypeDefault": "normal",
+          "rollbackPlanRequired": true,
+          "emergencyChangeProcess": "CTO and CISO verbal approval, ticket raised within 4 hours, retrospective CAB review within 5 working days",
+          "deploymentWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "12:30",
+              "endUtc": "16:30",
+              "note": "Mon-Fri 18:00-22:00 IST, outside NSE/BSE market hours"
+            }
+          ]
+        },
+        "secretsManagement": {
+          "backend": "vault",
+          "rotationDays": 90,
+          "scanningInCi": true
+        },
+        "dependencyPolicy": {
+          "lockfilesRequired": true,
+          "allowedRegistries": [
+            "https://registry.npmjs.org",
+            "https://pypi.org/simple"
+          ],
+          "sbomRequired": true,
+          "sbomFormat": "cyclonedx",
+          "vulnerabilitySlaDays": {
+            "critical": 7,
+            "high": 30,
+            "medium": 90,
+            "low": 180,
+            "info": 365
+          }
+        },
+        "aiCodingPolicy": {
+          "harnessesAllowed": [
+            "claude-code",
+            "copilot"
+          ],
+          "humanReviewRequired": true,
+          "promptInjectionControls": [
+            "tool-allowlist",
+            "secrets-redaction",
+            "human-approval-for-writes"
+          ],
+          "allowedDataClasses": [
+            "public",
+            "internal"
+          ]
+        },
+        "ssdfMapping": [
+          {
+            "practice": "PO.3.2",
+            "status": "implemented",
+            "notes": "Branch protection and CI gates enforced on all repositories"
+          },
+          {
+            "practice": "PW.7",
+            "status": "partial",
+            "notes": "Code review mandatory; security-focused review checklist not yet adopted"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:45:00Z",
+          "workflow": "seed-company",
+          "agent": "cto@zenithsecurities.in"
+        }
+      }
+    },
+    {
+      "description": "vulnerabilitySlaDays info is bounded",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.sdlc",
+        "companyId": "zenith-securities",
+        "policyVersion": "2.1.0",
+        "effectiveFrom": "2026-04-01",
+        "reviewCadenceMonths": 12,
+        "owner": "cto",
+        "branching": {
+          "model": "trunk",
+          "protectedBranches": [
+            "main",
+            "release/*"
+          ],
+          "signedCommitsRequired": true
+        },
+        "codeReview": {
+          "required": true,
+          "minApprovers": 1,
+          "codeownersEnforced": true,
+          "aiReviewAllowed": true,
+          "selfApprovalAllowed": false
+        },
+        "ciGates": [
+          {
+            "gate": "sast",
+            "tool": "semgrep",
+            "blocking": true,
+            "minSeverityToBlock": "high"
+          },
+          {
+            "gate": "secrets",
+            "tool": "gitleaks",
+            "blocking": true,
+            "minSeverityToBlock": "low"
+          },
+          {
+            "gate": "sca",
+            "tool": "trivy",
+            "blocking": true,
+            "minSeverityToBlock": "critical"
+          },
+          {
+            "gate": "unit-tests",
+            "tool": "pytest",
+            "blocking": true
+          }
+        ],
+        "releaseProcess": {
+          "environmentsOrder": [
+            "dev",
+            "qa",
+            "uat",
+            "prod"
+          ],
+          "approvalsRequired": 2,
+          "changeTypeDefault": "normal",
+          "rollbackPlanRequired": true,
+          "emergencyChangeProcess": "CTO and CISO verbal approval, ticket raised within 4 hours, retrospective CAB review within 5 working days",
+          "deploymentWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "12:30",
+              "endUtc": "16:30",
+              "note": "Mon-Fri 18:00-22:00 IST, outside NSE/BSE market hours"
+            }
+          ]
+        },
+        "secretsManagement": {
+          "backend": "vault",
+          "rotationDays": 90,
+          "scanningInCi": true
+        },
+        "dependencyPolicy": {
+          "lockfilesRequired": true,
+          "allowedRegistries": [
+            "https://registry.npmjs.org",
+            "https://pypi.org/simple"
+          ],
+          "sbomRequired": true,
+          "sbomFormat": "cyclonedx",
+          "vulnerabilitySlaDays": {
+            "critical": 7,
+            "high": 30,
+            "medium": 90,
+            "low": 180,
+            "info": 900
+          }
+        },
+        "aiCodingPolicy": {
+          "harnessesAllowed": [
+            "claude-code",
+            "copilot"
+          ],
+          "humanReviewRequired": true,
+          "promptInjectionControls": [
+            "tool-allowlist",
+            "secrets-redaction",
+            "human-approval-for-writes"
+          ],
+          "allowedDataClasses": [
+            "public",
+            "internal"
+          ]
+        },
+        "ssdfMapping": [
+          {
+            "practice": "PO.3.2",
+            "status": "implemented",
+            "notes": "Branch protection and CI gates enforced on all repositories"
+          },
+          {
+            "practice": "PW.7",
+            "status": "partial",
+            "notes": "Code review mandatory; security-focused review checklist not yet adopted"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:45:00Z",
+          "workflow": "seed-company",
+          "agent": "cto@zenithsecurities.in"
+        }
+      }
+    },
+    {
+      "description": "secretsManagement.backend cyberark via the shared secretStore vocabulary",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.sdlc",
+        "companyId": "zenith-securities",
+        "policyVersion": "2.1.0",
+        "effectiveFrom": "2026-04-01",
+        "reviewCadenceMonths": 12,
+        "owner": "cto",
+        "branching": {
+          "model": "trunk",
+          "protectedBranches": [
+            "main",
+            "release/*"
+          ],
+          "signedCommitsRequired": true
+        },
+        "codeReview": {
+          "required": true,
+          "minApprovers": 1,
+          "codeownersEnforced": true,
+          "aiReviewAllowed": true,
+          "selfApprovalAllowed": false
+        },
+        "ciGates": [
+          {
+            "gate": "sast",
+            "tool": "semgrep",
+            "blocking": true,
+            "minSeverityToBlock": "high"
+          },
+          {
+            "gate": "secrets",
+            "tool": "gitleaks",
+            "blocking": true,
+            "minSeverityToBlock": "low"
+          },
+          {
+            "gate": "sca",
+            "tool": "trivy",
+            "blocking": true,
+            "minSeverityToBlock": "critical"
+          },
+          {
+            "gate": "unit-tests",
+            "tool": "pytest",
+            "blocking": true
+          }
+        ],
+        "releaseProcess": {
+          "environmentsOrder": [
+            "dev",
+            "qa",
+            "uat",
+            "prod"
+          ],
+          "approvalsRequired": 2,
+          "changeTypeDefault": "normal",
+          "rollbackPlanRequired": true,
+          "emergencyChangeProcess": "CTO and CISO verbal approval, ticket raised within 4 hours, retrospective CAB review within 5 working days",
+          "deploymentWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "12:30",
+              "endUtc": "16:30",
+              "note": "Mon-Fri 18:00-22:00 IST, outside NSE/BSE market hours"
+            }
+          ]
+        },
+        "secretsManagement": {
+          "backend": "cyberark",
+          "rotationDays": 90,
+          "scanningInCi": true
+        },
+        "dependencyPolicy": {
+          "lockfilesRequired": true,
+          "allowedRegistries": [
+            "https://registry.npmjs.org",
+            "https://pypi.org/simple"
+          ],
+          "sbomRequired": true,
+          "sbomFormat": "cyclonedx",
+          "vulnerabilitySlaDays": {
+            "critical": 7,
+            "high": 30,
+            "medium": 90,
+            "low": 180,
+            "info": 365
+          }
+        },
+        "aiCodingPolicy": {
+          "harnessesAllowed": [
+            "claude-code",
+            "copilot"
+          ],
+          "humanReviewRequired": true,
+          "promptInjectionControls": [
+            "tool-allowlist",
+            "secrets-redaction",
+            "human-approval-for-writes"
+          ],
+          "allowedDataClasses": [
+            "public",
+            "internal"
+          ]
+        },
+        "ssdfMapping": [
+          {
+            "practice": "PO.3.2",
+            "status": "implemented",
+            "notes": "Branch protection and CI gates enforced on all repositories"
+          },
+          {
+            "practice": "PW.7",
+            "status": "partial",
+            "notes": "Code review mandatory; security-focused review checklist not yet adopted"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:45:00Z",
+          "workflow": "seed-company",
+          "agent": "cto@zenithsecurities.in"
+        }
+      }
+    },
+    {
+      "description": "owner dpo is a contactRole but not an allowed policy owner",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.sdlc",
+        "companyId": "zenith-securities",
+        "policyVersion": "2.1.0",
+        "effectiveFrom": "2026-04-01",
+        "reviewCadenceMonths": 12,
+        "owner": "dpo",
+        "branching": {
+          "model": "trunk",
+          "protectedBranches": [
+            "main",
+            "release/*"
+          ],
+          "signedCommitsRequired": true
+        },
+        "codeReview": {
+          "required": true,
+          "minApprovers": 1,
+          "codeownersEnforced": true,
+          "aiReviewAllowed": true,
+          "selfApprovalAllowed": false
+        },
+        "ciGates": [
+          {
+            "gate": "sast",
+            "tool": "semgrep",
+            "blocking": true,
+            "minSeverityToBlock": "high"
+          },
+          {
+            "gate": "secrets",
+            "tool": "gitleaks",
+            "blocking": true,
+            "minSeverityToBlock": "low"
+          },
+          {
+            "gate": "sca",
+            "tool": "trivy",
+            "blocking": true,
+            "minSeverityToBlock": "critical"
+          },
+          {
+            "gate": "unit-tests",
+            "tool": "pytest",
+            "blocking": true
+          }
+        ],
+        "releaseProcess": {
+          "environmentsOrder": [
+            "dev",
+            "qa",
+            "uat",
+            "prod"
+          ],
+          "approvalsRequired": 2,
+          "changeTypeDefault": "normal",
+          "rollbackPlanRequired": true,
+          "emergencyChangeProcess": "CTO and CISO verbal approval, ticket raised within 4 hours, retrospective CAB review within 5 working days",
+          "deploymentWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "12:30",
+              "endUtc": "16:30",
+              "note": "Mon-Fri 18:00-22:00 IST, outside NSE/BSE market hours"
+            }
+          ]
+        },
+        "secretsManagement": {
+          "backend": "vault",
+          "rotationDays": 90,
+          "scanningInCi": true
+        },
+        "dependencyPolicy": {
+          "lockfilesRequired": true,
+          "allowedRegistries": [
+            "https://registry.npmjs.org",
+            "https://pypi.org/simple"
+          ],
+          "sbomRequired": true,
+          "sbomFormat": "cyclonedx",
+          "vulnerabilitySlaDays": {
+            "critical": 7,
+            "high": 30,
+            "medium": 90,
+            "low": 180,
+            "info": 365
+          }
+        },
+        "aiCodingPolicy": {
+          "harnessesAllowed": [
+            "claude-code",
+            "copilot"
+          ],
+          "humanReviewRequired": true,
+          "promptInjectionControls": [
+            "tool-allowlist",
+            "secrets-redaction",
+            "human-approval-for-writes"
+          ],
+          "allowedDataClasses": [
+            "public",
+            "internal"
+          ]
+        },
+        "ssdfMapping": [
+          {
+            "practice": "PO.3.2",
+            "status": "implemented",
+            "notes": "Branch protection and CI gates enforced on all repositories"
+          },
+          {
+            "practice": "PW.7",
+            "status": "partial",
+            "notes": "Code review mandatory; security-focused review checklist not yet adopted"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:45:00Z",
+          "workflow": "seed-company",
+          "agent": "cto@zenithsecurities.in"
+        }
+      }
+    }
+  ]
+}

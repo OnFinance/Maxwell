@@ -1,0 +1,552 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/harness/opencode-config.schema.json",
+  "title": "OpenCode project configuration",
+  "description": "Validates opencode.json at the workspace root, the OpenCode counterpart of .claude/settings.json. Human-authored: no schemaVersion, kind or provenance because OpenCode reads this file directly. Closed at the top level to the keys Maxwell uses; agent, command, mcp, formatter and lsp maps are closed per entry. Secret-shaped values are refused: MCP environment values and credential-bearing headers must be '{env:NAME}' references. default_agent cannot be cross-checked against the agent map in JSON Schema; validate-frontmatter.mjs is the place for that",
+  "examples": [
+    {
+      "$schema": "https://opencode.ai/config.json",
+      "instructions": [
+        "AGENTS.md",
+        ".agents/skills/maxwell-conventions/SKILL.md"
+      ],
+      "model": "anthropic/claude-opus-5",
+      "small_model": "anthropic/claude-haiku-4-5-20251001",
+      "default_agent": "maxwell",
+      "share": "disabled",
+      "autoupdate": false,
+      "snapshot": true,
+      "agent": {
+        "maxwell": {
+          "description": "Primary Maxwell operator: runs /<workflow> <company_id> and coordinates the specialist subagents",
+          "mode": "primary",
+          "model": "anthropic/claude-opus-5",
+          "prompt": "{file:./AGENTS.md}",
+          "temperature": 0.1,
+          "permission": {
+            "edit": "allow",
+            "write": "allow",
+            "bash": {
+              "npm run validate*": "allow",
+              "node .claude/scripts/*": "allow",
+              "git push*": "ask",
+              "*": "deny"
+            },
+            "webfetch": "deny"
+          }
+        },
+        "iac-auditor": {
+          "description": "Static probe of Terraform, Pulumi and Kubernetes manifests for a target application; read-only against target systems",
+          "mode": "subagent",
+          "model": "anthropic/claude-sonnet-5",
+          "prompt": "{file:./.agents/agents/iac-auditor.prompt.md}",
+          "temperature": 0,
+          "permission": {
+            "read": "allow",
+            "grep": "allow",
+            "glob": "allow",
+            "bash": "deny",
+            "edit": "deny",
+            "write": "deny",
+            "webfetch": "deny"
+          }
+        },
+        "build": {
+          "disable": true
+        }
+      },
+      "command": {
+        "validate": {
+          "description": "Run every Maxwell validator and report problems by path",
+          "template": "Run `npm run validate` and report every problem by path. Do not edit schemas. $ARGUMENTS",
+          "agent": "maxwell",
+          "subtask": false
+        },
+        "status": {
+          "description": "Summarise the ledger, open initiatives and pending suggestions for a company",
+          "template": "Summarise the state of company-profile/$1: open findings by severity, initiatives in flight and pending suggestions",
+          "model": "anthropic/claude-haiku-4-5-20251001"
+        }
+      },
+      "plugin": [ "./.agents/hooks/maxwell-hooks.mjs" ],
+      "permission": {
+        "*": "ask",
+        "edit": "allow",
+        "bash": {
+          "npm run *": "allow",
+          "node .claude/scripts/*": "allow",
+          "sops --decrypt*": "ask",
+          "*": "ask"
+        },
+        "webfetch": "deny",
+        "skill": "allow"
+      },
+      "mcp": {
+        "nvd": {
+          "type": "remote",
+          "url": "https://mcp.example.internal/nvd",
+          "enabled": true,
+          "headers": {
+            "X-Api-Key": "{env:NVD_API_KEY}",
+            "Accept": "application/json"
+          },
+          "timeout": 30000
+        }
+      },
+      "experimental": {}
+    }
+  ],
+  "type": "object",
+  "required": [ "$schema", "instructions", "agent", "permission" ],
+  "properties": {
+    "$schema": {
+      "description": "Must be the OpenCode config schema URL so OpenCode and editors recognise the file",
+      "const": "https://opencode.ai/config.json"
+    },
+    "instructions": {
+      "description": "Files or globs whose content is prepended to the system prompt. Maxwell always lists AGENTS.md first",
+      "type": "array",
+      "maxItems": 32,
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "maxLength": 500,
+        "minLength": 1
+      }
+    },
+    "default_agent": {
+      "description": "Name of the primary agent selected on startup; must be a key of agent with mode primary or all (checked by validate-frontmatter.mjs, not here)",
+      "$ref": "#/$defs/agentName"
+    },
+    "agent": {
+      "description": "Agent definitions keyed by name. Maxwell subagents mirror .claude/agents; built-in OpenCode agents (build, plan, general) may be overridden or disabled here",
+      "type": "object",
+      "maxProperties": 64,
+      "propertyNames": {
+        "$ref": "#/$defs/agentName"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/agentConfig"
+      }
+    },
+    "command": {
+      "description": "Slash commands keyed by name; equivalent to .agents/commands/<name>.md files. Names must not collide with the 25 workflow scripts in .claude/workflows (the utility commands validate, kpis, status and seed-company are commands, not scripts)",
+      "type": "object",
+      "maxProperties": 64,
+      "propertyNames": {
+        "$ref": "#/$defs/agentName"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/commandConfig"
+      }
+    },
+    "plugin": {
+      "description": "Plugins to load: npm package specifiers or workspace-relative paths to plugin modules such as the Maxwell hook adapter",
+      "type": "array",
+      "maxItems": 32,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "maxLength": 500,
+        "minLength": 1
+      }
+    },
+    "permission": {
+      "description": "Global tool permissions applied to every agent unless the agent overrides them",
+      "$ref": "#/$defs/permissionMap"
+    },
+    "mcp": {
+      "description": "MCP servers keyed by name. Capped at 16 because every server adds tools to the context of every agent",
+      "type": "object",
+      "maxProperties": 16,
+      "propertyNames": {
+        "$ref": "#/$defs/agentName"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/mcpServer"
+      }
+    },
+    "model": {
+      "description": "Default model as provider/model, e.g. anthropic/claude-opus-5",
+      "$ref": "#/$defs/modelId"
+    },
+    "small_model": {
+      "description": "Cheaper model used for titles, summaries and other low-stakes calls",
+      "$ref": "#/$defs/modelId"
+    },
+    "share": {
+      "description": "Session sharing policy. Maxwell requires disabled: transcripts contain client infrastructure details",
+      "enum": [ "manual", "auto", "disabled" ]
+    },
+    "autoupdate": {
+      "description": "Whether OpenCode updates itself on startup; keep false for reproducible audit runs",
+      "type": "boolean"
+    },
+    "snapshot": {
+      "description": "Whether OpenCode snapshots the working tree before edits so changes can be reverted",
+      "type": "boolean"
+    },
+    "formatter": {
+      "description": "Code formatters keyed by name, or disabled per formatter. Capped at 16",
+      "type": "object",
+      "maxProperties": 16,
+      "propertyNames": {
+        "$ref": "#/$defs/agentName"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/formatterConfig"
+      }
+    },
+    "lsp": {
+      "description": "Language servers keyed by language id, or disabled per server. Capped at 16",
+      "type": "object",
+      "maxProperties": 16,
+      "propertyNames": {
+        "$ref": "#/$defs/agentName"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/lspConfig"
+      }
+    },
+    "experimental": {
+      "description": "Raw passthrough of OpenCode experimental flags whose shape changes between releases; capped at 16 keys so it cannot become a dumping ground",
+      "type": "object",
+      "maxProperties": 16
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "agentName": {
+      "description": "Lower-case kebab-case identifier used for agents, commands, MCP servers and formatters",
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "maxLength": 64
+    },
+    "modelId": {
+      "description": "OpenCode model reference in provider/model form; the model part may itself contain slashes for router providers, e.g. openrouter/anthropic/claude-sonnet-4",
+      "type": "string",
+      "pattern": "^[a-z0-9.-]+/[A-Za-z0-9.:_/-]+$",
+      "maxLength": 200
+    },
+    "envRef": {
+      "description": "OpenCode environment reference '{env:NAME}'; the only form allowed where a secret could otherwise be written",
+      "type": "string",
+      "pattern": "^\\{env:[A-Z][A-Z0-9_]{0,127}\\}$",
+      "maxLength": 140
+    },
+    "permissionAction": {
+      "enum": [ "allow", "deny", "ask" ]
+    },
+    "permissionMap": {
+      "description": "Tool name to action. Keys are the documented OpenCode tools (read, edit, glob, grep, bash, task, skill, lsp, question, webfetch, websearch, external_directory, doom_loop, and the write/patch/list/todowrite/todoread names the mirror emits), the global wildcard '*', or an MCP glob 'servername_*'. bash, edit and skill may instead map command or path patterns to actions; the most specific pattern wins and '*' is the default",
+      "type": "object",
+      "maxProperties": 32,
+      "propertyNames": {
+        "pattern": "^(\\*|[a-z][a-z0-9_]*\\*?)$",
+        "maxLength": 64
+      },
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/permissionAction"
+          },
+          {
+            "type": "object",
+            "maxProperties": 64,
+            "propertyNames": {
+              "maxLength": 500,
+              "minLength": 1
+            },
+            "additionalProperties": {
+              "$ref": "#/$defs/permissionAction"
+            }
+          }
+        ]
+      }
+    },
+    "agentConfig": {
+      "description": "One agent entry. description and mode are required unless the entry only disables a built-in (disable true)",
+      "type": "object",
+      "if": {
+        "required": [ "disable" ],
+        "properties": {
+          "disable": {
+            "const": true
+          }
+        }
+      },
+      "else": {
+        "required": [ "description", "mode" ]
+      },
+      "properties": {
+        "description": {
+          "description": "What the agent does and when the primary agent should delegate to it",
+          "type": "string",
+          "pattern": "\\S",
+          "maxLength": 1024,
+          "minLength": 1
+        },
+        "mode": {
+          "description": "primary agents are user-selectable, subagents are only invoked by other agents, all means both",
+          "enum": [ "primary", "subagent", "all" ]
+        },
+        "model": {
+          "description": "Model override for this agent as provider/model",
+          "$ref": "#/$defs/modelId"
+        },
+        "prompt": {
+          "description": "System prompt text, or '{file:./path}' to load it from a file such as the mirrored agent prompt",
+          "type": "string",
+          "maxLength": 20000,
+          "minLength": 1
+        },
+        "permission": {
+          "description": "Tool permissions for this agent, overriding the global permission map",
+          "$ref": "#/$defs/permissionMap"
+        },
+        "temperature": {
+          "description": "Sampling temperature; Maxwell probes and auditors use 0 for reproducibility",
+          "type": "number",
+          "maximum": 2,
+          "minimum": 0
+        },
+        "disable": {
+          "description": "When true the agent is hidden and cannot be invoked; used to switch off OpenCode built-ins",
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "commandConfig": {
+      "type": "object",
+      "required": [ "template" ],
+      "properties": {
+        "description": {
+          "description": "One-line help shown in the command palette",
+          "type": "string",
+          "pattern": "\\S",
+          "maxLength": 1024,
+          "minLength": 1
+        },
+        "template": {
+          "description": "Prompt sent when the command runs; $ARGUMENTS and $1..$n are substituted exactly as in Claude Code",
+          "type": "string",
+          "maxLength": 20000,
+          "minLength": 1
+        },
+        "agent": {
+          "description": "Agent that executes the command; defaults to the current primary agent",
+          "$ref": "#/$defs/agentName"
+        },
+        "model": {
+          "description": "Model override for this command as provider/model",
+          "$ref": "#/$defs/modelId"
+        },
+        "subtask": {
+          "description": "When true the command runs as a subtask in a fresh context instead of the current session",
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "mcpServer": {
+      "description": "One MCP server. type local spawns command (optionally in cwd); type remote connects to url (optionally with oauth)",
+      "type": "object",
+      "if": {
+        "properties": {
+          "type": {
+            "const": "local"
+          }
+        }
+      },
+      "then": {
+        "required": [ "command" ]
+      },
+      "else": {
+        "required": [ "url" ]
+      },
+      "required": [ "type" ],
+      "properties": {
+        "type": {
+          "enum": [ "local", "remote" ]
+        },
+        "command": {
+          "description": "Executable and arguments for a local server",
+          "type": "array",
+          "maxItems": 32,
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1
+          }
+        },
+        "cwd": {
+          "description": "Workspace-relative working directory for a local server process",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/workspacePath"
+        },
+        "url": {
+          "description": "Endpoint of a remote server",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/url"
+        },
+        "oauth": {
+          "description": "OAuth settings for a remote server: false disables OAuth entirely; otherwise a closed object whose clientSecret must be an '{env:NAME}' reference",
+          "anyOf": [
+            {
+              "const": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "clientId": {
+                  "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+                },
+                "clientSecret": {
+                  "$ref": "#/$defs/envRef"
+                },
+                "scope": {
+                  "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+                }
+              },
+              "additionalProperties": false
+            }
+          ]
+        },
+        "enabled": {
+          "description": "Whether the server is started; false keeps the entry for documentation without exposing its tools",
+          "type": "boolean"
+        },
+        "environment": {
+          "description": "Environment variables for a local server; every value must be an '{env:NAME}' reference, never a literal, so no secret can be committed here",
+          "type": "object",
+          "maxProperties": 32,
+          "propertyNames": {
+            "pattern": "^[A-Z][A-Z0-9_]{0,127}$"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/envRef"
+          }
+        },
+        "headers": {
+          "description": "HTTP headers for a remote server. Any header whose name contains auth, api-key/apikey, token, secret or cookie (case-insensitive) must be an '{env:NAME}' reference; other headers may carry a short literal such as a content type",
+          "type": "object",
+          "maxProperties": 32,
+          "propertyNames": {
+            "pattern": "^[A-Za-z0-9-]{1,128}$"
+          },
+          "patternProperties": {
+            "^[A-Za-z0-9-]*([Aa][Uu][Tt][Hh]|[Aa][Pp][Ii]-?[Kk][Ee][Yy]|[Tt][Oo][Kk][Ee][Nn]|[Ss][Ee][Cc][Rr][Ee][Tt]|[Cc][Oo][Oo][Kk][Ii][Ee])[A-Za-z0-9-]*$": {
+              "$ref": "#/$defs/envRef"
+            }
+          },
+          "additionalProperties": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1
+          }
+        },
+        "timeout": {
+          "description": "Connection timeout in milliseconds",
+          "type": "integer",
+          "maximum": 600000,
+          "minimum": 1
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "formatterConfig": {
+      "type": "object",
+      "properties": {
+        "disabled": {
+          "description": "Set true to switch off a built-in formatter",
+          "type": "boolean"
+        },
+        "command": {
+          "description": "Formatter executable and arguments; $FILE is substituted",
+          "type": "array",
+          "maxItems": 32,
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1
+          }
+        },
+        "environment": {
+          "description": "Environment variables for the formatter process",
+          "type": "object",
+          "maxProperties": 32,
+          "propertyNames": {
+            "pattern": "^[A-Z][A-Z0-9_]{0,127}$"
+          },
+          "additionalProperties": {
+            "type": "string",
+            "maxLength": 4000
+          }
+        },
+        "extensions": {
+          "description": "File extensions (with leading dot) the formatter handles",
+          "type": "array",
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^\\.[A-Za-z0-9]+$",
+            "maxLength": 32
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "lspConfig": {
+      "type": "object",
+      "properties": {
+        "disabled": {
+          "description": "Set true to switch off a built-in language server",
+          "type": "boolean"
+        },
+        "command": {
+          "description": "Language server executable and arguments",
+          "type": "array",
+          "maxItems": 32,
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1
+          }
+        },
+        "extensions": {
+          "description": "File extensions (with leading dot) routed to this server",
+          "type": "array",
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^\\.[A-Za-z0-9]+$",
+            "maxLength": 32
+          }
+        },
+        "env": {
+          "description": "Environment variables for the server process",
+          "type": "object",
+          "maxProperties": 32,
+          "propertyNames": {
+            "pattern": "^[A-Z][A-Z0-9_]{0,127}$"
+          },
+          "additionalProperties": {
+            "type": "string",
+            "maxLength": 4000
+          }
+        },
+        "initialization": {
+          "description": "Raw LSP initializationOptions passed through to the server; capped at 32 keys because its shape is server-specific",
+          "type": "object",
+          "maxProperties": 32
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

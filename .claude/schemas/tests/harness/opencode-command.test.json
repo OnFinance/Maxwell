@@ -1,0 +1,149 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/opencode-command.schema.json",
+  "tests": [
+    {
+      "description": "mirrored /validate command",
+      "valid": true,
+      "data": {
+        "description": "Run every Maxwell validator (layout, schemas, data, frontmatter, workflows, mirror) and report problems by path",
+        "agent": "maxwell",
+        "model": "anthropic/claude-sonnet-5",
+        "subtask": false,
+        "x-maxwell": {
+          "workflow": "validate",
+          "touches": [],
+          "readsCredentials": false
+        }
+      }
+    },
+    {
+      "description": "description only",
+      "valid": true,
+      "data": {
+        "description": "Show ledger, initiative and suggestion counts for a company"
+      }
+    },
+    {
+      "description": "argument-hint is a Claude Code field, not an OpenCode one",
+      "valid": false,
+      "data": {
+        "description": "Run every Maxwell validator (layout, schemas, data, frontmatter, workflows, mirror) and report problems by path",
+        "agent": "maxwell",
+        "model": "anthropic/claude-sonnet-5",
+        "subtask": false,
+        "x-maxwell": {
+          "workflow": "validate",
+          "touches": [],
+          "readsCredentials": false
+        },
+        "argument-hint": "[path]"
+      }
+    },
+    {
+      "description": "model must be provider/model",
+      "valid": false,
+      "data": {
+        "description": "Run every Maxwell validator (layout, schemas, data, frontmatter, workflows, mirror) and report problems by path",
+        "agent": "maxwell",
+        "model": "sonnet",
+        "subtask": false,
+        "x-maxwell": {
+          "workflow": "validate",
+          "touches": [],
+          "readsCredentials": false
+        }
+      }
+    },
+    {
+      "description": "x-maxwell.workflow must be a known workflow",
+      "valid": false,
+      "data": {
+        "description": "Run every Maxwell validator (layout, schemas, data, frontmatter, workflows, mirror) and report problems by path",
+        "agent": "maxwell",
+        "model": "anthropic/claude-sonnet-5",
+        "subtask": false,
+        "x-maxwell": {
+          "workflow": "validate-all",
+          "touches": [],
+          "readsCredentials": false
+        }
+      }
+    },
+    {
+      "description": "description is required",
+      "valid": false,
+      "data": {
+        "agent": "maxwell",
+        "model": "anthropic/claude-sonnet-5",
+        "subtask": false,
+        "x-maxwell": {
+          "workflow": "validate",
+          "touches": [],
+          "readsCredentials": false
+        }
+      }
+    },
+    {
+      "description": "description must not be whitespace only",
+      "valid": false,
+      "data": {
+        "description": "   ",
+        "agent": "maxwell",
+        "model": "anthropic/claude-sonnet-5",
+        "subtask": false,
+        "x-maxwell": {
+          "workflow": "validate",
+          "touches": [],
+          "readsCredentials": false
+        }
+      }
+    },
+    {
+      "description": "agent must be kebab-case",
+      "valid": false,
+      "data": {
+        "description": "Run every Maxwell validator (layout, schemas, data, frontmatter, workflows, mirror) and report problems by path",
+        "agent": "Maxwell Ops",
+        "model": "anthropic/claude-sonnet-5",
+        "subtask": false,
+        "x-maxwell": {
+          "workflow": "validate",
+          "touches": [],
+          "readsCredentials": false
+        }
+      }
+    },
+    {
+      "description": "subtask must be boolean",
+      "valid": false,
+      "data": {
+        "description": "Run every Maxwell validator (layout, schemas, data, frontmatter, workflows, mirror) and report problems by path",
+        "agent": "maxwell",
+        "model": "anthropic/claude-sonnet-5",
+        "subtask": "yes",
+        "x-maxwell": {
+          "workflow": "validate",
+          "touches": [],
+          "readsCredentials": false
+        }
+      }
+    },
+    {
+      "description": "touches must not traverse mid-path",
+      "valid": false,
+      "data": {
+        "description": "Run every Maxwell validator (layout, schemas, data, frontmatter, workflows, mirror) and report problems by path",
+        "agent": "maxwell",
+        "model": "anthropic/claude-sonnet-5",
+        "subtask": false,
+        "x-maxwell": {
+          "workflow": "validate",
+          "touches": [
+            "kpis/../../etc/**"
+          ],
+          "readsCredentials": false
+        }
+      }
+    }
+  ]
+}

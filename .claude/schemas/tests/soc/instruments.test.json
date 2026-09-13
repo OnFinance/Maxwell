@@ -1,0 +1,867 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/v1/catalog/instruments.schema.json",
+  "tests": [
+    {
+      "description": "registry with SEBI CSCRF entry and hard requirements",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.instruments",
+        "instruments": [
+          {
+            "instrumentId": "sebi-cscrf-2024",
+            "regulator": "SEBI",
+            "title": "Cybersecurity and Cyber Resilience Framework (CSCRF) for SEBI Regulated Entities",
+            "shortName": "SEBI CSCRF",
+            "version": "SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113",
+            "issuedOn": "2024-08-20",
+            "effectiveFrom": "2025-04-01",
+            "supersedes": [],
+            "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
+            "applicability": {
+              "entityTypes": [
+                "stock-broker",
+                "depository-participant",
+                "asset-management-company",
+                "market-infrastructure-institution"
+              ],
+              "jurisdictions": [
+                "IN"
+              ],
+              "categories": [
+                "mii",
+                "qualified-re",
+                "mid-size-re",
+                "small-size-re",
+                "self-certification-re"
+              ]
+            },
+            "structure": "NIST CSF style: function (GV, ID, PR, DE, RS, RC) . category . S<n> standard, e.g. GV.SC.S5; guidelines suffixed G<n>",
+            "hardRequirements": [
+              {
+                "topic": "sbom",
+                "requirement": "REs shall obtain a Software Bill of Materials for all critical systems and their components",
+                "unit": "boolean",
+                "value": 1,
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "topic": "vapt-cadence",
+                "requirement": "VAPT of critical systems at least twice a year for MIIs and Qualified REs",
+                "unit": "per-year",
+                "value": 2,
+                "controlId": "DE.CM.S2"
+              },
+              {
+                "topic": "incident-reporting",
+                "requirement": "Report cyber incidents to SEBI and CERT-In within 6 hours of noticing",
+                "unit": "hours",
+                "value": 6,
+                "controlId": "RS.CO.S1"
+              }
+            ],
+            "catalogFile": ".claude/skills/regulatory-catalogs/references/catalogs/sebi-cscrf-2024.catalog.json",
+            "lastReviewedAt": "2026-09-01"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-01T09:00:00Z"
+        }
+      }
+    },
+    {
+      "description": "registry with a global framework applicable to everyone",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.instruments",
+        "instruments": [
+          {
+            "instrumentId": "nist-csf-2.0",
+            "regulator": "NIST",
+            "title": "The NIST Cybersecurity Framework (CSF) 2.0",
+            "shortName": "NIST CSF 2.0",
+            "version": "2.0",
+            "issuedOn": "2024-02-26",
+            "url": "https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.29.pdf",
+            "applicability": {
+              "entityTypes": [],
+              "jurisdictions": []
+            },
+            "structure": "Function.Category-NN, e.g. PR.AA-01"
+          }
+        ]
+      }
+    },
+    {
+      "description": "invented extra key on an instrument is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.instruments",
+        "instruments": [
+          {
+            "instrumentId": "sebi-cscrf-2024",
+            "regulator": "SEBI",
+            "title": "Cybersecurity and Cyber Resilience Framework (CSCRF) for SEBI Regulated Entities",
+            "shortName": "SEBI CSCRF",
+            "version": "SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113",
+            "issuedOn": "2024-08-20",
+            "effectiveFrom": "2025-04-01",
+            "supersedes": [],
+            "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
+            "applicability": {
+              "entityTypes": [
+                "stock-broker",
+                "depository-participant",
+                "asset-management-company",
+                "market-infrastructure-institution"
+              ],
+              "jurisdictions": [
+                "IN"
+              ],
+              "categories": [
+                "mii",
+                "qualified-re",
+                "mid-size-re",
+                "small-size-re",
+                "self-certification-re"
+              ]
+            },
+            "structure": "NIST CSF style: function (GV, ID, PR, DE, RS, RC) . category . S<n> standard, e.g. GV.SC.S5; guidelines suffixed G<n>",
+            "hardRequirements": [
+              {
+                "topic": "sbom",
+                "requirement": "REs shall obtain a Software Bill of Materials for all critical systems and their components",
+                "unit": "boolean",
+                "value": 1,
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "topic": "vapt-cadence",
+                "requirement": "VAPT of critical systems at least twice a year for MIIs and Qualified REs",
+                "unit": "per-year",
+                "value": 2,
+                "controlId": "DE.CM.S2"
+              },
+              {
+                "topic": "incident-reporting",
+                "requirement": "Report cyber incidents to SEBI and CERT-In within 6 hours of noticing",
+                "unit": "hours",
+                "value": 6,
+                "controlId": "RS.CO.S1"
+              }
+            ],
+            "catalogFile": ".claude/skills/regulatory-catalogs/references/catalogs/sebi-cscrf-2024.catalog.json",
+            "lastReviewedAt": "2026-09-01",
+            "nickname": "cscrf"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-01T09:00:00Z"
+        }
+      }
+    },
+    {
+      "description": "instrumentId not in the vocab",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.instruments",
+        "instruments": [
+          {
+            "instrumentId": "sebi-cscrf-2019",
+            "regulator": "SEBI",
+            "title": "Cybersecurity and Cyber Resilience Framework (CSCRF) for SEBI Regulated Entities",
+            "shortName": "SEBI CSCRF",
+            "version": "SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113",
+            "issuedOn": "2024-08-20",
+            "effectiveFrom": "2025-04-01",
+            "supersedes": [],
+            "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
+            "applicability": {
+              "entityTypes": [
+                "stock-broker",
+                "depository-participant",
+                "asset-management-company",
+                "market-infrastructure-institution"
+              ],
+              "jurisdictions": [
+                "IN"
+              ],
+              "categories": [
+                "mii",
+                "qualified-re",
+                "mid-size-re",
+                "small-size-re",
+                "self-certification-re"
+              ]
+            },
+            "structure": "NIST CSF style: function (GV, ID, PR, DE, RS, RC) . category . S<n> standard, e.g. GV.SC.S5; guidelines suffixed G<n>",
+            "hardRequirements": [
+              {
+                "topic": "sbom",
+                "requirement": "REs shall obtain a Software Bill of Materials for all critical systems and their components",
+                "unit": "boolean",
+                "value": 1,
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "topic": "vapt-cadence",
+                "requirement": "VAPT of critical systems at least twice a year for MIIs and Qualified REs",
+                "unit": "per-year",
+                "value": 2,
+                "controlId": "DE.CM.S2"
+              },
+              {
+                "topic": "incident-reporting",
+                "requirement": "Report cyber incidents to SEBI and CERT-In within 6 hours of noticing",
+                "unit": "hours",
+                "value": 6,
+                "controlId": "RS.CO.S1"
+              }
+            ],
+            "catalogFile": ".claude/skills/regulatory-catalogs/references/catalogs/sebi-cscrf-2024.catalog.json",
+            "lastReviewedAt": "2026-09-01"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-01T09:00:00Z"
+        }
+      }
+    },
+    {
+      "description": "regulator not in the vocab",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.instruments",
+        "instruments": [
+          {
+            "instrumentId": "sebi-cscrf-2024",
+            "regulator": "SEBI-India",
+            "title": "Cybersecurity and Cyber Resilience Framework (CSCRF) for SEBI Regulated Entities",
+            "shortName": "SEBI CSCRF",
+            "version": "SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113",
+            "issuedOn": "2024-08-20",
+            "effectiveFrom": "2025-04-01",
+            "supersedes": [],
+            "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
+            "applicability": {
+              "entityTypes": [
+                "stock-broker",
+                "depository-participant",
+                "asset-management-company",
+                "market-infrastructure-institution"
+              ],
+              "jurisdictions": [
+                "IN"
+              ],
+              "categories": [
+                "mii",
+                "qualified-re",
+                "mid-size-re",
+                "small-size-re",
+                "self-certification-re"
+              ]
+            },
+            "structure": "NIST CSF style: function (GV, ID, PR, DE, RS, RC) . category . S<n> standard, e.g. GV.SC.S5; guidelines suffixed G<n>",
+            "hardRequirements": [
+              {
+                "topic": "sbom",
+                "requirement": "REs shall obtain a Software Bill of Materials for all critical systems and their components",
+                "unit": "boolean",
+                "value": 1,
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "topic": "vapt-cadence",
+                "requirement": "VAPT of critical systems at least twice a year for MIIs and Qualified REs",
+                "unit": "per-year",
+                "value": 2,
+                "controlId": "DE.CM.S2"
+              },
+              {
+                "topic": "incident-reporting",
+                "requirement": "Report cyber incidents to SEBI and CERT-In within 6 hours of noticing",
+                "unit": "hours",
+                "value": 6,
+                "controlId": "RS.CO.S1"
+              }
+            ],
+            "catalogFile": ".claude/skills/regulatory-catalogs/references/catalogs/sebi-cscrf-2024.catalog.json",
+            "lastReviewedAt": "2026-09-01"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-01T09:00:00Z"
+        }
+      }
+    },
+    {
+      "description": "hard requirement with unknown topic",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.instruments",
+        "instruments": [
+          {
+            "instrumentId": "sebi-cscrf-2024",
+            "regulator": "SEBI",
+            "title": "Cybersecurity and Cyber Resilience Framework (CSCRF) for SEBI Regulated Entities",
+            "shortName": "SEBI CSCRF",
+            "version": "SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113",
+            "issuedOn": "2024-08-20",
+            "effectiveFrom": "2025-04-01",
+            "supersedes": [],
+            "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
+            "applicability": {
+              "entityTypes": [
+                "stock-broker",
+                "depository-participant",
+                "asset-management-company",
+                "market-infrastructure-institution"
+              ],
+              "jurisdictions": [
+                "IN"
+              ],
+              "categories": [
+                "mii",
+                "qualified-re",
+                "mid-size-re",
+                "small-size-re",
+                "self-certification-re"
+              ]
+            },
+            "structure": "NIST CSF style: function (GV, ID, PR, DE, RS, RC) . category . S<n> standard, e.g. GV.SC.S5; guidelines suffixed G<n>",
+            "hardRequirements": [
+              {
+                "topic": "password-length",
+                "requirement": "REs shall obtain a Software Bill of Materials for all critical systems and their components",
+                "unit": "boolean",
+                "value": 1,
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "topic": "vapt-cadence",
+                "requirement": "VAPT of critical systems at least twice a year for MIIs and Qualified REs",
+                "unit": "per-year",
+                "value": 2,
+                "controlId": "DE.CM.S2"
+              },
+              {
+                "topic": "incident-reporting",
+                "requirement": "Report cyber incidents to SEBI and CERT-In within 6 hours of noticing",
+                "unit": "hours",
+                "value": 6,
+                "controlId": "RS.CO.S1"
+              }
+            ],
+            "catalogFile": ".claude/skills/regulatory-catalogs/references/catalogs/sebi-cscrf-2024.catalog.json",
+            "lastReviewedAt": "2026-09-01"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-01T09:00:00Z"
+        }
+      }
+    },
+    {
+      "description": "hard requirement with unknown unit",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.instruments",
+        "instruments": [
+          {
+            "instrumentId": "sebi-cscrf-2024",
+            "regulator": "SEBI",
+            "title": "Cybersecurity and Cyber Resilience Framework (CSCRF) for SEBI Regulated Entities",
+            "shortName": "SEBI CSCRF",
+            "version": "SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113",
+            "issuedOn": "2024-08-20",
+            "effectiveFrom": "2025-04-01",
+            "supersedes": [],
+            "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
+            "applicability": {
+              "entityTypes": [
+                "stock-broker",
+                "depository-participant",
+                "asset-management-company",
+                "market-infrastructure-institution"
+              ],
+              "jurisdictions": [
+                "IN"
+              ],
+              "categories": [
+                "mii",
+                "qualified-re",
+                "mid-size-re",
+                "small-size-re",
+                "self-certification-re"
+              ]
+            },
+            "structure": "NIST CSF style: function (GV, ID, PR, DE, RS, RC) . category . S<n> standard, e.g. GV.SC.S5; guidelines suffixed G<n>",
+            "hardRequirements": [
+              {
+                "topic": "sbom",
+                "requirement": "REs shall obtain a Software Bill of Materials for all critical systems and their components",
+                "unit": "weeks",
+                "value": 1,
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "topic": "vapt-cadence",
+                "requirement": "VAPT of critical systems at least twice a year for MIIs and Qualified REs",
+                "unit": "per-year",
+                "value": 2,
+                "controlId": "DE.CM.S2"
+              },
+              {
+                "topic": "incident-reporting",
+                "requirement": "Report cyber incidents to SEBI and CERT-In within 6 hours of noticing",
+                "unit": "hours",
+                "value": 6,
+                "controlId": "RS.CO.S1"
+              }
+            ],
+            "catalogFile": ".claude/skills/regulatory-catalogs/references/catalogs/sebi-cscrf-2024.catalog.json",
+            "lastReviewedAt": "2026-09-01"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-01T09:00:00Z"
+        }
+      }
+    },
+    {
+      "description": "instrument missing applicability",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.instruments",
+        "instruments": [
+          {
+            "instrumentId": "sebi-cscrf-2024",
+            "regulator": "SEBI",
+            "title": "Cybersecurity and Cyber Resilience Framework (CSCRF) for SEBI Regulated Entities",
+            "shortName": "SEBI CSCRF",
+            "version": "SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113",
+            "issuedOn": "2024-08-20",
+            "effectiveFrom": "2025-04-01",
+            "supersedes": [],
+            "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
+            "structure": "NIST CSF style: function (GV, ID, PR, DE, RS, RC) . category . S<n> standard, e.g. GV.SC.S5; guidelines suffixed G<n>",
+            "hardRequirements": [
+              {
+                "topic": "sbom",
+                "requirement": "REs shall obtain a Software Bill of Materials for all critical systems and their components",
+                "unit": "boolean",
+                "value": 1,
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "topic": "vapt-cadence",
+                "requirement": "VAPT of critical systems at least twice a year for MIIs and Qualified REs",
+                "unit": "per-year",
+                "value": 2,
+                "controlId": "DE.CM.S2"
+              },
+              {
+                "topic": "incident-reporting",
+                "requirement": "Report cyber incidents to SEBI and CERT-In within 6 hours of noticing",
+                "unit": "hours",
+                "value": 6,
+                "controlId": "RS.CO.S1"
+              }
+            ],
+            "catalogFile": ".claude/skills/regulatory-catalogs/references/catalogs/sebi-cscrf-2024.catalog.json",
+            "lastReviewedAt": "2026-09-01"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-01T09:00:00Z"
+        }
+      }
+    },
+    {
+      "description": "jurisdiction that is not an alpha-2 code",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.instruments",
+        "instruments": [
+          {
+            "instrumentId": "sebi-cscrf-2024",
+            "regulator": "SEBI",
+            "title": "Cybersecurity and Cyber Resilience Framework (CSCRF) for SEBI Regulated Entities",
+            "shortName": "SEBI CSCRF",
+            "version": "SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113",
+            "issuedOn": "2024-08-20",
+            "effectiveFrom": "2025-04-01",
+            "supersedes": [],
+            "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
+            "applicability": {
+              "entityTypes": [
+                "stock-broker",
+                "depository-participant",
+                "asset-management-company",
+                "market-infrastructure-institution"
+              ],
+              "jurisdictions": [
+                "India"
+              ],
+              "categories": [
+                "mii",
+                "qualified-re",
+                "mid-size-re",
+                "small-size-re",
+                "self-certification-re"
+              ]
+            },
+            "structure": "NIST CSF style: function (GV, ID, PR, DE, RS, RC) . category . S<n> standard, e.g. GV.SC.S5; guidelines suffixed G<n>",
+            "hardRequirements": [
+              {
+                "topic": "sbom",
+                "requirement": "REs shall obtain a Software Bill of Materials for all critical systems and their components",
+                "unit": "boolean",
+                "value": 1,
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "topic": "vapt-cadence",
+                "requirement": "VAPT of critical systems at least twice a year for MIIs and Qualified REs",
+                "unit": "per-year",
+                "value": 2,
+                "controlId": "DE.CM.S2"
+              },
+              {
+                "topic": "incident-reporting",
+                "requirement": "Report cyber incidents to SEBI and CERT-In within 6 hours of noticing",
+                "unit": "hours",
+                "value": 6,
+                "controlId": "RS.CO.S1"
+              }
+            ],
+            "catalogFile": ".claude/skills/regulatory-catalogs/references/catalogs/sebi-cscrf-2024.catalog.json",
+            "lastReviewedAt": "2026-09-01"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-01T09:00:00Z"
+        }
+      }
+    },
+    {
+      "description": "wrong kind",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.regulator",
+        "instruments": [
+          {
+            "instrumentId": "sebi-cscrf-2024",
+            "regulator": "SEBI",
+            "title": "Cybersecurity and Cyber Resilience Framework (CSCRF) for SEBI Regulated Entities",
+            "shortName": "SEBI CSCRF",
+            "version": "SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113",
+            "issuedOn": "2024-08-20",
+            "effectiveFrom": "2025-04-01",
+            "supersedes": [],
+            "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
+            "applicability": {
+              "entityTypes": [
+                "stock-broker",
+                "depository-participant",
+                "asset-management-company",
+                "market-infrastructure-institution"
+              ],
+              "jurisdictions": [
+                "IN"
+              ],
+              "categories": [
+                "mii",
+                "qualified-re",
+                "mid-size-re",
+                "small-size-re",
+                "self-certification-re"
+              ]
+            },
+            "structure": "NIST CSF style: function (GV, ID, PR, DE, RS, RC) . category . S<n> standard, e.g. GV.SC.S5; guidelines suffixed G<n>",
+            "hardRequirements": [
+              {
+                "topic": "sbom",
+                "requirement": "REs shall obtain a Software Bill of Materials for all critical systems and their components",
+                "unit": "boolean",
+                "value": 1,
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "topic": "vapt-cadence",
+                "requirement": "VAPT of critical systems at least twice a year for MIIs and Qualified REs",
+                "unit": "per-year",
+                "value": 2,
+                "controlId": "DE.CM.S2"
+              },
+              {
+                "topic": "incident-reporting",
+                "requirement": "Report cyber incidents to SEBI and CERT-In within 6 hours of noticing",
+                "unit": "hours",
+                "value": 6,
+                "controlId": "RS.CO.S1"
+              }
+            ],
+            "catalogFile": ".claude/skills/regulatory-catalogs/references/catalogs/sebi-cscrf-2024.catalog.json",
+            "lastReviewedAt": "2026-09-01"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-01T09:00:00Z"
+        }
+      }
+    },
+    {
+      "description": "catalogFile with path traversal",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.instruments",
+        "instruments": [
+          {
+            "instrumentId": "sebi-cscrf-2024",
+            "regulator": "SEBI",
+            "title": "Cybersecurity and Cyber Resilience Framework (CSCRF) for SEBI Regulated Entities",
+            "shortName": "SEBI CSCRF",
+            "version": "SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113",
+            "issuedOn": "2024-08-20",
+            "effectiveFrom": "2025-04-01",
+            "supersedes": [],
+            "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
+            "applicability": {
+              "entityTypes": [
+                "stock-broker",
+                "depository-participant",
+                "asset-management-company",
+                "market-infrastructure-institution"
+              ],
+              "jurisdictions": [
+                "IN"
+              ],
+              "categories": [
+                "mii",
+                "qualified-re",
+                "mid-size-re",
+                "small-size-re",
+                "self-certification-re"
+              ]
+            },
+            "structure": "NIST CSF style: function (GV, ID, PR, DE, RS, RC) . category . S<n> standard, e.g. GV.SC.S5; guidelines suffixed G<n>",
+            "hardRequirements": [
+              {
+                "topic": "sbom",
+                "requirement": "REs shall obtain a Software Bill of Materials for all critical systems and their components",
+                "unit": "boolean",
+                "value": 1,
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "topic": "vapt-cadence",
+                "requirement": "VAPT of critical systems at least twice a year for MIIs and Qualified REs",
+                "unit": "per-year",
+                "value": 2,
+                "controlId": "DE.CM.S2"
+              },
+              {
+                "topic": "incident-reporting",
+                "requirement": "Report cyber incidents to SEBI and CERT-In within 6 hours of noticing",
+                "unit": "hours",
+                "value": 6,
+                "controlId": "RS.CO.S1"
+              }
+            ],
+            "catalogFile": "../etc/passwd",
+            "lastReviewedAt": "2026-09-01"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-01T09:00:00Z"
+        }
+      }
+    },
+    {
+      "description": "applicability category not in the company category slug form",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.instruments",
+        "instruments": [
+          {
+            "instrumentId": "sebi-cscrf-2024",
+            "regulator": "SEBI",
+            "title": "Cybersecurity and Cyber Resilience Framework (CSCRF) for SEBI Regulated Entities",
+            "shortName": "SEBI CSCRF",
+            "version": "SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113",
+            "issuedOn": "2024-08-20",
+            "effectiveFrom": "2025-04-01",
+            "supersedes": [],
+            "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
+            "applicability": {
+              "entityTypes": [
+                "stock-broker",
+                "depository-participant",
+                "asset-management-company",
+                "market-infrastructure-institution"
+              ],
+              "jurisdictions": [
+                "IN"
+              ],
+              "categories": [
+                "Qualified RE"
+              ]
+            },
+            "structure": "NIST CSF style: function (GV, ID, PR, DE, RS, RC) . category . S<n> standard, e.g. GV.SC.S5; guidelines suffixed G<n>",
+            "hardRequirements": [
+              {
+                "topic": "sbom",
+                "requirement": "REs shall obtain a Software Bill of Materials for all critical systems and their components",
+                "unit": "boolean",
+                "value": 1,
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "topic": "vapt-cadence",
+                "requirement": "VAPT of critical systems at least twice a year for MIIs and Qualified REs",
+                "unit": "per-year",
+                "value": 2,
+                "controlId": "DE.CM.S2"
+              },
+              {
+                "topic": "incident-reporting",
+                "requirement": "Report cyber incidents to SEBI and CERT-In within 6 hours of noticing",
+                "unit": "hours",
+                "value": 6,
+                "controlId": "RS.CO.S1"
+              }
+            ],
+            "catalogFile": ".claude/skills/regulatory-catalogs/references/catalogs/sebi-cscrf-2024.catalog.json",
+            "lastReviewedAt": "2026-09-01"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-01T09:00:00Z"
+        }
+      }
+    },
+    {
+      "description": "hard requirements stated in minutes, years, per-quarter and counts",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.instruments",
+        "instruments": [
+          {
+            "instrumentId": "sebi-cscrf-2024",
+            "regulator": "SEBI",
+            "title": "Cybersecurity and Cyber Resilience Framework (CSCRF) for SEBI Regulated Entities",
+            "shortName": "SEBI CSCRF",
+            "version": "SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113",
+            "issuedOn": "2024-08-20",
+            "effectiveFrom": "2025-04-01",
+            "supersedes": [],
+            "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
+            "applicability": {
+              "entityTypes": [
+                "stock-broker",
+                "depository-participant",
+                "asset-management-company",
+                "market-infrastructure-institution"
+              ],
+              "jurisdictions": [
+                "IN"
+              ],
+              "categories": [
+                "mii",
+                "qualified-re",
+                "mid-size-re",
+                "small-size-re",
+                "self-certification-re"
+              ]
+            },
+            "structure": "NIST CSF style: function (GV, ID, PR, DE, RS, RC) . category . S<n> standard, e.g. GV.SC.S5; guidelines suffixed G<n>",
+            "hardRequirements": [
+              {
+                "topic": "sbom",
+                "requirement": "REs shall obtain a Software Bill of Materials for all critical systems and their components",
+                "unit": "boolean",
+                "value": 1,
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "topic": "vapt-cadence",
+                "requirement": "VAPT of critical systems at least twice a year for MIIs and Qualified REs",
+                "unit": "per-year",
+                "value": 2,
+                "controlId": "DE.CM.S2"
+              },
+              {
+                "topic": "incident-reporting",
+                "requirement": "Report cyber incidents to SEBI and CERT-In within 6 hours of noticing",
+                "unit": "hours",
+                "value": 6,
+                "controlId": "RS.CO.S1"
+              },
+              {
+                "topic": "session-timeout",
+                "requirement": "Sessions shall time out after 15 minutes of inactivity",
+                "unit": "minutes",
+                "value": 15
+              },
+              {
+                "topic": "log-retention",
+                "requirement": "Logs shall be retained for a rolling period of 180 days",
+                "unit": "days",
+                "value": 180,
+                "controlId": "DE.CM.S5"
+              },
+              {
+                "topic": "data-retention",
+                "requirement": "Records shall be preserved for 5 years",
+                "unit": "years",
+                "value": 5
+              },
+              {
+                "topic": "dr-drill",
+                "requirement": "At least one DR drill per quarter",
+                "unit": "per-quarter",
+                "value": 1
+              },
+              {
+                "topic": "access-review",
+                "requirement": "Privileged access reviewed by two independent reviewers",
+                "unit": "count",
+                "value": 2
+              }
+            ],
+            "catalogFile": ".claude/skills/regulatory-catalogs/references/catalogs/sebi-cscrf-2024.catalog.json",
+            "lastReviewedAt": "2026-09-01"
+          }
+        ],
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-01T09:00:00Z"
+        }
+      }
+    }
+  ]
+}

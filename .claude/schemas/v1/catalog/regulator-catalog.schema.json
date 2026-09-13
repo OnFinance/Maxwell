@@ -1,0 +1,289 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/catalog/regulator-catalog.schema.json",
+  "title": "Regulator control catalog",
+  "description": "Schema for .claude/skills/regulatory-catalogs/references/catalogs/<instrumentId>.catalog.json: an OSCAL 1.1.3 catalog reduced to what Maxwell workflows consume. groups mirror OSCAL groups, controls mirror OSCAL controls with prose and guidance parts flattened, mappings are regulatoryRefs to equivalent controls in other instruments. Control ids must be unique within a group; soc control records are keyed '<instrumentId>:<control id>' and regulatoryRefs cite (instrumentId, control id)",
+  "examples": [
+    {
+      "schemaVersion": "1",
+      "kind": "maxwell.catalog.regulator",
+      "instrumentId": "sebi-cscrf-2024",
+      "regulator": "SEBI",
+      "version": "SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113",
+      "sourceUrl": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
+      "retrievedAt": "2026-09-01T09:00:00Z",
+      "groups": [
+        {
+          "id": "GV.SC",
+          "title": "Govern: Cybersecurity Supply Chain Risk Management",
+          "controls": [
+            {
+              "id": "GV.SC.S5",
+              "title": "Software Bill of Materials for critical systems",
+              "prose": "REs shall obtain a Software Bill of Materials (SBOM) for all critical systems and for every new critical software procured, listing components, versions, licences and known vulnerabilities, and shall keep it updated on every release",
+              "guidance": "Generate CycloneDX or SPDX from the build pipeline and store the reference under applications/<app_id>/images/<image_id>.cdx.json",
+              "category": "GV.SC",
+              "applicability": {
+                "reCategories": [ "mii", "qualified-re", "mid-size-re" ],
+                "entityTypes": [
+                  "stock-broker",
+                  "market-infrastructure-institution"
+                ]
+              },
+              "mandatory": true,
+              "defaultSeverity": "high",
+              "cadence": "event-driven",
+              "evidenceExpected": [
+                "CycloneDX SBOM per production image",
+                "Pipeline step that regenerates SBOM on release"
+              ],
+              "params": [
+                {
+                  "id": "sbomFormat",
+                  "label": "SBOM format accepted for critical systems",
+                  "default": "cyclonedx-1.6"
+                }
+              ],
+              "mappings": [
+                {
+                  "regulator": "NIST",
+                  "instrument": "nist-ssdf-800-218",
+                  "controlId": "PS.3.2"
+                }
+              ],
+              "probeWorkflows": [ "probe-cicd-env", "probe-app-chart" ]
+            }
+          ]
+        }
+      ],
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-01T09:30:00Z",
+        "workflow": "manual",
+        "agent": "regulatory-cataloguer",
+        "sessionId": "8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b"
+      }
+    }
+  ],
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "kind",
+    "instrumentId",
+    "regulator",
+    "version",
+    "sourceUrl",
+    "retrievedAt",
+    "groups",
+    "provenance"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/schemaVersion"
+    },
+    "kind": {
+      "const": "maxwell.catalog.regulator"
+    },
+    "instrumentId": {
+      "description": "Instrument this catalog was extracted from; must equal the file's basename before .catalog.json",
+      "$ref": "https://maxwell.onfinance.ai/schemas/vocab/instruments.schema.json"
+    },
+    "regulator": {
+      "description": "Issuing regulator, copied from the instruments registry",
+      "$ref": "https://maxwell.onfinance.ai/schemas/vocab/regulators.schema.json"
+    },
+    "version": {
+      "description": "Instrument version the catalog reflects, as in the instruments registry",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+    },
+    "sourceUrl": {
+      "description": "URL of the document the controls were extracted from",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/url"
+    },
+    "retrievedAt": {
+      "description": "When the source document was fetched for extraction",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+    },
+    "groups": {
+      "description": "OSCAL groups: chapters, functions or annexes of the instrument, each holding controls",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/group"
+      }
+    },
+    "provenance": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/provenance"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "group": {
+      "type": "object",
+      "required": [ "id", "title", "controls" ],
+      "properties": {
+        "id": {
+          "description": "Group identifier as the instrument numbers it, e.g. 'GV.SC', 'Annex-I', 'Chapter-IV'",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/controlId"
+        },
+        "title": {
+          "description": "Group heading as printed in the instrument",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "controls": {
+          "description": "Controls in this group; ids must be unique within the group",
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/control"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "control": {
+      "description": "One control of the instrument. mandatory controls must state defaultSeverity, the severity a finding against the control gets when no CVSS score applies",
+      "type": "object",
+      "if": {
+        "properties": {
+          "mandatory": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "required": [ "defaultSeverity" ]
+      },
+      "required": [ "id", "title", "prose", "mandatory" ],
+      "properties": {
+        "id": {
+          "description": "Control id exactly as the instrument numbers it. regulatoryRefs cite it with the instrumentId; the soc ledger keys the control record '<instrumentId>:<id>'",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/controlId"
+        },
+        "title": {
+          "description": "Short control heading; write one if the instrument has none",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "prose": {
+          "description": "OSCAL statement part: the requirement text verbatim or a faithful paraphrase",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+        },
+        "guidance": {
+          "description": "OSCAL guidance part: how to implement or evidence the control in a typical Indian fin-serv stack",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+        },
+        "category": {
+          "description": "Framework category or domain the control belongs to, e.g. 'GV.SC', 'Access Control'",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "applicability": {
+          "description": "Narrows the instrument-level applicability for this control; omit when the whole instrument applies",
+          "type": "object",
+          "properties": {
+            "reCategories": {
+              "description": "Regulator-defined tiers the control binds, as slugs shared with company details.regulatoryRegistrations[].category (e.g. 'qualified-re'); empty means all tiers",
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "$ref": "https://maxwell.onfinance.ai/schemas/v1/catalog/instruments.schema.json#/$defs/reCategory"
+              }
+            },
+            "entityTypes": {
+              "description": "Entity types the control binds; empty means every type the instrument covers",
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "$ref": "https://maxwell.onfinance.ai/schemas/vocab/entity-types.schema.json"
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "mandatory": {
+          "description": "true when the instrument uses 'shall' or equivalent; false for guidance and recommendations",
+          "type": "boolean"
+        },
+        "defaultSeverity": {
+          "description": "Severity a finding against this control carries when no CVSS score applies (soc finding.severity copies it); required for mandatory controls. Set from how the regulator weights the clause, not from intuition",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/severity"
+        },
+        "cadence": {
+          "description": "How often the control must be performed or re-evidenced; 'event-driven' for controls triggered by a change or incident",
+          "enum": [
+            "continuous",
+            "daily",
+            "weekly",
+            "monthly",
+            "quarterly",
+            "half-yearly",
+            "annual",
+            "biennial",
+            "event-driven"
+          ]
+        },
+        "slaDays": {
+          "description": "Days allowed to remediate a gap against this control only when the instrument itself states one (cite the clause in guidance); omit otherwise, the SLA table sets the deadline by severity",
+          "type": "integer",
+          "maximum": 3650,
+          "minimum": 0
+        },
+        "evidenceExpected": {
+          "description": "Artefacts an auditor would accept as proof the control operates",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+          }
+        },
+        "params": {
+          "description": "OSCAL params the control exposes: the parameter names a soc control record may set (record parameters[].name must be one of these ids) with the regulator-stated default, e.g. CSCRF password length or log retention days",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "required": [ "id", "label" ],
+            "properties": {
+              "id": {
+                "description": "Parameter name, camelCase, the same shape as soc control record parameters[].name",
+                "type": "string",
+                "pattern": "^[a-z][A-Za-z0-9]{0,63}$"
+              },
+              "label": {
+                "description": "What the parameter sets, in the regulator's words",
+                "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+              },
+              "default": {
+                "description": "Regulator-stated default or minimum as text, when the clause states one; omit otherwise",
+                "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+              },
+              "unit": {
+                "description": "Unit of default, when numeric",
+                "$ref": "https://maxwell.onfinance.ai/schemas/v1/catalog/instruments.schema.json#/$defs/unit"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "mappings": {
+          "description": "Equivalent controls in other instruments (crosswalk); never map to the same instrument",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/regulatoryRef"
+          }
+        },
+        "probeWorkflows": {
+          "description": "Maxwell workflows whose observations can evidence this control",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/vocab/workflows.schema.json"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

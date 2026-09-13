@@ -1,0 +1,269 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/session/meta.schema.json",
+  "title": "Harness session metadata",
+  "description": "Schema for kpis/data/raw/sessions/<harness>/<sessionId>.meta.json, written by the session-start hook when a Claude Code or OpenCode session starts and completed by the session-end hook (endedAt, sampled, samplingReason). Records what was invoked, by whom, against which company and where the transcript lives, so summaries and KPIs can be attributed",
+  "examples": [
+    {
+      "schemaVersion": "1",
+      "kind": "maxwell.session.meta",
+      "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+      "harness": "claude-code",
+      "harnessVersion": "2.1.14",
+      "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+      "workflow": "refresh-soc",
+      "companyId": "zerodha-broking",
+      "args": {
+        "appIds": [ "kite-payments", "kite-web" ],
+        "envIds": [ "prod" ],
+        "dryRun": false
+      },
+      "startedAt": "2026-09-12T03:00:05Z",
+      "endedAt": "2026-09-12T03:41:52Z",
+      "cwd": "/srv/maxwell/workspace",
+      "gitBranch": "main",
+      "gitCommit": "9f3c2ab1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+      "transcriptPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.jsonl",
+      "exportPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.export.json",
+      "sampled": true,
+      "samplingReason": "bundle",
+      "model": "claude-opus-5",
+      "invokedBy": {
+        "type": "script",
+        "id": ".github/workflows/nightly-refresh.yml"
+      },
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-12T03:41:53Z",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "agent": "session-ingest-hook",
+        "model": "claude-opus-5"
+      }
+    }
+  ],
+  "type": "object",
+  "allOf": [
+    {
+      "if": {
+        "required": [ "harness" ],
+        "properties": {
+          "harness": {
+            "const": "claude-code"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "transcriptPath": {
+            "pattern": "^kpis/data/raw/sessions/claude-code/[A-Za-z0-9._-]+\\.jsonl$"
+          },
+          "exportPath": {
+            "pattern": "^kpis/data/raw/sessions/claude-code/[A-Za-z0-9._-]+\\.export\\.json$"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [ "harness" ],
+        "properties": {
+          "harness": {
+            "const": "opencode"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "transcriptPath": {
+            "pattern": "^kpis/data/raw/sessions/opencode/[A-Za-z0-9._-]+\\.jsonl$"
+          },
+          "exportPath": {
+            "pattern": "^kpis/data/raw/sessions/opencode/[A-Za-z0-9._-]+\\.export\\.json$"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [ "sampled" ],
+        "properties": {
+          "sampled": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "samplingReason": {
+            "enum": [ "bundle", "stochastic", "all", "forced" ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [ "sampled" ],
+        "properties": {
+          "sampled": {
+            "const": false
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "samplingReason": {
+            "enum": [ "bundle", "stochastic", "pending" ]
+          }
+        }
+      }
+    }
+  ],
+  "required": [
+    "schemaVersion",
+    "kind",
+    "sessionId",
+    "harness",
+    "workflow",
+    "args",
+    "startedAt",
+    "cwd",
+    "transcriptPath",
+    "model",
+    "invokedBy",
+    "provenance"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/schemaVersion"
+    },
+    "kind": {
+      "const": "maxwell.session.meta"
+    },
+    "sessionId": {
+      "description": "Harness session id; also the file stem of the meta, summary, transcript and export files",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/sessionId"
+    },
+    "harness": {
+      "description": "Harness that ran the session; must be 'claude-code' or 'opencode' for ingested sessions and matches the parent folder name",
+      "enum": [ "claude-code", "opencode" ]
+    },
+    "harnessVersion": {
+      "description": "Harness release, e.g. the Claude Code 'version' field on transcript records or the OpenCode CLI version. Omit when the harness does not report it; never write a placeholder",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/semver"
+    },
+    "runId": {
+      "description": "Headless run the session belongs to (MAXWELL_RUN_ID); omitted for interactive sessions",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/runId"
+    },
+    "workflow": {
+      "description": "Workflow the session executed; 'manual' for ad-hoc interactive sessions",
+      "$ref": "https://maxwell.onfinance.ai/schemas/vocab/workflows.schema.json"
+    },
+    "companyId": {
+      "description": "Company the workflow was invoked for; omitted for utility workflows with no company argument",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+    },
+    "args": {
+      "description": "Parsed workflow arguments and flags as invoked",
+      "type": "object",
+      "properties": {
+        "appIds": {
+          "description": "Applications the workflow was restricted to; omitted when it covered all applications of the company",
+          "type": "array",
+          "maxItems": 256,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+          }
+        },
+        "envIds": {
+          "description": "Environments the workflow was restricted to",
+          "type": "array",
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+          }
+        },
+        "dryRun": {
+          "description": "Whether --dry-run was passed (runtime probes plan and request evidence instead of executing)",
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "startedAt": {
+      "description": "Timestamp of the first transcript record",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+    },
+    "endedAt": {
+      "description": "Timestamp of the last transcript record; absent while the session is still running",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+    },
+    "cwd": {
+      "$ref": "#/$defs/cwd"
+    },
+    "gitBranch": {
+      "description": "Git branch checked out in cwd when the session started",
+      "type": "string",
+      "pattern": "^[^\\s~^:?*\\[\\\\]{1,255}$"
+    },
+    "gitCommit": {
+      "description": "HEAD commit in cwd when the session started",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/gitCommit"
+    },
+    "transcriptPath": {
+      "description": "Workspace path of the copied transcript (Claude Code JSONL or OpenCode message JSONL): kpis/data/raw/sessions/<harness>/<sessionId>.jsonl next to this file. The harness folder must match harness",
+      "$ref": "#/$defs/sessionFilePath"
+    },
+    "exportPath": {
+      "description": "Workspace path of the harness's own export (OpenCode `opencode export`): kpis/data/raw/sessions/<harness>/<sessionId>.export.json next to this file, when one was produced. The harness folder must match harness",
+      "$ref": "#/$defs/sessionFilePath"
+    },
+    "sampled": {
+      "description": "Whether this session is included in KPI measurement under the registry sampling settings. Decided by the session-end hook, so set together with endedAt (or write false with samplingReason pending while the session runs)",
+      "type": "boolean"
+    },
+    "samplingReason": {
+      "description": "Why sampled has its value: the registry mode that selected (sampled true) or skipped (sampled false) it, 'forced' when MAXWELL_KPI_SAMPLE=1 overrode the sampler, or 'pending' while the session is still running and no decision has been taken (sampled false only)",
+      "enum": [ "bundle", "stochastic", "all", "forced", "pending" ]
+    },
+    "model": {
+      "description": "Primary model id the session was started with (gen_ai.request.model), e.g. 'claude-opus-5'",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/modelId"
+    },
+    "invokedBy": {
+      "description": "Who started the session: a human operator, a scheduler script or a parent agent",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/actor"
+    },
+    "provenance": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/provenance"
+    }
+  },
+  "additionalProperties": false,
+  "dependentRequired": {
+    "endedAt": [ "sampled", "samplingReason" ],
+    "sampled": [ "samplingReason" ],
+    "samplingReason": [ "sampled" ]
+  },
+  "$defs": {
+    "cwd": {
+      "description": "Working directory the harness ran in: either an absolute POSIX path or a path relative to the workspace root",
+      "anyOf": [
+        {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/workspacePath"
+        },
+        {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/absolutePath"
+        }
+      ]
+    },
+    "sessionFilePath": {
+      "description": "Workspace path under kpis/data/raw/sessions/<harness>/; the per-harness allOf branches pin the folder and suffix",
+      "type": "string",
+      "pattern": "^kpis/data/raw/sessions/(claude-code|opencode)/[A-Za-z0-9._-]+$"
+    }
+  }
+}

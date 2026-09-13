@@ -1,0 +1,1243 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/v1/session/meta.schema.json",
+  "tests": [
+    {
+      "description": "complete claude-code session meta",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.meta",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "args": {
+          "appIds": [
+            "kite-payments",
+            "kite-web"
+          ],
+          "envIds": [
+            "prod"
+          ],
+          "dryRun": false
+        },
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "cwd": "/srv/maxwell/workspace",
+        "gitBranch": "main",
+        "gitCommit": "9f3c2ab1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+        "transcriptPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.jsonl",
+        "exportPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.export.json",
+        "sampled": true,
+        "samplingReason": "bundle",
+        "model": "claude-opus-5",
+        "invokedBy": {
+          "type": "script",
+          "id": ".github/workflows/nightly-refresh.yml"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T03:41:53Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": "session-ingest-hook",
+          "model": "claude-opus-5"
+        }
+      }
+    },
+    {
+      "description": "opencode session with ses_ id and relative cwd",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.meta",
+        "sessionId": "ses_8KpQ2mN4vX",
+        "harness": "opencode",
+        "harnessVersion": "1.0.150",
+        "workflow": "refresh-soc",
+        "args": {},
+        "startedAt": "2026-09-12T03:00:05Z",
+        "cwd": "company-profile/zerodha-broking",
+        "gitBranch": "main",
+        "gitCommit": "9f3c2ab1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+        "transcriptPath": "kpis/data/raw/sessions/opencode/ses_8KpQ2mN4vX.jsonl",
+        "exportPath": "kpis/data/raw/sessions/opencode/ses_8KpQ2mN4vX.export.json",
+        "sampled": true,
+        "samplingReason": "bundle",
+        "model": "claude-opus-5",
+        "invokedBy": {
+          "type": "script",
+          "id": ".github/workflows/nightly-refresh.yml"
+        },
+        "provenance": {
+          "harness": "opencode",
+          "generatedAt": "2026-09-12T03:41:53Z",
+          "sessionId": "ses_8KpQ2mN4vX",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": "session-ingest-hook",
+          "model": "claude-opus-5"
+        }
+      }
+    },
+    {
+      "description": "invented extra key",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.meta",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "args": {
+          "appIds": [
+            "kite-payments",
+            "kite-web"
+          ],
+          "envIds": [
+            "prod"
+          ],
+          "dryRun": false
+        },
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "cwd": "/srv/maxwell/workspace",
+        "gitBranch": "main",
+        "gitCommit": "9f3c2ab1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+        "transcriptPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.jsonl",
+        "exportPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.export.json",
+        "sampled": true,
+        "samplingReason": "bundle",
+        "model": "claude-opus-5",
+        "invokedBy": {
+          "type": "script",
+          "id": ".github/workflows/nightly-refresh.yml"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T03:41:53Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": "session-ingest-hook",
+          "model": "claude-opus-5"
+        },
+        "userAgent": "curl"
+      }
+    },
+    {
+      "description": "bad sessionId pattern",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.meta",
+        "sessionId": "session-42",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "args": {
+          "appIds": [
+            "kite-payments",
+            "kite-web"
+          ],
+          "envIds": [
+            "prod"
+          ],
+          "dryRun": false
+        },
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "cwd": "/srv/maxwell/workspace",
+        "gitBranch": "main",
+        "gitCommit": "9f3c2ab1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+        "transcriptPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.jsonl",
+        "exportPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.export.json",
+        "sampled": true,
+        "samplingReason": "bundle",
+        "model": "claude-opus-5",
+        "invokedBy": {
+          "type": "script",
+          "id": ".github/workflows/nightly-refresh.yml"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T03:41:53Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": "session-ingest-hook",
+          "model": "claude-opus-5"
+        }
+      }
+    },
+    {
+      "description": "harness human is not ingestable",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.meta",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "human",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "args": {
+          "appIds": [
+            "kite-payments",
+            "kite-web"
+          ],
+          "envIds": [
+            "prod"
+          ],
+          "dryRun": false
+        },
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "cwd": "/srv/maxwell/workspace",
+        "gitBranch": "main",
+        "gitCommit": "9f3c2ab1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+        "transcriptPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.jsonl",
+        "exportPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.export.json",
+        "sampled": true,
+        "samplingReason": "bundle",
+        "model": "claude-opus-5",
+        "invokedBy": {
+          "type": "script",
+          "id": ".github/workflows/nightly-refresh.yml"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T03:41:53Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": "session-ingest-hook",
+          "model": "claude-opus-5"
+        }
+      }
+    },
+    {
+      "description": "bad samplingReason enum",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.meta",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "args": {
+          "appIds": [
+            "kite-payments",
+            "kite-web"
+          ],
+          "envIds": [
+            "prod"
+          ],
+          "dryRun": false
+        },
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "cwd": "/srv/maxwell/workspace",
+        "gitBranch": "main",
+        "gitCommit": "9f3c2ab1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+        "transcriptPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.jsonl",
+        "exportPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.export.json",
+        "sampled": true,
+        "samplingReason": "random",
+        "model": "claude-opus-5",
+        "invokedBy": {
+          "type": "script",
+          "id": ".github/workflows/nightly-refresh.yml"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T03:41:53Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": "session-ingest-hook",
+          "model": "claude-opus-5"
+        }
+      }
+    },
+    {
+      "description": "missing required transcriptPath",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.meta",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "args": {
+          "appIds": [
+            "kite-payments",
+            "kite-web"
+          ],
+          "envIds": [
+            "prod"
+          ],
+          "dryRun": false
+        },
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "cwd": "/srv/maxwell/workspace",
+        "gitBranch": "main",
+        "gitCommit": "9f3c2ab1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+        "exportPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.export.json",
+        "sampled": true,
+        "samplingReason": "bundle",
+        "model": "claude-opus-5",
+        "invokedBy": {
+          "type": "script",
+          "id": ".github/workflows/nightly-refresh.yml"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T03:41:53Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": "session-ingest-hook",
+          "model": "claude-opus-5"
+        }
+      }
+    },
+    {
+      "description": "transcriptPath outside sessions dir",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.meta",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "args": {
+          "appIds": [
+            "kite-payments",
+            "kite-web"
+          ],
+          "envIds": [
+            "prod"
+          ],
+          "dryRun": false
+        },
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "cwd": "/srv/maxwell/workspace",
+        "gitBranch": "main",
+        "gitCommit": "9f3c2ab1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+        "transcriptPath": "kpis/data/raw/transcript.jsonl",
+        "exportPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.export.json",
+        "sampled": true,
+        "samplingReason": "bundle",
+        "model": "claude-opus-5",
+        "invokedBy": {
+          "type": "script",
+          "id": ".github/workflows/nightly-refresh.yml"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T03:41:53Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": "session-ingest-hook",
+          "model": "claude-opus-5"
+        }
+      }
+    },
+    {
+      "description": "cwd with traversal",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.meta",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "args": {
+          "appIds": [
+            "kite-payments",
+            "kite-web"
+          ],
+          "envIds": [
+            "prod"
+          ],
+          "dryRun": false
+        },
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "cwd": "../elsewhere",
+        "gitBranch": "main",
+        "gitCommit": "9f3c2ab1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+        "transcriptPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.jsonl",
+        "exportPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.export.json",
+        "sampled": true,
+        "samplingReason": "bundle",
+        "model": "claude-opus-5",
+        "invokedBy": {
+          "type": "script",
+          "id": ".github/workflows/nightly-refresh.yml"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T03:41:53Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": "session-ingest-hook",
+          "model": "claude-opus-5"
+        }
+      }
+    },
+    {
+      "description": "unknown workflow",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.meta",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-all",
+        "companyId": "zerodha-broking",
+        "args": {
+          "appIds": [
+            "kite-payments",
+            "kite-web"
+          ],
+          "envIds": [
+            "prod"
+          ],
+          "dryRun": false
+        },
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "cwd": "/srv/maxwell/workspace",
+        "gitBranch": "main",
+        "gitCommit": "9f3c2ab1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+        "transcriptPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.jsonl",
+        "exportPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.export.json",
+        "sampled": true,
+        "samplingReason": "bundle",
+        "model": "claude-opus-5",
+        "invokedBy": {
+          "type": "script",
+          "id": ".github/workflows/nightly-refresh.yml"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T03:41:53Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": "session-ingest-hook",
+          "model": "claude-opus-5"
+        }
+      }
+    },
+    {
+      "description": "unknown args flag",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.meta",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "args": {
+          "appIds": [
+            "kite-payments",
+            "kite-web"
+          ],
+          "envIds": [
+            "prod"
+          ],
+          "dryRun": false,
+          "verbose": true
+        },
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "cwd": "/srv/maxwell/workspace",
+        "gitBranch": "main",
+        "gitCommit": "9f3c2ab1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+        "transcriptPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.jsonl",
+        "exportPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.export.json",
+        "sampled": true,
+        "samplingReason": "bundle",
+        "model": "claude-opus-5",
+        "invokedBy": {
+          "type": "script",
+          "id": ".github/workflows/nightly-refresh.yml"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T03:41:53Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": "session-ingest-hook",
+          "model": "claude-opus-5"
+        }
+      }
+    },
+    {
+      "description": "harnessVersion not semver",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.meta",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "args": {
+          "appIds": [
+            "kite-payments",
+            "kite-web"
+          ],
+          "envIds": [
+            "prod"
+          ],
+          "dryRun": false
+        },
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "cwd": "/srv/maxwell/workspace",
+        "gitBranch": "main",
+        "gitCommit": "9f3c2ab1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+        "transcriptPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.jsonl",
+        "exportPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.export.json",
+        "sampled": true,
+        "samplingReason": "bundle",
+        "model": "claude-opus-5",
+        "invokedBy": {
+          "type": "script",
+          "id": ".github/workflows/nightly-refresh.yml"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T03:41:53Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": "session-ingest-hook",
+          "model": "claude-opus-5"
+        }
+      }
+    },
+    {
+      "description": "running session without harnessVersion, endedAt or sampling decision",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.meta",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "args": {
+          "appIds": [
+            "kite-payments",
+            "kite-web"
+          ],
+          "envIds": [
+            "prod"
+          ],
+          "dryRun": false
+        },
+        "startedAt": "2026-09-12T03:00:05Z",
+        "cwd": "/srv/maxwell/workspace",
+        "gitBranch": "main",
+        "gitCommit": "9f3c2ab1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+        "transcriptPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.jsonl",
+        "exportPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.export.json",
+        "model": "claude-opus-5",
+        "invokedBy": {
+          "type": "script",
+          "id": ".github/workflows/nightly-refresh.yml"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T03:41:53Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": "session-ingest-hook",
+          "model": "claude-opus-5"
+        }
+      }
+    },
+    {
+      "description": "running session with sampled false and samplingReason pending",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.meta",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "args": {
+          "appIds": [
+            "kite-payments",
+            "kite-web"
+          ],
+          "envIds": [
+            "prod"
+          ],
+          "dryRun": false
+        },
+        "startedAt": "2026-09-12T03:00:05Z",
+        "cwd": "/srv/maxwell/workspace",
+        "gitBranch": "main",
+        "gitCommit": "9f3c2ab1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+        "transcriptPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.jsonl",
+        "exportPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.export.json",
+        "sampled": false,
+        "samplingReason": "pending",
+        "model": "claude-opus-5",
+        "invokedBy": {
+          "type": "script",
+          "id": ".github/workflows/nightly-refresh.yml"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T03:41:53Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": "session-ingest-hook",
+          "model": "claude-opus-5"
+        }
+      }
+    },
+    {
+      "description": "session skipped by the stochastic sampler",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.meta",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "args": {
+          "appIds": [
+            "kite-payments",
+            "kite-web"
+          ],
+          "envIds": [
+            "prod"
+          ],
+          "dryRun": false
+        },
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "cwd": "/srv/maxwell/workspace",
+        "gitBranch": "main",
+        "gitCommit": "9f3c2ab1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+        "transcriptPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.jsonl",
+        "exportPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.export.json",
+        "sampled": false,
+        "samplingReason": "stochastic",
+        "model": "claude-opus-5",
+        "invokedBy": {
+          "type": "script",
+          "id": ".github/workflows/nightly-refresh.yml"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T03:41:53Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": "session-ingest-hook",
+          "model": "claude-opus-5"
+        }
+      }
+    },
+    {
+      "description": "session forced into the sample",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.meta",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "args": {
+          "appIds": [
+            "kite-payments",
+            "kite-web"
+          ],
+          "envIds": [
+            "prod"
+          ],
+          "dryRun": false
+        },
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "cwd": "/srv/maxwell/workspace",
+        "gitBranch": "main",
+        "gitCommit": "9f3c2ab1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+        "transcriptPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.jsonl",
+        "exportPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.export.json",
+        "sampled": true,
+        "samplingReason": "forced",
+        "model": "claude-opus-5",
+        "invokedBy": {
+          "type": "script",
+          "id": ".github/workflows/nightly-refresh.yml"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T03:41:53Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": "session-ingest-hook",
+          "model": "claude-opus-5"
+        }
+      }
+    },
+    {
+      "description": "harnessVersion placeholder unknown",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.meta",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "unknown",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "args": {
+          "appIds": [
+            "kite-payments",
+            "kite-web"
+          ],
+          "envIds": [
+            "prod"
+          ],
+          "dryRun": false
+        },
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "cwd": "/srv/maxwell/workspace",
+        "gitBranch": "main",
+        "gitCommit": "9f3c2ab1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+        "transcriptPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.jsonl",
+        "exportPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.export.json",
+        "sampled": true,
+        "samplingReason": "bundle",
+        "model": "claude-opus-5",
+        "invokedBy": {
+          "type": "script",
+          "id": ".github/workflows/nightly-refresh.yml"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T03:41:53Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": "session-ingest-hook",
+          "model": "claude-opus-5"
+        }
+      }
+    },
+    {
+      "description": "endedAt without a sampling decision",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.meta",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "args": {
+          "appIds": [
+            "kite-payments",
+            "kite-web"
+          ],
+          "envIds": [
+            "prod"
+          ],
+          "dryRun": false
+        },
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "cwd": "/srv/maxwell/workspace",
+        "gitBranch": "main",
+        "gitCommit": "9f3c2ab1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+        "transcriptPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.jsonl",
+        "exportPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.export.json",
+        "model": "claude-opus-5",
+        "invokedBy": {
+          "type": "script",
+          "id": ".github/workflows/nightly-refresh.yml"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T03:41:53Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": "session-ingest-hook",
+          "model": "claude-opus-5"
+        }
+      }
+    },
+    {
+      "description": "sampled without samplingReason",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.meta",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "args": {
+          "appIds": [
+            "kite-payments",
+            "kite-web"
+          ],
+          "envIds": [
+            "prod"
+          ],
+          "dryRun": false
+        },
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "cwd": "/srv/maxwell/workspace",
+        "gitBranch": "main",
+        "gitCommit": "9f3c2ab1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+        "transcriptPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.jsonl",
+        "exportPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.export.json",
+        "sampled": true,
+        "model": "claude-opus-5",
+        "invokedBy": {
+          "type": "script",
+          "id": ".github/workflows/nightly-refresh.yml"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T03:41:53Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": "session-ingest-hook",
+          "model": "claude-opus-5"
+        }
+      }
+    },
+    {
+      "description": "sampled true with samplingReason pending",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.meta",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "args": {
+          "appIds": [
+            "kite-payments",
+            "kite-web"
+          ],
+          "envIds": [
+            "prod"
+          ],
+          "dryRun": false
+        },
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "cwd": "/srv/maxwell/workspace",
+        "gitBranch": "main",
+        "gitCommit": "9f3c2ab1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+        "transcriptPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.jsonl",
+        "exportPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.export.json",
+        "sampled": true,
+        "samplingReason": "pending",
+        "model": "claude-opus-5",
+        "invokedBy": {
+          "type": "script",
+          "id": ".github/workflows/nightly-refresh.yml"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T03:41:53Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": "session-ingest-hook",
+          "model": "claude-opus-5"
+        }
+      }
+    },
+    {
+      "description": "sampled false with samplingReason 'all'",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.meta",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "args": {
+          "appIds": [
+            "kite-payments",
+            "kite-web"
+          ],
+          "envIds": [
+            "prod"
+          ],
+          "dryRun": false
+        },
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "cwd": "/srv/maxwell/workspace",
+        "gitBranch": "main",
+        "gitCommit": "9f3c2ab1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+        "transcriptPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.jsonl",
+        "exportPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.export.json",
+        "sampled": false,
+        "samplingReason": "all",
+        "model": "claude-opus-5",
+        "invokedBy": {
+          "type": "script",
+          "id": ".github/workflows/nightly-refresh.yml"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T03:41:53Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": "session-ingest-hook",
+          "model": "claude-opus-5"
+        }
+      }
+    },
+    {
+      "description": "sampled false with samplingReason forced",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.meta",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "args": {
+          "appIds": [
+            "kite-payments",
+            "kite-web"
+          ],
+          "envIds": [
+            "prod"
+          ],
+          "dryRun": false
+        },
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "cwd": "/srv/maxwell/workspace",
+        "gitBranch": "main",
+        "gitCommit": "9f3c2ab1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+        "transcriptPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.jsonl",
+        "exportPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.export.json",
+        "sampled": false,
+        "samplingReason": "forced",
+        "model": "claude-opus-5",
+        "invokedBy": {
+          "type": "script",
+          "id": ".github/workflows/nightly-refresh.yml"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T03:41:53Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": "session-ingest-hook",
+          "model": "claude-opus-5"
+        }
+      }
+    },
+    {
+      "description": "transcriptPath under the wrong harness folder",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.meta",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "args": {
+          "appIds": [
+            "kite-payments",
+            "kite-web"
+          ],
+          "envIds": [
+            "prod"
+          ],
+          "dryRun": false
+        },
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "cwd": "/srv/maxwell/workspace",
+        "gitBranch": "main",
+        "gitCommit": "9f3c2ab1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+        "transcriptPath": "kpis/data/raw/sessions/opencode/other.jsonl",
+        "exportPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.export.json",
+        "sampled": true,
+        "samplingReason": "bundle",
+        "model": "claude-opus-5",
+        "invokedBy": {
+          "type": "script",
+          "id": ".github/workflows/nightly-refresh.yml"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T03:41:53Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": "session-ingest-hook",
+          "model": "claude-opus-5"
+        }
+      }
+    },
+    {
+      "description": "opencode exportPath under the claude-code folder",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.meta",
+        "sessionId": "ses_8KpQ2mN4vX",
+        "harness": "opencode",
+        "harnessVersion": "1.0.150",
+        "workflow": "refresh-soc",
+        "args": {},
+        "startedAt": "2026-09-12T03:00:05Z",
+        "cwd": "company-profile/zerodha-broking",
+        "gitBranch": "main",
+        "gitCommit": "9f3c2ab1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+        "transcriptPath": "kpis/data/raw/sessions/opencode/ses_8KpQ2mN4vX.jsonl",
+        "exportPath": "kpis/data/raw/sessions/claude-code/ses_8KpQ2mN4vX.export.json",
+        "sampled": true,
+        "samplingReason": "bundle",
+        "model": "claude-opus-5",
+        "invokedBy": {
+          "type": "script",
+          "id": ".github/workflows/nightly-refresh.yml"
+        },
+        "provenance": {
+          "harness": "opencode",
+          "generatedAt": "2026-09-12T03:41:53Z",
+          "sessionId": "ses_8KpQ2mN4vX",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": "session-ingest-hook",
+          "model": "claude-opus-5"
+        }
+      }
+    },
+    {
+      "description": "transcriptPath without the .jsonl suffix",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.meta",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "args": {
+          "appIds": [
+            "kite-payments",
+            "kite-web"
+          ],
+          "envIds": [
+            "prod"
+          ],
+          "dryRun": false
+        },
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "cwd": "/srv/maxwell/workspace",
+        "gitBranch": "main",
+        "gitCommit": "9f3c2ab1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+        "transcriptPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.export.json",
+        "exportPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.export.json",
+        "sampled": true,
+        "samplingReason": "bundle",
+        "model": "claude-opus-5",
+        "invokedBy": {
+          "type": "script",
+          "id": ".github/workflows/nightly-refresh.yml"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T03:41:53Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": "session-ingest-hook",
+          "model": "claude-opus-5"
+        }
+      }
+    },
+    {
+      "description": "exportPath without the .export.json suffix",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.meta",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "args": {
+          "appIds": [
+            "kite-payments",
+            "kite-web"
+          ],
+          "envIds": [
+            "prod"
+          ],
+          "dryRun": false
+        },
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "cwd": "/srv/maxwell/workspace",
+        "gitBranch": "main",
+        "gitCommit": "9f3c2ab1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+        "transcriptPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.jsonl",
+        "exportPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.jsonl",
+        "sampled": true,
+        "samplingReason": "bundle",
+        "model": "claude-opus-5",
+        "invokedBy": {
+          "type": "script",
+          "id": ".github/workflows/nightly-refresh.yml"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T03:41:53Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": "session-ingest-hook",
+          "model": "claude-opus-5"
+        }
+      }
+    },
+    {
+      "description": "wrong kind",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.metadata",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "args": {
+          "appIds": [
+            "kite-payments",
+            "kite-web"
+          ],
+          "envIds": [
+            "prod"
+          ],
+          "dryRun": false
+        },
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "cwd": "/srv/maxwell/workspace",
+        "gitBranch": "main",
+        "gitCommit": "9f3c2ab1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+        "transcriptPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.jsonl",
+        "exportPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.export.json",
+        "sampled": true,
+        "samplingReason": "bundle",
+        "model": "claude-opus-5",
+        "invokedBy": {
+          "type": "script",
+          "id": ".github/workflows/nightly-refresh.yml"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T03:41:53Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": "session-ingest-hook",
+          "model": "claude-opus-5"
+        }
+      }
+    }
+  ]
+}

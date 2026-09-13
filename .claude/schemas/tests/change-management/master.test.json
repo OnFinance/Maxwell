@@ -1,0 +1,3606 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/v1/change-management/master.schema.json",
+  "tests": [
+    {
+      "description": "realistic in-progress SBOM initiative",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "counters": {
+          "open": 1,
+          "closed": 0,
+          "cancelled": 0,
+          "overdue": 0
+        },
+        "initiatives": [
+          {
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "in-progress",
+            "severity": "high",
+            "priority": "p2",
+            "changeType": "normal",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "approver": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "approvedAt": "2026-08-21T10:05:00Z",
+            "dueAt": "2026-09-19T06:30:00Z",
+            "plannedWindow": {
+              "start": "2026-09-02T05:00:00Z",
+              "end": "2026-09-12T06:30:00Z"
+            },
+            "rollbackPlan": "Revert PR #482 on trading-gateway-api; the build workflow returns to its previous definition and no runtime component is affected",
+            "riskAssessment": "Low: adds a post-build CI job only; a failing SBOM step blocks the pipeline but not the running service",
+            "slaBasis": {
+              "source": "sla-table",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "GV.SC.S5",
+              "topic": "sbom",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 2,
+              "done": 1,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "closed initiative carries closedAt",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "counters": {
+          "open": 0,
+          "closed": 1,
+          "cancelled": 0,
+          "overdue": 0
+        },
+        "initiatives": [
+          {
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "closed",
+            "severity": "high",
+            "priority": "p2",
+            "changeType": "normal",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "approver": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "approvedAt": "2026-08-21T10:05:00Z",
+            "dueAt": "2026-09-19T06:30:00Z",
+            "plannedWindow": {
+              "start": "2026-09-02T05:00:00Z",
+              "end": "2026-09-12T06:30:00Z"
+            },
+            "rollbackPlan": "Revert PR #482 on trading-gateway-api; the build workflow returns to its previous definition and no runtime component is affected",
+            "riskAssessment": "Low: adds a post-build CI job only; a failing SBOM step blocks the pipeline but not the running service",
+            "slaBasis": {
+              "source": "sla-table",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "GV.SC.S5",
+              "topic": "sbom",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 2,
+              "done": 2,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            },
+            "closedAt": "2026-09-08T10:00:00Z"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "empty index for a freshly seeded company",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "counters": {
+          "open": 0,
+          "closed": 0,
+          "cancelled": 0,
+          "overdue": 0
+        },
+        "initiatives": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "invented top-level key",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "counters": {
+          "open": 1,
+          "closed": 0,
+          "cancelled": 0,
+          "overdue": 0
+        },
+        "initiatives": [
+          {
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "in-progress",
+            "severity": "high",
+            "priority": "p2",
+            "changeType": "normal",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "approver": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "approvedAt": "2026-08-21T10:05:00Z",
+            "dueAt": "2026-09-19T06:30:00Z",
+            "plannedWindow": {
+              "start": "2026-09-02T05:00:00Z",
+              "end": "2026-09-12T06:30:00Z"
+            },
+            "rollbackPlan": "Revert PR #482 on trading-gateway-api; the build workflow returns to its previous definition and no runtime component is affected",
+            "riskAssessment": "Low: adds a post-build CI job only; a failing SBOM step blocks the pipeline but not the running service",
+            "slaBasis": {
+              "source": "sla-table",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "GV.SC.S5",
+              "topic": "sbom",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 2,
+              "done": 1,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        },
+        "notes": "x"
+      }
+    },
+    {
+      "description": "invented initiative key",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "counters": {
+          "open": 1,
+          "closed": 0,
+          "cancelled": 0,
+          "overdue": 0
+        },
+        "initiatives": [
+          {
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "in-progress",
+            "severity": "high",
+            "priority": "p2",
+            "changeType": "normal",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "approver": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "approvedAt": "2026-08-21T10:05:00Z",
+            "dueAt": "2026-09-19T06:30:00Z",
+            "plannedWindow": {
+              "start": "2026-09-02T05:00:00Z",
+              "end": "2026-09-12T06:30:00Z"
+            },
+            "rollbackPlan": "Revert PR #482 on trading-gateway-api; the build workflow returns to its previous definition and no runtime component is affected",
+            "riskAssessment": "Low: adds a post-build CI job only; a failing SBOM step blocks the pipeline but not the running service",
+            "slaBasis": {
+              "source": "sla-table",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "GV.SC.S5",
+              "topic": "sbom",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 2,
+              "done": 1,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            },
+            "ticket": "CM-1"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "bad initiativeId pattern",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "counters": {
+          "open": 1,
+          "closed": 0,
+          "cancelled": 0,
+          "overdue": 0
+        },
+        "initiatives": [
+          {
+            "initiativeId": "init_123",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "in-progress",
+            "severity": "high",
+            "priority": "p2",
+            "changeType": "normal",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "approver": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "approvedAt": "2026-08-21T10:05:00Z",
+            "dueAt": "2026-09-19T06:30:00Z",
+            "plannedWindow": {
+              "start": "2026-09-02T05:00:00Z",
+              "end": "2026-09-12T06:30:00Z"
+            },
+            "rollbackPlan": "Revert PR #482 on trading-gateway-api; the build workflow returns to its previous definition and no runtime component is affected",
+            "riskAssessment": "Low: adds a post-build CI job only; a failing SBOM step blocks the pipeline but not the running service",
+            "slaBasis": {
+              "source": "sla-table",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "GV.SC.S5",
+              "topic": "sbom",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 2,
+              "done": 1,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "bad status enum value",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "counters": {
+          "open": 1,
+          "closed": 0,
+          "cancelled": 0,
+          "overdue": 0
+        },
+        "initiatives": [
+          {
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "open",
+            "severity": "high",
+            "priority": "p2",
+            "changeType": "normal",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "approver": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "approvedAt": "2026-08-21T10:05:00Z",
+            "dueAt": "2026-09-19T06:30:00Z",
+            "slaBasis": {
+              "source": "sla-table",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "GV.SC.S5",
+              "topic": "sbom",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 2,
+              "done": 1,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "bad priority enum value",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "counters": {
+          "open": 1,
+          "closed": 0,
+          "cancelled": 0,
+          "overdue": 0
+        },
+        "initiatives": [
+          {
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "in-progress",
+            "severity": "high",
+            "priority": "p0",
+            "changeType": "normal",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "approver": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "approvedAt": "2026-08-21T10:05:00Z",
+            "dueAt": "2026-09-19T06:30:00Z",
+            "plannedWindow": {
+              "start": "2026-09-02T05:00:00Z",
+              "end": "2026-09-12T06:30:00Z"
+            },
+            "rollbackPlan": "Revert PR #482 on trading-gateway-api; the build workflow returns to its previous definition and no runtime component is affected",
+            "riskAssessment": "Low: adds a post-build CI job only; a failing SBOM step blocks the pipeline but not the running service",
+            "slaBasis": {
+              "source": "sla-table",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "GV.SC.S5",
+              "topic": "sbom",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 2,
+              "done": 1,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "wrong kind const",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.index",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "counters": {
+          "open": 1,
+          "closed": 0,
+          "cancelled": 0,
+          "overdue": 0
+        },
+        "initiatives": [
+          {
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "in-progress",
+            "severity": "high",
+            "priority": "p2",
+            "changeType": "normal",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "approver": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "approvedAt": "2026-08-21T10:05:00Z",
+            "dueAt": "2026-09-19T06:30:00Z",
+            "plannedWindow": {
+              "start": "2026-09-02T05:00:00Z",
+              "end": "2026-09-12T06:30:00Z"
+            },
+            "rollbackPlan": "Revert PR #482 on trading-gateway-api; the build workflow returns to its previous definition and no runtime component is affected",
+            "riskAssessment": "Low: adds a post-build CI job only; a failing SBOM step blocks the pipeline but not the running service",
+            "slaBasis": {
+              "source": "sla-table",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "GV.SC.S5",
+              "topic": "sbom",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 2,
+              "done": 1,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "missing required dueAt",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "counters": {
+          "open": 1,
+          "closed": 0,
+          "cancelled": 0,
+          "overdue": 0
+        },
+        "initiatives": [
+          {
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "in-progress",
+            "severity": "high",
+            "priority": "p2",
+            "changeType": "normal",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "approver": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "approvedAt": "2026-08-21T10:05:00Z",
+            "slaBasis": {
+              "source": "sla-table",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "GV.SC.S5",
+              "topic": "sbom",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 2,
+              "done": 1,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "missing required counters",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "initiatives": [
+          {
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "in-progress",
+            "severity": "high",
+            "priority": "p2",
+            "changeType": "normal",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "approver": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "approvedAt": "2026-08-21T10:05:00Z",
+            "dueAt": "2026-09-19T06:30:00Z",
+            "plannedWindow": {
+              "start": "2026-09-02T05:00:00Z",
+              "end": "2026-09-12T06:30:00Z"
+            },
+            "rollbackPlan": "Revert PR #482 on trading-gateway-api; the build workflow returns to its previous definition and no runtime component is affected",
+            "riskAssessment": "Low: adds a post-build CI job only; a failing SBOM step blocks the pipeline but not the running service",
+            "slaBasis": {
+              "source": "sla-table",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "GV.SC.S5",
+              "topic": "sbom",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 2,
+              "done": 1,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "regulatoryRefs must not be empty",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "counters": {
+          "open": 1,
+          "closed": 0,
+          "cancelled": 0,
+          "overdue": 0
+        },
+        "initiatives": [
+          {
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "in-progress",
+            "severity": "high",
+            "priority": "p2",
+            "changeType": "normal",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "approver": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "approvedAt": "2026-08-21T10:05:00Z",
+            "dueAt": "2026-09-19T06:30:00Z",
+            "plannedWindow": {
+              "start": "2026-09-02T05:00:00Z",
+              "end": "2026-09-12T06:30:00Z"
+            },
+            "rollbackPlan": "Revert PR #482 on trading-gateway-api; the build workflow returns to its previous definition and no runtime component is affected",
+            "riskAssessment": "Low: adds a post-build CI job only; a failing SBOM step blocks the pipeline but not the running service",
+            "slaBasis": {
+              "source": "sla-table",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "GV.SC.S5",
+              "topic": "sbom",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 2,
+              "done": 1,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "closed status without closedAt",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "counters": {
+          "open": 1,
+          "closed": 0,
+          "cancelled": 0,
+          "overdue": 0
+        },
+        "initiatives": [
+          {
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "closed",
+            "severity": "high",
+            "priority": "p2",
+            "changeType": "normal",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "approver": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "approvedAt": "2026-08-21T10:05:00Z",
+            "dueAt": "2026-09-19T06:30:00Z",
+            "plannedWindow": {
+              "start": "2026-09-02T05:00:00Z",
+              "end": "2026-09-12T06:30:00Z"
+            },
+            "rollbackPlan": "Revert PR #482 on trading-gateway-api; the build workflow returns to its previous definition and no runtime component is affected",
+            "riskAssessment": "Low: adds a post-build CI job only; a failing SBOM step blocks the pipeline but not the running service",
+            "slaBasis": {
+              "source": "sla-table",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "GV.SC.S5",
+              "topic": "sbom",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 2,
+              "done": 1,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "closedAt present while in-progress",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "counters": {
+          "open": 1,
+          "closed": 0,
+          "cancelled": 0,
+          "overdue": 0
+        },
+        "initiatives": [
+          {
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "in-progress",
+            "severity": "high",
+            "priority": "p2",
+            "changeType": "normal",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "approver": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "approvedAt": "2026-08-21T10:05:00Z",
+            "dueAt": "2026-09-19T06:30:00Z",
+            "plannedWindow": {
+              "start": "2026-09-02T05:00:00Z",
+              "end": "2026-09-12T06:30:00Z"
+            },
+            "rollbackPlan": "Revert PR #482 on trading-gateway-api; the build workflow returns to its previous definition and no runtime component is affected",
+            "riskAssessment": "Low: adds a post-build CI job only; a failing SBOM step blocks the pipeline but not the running service",
+            "slaBasis": {
+              "source": "sla-table",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "GV.SC.S5",
+              "topic": "sbom",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 2,
+              "done": 1,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            },
+            "closedAt": "2026-09-08T10:00:00Z"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "approved status without approvedAt",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "counters": {
+          "open": 1,
+          "closed": 0,
+          "cancelled": 0,
+          "overdue": 0
+        },
+        "initiatives": [
+          {
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "approved",
+            "severity": "high",
+            "priority": "p2",
+            "changeType": "normal",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "approver": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "dueAt": "2026-09-19T06:30:00Z",
+            "plannedWindow": {
+              "start": "2026-09-02T05:00:00Z",
+              "end": "2026-09-12T06:30:00Z"
+            },
+            "rollbackPlan": "Revert PR #482 on trading-gateway-api; the build workflow returns to its previous definition and no runtime component is affected",
+            "riskAssessment": "Low: adds a post-build CI job only; a failing SBOM step blocks the pipeline but not the running service",
+            "slaBasis": {
+              "source": "sla-table",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "GV.SC.S5",
+              "topic": "sbom",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 2,
+              "done": 1,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "duplicate initiative entries",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "counters": {
+          "open": 1,
+          "closed": 0,
+          "cancelled": 0,
+          "overdue": 0
+        },
+        "initiatives": [
+          {
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "in-progress",
+            "severity": "high",
+            "priority": "p2",
+            "changeType": "normal",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "approver": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "approvedAt": "2026-08-21T10:05:00Z",
+            "dueAt": "2026-09-19T06:30:00Z",
+            "plannedWindow": {
+              "start": "2026-09-02T05:00:00Z",
+              "end": "2026-09-12T06:30:00Z"
+            },
+            "rollbackPlan": "Revert PR #482 on trading-gateway-api; the build workflow returns to its previous definition and no runtime component is affected",
+            "riskAssessment": "Low: adds a post-build CI job only; a failing SBOM step blocks the pipeline but not the running service",
+            "slaBasis": {
+              "source": "sla-table",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "GV.SC.S5",
+              "topic": "sbom",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 2,
+              "done": 1,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            }
+          },
+          {
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "in-progress",
+            "severity": "high",
+            "priority": "p2",
+            "changeType": "normal",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "approver": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "approvedAt": "2026-08-21T10:05:00Z",
+            "dueAt": "2026-09-19T06:30:00Z",
+            "plannedWindow": {
+              "start": "2026-09-02T05:00:00Z",
+              "end": "2026-09-12T06:30:00Z"
+            },
+            "rollbackPlan": "Revert PR #482 on trading-gateway-api; the build workflow returns to its previous definition and no runtime component is affected",
+            "riskAssessment": "Low: adds a post-build CI job only; a failing SBOM step blocks the pipeline but not the running service",
+            "slaBasis": {
+              "source": "sla-table",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "GV.SC.S5",
+              "topic": "sbom",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 2,
+              "done": 1,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "timestamp without trailing Z",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00+05:30",
+        "counters": {
+          "open": 1,
+          "closed": 0,
+          "cancelled": 0,
+          "overdue": 0
+        },
+        "initiatives": [
+          {
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "in-progress",
+            "severity": "high",
+            "priority": "p2",
+            "changeType": "normal",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "approver": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "approvedAt": "2026-08-21T10:05:00Z",
+            "dueAt": "2026-09-19T06:30:00Z",
+            "plannedWindow": {
+              "start": "2026-09-02T05:00:00Z",
+              "end": "2026-09-12T06:30:00Z"
+            },
+            "rollbackPlan": "Revert PR #482 on trading-gateway-api; the build workflow returns to its previous definition and no runtime component is affected",
+            "riskAssessment": "Low: adds a post-build CI job only; a failing SBOM step blocks the pipeline but not the running service",
+            "slaBasis": {
+              "source": "sla-table",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "GV.SC.S5",
+              "topic": "sbom",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 2,
+              "done": 1,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "in-progress without approvedAt",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "counters": {
+          "open": 1,
+          "closed": 0,
+          "cancelled": 0,
+          "overdue": 0
+        },
+        "initiatives": [
+          {
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "in-progress",
+            "severity": "high",
+            "priority": "p2",
+            "changeType": "normal",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "approver": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "dueAt": "2026-09-19T06:30:00Z",
+            "plannedWindow": {
+              "start": "2026-09-02T05:00:00Z",
+              "end": "2026-09-12T06:30:00Z"
+            },
+            "rollbackPlan": "Revert PR #482 on trading-gateway-api; the build workflow returns to its previous definition and no runtime component is affected",
+            "riskAssessment": "Low: adds a post-build CI job only; a failing SBOM step blocks the pipeline but not the running service",
+            "slaBasis": {
+              "source": "sla-table",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "GV.SC.S5",
+              "topic": "sbom",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 2,
+              "done": 1,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "closed without approver",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "counters": {
+          "open": 0,
+          "closed": 1,
+          "cancelled": 0,
+          "overdue": 0
+        },
+        "initiatives": [
+          {
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "closed",
+            "severity": "high",
+            "priority": "p2",
+            "changeType": "normal",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "approvedAt": "2026-08-21T10:05:00Z",
+            "dueAt": "2026-09-19T06:30:00Z",
+            "plannedWindow": {
+              "start": "2026-09-02T05:00:00Z",
+              "end": "2026-09-12T06:30:00Z"
+            },
+            "rollbackPlan": "Revert PR #482 on trading-gateway-api; the build workflow returns to its previous definition and no runtime component is affected",
+            "riskAssessment": "Low: adds a post-build CI job only; a failing SBOM step blocks the pipeline but not the running service",
+            "slaBasis": {
+              "source": "sla-table",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "GV.SC.S5",
+              "topic": "sbom",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 2,
+              "done": 1,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            },
+            "closedAt": "2026-09-08T10:00:00Z"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "proposed initiative carries no approval or rollback plan",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "counters": {
+          "open": 1,
+          "closed": 0,
+          "cancelled": 0,
+          "overdue": 0
+        },
+        "initiatives": [
+          {
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "proposed",
+            "severity": "high",
+            "priority": "p2",
+            "changeType": "normal",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "dueAt": "2026-09-19T06:30:00Z",
+            "slaBasis": {
+              "source": "sla-table",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "GV.SC.S5",
+              "topic": "sbom",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 0,
+              "done": 0,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "approvedAt present while proposed",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "counters": {
+          "open": 1,
+          "closed": 0,
+          "cancelled": 0,
+          "overdue": 0
+        },
+        "initiatives": [
+          {
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "proposed",
+            "severity": "high",
+            "priority": "p2",
+            "changeType": "normal",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "approvedAt": "2026-08-21T10:05:00Z",
+            "dueAt": "2026-09-19T06:30:00Z",
+            "riskAssessment": "Low: adds a post-build CI job only; a failing SBOM step blocks the pipeline but not the running service",
+            "slaBasis": {
+              "source": "sla-table",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "GV.SC.S5",
+              "topic": "sbom",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 2,
+              "done": 1,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "approver present while proposed",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "counters": {
+          "open": 1,
+          "closed": 0,
+          "cancelled": 0,
+          "overdue": 0
+        },
+        "initiatives": [
+          {
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "proposed",
+            "severity": "high",
+            "priority": "p2",
+            "changeType": "normal",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "approver": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "dueAt": "2026-09-19T06:30:00Z",
+            "riskAssessment": "Low: adds a post-build CI job only; a failing SBOM step blocks the pipeline but not the running service",
+            "slaBasis": {
+              "source": "sla-table",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "GV.SC.S5",
+              "topic": "sbom",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 2,
+              "done": 1,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "cancelled with closedAt",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "counters": {
+          "open": 0,
+          "closed": 0,
+          "cancelled": 1,
+          "overdue": 0
+        },
+        "initiatives": [
+          {
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "cancelled",
+            "severity": "high",
+            "priority": "p2",
+            "changeType": "normal",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "approver": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "approvedAt": "2026-08-21T10:05:00Z",
+            "dueAt": "2026-09-19T06:30:00Z",
+            "plannedWindow": {
+              "start": "2026-09-02T05:00:00Z",
+              "end": "2026-09-12T06:30:00Z"
+            },
+            "rollbackPlan": "Revert PR #482 on trading-gateway-api; the build workflow returns to its previous definition and no runtime component is affected",
+            "riskAssessment": "Low: adds a post-build CI job only; a failing SBOM step blocks the pipeline but not the running service",
+            "slaBasis": {
+              "source": "sla-table",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "GV.SC.S5",
+              "topic": "sbom",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 2,
+              "done": 1,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            },
+            "closedAt": "2026-09-08T10:00:00Z"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "cancelled without closedAt",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "counters": {
+          "open": 0,
+          "closed": 0,
+          "cancelled": 1,
+          "overdue": 0
+        },
+        "initiatives": [
+          {
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "cancelled",
+            "severity": "high",
+            "priority": "p2",
+            "changeType": "normal",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "approver": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "approvedAt": "2026-08-21T10:05:00Z",
+            "dueAt": "2026-09-19T06:30:00Z",
+            "plannedWindow": {
+              "start": "2026-09-02T05:00:00Z",
+              "end": "2026-09-12T06:30:00Z"
+            },
+            "rollbackPlan": "Revert PR #482 on trading-gateway-api; the build workflow returns to its previous definition and no runtime component is affected",
+            "riskAssessment": "Low: adds a post-build CI job only; a failing SBOM step blocks the pipeline but not the running service",
+            "slaBasis": {
+              "source": "sla-table",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "GV.SC.S5",
+              "topic": "sbom",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 2,
+              "done": 1,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "reopened with closedAt",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "counters": {
+          "open": 1,
+          "closed": 0,
+          "cancelled": 0,
+          "overdue": 0
+        },
+        "initiatives": [
+          {
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "reopened",
+            "severity": "high",
+            "priority": "p2",
+            "changeType": "normal",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "approver": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "approvedAt": "2026-08-21T10:05:00Z",
+            "dueAt": "2026-09-19T06:30:00Z",
+            "plannedWindow": {
+              "start": "2026-09-02T05:00:00Z",
+              "end": "2026-09-12T06:30:00Z"
+            },
+            "rollbackPlan": "Revert PR #482 on trading-gateway-api; the build workflow returns to its previous definition and no runtime component is affected",
+            "riskAssessment": "Low: adds a post-build CI job only; a failing SBOM step blocks the pipeline but not the running service",
+            "slaBasis": {
+              "source": "sla-table",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "GV.SC.S5",
+              "topic": "sbom",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 2,
+              "done": 1,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            },
+            "closedAt": "2026-09-08T10:00:00Z"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "counters without cancelled",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "counters": {
+          "open": 1,
+          "closed": 0,
+          "overdue": 0
+        },
+        "initiatives": [
+          {
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "in-progress",
+            "severity": "high",
+            "priority": "p2",
+            "changeType": "normal",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "approver": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "approvedAt": "2026-08-21T10:05:00Z",
+            "dueAt": "2026-09-19T06:30:00Z",
+            "plannedWindow": {
+              "start": "2026-09-02T05:00:00Z",
+              "end": "2026-09-12T06:30:00Z"
+            },
+            "rollbackPlan": "Revert PR #482 on trading-gateway-api; the build workflow returns to its previous definition and no runtime component is affected",
+            "riskAssessment": "Low: adds a post-build CI job only; a failing SBOM step blocks the pipeline but not the running service",
+            "slaBasis": {
+              "source": "sla-table",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "GV.SC.S5",
+              "topic": "sbom",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 2,
+              "done": 1,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "bad slaBasis.instrument",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "counters": {
+          "open": 1,
+          "closed": 0,
+          "cancelled": 0,
+          "overdue": 0
+        },
+        "initiatives": [
+          {
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "in-progress",
+            "severity": "high",
+            "priority": "p2",
+            "changeType": "normal",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "approver": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "approvedAt": "2026-08-21T10:05:00Z",
+            "dueAt": "2026-09-19T06:30:00Z",
+            "plannedWindow": {
+              "start": "2026-09-02T05:00:00Z",
+              "end": "2026-09-12T06:30:00Z"
+            },
+            "rollbackPlan": "Revert PR #482 on trading-gateway-api; the build workflow returns to its previous definition and no runtime component is affected",
+            "riskAssessment": "Low: adds a post-build CI job only; a failing SBOM step blocks the pipeline but not the running service",
+            "slaBasis": {
+              "source": "sla-table",
+              "instrument": "sebi-cscrf",
+              "controlId": "GV.SC.S5",
+              "topic": "sbom",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 2,
+              "done": 1,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "slaBasis from sla-table without instrument",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "counters": {
+          "open": 1,
+          "closed": 0,
+          "cancelled": 0,
+          "overdue": 0
+        },
+        "initiatives": [
+          {
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "in-progress",
+            "severity": "high",
+            "priority": "p2",
+            "changeType": "normal",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "approver": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "approvedAt": "2026-08-21T10:05:00Z",
+            "dueAt": "2026-09-19T06:30:00Z",
+            "plannedWindow": {
+              "start": "2026-09-02T05:00:00Z",
+              "end": "2026-09-12T06:30:00Z"
+            },
+            "rollbackPlan": "Revert PR #482 on trading-gateway-api; the build workflow returns to its previous definition and no runtime component is affected",
+            "riskAssessment": "Low: adds a post-build CI job only; a failing SBOM step blocks the pipeline but not the running service",
+            "slaBasis": {
+              "source": "sla-table",
+              "topic": "sbom",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 2,
+              "done": 1,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "slaBasis from defaults needs no instrument",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "counters": {
+          "open": 1,
+          "closed": 0,
+          "cancelled": 0,
+          "overdue": 0
+        },
+        "initiatives": [
+          {
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "in-progress",
+            "severity": "high",
+            "priority": "p2",
+            "changeType": "normal",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "approver": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "approvedAt": "2026-08-21T10:05:00Z",
+            "dueAt": "2026-09-19T06:30:00Z",
+            "plannedWindow": {
+              "start": "2026-09-02T05:00:00Z",
+              "end": "2026-09-12T06:30:00Z"
+            },
+            "rollbackPlan": "Revert PR #482 on trading-gateway-api; the build workflow returns to its previous definition and no runtime component is affected",
+            "riskAssessment": "Low: adds a post-build CI job only; a failing SBOM step blocks the pipeline but not the running service",
+            "slaBasis": {
+              "source": "defaults",
+              "topic": "sbom",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 2,
+              "done": 1,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "slaBasis without topic",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "counters": {
+          "open": 1,
+          "closed": 0,
+          "cancelled": 0,
+          "overdue": 0
+        },
+        "initiatives": [
+          {
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "in-progress",
+            "severity": "high",
+            "priority": "p2",
+            "changeType": "normal",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "approver": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "approvedAt": "2026-08-21T10:05:00Z",
+            "dueAt": "2026-09-19T06:30:00Z",
+            "plannedWindow": {
+              "start": "2026-09-02T05:00:00Z",
+              "end": "2026-09-12T06:30:00Z"
+            },
+            "rollbackPlan": "Revert PR #482 on trading-gateway-api; the build workflow returns to its previous definition and no runtime component is affected",
+            "riskAssessment": "Low: adds a post-build CI job only; a failing SBOM step blocks the pipeline but not the running service",
+            "slaBasis": {
+              "source": "sla-table",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "GV.SC.S5",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 2,
+              "done": 1,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "bad slaBasis.source",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "counters": {
+          "open": 1,
+          "closed": 0,
+          "cancelled": 0,
+          "overdue": 0
+        },
+        "initiatives": [
+          {
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "in-progress",
+            "severity": "high",
+            "priority": "p2",
+            "changeType": "normal",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "approver": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "approvedAt": "2026-08-21T10:05:00Z",
+            "dueAt": "2026-09-19T06:30:00Z",
+            "plannedWindow": {
+              "start": "2026-09-02T05:00:00Z",
+              "end": "2026-09-12T06:30:00Z"
+            },
+            "rollbackPlan": "Revert PR #482 on trading-gateway-api; the build workflow returns to its previous definition and no runtime component is affected",
+            "riskAssessment": "Low: adds a post-build CI job only; a failing SBOM step blocks the pipeline but not the running service",
+            "slaBasis": {
+              "source": "intuition",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "GV.SC.S5",
+              "topic": "sbom",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 2,
+              "done": 1,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "normal change approved without rollbackPlan",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "counters": {
+          "open": 1,
+          "closed": 0,
+          "cancelled": 0,
+          "overdue": 0
+        },
+        "initiatives": [
+          {
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "approved",
+            "severity": "high",
+            "priority": "p2",
+            "changeType": "normal",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "approver": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "approvedAt": "2026-08-21T10:05:00Z",
+            "dueAt": "2026-09-19T06:30:00Z",
+            "plannedWindow": {
+              "start": "2026-09-02T05:00:00Z",
+              "end": "2026-09-12T06:30:00Z"
+            },
+            "riskAssessment": "Low: adds a post-build CI job only; a failing SBOM step blocks the pipeline but not the running service",
+            "slaBasis": {
+              "source": "sla-table",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "GV.SC.S5",
+              "topic": "sbom",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 2,
+              "done": 1,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "normal change in-progress without plannedWindow",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "counters": {
+          "open": 1,
+          "closed": 0,
+          "cancelled": 0,
+          "overdue": 0
+        },
+        "initiatives": [
+          {
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "in-progress",
+            "severity": "high",
+            "priority": "p2",
+            "changeType": "normal",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "approver": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "approvedAt": "2026-08-21T10:05:00Z",
+            "dueAt": "2026-09-19T06:30:00Z",
+            "rollbackPlan": "Revert PR #482 on trading-gateway-api; the build workflow returns to its previous definition and no runtime component is affected",
+            "riskAssessment": "Low: adds a post-build CI job only; a failing SBOM step blocks the pipeline but not the running service",
+            "slaBasis": {
+              "source": "sla-table",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "GV.SC.S5",
+              "topic": "sbom",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 2,
+              "done": 1,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "standard change is pre-authorised and needs no rollback plan",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "counters": {
+          "open": 1,
+          "closed": 0,
+          "cancelled": 0,
+          "overdue": 0
+        },
+        "initiatives": [
+          {
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "in-progress",
+            "severity": "high",
+            "priority": "p2",
+            "changeType": "standard",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "approver": {
+              "type": "script",
+              "id": ".claude/scripts/cm/standard-change-policy.mjs"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "approvedAt": "2026-08-20T06:30:00Z",
+            "dueAt": "2026-09-19T06:30:00Z",
+            "slaBasis": {
+              "source": "sla-table",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "GV.SC.S5",
+              "topic": "sbom",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 2,
+              "done": 1,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "plannedWindow without end",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.master",
+        "companyId": "arthveda-securities",
+        "updatedAt": "2026-09-10T11:42:00Z",
+        "counters": {
+          "open": 1,
+          "closed": 0,
+          "cancelled": 0,
+          "overdue": 0
+        },
+        "initiatives": [
+          {
+            "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+            "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+            "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+            "status": "in-progress",
+            "severity": "high",
+            "priority": "p2",
+            "changeType": "normal",
+            "owner": {
+              "type": "human",
+              "id": "platform-lead@arthveda.example"
+            },
+            "approver": {
+              "type": "human",
+              "id": "ciso@arthveda.example"
+            },
+            "createdAt": "2026-08-20T06:30:00Z",
+            "approvedAt": "2026-08-21T10:05:00Z",
+            "dueAt": "2026-09-19T06:30:00Z",
+            "plannedWindow": {
+              "start": "2026-09-02T05:00:00Z"
+            },
+            "rollbackPlan": "Revert PR #482 on trading-gateway-api; the build workflow returns to its previous definition and no runtime component is affected",
+            "riskAssessment": "Low: adds a post-build CI job only; a failing SBOM step blocks the pipeline but not the running service",
+            "slaBasis": {
+              "source": "sla-table",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "GV.SC.S5",
+              "topic": "sbom",
+              "days": 30
+            },
+            "findingIds": [
+              "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2"
+            ],
+            "riskIds": [
+              "rsk_01M0CJ8ET0C59N0SB765HFQRW8"
+            ],
+            "controlIds": [
+              "GV.SC.S5",
+              "PS.3.2"
+            ],
+            "regulatoryRefs": [
+              {
+                "regulator": "SEBI",
+                "instrument": "sebi-cscrf-2024",
+                "controlId": "GV.SC.S5"
+              },
+              {
+                "regulator": "NIST",
+                "instrument": "nist-ssdf-800-218",
+                "controlId": "PS.3.2"
+              }
+            ],
+            "targets": [
+              {
+                "type": "repo",
+                "appId": "trading-gateway",
+                "repoId": "trading-gateway-api"
+              }
+            ],
+            "taskCounts": {
+              "total": 2,
+              "done": 1,
+              "blocked": 0
+            },
+            "suggestionIds": [
+              "sug_01M0KTP6M0GSB53TM0315NTTZW"
+            ],
+            "sourceWorkflow": "impl-change-management",
+            "provenance": {
+              "harness": "claude-code",
+              "generatedAt": "2026-08-20T06:30:00Z",
+              "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+              "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+              "workflow": "impl-change-management",
+              "agent": "change-manager"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-10T11:42:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    }
+  ]
+}

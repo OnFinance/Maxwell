@@ -183,6 +183,10 @@
       "schema": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/opencode-command.schema.json"
     },
     {
+      "glob": ".agents/agents/*.prompt.md",
+      "format": "markdown"
+    },
+    {
       "glob": ".agents/agents/*.md",
       "format": "frontmatter",
       "schema": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/opencode-agent.schema.json"

@@ -1,0 +1,56 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(npm test *)",
+      "Bash(node .claude/scripts/*)",
+      "Bash(npx jsonschema *)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git ls-files *)",
+      "Read(./**)"
+    ],
+    "deny": [
+      "Read(./applications/*/credentials.dec.json)",
+      "Read(./.sops-key.txt)",
+      "Read(~/.ssh/**)",
+      "Read(~/.aws/**)",
+      "Read(~/.config/gcloud/**)",
+      "Read(~/.kube/**)",
+      "Bash(sops --decrypt *)",
+      "Bash(sops -d *)",
+      "Bash(rm -rf *)",
+      "Bash(git push --force *)",
+      "Write(./applications/*/repos/**)",
+      "Edit(./applications/*/repos/**)"
+    ],
+    "ask": [
+      "Bash(kubectl *)",
+      "Bash(docker *)",
+      "Bash(ssh *)",
+      "Bash(curl *)",
+      "Bash(git push *)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      { "hooks": [{ "type": "command", "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\"", "timeout": 30 }] }
+    ],
+    "UserPromptSubmit": [
+      { "hooks": [{ "type": "command", "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/user-prompt.mjs\"", "timeout": 10 }] }
+    ],
+    "PreToolUse": [
+      { "matcher": "Write|Edit|MultiEdit", "hooks": [{ "type": "command", "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-write.mjs\"", "timeout": 20 }] }
+    ],
+    "PostToolUse": [
+      { "matcher": "Write|Edit|MultiEdit", "hooks": [{ "type": "command", "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/validate-write.mjs\"", "timeout": 60 }] }
+    ],
+    "SessionEnd": [
+      { "hooks": [{ "type": "command", "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-end.mjs\"", "timeout": 120 }] }
+    ]
+  },
+  "env": {
+    "MAXWELL_HARNESS": "claude-code"
+  }
+}

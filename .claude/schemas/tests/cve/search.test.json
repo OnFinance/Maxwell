@@ -1,0 +1,2609 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/v1/cve/search.schema.json",
+  "tests": [
+    {
+      "description": "valid purl search with one OSV hit",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "purl",
+          "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "valid cve-ids batch lookup against NVD with no hits",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "nvd",
+        "query": {
+          "type": "cve-ids",
+          "cveIds": [
+            "CVE-2024-38816",
+            "CVE-2025-1234"
+          ]
+        },
+        "status": "ok",
+        "resultCount": 0,
+        "results": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "valid ecosystem-package search",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "ecosystem-package",
+          "ecosystem": "PyPI",
+          "package": "requests",
+          "version": "2.31.0"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "valid cpe search",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "cpe",
+          "cpe": "cpe:2.3:a:vmware:spring_framework:6.1.12:*:*:*:*:*:*:*"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "invented extra top-level key",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "purl",
+          "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        },
+        "notes": "fetched manually"
+      }
+    },
+    {
+      "description": "invented extra key inside a result",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "purl",
+          "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json",
+            "exploited": true
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "bad queryId pattern",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "query-123",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "purl",
+          "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "bad vulnId pattern in a result",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "purl",
+          "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "CVE-24-1",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "bad GHSA id with disallowed characters",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "purl",
+          "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-abcd-1234-5678",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "bad source enum value",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "mitre",
+        "query": {
+          "type": "purl",
+          "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "bad severity enum value",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "purl",
+          "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "HIGH",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "missing required results",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "purl",
+          "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "missing required provenance",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "purl",
+          "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        }
+      }
+    },
+    {
+      "description": "purl query without purl selector",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "purl"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "cve-ids query with keyword selector only",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "cve-ids",
+          "keyword": "spring"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "query with unknown selector key",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "keyword",
+          "keyword": "spring",
+          "regex": ".*"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "malformed cpe string",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "cpe",
+          "cpe": "cpe:/a:vmware:spring_framework"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "wrong kind const",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.record",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "purl",
+          "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "cvssScore above 10",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "purl",
+          "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 11,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "recordPath outside cves/data",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "purl",
+          "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/search/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "negative resultCount",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "purl",
+          "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": -1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "timestamp without Z suffix",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22+05:30",
+        "source": "osv",
+        "query": {
+          "type": "purl",
+          "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "valid rate-limited call with no results and a zeroed quota",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "purl",
+          "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "rate-limited",
+        "error": "HTTP 429 Too Many Requests from api.osv.dev",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        },
+        "rateLimit": {
+          "remaining": 0,
+          "resetAt": "2026-09-12T05:00:00Z"
+        }
+      }
+    },
+    {
+      "description": "valid failed call recorded with an error",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "purl",
+          "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "error",
+        "error": "HTTP 503 Service Unavailable from services.nvd.nist.gov",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "valid timed-out call",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "purl",
+          "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "timeout",
+        "error": "no response within 30s",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "valid vendor-advisory hit with a colon id and an underscore record path",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "vendor-advisory",
+        "query": {
+          "type": "keyword",
+          "keyword": "gnutls"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "RHSA-2024:0387",
+            "aliases": [
+              "CVE-2024-0553",
+              "CVE-2024-0567"
+            ],
+            "summary": "Red Hat Security Advisory: gnutls security update",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-01-23T00:00:00Z",
+            "modified": "2025-11-17T03:21:07Z",
+            "recordPath": "cves/data/RHSA-2024_0387.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "valid cve-org lookup of the CNA record",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "cve-org",
+        "query": {
+          "type": "cve-ids",
+          "cveIds": [
+            "CVE-2024-38816"
+          ]
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "valid cpe with an escaped colon inside a component",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "nvd",
+        "query": {
+          "type": "cpe",
+          "cpe": "cpe:2.3:a:vmware:spring\\:framework:6.1.12:*:*:*:*:*:*:*"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "valid ecosystem-package query with a release suffix",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "ecosystem-package",
+          "ecosystem": "Ubuntu:22.04:LTS",
+          "package": "openssl"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "valid result with a CGA alias",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "purl",
+          "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816",
+              "CGA-jfvw-f67x-xrrh"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "status error without error text",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "purl",
+          "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "error",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "status ok with an error text",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "purl",
+          "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        },
+        "error": "HTTP 200 but odd"
+      }
+    },
+    {
+      "description": "status ok without resultCount",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "purl",
+          "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "missing required status",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "purl",
+          "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "bad status enum value",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "purl",
+          "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "partial",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "purl query with a second selector",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "purl",
+          "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12",
+          "cpe": "cpe:2.3:a:vmware:spring_framework:6.1.12:*:*:*:*:*:*:*"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "purl query with ecosystem and version selectors",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "purl",
+          "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12",
+          "ecosystem": "Maven",
+          "version": "6.1.12"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "ecosystem-package query with a purl selector",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "ecosystem-package",
+          "ecosystem": "Maven",
+          "package": "org.springframework:spring-webmvc",
+          "purl": "pkg:maven/org.springframework/spring-webmvc"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "ecosystem-package query missing package",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "ecosystem-package",
+          "ecosystem": "PyPI"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "bad ecosystem in an ecosystem-package query",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "ecosystem-package",
+          "ecosystem": ":PyPI",
+          "package": "requests"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "invented extra key in rateLimit",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "purl",
+          "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z",
+          "limit": 1000
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "rateLimit without remaining",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "purl",
+          "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "recordPath containing a colon",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "purl",
+          "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "RHSA-2024:0387",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/RHSA-2024:0387.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "cpe with an unescaped extra colon",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "cpe",
+          "cpe": "cpe:2.3:a:vmware:spring:framework:6.1.12:*:*:*:*:*:*:*"
+        },
+        "forAssets": [
+          {
+            "type": "repo",
+            "appId": "nse-order-gateway",
+            "repoId": "order-gateway-java"
+          },
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway",
+            "envId": "prod-mumbai"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "forAssets vendor ref needs only vendorId (common assetRef)",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "purl",
+          "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12"
+        },
+        "forAssets": [
+          {
+            "type": "vendor",
+            "vendorId": "aws"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "forAssets vendor ref without vendorId is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "purl",
+          "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12"
+        },
+        "forAssets": [
+          {
+            "type": "vendor",
+            "appId": "nse-order-gateway"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "forAssets environment ref without envId is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "purl",
+          "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12"
+        },
+        "forAssets": [
+          {
+            "type": "environment",
+            "appId": "nse-order-gateway"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "forAssets application ref without appId is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "purl",
+          "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12"
+        },
+        "forAssets": [
+          {
+            "type": "application"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    },
+    {
+      "description": "forAssets company ref needs no id",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cve.search",
+        "queryId": "q_01J7Q5Z3X8C4NB2H9KRM6VWT0A",
+        "createdAt": "2026-09-12T04:15:22Z",
+        "source": "osv",
+        "query": {
+          "type": "purl",
+          "purl": "pkg:maven/org.springframework/spring-webmvc@6.1.12"
+        },
+        "forAssets": [
+          {
+            "type": "company"
+          }
+        ],
+        "status": "ok",
+        "resultCount": 1,
+        "results": [
+          {
+            "vulnId": "GHSA-c3hp-fjw2-8w9m",
+            "aliases": [
+              "CVE-2024-38816"
+            ],
+            "summary": "Path traversal in Spring Framework functional web frameworks when serving static resources via RouterFunctions",
+            "severity": "high",
+            "cvssScore": 7.5,
+            "published": "2024-09-13T06:30:11Z",
+            "modified": "2025-11-02T18:02:44Z",
+            "recordPath": "cves/data/CVE-2024-38816.json"
+          }
+        ],
+        "rateLimit": {
+          "remaining": 998,
+          "resetAt": "2026-09-12T05:00:00Z"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T04:15:23Z",
+          "sessionId": "3f1c2a7e-9b64-4c1d-8e2f-5a6b7c8d9e0f",
+          "runId": "run_01J7Q5Z3X8C4NB2H9KRM6VWT0B",
+          "workflow": "probe-app-chart",
+          "agent": "vuln-intel",
+          "model": "claude-fable-5-1"
+        }
+      }
+    }
+  ]
+}

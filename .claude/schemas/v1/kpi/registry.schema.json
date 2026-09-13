@@ -1,0 +1,725 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/kpi/registry.schema.json",
+  "title": "KPI registry",
+  "description": "Schema for kpis/metrics.json, the single registry of the six Maxwell KPIs: what each measures, which raw inputs feed it, how it is aggregated and normalised, and how harness sessions are sampled for measurement. Shared KPI vocabularies (kpiId, unit, rawInputSource, samplingMode, normalisationName) live in $defs and are referenced by the run, datapoint and methodology schemas. The example is the canonical content of kpis/metrics.json: its formulas agree with the field descriptions in the task, change-management master, suggestions master and soc record schemas",
+  "examples": [
+    {
+      "schemaVersion": "1",
+      "kind": "maxwell.kpi.registry",
+      "kpis": [
+        {
+          "kpiId": "cost_of_audit",
+          "name": "Cost of audit",
+          "description": "Fully loaded USD cost of producing one audit cycle (one headless run) for a company: model tokens of the sampled sessions priced from the pricing table and scaled to the whole run, plus the human review allowance recorded in humanReview",
+          "unit": "usd",
+          "direction": "lower-is-better",
+          "formula": "sum(costUsd.computed over sampled sessions of the run) * (sessionsConsidered / sessionsSampled) + humanReview.hoursPerAuditCycle * humanReview.loadedHourlyRate.amount",
+          "rawInputs": [
+            {
+              "source": "session-summary",
+              "fields": [
+                "runId",
+                "costUsd.computed",
+                "models[].tokens",
+                "models[].costUsd",
+                "durationMs"
+              ]
+            },
+            {
+              "source": "soc-ledger",
+              "fields": [ "kind", "provenance.sessionId", "provenance.runId" ]
+            },
+            {
+              "source": "registry",
+              "fields": [
+                "sampling.mode",
+                "humanReview.hoursPerAuditCycle",
+                "humanReview.loadedHourlyRate.amount"
+              ]
+            }
+          ],
+          "dimensions": [ "companyId", "runId", "workflow", "model", "harness" ],
+          "aggregation": "sum",
+          "cadence": "per-run",
+          "normalisations": [
+            {
+              "name": "usd-per-control-observed",
+              "denominator": "controls-observed",
+              "unit": "usd-per-control"
+            },
+            {
+              "name": "usd-per-application",
+              "denominator": "applications",
+              "unit": "usd-per-application"
+            }
+          ],
+          "targets": {
+            "warn": 400,
+            "alert": 800
+          },
+          "methodologyDoc": "kpis/measurement/cost_of_audit.md",
+          "methodVersion": "1.0.0"
+        },
+        {
+          "kpiId": "cm_actionability",
+          "name": "Change-management actionability",
+          "description": "Share of change-management tasks created by Maxwell in the period that are actionable as written: owner, dueAt, at least one acceptanceCriteria entry, a verificationMethod and a rootCause are all present on the task at creation",
+          "unit": "ratio",
+          "direction": "higher-is-better",
+          "formula": "count(tasks created in period with owner, dueAt, acceptanceCriteria[0], verificationMethod and rootCause present) / count(tasks created in period)",
+          "rawInputs": [
+            {
+              "source": "change-management",
+              "fields": [
+                "tasks[].createdAt",
+                "tasks[].owner",
+                "tasks[].dueAt",
+                "tasks[].acceptanceCriteria",
+                "tasks[].verificationMethod",
+                "tasks[].rootCause",
+                "tasks[].provenance"
+              ]
+            }
+          ],
+          "dimensions": [ "companyId", "runId", "workflow", "severity" ],
+          "aggregation": "rate",
+          "cadence": "weekly",
+          "normalisations": [],
+          "targets": {
+            "warn": 0.6,
+            "alert": 0.4
+          },
+          "methodologyDoc": "kpis/measurement/cm_actionability.md",
+          "methodVersion": "1.0.0"
+        },
+        {
+          "kpiId": "cm_coverage",
+          "name": "Change-management coverage",
+          "description": "Share of applicable controls (implementationStatus other than not-applicable, scoped by applicableAssets) that Maxwell observed in the period, i.e. that are referenced by at least one ledger observation carrying a result",
+          "unit": "percent",
+          "direction": "higher-is-better",
+          "formula": "100 * count(applicable controls with an observation in period whose controlIds contains the control id and whose result is set) / count(controls with implementationStatus != not-applicable)",
+          "rawInputs": [
+            {
+              "source": "soc-ledger",
+              "fields": [
+                "control.id",
+                "control.implementationStatus",
+                "control.applicableAssets",
+                "observation.controlIds",
+                "observation.result",
+                "observation.collectedAt"
+              ]
+            }
+          ],
+          "dimensions": [ "companyId", "appId", "severity" ],
+          "aggregation": "rate",
+          "cadence": "weekly",
+          "normalisations": [],
+          "targets": {
+            "warn": 85,
+            "alert": 70
+          },
+          "methodologyDoc": "kpis/measurement/cm_coverage.md",
+          "methodVersion": "1.0.0"
+        },
+        {
+          "kpiId": "cm_time_to_implementation",
+          "name": "Change-management time to implementation",
+          "description": "Median calendar days from an initiative being raised (createdAt) to its closure (closedAt) for initiatives closed in the period. The SLA comparison uses dueAt = createdAt + slaBasis.days and is published as the sla-compliance-rate series",
+          "unit": "days",
+          "direction": "lower-is-better",
+          "formula": "median((closedAt - createdAt) / 86400 for initiatives with status closed and closedAt in period); sla-compliance-rate = count(closed initiatives with closedAt <= dueAt) / count(closed initiatives)",
+          "rawInputs": [
+            {
+              "source": "change-management",
+              "fields": [
+                "initiatives[].status",
+                "initiatives[].createdAt",
+                "initiatives[].closedAt",
+                "initiatives[].dueAt",
+                "initiatives[].slaBasis.days"
+              ]
+            }
+          ],
+          "dimensions": [ "companyId", "appId", "severity" ],
+          "aggregation": "median",
+          "cadence": "monthly",
+          "normalisations": [
+            {
+              "name": "sla-compliance-rate",
+              "denominator": "initiatives",
+              "unit": "ratio"
+            }
+          ],
+          "targets": {
+            "warn": 30,
+            "alert": 60
+          },
+          "methodologyDoc": "kpis/measurement/cm_time_to_implementation.md",
+          "methodVersion": "1.0.0"
+        },
+        {
+          "kpiId": "suggestion_acceptance_rate",
+          "name": "Suggestion acceptance rate",
+          "description": "Share of code suggestions surfaced to a human in the period (surfacedAt set) whose status is accepted or merged rather than rejected, reverted, superseded or expired. Merge rate, revert rate and 30-day retention are published as normalised series of this KPI",
+          "unit": "percent",
+          "direction": "higher-is-better",
+          "formula": "100 * count(suggestions with surfacedAt in period and status in [accepted, merged]) / count(suggestions with surfacedAt in period); merge-rate = merged / surfaced; revert-rate = reverted / merged; retention-30d = retained / merged with retentionCheckedAt set",
+          "rawInputs": [
+            {
+              "source": "suggestions",
+              "fields": [
+                "suggestions[].status",
+                "suggestions[].surfacedAt",
+                "suggestions[].mergedAt",
+                "suggestions[].revertedAt",
+                "suggestions[].retentionCheckedAt",
+                "suggestions[].retained"
+              ]
+            }
+          ],
+          "dimensions": [ "companyId", "appId", "model", "harness" ],
+          "aggregation": "rate",
+          "cadence": "weekly",
+          "normalisations": [
+            {
+              "name": "merge-rate",
+              "denominator": "suggestions-surfaced",
+              "unit": "percent"
+            },
+            {
+              "name": "revert-rate",
+              "denominator": "suggestions-merged",
+              "unit": "percent"
+            },
+            {
+              "name": "retention-30d",
+              "denominator": "suggestions-merged",
+              "unit": "percent"
+            }
+          ],
+          "targets": {
+            "warn": 50,
+            "alert": 30
+          },
+          "methodologyDoc": "kpis/measurement/suggestion_acceptance_rate.md",
+          "methodVersion": "1.0.0"
+        },
+        {
+          "kpiId": "incident_rate",
+          "name": "Incident rate",
+          "description": "PagerDuty incidents attributable to Maxwell-managed changes per 1000 initiatives closed in the period. An incident is attributed when its incident_key equals a ledger incident.dedupKey (maxwell:<controlId>:<assetId>:<fingerprint16>), which joins it to the ledger record and through it to the affected assets and severity",
+          "unit": "per-1000-changes",
+          "direction": "lower-is-better",
+          "formula": "1000 * count(pagerduty incidents with created_at in period whose incident_key equals a ledger incident.dedupKey) / count(initiatives with status closed and closedAt in period)",
+          "rawInputs": [
+            {
+              "source": "pagerduty",
+              "fields": [
+                "incidents[].incident_key",
+                "incidents[].created_at",
+                "incidents[].status",
+                "incidents[].urgency"
+              ]
+            },
+            {
+              "source": "soc-ledger",
+              "fields": [
+                "incident.dedupKey",
+                "incident.severity",
+                "incident.affectedAssets"
+              ]
+            },
+            {
+              "source": "change-management",
+              "fields": [ "initiatives[].status", "initiatives[].closedAt" ]
+            }
+          ],
+          "dimensions": [ "companyId", "appId", "envId", "severity", "period" ],
+          "aggregation": "rate",
+          "cadence": "monthly",
+          "normalisations": [
+            {
+              "name": "incidents-per-application",
+              "denominator": "applications",
+              "unit": "count"
+            }
+          ],
+          "targets": {
+            "warn": 5,
+            "alert": 10
+          },
+          "methodologyDoc": "kpis/measurement/incident_rate.md",
+          "methodVersion": "1.0.0"
+        }
+      ],
+      "sampling": {
+        "mode": "bundle",
+        "bundleSize": 10,
+        "rate": 0.2,
+        "seed": "maxwell-2026-09"
+      },
+      "pricingRef": ".claude/skills/kpi-extraction/references/pricing.json",
+      "pagerduty": {
+        "enabled": true,
+        "exportPath": "kpis/data/raw/pagerduty",
+        "dedupKeyPrefix": "maxwell:"
+      },
+      "humanReview": {
+        "hoursPerAuditCycle": 2.5,
+        "loadedHourlyRate": {
+          "amount": 45,
+          "currency": "USD"
+        }
+      },
+      "provenance": {
+        "harness": "human",
+        "generatedAt": "2026-09-13T09:30:00Z",
+        "agent": "kpi-owner"
+      }
+    }
+  ],
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "kind",
+    "kpis",
+    "sampling",
+    "pricingRef",
+    "pagerduty",
+    "humanReview",
+    "provenance"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/schemaVersion"
+    },
+    "kind": {
+      "const": "maxwell.kpi.registry"
+    },
+    "kpis": {
+      "description": "Exactly the six KPI definitions, one per kpiId, in any order",
+      "type": "array",
+      "allOf": [
+        {
+          "contains": {
+            "type": "object",
+            "required": [ "kpiId" ],
+            "properties": {
+              "kpiId": {
+                "const": "cost_of_audit"
+              }
+            }
+          }
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [ "kpiId" ],
+            "properties": {
+              "kpiId": {
+                "const": "cm_actionability"
+              }
+            }
+          }
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [ "kpiId" ],
+            "properties": {
+              "kpiId": {
+                "const": "cm_coverage"
+              }
+            }
+          }
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [ "kpiId" ],
+            "properties": {
+              "kpiId": {
+                "const": "cm_time_to_implementation"
+              }
+            }
+          }
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [ "kpiId" ],
+            "properties": {
+              "kpiId": {
+                "const": "suggestion_acceptance_rate"
+              }
+            }
+          }
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [ "kpiId" ],
+            "properties": {
+              "kpiId": {
+                "const": "incident_rate"
+              }
+            }
+          }
+        }
+      ],
+      "maxItems": 6,
+      "minItems": 6,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/kpi"
+      }
+    },
+    "sampling": {
+      "description": "How harness sessions are selected for KPI measurement. bundleSize is required under 'bundle', rate and seed under 'stochastic'; 'all' needs only mode. seed makes stochastic sampling reproducible",
+      "type": "object",
+      "allOf": [
+        {
+          "if": {
+            "required": [ "mode" ],
+            "properties": {
+              "mode": {
+                "const": "bundle"
+              }
+            }
+          },
+          "then": {
+            "required": [ "bundleSize" ]
+          }
+        },
+        {
+          "if": {
+            "required": [ "mode" ],
+            "properties": {
+              "mode": {
+                "const": "stochastic"
+              }
+            }
+          },
+          "then": {
+            "required": [ "rate", "seed" ]
+          }
+        }
+      ],
+      "required": [ "mode" ],
+      "properties": {
+        "mode": {
+          "$ref": "#/$defs/samplingMode"
+        },
+        "bundleSize": {
+          "description": "Number of runs whose sessions are measured in full under 'bundle' mode",
+          "type": "integer",
+          "minimum": 1
+        },
+        "rate": {
+          "description": "Probability that a session is sampled under 'stochastic' mode",
+          "type": "number",
+          "maximum": 1,
+          "minimum": 0
+        },
+        "seed": {
+          "description": "Seed string for the stochastic sampler so re-runs pick the same sessions",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        }
+      },
+      "additionalProperties": false
+    },
+    "pricingRef": {
+      "description": "Workspace path of the model pricing table used by cost_of_audit; always the kpi-extraction skill's pricing.json",
+      "const": ".claude/skills/kpi-extraction/references/pricing.json"
+    },
+    "pagerduty": {
+      "description": "PagerDuty integration settings for incident_rate. exportPath is required when enabled",
+      "type": "object",
+      "if": {
+        "required": [ "enabled" ],
+        "properties": {
+          "enabled": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "required": [ "exportPath" ]
+      },
+      "required": [ "enabled", "dedupKeyPrefix" ],
+      "properties": {
+        "enabled": {
+          "description": "Whether PagerDuty exports are ingested; when false incident_rate is not computed",
+          "type": "boolean"
+        },
+        "exportPath": {
+          "description": "Workspace directory where PagerDuty exports are written, normally kpis/data/raw/pagerduty",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/workspacePath"
+        },
+        "dedupKeyPrefix": {
+          "description": "Prefix of incident_key values that identify incidents raised for Maxwell-managed changes",
+          "const": "maxwell:"
+        }
+      },
+      "additionalProperties": false
+    },
+    "humanReview": {
+      "description": "Human review effort folded into cost_of_audit: hoursPerAuditCycle * loadedHourlyRate.amount is added to the scaled model cost of every run. Set hoursPerAuditCycle to 0 when reviews are not costed",
+      "type": "object",
+      "required": [ "hoursPerAuditCycle", "loadedHourlyRate" ],
+      "properties": {
+        "hoursPerAuditCycle": {
+          "description": "Reviewer hours spent on one audit cycle (one headless run), as budgeted by the KPI owner",
+          "type": "number",
+          "minimum": 0
+        },
+        "loadedHourlyRate": {
+          "description": "Fully loaded cost of one reviewer hour, used to price human review time. cost_of_audit is reported in USD, so currency must be USD",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/money"
+        }
+      },
+      "additionalProperties": false
+    },
+    "provenance": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/provenance"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "kpiId": {
+      "description": "Alias of common kpiId, kept for existing $refs",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/kpiId"
+    },
+    "unit": {
+      "description": "Unit of a KPI series. 'ratio' is 0..1, 'percent' is 0..100, 'per-month' and 'per-1000-changes' are rates, 'usd-per-control' and 'usd-per-application' are the units of normalised cost series",
+      "enum": [
+        "usd",
+        "usd-per-control",
+        "usd-per-application",
+        "ratio",
+        "percent",
+        "hours",
+        "days",
+        "count",
+        "per-month",
+        "per-1000-changes"
+      ]
+    },
+    "direction": {
+      "description": "Which way is good, used to interpret warn and alert targets",
+      "enum": [ "lower-is-better", "higher-is-better" ]
+    },
+    "rawInputSource": {
+      "description": "Where a raw input is read from: harness transcripts (session-jsonl), ingested session summaries, the soc ledger, change-management files, suggestion masters, PagerDuty exports, git history or this registry (sampling and humanReview settings)",
+      "enum": [
+        "session-jsonl",
+        "session-summary",
+        "soc-ledger",
+        "change-management",
+        "suggestions",
+        "pagerduty",
+        "git",
+        "registry"
+      ]
+    },
+    "dimension": {
+      "description": "Grouping key a KPI series may be sliced by. Matches the keys of datapoint.dimensions plus 'period' for time bucketing",
+      "enum": [
+        "companyId",
+        "runId",
+        "workflow",
+        "appId",
+        "envId",
+        "severity",
+        "model",
+        "harness",
+        "period"
+      ]
+    },
+    "aggregation": {
+      "description": "How per-record values are folded into one datapoint per period and dimension tuple",
+      "enum": [ "sum", "mean", "median", "p90", "rate", "count" ]
+    },
+    "cadence": {
+      "description": "How often a datapoint is computed: once per headless run or on a calendar bucket",
+      "enum": [ "per-run", "daily", "weekly", "monthly" ]
+    },
+    "samplingMode": {
+      "description": "How harness sessions are chosen for measurement: 'bundle' takes every session of the first bundleSize runs, 'stochastic' samples each session with probability rate, 'all' measures everything",
+      "enum": [ "bundle", "stochastic", "all" ]
+    },
+    "denominator": {
+      "description": "Population a KPI is normalised over. 'controls-applicable' is the cm_coverage denominator, 'suggestions-surfaced' and 'suggestions-merged' the suggestion sub-metric denominators, 'initiatives' the change-management SLA population",
+      "enum": [
+        "controls-observed",
+        "controls-applicable",
+        "findings",
+        "applications",
+        "sessions",
+        "changes",
+        "initiatives",
+        "suggestions-surfaced",
+        "suggestions-merged",
+        "assets"
+      ]
+    },
+    "normalisationName": {
+      "description": "Closed list of normalised series names. A datapoint's series is 'raw' or one of these, so the list is fixed here rather than in the registry data; add a name here before adding the normalisation to kpis/metrics.json",
+      "enum": [
+        "usd-per-control-observed",
+        "usd-per-application",
+        "sla-compliance-rate",
+        "merge-rate",
+        "revert-rate",
+        "retention-30d",
+        "incidents-per-application"
+      ]
+    },
+    "rawInput": {
+      "description": "One raw input source and the fields read from it",
+      "type": "object",
+      "required": [ "source", "fields" ],
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/rawInputSource"
+        },
+        "fields": {
+          "description": "Field paths read from the source, in the source's own naming (dot paths for JSON, PagerDuty snake_case for pagerduty)",
+          "type": "array",
+          "maxItems": 32,
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "normalisation": {
+      "description": "A named per-population variant of the KPI, e.g. USD per control observed, published as its own series (datapoint.series = name) in the stated unit",
+      "type": "object",
+      "required": [ "name", "denominator", "unit" ],
+      "properties": {
+        "name": {
+          "description": "Slug naming the normalised series, e.g. 'usd-per-control-observed'; datapoints of this series carry it as series",
+          "$ref": "#/$defs/normalisationName"
+        },
+        "denominator": {
+          "$ref": "#/$defs/denominator"
+        },
+        "unit": {
+          "description": "Unit of the normalised series; datapoints of this series carry it as unit",
+          "$ref": "#/$defs/unit"
+        }
+      },
+      "additionalProperties": false
+    },
+    "kpi": {
+      "description": "Definition of one KPI",
+      "type": "object",
+      "required": [
+        "kpiId",
+        "name",
+        "description",
+        "unit",
+        "direction",
+        "formula",
+        "rawInputs",
+        "dimensions",
+        "aggregation",
+        "cadence",
+        "normalisations",
+        "targets",
+        "methodologyDoc",
+        "methodVersion"
+      ],
+      "properties": {
+        "kpiId": {
+          "$ref": "#/$defs/kpiId"
+        },
+        "name": {
+          "description": "Human display name of the KPI",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "description": {
+          "description": "What the KPI measures and why it matters, in one or two sentences",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+        },
+        "unit": {
+          "$ref": "#/$defs/unit"
+        },
+        "direction": {
+          "$ref": "#/$defs/direction"
+        },
+        "formula": {
+          "description": "Human-readable formula in terms of rawInputs fields. The executable definition is the methodology doc",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+        },
+        "rawInputs": {
+          "description": "Raw sources and fields the KPI is computed from",
+          "type": "array",
+          "maxItems": 16,
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/rawInput"
+          }
+        },
+        "dimensions": {
+          "description": "Dimensions the KPI series is sliced by. Each datapoint carries a subset of these",
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/dimension"
+          }
+        },
+        "aggregation": {
+          "$ref": "#/$defs/aggregation"
+        },
+        "cadence": {
+          "$ref": "#/$defs/cadence"
+        },
+        "normalisations": {
+          "description": "Normalised variants of the KPI, each published as its own series. May be empty when the raw value is already comparable across companies",
+          "type": "array",
+          "maxItems": 8,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/normalisation"
+          }
+        },
+        "targets": {
+          "description": "Thresholds in the KPI's unit. 'warn' is crossed first, 'alert' second, in the sense given by direction",
+          "type": "object",
+          "required": [ "warn", "alert" ],
+          "properties": {
+            "warn": {
+              "description": "Value at which the KPI is flagged for attention",
+              "type": "number"
+            },
+            "alert": {
+              "description": "Value at which the KPI is escalated",
+              "type": "number"
+            }
+          },
+          "additionalProperties": false
+        },
+        "methodologyDoc": {
+          "description": "Workspace path of the methodology markdown, always kpis/measurement/<kpiId>.md",
+          "type": "string",
+          "pattern": "^kpis/measurement/(cost_of_audit|cm_actionability|cm_coverage|cm_time_to_implementation|suggestion_acceptance_rate|incident_rate)\\.md$"
+        },
+        "methodVersion": {
+          "description": "Semantic version of the measurement method; must match the methodology doc frontmatter and is stamped on every datapoint",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/semver"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

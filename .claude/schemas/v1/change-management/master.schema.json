@@ -1,0 +1,485 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/change-management/master.schema.json",
+  "title": "Change-management master index",
+  "description": "company-profile/<company_id>/change_management/master.json: the index of every remediation initiative for one company. Feeds the cm_coverage, cm_time_to_implementation and incident_rate KPIs, so owner, approvedAt, dueAt, closedAt, slaBasis and regulatoryRefs must always be populated. Per-initiative detail lives in initiatives/<init_id>/timeline.json and tasks/task_<n>.json",
+  "examples": [
+    {
+      "schemaVersion": "1",
+      "kind": "maxwell.cm.master",
+      "companyId": "arthveda-securities",
+      "updatedAt": "2026-09-10T11:42:00Z",
+      "counters": {
+        "open": 1,
+        "closed": 0,
+        "cancelled": 0,
+        "overdue": 0
+      },
+      "initiatives": [
+        {
+          "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+          "title": "Generate and retain CycloneDX SBOMs in the trading-gateway CI pipeline",
+          "summary": "SEBI CSCRF GV.SC.S5 requires a software bill of materials for critical systems; the trading-gateway build produces none today",
+          "status": "in-progress",
+          "severity": "high",
+          "priority": "p2",
+          "changeType": "normal",
+          "owner": {
+            "type": "human",
+            "id": "platform-lead@arthveda.example"
+          },
+          "approver": {
+            "type": "human",
+            "id": "ciso@arthveda.example"
+          },
+          "createdAt": "2026-08-20T06:30:00Z",
+          "approvedAt": "2026-08-21T10:05:00Z",
+          "dueAt": "2026-09-19T06:30:00Z",
+          "plannedWindow": {
+            "start": "2026-09-02T05:00:00Z",
+            "end": "2026-09-12T06:30:00Z"
+          },
+          "rollbackPlan": "Revert PR #482 on trading-gateway-api; the build workflow returns to its previous definition and no runtime component is affected",
+          "riskAssessment": "Low: adds a post-build CI job only; a failing SBOM step blocks the pipeline but not the running service",
+          "slaBasis": {
+            "source": "sla-table",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "GV.SC.S5",
+            "topic": "sbom",
+            "days": 30
+          },
+          "findingIds": [ "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2" ],
+          "riskIds": [ "rsk_01M0CJ8ET0C59N0SB765HFQRW8" ],
+          "controlIds": [ "GV.SC.S5", "PS.3.2" ],
+          "regulatoryRefs": [
+            {
+              "regulator": "SEBI",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "GV.SC.S5"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-ssdf-800-218",
+              "controlId": "PS.3.2"
+            }
+          ],
+          "targets": [
+            {
+              "type": "repo",
+              "appId": "trading-gateway",
+              "repoId": "trading-gateway-api"
+            }
+          ],
+          "taskCounts": {
+            "total": 2,
+            "done": 1,
+            "blocked": 0
+          },
+          "suggestionIds": [ "sug_01M0KTP6M0GSB53TM0315NTTZW" ],
+          "sourceWorkflow": "impl-change-management",
+          "provenance": {
+            "harness": "claude-code",
+            "generatedAt": "2026-08-20T06:30:00Z",
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "workflow": "impl-change-management",
+            "agent": "change-manager"
+          }
+        }
+      ],
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-10T11:42:00Z",
+        "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+        "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+        "workflow": "impl-change-management",
+        "agent": "change-manager"
+      }
+    }
+  ],
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "kind",
+    "companyId",
+    "updatedAt",
+    "counters",
+    "initiatives",
+    "provenance"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/schemaVersion"
+    },
+    "kind": {
+      "const": "maxwell.cm.master"
+    },
+    "companyId": {
+      "description": "Slug of the company this index belongs to; must equal the company-profile directory name",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+    },
+    "updatedAt": {
+      "description": "When this index was last rewritten. Must be >= every initiative's createdAt and the latest closedAt",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+    },
+    "counters": {
+      "description": "Derived roll-up over initiatives[], recomputed on every write. open + closed + cancelled == initiatives.length. KPIs count status == closed only: cancelled initiatives are excluded from cm_time_to_implementation, SLA compliance and the incident_rate denominator",
+      "type": "object",
+      "required": [ "open", "closed", "cancelled", "overdue" ],
+      "properties": {
+        "open": {
+          "description": "Number of initiatives whose status is not closed or cancelled",
+          "type": "integer",
+          "minimum": 0
+        },
+        "closed": {
+          "description": "Number of initiatives whose status is closed; the only ones the KPIs count as implemented",
+          "type": "integer",
+          "minimum": 0
+        },
+        "cancelled": {
+          "description": "Number of initiatives whose status is cancelled; excluded from every KPI",
+          "type": "integer",
+          "minimum": 0
+        },
+        "overdue": {
+          "description": "Number of open initiatives whose dueAt is earlier than updatedAt (SLA breached)",
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "initiatives": {
+      "description": "Every initiative ever raised for the company, including closed and cancelled ones. initiativeId must be unique across the array",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/initiative"
+      }
+    },
+    "provenance": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/provenance"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "priority": {
+      "description": "Scheduling priority set by the change manager (vocab statuses priority)",
+      "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/priority"
+    },
+    "slaBasis": {
+      "description": "Which rule produced dueAt, mirroring soc finding.slaBasis. source sla-table: the (instrument, topic, severity) row of .claude/skills/regulatory-catalogs/references/sla-table.json, instrument required; defaults: the table's per-severity defaults because no row matched; company-policy: a company-override from sdlc/policy.json. days is copied from that source so dueAt = createdAt + days can be audited",
+      "type": "object",
+      "if": {
+        "properties": {
+          "source": {
+            "const": "sla-table"
+          }
+        }
+      },
+      "then": {
+        "required": [ "instrument" ]
+      },
+      "required": [ "source", "topic", "days" ],
+      "properties": {
+        "source": {
+          "description": "Where days came from: sla-table row, sla-table defaults fallback, or company-policy override",
+          "enum": [ "sla-table", "defaults", "company-policy" ]
+        },
+        "instrument": {
+          "description": "Instrument whose SLA table row was applied; required when source is sla-table",
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/instruments.schema.json"
+        },
+        "controlId": {
+          "description": "Control within the instrument whose SLA row was applied, when the table is per control",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/controlId"
+        },
+        "topic": {
+          "description": "SLA-table topic that was looked up (the row key together with instrument and severity)",
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/sla-table.schema.json#/$defs/topic"
+        },
+        "days": {
+          "description": "Calendar days allowed from createdAt to closedAt under the cited source",
+          "type": "integer",
+          "maximum": 3650,
+          "minimum": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "taskCounts": {
+      "description": "Derived roll-up over initiatives/<init_id>/tasks/task_<n>.json, recomputed whenever a task file changes",
+      "type": "object",
+      "required": [ "total", "done", "blocked" ],
+      "properties": {
+        "total": {
+          "description": "Number of task files under the initiative, all statuses included",
+          "type": "integer",
+          "minimum": 0
+        },
+        "done": {
+          "description": "Number of tasks with status done",
+          "type": "integer",
+          "minimum": 0
+        },
+        "blocked": {
+          "description": "Number of tasks with status blocked",
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "initiative": {
+      "description": "One remediation initiative (ITIL 4 change). Lifecycle: proposed -> approved -> in-progress -> (blocked) -> verifying -> closed; cancelled or reopened at any point after proposed. approvedAt and approver are forbidden while proposed and required from approved onward (approved, in-progress, blocked, verifying, closed, reopened); a standard change is pre-authorised, so record the policy as approver (type script or human) and approvedAt = createdAt. rollbackPlan and plannedWindow are required for normal and emergency changes from approved onward. closedAt is required exactly when status is closed or cancelled",
+      "type": "object",
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "approved",
+                  "in-progress",
+                  "blocked",
+                  "verifying",
+                  "closed",
+                  "reopened"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [ "approvedAt", "approver" ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "proposed"
+              }
+            }
+          },
+          "then": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [ "approvedAt" ]
+                },
+                {
+                  "required": [ "approver" ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [ "changeType", "status" ],
+            "properties": {
+              "changeType": {
+                "enum": [ "normal", "emergency" ]
+              },
+              "status": {
+                "enum": [
+                  "approved",
+                  "in-progress",
+                  "blocked",
+                  "verifying",
+                  "closed",
+                  "reopened"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [ "rollbackPlan", "plannedWindow" ]
+          }
+        }
+      ],
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [ "closed", "cancelled" ]
+          }
+        }
+      },
+      "then": {
+        "required": [ "closedAt" ]
+      },
+      "else": {
+        "not": {
+          "required": [ "closedAt" ]
+        }
+      },
+      "required": [
+        "initiativeId",
+        "title",
+        "summary",
+        "status",
+        "severity",
+        "priority",
+        "changeType",
+        "owner",
+        "createdAt",
+        "dueAt",
+        "slaBasis",
+        "findingIds",
+        "riskIds",
+        "controlIds",
+        "regulatoryRefs",
+        "targets",
+        "taskCounts",
+        "suggestionIds",
+        "sourceWorkflow",
+        "provenance"
+      ],
+      "properties": {
+        "initiativeId": {
+          "description": "Prefixed ULID; also the directory name under change_management/initiatives/",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/initiativeId"
+        },
+        "title": {
+          "description": "Imperative one-line title of the change, e.g. 'Generate SBOMs in CI'",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "summary": {
+          "description": "One or two sentences on why the change is needed and what it delivers",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "status": {
+          "description": "Current lifecycle state; every transition must also be recorded as an event in the initiative timeline",
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/initiative"
+        },
+        "severity": {
+          "description": "Highest severity among the linked findings and risks",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/severity"
+        },
+        "priority": {
+          "$ref": "#/$defs/priority"
+        },
+        "changeType": {
+          "description": "ITIL 4 change type: standard (pre-authorised, low risk), normal (needs approval), emergency (expedited approval)",
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/changeType"
+        },
+        "owner": {
+          "description": "Accountable person or agent; a human owner is expected before the initiative leaves proposed",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/actor"
+        },
+        "approver": {
+          "description": "Who approved the change (CAB member, CISO, ECAB for emergency; the pre-authorising policy script for a standard change). Required from approved onward, forbidden while proposed",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/actor"
+        },
+        "createdAt": {
+          "description": "When the initiative was raised. Starts the SLA clock (dueAt = createdAt + slaBasis.days) but not the cm_time_to_implementation clock, which starts at approvedAt",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "approvedAt": {
+          "description": "When the approver authorised the change; for a standard change equal to createdAt. Start of the cm_time_to_implementation clock (median of closedAt - approvedAt over initiatives with status closed). Required from approved onward, forbidden while proposed",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "dueAt": {
+          "description": "SLA deadline = createdAt + slaBasis.days. SLA compliance = closedAt <= dueAt for status closed; while open, overdue = dueAt < updatedAt. Cancelled initiatives are excluded",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "plannedWindow": {
+          "$ref": "#/$defs/plannedWindow"
+        },
+        "rollbackPlan": {
+          "description": "Documented back-out plan (ITIL 4, RBI IT Governance MD 2023, SEBI CSCRF): how to restore the previous state if implementation or verification fails. Required for normal and emergency changes from approved onward; not used by any KPI",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/nonEmptyString"
+        },
+        "riskAssessment": {
+          "description": "Assessed risk of making the change (blast radius, downtime, data impact) and any mitigations; recommended for normal and emergency changes. Not used by any KPI",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/nonEmptyString"
+        },
+        "closedAt": {
+          "description": "When the initiative reached closed or cancelled. Only status closed feeds the KPIs: cm_time_to_implementation = closedAt - approvedAt and SLA compliance = closedAt <= dueAt for closed initiatives; cancelled ones are excluded from both and from the incident_rate denominator. Remove it when reopening",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "slaBasis": {
+          "$ref": "#/$defs/slaBasis"
+        },
+        "findingIds": {
+          "description": "Ledger findings this initiative remediates; empty only for proactive changes",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/findingId"
+          }
+        },
+        "riskIds": {
+          "description": "Ledger risks this initiative mitigates",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/riskId"
+          }
+        },
+        "controlIds": {
+          "description": "Ids of control records in the company's soc ledger that the initiative implements or strengthens (same meaning as controlIds on soc records); each must exist in the ledger and should correspond to a regulatoryRefs entry. Joined by cm_coverage",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/controlId"
+          }
+        },
+        "regulatoryRefs": {
+          "description": "At least one regulatory clause justifying the change; the most specific Indian instrument first",
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/regulatoryRef"
+          }
+        },
+        "targets": {
+          "description": "Assets the change touches (applications, environments, repos, images, vendors)",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/assetRef"
+          }
+        },
+        "taskCounts": {
+          "$ref": "#/$defs/taskCounts"
+        },
+        "suggestionIds": {
+          "description": "Auto-improvement suggestions (suggestions/master.json) raised to implement this initiative",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/suggestionId"
+          }
+        },
+        "sourceWorkflow": {
+          "description": "Workflow that raised the initiative (usually impl-change-management or a report-* workflow)",
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/workflows.schema.json"
+        },
+        "provenance": {
+          "description": "Provenance of this initiative entry, distinct from the index-level provenance",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/provenance"
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "plannedWindow": {
+      "description": "Implementation window agreed at approval (ITIL 4 change schedule); required for normal and emergency changes once approved",
+      "type": "object",
+      "required": [ "start", "end" ],
+      "properties": {
+        "start": {
+          "description": "Earliest moment implementation may begin",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "end": {
+          "description": "Latest moment implementation must be complete or rolled back; never later than dueAt",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

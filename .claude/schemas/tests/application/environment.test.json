@@ -1,0 +1,2595 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/v1/application/environment.schema.json",
+  "tests": [
+    {
+      "description": "realistic complete instance (schema example)",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.environment",
+        "appId": "ledger-core",
+        "envId": "prod-mumbai",
+        "name": "Production (Mumbai)",
+        "tier": "prod",
+        "exposure": "internet",
+        "hosting": {
+          "provider": "aws",
+          "region": "ap-south-1",
+          "accountRef": "arthanidhi-prod",
+          "cluster": "eks-prod-mumbai",
+          "namespace": "ledger-core",
+          "kubernetesVersion": "1.31"
+        },
+        "urls": [
+          "https://api.arthanidhi.example/ledger"
+        ],
+        "iac": [
+          {
+            "repoId": "ledger-core-infra",
+            "path": "terraform/envs/prod-mumbai",
+            "tool": "terraform"
+          },
+          {
+            "repoId": "ledger-core-api",
+            "path": "deploy/helm/ledger-core",
+            "tool": "helm"
+          }
+        ],
+        "secretsBackend": "aws-secrets-manager",
+        "observability": {
+          "logsRetentionDays": 365,
+          "logsInIndia": true,
+          "siem": "Splunk Cloud (ap-south-1 tenant)",
+          "apm": "Datadog APM"
+        },
+        "alerting": {
+          "pagerdutyServiceIds": [
+            "PT4KHLK"
+          ],
+          "escalationPolicyId": "PEP7XZ2"
+        },
+        "dataClassification": [
+          "pii",
+          "financial",
+          "regulatory"
+        ],
+        "residency": [
+          "IN"
+        ],
+        "probeAccess": {
+          "credentialKey": "prod-mumbai-kubeconfig-ro",
+          "method": "kubeconfig",
+          "readOnly": true,
+          "allowedWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "16:30",
+              "endUtc": "23:30"
+            }
+          ],
+          "rateLimitPerMinute": 60
+        },
+        "changeFreeze": [
+          {
+            "from": "2026-03-28T00:00:00Z",
+            "to": "2026-04-02T00:00:00Z",
+            "reason": "Financial year-end close; SEBI settlement cycle"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:15:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "minimal instance with probe method none and no credentialKey",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.environment",
+        "appId": "ledger-core",
+        "envId": "dev-local",
+        "tier": "dev",
+        "exposure": "internal",
+        "hosting": {
+          "provider": "on-prem",
+          "region": "blr-dc1"
+        },
+        "secretsBackend": "kubernetes-secrets",
+        "observability": {
+          "logsRetentionDays": 30,
+          "logsInIndia": true
+        },
+        "dataClassification": [
+          "internal"
+        ],
+        "residency": [
+          "IN"
+        ],
+        "probeAccess": {
+          "method": "none",
+          "readOnly": true
+        },
+        "provenance": {
+          "harness": "human",
+          "generatedAt": "2026-09-13T06:15:00Z"
+        }
+      }
+    },
+    {
+      "description": "invented extra top-level key",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.environment",
+        "appId": "ledger-core",
+        "envId": "prod-mumbai",
+        "name": "Production (Mumbai)",
+        "tier": "prod",
+        "exposure": "internet",
+        "hosting": {
+          "provider": "aws",
+          "region": "ap-south-1",
+          "accountRef": "arthanidhi-prod",
+          "cluster": "eks-prod-mumbai",
+          "namespace": "ledger-core",
+          "kubernetesVersion": "1.31"
+        },
+        "urls": [
+          "https://api.arthanidhi.example/ledger"
+        ],
+        "iac": [
+          {
+            "repoId": "ledger-core-infra",
+            "path": "terraform/envs/prod-mumbai",
+            "tool": "terraform"
+          },
+          {
+            "repoId": "ledger-core-api",
+            "path": "deploy/helm/ledger-core",
+            "tool": "helm"
+          }
+        ],
+        "secretsBackend": "aws-secrets-manager",
+        "observability": {
+          "logsRetentionDays": 365,
+          "logsInIndia": true,
+          "siem": "Splunk Cloud (ap-south-1 tenant)",
+          "apm": "Datadog APM"
+        },
+        "dataClassification": [
+          "pii",
+          "financial",
+          "regulatory"
+        ],
+        "residency": [
+          "IN"
+        ],
+        "probeAccess": {
+          "credentialKey": "prod-mumbai-kubeconfig-ro",
+          "method": "kubeconfig",
+          "readOnly": true,
+          "allowedWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "16:30",
+              "endUtc": "23:30"
+            }
+          ],
+          "rateLimitPerMinute": 60
+        },
+        "changeFreeze": [
+          {
+            "from": "2026-03-28T00:00:00Z",
+            "to": "2026-04-02T00:00:00Z",
+            "reason": "Financial year-end close; SEBI settlement cycle"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:15:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        },
+        "owner": "platform-team"
+      }
+    },
+    {
+      "description": "envId with uppercase letters violates slug pattern",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.environment",
+        "appId": "ledger-core",
+        "envId": "Prod-Mumbai",
+        "name": "Production (Mumbai)",
+        "tier": "prod",
+        "exposure": "internet",
+        "hosting": {
+          "provider": "aws",
+          "region": "ap-south-1",
+          "accountRef": "arthanidhi-prod",
+          "cluster": "eks-prod-mumbai",
+          "namespace": "ledger-core",
+          "kubernetesVersion": "1.31"
+        },
+        "urls": [
+          "https://api.arthanidhi.example/ledger"
+        ],
+        "iac": [
+          {
+            "repoId": "ledger-core-infra",
+            "path": "terraform/envs/prod-mumbai",
+            "tool": "terraform"
+          },
+          {
+            "repoId": "ledger-core-api",
+            "path": "deploy/helm/ledger-core",
+            "tool": "helm"
+          }
+        ],
+        "secretsBackend": "aws-secrets-manager",
+        "observability": {
+          "logsRetentionDays": 365,
+          "logsInIndia": true,
+          "siem": "Splunk Cloud (ap-south-1 tenant)",
+          "apm": "Datadog APM"
+        },
+        "dataClassification": [
+          "pii",
+          "financial",
+          "regulatory"
+        ],
+        "residency": [
+          "IN"
+        ],
+        "probeAccess": {
+          "credentialKey": "prod-mumbai-kubeconfig-ro",
+          "method": "kubeconfig",
+          "readOnly": true,
+          "allowedWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "16:30",
+              "endUtc": "23:30"
+            }
+          ],
+          "rateLimitPerMinute": 60
+        },
+        "changeFreeze": [
+          {
+            "from": "2026-03-28T00:00:00Z",
+            "to": "2026-04-02T00:00:00Z",
+            "reason": "Financial year-end close; SEBI settlement cycle"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:15:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "tier outside environmentTier vocabulary",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.environment",
+        "appId": "ledger-core",
+        "envId": "prod-mumbai",
+        "name": "Production (Mumbai)",
+        "tier": "production",
+        "exposure": "internet",
+        "hosting": {
+          "provider": "aws",
+          "region": "ap-south-1",
+          "accountRef": "arthanidhi-prod",
+          "cluster": "eks-prod-mumbai",
+          "namespace": "ledger-core",
+          "kubernetesVersion": "1.31"
+        },
+        "urls": [
+          "https://api.arthanidhi.example/ledger"
+        ],
+        "iac": [
+          {
+            "repoId": "ledger-core-infra",
+            "path": "terraform/envs/prod-mumbai",
+            "tool": "terraform"
+          },
+          {
+            "repoId": "ledger-core-api",
+            "path": "deploy/helm/ledger-core",
+            "tool": "helm"
+          }
+        ],
+        "secretsBackend": "aws-secrets-manager",
+        "observability": {
+          "logsRetentionDays": 365,
+          "logsInIndia": true,
+          "siem": "Splunk Cloud (ap-south-1 tenant)",
+          "apm": "Datadog APM"
+        },
+        "dataClassification": [
+          "pii",
+          "financial",
+          "regulatory"
+        ],
+        "residency": [
+          "IN"
+        ],
+        "probeAccess": {
+          "credentialKey": "prod-mumbai-kubeconfig-ro",
+          "method": "kubeconfig",
+          "readOnly": true,
+          "allowedWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "16:30",
+              "endUtc": "23:30"
+            }
+          ],
+          "rateLimitPerMinute": 60
+        },
+        "changeFreeze": [
+          {
+            "from": "2026-03-28T00:00:00Z",
+            "to": "2026-04-02T00:00:00Z",
+            "reason": "Financial year-end close; SEBI settlement cycle"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:15:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "missing required probeAccess",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.environment",
+        "appId": "ledger-core",
+        "envId": "prod-mumbai",
+        "name": "Production (Mumbai)",
+        "tier": "prod",
+        "exposure": "internet",
+        "hosting": {
+          "provider": "aws",
+          "region": "ap-south-1",
+          "accountRef": "arthanidhi-prod",
+          "cluster": "eks-prod-mumbai",
+          "namespace": "ledger-core",
+          "kubernetesVersion": "1.31"
+        },
+        "urls": [
+          "https://api.arthanidhi.example/ledger"
+        ],
+        "iac": [
+          {
+            "repoId": "ledger-core-infra",
+            "path": "terraform/envs/prod-mumbai",
+            "tool": "terraform"
+          },
+          {
+            "repoId": "ledger-core-api",
+            "path": "deploy/helm/ledger-core",
+            "tool": "helm"
+          }
+        ],
+        "secretsBackend": "aws-secrets-manager",
+        "observability": {
+          "logsRetentionDays": 365,
+          "logsInIndia": true,
+          "siem": "Splunk Cloud (ap-south-1 tenant)",
+          "apm": "Datadog APM"
+        },
+        "dataClassification": [
+          "pii",
+          "financial",
+          "regulatory"
+        ],
+        "residency": [
+          "IN"
+        ],
+        "changeFreeze": [
+          {
+            "from": "2026-03-28T00:00:00Z",
+            "to": "2026-04-02T00:00:00Z",
+            "reason": "Financial year-end close; SEBI settlement cycle"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:15:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "wrong kind const",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.env",
+        "appId": "ledger-core",
+        "envId": "prod-mumbai",
+        "name": "Production (Mumbai)",
+        "tier": "prod",
+        "exposure": "internet",
+        "hosting": {
+          "provider": "aws",
+          "region": "ap-south-1",
+          "accountRef": "arthanidhi-prod",
+          "cluster": "eks-prod-mumbai",
+          "namespace": "ledger-core",
+          "kubernetesVersion": "1.31"
+        },
+        "urls": [
+          "https://api.arthanidhi.example/ledger"
+        ],
+        "iac": [
+          {
+            "repoId": "ledger-core-infra",
+            "path": "terraform/envs/prod-mumbai",
+            "tool": "terraform"
+          },
+          {
+            "repoId": "ledger-core-api",
+            "path": "deploy/helm/ledger-core",
+            "tool": "helm"
+          }
+        ],
+        "secretsBackend": "aws-secrets-manager",
+        "observability": {
+          "logsRetentionDays": 365,
+          "logsInIndia": true,
+          "siem": "Splunk Cloud (ap-south-1 tenant)",
+          "apm": "Datadog APM"
+        },
+        "dataClassification": [
+          "pii",
+          "financial",
+          "regulatory"
+        ],
+        "residency": [
+          "IN"
+        ],
+        "probeAccess": {
+          "credentialKey": "prod-mumbai-kubeconfig-ro",
+          "method": "kubeconfig",
+          "readOnly": true,
+          "allowedWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "16:30",
+              "endUtc": "23:30"
+            }
+          ],
+          "rateLimitPerMinute": 60
+        },
+        "changeFreeze": [
+          {
+            "from": "2026-03-28T00:00:00Z",
+            "to": "2026-04-02T00:00:00Z",
+            "reason": "Financial year-end close; SEBI settlement cycle"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:15:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "probeAccess.readOnly false violates read-only invariant",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.environment",
+        "appId": "ledger-core",
+        "envId": "prod-mumbai",
+        "name": "Production (Mumbai)",
+        "tier": "prod",
+        "exposure": "internet",
+        "hosting": {
+          "provider": "aws",
+          "region": "ap-south-1",
+          "accountRef": "arthanidhi-prod",
+          "cluster": "eks-prod-mumbai",
+          "namespace": "ledger-core",
+          "kubernetesVersion": "1.31"
+        },
+        "urls": [
+          "https://api.arthanidhi.example/ledger"
+        ],
+        "iac": [
+          {
+            "repoId": "ledger-core-infra",
+            "path": "terraform/envs/prod-mumbai",
+            "tool": "terraform"
+          },
+          {
+            "repoId": "ledger-core-api",
+            "path": "deploy/helm/ledger-core",
+            "tool": "helm"
+          }
+        ],
+        "secretsBackend": "aws-secrets-manager",
+        "observability": {
+          "logsRetentionDays": 365,
+          "logsInIndia": true,
+          "siem": "Splunk Cloud (ap-south-1 tenant)",
+          "apm": "Datadog APM"
+        },
+        "dataClassification": [
+          "pii",
+          "financial",
+          "regulatory"
+        ],
+        "residency": [
+          "IN"
+        ],
+        "probeAccess": {
+          "credentialKey": "prod-mumbai-kubeconfig-ro",
+          "method": "kubeconfig",
+          "readOnly": false,
+          "allowedWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "16:30",
+              "endUtc": "23:30"
+            }
+          ],
+          "rateLimitPerMinute": 60
+        },
+        "changeFreeze": [
+          {
+            "from": "2026-03-28T00:00:00Z",
+            "to": "2026-04-02T00:00:00Z",
+            "reason": "Financial year-end close; SEBI settlement cycle"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:15:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "probeAccess method kubeconfig without credentialKey",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.environment",
+        "appId": "ledger-core",
+        "envId": "prod-mumbai",
+        "name": "Production (Mumbai)",
+        "tier": "prod",
+        "exposure": "internet",
+        "hosting": {
+          "provider": "aws",
+          "region": "ap-south-1",
+          "accountRef": "arthanidhi-prod",
+          "cluster": "eks-prod-mumbai",
+          "namespace": "ledger-core",
+          "kubernetesVersion": "1.31"
+        },
+        "urls": [
+          "https://api.arthanidhi.example/ledger"
+        ],
+        "iac": [
+          {
+            "repoId": "ledger-core-infra",
+            "path": "terraform/envs/prod-mumbai",
+            "tool": "terraform"
+          },
+          {
+            "repoId": "ledger-core-api",
+            "path": "deploy/helm/ledger-core",
+            "tool": "helm"
+          }
+        ],
+        "secretsBackend": "aws-secrets-manager",
+        "observability": {
+          "logsRetentionDays": 365,
+          "logsInIndia": true,
+          "siem": "Splunk Cloud (ap-south-1 tenant)",
+          "apm": "Datadog APM"
+        },
+        "dataClassification": [
+          "pii",
+          "financial",
+          "regulatory"
+        ],
+        "residency": [
+          "IN"
+        ],
+        "probeAccess": {
+          "method": "kubeconfig",
+          "readOnly": true,
+          "allowedWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "16:30",
+              "endUtc": "23:30"
+            }
+          ],
+          "rateLimitPerMinute": 60
+        },
+        "changeFreeze": [
+          {
+            "from": "2026-03-28T00:00:00Z",
+            "to": "2026-04-02T00:00:00Z",
+            "reason": "Financial year-end close; SEBI settlement cycle"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:15:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "probeAccess method none with credentialKey",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.environment",
+        "appId": "ledger-core",
+        "envId": "prod-mumbai",
+        "name": "Production (Mumbai)",
+        "tier": "prod",
+        "exposure": "internet",
+        "hosting": {
+          "provider": "aws",
+          "region": "ap-south-1",
+          "accountRef": "arthanidhi-prod",
+          "cluster": "eks-prod-mumbai",
+          "namespace": "ledger-core",
+          "kubernetesVersion": "1.31"
+        },
+        "urls": [
+          "https://api.arthanidhi.example/ledger"
+        ],
+        "iac": [
+          {
+            "repoId": "ledger-core-infra",
+            "path": "terraform/envs/prod-mumbai",
+            "tool": "terraform"
+          },
+          {
+            "repoId": "ledger-core-api",
+            "path": "deploy/helm/ledger-core",
+            "tool": "helm"
+          }
+        ],
+        "secretsBackend": "aws-secrets-manager",
+        "observability": {
+          "logsRetentionDays": 365,
+          "logsInIndia": true,
+          "siem": "Splunk Cloud (ap-south-1 tenant)",
+          "apm": "Datadog APM"
+        },
+        "dataClassification": [
+          "pii",
+          "financial",
+          "regulatory"
+        ],
+        "residency": [
+          "IN"
+        ],
+        "probeAccess": {
+          "credentialKey": "prod-mumbai-kubeconfig-ro",
+          "method": "none",
+          "readOnly": true,
+          "allowedWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "16:30",
+              "endUtc": "23:30"
+            }
+          ],
+          "rateLimitPerMinute": 60
+        },
+        "changeFreeze": [
+          {
+            "from": "2026-03-28T00:00:00Z",
+            "to": "2026-04-02T00:00:00Z",
+            "reason": "Financial year-end close; SEBI settlement cycle"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:15:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "extra key inside probeAccess is rejected by unevaluatedProperties",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.environment",
+        "appId": "ledger-core",
+        "envId": "prod-mumbai",
+        "name": "Production (Mumbai)",
+        "tier": "prod",
+        "exposure": "internet",
+        "hosting": {
+          "provider": "aws",
+          "region": "ap-south-1",
+          "accountRef": "arthanidhi-prod",
+          "cluster": "eks-prod-mumbai",
+          "namespace": "ledger-core",
+          "kubernetesVersion": "1.31"
+        },
+        "urls": [
+          "https://api.arthanidhi.example/ledger"
+        ],
+        "iac": [
+          {
+            "repoId": "ledger-core-infra",
+            "path": "terraform/envs/prod-mumbai",
+            "tool": "terraform"
+          },
+          {
+            "repoId": "ledger-core-api",
+            "path": "deploy/helm/ledger-core",
+            "tool": "helm"
+          }
+        ],
+        "secretsBackend": "aws-secrets-manager",
+        "observability": {
+          "logsRetentionDays": 365,
+          "logsInIndia": true,
+          "siem": "Splunk Cloud (ap-south-1 tenant)",
+          "apm": "Datadog APM"
+        },
+        "dataClassification": [
+          "pii",
+          "financial",
+          "regulatory"
+        ],
+        "residency": [
+          "IN"
+        ],
+        "probeAccess": {
+          "credentialKey": "prod-mumbai-kubeconfig-ro",
+          "method": "kubeconfig",
+          "readOnly": true,
+          "allowedWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "16:30",
+              "endUtc": "23:30"
+            }
+          ],
+          "rateLimitPerMinute": 60,
+          "token": "x"
+        },
+        "changeFreeze": [
+          {
+            "from": "2026-03-28T00:00:00Z",
+            "to": "2026-04-02T00:00:00Z",
+            "reason": "Financial year-end close; SEBI settlement cycle"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:15:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "allowedWindow startUtc not HH:MM",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.environment",
+        "appId": "ledger-core",
+        "envId": "prod-mumbai",
+        "name": "Production (Mumbai)",
+        "tier": "prod",
+        "exposure": "internet",
+        "hosting": {
+          "provider": "aws",
+          "region": "ap-south-1",
+          "accountRef": "arthanidhi-prod",
+          "cluster": "eks-prod-mumbai",
+          "namespace": "ledger-core",
+          "kubernetesVersion": "1.31"
+        },
+        "urls": [
+          "https://api.arthanidhi.example/ledger"
+        ],
+        "iac": [
+          {
+            "repoId": "ledger-core-infra",
+            "path": "terraform/envs/prod-mumbai",
+            "tool": "terraform"
+          },
+          {
+            "repoId": "ledger-core-api",
+            "path": "deploy/helm/ledger-core",
+            "tool": "helm"
+          }
+        ],
+        "secretsBackend": "aws-secrets-manager",
+        "observability": {
+          "logsRetentionDays": 365,
+          "logsInIndia": true,
+          "siem": "Splunk Cloud (ap-south-1 tenant)",
+          "apm": "Datadog APM"
+        },
+        "dataClassification": [
+          "pii",
+          "financial",
+          "regulatory"
+        ],
+        "residency": [
+          "IN"
+        ],
+        "probeAccess": {
+          "credentialKey": "prod-mumbai-kubeconfig-ro",
+          "method": "kubeconfig",
+          "readOnly": true,
+          "allowedWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "4:30pm",
+              "endUtc": "23:30"
+            }
+          ],
+          "rateLimitPerMinute": 60
+        },
+        "changeFreeze": [
+          {
+            "from": "2026-03-28T00:00:00Z",
+            "to": "2026-04-02T00:00:00Z",
+            "reason": "Financial year-end close; SEBI settlement cycle"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:15:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "hosting.provider not in enum",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.environment",
+        "appId": "ledger-core",
+        "envId": "prod-mumbai",
+        "name": "Production (Mumbai)",
+        "tier": "prod",
+        "exposure": "internet",
+        "hosting": {
+          "provider": "digitalocean",
+          "region": "ap-south-1",
+          "accountRef": "arthanidhi-prod",
+          "cluster": "eks-prod-mumbai",
+          "namespace": "ledger-core",
+          "kubernetesVersion": "1.31"
+        },
+        "urls": [
+          "https://api.arthanidhi.example/ledger"
+        ],
+        "iac": [
+          {
+            "repoId": "ledger-core-infra",
+            "path": "terraform/envs/prod-mumbai",
+            "tool": "terraform"
+          },
+          {
+            "repoId": "ledger-core-api",
+            "path": "deploy/helm/ledger-core",
+            "tool": "helm"
+          }
+        ],
+        "secretsBackend": "aws-secrets-manager",
+        "observability": {
+          "logsRetentionDays": 365,
+          "logsInIndia": true,
+          "siem": "Splunk Cloud (ap-south-1 tenant)",
+          "apm": "Datadog APM"
+        },
+        "dataClassification": [
+          "pii",
+          "financial",
+          "regulatory"
+        ],
+        "residency": [
+          "IN"
+        ],
+        "probeAccess": {
+          "credentialKey": "prod-mumbai-kubeconfig-ro",
+          "method": "kubeconfig",
+          "readOnly": true,
+          "allowedWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "16:30",
+              "endUtc": "23:30"
+            }
+          ],
+          "rateLimitPerMinute": 60
+        },
+        "changeFreeze": [
+          {
+            "from": "2026-03-28T00:00:00Z",
+            "to": "2026-04-02T00:00:00Z",
+            "reason": "Financial year-end close; SEBI settlement cycle"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:15:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "iac tool not in enum",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.environment",
+        "appId": "ledger-core",
+        "envId": "prod-mumbai",
+        "name": "Production (Mumbai)",
+        "tier": "prod",
+        "exposure": "internet",
+        "hosting": {
+          "provider": "aws",
+          "region": "ap-south-1",
+          "accountRef": "arthanidhi-prod",
+          "cluster": "eks-prod-mumbai",
+          "namespace": "ledger-core",
+          "kubernetesVersion": "1.31"
+        },
+        "urls": [
+          "https://api.arthanidhi.example/ledger"
+        ],
+        "iac": [
+          {
+            "repoId": "ledger-core-infra",
+            "path": "terraform/envs/prod-mumbai",
+            "tool": "bicep"
+          },
+          {
+            "repoId": "ledger-core-api",
+            "path": "deploy/helm/ledger-core",
+            "tool": "helm"
+          }
+        ],
+        "secretsBackend": "aws-secrets-manager",
+        "observability": {
+          "logsRetentionDays": 365,
+          "logsInIndia": true,
+          "siem": "Splunk Cloud (ap-south-1 tenant)",
+          "apm": "Datadog APM"
+        },
+        "dataClassification": [
+          "pii",
+          "financial",
+          "regulatory"
+        ],
+        "residency": [
+          "IN"
+        ],
+        "probeAccess": {
+          "credentialKey": "prod-mumbai-kubeconfig-ro",
+          "method": "kubeconfig",
+          "readOnly": true,
+          "allowedWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "16:30",
+              "endUtc": "23:30"
+            }
+          ],
+          "rateLimitPerMinute": 60
+        },
+        "changeFreeze": [
+          {
+            "from": "2026-03-28T00:00:00Z",
+            "to": "2026-04-02T00:00:00Z",
+            "reason": "Financial year-end close; SEBI settlement cycle"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:15:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "residency country code lowercase",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.environment",
+        "appId": "ledger-core",
+        "envId": "prod-mumbai",
+        "name": "Production (Mumbai)",
+        "tier": "prod",
+        "exposure": "internet",
+        "hosting": {
+          "provider": "aws",
+          "region": "ap-south-1",
+          "accountRef": "arthanidhi-prod",
+          "cluster": "eks-prod-mumbai",
+          "namespace": "ledger-core",
+          "kubernetesVersion": "1.31"
+        },
+        "urls": [
+          "https://api.arthanidhi.example/ledger"
+        ],
+        "iac": [
+          {
+            "repoId": "ledger-core-infra",
+            "path": "terraform/envs/prod-mumbai",
+            "tool": "terraform"
+          },
+          {
+            "repoId": "ledger-core-api",
+            "path": "deploy/helm/ledger-core",
+            "tool": "helm"
+          }
+        ],
+        "secretsBackend": "aws-secrets-manager",
+        "observability": {
+          "logsRetentionDays": 365,
+          "logsInIndia": true,
+          "siem": "Splunk Cloud (ap-south-1 tenant)",
+          "apm": "Datadog APM"
+        },
+        "dataClassification": [
+          "pii",
+          "financial",
+          "regulatory"
+        ],
+        "residency": [
+          "in"
+        ],
+        "probeAccess": {
+          "credentialKey": "prod-mumbai-kubeconfig-ro",
+          "method": "kubeconfig",
+          "readOnly": true,
+          "allowedWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "16:30",
+              "endUtc": "23:30"
+            }
+          ],
+          "rateLimitPerMinute": 60
+        },
+        "changeFreeze": [
+          {
+            "from": "2026-03-28T00:00:00Z",
+            "to": "2026-04-02T00:00:00Z",
+            "reason": "Financial year-end close; SEBI settlement cycle"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:15:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "dataClassification empty array",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.environment",
+        "appId": "ledger-core",
+        "envId": "prod-mumbai",
+        "name": "Production (Mumbai)",
+        "tier": "prod",
+        "exposure": "internet",
+        "hosting": {
+          "provider": "aws",
+          "region": "ap-south-1",
+          "accountRef": "arthanidhi-prod",
+          "cluster": "eks-prod-mumbai",
+          "namespace": "ledger-core",
+          "kubernetesVersion": "1.31"
+        },
+        "urls": [
+          "https://api.arthanidhi.example/ledger"
+        ],
+        "iac": [
+          {
+            "repoId": "ledger-core-infra",
+            "path": "terraform/envs/prod-mumbai",
+            "tool": "terraform"
+          },
+          {
+            "repoId": "ledger-core-api",
+            "path": "deploy/helm/ledger-core",
+            "tool": "helm"
+          }
+        ],
+        "secretsBackend": "aws-secrets-manager",
+        "observability": {
+          "logsRetentionDays": 365,
+          "logsInIndia": true,
+          "siem": "Splunk Cloud (ap-south-1 tenant)",
+          "apm": "Datadog APM"
+        },
+        "dataClassification": [],
+        "residency": [
+          "IN"
+        ],
+        "probeAccess": {
+          "credentialKey": "prod-mumbai-kubeconfig-ro",
+          "method": "kubeconfig",
+          "readOnly": true,
+          "allowedWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "16:30",
+              "endUtc": "23:30"
+            }
+          ],
+          "rateLimitPerMinute": 60
+        },
+        "changeFreeze": [
+          {
+            "from": "2026-03-28T00:00:00Z",
+            "to": "2026-04-02T00:00:00Z",
+            "reason": "Financial year-end close; SEBI settlement cycle"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:15:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "url without http scheme",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.environment",
+        "appId": "ledger-core",
+        "envId": "prod-mumbai",
+        "name": "Production (Mumbai)",
+        "tier": "prod",
+        "exposure": "internet",
+        "hosting": {
+          "provider": "aws",
+          "region": "ap-south-1",
+          "accountRef": "arthanidhi-prod",
+          "cluster": "eks-prod-mumbai",
+          "namespace": "ledger-core",
+          "kubernetesVersion": "1.31"
+        },
+        "urls": [
+          "ftp://files.example"
+        ],
+        "iac": [
+          {
+            "repoId": "ledger-core-infra",
+            "path": "terraform/envs/prod-mumbai",
+            "tool": "terraform"
+          },
+          {
+            "repoId": "ledger-core-api",
+            "path": "deploy/helm/ledger-core",
+            "tool": "helm"
+          }
+        ],
+        "secretsBackend": "aws-secrets-manager",
+        "observability": {
+          "logsRetentionDays": 365,
+          "logsInIndia": true,
+          "siem": "Splunk Cloud (ap-south-1 tenant)",
+          "apm": "Datadog APM"
+        },
+        "dataClassification": [
+          "pii",
+          "financial",
+          "regulatory"
+        ],
+        "residency": [
+          "IN"
+        ],
+        "probeAccess": {
+          "credentialKey": "prod-mumbai-kubeconfig-ro",
+          "method": "kubeconfig",
+          "readOnly": true,
+          "allowedWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "16:30",
+              "endUtc": "23:30"
+            }
+          ],
+          "rateLimitPerMinute": 60
+        },
+        "changeFreeze": [
+          {
+            "from": "2026-03-28T00:00:00Z",
+            "to": "2026-04-02T00:00:00Z",
+            "reason": "Financial year-end close; SEBI settlement cycle"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:15:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "changeFreeze missing reason",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.environment",
+        "appId": "ledger-core",
+        "envId": "prod-mumbai",
+        "name": "Production (Mumbai)",
+        "tier": "prod",
+        "exposure": "internet",
+        "hosting": {
+          "provider": "aws",
+          "region": "ap-south-1",
+          "accountRef": "arthanidhi-prod",
+          "cluster": "eks-prod-mumbai",
+          "namespace": "ledger-core",
+          "kubernetesVersion": "1.31"
+        },
+        "urls": [
+          "https://api.arthanidhi.example/ledger"
+        ],
+        "iac": [
+          {
+            "repoId": "ledger-core-infra",
+            "path": "terraform/envs/prod-mumbai",
+            "tool": "terraform"
+          },
+          {
+            "repoId": "ledger-core-api",
+            "path": "deploy/helm/ledger-core",
+            "tool": "helm"
+          }
+        ],
+        "secretsBackend": "aws-secrets-manager",
+        "observability": {
+          "logsRetentionDays": 365,
+          "logsInIndia": true,
+          "siem": "Splunk Cloud (ap-south-1 tenant)",
+          "apm": "Datadog APM"
+        },
+        "dataClassification": [
+          "pii",
+          "financial",
+          "regulatory"
+        ],
+        "residency": [
+          "IN"
+        ],
+        "probeAccess": {
+          "credentialKey": "prod-mumbai-kubeconfig-ro",
+          "method": "kubeconfig",
+          "readOnly": true,
+          "allowedWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "16:30",
+              "endUtc": "23:30"
+            }
+          ],
+          "rateLimitPerMinute": 60
+        },
+        "changeFreeze": [
+          {
+            "from": "2026-03-28T00:00:00Z",
+            "to": "2026-04-02T00:00:00Z"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:15:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "logsRetentionDays as string",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.environment",
+        "appId": "ledger-core",
+        "envId": "prod-mumbai",
+        "name": "Production (Mumbai)",
+        "tier": "prod",
+        "exposure": "internet",
+        "hosting": {
+          "provider": "aws",
+          "region": "ap-south-1",
+          "accountRef": "arthanidhi-prod",
+          "cluster": "eks-prod-mumbai",
+          "namespace": "ledger-core",
+          "kubernetesVersion": "1.31"
+        },
+        "urls": [
+          "https://api.arthanidhi.example/ledger"
+        ],
+        "iac": [
+          {
+            "repoId": "ledger-core-infra",
+            "path": "terraform/envs/prod-mumbai",
+            "tool": "terraform"
+          },
+          {
+            "repoId": "ledger-core-api",
+            "path": "deploy/helm/ledger-core",
+            "tool": "helm"
+          }
+        ],
+        "secretsBackend": "aws-secrets-manager",
+        "observability": {
+          "logsRetentionDays": "365",
+          "logsInIndia": true,
+          "siem": "Splunk Cloud (ap-south-1 tenant)",
+          "apm": "Datadog APM"
+        },
+        "dataClassification": [
+          "pii",
+          "financial",
+          "regulatory"
+        ],
+        "residency": [
+          "IN"
+        ],
+        "probeAccess": {
+          "credentialKey": "prod-mumbai-kubeconfig-ro",
+          "method": "kubeconfig",
+          "readOnly": true,
+          "allowedWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "16:30",
+              "endUtc": "23:30"
+            }
+          ],
+          "rateLimitPerMinute": 60
+        },
+        "changeFreeze": [
+          {
+            "from": "2026-03-28T00:00:00Z",
+            "to": "2026-04-02T00:00:00Z",
+            "reason": "Financial year-end close; SEBI settlement cycle"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:15:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "probe method http-only without credentialKey",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.environment",
+        "appId": "ledger-core",
+        "envId": "prod-mumbai",
+        "name": "Production (Mumbai)",
+        "tier": "prod",
+        "exposure": "internet",
+        "hosting": {
+          "provider": "aws",
+          "region": "ap-south-1",
+          "accountRef": "arthanidhi-prod",
+          "cluster": "eks-prod-mumbai",
+          "namespace": "ledger-core",
+          "kubernetesVersion": "1.31"
+        },
+        "urls": [
+          "https://api.arthanidhi.example/ledger"
+        ],
+        "iac": [
+          {
+            "repoId": "ledger-core-infra",
+            "path": "terraform/envs/prod-mumbai",
+            "tool": "terraform"
+          },
+          {
+            "repoId": "ledger-core-api",
+            "path": "deploy/helm/ledger-core",
+            "tool": "helm"
+          }
+        ],
+        "secretsBackend": "aws-secrets-manager",
+        "observability": {
+          "logsRetentionDays": 365,
+          "logsInIndia": true,
+          "siem": "Splunk Cloud (ap-south-1 tenant)",
+          "apm": "Datadog APM"
+        },
+        "alerting": {
+          "pagerdutyServiceIds": [
+            "PT4KHLK"
+          ],
+          "escalationPolicyId": "PEP7XZ2"
+        },
+        "dataClassification": [
+          "pii",
+          "financial",
+          "regulatory"
+        ],
+        "residency": [
+          "IN"
+        ],
+        "probeAccess": {
+          "method": "http-only",
+          "readOnly": true
+        },
+        "changeFreeze": [
+          {
+            "from": "2026-03-28T00:00:00Z",
+            "to": "2026-04-02T00:00:00Z",
+            "reason": "Financial year-end close; SEBI settlement cycle"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:15:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "probe method http-only with an optional credentialKey",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.environment",
+        "appId": "ledger-core",
+        "envId": "prod-mumbai",
+        "name": "Production (Mumbai)",
+        "tier": "prod",
+        "exposure": "internet",
+        "hosting": {
+          "provider": "aws",
+          "region": "ap-south-1",
+          "accountRef": "arthanidhi-prod",
+          "cluster": "eks-prod-mumbai",
+          "namespace": "ledger-core",
+          "kubernetesVersion": "1.31"
+        },
+        "urls": [
+          "https://api.arthanidhi.example/ledger"
+        ],
+        "iac": [
+          {
+            "repoId": "ledger-core-infra",
+            "path": "terraform/envs/prod-mumbai",
+            "tool": "terraform"
+          },
+          {
+            "repoId": "ledger-core-api",
+            "path": "deploy/helm/ledger-core",
+            "tool": "helm"
+          }
+        ],
+        "secretsBackend": "aws-secrets-manager",
+        "observability": {
+          "logsRetentionDays": 365,
+          "logsInIndia": true,
+          "siem": "Splunk Cloud (ap-south-1 tenant)",
+          "apm": "Datadog APM"
+        },
+        "alerting": {
+          "pagerdutyServiceIds": [
+            "PT4KHLK"
+          ],
+          "escalationPolicyId": "PEP7XZ2"
+        },
+        "dataClassification": [
+          "pii",
+          "financial",
+          "regulatory"
+        ],
+        "residency": [
+          "IN"
+        ],
+        "probeAccess": {
+          "method": "http-only",
+          "readOnly": true,
+          "credentialKey": "waf-bypass-header"
+        },
+        "changeFreeze": [
+          {
+            "from": "2026-03-28T00:00:00Z",
+            "to": "2026-04-02T00:00:00Z",
+            "reason": "Financial year-end close; SEBI settlement cycle"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:15:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "probe method cloud-api without credentialKey",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.environment",
+        "appId": "ledger-core",
+        "envId": "prod-mumbai",
+        "name": "Production (Mumbai)",
+        "tier": "prod",
+        "exposure": "internet",
+        "hosting": {
+          "provider": "aws",
+          "region": "ap-south-1",
+          "accountRef": "arthanidhi-prod",
+          "cluster": "eks-prod-mumbai",
+          "namespace": "ledger-core",
+          "kubernetesVersion": "1.31"
+        },
+        "urls": [
+          "https://api.arthanidhi.example/ledger"
+        ],
+        "iac": [
+          {
+            "repoId": "ledger-core-infra",
+            "path": "terraform/envs/prod-mumbai",
+            "tool": "terraform"
+          },
+          {
+            "repoId": "ledger-core-api",
+            "path": "deploy/helm/ledger-core",
+            "tool": "helm"
+          }
+        ],
+        "secretsBackend": "aws-secrets-manager",
+        "observability": {
+          "logsRetentionDays": 365,
+          "logsInIndia": true,
+          "siem": "Splunk Cloud (ap-south-1 tenant)",
+          "apm": "Datadog APM"
+        },
+        "alerting": {
+          "pagerdutyServiceIds": [
+            "PT4KHLK"
+          ],
+          "escalationPolicyId": "PEP7XZ2"
+        },
+        "dataClassification": [
+          "pii",
+          "financial",
+          "regulatory"
+        ],
+        "residency": [
+          "IN"
+        ],
+        "probeAccess": {
+          "method": "cloud-api",
+          "readOnly": true
+        },
+        "changeFreeze": [
+          {
+            "from": "2026-03-28T00:00:00Z",
+            "to": "2026-04-02T00:00:00Z",
+            "reason": "Financial year-end close; SEBI settlement cycle"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:15:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "alerting with PagerDuty service and escalation policy ids",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.environment",
+        "appId": "ledger-core",
+        "envId": "prod-mumbai",
+        "name": "Production (Mumbai)",
+        "tier": "prod",
+        "exposure": "internet",
+        "hosting": {
+          "provider": "aws",
+          "region": "ap-south-1",
+          "accountRef": "arthanidhi-prod",
+          "cluster": "eks-prod-mumbai",
+          "namespace": "ledger-core",
+          "kubernetesVersion": "1.31"
+        },
+        "urls": [
+          "https://api.arthanidhi.example/ledger"
+        ],
+        "iac": [
+          {
+            "repoId": "ledger-core-infra",
+            "path": "terraform/envs/prod-mumbai",
+            "tool": "terraform"
+          },
+          {
+            "repoId": "ledger-core-api",
+            "path": "deploy/helm/ledger-core",
+            "tool": "helm"
+          }
+        ],
+        "secretsBackend": "aws-secrets-manager",
+        "observability": {
+          "logsRetentionDays": 365,
+          "logsInIndia": true,
+          "siem": "Splunk Cloud (ap-south-1 tenant)",
+          "apm": "Datadog APM"
+        },
+        "alerting": {
+          "pagerdutyServiceIds": [
+            "PT4KHLK",
+            "PABC123"
+          ],
+          "escalationPolicyId": "PEP7XZ2"
+        },
+        "dataClassification": [
+          "pii",
+          "financial",
+          "regulatory"
+        ],
+        "residency": [
+          "IN"
+        ],
+        "probeAccess": {
+          "credentialKey": "prod-mumbai-kubeconfig-ro",
+          "method": "kubeconfig",
+          "readOnly": true,
+          "allowedWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "16:30",
+              "endUtc": "23:30"
+            }
+          ],
+          "rateLimitPerMinute": 60
+        },
+        "changeFreeze": [
+          {
+            "from": "2026-03-28T00:00:00Z",
+            "to": "2026-04-02T00:00:00Z",
+            "reason": "Financial year-end close; SEBI settlement cycle"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:15:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "alerting pagerdutyServiceIds lowercase id violates pattern",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.environment",
+        "appId": "ledger-core",
+        "envId": "prod-mumbai",
+        "name": "Production (Mumbai)",
+        "tier": "prod",
+        "exposure": "internet",
+        "hosting": {
+          "provider": "aws",
+          "region": "ap-south-1",
+          "accountRef": "arthanidhi-prod",
+          "cluster": "eks-prod-mumbai",
+          "namespace": "ledger-core",
+          "kubernetesVersion": "1.31"
+        },
+        "urls": [
+          "https://api.arthanidhi.example/ledger"
+        ],
+        "iac": [
+          {
+            "repoId": "ledger-core-infra",
+            "path": "terraform/envs/prod-mumbai",
+            "tool": "terraform"
+          },
+          {
+            "repoId": "ledger-core-api",
+            "path": "deploy/helm/ledger-core",
+            "tool": "helm"
+          }
+        ],
+        "secretsBackend": "aws-secrets-manager",
+        "observability": {
+          "logsRetentionDays": 365,
+          "logsInIndia": true,
+          "siem": "Splunk Cloud (ap-south-1 tenant)",
+          "apm": "Datadog APM"
+        },
+        "alerting": {
+          "pagerdutyServiceIds": [
+            "pt4khlk"
+          ]
+        },
+        "dataClassification": [
+          "pii",
+          "financial",
+          "regulatory"
+        ],
+        "residency": [
+          "IN"
+        ],
+        "probeAccess": {
+          "credentialKey": "prod-mumbai-kubeconfig-ro",
+          "method": "kubeconfig",
+          "readOnly": true,
+          "allowedWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "16:30",
+              "endUtc": "23:30"
+            }
+          ],
+          "rateLimitPerMinute": 60
+        },
+        "changeFreeze": [
+          {
+            "from": "2026-03-28T00:00:00Z",
+            "to": "2026-04-02T00:00:00Z",
+            "reason": "Financial year-end close; SEBI settlement cycle"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:15:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "alerting empty pagerdutyServiceIds",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.environment",
+        "appId": "ledger-core",
+        "envId": "prod-mumbai",
+        "name": "Production (Mumbai)",
+        "tier": "prod",
+        "exposure": "internet",
+        "hosting": {
+          "provider": "aws",
+          "region": "ap-south-1",
+          "accountRef": "arthanidhi-prod",
+          "cluster": "eks-prod-mumbai",
+          "namespace": "ledger-core",
+          "kubernetesVersion": "1.31"
+        },
+        "urls": [
+          "https://api.arthanidhi.example/ledger"
+        ],
+        "iac": [
+          {
+            "repoId": "ledger-core-infra",
+            "path": "terraform/envs/prod-mumbai",
+            "tool": "terraform"
+          },
+          {
+            "repoId": "ledger-core-api",
+            "path": "deploy/helm/ledger-core",
+            "tool": "helm"
+          }
+        ],
+        "secretsBackend": "aws-secrets-manager",
+        "observability": {
+          "logsRetentionDays": 365,
+          "logsInIndia": true,
+          "siem": "Splunk Cloud (ap-south-1 tenant)",
+          "apm": "Datadog APM"
+        },
+        "alerting": {
+          "pagerdutyServiceIds": []
+        },
+        "dataClassification": [
+          "pii",
+          "financial",
+          "regulatory"
+        ],
+        "residency": [
+          "IN"
+        ],
+        "probeAccess": {
+          "credentialKey": "prod-mumbai-kubeconfig-ro",
+          "method": "kubeconfig",
+          "readOnly": true,
+          "allowedWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "16:30",
+              "endUtc": "23:30"
+            }
+          ],
+          "rateLimitPerMinute": 60
+        },
+        "changeFreeze": [
+          {
+            "from": "2026-03-28T00:00:00Z",
+            "to": "2026-04-02T00:00:00Z",
+            "reason": "Financial year-end close; SEBI settlement cycle"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:15:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "alerting extra key",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.environment",
+        "appId": "ledger-core",
+        "envId": "prod-mumbai",
+        "name": "Production (Mumbai)",
+        "tier": "prod",
+        "exposure": "internet",
+        "hosting": {
+          "provider": "aws",
+          "region": "ap-south-1",
+          "accountRef": "arthanidhi-prod",
+          "cluster": "eks-prod-mumbai",
+          "namespace": "ledger-core",
+          "kubernetesVersion": "1.31"
+        },
+        "urls": [
+          "https://api.arthanidhi.example/ledger"
+        ],
+        "iac": [
+          {
+            "repoId": "ledger-core-infra",
+            "path": "terraform/envs/prod-mumbai",
+            "tool": "terraform"
+          },
+          {
+            "repoId": "ledger-core-api",
+            "path": "deploy/helm/ledger-core",
+            "tool": "helm"
+          }
+        ],
+        "secretsBackend": "aws-secrets-manager",
+        "observability": {
+          "logsRetentionDays": 365,
+          "logsInIndia": true,
+          "siem": "Splunk Cloud (ap-south-1 tenant)",
+          "apm": "Datadog APM"
+        },
+        "alerting": {
+          "pagerdutyServiceIds": [
+            "PT4KHLK"
+          ],
+          "slackChannel": "#oncall"
+        },
+        "dataClassification": [
+          "pii",
+          "financial",
+          "regulatory"
+        ],
+        "residency": [
+          "IN"
+        ],
+        "probeAccess": {
+          "credentialKey": "prod-mumbai-kubeconfig-ro",
+          "method": "kubeconfig",
+          "readOnly": true,
+          "allowedWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "16:30",
+              "endUtc": "23:30"
+            }
+          ],
+          "rateLimitPerMinute": 60
+        },
+        "changeFreeze": [
+          {
+            "from": "2026-03-28T00:00:00Z",
+            "to": "2026-04-02T00:00:00Z",
+            "reason": "Financial year-end close; SEBI settlement cycle"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:15:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "secretsBackend cyberark",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.environment",
+        "appId": "ledger-core",
+        "envId": "prod-mumbai",
+        "name": "Production (Mumbai)",
+        "tier": "prod",
+        "exposure": "internet",
+        "hosting": {
+          "provider": "aws",
+          "region": "ap-south-1",
+          "accountRef": "arthanidhi-prod",
+          "cluster": "eks-prod-mumbai",
+          "namespace": "ledger-core",
+          "kubernetesVersion": "1.31"
+        },
+        "urls": [
+          "https://api.arthanidhi.example/ledger"
+        ],
+        "iac": [
+          {
+            "repoId": "ledger-core-infra",
+            "path": "terraform/envs/prod-mumbai",
+            "tool": "terraform"
+          },
+          {
+            "repoId": "ledger-core-api",
+            "path": "deploy/helm/ledger-core",
+            "tool": "helm"
+          }
+        ],
+        "secretsBackend": "cyberark",
+        "observability": {
+          "logsRetentionDays": 365,
+          "logsInIndia": true,
+          "siem": "Splunk Cloud (ap-south-1 tenant)",
+          "apm": "Datadog APM"
+        },
+        "alerting": {
+          "pagerdutyServiceIds": [
+            "PT4KHLK"
+          ],
+          "escalationPolicyId": "PEP7XZ2"
+        },
+        "dataClassification": [
+          "pii",
+          "financial",
+          "regulatory"
+        ],
+        "residency": [
+          "IN"
+        ],
+        "probeAccess": {
+          "credentialKey": "prod-mumbai-kubeconfig-ro",
+          "method": "kubeconfig",
+          "readOnly": true,
+          "allowedWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "16:30",
+              "endUtc": "23:30"
+            }
+          ],
+          "rateLimitPerMinute": 60
+        },
+        "changeFreeze": [
+          {
+            "from": "2026-03-28T00:00:00Z",
+            "to": "2026-04-02T00:00:00Z",
+            "reason": "Financial year-end close; SEBI settlement cycle"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:15:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "probe credentialKey with uppercase violates shared credentialKey pattern",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.environment",
+        "appId": "ledger-core",
+        "envId": "prod-mumbai",
+        "name": "Production (Mumbai)",
+        "tier": "prod",
+        "exposure": "internet",
+        "hosting": {
+          "provider": "aws",
+          "region": "ap-south-1",
+          "accountRef": "arthanidhi-prod",
+          "cluster": "eks-prod-mumbai",
+          "namespace": "ledger-core",
+          "kubernetesVersion": "1.31"
+        },
+        "urls": [
+          "https://api.arthanidhi.example/ledger"
+        ],
+        "iac": [
+          {
+            "repoId": "ledger-core-infra",
+            "path": "terraform/envs/prod-mumbai",
+            "tool": "terraform"
+          },
+          {
+            "repoId": "ledger-core-api",
+            "path": "deploy/helm/ledger-core",
+            "tool": "helm"
+          }
+        ],
+        "secretsBackend": "aws-secrets-manager",
+        "observability": {
+          "logsRetentionDays": 365,
+          "logsInIndia": true,
+          "siem": "Splunk Cloud (ap-south-1 tenant)",
+          "apm": "Datadog APM"
+        },
+        "alerting": {
+          "pagerdutyServiceIds": [
+            "PT4KHLK"
+          ],
+          "escalationPolicyId": "PEP7XZ2"
+        },
+        "dataClassification": [
+          "pii",
+          "financial",
+          "regulatory"
+        ],
+        "residency": [
+          "IN"
+        ],
+        "probeAccess": {
+          "credentialKey": "Prod-Key",
+          "method": "kubeconfig",
+          "readOnly": true,
+          "allowedWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "16:30",
+              "endUtc": "23:30"
+            }
+          ],
+          "rateLimitPerMinute": 60
+        },
+        "changeFreeze": [
+          {
+            "from": "2026-03-28T00:00:00Z",
+            "to": "2026-04-02T00:00:00Z",
+            "reason": "Financial year-end close; SEBI settlement cycle"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:15:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "allowedWindow with equal start and end means whole day",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.environment",
+        "appId": "ledger-core",
+        "envId": "prod-mumbai",
+        "name": "Production (Mumbai)",
+        "tier": "prod",
+        "exposure": "internet",
+        "hosting": {
+          "provider": "aws",
+          "region": "ap-south-1",
+          "accountRef": "arthanidhi-prod",
+          "cluster": "eks-prod-mumbai",
+          "namespace": "ledger-core",
+          "kubernetesVersion": "1.31"
+        },
+        "urls": [
+          "https://api.arthanidhi.example/ledger"
+        ],
+        "iac": [
+          {
+            "repoId": "ledger-core-infra",
+            "path": "terraform/envs/prod-mumbai",
+            "tool": "terraform"
+          },
+          {
+            "repoId": "ledger-core-api",
+            "path": "deploy/helm/ledger-core",
+            "tool": "helm"
+          }
+        ],
+        "secretsBackend": "aws-secrets-manager",
+        "observability": {
+          "logsRetentionDays": 365,
+          "logsInIndia": true,
+          "siem": "Splunk Cloud (ap-south-1 tenant)",
+          "apm": "Datadog APM"
+        },
+        "alerting": {
+          "pagerdutyServiceIds": [
+            "PT4KHLK"
+          ],
+          "escalationPolicyId": "PEP7XZ2"
+        },
+        "dataClassification": [
+          "pii",
+          "financial",
+          "regulatory"
+        ],
+        "residency": [
+          "IN"
+        ],
+        "probeAccess": {
+          "credentialKey": "prod-mumbai-kubeconfig-ro",
+          "method": "kubeconfig",
+          "readOnly": true,
+          "allowedWindows": [
+            {
+              "daysOfWeek": [
+                "sat",
+                "sun"
+              ],
+              "startUtc": "00:00",
+              "endUtc": "00:00"
+            }
+          ],
+          "rateLimitPerMinute": 60
+        },
+        "changeFreeze": [
+          {
+            "from": "2026-03-28T00:00:00Z",
+            "to": "2026-04-02T00:00:00Z",
+            "reason": "Financial year-end close; SEBI settlement cycle"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:15:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "secretsBackend doppler from the shared secretStore vocabulary",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.environment",
+        "appId": "ledger-core",
+        "envId": "prod-mumbai",
+        "name": "Production (Mumbai)",
+        "tier": "prod",
+        "exposure": "internet",
+        "hosting": {
+          "provider": "aws",
+          "region": "ap-south-1",
+          "accountRef": "arthanidhi-prod",
+          "cluster": "eks-prod-mumbai",
+          "namespace": "ledger-core",
+          "kubernetesVersion": "1.31"
+        },
+        "urls": [
+          "https://api.arthanidhi.example/ledger"
+        ],
+        "iac": [
+          {
+            "repoId": "ledger-core-infra",
+            "path": "terraform/envs/prod-mumbai",
+            "tool": "terraform"
+          },
+          {
+            "repoId": "ledger-core-api",
+            "path": "deploy/helm/ledger-core",
+            "tool": "helm"
+          }
+        ],
+        "secretsBackend": "doppler",
+        "observability": {
+          "logsRetentionDays": 365,
+          "logsInIndia": true,
+          "siem": "Splunk Cloud (ap-south-1 tenant)",
+          "apm": "Datadog APM"
+        },
+        "alerting": {
+          "pagerdutyServiceIds": [
+            "PT4KHLK"
+          ],
+          "escalationPolicyId": "PEP7XZ2"
+        },
+        "dataClassification": [
+          "pii",
+          "financial",
+          "regulatory"
+        ],
+        "residency": [
+          "IN"
+        ],
+        "probeAccess": {
+          "credentialKey": "prod-mumbai-kubeconfig-ro",
+          "method": "kubeconfig",
+          "readOnly": true,
+          "allowedWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "16:30",
+              "endUtc": "23:30"
+            }
+          ],
+          "rateLimitPerMinute": 60
+        },
+        "changeFreeze": [
+          {
+            "from": "2026-03-28T00:00:00Z",
+            "to": "2026-04-02T00:00:00Z",
+            "reason": "Financial year-end close; SEBI settlement cycle"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:15:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    },
+    {
+      "description": "secretsBackend outside the shared secretStore vocabulary is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.app.environment",
+        "appId": "ledger-core",
+        "envId": "prod-mumbai",
+        "name": "Production (Mumbai)",
+        "tier": "prod",
+        "exposure": "internet",
+        "hosting": {
+          "provider": "aws",
+          "region": "ap-south-1",
+          "accountRef": "arthanidhi-prod",
+          "cluster": "eks-prod-mumbai",
+          "namespace": "ledger-core",
+          "kubernetesVersion": "1.31"
+        },
+        "urls": [
+          "https://api.arthanidhi.example/ledger"
+        ],
+        "iac": [
+          {
+            "repoId": "ledger-core-infra",
+            "path": "terraform/envs/prod-mumbai",
+            "tool": "terraform"
+          },
+          {
+            "repoId": "ledger-core-api",
+            "path": "deploy/helm/ledger-core",
+            "tool": "helm"
+          }
+        ],
+        "secretsBackend": "hashicorp-vault",
+        "observability": {
+          "logsRetentionDays": 365,
+          "logsInIndia": true,
+          "siem": "Splunk Cloud (ap-south-1 tenant)",
+          "apm": "Datadog APM"
+        },
+        "alerting": {
+          "pagerdutyServiceIds": [
+            "PT4KHLK"
+          ],
+          "escalationPolicyId": "PEP7XZ2"
+        },
+        "dataClassification": [
+          "pii",
+          "financial",
+          "regulatory"
+        ],
+        "residency": [
+          "IN"
+        ],
+        "probeAccess": {
+          "credentialKey": "prod-mumbai-kubeconfig-ro",
+          "method": "kubeconfig",
+          "readOnly": true,
+          "allowedWindows": [
+            {
+              "daysOfWeek": [
+                "mon",
+                "tue",
+                "wed",
+                "thu",
+                "fri"
+              ],
+              "startUtc": "16:30",
+              "endUtc": "23:30"
+            }
+          ],
+          "rateLimitPerMinute": 60
+        },
+        "changeFreeze": [
+          {
+            "from": "2026-03-28T00:00:00Z",
+            "to": "2026-04-02T00:00:00Z",
+            "reason": "Financial year-end close; SEBI settlement cycle"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T06:15:00Z",
+          "sessionId": "2f1c3a4e-8b7d-4c6e-9f0a-1b2c3d4e5f60",
+          "runId": "run_01J7Q8Z2N3M4P5R6S7T8V9W0X1",
+          "workflow": "refresh-ctx",
+          "agent": "context-refresher"
+        }
+      }
+    }
+  ]
+}

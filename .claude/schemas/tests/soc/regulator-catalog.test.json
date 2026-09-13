@@ -1,0 +1,1134 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/v1/catalog/regulator-catalog.schema.json",
+  "tests": [
+    {
+      "description": "SEBI CSCRF catalog with GV.SC.S5",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.regulator",
+        "instrumentId": "sebi-cscrf-2024",
+        "regulator": "SEBI",
+        "version": "SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113",
+        "sourceUrl": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
+        "retrievedAt": "2026-09-01T09:00:00Z",
+        "groups": [
+          {
+            "id": "GV.SC",
+            "title": "Govern: Cybersecurity Supply Chain Risk Management",
+            "controls": [
+              {
+                "id": "GV.SC.S5",
+                "title": "Software Bill of Materials for critical systems",
+                "prose": "REs shall obtain a Software Bill of Materials (SBOM) for all critical systems and for every new critical software procured, listing components, versions, licences and known vulnerabilities, and shall keep it updated on every release",
+                "guidance": "Generate CycloneDX or SPDX from the build pipeline and store the reference under applications/<app_id>/images/<image_id>.cdx.json",
+                "category": "GV.SC",
+                "applicability": {
+                  "reCategories": [
+                    "mii",
+                    "qualified-re",
+                    "mid-size-re"
+                  ],
+                  "entityTypes": [
+                    "stock-broker",
+                    "market-infrastructure-institution"
+                  ]
+                },
+                "mandatory": true,
+                "defaultSeverity": "high",
+                "cadence": "event-driven",
+                "evidenceExpected": [
+                  "CycloneDX SBOM per production image",
+                  "Pipeline step that regenerates SBOM on release"
+                ],
+                "mappings": [
+                  {
+                    "regulator": "NIST",
+                    "instrument": "nist-ssdf-800-218",
+                    "controlId": "PS.3.2"
+                  }
+                ],
+                "probeWorkflows": [
+                  "probe-cicd-env",
+                  "probe-app-chart"
+                ],
+                "params": [
+                  {
+                    "id": "sbomFormat",
+                    "label": "SBOM format accepted for critical systems",
+                    "default": "cyclonedx-1.6"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-01T09:30:00Z",
+          "workflow": "manual",
+          "agent": "regulatory-cataloguer",
+          "sessionId": "8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b"
+        }
+      }
+    },
+    {
+      "description": "minimal catalog control with only required fields",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.regulator",
+        "instrumentId": "sebi-cscrf-2024",
+        "regulator": "SEBI",
+        "version": "SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113",
+        "sourceUrl": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
+        "retrievedAt": "2026-09-01T09:00:00Z",
+        "groups": [
+          {
+            "id": "GV.SC",
+            "title": "Govern: Cybersecurity Supply Chain Risk Management",
+            "controls": [
+              {
+                "id": "GV.SC.S1",
+                "title": "Supply chain risk management programme",
+                "prose": "REs shall establish a cyber supply chain risk management programme",
+                "mandatory": true,
+                "defaultSeverity": "high"
+              }
+            ]
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-01T09:30:00Z",
+          "workflow": "manual",
+          "agent": "regulatory-cataloguer",
+          "sessionId": "8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b"
+        }
+      }
+    },
+    {
+      "description": "invented extra key on a control is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.regulator",
+        "instrumentId": "sebi-cscrf-2024",
+        "regulator": "SEBI",
+        "version": "SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113",
+        "sourceUrl": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
+        "retrievedAt": "2026-09-01T09:00:00Z",
+        "groups": [
+          {
+            "id": "GV.SC",
+            "title": "Govern: Cybersecurity Supply Chain Risk Management",
+            "controls": [
+              {
+                "id": "GV.SC.S5",
+                "title": "Software Bill of Materials for critical systems",
+                "prose": "REs shall obtain a Software Bill of Materials (SBOM) for all critical systems and for every new critical software procured, listing components, versions, licences and known vulnerabilities, and shall keep it updated on every release",
+                "guidance": "Generate CycloneDX or SPDX from the build pipeline and store the reference under applications/<app_id>/images/<image_id>.cdx.json",
+                "category": "GV.SC",
+                "applicability": {
+                  "reCategories": [
+                    "mii",
+                    "qualified-re",
+                    "mid-size-re"
+                  ],
+                  "entityTypes": [
+                    "stock-broker",
+                    "market-infrastructure-institution"
+                  ]
+                },
+                "mandatory": true,
+                "defaultSeverity": "high",
+                "cadence": "event-driven",
+                "evidenceExpected": [
+                  "CycloneDX SBOM per production image",
+                  "Pipeline step that regenerates SBOM on release"
+                ],
+                "mappings": [
+                  {
+                    "regulator": "NIST",
+                    "instrument": "nist-ssdf-800-218",
+                    "controlId": "PS.3.2"
+                  }
+                ],
+                "probeWorkflows": [
+                  "probe-cicd-env",
+                  "probe-app-chart"
+                ],
+                "weight": 5
+              }
+            ]
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-01T09:30:00Z",
+          "workflow": "manual",
+          "agent": "regulatory-cataloguer",
+          "sessionId": "8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b"
+        }
+      }
+    },
+    {
+      "description": "control id with spaces",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.regulator",
+        "instrumentId": "sebi-cscrf-2024",
+        "regulator": "SEBI",
+        "version": "SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113",
+        "sourceUrl": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
+        "retrievedAt": "2026-09-01T09:00:00Z",
+        "groups": [
+          {
+            "id": "GV.SC",
+            "title": "Govern: Cybersecurity Supply Chain Risk Management",
+            "controls": [
+              {
+                "id": "GV SC S5",
+                "title": "Software Bill of Materials for critical systems",
+                "prose": "REs shall obtain a Software Bill of Materials (SBOM) for all critical systems and for every new critical software procured, listing components, versions, licences and known vulnerabilities, and shall keep it updated on every release",
+                "guidance": "Generate CycloneDX or SPDX from the build pipeline and store the reference under applications/<app_id>/images/<image_id>.cdx.json",
+                "category": "GV.SC",
+                "applicability": {
+                  "reCategories": [
+                    "mii",
+                    "qualified-re",
+                    "mid-size-re"
+                  ],
+                  "entityTypes": [
+                    "stock-broker",
+                    "market-infrastructure-institution"
+                  ]
+                },
+                "mandatory": true,
+                "defaultSeverity": "high",
+                "cadence": "event-driven",
+                "evidenceExpected": [
+                  "CycloneDX SBOM per production image",
+                  "Pipeline step that regenerates SBOM on release"
+                ],
+                "mappings": [
+                  {
+                    "regulator": "NIST",
+                    "instrument": "nist-ssdf-800-218",
+                    "controlId": "PS.3.2"
+                  }
+                ],
+                "probeWorkflows": [
+                  "probe-cicd-env",
+                  "probe-app-chart"
+                ]
+              }
+            ]
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-01T09:30:00Z",
+          "workflow": "manual",
+          "agent": "regulatory-cataloguer",
+          "sessionId": "8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b"
+        }
+      }
+    },
+    {
+      "description": "cadence outside the enum",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.regulator",
+        "instrumentId": "sebi-cscrf-2024",
+        "regulator": "SEBI",
+        "version": "SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113",
+        "sourceUrl": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
+        "retrievedAt": "2026-09-01T09:00:00Z",
+        "groups": [
+          {
+            "id": "GV.SC",
+            "title": "Govern: Cybersecurity Supply Chain Risk Management",
+            "controls": [
+              {
+                "id": "GV.SC.S5",
+                "title": "Software Bill of Materials for critical systems",
+                "prose": "REs shall obtain a Software Bill of Materials (SBOM) for all critical systems and for every new critical software procured, listing components, versions, licences and known vulnerabilities, and shall keep it updated on every release",
+                "guidance": "Generate CycloneDX or SPDX from the build pipeline and store the reference under applications/<app_id>/images/<image_id>.cdx.json",
+                "category": "GV.SC",
+                "applicability": {
+                  "reCategories": [
+                    "mii",
+                    "qualified-re",
+                    "mid-size-re"
+                  ],
+                  "entityTypes": [
+                    "stock-broker",
+                    "market-infrastructure-institution"
+                  ]
+                },
+                "mandatory": true,
+                "defaultSeverity": "high",
+                "cadence": "fortnightly",
+                "evidenceExpected": [
+                  "CycloneDX SBOM per production image",
+                  "Pipeline step that regenerates SBOM on release"
+                ],
+                "mappings": [
+                  {
+                    "regulator": "NIST",
+                    "instrument": "nist-ssdf-800-218",
+                    "controlId": "PS.3.2"
+                  }
+                ],
+                "probeWorkflows": [
+                  "probe-cicd-env",
+                  "probe-app-chart"
+                ]
+              }
+            ]
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-01T09:30:00Z",
+          "workflow": "manual",
+          "agent": "regulatory-cataloguer",
+          "sessionId": "8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b"
+        }
+      }
+    },
+    {
+      "description": "probe workflow not in the vocab",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.regulator",
+        "instrumentId": "sebi-cscrf-2024",
+        "regulator": "SEBI",
+        "version": "SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113",
+        "sourceUrl": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
+        "retrievedAt": "2026-09-01T09:00:00Z",
+        "groups": [
+          {
+            "id": "GV.SC",
+            "title": "Govern: Cybersecurity Supply Chain Risk Management",
+            "controls": [
+              {
+                "id": "GV.SC.S5",
+                "title": "Software Bill of Materials for critical systems",
+                "prose": "REs shall obtain a Software Bill of Materials (SBOM) for all critical systems and for every new critical software procured, listing components, versions, licences and known vulnerabilities, and shall keep it updated on every release",
+                "guidance": "Generate CycloneDX or SPDX from the build pipeline and store the reference under applications/<app_id>/images/<image_id>.cdx.json",
+                "category": "GV.SC",
+                "applicability": {
+                  "reCategories": [
+                    "mii",
+                    "qualified-re",
+                    "mid-size-re"
+                  ],
+                  "entityTypes": [
+                    "stock-broker",
+                    "market-infrastructure-institution"
+                  ]
+                },
+                "mandatory": true,
+                "defaultSeverity": "high",
+                "cadence": "event-driven",
+                "evidenceExpected": [
+                  "CycloneDX SBOM per production image",
+                  "Pipeline step that regenerates SBOM on release"
+                ],
+                "mappings": [
+                  {
+                    "regulator": "NIST",
+                    "instrument": "nist-ssdf-800-218",
+                    "controlId": "PS.3.2"
+                  }
+                ],
+                "probeWorkflows": [
+                  "probe-sbom"
+                ]
+              }
+            ]
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-01T09:30:00Z",
+          "workflow": "manual",
+          "agent": "regulatory-cataloguer",
+          "sessionId": "8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b"
+        }
+      }
+    },
+    {
+      "description": "catalog missing provenance",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.regulator",
+        "instrumentId": "sebi-cscrf-2024",
+        "regulator": "SEBI",
+        "version": "SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113",
+        "sourceUrl": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
+        "retrievedAt": "2026-09-01T09:00:00Z",
+        "groups": [
+          {
+            "id": "GV.SC",
+            "title": "Govern: Cybersecurity Supply Chain Risk Management",
+            "controls": [
+              {
+                "id": "GV.SC.S5",
+                "title": "Software Bill of Materials for critical systems",
+                "prose": "REs shall obtain a Software Bill of Materials (SBOM) for all critical systems and for every new critical software procured, listing components, versions, licences and known vulnerabilities, and shall keep it updated on every release",
+                "guidance": "Generate CycloneDX or SPDX from the build pipeline and store the reference under applications/<app_id>/images/<image_id>.cdx.json",
+                "category": "GV.SC",
+                "applicability": {
+                  "reCategories": [
+                    "mii",
+                    "qualified-re",
+                    "mid-size-re"
+                  ],
+                  "entityTypes": [
+                    "stock-broker",
+                    "market-infrastructure-institution"
+                  ]
+                },
+                "mandatory": true,
+                "defaultSeverity": "high",
+                "cadence": "event-driven",
+                "evidenceExpected": [
+                  "CycloneDX SBOM per production image",
+                  "Pipeline step that regenerates SBOM on release"
+                ],
+                "mappings": [
+                  {
+                    "regulator": "NIST",
+                    "instrument": "nist-ssdf-800-218",
+                    "controlId": "PS.3.2"
+                  }
+                ],
+                "probeWorkflows": [
+                  "probe-cicd-env",
+                  "probe-app-chart"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "description": "control missing mandatory flag",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.regulator",
+        "instrumentId": "sebi-cscrf-2024",
+        "regulator": "SEBI",
+        "version": "SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113",
+        "sourceUrl": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
+        "retrievedAt": "2026-09-01T09:00:00Z",
+        "groups": [
+          {
+            "id": "GV.SC",
+            "title": "Govern: Cybersecurity Supply Chain Risk Management",
+            "controls": [
+              {
+                "id": "GV.SC.S5",
+                "title": "Software Bill of Materials for critical systems",
+                "prose": "REs shall obtain a Software Bill of Materials (SBOM) for all critical systems and for every new critical software procured, listing components, versions, licences and known vulnerabilities, and shall keep it updated on every release",
+                "guidance": "Generate CycloneDX or SPDX from the build pipeline and store the reference under applications/<app_id>/images/<image_id>.cdx.json",
+                "category": "GV.SC",
+                "applicability": {
+                  "reCategories": [
+                    "mii",
+                    "qualified-re",
+                    "mid-size-re"
+                  ],
+                  "entityTypes": [
+                    "stock-broker",
+                    "market-infrastructure-institution"
+                  ]
+                },
+                "cadence": "event-driven",
+                "evidenceExpected": [
+                  "CycloneDX SBOM per production image",
+                  "Pipeline step that regenerates SBOM on release"
+                ],
+                "mappings": [
+                  {
+                    "regulator": "NIST",
+                    "instrument": "nist-ssdf-800-218",
+                    "controlId": "PS.3.2"
+                  }
+                ],
+                "probeWorkflows": [
+                  "probe-cicd-env",
+                  "probe-app-chart"
+                ]
+              }
+            ]
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-01T09:30:00Z",
+          "workflow": "manual",
+          "agent": "regulatory-cataloguer",
+          "sessionId": "8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b"
+        }
+      }
+    },
+    {
+      "description": "group with no controls",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.regulator",
+        "instrumentId": "sebi-cscrf-2024",
+        "regulator": "SEBI",
+        "version": "SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113",
+        "sourceUrl": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
+        "retrievedAt": "2026-09-01T09:00:00Z",
+        "groups": [
+          {
+            "id": "GV.SC",
+            "title": "Govern: Cybersecurity Supply Chain Risk Management",
+            "controls": []
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-01T09:30:00Z",
+          "workflow": "manual",
+          "agent": "regulatory-cataloguer",
+          "sessionId": "8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b"
+        }
+      }
+    },
+    {
+      "description": "mapping missing controlId",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.regulator",
+        "instrumentId": "sebi-cscrf-2024",
+        "regulator": "SEBI",
+        "version": "SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113",
+        "sourceUrl": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
+        "retrievedAt": "2026-09-01T09:00:00Z",
+        "groups": [
+          {
+            "id": "GV.SC",
+            "title": "Govern: Cybersecurity Supply Chain Risk Management",
+            "controls": [
+              {
+                "id": "GV.SC.S5",
+                "title": "Software Bill of Materials for critical systems",
+                "prose": "REs shall obtain a Software Bill of Materials (SBOM) for all critical systems and for every new critical software procured, listing components, versions, licences and known vulnerabilities, and shall keep it updated on every release",
+                "guidance": "Generate CycloneDX or SPDX from the build pipeline and store the reference under applications/<app_id>/images/<image_id>.cdx.json",
+                "category": "GV.SC",
+                "applicability": {
+                  "reCategories": [
+                    "mii",
+                    "qualified-re",
+                    "mid-size-re"
+                  ],
+                  "entityTypes": [
+                    "stock-broker",
+                    "market-infrastructure-institution"
+                  ]
+                },
+                "mandatory": true,
+                "defaultSeverity": "high",
+                "cadence": "event-driven",
+                "evidenceExpected": [
+                  "CycloneDX SBOM per production image",
+                  "Pipeline step that regenerates SBOM on release"
+                ],
+                "mappings": [
+                  {
+                    "regulator": "NIST",
+                    "instrument": "nist-ssdf-800-218"
+                  }
+                ],
+                "probeWorkflows": [
+                  "probe-cicd-env",
+                  "probe-app-chart"
+                ]
+              }
+            ]
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-01T09:30:00Z",
+          "workflow": "manual",
+          "agent": "regulatory-cataloguer",
+          "sessionId": "8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b"
+        }
+      }
+    },
+    {
+      "description": "retrievedAt is a date not a timestamp",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.regulator",
+        "instrumentId": "sebi-cscrf-2024",
+        "regulator": "SEBI",
+        "version": "SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113",
+        "sourceUrl": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
+        "retrievedAt": "2026-09-01",
+        "groups": [
+          {
+            "id": "GV.SC",
+            "title": "Govern: Cybersecurity Supply Chain Risk Management",
+            "controls": [
+              {
+                "id": "GV.SC.S5",
+                "title": "Software Bill of Materials for critical systems",
+                "prose": "REs shall obtain a Software Bill of Materials (SBOM) for all critical systems and for every new critical software procured, listing components, versions, licences and known vulnerabilities, and shall keep it updated on every release",
+                "guidance": "Generate CycloneDX or SPDX from the build pipeline and store the reference under applications/<app_id>/images/<image_id>.cdx.json",
+                "category": "GV.SC",
+                "applicability": {
+                  "reCategories": [
+                    "mii",
+                    "qualified-re",
+                    "mid-size-re"
+                  ],
+                  "entityTypes": [
+                    "stock-broker",
+                    "market-infrastructure-institution"
+                  ]
+                },
+                "mandatory": true,
+                "defaultSeverity": "high",
+                "cadence": "event-driven",
+                "evidenceExpected": [
+                  "CycloneDX SBOM per production image",
+                  "Pipeline step that regenerates SBOM on release"
+                ],
+                "mappings": [
+                  {
+                    "regulator": "NIST",
+                    "instrument": "nist-ssdf-800-218",
+                    "controlId": "PS.3.2"
+                  }
+                ],
+                "probeWorkflows": [
+                  "probe-cicd-env",
+                  "probe-app-chart"
+                ]
+              }
+            ]
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-01T09:30:00Z",
+          "workflow": "manual",
+          "agent": "regulatory-cataloguer",
+          "sessionId": "8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b"
+        }
+      }
+    },
+    {
+      "description": "mandatory control without defaultSeverity",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.regulator",
+        "instrumentId": "sebi-cscrf-2024",
+        "regulator": "SEBI",
+        "version": "SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113",
+        "sourceUrl": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
+        "retrievedAt": "2026-09-01T09:00:00Z",
+        "groups": [
+          {
+            "id": "GV.SC",
+            "title": "Govern: Cybersecurity Supply Chain Risk Management",
+            "controls": [
+              {
+                "id": "GV.SC.S5",
+                "title": "Software Bill of Materials for critical systems",
+                "prose": "REs shall obtain a Software Bill of Materials (SBOM) for all critical systems and for every new critical software procured, listing components, versions, licences and known vulnerabilities, and shall keep it updated on every release",
+                "guidance": "Generate CycloneDX or SPDX from the build pipeline and store the reference under applications/<app_id>/images/<image_id>.cdx.json",
+                "category": "GV.SC",
+                "applicability": {
+                  "reCategories": [
+                    "mii",
+                    "qualified-re",
+                    "mid-size-re"
+                  ],
+                  "entityTypes": [
+                    "stock-broker",
+                    "market-infrastructure-institution"
+                  ]
+                },
+                "mandatory": true,
+                "cadence": "event-driven",
+                "evidenceExpected": [
+                  "CycloneDX SBOM per production image",
+                  "Pipeline step that regenerates SBOM on release"
+                ],
+                "mappings": [
+                  {
+                    "regulator": "NIST",
+                    "instrument": "nist-ssdf-800-218",
+                    "controlId": "PS.3.2"
+                  }
+                ],
+                "probeWorkflows": [
+                  "probe-cicd-env",
+                  "probe-app-chart"
+                ],
+                "params": [
+                  {
+                    "id": "sbomFormat",
+                    "label": "SBOM format accepted for critical systems",
+                    "default": "cyclonedx-1.6"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-01T09:30:00Z",
+          "workflow": "manual",
+          "agent": "regulatory-cataloguer",
+          "sessionId": "8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b"
+        }
+      }
+    },
+    {
+      "description": "guidance control may omit defaultSeverity",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.regulator",
+        "instrumentId": "sebi-cscrf-2024",
+        "regulator": "SEBI",
+        "version": "SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113",
+        "sourceUrl": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
+        "retrievedAt": "2026-09-01T09:00:00Z",
+        "groups": [
+          {
+            "id": "GV.SC",
+            "title": "Govern: Cybersecurity Supply Chain Risk Management",
+            "controls": [
+              {
+                "id": "GV.SC.S5",
+                "title": "Software Bill of Materials for critical systems",
+                "prose": "REs shall obtain a Software Bill of Materials (SBOM) for all critical systems and for every new critical software procured, listing components, versions, licences and known vulnerabilities, and shall keep it updated on every release",
+                "guidance": "Generate CycloneDX or SPDX from the build pipeline and store the reference under applications/<app_id>/images/<image_id>.cdx.json",
+                "category": "GV.SC",
+                "applicability": {
+                  "reCategories": [
+                    "mii",
+                    "qualified-re",
+                    "mid-size-re"
+                  ],
+                  "entityTypes": [
+                    "stock-broker",
+                    "market-infrastructure-institution"
+                  ]
+                },
+                "mandatory": false,
+                "cadence": "event-driven",
+                "evidenceExpected": [
+                  "CycloneDX SBOM per production image",
+                  "Pipeline step that regenerates SBOM on release"
+                ],
+                "mappings": [
+                  {
+                    "regulator": "NIST",
+                    "instrument": "nist-ssdf-800-218",
+                    "controlId": "PS.3.2"
+                  }
+                ],
+                "probeWorkflows": [
+                  "probe-cicd-env",
+                  "probe-app-chart"
+                ],
+                "params": [
+                  {
+                    "id": "sbomFormat",
+                    "label": "SBOM format accepted for critical systems",
+                    "default": "cyclonedx-1.6"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-01T09:30:00Z",
+          "workflow": "manual",
+          "agent": "regulatory-cataloguer",
+          "sessionId": "8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b"
+        }
+      }
+    },
+    {
+      "description": "defaultSeverity outside the canonical enum",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.regulator",
+        "instrumentId": "sebi-cscrf-2024",
+        "regulator": "SEBI",
+        "version": "SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113",
+        "sourceUrl": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
+        "retrievedAt": "2026-09-01T09:00:00Z",
+        "groups": [
+          {
+            "id": "GV.SC",
+            "title": "Govern: Cybersecurity Supply Chain Risk Management",
+            "controls": [
+              {
+                "id": "GV.SC.S5",
+                "title": "Software Bill of Materials for critical systems",
+                "prose": "REs shall obtain a Software Bill of Materials (SBOM) for all critical systems and for every new critical software procured, listing components, versions, licences and known vulnerabilities, and shall keep it updated on every release",
+                "guidance": "Generate CycloneDX or SPDX from the build pipeline and store the reference under applications/<app_id>/images/<image_id>.cdx.json",
+                "category": "GV.SC",
+                "applicability": {
+                  "reCategories": [
+                    "mii",
+                    "qualified-re",
+                    "mid-size-re"
+                  ],
+                  "entityTypes": [
+                    "stock-broker",
+                    "market-infrastructure-institution"
+                  ]
+                },
+                "mandatory": true,
+                "defaultSeverity": "severe",
+                "cadence": "event-driven",
+                "evidenceExpected": [
+                  "CycloneDX SBOM per production image",
+                  "Pipeline step that regenerates SBOM on release"
+                ],
+                "mappings": [
+                  {
+                    "regulator": "NIST",
+                    "instrument": "nist-ssdf-800-218",
+                    "controlId": "PS.3.2"
+                  }
+                ],
+                "probeWorkflows": [
+                  "probe-cicd-env",
+                  "probe-app-chart"
+                ],
+                "params": [
+                  {
+                    "id": "sbomFormat",
+                    "label": "SBOM format accepted for critical systems",
+                    "default": "cyclonedx-1.6"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-01T09:30:00Z",
+          "workflow": "manual",
+          "agent": "regulatory-cataloguer",
+          "sessionId": "8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b"
+        }
+      }
+    },
+    {
+      "description": "reCategories not in the company category slug form",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.regulator",
+        "instrumentId": "sebi-cscrf-2024",
+        "regulator": "SEBI",
+        "version": "SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113",
+        "sourceUrl": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
+        "retrievedAt": "2026-09-01T09:00:00Z",
+        "groups": [
+          {
+            "id": "GV.SC",
+            "title": "Govern: Cybersecurity Supply Chain Risk Management",
+            "controls": [
+              {
+                "id": "GV.SC.S5",
+                "title": "Software Bill of Materials for critical systems",
+                "prose": "REs shall obtain a Software Bill of Materials (SBOM) for all critical systems and for every new critical software procured, listing components, versions, licences and known vulnerabilities, and shall keep it updated on every release",
+                "guidance": "Generate CycloneDX or SPDX from the build pipeline and store the reference under applications/<app_id>/images/<image_id>.cdx.json",
+                "category": "GV.SC",
+                "applicability": {
+                  "reCategories": [
+                    "Qualified RE"
+                  ],
+                  "entityTypes": [
+                    "stock-broker",
+                    "market-infrastructure-institution"
+                  ]
+                },
+                "mandatory": true,
+                "defaultSeverity": "high",
+                "cadence": "event-driven",
+                "evidenceExpected": [
+                  "CycloneDX SBOM per production image",
+                  "Pipeline step that regenerates SBOM on release"
+                ],
+                "mappings": [
+                  {
+                    "regulator": "NIST",
+                    "instrument": "nist-ssdf-800-218",
+                    "controlId": "PS.3.2"
+                  }
+                ],
+                "probeWorkflows": [
+                  "probe-cicd-env",
+                  "probe-app-chart"
+                ],
+                "params": [
+                  {
+                    "id": "sbomFormat",
+                    "label": "SBOM format accepted for critical systems",
+                    "default": "cyclonedx-1.6"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-01T09:30:00Z",
+          "workflow": "manual",
+          "agent": "regulatory-cataloguer",
+          "sessionId": "8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b"
+        }
+      }
+    },
+    {
+      "description": "control param with a regulator-stated default and unit",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.regulator",
+        "instrumentId": "sebi-cscrf-2024",
+        "regulator": "SEBI",
+        "version": "SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113",
+        "sourceUrl": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
+        "retrievedAt": "2026-09-01T09:00:00Z",
+        "groups": [
+          {
+            "id": "GV.SC",
+            "title": "Govern: Cybersecurity Supply Chain Risk Management",
+            "controls": [
+              {
+                "id": "GV.SC.S5",
+                "title": "Software Bill of Materials for critical systems",
+                "prose": "REs shall obtain a Software Bill of Materials (SBOM) for all critical systems and for every new critical software procured, listing components, versions, licences and known vulnerabilities, and shall keep it updated on every release",
+                "guidance": "Generate CycloneDX or SPDX from the build pipeline and store the reference under applications/<app_id>/images/<image_id>.cdx.json",
+                "category": "GV.SC",
+                "applicability": {
+                  "reCategories": [
+                    "mii",
+                    "qualified-re",
+                    "mid-size-re"
+                  ],
+                  "entityTypes": [
+                    "stock-broker",
+                    "market-infrastructure-institution"
+                  ]
+                },
+                "mandatory": true,
+                "defaultSeverity": "high",
+                "cadence": "event-driven",
+                "evidenceExpected": [
+                  "CycloneDX SBOM per production image",
+                  "Pipeline step that regenerates SBOM on release"
+                ],
+                "mappings": [
+                  {
+                    "regulator": "NIST",
+                    "instrument": "nist-ssdf-800-218",
+                    "controlId": "PS.3.2"
+                  }
+                ],
+                "probeWorkflows": [
+                  "probe-cicd-env",
+                  "probe-app-chart"
+                ],
+                "params": [
+                  {
+                    "id": "logRetentionDays",
+                    "label": "Minimum log retention",
+                    "default": "180",
+                    "unit": "days"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-01T09:30:00Z",
+          "workflow": "manual",
+          "agent": "regulatory-cataloguer",
+          "sessionId": "8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b"
+        }
+      }
+    },
+    {
+      "description": "control param id not camelCase",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.regulator",
+        "instrumentId": "sebi-cscrf-2024",
+        "regulator": "SEBI",
+        "version": "SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113",
+        "sourceUrl": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
+        "retrievedAt": "2026-09-01T09:00:00Z",
+        "groups": [
+          {
+            "id": "GV.SC",
+            "title": "Govern: Cybersecurity Supply Chain Risk Management",
+            "controls": [
+              {
+                "id": "GV.SC.S5",
+                "title": "Software Bill of Materials for critical systems",
+                "prose": "REs shall obtain a Software Bill of Materials (SBOM) for all critical systems and for every new critical software procured, listing components, versions, licences and known vulnerabilities, and shall keep it updated on every release",
+                "guidance": "Generate CycloneDX or SPDX from the build pipeline and store the reference under applications/<app_id>/images/<image_id>.cdx.json",
+                "category": "GV.SC",
+                "applicability": {
+                  "reCategories": [
+                    "mii",
+                    "qualified-re",
+                    "mid-size-re"
+                  ],
+                  "entityTypes": [
+                    "stock-broker",
+                    "market-infrastructure-institution"
+                  ]
+                },
+                "mandatory": true,
+                "defaultSeverity": "high",
+                "cadence": "event-driven",
+                "evidenceExpected": [
+                  "CycloneDX SBOM per production image",
+                  "Pipeline step that regenerates SBOM on release"
+                ],
+                "mappings": [
+                  {
+                    "regulator": "NIST",
+                    "instrument": "nist-ssdf-800-218",
+                    "controlId": "PS.3.2"
+                  }
+                ],
+                "probeWorkflows": [
+                  "probe-cicd-env",
+                  "probe-app-chart"
+                ],
+                "params": [
+                  {
+                    "id": "LogRetention",
+                    "label": "Minimum log retention"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-01T09:30:00Z",
+          "workflow": "manual",
+          "agent": "regulatory-cataloguer",
+          "sessionId": "8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b"
+        }
+      }
+    },
+    {
+      "description": "invented extra key inside params is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.regulator",
+        "instrumentId": "sebi-cscrf-2024",
+        "regulator": "SEBI",
+        "version": "SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113",
+        "sourceUrl": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
+        "retrievedAt": "2026-09-01T09:00:00Z",
+        "groups": [
+          {
+            "id": "GV.SC",
+            "title": "Govern: Cybersecurity Supply Chain Risk Management",
+            "controls": [
+              {
+                "id": "GV.SC.S5",
+                "title": "Software Bill of Materials for critical systems",
+                "prose": "REs shall obtain a Software Bill of Materials (SBOM) for all critical systems and for every new critical software procured, listing components, versions, licences and known vulnerabilities, and shall keep it updated on every release",
+                "guidance": "Generate CycloneDX or SPDX from the build pipeline and store the reference under applications/<app_id>/images/<image_id>.cdx.json",
+                "category": "GV.SC",
+                "applicability": {
+                  "reCategories": [
+                    "mii",
+                    "qualified-re",
+                    "mid-size-re"
+                  ],
+                  "entityTypes": [
+                    "stock-broker",
+                    "market-infrastructure-institution"
+                  ]
+                },
+                "mandatory": true,
+                "defaultSeverity": "high",
+                "cadence": "event-driven",
+                "evidenceExpected": [
+                  "CycloneDX SBOM per production image",
+                  "Pipeline step that regenerates SBOM on release"
+                ],
+                "mappings": [
+                  {
+                    "regulator": "NIST",
+                    "instrument": "nist-ssdf-800-218",
+                    "controlId": "PS.3.2"
+                  }
+                ],
+                "probeWorkflows": [
+                  "probe-cicd-env",
+                  "probe-app-chart"
+                ],
+                "params": [
+                  {
+                    "id": "logRetentionDays",
+                    "label": "Minimum log retention",
+                    "unit": "days",
+                    "source": "annex"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-01T09:30:00Z",
+          "workflow": "manual",
+          "agent": "regulatory-cataloguer",
+          "sessionId": "8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b"
+        }
+      }
+    }
+  ]
+}

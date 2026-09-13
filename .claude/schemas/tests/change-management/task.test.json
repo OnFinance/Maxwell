@@ -1,0 +1,2591 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/v1/change-management/task.schema.json",
+  "tests": [
+    {
+      "description": "realistic done task with evidence",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "done",
+        "humanEdited": false,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "re-probe",
+          "workflow": "probe-cicd-env",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "rootCause": {
+          "category": "process-gap",
+          "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "startedAt": "2026-09-02T05:00:00Z",
+        "doneAt": "2026-09-05T13:20:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [
+          {
+            "type": "pull-request",
+            "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+            "collectedAt": "2026-09-05T13:20:00Z",
+            "description": "PR adding the sbom job"
+          },
+          {
+            "type": "sbom",
+            "ref": "applications/trading-gateway/images/trading-gateway-api.cdx.json",
+            "sha256": "6b3d7a1f0c9e2b4d5f6a7b8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f708192a",
+            "collectedAt": "2026-09-05T13:25:00Z"
+          }
+        ],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "todo task depending on task_1",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_2",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 2,
+        "title": "Re-probe CI and attach SBOM evidence to the initiative",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "todo",
+        "humanEdited": false,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "re-probe",
+          "workflow": "probe-cicd-env",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "rootCause": {
+          "category": "process-gap",
+          "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [
+          "task_1"
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "blocked task with blockedReason",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "blocked",
+        "humanEdited": false,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "re-probe",
+          "workflow": "probe-cicd-env",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "rootCause": {
+          "category": "process-gap",
+          "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "startedAt": "2026-09-02T05:00:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [
+          {
+            "type": "pull-request",
+            "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+            "collectedAt": "2026-09-05T13:20:00Z",
+            "description": "PR adding the sbom job"
+          },
+          {
+            "type": "sbom",
+            "ref": "applications/trading-gateway/images/trading-gateway-api.cdx.json",
+            "sha256": "6b3d7a1f0c9e2b4d5f6a7b8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f708192a",
+            "collectedAt": "2026-09-05T13:25:00Z"
+          }
+        ],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        },
+        "blockedReason": "Waiting for the org-level allowlist to permit the cyclonedx-gomod action"
+      }
+    },
+    {
+      "description": "invented top-level key",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "done",
+        "humanEdited": false,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "re-probe",
+          "workflow": "probe-cicd-env",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "rootCause": {
+          "category": "process-gap",
+          "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "startedAt": "2026-09-02T05:00:00Z",
+        "doneAt": "2026-09-05T13:20:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [
+          {
+            "type": "pull-request",
+            "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+            "collectedAt": "2026-09-05T13:20:00Z",
+            "description": "PR adding the sbom job"
+          },
+          {
+            "type": "sbom",
+            "ref": "applications/trading-gateway/images/trading-gateway-api.cdx.json",
+            "sha256": "6b3d7a1f0c9e2b4d5f6a7b8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f708192a",
+            "collectedAt": "2026-09-05T13:25:00Z"
+          }
+        ],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        },
+        "assignee": "x"
+      }
+    },
+    {
+      "description": "invented verificationMethod key",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "done",
+        "humanEdited": false,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "re-probe",
+          "workflow": "probe-cicd-env",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact",
+          "tool": "trivy"
+        },
+        "rootCause": {
+          "category": "process-gap",
+          "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "startedAt": "2026-09-02T05:00:00Z",
+        "doneAt": "2026-09-05T13:20:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [
+          {
+            "type": "pull-request",
+            "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+            "collectedAt": "2026-09-05T13:20:00Z",
+            "description": "PR adding the sbom job"
+          },
+          {
+            "type": "sbom",
+            "ref": "applications/trading-gateway/images/trading-gateway-api.cdx.json",
+            "sha256": "6b3d7a1f0c9e2b4d5f6a7b8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f708192a",
+            "collectedAt": "2026-09-05T13:25:00Z"
+          }
+        ],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "bad taskId pattern",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task-1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "done",
+        "humanEdited": false,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "re-probe",
+          "workflow": "probe-cicd-env",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "rootCause": {
+          "category": "process-gap",
+          "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "startedAt": "2026-09-02T05:00:00Z",
+        "doneAt": "2026-09-05T13:20:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [
+          {
+            "type": "pull-request",
+            "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+            "collectedAt": "2026-09-05T13:20:00Z",
+            "description": "PR adding the sbom job"
+          },
+          {
+            "type": "sbom",
+            "ref": "applications/trading-gateway/images/trading-gateway-api.cdx.json",
+            "sha256": "6b3d7a1f0c9e2b4d5f6a7b8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f708192a",
+            "collectedAt": "2026-09-05T13:25:00Z"
+          }
+        ],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "bad status enum value",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "complete",
+        "humanEdited": false,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "re-probe",
+          "workflow": "probe-cicd-env",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "rootCause": {
+          "category": "process-gap",
+          "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "startedAt": "2026-09-02T05:00:00Z",
+        "doneAt": "2026-09-05T13:20:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [
+          {
+            "type": "pull-request",
+            "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+            "collectedAt": "2026-09-05T13:20:00Z",
+            "description": "PR adding the sbom job"
+          },
+          {
+            "type": "sbom",
+            "ref": "applications/trading-gateway/images/trading-gateway-api.cdx.json",
+            "sha256": "6b3d7a1f0c9e2b4d5f6a7b8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f708192a",
+            "collectedAt": "2026-09-05T13:25:00Z"
+          }
+        ],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "bad rootCause category",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "done",
+        "humanEdited": false,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "re-probe",
+          "workflow": "probe-cicd-env",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "rootCause": {
+          "category": "bad-luck",
+          "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "startedAt": "2026-09-02T05:00:00Z",
+        "doneAt": "2026-09-05T13:20:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [
+          {
+            "type": "pull-request",
+            "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+            "collectedAt": "2026-09-05T13:20:00Z",
+            "description": "PR adding the sbom job"
+          },
+          {
+            "type": "sbom",
+            "ref": "applications/trading-gateway/images/trading-gateway-api.cdx.json",
+            "sha256": "6b3d7a1f0c9e2b4d5f6a7b8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f708192a",
+            "collectedAt": "2026-09-05T13:25:00Z"
+          }
+        ],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "bad verificationMethod type",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "done",
+        "humanEdited": false,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "trust-me",
+          "workflow": "probe-cicd-env",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "rootCause": {
+          "category": "process-gap",
+          "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "startedAt": "2026-09-02T05:00:00Z",
+        "doneAt": "2026-09-05T13:20:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [
+          {
+            "type": "pull-request",
+            "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+            "collectedAt": "2026-09-05T13:20:00Z",
+            "description": "PR adding the sbom job"
+          },
+          {
+            "type": "sbom",
+            "ref": "applications/trading-gateway/images/trading-gateway-api.cdx.json",
+            "sha256": "6b3d7a1f0c9e2b4d5f6a7b8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f708192a",
+            "collectedAt": "2026-09-05T13:25:00Z"
+          }
+        ],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "missing required rootCause",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "done",
+        "humanEdited": false,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "re-probe",
+          "workflow": "probe-cicd-env",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "startedAt": "2026-09-02T05:00:00Z",
+        "doneAt": "2026-09-05T13:20:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [
+          {
+            "type": "pull-request",
+            "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+            "collectedAt": "2026-09-05T13:20:00Z",
+            "description": "PR adding the sbom job"
+          },
+          {
+            "type": "sbom",
+            "ref": "applications/trading-gateway/images/trading-gateway-api.cdx.json",
+            "sha256": "6b3d7a1f0c9e2b4d5f6a7b8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f708192a",
+            "collectedAt": "2026-09-05T13:25:00Z"
+          }
+        ],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "missing required owner",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "status": "done",
+        "humanEdited": false,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "re-probe",
+          "workflow": "probe-cicd-env",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "rootCause": {
+          "category": "process-gap",
+          "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "startedAt": "2026-09-02T05:00:00Z",
+        "doneAt": "2026-09-05T13:20:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [
+          {
+            "type": "pull-request",
+            "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+            "collectedAt": "2026-09-05T13:20:00Z",
+            "description": "PR adding the sbom job"
+          },
+          {
+            "type": "sbom",
+            "ref": "applications/trading-gateway/images/trading-gateway-api.cdx.json",
+            "sha256": "6b3d7a1f0c9e2b4d5f6a7b8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f708192a",
+            "collectedAt": "2026-09-05T13:25:00Z"
+          }
+        ],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "done task without doneAt",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "done",
+        "humanEdited": false,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "re-probe",
+          "workflow": "probe-cicd-env",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "rootCause": {
+          "category": "process-gap",
+          "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "startedAt": "2026-09-02T05:00:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [
+          {
+            "type": "pull-request",
+            "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+            "collectedAt": "2026-09-05T13:20:00Z",
+            "description": "PR adding the sbom job"
+          },
+          {
+            "type": "sbom",
+            "ref": "applications/trading-gateway/images/trading-gateway-api.cdx.json",
+            "sha256": "6b3d7a1f0c9e2b4d5f6a7b8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f708192a",
+            "collectedAt": "2026-09-05T13:25:00Z"
+          }
+        ],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "done task without acceptance criteria",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "done",
+        "humanEdited": false,
+        "acceptanceCriteria": [],
+        "verificationMethod": {
+          "type": "re-probe",
+          "workflow": "probe-cicd-env",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "rootCause": {
+          "category": "process-gap",
+          "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "startedAt": "2026-09-02T05:00:00Z",
+        "doneAt": "2026-09-05T13:20:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [
+          {
+            "type": "pull-request",
+            "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+            "collectedAt": "2026-09-05T13:20:00Z",
+            "description": "PR adding the sbom job"
+          },
+          {
+            "type": "sbom",
+            "ref": "applications/trading-gateway/images/trading-gateway-api.cdx.json",
+            "sha256": "6b3d7a1f0c9e2b4d5f6a7b8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f708192a",
+            "collectedAt": "2026-09-05T13:25:00Z"
+          }
+        ],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "done task without evidence",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "done",
+        "humanEdited": false,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "re-probe",
+          "workflow": "probe-cicd-env",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "rootCause": {
+          "category": "process-gap",
+          "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "startedAt": "2026-09-02T05:00:00Z",
+        "doneAt": "2026-09-05T13:20:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "doneAt present while in-progress",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "in-progress",
+        "humanEdited": false,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "re-probe",
+          "workflow": "probe-cicd-env",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "rootCause": {
+          "category": "process-gap",
+          "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "startedAt": "2026-09-02T05:00:00Z",
+        "doneAt": "2026-09-05T13:20:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [
+          {
+            "type": "pull-request",
+            "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+            "collectedAt": "2026-09-05T13:20:00Z",
+            "description": "PR adding the sbom job"
+          },
+          {
+            "type": "sbom",
+            "ref": "applications/trading-gateway/images/trading-gateway-api.cdx.json",
+            "sha256": "6b3d7a1f0c9e2b4d5f6a7b8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f708192a",
+            "collectedAt": "2026-09-05T13:25:00Z"
+          }
+        ],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "in-progress without startedAt",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "in-progress",
+        "humanEdited": false,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "re-probe",
+          "workflow": "probe-cicd-env",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "rootCause": {
+          "category": "process-gap",
+          "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [
+          {
+            "type": "pull-request",
+            "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+            "collectedAt": "2026-09-05T13:20:00Z",
+            "description": "PR adding the sbom job"
+          },
+          {
+            "type": "sbom",
+            "ref": "applications/trading-gateway/images/trading-gateway-api.cdx.json",
+            "sha256": "6b3d7a1f0c9e2b4d5f6a7b8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f708192a",
+            "collectedAt": "2026-09-05T13:25:00Z"
+          }
+        ],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "blocked without blockedReason",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "blocked",
+        "humanEdited": false,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "re-probe",
+          "workflow": "probe-cicd-env",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "rootCause": {
+          "category": "process-gap",
+          "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "startedAt": "2026-09-02T05:00:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [
+          {
+            "type": "pull-request",
+            "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+            "collectedAt": "2026-09-05T13:20:00Z",
+            "description": "PR adding the sbom job"
+          },
+          {
+            "type": "sbom",
+            "ref": "applications/trading-gateway/images/trading-gateway-api.cdx.json",
+            "sha256": "6b3d7a1f0c9e2b4d5f6a7b8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f708192a",
+            "collectedAt": "2026-09-05T13:25:00Z"
+          }
+        ],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "seq must be at least 1",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 0,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "done",
+        "humanEdited": false,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "re-probe",
+          "workflow": "probe-cicd-env",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "rootCause": {
+          "category": "process-gap",
+          "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "startedAt": "2026-09-02T05:00:00Z",
+        "doneAt": "2026-09-05T13:20:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [
+          {
+            "type": "pull-request",
+            "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+            "collectedAt": "2026-09-05T13:20:00Z",
+            "description": "PR adding the sbom job"
+          },
+          {
+            "type": "sbom",
+            "ref": "applications/trading-gateway/images/trading-gateway-api.cdx.json",
+            "sha256": "6b3d7a1f0c9e2b4d5f6a7b8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f708192a",
+            "collectedAt": "2026-09-05T13:25:00Z"
+          }
+        ],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "wrong kind const",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.timeline",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "done",
+        "humanEdited": false,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "re-probe",
+          "workflow": "probe-cicd-env",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "rootCause": {
+          "category": "process-gap",
+          "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "startedAt": "2026-09-02T05:00:00Z",
+        "doneAt": "2026-09-05T13:20:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [
+          {
+            "type": "pull-request",
+            "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+            "collectedAt": "2026-09-05T13:20:00Z",
+            "description": "PR adding the sbom job"
+          },
+          {
+            "type": "sbom",
+            "ref": "applications/trading-gateway/images/trading-gateway-api.cdx.json",
+            "sha256": "6b3d7a1f0c9e2b4d5f6a7b8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f708192a",
+            "collectedAt": "2026-09-05T13:25:00Z"
+          }
+        ],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "createdAt without trailing Z",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "done",
+        "humanEdited": false,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "re-probe",
+          "workflow": "probe-cicd-env",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "rootCause": {
+          "category": "process-gap",
+          "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00",
+        "startedAt": "2026-09-02T05:00:00Z",
+        "doneAt": "2026-09-05T13:20:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [
+          {
+            "type": "pull-request",
+            "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+            "collectedAt": "2026-09-05T13:20:00Z",
+            "description": "PR adding the sbom job"
+          },
+          {
+            "type": "sbom",
+            "ref": "applications/trading-gateway/images/trading-gateway-api.cdx.json",
+            "sha256": "6b3d7a1f0c9e2b4d5f6a7b8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f708192a",
+            "collectedAt": "2026-09-05T13:25:00Z"
+          }
+        ],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "cancelled task with reason and timestamp",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "cancelled",
+        "humanEdited": false,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "re-probe",
+          "workflow": "probe-cicd-env",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "rootCause": {
+          "category": "process-gap",
+          "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-08-22T04:10:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        },
+        "cancelledAt": "2026-09-06T02:15:00Z",
+        "cancelledReason": "Retention is enforced by the org-level artefact setting; the task is redundant"
+      }
+    },
+    {
+      "description": "cancelled without cancelledReason",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "cancelled",
+        "humanEdited": false,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "re-probe",
+          "workflow": "probe-cicd-env",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "rootCause": {
+          "category": "process-gap",
+          "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-08-22T04:10:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        },
+        "cancelledAt": "2026-09-06T02:15:00Z"
+      }
+    },
+    {
+      "description": "cancelled without cancelledAt",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "cancelled",
+        "humanEdited": false,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "re-probe",
+          "workflow": "probe-cicd-env",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "rootCause": {
+          "category": "process-gap",
+          "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-08-22T04:10:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        },
+        "cancelledReason": "Redundant"
+      }
+    },
+    {
+      "description": "cancelledReason present while todo",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "todo",
+        "humanEdited": false,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "re-probe",
+          "workflow": "probe-cicd-env",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "rootCause": {
+          "category": "process-gap",
+          "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-08-22T04:10:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        },
+        "cancelledReason": "Redundant"
+      }
+    },
+    {
+      "description": "todo with startedAt",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "todo",
+        "humanEdited": false,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "re-probe",
+          "workflow": "probe-cicd-env",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "rootCause": {
+          "category": "process-gap",
+          "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-08-22T04:10:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        },
+        "startedAt": "2026-09-02T05:00:00Z"
+      }
+    },
+    {
+      "description": "blockedReason present while in-progress",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "in-progress",
+        "humanEdited": false,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "re-probe",
+          "workflow": "probe-cicd-env",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "rootCause": {
+          "category": "process-gap",
+          "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "startedAt": "2026-09-02T05:00:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [
+          {
+            "type": "pull-request",
+            "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+            "collectedAt": "2026-09-05T13:20:00Z",
+            "description": "PR adding the sbom job"
+          },
+          {
+            "type": "sbom",
+            "ref": "applications/trading-gateway/images/trading-gateway-api.cdx.json",
+            "sha256": "6b3d7a1f0c9e2b4d5f6a7b8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f708192a",
+            "collectedAt": "2026-09-05T13:25:00Z"
+          }
+        ],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        },
+        "blockedReason": "Waiting on org admin"
+      }
+    },
+    {
+      "description": "re-probe without workflow",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "done",
+        "humanEdited": false,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "re-probe",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "rootCause": {
+          "category": "process-gap",
+          "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "startedAt": "2026-09-02T05:00:00Z",
+        "doneAt": "2026-09-05T13:20:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [
+          {
+            "type": "pull-request",
+            "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+            "collectedAt": "2026-09-05T13:20:00Z",
+            "description": "PR adding the sbom job"
+          },
+          {
+            "type": "sbom",
+            "ref": "applications/trading-gateway/images/trading-gateway-api.cdx.json",
+            "sha256": "6b3d7a1f0c9e2b4d5f6a7b8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f708192a",
+            "collectedAt": "2026-09-05T13:25:00Z"
+          }
+        ],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "workflow present on a manual-test verification",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "done",
+        "humanEdited": false,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "manual-test",
+          "workflow": "probe-cicd-env",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "rootCause": {
+          "category": "process-gap",
+          "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "startedAt": "2026-09-02T05:00:00Z",
+        "doneAt": "2026-09-05T13:20:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [
+          {
+            "type": "pull-request",
+            "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+            "collectedAt": "2026-09-05T13:20:00Z",
+            "description": "PR adding the sbom job"
+          },
+          {
+            "type": "sbom",
+            "ref": "applications/trading-gateway/images/trading-gateway-api.cdx.json",
+            "sha256": "6b3d7a1f0c9e2b4d5f6a7b8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f708192a",
+            "collectedAt": "2026-09-05T13:25:00Z"
+          }
+        ],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "re-probe workflow must be a probe",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "done",
+        "humanEdited": false,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "re-probe",
+          "workflow": "impl-change-management",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "rootCause": {
+          "category": "process-gap",
+          "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "startedAt": "2026-09-02T05:00:00Z",
+        "doneAt": "2026-09-05T13:20:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [
+          {
+            "type": "pull-request",
+            "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+            "collectedAt": "2026-09-05T13:20:00Z",
+            "description": "PR adding the sbom job"
+          },
+          {
+            "type": "sbom",
+            "ref": "applications/trading-gateway/images/trading-gateway-api.cdx.json",
+            "sha256": "6b3d7a1f0c9e2b4d5f6a7b8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f708192a",
+            "collectedAt": "2026-09-05T13:25:00Z"
+          }
+        ],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "manual-test verification without workflow",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "done",
+        "humanEdited": false,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "manual-test",
+          "description": "Platform lead downloads the latest sbom.cdx.json artefact and confirms it lists the module's direct dependencies"
+        },
+        "rootCause": {
+          "category": "process-gap",
+          "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "startedAt": "2026-09-02T05:00:00Z",
+        "doneAt": "2026-09-05T13:20:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [
+          {
+            "type": "pull-request",
+            "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+            "collectedAt": "2026-09-05T13:20:00Z",
+            "description": "PR adding the sbom job"
+          },
+          {
+            "type": "sbom",
+            "ref": "applications/trading-gateway/images/trading-gateway-api.cdx.json",
+            "sha256": "6b3d7a1f0c9e2b4d5f6a7b8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f708192a",
+            "collectedAt": "2026-09-05T13:25:00Z"
+          }
+        ],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "missing required humanEdited",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "done",
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "re-probe",
+          "workflow": "probe-cicd-env",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "rootCause": {
+          "category": "process-gap",
+          "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "startedAt": "2026-09-02T05:00:00Z",
+        "doneAt": "2026-09-05T13:20:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [
+          {
+            "type": "pull-request",
+            "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+            "collectedAt": "2026-09-05T13:20:00Z",
+            "description": "PR adding the sbom job"
+          },
+          {
+            "type": "sbom",
+            "ref": "applications/trading-gateway/images/trading-gateway-api.cdx.json",
+            "sha256": "6b3d7a1f0c9e2b4d5f6a7b8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f708192a",
+            "collectedAt": "2026-09-05T13:25:00Z"
+          }
+        ],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "human-edited task records the editor",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "done",
+        "humanEdited": true,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "re-probe",
+          "workflow": "probe-cicd-env",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "rootCause": {
+          "category": "process-gap",
+          "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "startedAt": "2026-09-02T05:00:00Z",
+        "doneAt": "2026-09-05T13:20:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [
+          {
+            "type": "pull-request",
+            "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+            "collectedAt": "2026-09-05T13:20:00Z",
+            "description": "PR adding the sbom job"
+          },
+          {
+            "type": "sbom",
+            "ref": "applications/trading-gateway/images/trading-gateway-api.cdx.json",
+            "sha256": "6b3d7a1f0c9e2b4d5f6a7b8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f708192a",
+            "collectedAt": "2026-09-05T13:25:00Z"
+          }
+        ],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        },
+        "lastEditedBy": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "lastEditedAt": "2026-08-23T09:00:00Z"
+      }
+    },
+    {
+      "description": "humanEdited true without lastEditedBy",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "done",
+        "humanEdited": true,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "re-probe",
+          "workflow": "probe-cicd-env",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "rootCause": {
+          "category": "process-gap",
+          "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "startedAt": "2026-09-02T05:00:00Z",
+        "doneAt": "2026-09-05T13:20:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [
+          {
+            "type": "pull-request",
+            "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+            "collectedAt": "2026-09-05T13:20:00Z",
+            "description": "PR adding the sbom job"
+          },
+          {
+            "type": "sbom",
+            "ref": "applications/trading-gateway/images/trading-gateway-api.cdx.json",
+            "sha256": "6b3d7a1f0c9e2b4d5f6a7b8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f708192a",
+            "collectedAt": "2026-09-05T13:25:00Z"
+          }
+        ],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        },
+        "lastEditedAt": "2026-08-23T09:00:00Z"
+      }
+    },
+    {
+      "description": "lastEditedAt without lastEditedBy",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "done",
+        "humanEdited": false,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "re-probe",
+          "workflow": "probe-cicd-env",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "rootCause": {
+          "category": "process-gap",
+          "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "startedAt": "2026-09-02T05:00:00Z",
+        "doneAt": "2026-09-05T13:20:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [
+          {
+            "type": "pull-request",
+            "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+            "collectedAt": "2026-09-05T13:20:00Z",
+            "description": "PR adding the sbom job"
+          },
+          {
+            "type": "sbom",
+            "ref": "applications/trading-gateway/images/trading-gateway-api.cdx.json",
+            "sha256": "6b3d7a1f0c9e2b4d5f6a7b8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f708192a",
+            "collectedAt": "2026-09-05T13:25:00Z"
+          }
+        ],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        },
+        "lastEditedAt": "2026-08-23T09:00:00Z"
+      }
+    },
+    {
+      "description": "lastEditedBy must be a human",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "done",
+        "humanEdited": true,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "re-probe",
+          "workflow": "probe-cicd-env",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "rootCause": {
+          "category": "process-gap",
+          "description": "The CI template predates the SBOM requirement; no pipeline stage owned dependency inventory"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "startedAt": "2026-09-02T05:00:00Z",
+        "doneAt": "2026-09-05T13:20:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [
+          {
+            "type": "pull-request",
+            "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+            "collectedAt": "2026-09-05T13:20:00Z",
+            "description": "PR adding the sbom job"
+          },
+          {
+            "type": "sbom",
+            "ref": "applications/trading-gateway/images/trading-gateway-api.cdx.json",
+            "sha256": "6b3d7a1f0c9e2b4d5f6a7b8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f708192a",
+            "collectedAt": "2026-09-05T13:25:00Z"
+          }
+        ],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        },
+        "lastEditedBy": {
+          "type": "agent",
+          "id": "change-manager"
+        },
+        "lastEditedAt": "2026-08-23T09:00:00Z"
+      }
+    },
+    {
+      "description": "done task with unknown root cause",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "done",
+        "humanEdited": false,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "re-probe",
+          "workflow": "probe-cicd-env",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "rootCause": {
+          "category": "unknown",
+          "description": "Not yet analysed"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "startedAt": "2026-09-02T05:00:00Z",
+        "doneAt": "2026-09-05T13:20:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [
+          {
+            "type": "pull-request",
+            "ref": "https://github.com/arthveda/trading-gateway-api/pull/482",
+            "collectedAt": "2026-09-05T13:20:00Z",
+            "description": "PR adding the sbom job"
+          },
+          {
+            "type": "sbom",
+            "ref": "applications/trading-gateway/images/trading-gateway-api.cdx.json",
+            "sha256": "6b3d7a1f0c9e2b4d5f6a7b8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f708192a",
+            "collectedAt": "2026-09-05T13:25:00Z"
+          }
+        ],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-05T13:20:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    },
+    {
+      "description": "open task may still have an unknown root cause",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.cm.task",
+        "taskId": "task_1",
+        "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+        "companyId": "arthveda-securities",
+        "seq": 1,
+        "title": "Add a CycloneDX SBOM job to the trading-gateway-api build workflow",
+        "description": "Extend .github/workflows/build.yml with a job that runs cyclonedx-gomod after the build, uploads sbom.cdx.json as a build artefact and fails the build if generation fails. Retain artefacts for 400 days to satisfy the SEBI CSCRF evidence retention expectation",
+        "owner": {
+          "type": "human",
+          "id": "platform-lead@arthveda.example"
+        },
+        "status": "todo",
+        "humanEdited": false,
+        "acceptanceCriteria": [
+          "Every push to main produces an sbom.cdx.json artefact in CycloneDX 1.6 JSON",
+          "The SBOM lists the module and all direct and transitive Go dependencies with purls",
+          "Build fails when the SBOM step exits non-zero"
+        ],
+        "verificationMethod": {
+          "type": "re-probe",
+          "workflow": "probe-cicd-env",
+          "description": "Re-run probe-cicd-env and confirm the sbom job exists and the latest three runs uploaded the artefact"
+        },
+        "rootCause": {
+          "category": "unknown",
+          "description": "Not yet analysed"
+        },
+        "targets": [
+          {
+            "type": "repo",
+            "appId": "trading-gateway",
+            "repoId": "trading-gateway-api",
+            "path": "applications/trading-gateway/repos/trading-gateway-api.json"
+          }
+        ],
+        "effortEstimateHours": 4,
+        "createdAt": "2026-08-22T04:10:00Z",
+        "dueAt": "2026-09-12T06:30:00Z",
+        "evidence": [],
+        "suggestionIds": [
+          "sug_01M0KTP6M0GSB53TM0315NTTZW"
+        ],
+        "dependsOn": [],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-08-22T04:10:00Z",
+          "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+          "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+          "workflow": "impl-change-management",
+          "agent": "change-manager"
+        }
+      }
+    }
+  ]
+}

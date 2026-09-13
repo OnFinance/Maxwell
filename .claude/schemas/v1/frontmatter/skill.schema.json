@@ -1,0 +1,234 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/skill.schema.json",
+  "title": "Skill frontmatter",
+  "description": "YAML frontmatter of SKILL.md under .claude/skills/<name>/ and .agents/skills/<name>/. Follows the agentskills.io specification (name, description, license, compatibility, metadata, allowed-tools) plus the Claude Code extensions. name must equal the directory name and be unique across both trees. Human-authored: no schemaVersion, kind or provenance. Also hosts the tool, model, effort, agent-name and path-glob definitions shared with the command and agent frontmatter schemas. Claude Code additionally accepts hooks and shell in skill files; Maxwell refuses them deliberately: hooks are centralised in .claude/settings.json so no skill can bypass the write guard, and the shell is always bash on Maxwell hosts",
+  "examples": [
+    {
+      "name": "soc-ledger",
+      "description": "How to read and append to the state-of-controls ledger company-profile/<company_id>/soc/main.jsonl: record kinds, fingerprints, supersession, and the append/version helper scripts. Use whenever a workflow records a control, observation, finding, risk or incident",
+      "license": "AGPL-3.0-only",
+      "compatibility": "Requires Node 22 and the Maxwell workspace layout; helper scripts live in .claude/scripts/soc",
+      "metadata": {
+        "author": "OnFinance",
+        "version": "1.0.0"
+      },
+      "allowed-tools": "Read Grep Bash(node .claude/scripts/soc/*)",
+      "when_to_use": "Before writing any line to soc/main.jsonl or producing a versions/commit_<n>.diff",
+      "user-invocable": false,
+      "disable-model-invocation": false,
+      "x-maxwell": {
+        "kind": "convention",
+        "workflows": [
+          "refresh-soc",
+          "probe-iac",
+          "runtime-probe-prod-env",
+          "report-audit-findings"
+        ]
+      }
+    }
+  ],
+  "type": "object",
+  "required": [ "name", "description" ],
+  "properties": {
+    "name": {
+      "description": "Skill identifier: lower-case words separated by single hyphens, equal to the containing directory name",
+      "$ref": "#/$defs/agentName"
+    },
+    "description": {
+      "description": "What the skill covers and when to load it; the model reads only this to decide whether to open the skill, so include the trigger conditions",
+      "$ref": "#/$defs/description"
+    },
+    "license": {
+      "description": "SPDX identifier or licence name covering the skill content",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+    },
+    "compatibility": {
+      "description": "Environment requirements: harness versions, required tools, network access, workspace prerequisites",
+      "type": "string",
+      "pattern": "\\S",
+      "maxLength": 500,
+      "minLength": 1
+    },
+    "metadata": {
+      "description": "Free-form string key/value metadata per agentskills.io, e.g. author, version, homepage",
+      "type": "object",
+      "maxProperties": 32,
+      "propertyNames": {
+        "pattern": "^[a-z][a-zA-Z0-9_-]{0,63}$"
+      },
+      "additionalProperties": {
+        "type": "string",
+        "maxLength": 500
+      }
+    },
+    "allowed-tools": {
+      "description": "Tools pre-approved while the skill is active: a space or comma separated string or a YAML list of 'Tool' / 'Tool(specifier)' entries",
+      "$ref": "#/$defs/toolList"
+    },
+    "disallowed-tools": {
+      "description": "Tools removed from the inherited set while the skill is active; same shape as allowed-tools",
+      "$ref": "#/$defs/toolList"
+    },
+    "arguments": {
+      "description": "Named positional arguments substituted as $<name> in the body, e.g. [company_id, app_id]; a space-separated string or a YAML list",
+      "$ref": "#/$defs/argumentNames"
+    },
+    "when_to_use": {
+      "description": "Extra trigger guidance appended to the description in the skill index",
+      "type": "string",
+      "pattern": "\\S",
+      "maxLength": 1024,
+      "minLength": 1
+    },
+    "argument-hint": {
+      "description": "Argument placeholder shown when the skill is invoked as a slash command",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+    },
+    "disable-model-invocation": {
+      "description": "When true only a human can invoke the skill as /<name>; the model will not load it on its own",
+      "type": "boolean"
+    },
+    "user-invocable": {
+      "description": "When false the skill is hidden from the / menu and only loaded by the model",
+      "type": "boolean"
+    },
+    "model": {
+      "description": "Model used when the skill runs as a command: an alias (sonnet, opus, haiku, fable, inherit) or a full claude-* model id",
+      "$ref": "#/$defs/claudeModel"
+    },
+    "effort": {
+      "description": "Reasoning effort when the skill runs as a command",
+      "$ref": "#/$defs/effort"
+    },
+    "context": {
+      "description": "fork runs the skill in a forked subagent context instead of the main conversation; required whenever agent or background is set",
+      "const": "fork"
+    },
+    "agent": {
+      "description": "Subagent (from .claude/agents) that executes the skill when context is fork",
+      "$ref": "#/$defs/agentName"
+    },
+    "background": {
+      "description": "When true the forked skill runs in the background; only meaningful with context fork",
+      "type": "boolean"
+    },
+    "paths": {
+      "description": "Workspace path globs; the skill is auto-suggested when files matching them are touched",
+      "type": "array",
+      "maxItems": 32,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/pathGlob"
+      }
+    },
+    "x-maxwell": {
+      "description": "Maxwell metadata not interpreted by the harness",
+      "type": "object",
+      "required": [ "kind" ],
+      "properties": {
+        "kind": {
+          "description": "convention documents how Maxwell files are written; capability teaches a technique (e.g. IaC misconfiguration patterns); catalog carries reference data such as regulatory catalogs; runbook is a step-by-step procedure",
+          "enum": [ "convention", "capability", "catalog", "runbook" ]
+        },
+        "workflows": {
+          "description": "Workflows that rely on this skill; empty or absent means it is general purpose",
+          "type": "array",
+          "maxItems": 32,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/vocab/workflows.schema.json"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "dependentRequired": {
+    "agent": [ "context" ],
+    "background": [ "context" ]
+  },
+  "$defs": {
+    "description": {
+      "description": "Human-facing one-liner; must contain a non-whitespace character",
+      "type": "string",
+      "pattern": "\\S",
+      "maxLength": 1024,
+      "minLength": 1
+    },
+    "toolSpec": {
+      "description": "'Tool' or 'Tool(specifier)', e.g. 'Read', 'Bash(npm run *)', 'Agent(worker, researcher)', or an MCP tool 'mcp__server__tool' / 'mcp__server__*'. The specifier must not be blank and may contain one level of nested parentheses",
+      "type": "string",
+      "pattern": "^([A-Z][A-Za-z0-9]*|mcp__[A-Za-z0-9_*-]+)(\\((?!\\s*\\))(?:[^()]|\\([^()]*\\))+\\))?$",
+      "maxLength": 500
+    },
+    "toolList": {
+      "description": "Tool allow or deny list: a string of toolSpec tokens separated by commas and/or whitespace, or a YAML list of toolSpec entries",
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^([A-Z][A-Za-z0-9]*|mcp__[A-Za-z0-9_*-]+)(\\((?!\\s*\\))(?:[^()]|\\([^()]*\\))+\\))?(?:(?:\\s*,\\s*|\\s+)([A-Z][A-Za-z0-9]*|mcp__[A-Za-z0-9_*-]+)(\\((?!\\s*\\))(?:[^()]|\\([^()]*\\))+\\))?)*$",
+          "maxLength": 4000
+        },
+        {
+          "type": "array",
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/toolSpec"
+          }
+        }
+      ]
+    },
+    "argumentNames": {
+      "description": "Positional argument names: lower snake case identifiers as a space-separated string or a YAML list",
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*( [a-z][a-z0-9_]*)*$",
+          "maxLength": 500
+        },
+        {
+          "type": "array",
+          "maxItems": 16,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$",
+            "maxLength": 64
+          }
+        }
+      ]
+    },
+    "claudeModel": {
+      "description": "Claude Code model reference for frontmatter: an alias (sonnet, opus, haiku, fable), inherit, or a full claude-* model id",
+      "anyOf": [
+        {
+          "enum": [ "sonnet", "opus", "haiku", "fable", "inherit" ]
+        },
+        {
+          "type": "string",
+          "pattern": "^claude-[a-z0-9-]+$",
+          "maxLength": 100
+        }
+      ]
+    },
+    "effort": {
+      "description": "Reasoning effort level",
+      "enum": [ "low", "medium", "high", "xhigh", "max" ]
+    },
+    "agentName": {
+      "description": "Strict lower-case kebab-case identifier (no leading, trailing or doubled hyphens) used for agents, skills and commands; identical to the OpenCode agent map key rule so a valid Claude name always mirrors",
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "maxLength": 64
+    },
+    "pathGlob": {
+      "description": "Workspace-relative path or glob (POSIX separators, '*', '**' and '{a,b}' allowed, no leading slash). No segment may be '.' or '..', so traversal is impossible anywhere in the path",
+      "type": "string",
+      "pattern": "^(?!\\.\\.?(?:/|$))[A-Za-z0-9._*{},@-]+(?:/(?!\\.\\.?(?:/|$))[A-Za-z0-9._*{},@-]+)*$",
+      "maxLength": 200
+    }
+  }
+}

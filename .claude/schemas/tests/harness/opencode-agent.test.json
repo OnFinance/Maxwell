@@ -1,0 +1,395 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/opencode-agent.schema.json",
+  "tests": [
+    {
+      "description": "mirrored iac-auditor agent",
+      "valid": true,
+      "data": {
+        "description": "Static probe of Terraform, Pulumi, Helm and Kubernetes manifests in a target application's repos. Use for probe-iac and probe-app-chart to find misconfigurations mapped to SEBI CSCRF, RBI Directions 2026 and CIS benchmarks. Read-only: never applies changes",
+        "mode": "subagent",
+        "model": "anthropic/claude-sonnet-5",
+        "temperature": 0,
+        "permission": {
+          "read": "allow",
+          "edit": "deny",
+          "bash": "allow",
+          "webfetch": "deny",
+          "glob": "allow",
+          "grep": "allow",
+          "list": "allow",
+          "write": "deny",
+          "patch": "deny",
+          "todowrite": "deny",
+          "todoread": "deny",
+          "skill": "deny",
+          "task": "deny"
+        },
+        "x-maxwell": {
+          "role": "static-probe",
+          "writes": [
+            "company-profile/*/soc/main.jsonl",
+            "company-profile/*/summary.md"
+          ],
+          "readOnlyTargets": true,
+          "regulatoryFocus": [
+            "sebi-cscrf-2024",
+            "rbi-cyber-tech-directions-2026",
+            "cis-controls-8.1"
+          ]
+        }
+      }
+    },
+    {
+      "description": "primary agent with nested bash permission patterns",
+      "valid": true,
+      "data": {
+        "description": "Primary Maxwell operator that runs workflows and coordinates subagents",
+        "mode": "primary",
+        "model": "anthropic/claude-opus-5",
+        "permission": {
+          "bash": {
+            "npm run *": "allow",
+            "*": "ask"
+          },
+          "edit": "allow"
+        },
+        "disable": false
+      }
+    },
+    {
+      "description": "permission map with the global wildcard, an MCP glob and a router model id",
+      "valid": true,
+      "data": {
+        "description": "Static probe of Terraform, Pulumi, Helm and Kubernetes manifests in a target application's repos. Use for probe-iac and probe-app-chart to find misconfigurations mapped to SEBI CSCRF, RBI Directions 2026 and CIS benchmarks. Read-only: never applies changes",
+        "mode": "subagent",
+        "model": "openrouter/anthropic/claude-sonnet-4",
+        "temperature": 0,
+        "permission": {
+          "*": "deny",
+          "read": "allow",
+          "nvd_*": "allow"
+        },
+        "x-maxwell": {
+          "role": "static-probe",
+          "writes": [
+            "company-profile/*/soc/main.jsonl",
+            "company-profile/*/summary.md"
+          ],
+          "readOnlyTargets": true,
+          "regulatoryFocus": [
+            "sebi-cscrf-2024",
+            "rbi-cyber-tech-directions-2026",
+            "cis-controls-8.1"
+          ]
+        }
+      }
+    },
+    {
+      "description": "tools is a Claude Code field; OpenCode uses permission",
+      "valid": false,
+      "data": {
+        "description": "Static probe of Terraform, Pulumi, Helm and Kubernetes manifests in a target application's repos. Use for probe-iac and probe-app-chart to find misconfigurations mapped to SEBI CSCRF, RBI Directions 2026 and CIS benchmarks. Read-only: never applies changes",
+        "mode": "subagent",
+        "model": "anthropic/claude-sonnet-5",
+        "temperature": 0,
+        "permission": {
+          "read": "allow",
+          "edit": "deny",
+          "bash": "allow",
+          "webfetch": "deny",
+          "glob": "allow",
+          "grep": "allow",
+          "list": "allow",
+          "write": "deny",
+          "patch": "deny",
+          "todowrite": "deny",
+          "todoread": "deny",
+          "skill": "deny",
+          "task": "deny"
+        },
+        "x-maxwell": {
+          "role": "static-probe",
+          "writes": [
+            "company-profile/*/soc/main.jsonl",
+            "company-profile/*/summary.md"
+          ],
+          "readOnlyTargets": true,
+          "regulatoryFocus": [
+            "sebi-cscrf-2024",
+            "rbi-cyber-tech-directions-2026",
+            "cis-controls-8.1"
+          ]
+        },
+        "tools": [
+          "Read"
+        ]
+      }
+    },
+    {
+      "description": "model must be provider/model",
+      "valid": false,
+      "data": {
+        "description": "Static probe of Terraform, Pulumi, Helm and Kubernetes manifests in a target application's repos. Use for probe-iac and probe-app-chart to find misconfigurations mapped to SEBI CSCRF, RBI Directions 2026 and CIS benchmarks. Read-only: never applies changes",
+        "mode": "subagent",
+        "model": "claude-sonnet-5",
+        "temperature": 0,
+        "permission": {
+          "read": "allow",
+          "edit": "deny",
+          "bash": "allow",
+          "webfetch": "deny",
+          "glob": "allow",
+          "grep": "allow",
+          "list": "allow",
+          "write": "deny",
+          "patch": "deny",
+          "todowrite": "deny",
+          "todoread": "deny",
+          "skill": "deny",
+          "task": "deny"
+        },
+        "x-maxwell": {
+          "role": "static-probe",
+          "writes": [
+            "company-profile/*/soc/main.jsonl",
+            "company-profile/*/summary.md"
+          ],
+          "readOnlyTargets": true,
+          "regulatoryFocus": [
+            "sebi-cscrf-2024",
+            "rbi-cyber-tech-directions-2026",
+            "cis-controls-8.1"
+          ]
+        }
+      }
+    },
+    {
+      "description": "mode outside primary/subagent/all",
+      "valid": false,
+      "data": {
+        "description": "Static probe of Terraform, Pulumi, Helm and Kubernetes manifests in a target application's repos. Use for probe-iac and probe-app-chart to find misconfigurations mapped to SEBI CSCRF, RBI Directions 2026 and CIS benchmarks. Read-only: never applies changes",
+        "mode": "background",
+        "model": "anthropic/claude-sonnet-5",
+        "temperature": 0,
+        "permission": {
+          "read": "allow",
+          "edit": "deny",
+          "bash": "allow",
+          "webfetch": "deny",
+          "glob": "allow",
+          "grep": "allow",
+          "list": "allow",
+          "write": "deny",
+          "patch": "deny",
+          "todowrite": "deny",
+          "todoread": "deny",
+          "skill": "deny",
+          "task": "deny"
+        },
+        "x-maxwell": {
+          "role": "static-probe",
+          "writes": [
+            "company-profile/*/soc/main.jsonl",
+            "company-profile/*/summary.md"
+          ],
+          "readOnlyTargets": true,
+          "regulatoryFocus": [
+            "sebi-cscrf-2024",
+            "rbi-cyber-tech-directions-2026",
+            "cis-controls-8.1"
+          ]
+        }
+      }
+    },
+    {
+      "description": "mode is required",
+      "valid": false,
+      "data": {
+        "description": "Static probe of Terraform, Pulumi, Helm and Kubernetes manifests in a target application's repos. Use for probe-iac and probe-app-chart to find misconfigurations mapped to SEBI CSCRF, RBI Directions 2026 and CIS benchmarks. Read-only: never applies changes",
+        "model": "anthropic/claude-sonnet-5",
+        "temperature": 0,
+        "permission": {
+          "read": "allow",
+          "edit": "deny",
+          "bash": "allow",
+          "webfetch": "deny",
+          "glob": "allow",
+          "grep": "allow",
+          "list": "allow",
+          "write": "deny",
+          "patch": "deny",
+          "todowrite": "deny",
+          "todoread": "deny",
+          "skill": "deny",
+          "task": "deny"
+        },
+        "x-maxwell": {
+          "role": "static-probe",
+          "writes": [
+            "company-profile/*/soc/main.jsonl",
+            "company-profile/*/summary.md"
+          ],
+          "readOnlyTargets": true,
+          "regulatoryFocus": [
+            "sebi-cscrf-2024",
+            "rbi-cyber-tech-directions-2026",
+            "cis-controls-8.1"
+          ]
+        }
+      }
+    },
+    {
+      "description": "permission action outside allow/deny/ask",
+      "valid": false,
+      "data": {
+        "description": "Static probe of Terraform, Pulumi, Helm and Kubernetes manifests in a target application's repos. Use for probe-iac and probe-app-chart to find misconfigurations mapped to SEBI CSCRF, RBI Directions 2026 and CIS benchmarks. Read-only: never applies changes",
+        "mode": "subagent",
+        "model": "anthropic/claude-sonnet-5",
+        "temperature": 0,
+        "permission": {
+          "read": "allow",
+          "edit": "deny",
+          "bash": "never",
+          "webfetch": "deny",
+          "glob": "allow",
+          "grep": "allow",
+          "list": "allow",
+          "write": "deny",
+          "patch": "deny",
+          "todowrite": "deny",
+          "todoread": "deny",
+          "skill": "deny",
+          "task": "deny"
+        },
+        "x-maxwell": {
+          "role": "static-probe",
+          "writes": [
+            "company-profile/*/soc/main.jsonl",
+            "company-profile/*/summary.md"
+          ],
+          "readOnlyTargets": true,
+          "regulatoryFocus": [
+            "sebi-cscrf-2024",
+            "rbi-cyber-tech-directions-2026",
+            "cis-controls-8.1"
+          ]
+        }
+      }
+    },
+    {
+      "description": "permission keys are lower-case OpenCode tool names, not Claude tool names",
+      "valid": false,
+      "data": {
+        "description": "Static probe of Terraform, Pulumi, Helm and Kubernetes manifests in a target application's repos. Use for probe-iac and probe-app-chart to find misconfigurations mapped to SEBI CSCRF, RBI Directions 2026 and CIS benchmarks. Read-only: never applies changes",
+        "mode": "subagent",
+        "model": "anthropic/claude-sonnet-5",
+        "temperature": 0,
+        "permission": {
+          "read": "allow",
+          "edit": "deny",
+          "bash": "allow",
+          "webfetch": "deny",
+          "glob": "allow",
+          "grep": "allow",
+          "list": "allow",
+          "write": "deny",
+          "patch": "deny",
+          "todowrite": "deny",
+          "todoread": "deny",
+          "skill": "deny",
+          "task": "deny",
+          "Bash": "allow"
+        },
+        "x-maxwell": {
+          "role": "static-probe",
+          "writes": [
+            "company-profile/*/soc/main.jsonl",
+            "company-profile/*/summary.md"
+          ],
+          "readOnlyTargets": true,
+          "regulatoryFocus": [
+            "sebi-cscrf-2024",
+            "rbi-cyber-tech-directions-2026",
+            "cis-controls-8.1"
+          ]
+        }
+      }
+    },
+    {
+      "description": "temperature below 0",
+      "valid": false,
+      "data": {
+        "description": "Static probe of Terraform, Pulumi, Helm and Kubernetes manifests in a target application's repos. Use for probe-iac and probe-app-chart to find misconfigurations mapped to SEBI CSCRF, RBI Directions 2026 and CIS benchmarks. Read-only: never applies changes",
+        "mode": "subagent",
+        "model": "anthropic/claude-sonnet-5",
+        "temperature": -0.1,
+        "permission": {
+          "read": "allow",
+          "edit": "deny",
+          "bash": "allow",
+          "webfetch": "deny",
+          "glob": "allow",
+          "grep": "allow",
+          "list": "allow",
+          "write": "deny",
+          "patch": "deny",
+          "todowrite": "deny",
+          "todoread": "deny",
+          "skill": "deny",
+          "task": "deny"
+        },
+        "x-maxwell": {
+          "role": "static-probe",
+          "writes": [
+            "company-profile/*/soc/main.jsonl",
+            "company-profile/*/summary.md"
+          ],
+          "readOnlyTargets": true,
+          "regulatoryFocus": [
+            "sebi-cscrf-2024",
+            "rbi-cyber-tech-directions-2026",
+            "cis-controls-8.1"
+          ]
+        }
+      }
+    },
+    {
+      "description": "runtime probes must be read-only against targets",
+      "valid": false,
+      "data": {
+        "description": "Static probe of Terraform, Pulumi, Helm and Kubernetes manifests in a target application's repos. Use for probe-iac and probe-app-chart to find misconfigurations mapped to SEBI CSCRF, RBI Directions 2026 and CIS benchmarks. Read-only: never applies changes",
+        "mode": "subagent",
+        "model": "anthropic/claude-sonnet-5",
+        "temperature": 0,
+        "permission": {
+          "read": "allow",
+          "edit": "deny",
+          "bash": "allow",
+          "webfetch": "deny",
+          "glob": "allow",
+          "grep": "allow",
+          "list": "allow",
+          "write": "deny",
+          "patch": "deny",
+          "todowrite": "deny",
+          "todoread": "deny",
+          "skill": "deny",
+          "task": "deny"
+        },
+        "x-maxwell": {
+          "role": "runtime-probe",
+          "writes": [
+            "company-profile/*/soc/main.jsonl",
+            "company-profile/*/summary.md"
+          ],
+          "readOnlyTargets": false,
+          "regulatoryFocus": [
+            "sebi-cscrf-2024",
+            "rbi-cyber-tech-directions-2026",
+            "cis-controls-8.1"
+          ]
+        }
+      }
+    }
+  ]
+}

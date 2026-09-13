@@ -1,0 +1,2557 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/v1/company/metastore.schema.json",
+  "tests": [
+    {
+      "description": "unity catalog snapshot with pipeline and lineage",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.metastore",
+        "companyId": "zenith-securities",
+        "snapshotAt": "2026-09-13T02:00:00Z",
+        "catalogs": [
+          {
+            "catalogId": "prod-unity",
+            "type": "unity",
+            "endpointRef": "prod-unity-catalog-ro",
+            "appId": "data-platform",
+            "schemas": [
+              {
+                "name": "trading",
+                "tables": [
+                  {
+                    "name": "client_orders",
+                    "fullyQualifiedName": "prod.trading.client_orders",
+                    "columns": [
+                      {
+                        "name": "client_code",
+                        "dataType": "string",
+                        "dataClassification": [
+                          "confidential",
+                          "pii"
+                        ],
+                        "pii": true
+                      },
+                      {
+                        "name": "order_value_inr",
+                        "dataType": "decimal(18,2)",
+                        "dataClassification": [
+                          "financial"
+                        ],
+                        "pii": false
+                      }
+                    ],
+                    "owner": "data-eng@zenithsecurities.in",
+                    "retentionDays": 2920,
+                    "rowCountEstimate": 184000000,
+                    "location": "s3://zenith-prod-lake/trading/client_orders",
+                    "format": "delta"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "pipelines": [
+          {
+            "pipelineId": "orders-daily-load",
+            "name": "Orders daily load from OMS",
+            "orchestrator": "databricks-workflows",
+            "schedule": "30 18 * * 1-5",
+            "owner": "data-eng@zenithsecurities.in",
+            "sourceRepo": {
+              "appId": "data-platform",
+              "repoId": "airflow-dags"
+            }
+          }
+        ],
+        "lineage": [
+          {
+            "job": {
+              "namespace": "databricks://prod-workspace",
+              "name": "orders-daily-load.load_orders"
+            },
+            "inputs": [
+              {
+                "namespace": "postgres://oms-db.internal:5432",
+                "name": "oms.public.orders"
+              }
+            ],
+            "outputs": [
+              {
+                "namespace": "s3://zenith-prod-lake",
+                "name": "trading/client_orders"
+              }
+            ],
+            "facets": {
+              "columnLineage": "client_code<-postgres://oms-db.internal:5432/oms.public.orders.client_code;order_value_inr<-postgres://oms-db.internal:5432/oms.public.orders.value"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T02:05:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XB",
+          "workflow": "refresh-metastore",
+          "agent": "metastore-crawler"
+        }
+      }
+    },
+    {
+      "description": "raw openMetadataExport passthrough is allowed",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.metastore",
+        "companyId": "zenith-securities",
+        "snapshotAt": "2026-09-13T02:00:00Z",
+        "catalogs": [
+          {
+            "catalogId": "prod-unity",
+            "type": "unity",
+            "endpointRef": "prod-unity-catalog-ro",
+            "appId": "data-platform",
+            "schemas": [
+              {
+                "name": "trading",
+                "tables": [
+                  {
+                    "name": "client_orders",
+                    "fullyQualifiedName": "prod.trading.client_orders",
+                    "columns": [
+                      {
+                        "name": "client_code",
+                        "dataType": "string",
+                        "pii": true,
+                        "dataClassification": [
+                          "confidential",
+                          "pii"
+                        ]
+                      },
+                      {
+                        "name": "order_value_inr",
+                        "dataType": "decimal(18,2)",
+                        "pii": false,
+                        "dataClassification": [
+                          "financial"
+                        ]
+                      }
+                    ],
+                    "owner": "data-eng@zenithsecurities.in",
+                    "retentionDays": 2920,
+                    "rowCountEstimate": 184000000,
+                    "location": "s3://zenith-prod-lake/trading/client_orders",
+                    "format": "delta"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "pipelines": [
+          {
+            "pipelineId": "orders-daily-load",
+            "name": "Orders daily load from OMS",
+            "orchestrator": "databricks-workflows",
+            "schedule": "30 18 * * 1-5",
+            "owner": "data-eng@zenithsecurities.in",
+            "sourceRepo": {
+              "appId": "data-platform",
+              "repoId": "airflow-dags"
+            }
+          }
+        ],
+        "lineage": [
+          {
+            "job": {
+              "namespace": "airflow://prod",
+              "name": "orders-daily-load.load_orders"
+            },
+            "inputs": [
+              {
+                "namespace": "postgres://oms-db.internal:5432",
+                "name": "oms.public.orders"
+              }
+            ],
+            "outputs": [
+              {
+                "namespace": "s3://zenith-prod-lake",
+                "name": "trading/client_orders"
+              }
+            ],
+            "facets": {
+              "columnLineage": "client_code<-postgres://oms-db.internal:5432/oms.public.orders.client_code;order_value_inr<-postgres://oms-db.internal:5432/oms.public.orders.value"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T02:05:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XB",
+          "workflow": "refresh-metastore",
+          "agent": "metastore-crawler"
+        },
+        "openMetadataExport": {
+          "id": "a1",
+          "entityType": "table",
+          "fullyQualifiedName": "prod.trading.client_orders"
+        }
+      }
+    },
+    {
+      "description": "invented top-level key is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.metastore",
+        "companyId": "zenith-securities",
+        "snapshotAt": "2026-09-13T02:00:00Z",
+        "catalogs": [
+          {
+            "catalogId": "prod-unity",
+            "type": "unity",
+            "endpointRef": "prod-unity-catalog-ro",
+            "appId": "data-platform",
+            "schemas": [
+              {
+                "name": "trading",
+                "tables": [
+                  {
+                    "name": "client_orders",
+                    "fullyQualifiedName": "prod.trading.client_orders",
+                    "columns": [
+                      {
+                        "name": "client_code",
+                        "dataType": "string",
+                        "pii": true,
+                        "dataClassification": [
+                          "confidential",
+                          "pii"
+                        ]
+                      },
+                      {
+                        "name": "order_value_inr",
+                        "dataType": "decimal(18,2)",
+                        "pii": false,
+                        "dataClassification": [
+                          "financial"
+                        ]
+                      }
+                    ],
+                    "owner": "data-eng@zenithsecurities.in",
+                    "retentionDays": 2920,
+                    "rowCountEstimate": 184000000,
+                    "location": "s3://zenith-prod-lake/trading/client_orders",
+                    "format": "delta"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "pipelines": [
+          {
+            "pipelineId": "orders-daily-load",
+            "name": "Orders daily load from OMS",
+            "orchestrator": "databricks-workflows",
+            "schedule": "30 18 * * 1-5",
+            "owner": "data-eng@zenithsecurities.in",
+            "sourceRepo": {
+              "appId": "data-platform",
+              "repoId": "airflow-dags"
+            }
+          }
+        ],
+        "lineage": [
+          {
+            "job": {
+              "namespace": "airflow://prod",
+              "name": "orders-daily-load.load_orders"
+            },
+            "inputs": [
+              {
+                "namespace": "postgres://oms-db.internal:5432",
+                "name": "oms.public.orders"
+              }
+            ],
+            "outputs": [
+              {
+                "namespace": "s3://zenith-prod-lake",
+                "name": "trading/client_orders"
+              }
+            ],
+            "facets": {
+              "columnLineage": "client_code<-postgres://oms-db.internal:5432/oms.public.orders.client_code;order_value_inr<-postgres://oms-db.internal:5432/oms.public.orders.value"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T02:05:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XB",
+          "workflow": "refresh-metastore",
+          "agent": "metastore-crawler"
+        },
+        "warehouses": []
+      }
+    },
+    {
+      "description": "invented column key is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.metastore",
+        "companyId": "zenith-securities",
+        "snapshotAt": "2026-09-13T02:00:00Z",
+        "catalogs": [
+          {
+            "catalogId": "prod-unity",
+            "type": "unity",
+            "endpointRef": "prod-unity-catalog-ro",
+            "appId": "data-platform",
+            "schemas": [
+              {
+                "name": "trading",
+                "tables": [
+                  {
+                    "name": "client_orders",
+                    "fullyQualifiedName": "prod.trading.client_orders",
+                    "columns": [
+                      {
+                        "name": "client_code",
+                        "dataType": "string",
+                        "pii": true,
+                        "nullable": true,
+                        "dataClassification": [
+                          "confidential",
+                          "pii"
+                        ]
+                      },
+                      {
+                        "name": "order_value_inr",
+                        "dataType": "decimal(18,2)",
+                        "pii": false,
+                        "dataClassification": [
+                          "financial"
+                        ]
+                      }
+                    ],
+                    "owner": "data-eng@zenithsecurities.in",
+                    "retentionDays": 2920,
+                    "rowCountEstimate": 184000000,
+                    "location": "s3://zenith-prod-lake/trading/client_orders",
+                    "format": "delta"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "pipelines": [
+          {
+            "pipelineId": "orders-daily-load",
+            "name": "Orders daily load from OMS",
+            "orchestrator": "databricks-workflows",
+            "schedule": "30 18 * * 1-5",
+            "owner": "data-eng@zenithsecurities.in",
+            "sourceRepo": {
+              "appId": "data-platform",
+              "repoId": "airflow-dags"
+            }
+          }
+        ],
+        "lineage": [
+          {
+            "job": {
+              "namespace": "airflow://prod",
+              "name": "orders-daily-load.load_orders"
+            },
+            "inputs": [
+              {
+                "namespace": "postgres://oms-db.internal:5432",
+                "name": "oms.public.orders"
+              }
+            ],
+            "outputs": [
+              {
+                "namespace": "s3://zenith-prod-lake",
+                "name": "trading/client_orders"
+              }
+            ],
+            "facets": {
+              "columnLineage": "client_code<-postgres://oms-db.internal:5432/oms.public.orders.client_code;order_value_inr<-postgres://oms-db.internal:5432/oms.public.orders.value"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T02:05:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XB",
+          "workflow": "refresh-metastore",
+          "agent": "metastore-crawler"
+        }
+      }
+    },
+    {
+      "description": "catalogId must be a slug",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.metastore",
+        "companyId": "zenith-securities",
+        "snapshotAt": "2026-09-13T02:00:00Z",
+        "catalogs": [
+          {
+            "catalogId": "Prod Unity",
+            "type": "unity",
+            "endpointRef": "prod-unity-catalog-ro",
+            "appId": "data-platform",
+            "schemas": [
+              {
+                "name": "trading",
+                "tables": [
+                  {
+                    "name": "client_orders",
+                    "fullyQualifiedName": "prod.trading.client_orders",
+                    "columns": [
+                      {
+                        "name": "client_code",
+                        "dataType": "string",
+                        "pii": true,
+                        "dataClassification": [
+                          "confidential",
+                          "pii"
+                        ]
+                      },
+                      {
+                        "name": "order_value_inr",
+                        "dataType": "decimal(18,2)",
+                        "pii": false,
+                        "dataClassification": [
+                          "financial"
+                        ]
+                      }
+                    ],
+                    "owner": "data-eng@zenithsecurities.in",
+                    "retentionDays": 2920,
+                    "rowCountEstimate": 184000000,
+                    "location": "s3://zenith-prod-lake/trading/client_orders",
+                    "format": "delta"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "pipelines": [
+          {
+            "pipelineId": "orders-daily-load",
+            "name": "Orders daily load from OMS",
+            "orchestrator": "databricks-workflows",
+            "schedule": "30 18 * * 1-5",
+            "owner": "data-eng@zenithsecurities.in",
+            "sourceRepo": {
+              "appId": "data-platform",
+              "repoId": "airflow-dags"
+            }
+          }
+        ],
+        "lineage": [
+          {
+            "job": {
+              "namespace": "airflow://prod",
+              "name": "orders-daily-load.load_orders"
+            },
+            "inputs": [
+              {
+                "namespace": "postgres://oms-db.internal:5432",
+                "name": "oms.public.orders"
+              }
+            ],
+            "outputs": [
+              {
+                "namespace": "s3://zenith-prod-lake",
+                "name": "trading/client_orders"
+              }
+            ],
+            "facets": {
+              "columnLineage": "client_code<-postgres://oms-db.internal:5432/oms.public.orders.client_code;order_value_inr<-postgres://oms-db.internal:5432/oms.public.orders.value"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T02:05:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XB",
+          "workflow": "refresh-metastore",
+          "agent": "metastore-crawler"
+        }
+      }
+    },
+    {
+      "description": "endpointRef must not be a URL with credentials",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.metastore",
+        "companyId": "zenith-securities",
+        "snapshotAt": "2026-09-13T02:00:00Z",
+        "catalogs": [
+          {
+            "catalogId": "prod-unity",
+            "type": "unity",
+            "endpointRef": "https://user:pass@host/",
+            "appId": "data-platform",
+            "schemas": [
+              {
+                "name": "trading",
+                "tables": [
+                  {
+                    "name": "client_orders",
+                    "fullyQualifiedName": "prod.trading.client_orders",
+                    "columns": [
+                      {
+                        "name": "client_code",
+                        "dataType": "string",
+                        "pii": true,
+                        "dataClassification": [
+                          "confidential",
+                          "pii"
+                        ]
+                      },
+                      {
+                        "name": "order_value_inr",
+                        "dataType": "decimal(18,2)",
+                        "pii": false,
+                        "dataClassification": [
+                          "financial"
+                        ]
+                      }
+                    ],
+                    "owner": "data-eng@zenithsecurities.in",
+                    "retentionDays": 2920,
+                    "rowCountEstimate": 184000000,
+                    "location": "s3://zenith-prod-lake/trading/client_orders",
+                    "format": "delta"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "pipelines": [
+          {
+            "pipelineId": "orders-daily-load",
+            "name": "Orders daily load from OMS",
+            "orchestrator": "databricks-workflows",
+            "schedule": "30 18 * * 1-5",
+            "owner": "data-eng@zenithsecurities.in",
+            "sourceRepo": {
+              "appId": "data-platform",
+              "repoId": "airflow-dags"
+            }
+          }
+        ],
+        "lineage": [
+          {
+            "job": {
+              "namespace": "airflow://prod",
+              "name": "orders-daily-load.load_orders"
+            },
+            "inputs": [
+              {
+                "namespace": "postgres://oms-db.internal:5432",
+                "name": "oms.public.orders"
+              }
+            ],
+            "outputs": [
+              {
+                "namespace": "s3://zenith-prod-lake",
+                "name": "trading/client_orders"
+              }
+            ],
+            "facets": {
+              "columnLineage": "client_code<-postgres://oms-db.internal:5432/oms.public.orders.client_code;order_value_inr<-postgres://oms-db.internal:5432/oms.public.orders.value"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T02:05:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XB",
+          "workflow": "refresh-metastore",
+          "agent": "metastore-crawler"
+        }
+      }
+    },
+    {
+      "description": "unknown catalog type is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.metastore",
+        "companyId": "zenith-securities",
+        "snapshotAt": "2026-09-13T02:00:00Z",
+        "catalogs": [
+          {
+            "catalogId": "prod-unity",
+            "type": "postgres",
+            "endpointRef": "prod-unity-catalog-ro",
+            "appId": "data-platform",
+            "schemas": [
+              {
+                "name": "trading",
+                "tables": [
+                  {
+                    "name": "client_orders",
+                    "fullyQualifiedName": "prod.trading.client_orders",
+                    "columns": [
+                      {
+                        "name": "client_code",
+                        "dataType": "string",
+                        "pii": true,
+                        "dataClassification": [
+                          "confidential",
+                          "pii"
+                        ]
+                      },
+                      {
+                        "name": "order_value_inr",
+                        "dataType": "decimal(18,2)",
+                        "pii": false,
+                        "dataClassification": [
+                          "financial"
+                        ]
+                      }
+                    ],
+                    "owner": "data-eng@zenithsecurities.in",
+                    "retentionDays": 2920,
+                    "rowCountEstimate": 184000000,
+                    "location": "s3://zenith-prod-lake/trading/client_orders",
+                    "format": "delta"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "pipelines": [
+          {
+            "pipelineId": "orders-daily-load",
+            "name": "Orders daily load from OMS",
+            "orchestrator": "databricks-workflows",
+            "schedule": "30 18 * * 1-5",
+            "owner": "data-eng@zenithsecurities.in",
+            "sourceRepo": {
+              "appId": "data-platform",
+              "repoId": "airflow-dags"
+            }
+          }
+        ],
+        "lineage": [
+          {
+            "job": {
+              "namespace": "airflow://prod",
+              "name": "orders-daily-load.load_orders"
+            },
+            "inputs": [
+              {
+                "namespace": "postgres://oms-db.internal:5432",
+                "name": "oms.public.orders"
+              }
+            ],
+            "outputs": [
+              {
+                "namespace": "s3://zenith-prod-lake",
+                "name": "trading/client_orders"
+              }
+            ],
+            "facets": {
+              "columnLineage": "client_code<-postgres://oms-db.internal:5432/oms.public.orders.client_code;order_value_inr<-postgres://oms-db.internal:5432/oms.public.orders.value"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T02:05:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XB",
+          "workflow": "refresh-metastore",
+          "agent": "metastore-crawler"
+        }
+      }
+    },
+    {
+      "description": "unknown orchestrator is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.metastore",
+        "companyId": "zenith-securities",
+        "snapshotAt": "2026-09-13T02:00:00Z",
+        "catalogs": [
+          {
+            "catalogId": "prod-unity",
+            "type": "unity",
+            "endpointRef": "prod-unity-catalog-ro",
+            "appId": "data-platform",
+            "schemas": [
+              {
+                "name": "trading",
+                "tables": [
+                  {
+                    "name": "client_orders",
+                    "fullyQualifiedName": "prod.trading.client_orders",
+                    "columns": [
+                      {
+                        "name": "client_code",
+                        "dataType": "string",
+                        "pii": true,
+                        "dataClassification": [
+                          "confidential",
+                          "pii"
+                        ]
+                      },
+                      {
+                        "name": "order_value_inr",
+                        "dataType": "decimal(18,2)",
+                        "pii": false,
+                        "dataClassification": [
+                          "financial"
+                        ]
+                      }
+                    ],
+                    "owner": "data-eng@zenithsecurities.in",
+                    "retentionDays": 2920,
+                    "rowCountEstimate": 184000000,
+                    "location": "s3://zenith-prod-lake/trading/client_orders",
+                    "format": "delta"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "pipelines": [
+          {
+            "pipelineId": "orders-daily-load",
+            "name": "Orders daily load from OMS",
+            "orchestrator": "cron",
+            "schedule": "30 18 * * 1-5",
+            "owner": "data-eng@zenithsecurities.in",
+            "sourceRepo": {
+              "appId": "data-platform",
+              "repoId": "airflow-dags"
+            }
+          }
+        ],
+        "lineage": [
+          {
+            "job": {
+              "namespace": "airflow://prod",
+              "name": "orders-daily-load.load_orders"
+            },
+            "inputs": [
+              {
+                "namespace": "postgres://oms-db.internal:5432",
+                "name": "oms.public.orders"
+              }
+            ],
+            "outputs": [
+              {
+                "namespace": "s3://zenith-prod-lake",
+                "name": "trading/client_orders"
+              }
+            ],
+            "facets": {
+              "columnLineage": "client_code<-postgres://oms-db.internal:5432/oms.public.orders.client_code;order_value_inr<-postgres://oms-db.internal:5432/oms.public.orders.value"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T02:05:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XB",
+          "workflow": "refresh-metastore",
+          "agent": "metastore-crawler"
+        }
+      }
+    },
+    {
+      "description": "column classification must come from the vocabulary",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.metastore",
+        "companyId": "zenith-securities",
+        "snapshotAt": "2026-09-13T02:00:00Z",
+        "catalogs": [
+          {
+            "catalogId": "prod-unity",
+            "type": "unity",
+            "endpointRef": "prod-unity-catalog-ro",
+            "appId": "data-platform",
+            "schemas": [
+              {
+                "name": "trading",
+                "tables": [
+                  {
+                    "name": "client_orders",
+                    "fullyQualifiedName": "prod.trading.client_orders",
+                    "columns": [
+                      {
+                        "name": "client_code",
+                        "dataType": "string",
+                        "pii": true,
+                        "dataClassification": [
+                          "secret"
+                        ]
+                      },
+                      {
+                        "name": "order_value_inr",
+                        "dataType": "decimal(18,2)",
+                        "pii": false,
+                        "dataClassification": [
+                          "financial"
+                        ]
+                      }
+                    ],
+                    "owner": "data-eng@zenithsecurities.in",
+                    "retentionDays": 2920,
+                    "rowCountEstimate": 184000000,
+                    "location": "s3://zenith-prod-lake/trading/client_orders",
+                    "format": "delta"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "pipelines": [
+          {
+            "pipelineId": "orders-daily-load",
+            "name": "Orders daily load from OMS",
+            "orchestrator": "databricks-workflows",
+            "schedule": "30 18 * * 1-5",
+            "owner": "data-eng@zenithsecurities.in",
+            "sourceRepo": {
+              "appId": "data-platform",
+              "repoId": "airflow-dags"
+            }
+          }
+        ],
+        "lineage": [
+          {
+            "job": {
+              "namespace": "airflow://prod",
+              "name": "orders-daily-load.load_orders"
+            },
+            "inputs": [
+              {
+                "namespace": "postgres://oms-db.internal:5432",
+                "name": "oms.public.orders"
+              }
+            ],
+            "outputs": [
+              {
+                "namespace": "s3://zenith-prod-lake",
+                "name": "trading/client_orders"
+              }
+            ],
+            "facets": {
+              "columnLineage": "client_code<-postgres://oms-db.internal:5432/oms.public.orders.client_code;order_value_inr<-postgres://oms-db.internal:5432/oms.public.orders.value"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T02:05:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XB",
+          "workflow": "refresh-metastore",
+          "agent": "metastore-crawler"
+        }
+      }
+    },
+    {
+      "description": "missing snapshotAt",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.metastore",
+        "companyId": "zenith-securities",
+        "catalogs": [
+          {
+            "catalogId": "prod-unity",
+            "type": "unity",
+            "endpointRef": "prod-unity-catalog-ro",
+            "appId": "data-platform",
+            "schemas": [
+              {
+                "name": "trading",
+                "tables": [
+                  {
+                    "name": "client_orders",
+                    "fullyQualifiedName": "prod.trading.client_orders",
+                    "columns": [
+                      {
+                        "name": "client_code",
+                        "dataType": "string",
+                        "pii": true,
+                        "dataClassification": [
+                          "confidential",
+                          "pii"
+                        ]
+                      },
+                      {
+                        "name": "order_value_inr",
+                        "dataType": "decimal(18,2)",
+                        "pii": false,
+                        "dataClassification": [
+                          "financial"
+                        ]
+                      }
+                    ],
+                    "owner": "data-eng@zenithsecurities.in",
+                    "retentionDays": 2920,
+                    "rowCountEstimate": 184000000,
+                    "location": "s3://zenith-prod-lake/trading/client_orders",
+                    "format": "delta"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "pipelines": [
+          {
+            "pipelineId": "orders-daily-load",
+            "name": "Orders daily load from OMS",
+            "orchestrator": "databricks-workflows",
+            "schedule": "30 18 * * 1-5",
+            "owner": "data-eng@zenithsecurities.in",
+            "sourceRepo": {
+              "appId": "data-platform",
+              "repoId": "airflow-dags"
+            }
+          }
+        ],
+        "lineage": [
+          {
+            "job": {
+              "namespace": "airflow://prod",
+              "name": "orders-daily-load.load_orders"
+            },
+            "inputs": [
+              {
+                "namespace": "postgres://oms-db.internal:5432",
+                "name": "oms.public.orders"
+              }
+            ],
+            "outputs": [
+              {
+                "namespace": "s3://zenith-prod-lake",
+                "name": "trading/client_orders"
+              }
+            ],
+            "facets": {
+              "columnLineage": "client_code<-postgres://oms-db.internal:5432/oms.public.orders.client_code;order_value_inr<-postgres://oms-db.internal:5432/oms.public.orders.value"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T02:05:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XB",
+          "workflow": "refresh-metastore",
+          "agent": "metastore-crawler"
+        }
+      }
+    },
+    {
+      "description": "lineage edge needs job name",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.metastore",
+        "companyId": "zenith-securities",
+        "snapshotAt": "2026-09-13T02:00:00Z",
+        "catalogs": [
+          {
+            "catalogId": "prod-unity",
+            "type": "unity",
+            "endpointRef": "prod-unity-catalog-ro",
+            "appId": "data-platform",
+            "schemas": [
+              {
+                "name": "trading",
+                "tables": [
+                  {
+                    "name": "client_orders",
+                    "fullyQualifiedName": "prod.trading.client_orders",
+                    "columns": [
+                      {
+                        "name": "client_code",
+                        "dataType": "string",
+                        "pii": true,
+                        "dataClassification": [
+                          "confidential",
+                          "pii"
+                        ]
+                      },
+                      {
+                        "name": "order_value_inr",
+                        "dataType": "decimal(18,2)",
+                        "pii": false,
+                        "dataClassification": [
+                          "financial"
+                        ]
+                      }
+                    ],
+                    "owner": "data-eng@zenithsecurities.in",
+                    "retentionDays": 2920,
+                    "rowCountEstimate": 184000000,
+                    "location": "s3://zenith-prod-lake/trading/client_orders",
+                    "format": "delta"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "pipelines": [
+          {
+            "pipelineId": "orders-daily-load",
+            "name": "Orders daily load from OMS",
+            "orchestrator": "databricks-workflows",
+            "schedule": "30 18 * * 1-5",
+            "owner": "data-eng@zenithsecurities.in",
+            "sourceRepo": {
+              "appId": "data-platform",
+              "repoId": "airflow-dags"
+            }
+          }
+        ],
+        "lineage": [
+          {
+            "job": {
+              "namespace": "airflow://prod"
+            },
+            "inputs": [
+              {
+                "namespace": "postgres://oms-db.internal:5432",
+                "name": "oms.public.orders"
+              }
+            ],
+            "outputs": [
+              {
+                "namespace": "s3://zenith-prod-lake",
+                "name": "trading/client_orders"
+              }
+            ],
+            "facets": {
+              "columnLineage": "client_code<-postgres://oms-db.internal:5432/oms.public.orders.client_code;order_value_inr<-postgres://oms-db.internal:5432/oms.public.orders.value"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T02:05:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XB",
+          "workflow": "refresh-metastore",
+          "agent": "metastore-crawler"
+        }
+      }
+    },
+    {
+      "description": "openMetadataExport capped at 50 keys",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.metastore",
+        "companyId": "zenith-securities",
+        "snapshotAt": "2026-09-13T02:00:00Z",
+        "catalogs": [
+          {
+            "catalogId": "prod-unity",
+            "type": "unity",
+            "endpointRef": "prod-unity-catalog-ro",
+            "appId": "data-platform",
+            "schemas": [
+              {
+                "name": "trading",
+                "tables": [
+                  {
+                    "name": "client_orders",
+                    "fullyQualifiedName": "prod.trading.client_orders",
+                    "columns": [
+                      {
+                        "name": "client_code",
+                        "dataType": "string",
+                        "pii": true,
+                        "dataClassification": [
+                          "confidential",
+                          "pii"
+                        ]
+                      },
+                      {
+                        "name": "order_value_inr",
+                        "dataType": "decimal(18,2)",
+                        "pii": false,
+                        "dataClassification": [
+                          "financial"
+                        ]
+                      }
+                    ],
+                    "owner": "data-eng@zenithsecurities.in",
+                    "retentionDays": 2920,
+                    "rowCountEstimate": 184000000,
+                    "location": "s3://zenith-prod-lake/trading/client_orders",
+                    "format": "delta"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "pipelines": [
+          {
+            "pipelineId": "orders-daily-load",
+            "name": "Orders daily load from OMS",
+            "orchestrator": "databricks-workflows",
+            "schedule": "30 18 * * 1-5",
+            "owner": "data-eng@zenithsecurities.in",
+            "sourceRepo": {
+              "appId": "data-platform",
+              "repoId": "airflow-dags"
+            }
+          }
+        ],
+        "lineage": [
+          {
+            "job": {
+              "namespace": "airflow://prod",
+              "name": "orders-daily-load.load_orders"
+            },
+            "inputs": [
+              {
+                "namespace": "postgres://oms-db.internal:5432",
+                "name": "oms.public.orders"
+              }
+            ],
+            "outputs": [
+              {
+                "namespace": "s3://zenith-prod-lake",
+                "name": "trading/client_orders"
+              }
+            ],
+            "facets": {
+              "columnLineage": "client_code<-postgres://oms-db.internal:5432/oms.public.orders.client_code;order_value_inr<-postgres://oms-db.internal:5432/oms.public.orders.value"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T02:05:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XB",
+          "workflow": "refresh-metastore",
+          "agent": "metastore-crawler"
+        },
+        "openMetadataExport": {
+          "k0": 0,
+          "k1": 1,
+          "k2": 2,
+          "k3": 3,
+          "k4": 4,
+          "k5": 5,
+          "k6": 6,
+          "k7": 7,
+          "k8": 8,
+          "k9": 9,
+          "k10": 10,
+          "k11": 11,
+          "k12": 12,
+          "k13": 13,
+          "k14": 14,
+          "k15": 15,
+          "k16": 16,
+          "k17": 17,
+          "k18": 18,
+          "k19": 19,
+          "k20": 20,
+          "k21": 21,
+          "k22": 22,
+          "k23": 23,
+          "k24": 24,
+          "k25": 25,
+          "k26": 26,
+          "k27": 27,
+          "k28": 28,
+          "k29": 29,
+          "k30": 30,
+          "k31": 31,
+          "k32": 32,
+          "k33": 33,
+          "k34": 34,
+          "k35": 35,
+          "k36": 36,
+          "k37": 37,
+          "k38": 38,
+          "k39": 39,
+          "k40": 40,
+          "k41": 41,
+          "k42": 42,
+          "k43": 43,
+          "k44": 44,
+          "k45": 45,
+          "k46": 46,
+          "k47": 47,
+          "k48": 48,
+          "k49": 49,
+          "k50": 50
+        }
+      }
+    },
+    {
+      "description": "missing provenance",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.metastore",
+        "companyId": "zenith-securities",
+        "snapshotAt": "2026-09-13T02:00:00Z",
+        "catalogs": [
+          {
+            "catalogId": "prod-unity",
+            "type": "unity",
+            "endpointRef": "prod-unity-catalog-ro",
+            "appId": "data-platform",
+            "schemas": [
+              {
+                "name": "trading",
+                "tables": [
+                  {
+                    "name": "client_orders",
+                    "fullyQualifiedName": "prod.trading.client_orders",
+                    "columns": [
+                      {
+                        "name": "client_code",
+                        "dataType": "string",
+                        "pii": true,
+                        "dataClassification": [
+                          "confidential",
+                          "pii"
+                        ]
+                      },
+                      {
+                        "name": "order_value_inr",
+                        "dataType": "decimal(18,2)",
+                        "pii": false,
+                        "dataClassification": [
+                          "financial"
+                        ]
+                      }
+                    ],
+                    "owner": "data-eng@zenithsecurities.in",
+                    "retentionDays": 2920,
+                    "rowCountEstimate": 184000000,
+                    "location": "s3://zenith-prod-lake/trading/client_orders",
+                    "format": "delta"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "pipelines": [
+          {
+            "pipelineId": "orders-daily-load",
+            "name": "Orders daily load from OMS",
+            "orchestrator": "databricks-workflows",
+            "schedule": "30 18 * * 1-5",
+            "owner": "data-eng@zenithsecurities.in",
+            "sourceRepo": {
+              "appId": "data-platform",
+              "repoId": "airflow-dags"
+            }
+          }
+        ],
+        "lineage": [
+          {
+            "job": {
+              "namespace": "airflow://prod",
+              "name": "orders-daily-load.load_orders"
+            },
+            "inputs": [
+              {
+                "namespace": "postgres://oms-db.internal:5432",
+                "name": "oms.public.orders"
+              }
+            ],
+            "outputs": [
+              {
+                "namespace": "s3://zenith-prod-lake",
+                "name": "trading/client_orders"
+              }
+            ],
+            "facets": {
+              "columnLineage": "client_code<-postgres://oms-db.internal:5432/oms.public.orders.client_code;order_value_inr<-postgres://oms-db.internal:5432/oms.public.orders.value"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "description": "endpointRef must not be a URL",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.metastore",
+        "companyId": "zenith-securities",
+        "snapshotAt": "2026-09-13T02:00:00Z",
+        "catalogs": [
+          {
+            "catalogId": "prod-unity",
+            "type": "unity",
+            "endpointRef": "https://dbc.cloud.databricks.com/api/2.1/unity-catalog",
+            "appId": "data-platform",
+            "schemas": [
+              {
+                "name": "trading",
+                "tables": [
+                  {
+                    "name": "client_orders",
+                    "fullyQualifiedName": "prod.trading.client_orders",
+                    "columns": [
+                      {
+                        "name": "client_code",
+                        "dataType": "string",
+                        "dataClassification": [
+                          "confidential",
+                          "pii"
+                        ],
+                        "pii": true
+                      },
+                      {
+                        "name": "order_value_inr",
+                        "dataType": "decimal(18,2)",
+                        "dataClassification": [
+                          "financial"
+                        ],
+                        "pii": false
+                      }
+                    ],
+                    "owner": "data-eng@zenithsecurities.in",
+                    "retentionDays": 2920,
+                    "rowCountEstimate": 184000000,
+                    "location": "s3://zenith-prod-lake/trading/client_orders",
+                    "format": "delta"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "pipelines": [
+          {
+            "pipelineId": "orders-daily-load",
+            "name": "Orders daily load from OMS",
+            "orchestrator": "databricks-workflows",
+            "schedule": "30 18 * * 1-5",
+            "owner": "data-eng@zenithsecurities.in",
+            "sourceRepo": {
+              "appId": "data-platform",
+              "repoId": "airflow-dags"
+            }
+          }
+        ],
+        "lineage": [
+          {
+            "job": {
+              "namespace": "databricks://prod-workspace",
+              "name": "orders-daily-load.load_orders"
+            },
+            "inputs": [
+              {
+                "namespace": "postgres://oms-db.internal:5432",
+                "name": "oms.public.orders"
+              }
+            ],
+            "outputs": [
+              {
+                "namespace": "s3://zenith-prod-lake",
+                "name": "trading/client_orders"
+              }
+            ],
+            "facets": {
+              "columnLineage": "client_code<-postgres://oms-db.internal:5432/oms.public.orders.client_code;order_value_inr<-postgres://oms-db.internal:5432/oms.public.orders.value"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T02:05:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XB",
+          "workflow": "refresh-metastore",
+          "agent": "metastore-crawler"
+        }
+      }
+    },
+    {
+      "description": "endpointRef must be a lowercase credentials key",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.metastore",
+        "companyId": "zenith-securities",
+        "snapshotAt": "2026-09-13T02:00:00Z",
+        "catalogs": [
+          {
+            "catalogId": "prod-unity",
+            "type": "unity",
+            "endpointRef": "DATABRICKS_UNITY_TOKEN",
+            "appId": "data-platform",
+            "schemas": [
+              {
+                "name": "trading",
+                "tables": [
+                  {
+                    "name": "client_orders",
+                    "fullyQualifiedName": "prod.trading.client_orders",
+                    "columns": [
+                      {
+                        "name": "client_code",
+                        "dataType": "string",
+                        "dataClassification": [
+                          "confidential",
+                          "pii"
+                        ],
+                        "pii": true
+                      },
+                      {
+                        "name": "order_value_inr",
+                        "dataType": "decimal(18,2)",
+                        "dataClassification": [
+                          "financial"
+                        ],
+                        "pii": false
+                      }
+                    ],
+                    "owner": "data-eng@zenithsecurities.in",
+                    "retentionDays": 2920,
+                    "rowCountEstimate": 184000000,
+                    "location": "s3://zenith-prod-lake/trading/client_orders",
+                    "format": "delta"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "pipelines": [
+          {
+            "pipelineId": "orders-daily-load",
+            "name": "Orders daily load from OMS",
+            "orchestrator": "databricks-workflows",
+            "schedule": "30 18 * * 1-5",
+            "owner": "data-eng@zenithsecurities.in",
+            "sourceRepo": {
+              "appId": "data-platform",
+              "repoId": "airflow-dags"
+            }
+          }
+        ],
+        "lineage": [
+          {
+            "job": {
+              "namespace": "databricks://prod-workspace",
+              "name": "orders-daily-load.load_orders"
+            },
+            "inputs": [
+              {
+                "namespace": "postgres://oms-db.internal:5432",
+                "name": "oms.public.orders"
+              }
+            ],
+            "outputs": [
+              {
+                "namespace": "s3://zenith-prod-lake",
+                "name": "trading/client_orders"
+              }
+            ],
+            "facets": {
+              "columnLineage": "client_code<-postgres://oms-db.internal:5432/oms.public.orders.client_code;order_value_inr<-postgres://oms-db.internal:5432/oms.public.orders.value"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T02:05:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XB",
+          "workflow": "refresh-metastore",
+          "agent": "metastore-crawler"
+        }
+      }
+    },
+    {
+      "description": "endpointRef without appId is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.metastore",
+        "companyId": "zenith-securities",
+        "snapshotAt": "2026-09-13T02:00:00Z",
+        "catalogs": [
+          {
+            "catalogId": "prod-unity",
+            "type": "unity",
+            "endpointRef": "prod-unity-catalog-ro",
+            "schemas": [
+              {
+                "name": "trading",
+                "tables": [
+                  {
+                    "name": "client_orders",
+                    "fullyQualifiedName": "prod.trading.client_orders",
+                    "columns": [
+                      {
+                        "name": "client_code",
+                        "dataType": "string",
+                        "dataClassification": [
+                          "confidential",
+                          "pii"
+                        ],
+                        "pii": true
+                      },
+                      {
+                        "name": "order_value_inr",
+                        "dataType": "decimal(18,2)",
+                        "dataClassification": [
+                          "financial"
+                        ],
+                        "pii": false
+                      }
+                    ],
+                    "owner": "data-eng@zenithsecurities.in",
+                    "retentionDays": 2920,
+                    "rowCountEstimate": 184000000,
+                    "location": "s3://zenith-prod-lake/trading/client_orders",
+                    "format": "delta"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "pipelines": [
+          {
+            "pipelineId": "orders-daily-load",
+            "name": "Orders daily load from OMS",
+            "orchestrator": "databricks-workflows",
+            "schedule": "30 18 * * 1-5",
+            "owner": "data-eng@zenithsecurities.in",
+            "sourceRepo": {
+              "appId": "data-platform",
+              "repoId": "airflow-dags"
+            }
+          }
+        ],
+        "lineage": [
+          {
+            "job": {
+              "namespace": "databricks://prod-workspace",
+              "name": "orders-daily-load.load_orders"
+            },
+            "inputs": [
+              {
+                "namespace": "postgres://oms-db.internal:5432",
+                "name": "oms.public.orders"
+              }
+            ],
+            "outputs": [
+              {
+                "namespace": "s3://zenith-prod-lake",
+                "name": "trading/client_orders"
+              }
+            ],
+            "facets": {
+              "columnLineage": "client_code<-postgres://oms-db.internal:5432/oms.public.orders.client_code;order_value_inr<-postgres://oms-db.internal:5432/oms.public.orders.value"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T02:05:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XB",
+          "workflow": "refresh-metastore",
+          "agent": "metastore-crawler"
+        }
+      }
+    },
+    {
+      "description": "rdbms catalog type is accepted",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.metastore",
+        "companyId": "zenith-securities",
+        "snapshotAt": "2026-09-13T02:00:00Z",
+        "catalogs": [
+          {
+            "catalogId": "prod-unity",
+            "type": "rdbms",
+            "endpointRef": "prod-unity-catalog-ro",
+            "appId": "data-platform",
+            "schemas": [
+              {
+                "name": "trading",
+                "tables": [
+                  {
+                    "name": "client_orders",
+                    "fullyQualifiedName": "prod.trading.client_orders",
+                    "columns": [
+                      {
+                        "name": "client_code",
+                        "dataType": "string",
+                        "dataClassification": [
+                          "confidential",
+                          "pii"
+                        ],
+                        "pii": true
+                      },
+                      {
+                        "name": "order_value_inr",
+                        "dataType": "decimal(18,2)",
+                        "dataClassification": [
+                          "financial"
+                        ],
+                        "pii": false
+                      }
+                    ],
+                    "owner": "data-eng@zenithsecurities.in",
+                    "retentionDays": 2920,
+                    "rowCountEstimate": 184000000,
+                    "location": "s3://zenith-prod-lake/trading/client_orders",
+                    "format": "delta"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "pipelines": [
+          {
+            "pipelineId": "orders-daily-load",
+            "name": "Orders daily load from OMS",
+            "orchestrator": "databricks-workflows",
+            "schedule": "30 18 * * 1-5",
+            "owner": "data-eng@zenithsecurities.in",
+            "sourceRepo": {
+              "appId": "data-platform",
+              "repoId": "airflow-dags"
+            }
+          }
+        ],
+        "lineage": [
+          {
+            "job": {
+              "namespace": "databricks://prod-workspace",
+              "name": "orders-daily-load.load_orders"
+            },
+            "inputs": [
+              {
+                "namespace": "postgres://oms-db.internal:5432",
+                "name": "oms.public.orders"
+              }
+            ],
+            "outputs": [
+              {
+                "namespace": "s3://zenith-prod-lake",
+                "name": "trading/client_orders"
+              }
+            ],
+            "facets": {
+              "columnLineage": "client_code<-postgres://oms-db.internal:5432/oms.public.orders.client_code;order_value_inr<-postgres://oms-db.internal:5432/oms.public.orders.value"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T02:05:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XB",
+          "workflow": "refresh-metastore",
+          "agent": "metastore-crawler"
+        }
+      }
+    },
+    {
+      "description": "pii true requires the pii classification",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.metastore",
+        "companyId": "zenith-securities",
+        "snapshotAt": "2026-09-13T02:00:00Z",
+        "catalogs": [
+          {
+            "catalogId": "prod-unity",
+            "type": "unity",
+            "endpointRef": "prod-unity-catalog-ro",
+            "appId": "data-platform",
+            "schemas": [
+              {
+                "name": "trading",
+                "tables": [
+                  {
+                    "name": "client_orders",
+                    "fullyQualifiedName": "prod.trading.client_orders",
+                    "columns": [
+                      {
+                        "name": "client_code",
+                        "dataType": "string",
+                        "dataClassification": [
+                          "confidential"
+                        ],
+                        "pii": true
+                      },
+                      {
+                        "name": "order_value_inr",
+                        "dataType": "decimal(18,2)",
+                        "dataClassification": [
+                          "financial"
+                        ],
+                        "pii": false
+                      }
+                    ],
+                    "owner": "data-eng@zenithsecurities.in",
+                    "retentionDays": 2920,
+                    "rowCountEstimate": 184000000,
+                    "location": "s3://zenith-prod-lake/trading/client_orders",
+                    "format": "delta"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "pipelines": [
+          {
+            "pipelineId": "orders-daily-load",
+            "name": "Orders daily load from OMS",
+            "orchestrator": "databricks-workflows",
+            "schedule": "30 18 * * 1-5",
+            "owner": "data-eng@zenithsecurities.in",
+            "sourceRepo": {
+              "appId": "data-platform",
+              "repoId": "airflow-dags"
+            }
+          }
+        ],
+        "lineage": [
+          {
+            "job": {
+              "namespace": "databricks://prod-workspace",
+              "name": "orders-daily-load.load_orders"
+            },
+            "inputs": [
+              {
+                "namespace": "postgres://oms-db.internal:5432",
+                "name": "oms.public.orders"
+              }
+            ],
+            "outputs": [
+              {
+                "namespace": "s3://zenith-prod-lake",
+                "name": "trading/client_orders"
+              }
+            ],
+            "facets": {
+              "columnLineage": "client_code<-postgres://oms-db.internal:5432/oms.public.orders.client_code;order_value_inr<-postgres://oms-db.internal:5432/oms.public.orders.value"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T02:05:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XB",
+          "workflow": "refresh-metastore",
+          "agent": "metastore-crawler"
+        }
+      }
+    },
+    {
+      "description": "pii classification requires pii true",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.metastore",
+        "companyId": "zenith-securities",
+        "snapshotAt": "2026-09-13T02:00:00Z",
+        "catalogs": [
+          {
+            "catalogId": "prod-unity",
+            "type": "unity",
+            "endpointRef": "prod-unity-catalog-ro",
+            "appId": "data-platform",
+            "schemas": [
+              {
+                "name": "trading",
+                "tables": [
+                  {
+                    "name": "client_orders",
+                    "fullyQualifiedName": "prod.trading.client_orders",
+                    "columns": [
+                      {
+                        "name": "client_code",
+                        "dataType": "string",
+                        "dataClassification": [
+                          "confidential",
+                          "pii"
+                        ],
+                        "pii": true
+                      },
+                      {
+                        "name": "order_value_inr",
+                        "dataType": "decimal(18,2)",
+                        "dataClassification": [
+                          "pii"
+                        ],
+                        "pii": false
+                      }
+                    ],
+                    "owner": "data-eng@zenithsecurities.in",
+                    "retentionDays": 2920,
+                    "rowCountEstimate": 184000000,
+                    "location": "s3://zenith-prod-lake/trading/client_orders",
+                    "format": "delta"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "pipelines": [
+          {
+            "pipelineId": "orders-daily-load",
+            "name": "Orders daily load from OMS",
+            "orchestrator": "databricks-workflows",
+            "schedule": "30 18 * * 1-5",
+            "owner": "data-eng@zenithsecurities.in",
+            "sourceRepo": {
+              "appId": "data-platform",
+              "repoId": "airflow-dags"
+            }
+          }
+        ],
+        "lineage": [
+          {
+            "job": {
+              "namespace": "databricks://prod-workspace",
+              "name": "orders-daily-load.load_orders"
+            },
+            "inputs": [
+              {
+                "namespace": "postgres://oms-db.internal:5432",
+                "name": "oms.public.orders"
+              }
+            ],
+            "outputs": [
+              {
+                "namespace": "s3://zenith-prod-lake",
+                "name": "trading/client_orders"
+              }
+            ],
+            "facets": {
+              "columnLineage": "client_code<-postgres://oms-db.internal:5432/oms.public.orders.client_code;order_value_inr<-postgres://oms-db.internal:5432/oms.public.orders.value"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T02:05:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XB",
+          "workflow": "refresh-metastore",
+          "agent": "metastore-crawler"
+        }
+      }
+    },
+    {
+      "description": "column uses dataClassification, not classification",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.metastore",
+        "companyId": "zenith-securities",
+        "snapshotAt": "2026-09-13T02:00:00Z",
+        "catalogs": [
+          {
+            "catalogId": "prod-unity",
+            "type": "unity",
+            "endpointRef": "prod-unity-catalog-ro",
+            "appId": "data-platform",
+            "schemas": [
+              {
+                "name": "trading",
+                "tables": [
+                  {
+                    "name": "client_orders",
+                    "fullyQualifiedName": "prod.trading.client_orders",
+                    "columns": [
+                      {
+                        "name": "client_code",
+                        "dataType": "string",
+                        "pii": true,
+                        "classification": [
+                          "pii"
+                        ]
+                      },
+                      {
+                        "name": "order_value_inr",
+                        "dataType": "decimal(18,2)",
+                        "dataClassification": [
+                          "financial"
+                        ],
+                        "pii": false
+                      }
+                    ],
+                    "owner": "data-eng@zenithsecurities.in",
+                    "retentionDays": 2920,
+                    "rowCountEstimate": 184000000,
+                    "location": "s3://zenith-prod-lake/trading/client_orders",
+                    "format": "delta"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "pipelines": [
+          {
+            "pipelineId": "orders-daily-load",
+            "name": "Orders daily load from OMS",
+            "orchestrator": "databricks-workflows",
+            "schedule": "30 18 * * 1-5",
+            "owner": "data-eng@zenithsecurities.in",
+            "sourceRepo": {
+              "appId": "data-platform",
+              "repoId": "airflow-dags"
+            }
+          }
+        ],
+        "lineage": [
+          {
+            "job": {
+              "namespace": "databricks://prod-workspace",
+              "name": "orders-daily-load.load_orders"
+            },
+            "inputs": [
+              {
+                "namespace": "postgres://oms-db.internal:5432",
+                "name": "oms.public.orders"
+              }
+            ],
+            "outputs": [
+              {
+                "namespace": "s3://zenith-prod-lake",
+                "name": "trading/client_orders"
+              }
+            ],
+            "facets": {
+              "columnLineage": "client_code<-postgres://oms-db.internal:5432/oms.public.orders.client_code;order_value_inr<-postgres://oms-db.internal:5432/oms.public.orders.value"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T02:05:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XB",
+          "workflow": "refresh-metastore",
+          "agent": "metastore-crawler"
+        }
+      }
+    },
+    {
+      "description": "facet keys must be identifiers",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.metastore",
+        "companyId": "zenith-securities",
+        "snapshotAt": "2026-09-13T02:00:00Z",
+        "catalogs": [
+          {
+            "catalogId": "prod-unity",
+            "type": "unity",
+            "endpointRef": "prod-unity-catalog-ro",
+            "appId": "data-platform",
+            "schemas": [
+              {
+                "name": "trading",
+                "tables": [
+                  {
+                    "name": "client_orders",
+                    "fullyQualifiedName": "prod.trading.client_orders",
+                    "columns": [
+                      {
+                        "name": "client_code",
+                        "dataType": "string",
+                        "dataClassification": [
+                          "confidential",
+                          "pii"
+                        ],
+                        "pii": true
+                      },
+                      {
+                        "name": "order_value_inr",
+                        "dataType": "decimal(18,2)",
+                        "dataClassification": [
+                          "financial"
+                        ],
+                        "pii": false
+                      }
+                    ],
+                    "owner": "data-eng@zenithsecurities.in",
+                    "retentionDays": 2920,
+                    "rowCountEstimate": 184000000,
+                    "location": "s3://zenith-prod-lake/trading/client_orders",
+                    "format": "delta"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "pipelines": [
+          {
+            "pipelineId": "orders-daily-load",
+            "name": "Orders daily load from OMS",
+            "orchestrator": "databricks-workflows",
+            "schedule": "30 18 * * 1-5",
+            "owner": "data-eng@zenithsecurities.in",
+            "sourceRepo": {
+              "appId": "data-platform",
+              "repoId": "airflow-dags"
+            }
+          }
+        ],
+        "lineage": [
+          {
+            "job": {
+              "namespace": "databricks://prod-workspace",
+              "name": "orders-daily-load.load_orders"
+            },
+            "inputs": [
+              {
+                "namespace": "postgres://oms-db.internal:5432",
+                "name": "oms.public.orders"
+              }
+            ],
+            "outputs": [
+              {
+                "namespace": "s3://zenith-prod-lake",
+                "name": "trading/client_orders"
+              }
+            ],
+            "facets": {
+              "": "x"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T02:05:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XB",
+          "workflow": "refresh-metastore",
+          "agent": "metastore-crawler"
+        }
+      }
+    },
+    {
+      "description": "lineage edge rejects legacy from/to fields",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.metastore",
+        "companyId": "zenith-securities",
+        "snapshotAt": "2026-09-13T02:00:00Z",
+        "catalogs": [
+          {
+            "catalogId": "prod-unity",
+            "type": "unity",
+            "endpointRef": "prod-unity-catalog-ro",
+            "appId": "data-platform",
+            "schemas": [
+              {
+                "name": "trading",
+                "tables": [
+                  {
+                    "name": "client_orders",
+                    "fullyQualifiedName": "prod.trading.client_orders",
+                    "columns": [
+                      {
+                        "name": "client_code",
+                        "dataType": "string",
+                        "dataClassification": [
+                          "confidential",
+                          "pii"
+                        ],
+                        "pii": true
+                      },
+                      {
+                        "name": "order_value_inr",
+                        "dataType": "decimal(18,2)",
+                        "dataClassification": [
+                          "financial"
+                        ],
+                        "pii": false
+                      }
+                    ],
+                    "owner": "data-eng@zenithsecurities.in",
+                    "retentionDays": 2920,
+                    "rowCountEstimate": 184000000,
+                    "location": "s3://zenith-prod-lake/trading/client_orders",
+                    "format": "delta"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "pipelines": [
+          {
+            "pipelineId": "orders-daily-load",
+            "name": "Orders daily load from OMS",
+            "orchestrator": "databricks-workflows",
+            "schedule": "30 18 * * 1-5",
+            "owner": "data-eng@zenithsecurities.in",
+            "sourceRepo": {
+              "appId": "data-platform",
+              "repoId": "airflow-dags"
+            }
+          }
+        ],
+        "lineage": [
+          {
+            "job": {
+              "namespace": "databricks://prod-workspace",
+              "name": "orders-daily-load.load_orders"
+            },
+            "inputs": [
+              {
+                "namespace": "postgres://oms-db.internal:5432",
+                "name": "oms.public.orders"
+              }
+            ],
+            "outputs": [
+              {
+                "namespace": "s3://zenith-prod-lake",
+                "name": "trading/client_orders"
+              }
+            ],
+            "facets": {
+              "columnLineage": "client_code<-postgres://oms-db.internal:5432/oms.public.orders.client_code;order_value_inr<-postgres://oms-db.internal:5432/oms.public.orders.value"
+            },
+            "from": {
+              "namespace": "postgres://oms-db.internal:5432",
+              "name": "oms.public.orders"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T02:05:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XB",
+          "workflow": "refresh-metastore",
+          "agent": "metastore-crawler"
+        }
+      }
+    },
+    {
+      "description": "lineage edge with no inputs is a source-only job",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.metastore",
+        "companyId": "zenith-securities",
+        "snapshotAt": "2026-09-13T02:00:00Z",
+        "catalogs": [
+          {
+            "catalogId": "prod-unity",
+            "type": "unity",
+            "endpointRef": "prod-unity-catalog-ro",
+            "appId": "data-platform",
+            "schemas": [
+              {
+                "name": "trading",
+                "tables": [
+                  {
+                    "name": "client_orders",
+                    "fullyQualifiedName": "prod.trading.client_orders",
+                    "columns": [
+                      {
+                        "name": "client_code",
+                        "dataType": "string",
+                        "dataClassification": [
+                          "confidential",
+                          "pii"
+                        ],
+                        "pii": true
+                      },
+                      {
+                        "name": "order_value_inr",
+                        "dataType": "decimal(18,2)",
+                        "dataClassification": [
+                          "financial"
+                        ],
+                        "pii": false
+                      }
+                    ],
+                    "owner": "data-eng@zenithsecurities.in",
+                    "retentionDays": 2920,
+                    "rowCountEstimate": 184000000,
+                    "location": "s3://zenith-prod-lake/trading/client_orders",
+                    "format": "delta"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "pipelines": [
+          {
+            "pipelineId": "orders-daily-load",
+            "name": "Orders daily load from OMS",
+            "orchestrator": "databricks-workflows",
+            "schedule": "30 18 * * 1-5",
+            "owner": "data-eng@zenithsecurities.in",
+            "sourceRepo": {
+              "appId": "data-platform",
+              "repoId": "airflow-dags"
+            }
+          }
+        ],
+        "lineage": [
+          {
+            "job": {
+              "namespace": "databricks://prod-workspace",
+              "name": "orders-daily-load.load_orders"
+            },
+            "inputs": [],
+            "outputs": [
+              {
+                "namespace": "s3://zenith-prod-lake",
+                "name": "trading/client_orders"
+              }
+            ],
+            "facets": {
+              "columnLineage": "client_code<-postgres://oms-db.internal:5432/oms.public.orders.client_code;order_value_inr<-postgres://oms-db.internal:5432/oms.public.orders.value"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T02:05:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XB",
+          "workflow": "refresh-metastore",
+          "agent": "metastore-crawler"
+        }
+      }
+    },
+    {
+      "description": "openMetadataExport values must be scalars",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.metastore",
+        "companyId": "zenith-securities",
+        "snapshotAt": "2026-09-13T02:00:00Z",
+        "catalogs": [
+          {
+            "catalogId": "prod-unity",
+            "type": "unity",
+            "endpointRef": "prod-unity-catalog-ro",
+            "appId": "data-platform",
+            "schemas": [
+              {
+                "name": "trading",
+                "tables": [
+                  {
+                    "name": "client_orders",
+                    "fullyQualifiedName": "prod.trading.client_orders",
+                    "columns": [
+                      {
+                        "name": "client_code",
+                        "dataType": "string",
+                        "dataClassification": [
+                          "confidential",
+                          "pii"
+                        ],
+                        "pii": true
+                      },
+                      {
+                        "name": "order_value_inr",
+                        "dataType": "decimal(18,2)",
+                        "dataClassification": [
+                          "financial"
+                        ],
+                        "pii": false
+                      }
+                    ],
+                    "owner": "data-eng@zenithsecurities.in",
+                    "retentionDays": 2920,
+                    "rowCountEstimate": 184000000,
+                    "location": "s3://zenith-prod-lake/trading/client_orders",
+                    "format": "delta"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "pipelines": [
+          {
+            "pipelineId": "orders-daily-load",
+            "name": "Orders daily load from OMS",
+            "orchestrator": "databricks-workflows",
+            "schedule": "30 18 * * 1-5",
+            "owner": "data-eng@zenithsecurities.in",
+            "sourceRepo": {
+              "appId": "data-platform",
+              "repoId": "airflow-dags"
+            }
+          }
+        ],
+        "lineage": [
+          {
+            "job": {
+              "namespace": "databricks://prod-workspace",
+              "name": "orders-daily-load.load_orders"
+            },
+            "inputs": [
+              {
+                "namespace": "postgres://oms-db.internal:5432",
+                "name": "oms.public.orders"
+              }
+            ],
+            "outputs": [
+              {
+                "namespace": "s3://zenith-prod-lake",
+                "name": "trading/client_orders"
+              }
+            ],
+            "facets": {
+              "columnLineage": "client_code<-postgres://oms-db.internal:5432/oms.public.orders.client_code;order_value_inr<-postgres://oms-db.internal:5432/oms.public.orders.value"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T02:05:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XB",
+          "workflow": "refresh-metastore",
+          "agent": "metastore-crawler"
+        },
+        "openMetadataExport": {
+          "entity": {
+            "nested": {
+              "deep": "x"
+            }
+          }
+        }
+      }
+    },
+    {
+      "description": "openMetadataExport string values are bounded",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.metastore",
+        "companyId": "zenith-securities",
+        "snapshotAt": "2026-09-13T02:00:00Z",
+        "catalogs": [
+          {
+            "catalogId": "prod-unity",
+            "type": "unity",
+            "endpointRef": "prod-unity-catalog-ro",
+            "appId": "data-platform",
+            "schemas": [
+              {
+                "name": "trading",
+                "tables": [
+                  {
+                    "name": "client_orders",
+                    "fullyQualifiedName": "prod.trading.client_orders",
+                    "columns": [
+                      {
+                        "name": "client_code",
+                        "dataType": "string",
+                        "dataClassification": [
+                          "confidential",
+                          "pii"
+                        ],
+                        "pii": true
+                      },
+                      {
+                        "name": "order_value_inr",
+                        "dataType": "decimal(18,2)",
+                        "dataClassification": [
+                          "financial"
+                        ],
+                        "pii": false
+                      }
+                    ],
+                    "owner": "data-eng@zenithsecurities.in",
+                    "retentionDays": 2920,
+                    "rowCountEstimate": 184000000,
+                    "location": "s3://zenith-prod-lake/trading/client_orders",
+                    "format": "delta"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "pipelines": [
+          {
+            "pipelineId": "orders-daily-load",
+            "name": "Orders daily load from OMS",
+            "orchestrator": "databricks-workflows",
+            "schedule": "30 18 * * 1-5",
+            "owner": "data-eng@zenithsecurities.in",
+            "sourceRepo": {
+              "appId": "data-platform",
+              "repoId": "airflow-dags"
+            }
+          }
+        ],
+        "lineage": [
+          {
+            "job": {
+              "namespace": "databricks://prod-workspace",
+              "name": "orders-daily-load.load_orders"
+            },
+            "inputs": [
+              {
+                "namespace": "postgres://oms-db.internal:5432",
+                "name": "oms.public.orders"
+              }
+            ],
+            "outputs": [
+              {
+                "namespace": "s3://zenith-prod-lake",
+                "name": "trading/client_orders"
+              }
+            ],
+            "facets": {
+              "columnLineage": "client_code<-postgres://oms-db.internal:5432/oms.public.orders.client_code;order_value_inr<-postgres://oms-db.internal:5432/oms.public.orders.value"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T02:05:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XB",
+          "workflow": "refresh-metastore",
+          "agent": "metastore-crawler"
+        },
+        "openMetadataExport": {
+          "description": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        }
+      }
+    },
+    {
+      "description": "glue orchestrator is accepted",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.metastore",
+        "companyId": "zenith-securities",
+        "snapshotAt": "2026-09-13T02:00:00Z",
+        "catalogs": [
+          {
+            "catalogId": "prod-unity",
+            "type": "unity",
+            "endpointRef": "prod-unity-catalog-ro",
+            "appId": "data-platform",
+            "schemas": [
+              {
+                "name": "trading",
+                "tables": [
+                  {
+                    "name": "client_orders",
+                    "fullyQualifiedName": "prod.trading.client_orders",
+                    "columns": [
+                      {
+                        "name": "client_code",
+                        "dataType": "string",
+                        "dataClassification": [
+                          "confidential",
+                          "pii"
+                        ],
+                        "pii": true
+                      },
+                      {
+                        "name": "order_value_inr",
+                        "dataType": "decimal(18,2)",
+                        "dataClassification": [
+                          "financial"
+                        ],
+                        "pii": false
+                      }
+                    ],
+                    "owner": "data-eng@zenithsecurities.in",
+                    "retentionDays": 2920,
+                    "rowCountEstimate": 184000000,
+                    "location": "s3://zenith-prod-lake/trading/client_orders",
+                    "format": "delta"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "pipelines": [
+          {
+            "pipelineId": "orders-daily-load",
+            "name": "Orders daily load from OMS",
+            "orchestrator": "glue",
+            "schedule": "30 18 * * 1-5",
+            "owner": "data-eng@zenithsecurities.in",
+            "sourceRepo": {
+              "appId": "data-platform",
+              "repoId": "airflow-dags"
+            }
+          }
+        ],
+        "lineage": [
+          {
+            "job": {
+              "namespace": "databricks://prod-workspace",
+              "name": "orders-daily-load.load_orders"
+            },
+            "inputs": [
+              {
+                "namespace": "postgres://oms-db.internal:5432",
+                "name": "oms.public.orders"
+              }
+            ],
+            "outputs": [
+              {
+                "namespace": "s3://zenith-prod-lake",
+                "name": "trading/client_orders"
+              }
+            ],
+            "facets": {
+              "columnLineage": "client_code<-postgres://oms-db.internal:5432/oms.public.orders.client_code;order_value_inr<-postgres://oms-db.internal:5432/oms.public.orders.value"
+            }
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T02:05:00Z",
+          "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XB",
+          "workflow": "refresh-metastore",
+          "agent": "metastore-crawler"
+        }
+      }
+    }
+  ]
+}

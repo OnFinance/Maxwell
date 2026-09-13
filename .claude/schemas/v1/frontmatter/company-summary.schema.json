@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/company-summary.schema.json",
+  "title": "Company summary frontmatter",
+  "description": "Schema for the YAML frontmatter of company-profile/<company_id>/summary.md, the human-readable report the report-writer regenerates from details.json, the SDLC policy and metastore, vendors, the ledger, initiatives and suggestions. Like every Maxwell document it carries a nested provenance block (YAML mapping) so scripts collect provenance uniformly; provenance.inputsHash records the hash of the source files. Quote timestamps in YAML so they stay strings",
+  "examples": [
+    {
+      "schemaVersion": "1",
+      "kind": "maxwell.company.summary",
+      "companyId": "zenith-securities",
+      "title": "Zenith Securities cyber resilience summary",
+      "version": "1.4.0",
+      "sections": [
+        "overview",
+        "regulatory-posture",
+        "applications",
+        "data-flows",
+        "vendors",
+        "control-summary",
+        "open-findings",
+        "risks",
+        "incidents",
+        "initiatives",
+        "suggestions",
+        "kpis"
+      ],
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-13T08:00:00Z",
+        "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XE",
+        "workflow": "report-audit-findings",
+        "agent": "report-writer",
+        "model": "claude-fable-5-1",
+        "gitCommit": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b",
+        "inputsHash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+      }
+    }
+  ],
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "kind",
+    "companyId",
+    "version",
+    "sections",
+    "provenance"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/schemaVersion"
+    },
+    "kind": {
+      "const": "maxwell.company.summary"
+    },
+    "companyId": {
+      "description": "Slug of the company; must equal the company-profile/<company_id> folder name",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+    },
+    "title": {
+      "description": "Report title shown as the document heading",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+    },
+    "version": {
+      "description": "Semantic version of the report; bump minor on each regeneration and major when the section set changes",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/semver"
+    },
+    "sections": {
+      "description": "Sections present in the body, in document order; each maps to a level-2 heading the report-writer produces. risks and incidents carry the regulator reporting clocks from the ledger; data-flows summarises sdlc/metastore.json",
+      "type": "array",
+      "maxItems": 12,
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "overview",
+          "regulatory-posture",
+          "applications",
+          "data-flows",
+          "vendors",
+          "control-summary",
+          "open-findings",
+          "risks",
+          "incidents",
+          "initiatives",
+          "suggestions",
+          "kpis"
+        ]
+      }
+    },
+    "provenance": {
+      "description": "Who generated the report and from what. inputsHash is required: sha256 over the concatenated bytes of the source files in this exact order: details.json, sdlc/policy.json, sdlc/metastore.json (skipped when absent), vendors/*.json sorted by file name, soc/main.jsonl, change_management/master.json, change_management/initiatives/*/timeline.json sorted by initiative id, suggestions/master.json. An unchanged hash means the report is current",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/provenance",
+      "required": [ "inputsHash" ],
+      "properties": {
+        "inputsHash": {
+          "description": "sha256 over the ordered source files listed above",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/sha256"
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

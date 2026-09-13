@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/kpi/run.schema.json",
+  "title": "KPI measurement run",
+  "description": "One line of kpis/measurement/runs.jsonl: a record of a single execution of the KPI computation (`npm run kpis`), listing which KPIs were computed over which period, how many sessions were considered and sampled, which series files were written and whether the computation succeeded, so /kpis can flag stale series",
+  "examples": [
+    {
+      "schemaVersion": "1",
+      "kind": "maxwell.kpi.run",
+      "runAt": "2026-09-13T10:15:42Z",
+      "kpiIds": [ "cost_of_audit", "cm_coverage", "incident_rate" ],
+      "companyId": "zerodha-broking",
+      "sessionsConsidered": 48,
+      "sessionsSampled": 10,
+      "samplingMode": "bundle",
+      "periodStart": "2026-09-01T00:00:00Z",
+      "periodEnd": "2026-09-13T00:00:00Z",
+      "outputs": [
+        "kpis/data/cost_of_audit/series.jsonl",
+        "kpis/data/cm_coverage/series.jsonl",
+        "kpis/data/incident_rate/series.jsonl"
+      ],
+      "durationMs": 3412,
+      "provenance": {
+        "harness": "script",
+        "generatedAt": "2026-09-13T10:15:45Z",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "kpis",
+        "agent": ".claude/scripts/kpis/compute.mjs",
+        "gitCommit": "9f3c2ab"
+      },
+      "status": "success"
+    }
+  ],
+  "type": "object",
+  "if": {
+    "required": [ "status" ],
+    "properties": {
+      "status": {
+        "enum": [ "partial", "failed" ]
+      }
+    }
+  },
+  "then": {
+    "required": [ "errors" ],
+    "properties": {
+      "errors": {
+        "minItems": 1
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "kind",
+    "runAt",
+    "kpiIds",
+    "sessionsConsidered",
+    "sessionsSampled",
+    "samplingMode",
+    "periodStart",
+    "periodEnd",
+    "outputs",
+    "status",
+    "durationMs",
+    "provenance"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/schemaVersion"
+    },
+    "kind": {
+      "const": "maxwell.kpi.run"
+    },
+    "runAt": {
+      "description": "When the computation started",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+    },
+    "kpiIds": {
+      "description": "KPIs computed in this run",
+      "type": "array",
+      "maxItems": 6,
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/kpiId"
+      }
+    },
+    "companyId": {
+      "description": "Company the run was scoped to; omitted when the run covered every company in the workspace",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+    },
+    "sessionsConsidered": {
+      "description": "Number of ingested session summaries whose startedAt fell inside the period",
+      "type": "integer",
+      "minimum": 0
+    },
+    "sessionsSampled": {
+      "description": "Number of those sessions actually used, per samplingMode. Never exceeds sessionsConsidered",
+      "type": "integer",
+      "minimum": 0
+    },
+    "samplingMode": {
+      "description": "Sampling mode in force for this run, copied from the registry at run time",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/kpi/registry.schema.json#/$defs/samplingMode"
+    },
+    "periodStart": {
+      "description": "Inclusive start of the measurement window",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+    },
+    "periodEnd": {
+      "description": "Exclusive end of the measurement window",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+    },
+    "outputs": {
+      "description": "Workspace paths of the series files appended to by this run; empty only for a failed run",
+      "type": "array",
+      "maxItems": 64,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/workspacePath"
+      }
+    },
+    "status": {
+      "description": "Outcome of the computation: 'success' when every KPI in kpiIds was written, 'partial' when some were (errors says which failed), 'failed' when none were. Series of a partial or failed run may be stale",
+      "enum": [ "success", "partial", "failed" ]
+    },
+    "errors": {
+      "description": "Errors raised during the computation; required and non-empty for partial and failed runs, omitted or empty for success",
+      "type": "array",
+      "maxItems": 1000,
+      "items": {
+        "$ref": "https://maxwell.onfinance.ai/schemas/v1/session/summary.schema.json#/$defs/error"
+      }
+    },
+    "durationMs": {
+      "description": "Wall-clock duration of the computation in milliseconds",
+      "type": "integer",
+      "minimum": 0
+    },
+    "provenance": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/provenance"
+    }
+  },
+  "additionalProperties": false
+}

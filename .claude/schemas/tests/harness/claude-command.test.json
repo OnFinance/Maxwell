@@ -1,0 +1,432 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/claude-command.schema.json",
+  "tests": [
+    {
+      "description": "/validate command frontmatter",
+      "valid": true,
+      "data": {
+        "description": "Run every Maxwell validator (layout, schemas, data, frontmatter, workflows, mirror) and report problems by path",
+        "argument-hint": "[path ...]",
+        "allowed-tools": [
+          "Bash(npm run validate*)",
+          "Bash(node .claude/scripts/*)",
+          "Read"
+        ],
+        "model": "sonnet",
+        "effort": "low",
+        "disable-model-invocation": false,
+        "user-invocable": true,
+        "x-maxwell": {
+          "workflow": "validate",
+          "touches": [],
+          "readsCredentials": false
+        }
+      }
+    },
+    {
+      "description": "seed-company command that writes a company profile via a forked agent",
+      "valid": true,
+      "data": {
+        "description": "Create the skeleton company-profile/<company_id> tree for a new regulated entity",
+        "argument-hint": "<company_id> --entity=<entity-type>",
+        "allowed-tools": "Read Write Bash(node .claude/scripts/*)",
+        "context": "fork",
+        "agent": "company-context",
+        "model": "claude-opus-5",
+        "x-maxwell": {
+          "workflow": "seed-company",
+          "touches": [
+            "company-profile/*/**"
+          ],
+          "readsCredentials": false
+        }
+      }
+    },
+    {
+      "description": "command with named arguments, a background fork and a disallowed-tools string",
+      "valid": true,
+      "data": {
+        "description": "Create the skeleton company-profile/<company_id> tree for a new regulated entity",
+        "argument-hint": "<company_id> --entity=<entity-type>",
+        "allowed-tools": "Read Write Bash(node .claude/scripts/*)",
+        "context": "fork",
+        "agent": "company-context",
+        "model": "claude-opus-5",
+        "x-maxwell": {
+          "workflow": "seed-company",
+          "touches": [
+            "company-profile/*/**"
+          ],
+          "readsCredentials": false
+        },
+        "arguments": [
+          "company_id",
+          "entity"
+        ],
+        "background": true,
+        "disallowed-tools": "WebFetch, WebSearch"
+      }
+    },
+    {
+      "description": "description only",
+      "valid": true,
+      "data": {
+        "description": "Show ledger, initiative and suggestion counts for a company"
+      }
+    },
+    {
+      "description": "name is not part of the legacy command format",
+      "valid": false,
+      "data": {
+        "description": "Run every Maxwell validator (layout, schemas, data, frontmatter, workflows, mirror) and report problems by path",
+        "argument-hint": "[path ...]",
+        "allowed-tools": [
+          "Bash(npm run validate*)",
+          "Bash(node .claude/scripts/*)",
+          "Read"
+        ],
+        "model": "sonnet",
+        "effort": "low",
+        "disable-model-invocation": false,
+        "user-invocable": true,
+        "x-maxwell": {
+          "workflow": "validate",
+          "touches": [],
+          "readsCredentials": false
+        },
+        "name": "validate"
+      }
+    },
+    {
+      "description": "hooks are refused in command files",
+      "valid": false,
+      "data": {
+        "description": "Run every Maxwell validator (layout, schemas, data, frontmatter, workflows, mirror) and report problems by path",
+        "argument-hint": "[path ...]",
+        "allowed-tools": [
+          "Bash(npm run validate*)",
+          "Bash(node .claude/scripts/*)",
+          "Read"
+        ],
+        "model": "sonnet",
+        "effort": "low",
+        "disable-model-invocation": false,
+        "user-invocable": true,
+        "x-maxwell": {
+          "workflow": "validate",
+          "touches": [],
+          "readsCredentials": false
+        },
+        "hooks": {
+          "PreToolUse": []
+        }
+      }
+    },
+    {
+      "description": "tool spec must start with an upper-case tool name",
+      "valid": false,
+      "data": {
+        "description": "Run every Maxwell validator (layout, schemas, data, frontmatter, workflows, mirror) and report problems by path",
+        "argument-hint": "[path ...]",
+        "allowed-tools": [
+          "bash(npm run *)"
+        ],
+        "model": "sonnet",
+        "effort": "low",
+        "disable-model-invocation": false,
+        "user-invocable": true,
+        "x-maxwell": {
+          "workflow": "validate",
+          "touches": [],
+          "readsCredentials": false
+        }
+      }
+    },
+    {
+      "description": "string-form allowed-tools with a lower-case tool name is rejected",
+      "valid": false,
+      "data": {
+        "description": "Create the skeleton company-profile/<company_id> tree for a new regulated entity",
+        "argument-hint": "<company_id> --entity=<entity-type>",
+        "allowed-tools": "nope, lower",
+        "context": "fork",
+        "agent": "company-context",
+        "model": "claude-opus-5",
+        "x-maxwell": {
+          "workflow": "seed-company",
+          "touches": [
+            "company-profile/*/**"
+          ],
+          "readsCredentials": false
+        }
+      }
+    },
+    {
+      "description": "effort outside the closed enum",
+      "valid": false,
+      "data": {
+        "description": "Run every Maxwell validator (layout, schemas, data, frontmatter, workflows, mirror) and report problems by path",
+        "argument-hint": "[path ...]",
+        "allowed-tools": [
+          "Bash(npm run validate*)",
+          "Bash(node .claude/scripts/*)",
+          "Read"
+        ],
+        "model": "sonnet",
+        "effort": "ultra",
+        "disable-model-invocation": false,
+        "user-invocable": true,
+        "x-maxwell": {
+          "workflow": "validate",
+          "touches": [],
+          "readsCredentials": false
+        }
+      }
+    },
+    {
+      "description": "description is required",
+      "valid": false,
+      "data": {
+        "argument-hint": "[path ...]",
+        "allowed-tools": [
+          "Bash(npm run validate*)",
+          "Bash(node .claude/scripts/*)",
+          "Read"
+        ],
+        "model": "sonnet",
+        "effort": "low",
+        "disable-model-invocation": false,
+        "user-invocable": true,
+        "x-maxwell": {
+          "workflow": "validate",
+          "touches": [],
+          "readsCredentials": false
+        }
+      }
+    },
+    {
+      "description": "description must not be whitespace only",
+      "valid": false,
+      "data": {
+        "description": "   ",
+        "argument-hint": "[path ...]",
+        "allowed-tools": [
+          "Bash(npm run validate*)",
+          "Bash(node .claude/scripts/*)",
+          "Read"
+        ],
+        "model": "sonnet",
+        "effort": "low",
+        "disable-model-invocation": false,
+        "user-invocable": true,
+        "x-maxwell": {
+          "workflow": "validate",
+          "touches": [],
+          "readsCredentials": false
+        }
+      }
+    },
+    {
+      "description": "x-maxwell.workflow must be a known workflow",
+      "valid": false,
+      "data": {
+        "description": "Run every Maxwell validator (layout, schemas, data, frontmatter, workflows, mirror) and report problems by path",
+        "argument-hint": "[path ...]",
+        "allowed-tools": [
+          "Bash(npm run validate*)",
+          "Bash(node .claude/scripts/*)",
+          "Read"
+        ],
+        "model": "sonnet",
+        "effort": "low",
+        "disable-model-invocation": false,
+        "user-invocable": true,
+        "x-maxwell": {
+          "workflow": "probe-everything",
+          "touches": [],
+          "readsCredentials": false
+        }
+      }
+    },
+    {
+      "description": "touches must not traverse outside the workspace",
+      "valid": false,
+      "data": {
+        "description": "Run every Maxwell validator (layout, schemas, data, frontmatter, workflows, mirror) and report problems by path",
+        "argument-hint": "[path ...]",
+        "allowed-tools": [
+          "Bash(npm run validate*)",
+          "Bash(node .claude/scripts/*)",
+          "Read"
+        ],
+        "model": "sonnet",
+        "effort": "low",
+        "disable-model-invocation": false,
+        "user-invocable": true,
+        "x-maxwell": {
+          "workflow": "validate",
+          "touches": [
+            "../outside/**"
+          ],
+          "readsCredentials": false
+        }
+      }
+    },
+    {
+      "description": "touches must not traverse mid-path",
+      "valid": false,
+      "data": {
+        "description": "Run every Maxwell validator (layout, schemas, data, frontmatter, workflows, mirror) and report problems by path",
+        "argument-hint": "[path ...]",
+        "allowed-tools": [
+          "Bash(npm run validate*)",
+          "Bash(node .claude/scripts/*)",
+          "Read"
+        ],
+        "model": "sonnet",
+        "effort": "low",
+        "disable-model-invocation": false,
+        "user-invocable": true,
+        "x-maxwell": {
+          "workflow": "validate",
+          "touches": [
+            "company-profile/../../etc/passwd"
+          ],
+          "readsCredentials": false
+        }
+      }
+    },
+    {
+      "description": "touches must not be a bare dot",
+      "valid": false,
+      "data": {
+        "description": "Run every Maxwell validator (layout, schemas, data, frontmatter, workflows, mirror) and report problems by path",
+        "argument-hint": "[path ...]",
+        "allowed-tools": [
+          "Bash(npm run validate*)",
+          "Bash(node .claude/scripts/*)",
+          "Read"
+        ],
+        "model": "sonnet",
+        "effort": "low",
+        "disable-model-invocation": false,
+        "user-invocable": true,
+        "x-maxwell": {
+          "workflow": "validate",
+          "touches": [
+            "."
+          ],
+          "readsCredentials": false
+        }
+      }
+    },
+    {
+      "description": "x-maxwell.readsCredentials is required",
+      "valid": false,
+      "data": {
+        "description": "Run every Maxwell validator (layout, schemas, data, frontmatter, workflows, mirror) and report problems by path",
+        "argument-hint": "[path ...]",
+        "allowed-tools": [
+          "Bash(npm run validate*)",
+          "Bash(node .claude/scripts/*)",
+          "Read"
+        ],
+        "model": "sonnet",
+        "effort": "low",
+        "disable-model-invocation": false,
+        "user-invocable": true,
+        "x-maxwell": {
+          "workflow": "validate",
+          "touches": []
+        }
+      }
+    },
+    {
+      "description": "extra key inside x-maxwell is denied",
+      "valid": false,
+      "data": {
+        "description": "Run every Maxwell validator (layout, schemas, data, frontmatter, workflows, mirror) and report problems by path",
+        "argument-hint": "[path ...]",
+        "allowed-tools": [
+          "Bash(npm run validate*)",
+          "Bash(node .claude/scripts/*)",
+          "Read"
+        ],
+        "model": "sonnet",
+        "effort": "low",
+        "disable-model-invocation": false,
+        "user-invocable": true,
+        "x-maxwell": {
+          "workflow": "validate",
+          "touches": [],
+          "readsCredentials": false,
+          "owner": "secops"
+        }
+      }
+    },
+    {
+      "description": "context may only be fork",
+      "valid": false,
+      "data": {
+        "description": "Run every Maxwell validator (layout, schemas, data, frontmatter, workflows, mirror) and report problems by path",
+        "argument-hint": "[path ...]",
+        "allowed-tools": [
+          "Bash(npm run validate*)",
+          "Bash(node .claude/scripts/*)",
+          "Read"
+        ],
+        "model": "sonnet",
+        "effort": "low",
+        "disable-model-invocation": false,
+        "user-invocable": true,
+        "x-maxwell": {
+          "workflow": "validate",
+          "touches": [],
+          "readsCredentials": false
+        },
+        "context": "inline"
+      }
+    },
+    {
+      "description": "agent requires context fork",
+      "valid": false,
+      "data": {
+        "description": "Create the skeleton company-profile/<company_id> tree for a new regulated entity",
+        "argument-hint": "<company_id> --entity=<entity-type>",
+        "allowed-tools": "Read Write Bash(node .claude/scripts/*)",
+        "agent": "company-context",
+        "model": "claude-opus-5",
+        "x-maxwell": {
+          "workflow": "seed-company",
+          "touches": [
+            "company-profile/*/**"
+          ],
+          "readsCredentials": false
+        }
+      }
+    },
+    {
+      "description": "background requires context fork",
+      "valid": false,
+      "data": {
+        "description": "Run every Maxwell validator (layout, schemas, data, frontmatter, workflows, mirror) and report problems by path",
+        "argument-hint": "[path ...]",
+        "allowed-tools": [
+          "Bash(npm run validate*)",
+          "Bash(node .claude/scripts/*)",
+          "Read"
+        ],
+        "model": "sonnet",
+        "effort": "low",
+        "disable-model-invocation": false,
+        "user-invocable": true,
+        "x-maxwell": {
+          "workflow": "validate",
+          "touches": [],
+          "readsCredentials": false
+        },
+        "background": true
+      }
+    }
+  ]
+}

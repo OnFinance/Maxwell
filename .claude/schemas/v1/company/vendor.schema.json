@@ -1,0 +1,547 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/company/vendor.schema.json",
+  "title": "Third-party vendor",
+  "description": "Schema for company-profile/<company_id>/vendors/<vendor_id>.json, the register entry for one ICT third-party service provider. Fields follow the DORA register of information (ITS 2024/2956) and the RBI IT outsourcing Master Direction 2023 so the file can be exported to either regulator's template",
+  "examples": [
+    {
+      "schemaVersion": "1",
+      "kind": "maxwell.company.vendor",
+      "companyId": "zenith-securities",
+      "vendorId": "aws",
+      "legalName": "Amazon Web Services, Inc.",
+      "lei": "549300DXHFVH5ZGTBK98",
+      "country": "US",
+      "website": "https://aws.amazon.com",
+      "intraGroup": false,
+      "ultimateParent": {
+        "legalName": "Amazon.com, Inc.",
+        "lei": "5493009NQRXG7AHTH046",
+        "country": "US"
+      },
+      "services": [
+        {
+          "serviceId": "aws-mumbai-compute",
+          "type": "cloud-iaas",
+          "description": "EC2, EKS and RDS hosting for the trading platform in ap-south-1 with DR in ap-south-2",
+          "criticality": "critical",
+          "supportsCriticalFunction": true,
+          "criticalFunctionRefs": [ "order-routing" ],
+          "dataAccessed": [ "pii", "financial", "confidential" ],
+          "hostingCountries": [ "IN" ],
+          "subcontractors": [
+            {
+              "name": "Sify Technologies",
+              "country": "IN",
+              "role": "Direct Connect colocation"
+            }
+          ]
+        }
+      ],
+      "materiality": "material",
+      "substitutability": "highly-complex",
+      "contract": {
+        "type": "overarching",
+        "reference": "AWS-EA-2024-0173",
+        "startDate": "2024-04-01",
+        "endDate": "2027-03-31",
+        "noticePeriodDays": 90,
+        "exitPlanDocumented": true,
+        "governingLaw": "IN",
+        "rightToAudit": true,
+        "subcontractingAllowed": true,
+        "dataReturnAndDeletion": true,
+        "annualValue": {
+          "amount": 42000000,
+          "currency": "INR"
+        }
+      },
+      "assurance": [
+        {
+          "type": "soc2-type2",
+          "issuer": "Ernst & Young LLP",
+          "periodStart": "2025-04-01",
+          "periodEnd": "2026-03-31",
+          "expiresAt": "2027-03-31",
+          "scope": "AWS ap-south-1 in-scope services",
+          "exceptionsCount": 0,
+          "evidence": {
+            "type": "url",
+            "ref": "https://aws.amazon.com/artifact/",
+            "description": "SOC 2 Type II report downloaded via AWS Artifact"
+          }
+        },
+        {
+          "type": "iso22301",
+          "issuer": "BSI Group",
+          "periodEnd": "2026-01-15",
+          "expiresAt": "2029-01-14",
+          "scope": "Business continuity management system for AWS global infrastructure"
+        }
+      ],
+      "lastAssessment": {
+        "date": "2026-06-15",
+        "rating": "low",
+        "assessor": "vendor-risk@zenithsecurities.in",
+        "findingIds": [ "fnd_01J9Z6X3F8N2Q4R5S6T7V8W9XC" ]
+      },
+      "regulatoryRefs": [
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "GV.SC.S5"
+        },
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "GV.SC.S2"
+        }
+      ],
+      "status": "active",
+      "tags": [ "cloud", "hyperscaler" ],
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-13T07:10:00Z",
+        "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XD",
+        "workflow": "refresh-vendor-ctx",
+        "agent": "vendor-profiler"
+      }
+    }
+  ],
+  "type": "object",
+  "if": {
+    "required": [ "status", "materiality" ],
+    "properties": {
+      "status": {
+        "enum": [ "active", "exiting" ]
+      },
+      "materiality": {
+        "const": "material"
+      }
+    }
+  },
+  "then": {
+    "required": [ "contract", "lastAssessment" ]
+  },
+  "required": [
+    "schemaVersion",
+    "kind",
+    "vendorId",
+    "legalName",
+    "country",
+    "intraGroup",
+    "services",
+    "materiality",
+    "status",
+    "provenance"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/schemaVersion"
+    },
+    "kind": {
+      "const": "maxwell.company.vendor"
+    },
+    "companyId": {
+      "description": "Slug of the company that engages the vendor; must equal the company-profile/<company_id> folder name when present",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+    },
+    "vendorId": {
+      "description": "Slug identifying the vendor; must equal the file name without .json",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+    },
+    "legalName": {
+      "description": "Registered legal name of the contracting entity",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+    },
+    "lei": {
+      "description": "Legal Entity Identifier of the contracting entity, required by the DORA register where one exists",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/lei"
+    },
+    "country": {
+      "description": "ISO 3166-1 alpha-2 country of incorporation of the contracting entity",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/countryCode"
+    },
+    "website": {
+      "description": "Vendor's public website",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/url"
+    },
+    "intraGroup": {
+      "description": "True when the provider is a group entity of the company (RBI outsourcing MD group-entity rules; DORA RoI B_05.01 ICT intra-group service provider); feeds concentration-risk reporting in refresh-vendor-ctx",
+      "type": "boolean"
+    },
+    "ultimateParent": {
+      "description": "Ultimate parent undertaking of the contracting entity, required by the DORA RoI (B_05.01) where the provider belongs to a group",
+      "type": "object",
+      "required": [ "legalName", "country" ],
+      "properties": {
+        "legalName": {
+          "description": "Registered legal name of the ultimate parent",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "lei": {
+          "description": "Legal Entity Identifier of the ultimate parent where one exists",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/lei"
+        },
+        "country": {
+          "description": "ISO 3166-1 alpha-2 country of incorporation of the ultimate parent",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/countryCode"
+        }
+      },
+      "additionalProperties": false
+    },
+    "services": {
+      "description": "ICT services received from this vendor, one entry per distinct service",
+      "type": "array",
+      "maxItems": 64,
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/service"
+      }
+    },
+    "materiality": {
+      "description": "Materiality per the RBI IT outsourcing Master Direction 2023; material outsourcing needs board approval and regulator notification, and active or exiting material vendors must have contract and lastAssessment on file",
+      "enum": [ "material", "non-material" ]
+    },
+    "substitutability": {
+      "description": "How easily the provider could be replaced, per DORA RoI B_07.01; expected for every material or critical arrangement",
+      "enum": [
+        "not-substitutable",
+        "highly-complex",
+        "medium-complexity",
+        "easily-substitutable"
+      ]
+    },
+    "contract": {
+      "$ref": "#/$defs/contract"
+    },
+    "assurance": {
+      "description": "Independent assurance reports and certifications held on file for the vendor",
+      "type": "array",
+      "maxItems": 32,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/assurance"
+      }
+    },
+    "lastAssessment": {
+      "description": "Most recent internal third-party risk assessment",
+      "type": "object",
+      "required": [ "date", "rating" ],
+      "properties": {
+        "date": {
+          "description": "Date the assessment was completed",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/date"
+        },
+        "rating": {
+          "description": "Residual risk rating assigned by the assessment, on the canonical severity scale without info",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/severity",
+          "not": {
+            "const": "info"
+          }
+        },
+        "assessor": {
+          "description": "Person or team that performed the assessment",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "findingIds": {
+          "description": "Ledger findings raised against the vendor by this assessment",
+          "type": "array",
+          "maxItems": 256,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/findingId"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "regulatoryRefs": {
+      "description": "Outsourcing and third-party-risk clauses this vendor relationship is governed by",
+      "type": "array",
+      "maxItems": 32,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/regulatoryRef"
+      }
+    },
+    "status": {
+      "description": "Lifecycle state of the vendor relationship",
+      "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/vendorStatus"
+    },
+    "tags": {
+      "description": "Free-form lowercase labels for filtering vendors",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/tags"
+    },
+    "provenance": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/provenance"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "service": {
+      "type": "object",
+      "if": {
+        "required": [ "supportsCriticalFunction" ],
+        "properties": {
+          "supportsCriticalFunction": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "required": [ "criticalFunctionRefs" ],
+        "properties": {
+          "criticalFunctionRefs": {
+            "type": "array",
+            "minItems": 1
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "criticalFunctionRefs": {
+            "type": "array",
+            "maxItems": 0
+          }
+        }
+      },
+      "required": [
+        "serviceId",
+        "type",
+        "description",
+        "criticality",
+        "supportsCriticalFunction",
+        "dataAccessed",
+        "hostingCountries"
+      ],
+      "properties": {
+        "serviceId": {
+          "description": "Slug identifying the service within this vendor file",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+        },
+        "type": {
+          "description": "ICT service type, modelled on the DORA register of information type-of-ICT-services list",
+          "enum": [
+            "cloud-iaas",
+            "cloud-paas",
+            "cloud-saas",
+            "data-centre",
+            "network",
+            "security-operations",
+            "payment-processing",
+            "core-banking",
+            "kyc-identity",
+            "data-analytics",
+            "ai-model-provider",
+            "software-development",
+            "managed-service",
+            "other"
+          ]
+        },
+        "description": {
+          "description": "What the service does for the company and which systems it touches",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+        },
+        "criticality": {
+          "description": "Criticality of the service to the company: critical services support a critical function (supportsCriticalFunction must be true), important ones would cause significant disruption, standard ones are replaceable",
+          "enum": [ "critical", "important", "standard" ]
+        },
+        "supportsCriticalFunction": {
+          "description": "True when the service supports a critical or important function listed in details.json; criticalFunctionRefs is then required and must otherwise be empty or absent",
+          "type": "boolean"
+        },
+        "criticalFunctionRefs": {
+          "description": "functionId values from details.json criticalFunctions that this service supports",
+          "type": "array",
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+          }
+        },
+        "dataAccessed": {
+          "description": "Highest data classifications the vendor can store or process for this service; empty when the vendor sees no company data",
+          "type": "array",
+          "maxItems": 9,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/dataClassification"
+          }
+        },
+        "hostingCountries": {
+          "description": "Countries where the service stores or processes company data; compare with details.json dataResidency",
+          "type": "array",
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/countryCode"
+          }
+        },
+        "subcontractors": {
+          "description": "Fourth parties the vendor relies on to deliver this service, per DORA RoI subcontracting chain",
+          "type": "array",
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "required": [ "name", "country", "role" ],
+            "properties": {
+              "name": {
+                "description": "Subcontractor legal or trading name",
+                "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+              },
+              "country": {
+                "description": "ISO 3166-1 alpha-2 country of the subcontractor",
+                "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/countryCode"
+              },
+              "role": {
+                "description": "What the subcontractor provides, for example colocation, support desk, DNS",
+                "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "unevaluatedProperties": false,
+      "dependentSchemas": {
+        "criticality": {
+          "if": {
+            "required": [ "criticality" ],
+            "properties": {
+              "criticality": {
+                "const": "critical"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "supportsCriticalFunction": {
+                "const": true
+              }
+            }
+          }
+        }
+      }
+    },
+    "contract": {
+      "description": "Key contractual terms the regulators expect an outsourcing agreement to contain",
+      "type": "object",
+      "required": [
+        "reference",
+        "startDate",
+        "noticePeriodDays",
+        "exitPlanDocumented",
+        "rightToAudit",
+        "subcontractingAllowed",
+        "dataReturnAndDeletion"
+      ],
+      "properties": {
+        "type": {
+          "description": "Contract structure per DORA RoI B_02.01: standalone agreement, overarching master agreement, or subsequent agreement under an overarching one",
+          "enum": [ "standalone", "overarching", "subsequent" ]
+        },
+        "reference": {
+          "description": "Contract number or document reference in the contract repository",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "startDate": {
+          "description": "Contract effective date",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/date"
+        },
+        "endDate": {
+          "description": "Contract end date; omit for evergreen contracts",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/date"
+        },
+        "noticePeriodDays": {
+          "description": "Days of notice either party must give to terminate",
+          "type": "integer",
+          "maximum": 1095,
+          "minimum": 0
+        },
+        "exitPlanDocumented": {
+          "description": "True when a tested exit or transition plan exists for this vendor",
+          "type": "boolean"
+        },
+        "governingLaw": {
+          "description": "ISO 3166-1 alpha-2 country whose law governs the contract",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/countryCode"
+        },
+        "rightToAudit": {
+          "description": "True when the contract grants the company and its regulators audit and inspection rights",
+          "type": "boolean"
+        },
+        "subcontractingAllowed": {
+          "description": "True when the vendor may subcontract; RBI expects prior consent for material services",
+          "type": "boolean"
+        },
+        "dataReturnAndDeletion": {
+          "description": "True when the contract obliges return and certified deletion of company data on exit",
+          "type": "boolean"
+        },
+        "annualValue": {
+          "description": "Approximate annual contract value, used for concentration-risk reporting",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/money"
+        }
+      },
+      "additionalProperties": false
+    },
+    "assurance": {
+      "type": "object",
+      "required": [ "type", "issuer", "periodEnd" ],
+      "properties": {
+        "type": {
+          "description": "Kind of assurance report or certification; iso22301 and soc1-type2 cover the business-continuity and financial-controls evidence RBI expects for material outsourcing",
+          "enum": [
+            "soc1-type2",
+            "soc2-type1",
+            "soc2-type2",
+            "iso27001",
+            "iso27017",
+            "iso27018",
+            "iso22301",
+            "pci-dss-aoc",
+            "csa-star",
+            "sig-lite",
+            "sig-core",
+            "vapt-report",
+            "cert-in-audit",
+            "other"
+          ]
+        },
+        "issuer": {
+          "description": "Auditor or certification body that issued the report",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "periodStart": {
+          "description": "Start of the period the report covers",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/date"
+        },
+        "periodEnd": {
+          "description": "End of the period the report covers, or the certification date",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/date"
+        },
+        "expiresAt": {
+          "description": "Date after which the report is stale and must be refreshed",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/date"
+        },
+        "scope": {
+          "description": "Services, locations or systems covered by the report",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+        },
+        "exceptionsCount": {
+          "description": "Number of exceptions or non-conformities noted in the report",
+          "type": "integer",
+          "minimum": 0
+        },
+        "evidence": {
+          "description": "Where the report itself is stored",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/evidenceRef"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

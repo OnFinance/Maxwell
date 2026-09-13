@@ -1,0 +1,521 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/suggestions/master.schema.json",
+  "title": "Auto-improvement suggestions index",
+  "description": "company-profile/<company_id>/suggestions/master.json: every code or configuration change Maxwell proposed for the company, with its review and merge lifecycle. The suggestion_acceptance_rate KPI computes accepted/surfaced from status and surfacedAt, merge rate from mergedAt and repos[].mergeCommit, revert rate from revertedAt and repos[].revertCommit, and 30-day retention from retentionCheckedAt and retained; superseded and expired entries are bucketed by closedAt and a supersession chain counts once. Diffs live at suggestions/suggestions/<sug_id>/<repo_id>/<name>.diff",
+  "examples": [
+    {
+      "schemaVersion": "1",
+      "kind": "maxwell.sug.master",
+      "companyId": "arthveda-securities",
+      "updatedAt": "2026-09-10T11:42:00Z",
+      "suggestions": [
+        {
+          "suggestionId": "sug_01M0KTP6M0GSB53TM0315NTTZW",
+          "title": "Add CycloneDX SBOM generation job to build.yml",
+          "rationale": "SEBI CSCRF GV.SC.S5 expects regulated entities to maintain a software bill of materials for critical applications. The trading-gateway-api GitHub Actions workflow builds and pushes an image but never records its dependency inventory. This diff adds an sbom job that runs cyclonedx-gomod on the module, uploads sbom.cdx.json as a 400-day artefact and fails the workflow if generation fails, so every production image has a matching SBOM",
+          "category": "cicd-gate",
+          "severity": "high",
+          "status": "merged",
+          "createdAt": "2026-08-22T04:12:00Z",
+          "surfacedAt": "2026-08-22T04:15:00Z",
+          "decidedAt": "2026-08-25T09:40:00Z",
+          "decidedBy": {
+            "type": "human",
+            "id": "platform-lead@arthveda.example"
+          },
+          "decisionNote": "Accepted; pinned the cyclonedx-gomod action to a commit SHA during review",
+          "mergedAt": "2026-09-05T13:20:00Z",
+          "prUrls": [
+            "https://github.com/arthveda/trading-gateway-api/pull/482"
+          ],
+          "repos": [
+            {
+              "appId": "trading-gateway",
+              "repoId": "trading-gateway-api",
+              "diffPath": "company-profile/arthveda-securities/suggestions/suggestions/sug_01M0KTP6M0GSB53TM0315NTTZW/trading-gateway-api/build-yml-sbom-job.diff",
+              "baseCommit": "9f3c1e2b7a4d5e6f8091a2b3c4d5e6f708192a3b",
+              "mergeCommit": "4c1d9e7b2a6f5083b1c2d3e4f5a6b7c8d9e0f1a2",
+              "linesAdded": 27,
+              "linesRemoved": 1,
+              "filesChanged": 1
+            }
+          ],
+          "findingIds": [ "fnd_01M0CGTNZ0DNXWVAV7VB0PNQJ2" ],
+          "controlIds": [ "GV.SC.S5", "PS.3.2" ],
+          "regulatoryRefs": [
+            {
+              "regulator": "SEBI",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "GV.SC.S5"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-ssdf-800-218",
+              "controlId": "PS.3.2"
+            }
+          ],
+          "initiativeId": "init_01M0EXSEJ04P58EWQQZTMMGYWY",
+          "sourceWorkflow": "impl-auto-improvement",
+          "provenance": {
+            "harness": "claude-code",
+            "generatedAt": "2026-08-22T04:12:00Z",
+            "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+            "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+            "workflow": "impl-auto-improvement",
+            "agent": "cicd-hardener",
+            "model": "claude-opus-4-1"
+          }
+        }
+      ],
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-10T11:42:00Z",
+        "sessionId": "3f9c2a7e-4b1d-4e8a-9c6f-2d5b7a1e8c40",
+        "runId": "run_01M0EW2GR0QZMY677TFF3NG1MD",
+        "workflow": "impl-auto-improvement",
+        "agent": "cicd-hardener"
+      }
+    }
+  ],
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "kind",
+    "companyId",
+    "updatedAt",
+    "suggestions",
+    "provenance"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/schemaVersion"
+    },
+    "kind": {
+      "const": "maxwell.sug.master"
+    },
+    "companyId": {
+      "description": "Slug of the company this index belongs to; must equal the company-profile directory name",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+    },
+    "updatedAt": {
+      "description": "When this index was last rewritten; the KPI treats it as the observation time for open suggestions",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+    },
+    "suggestions": {
+      "description": "Every suggestion ever raised, including rejected, reverted, superseded and expired ones; never delete entries. suggestionId must be unique across the array",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/suggestion"
+      }
+    },
+    "provenance": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/provenance"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "category": {
+      "description": "Kind of improvement the diff makes; one value per suggestion, split multi-purpose changes into several suggestions",
+      "enum": [
+        "dependency-upgrade",
+        "config-hardening",
+        "iac-fix",
+        "cicd-gate",
+        "secret-removal",
+        "policy-document",
+        "test-added",
+        "logging-monitoring",
+        "access-control",
+        "encryption",
+        "network-policy",
+        "container-hardening",
+        "agent-guardrail",
+        "data-pipeline-control",
+        "other"
+      ]
+    },
+    "repoChange": {
+      "description": "The diff proposed for one repository. One suggestion may span several repos of the same application",
+      "type": "object",
+      "required": [
+        "appId",
+        "repoId",
+        "diffPath",
+        "baseCommit",
+        "linesAdded",
+        "linesRemoved",
+        "filesChanged"
+      ],
+      "properties": {
+        "appId": {
+          "description": "Application that owns the repo (applications/<app_id>/)",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+        },
+        "repoId": {
+          "description": "Repository slug (applications/<app_id>/repos/<repo_id>.json)",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+        },
+        "diffPath": {
+          "description": "Workspace-root-relative path of the unified diff: company-profile/<company_id>/suggestions/suggestions/<sug_id>/<repo_id>/<name>.diff, where <sug_id> equals suggestionId and <repo_id> equals repoId",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/workspacePath",
+          "type": "string",
+          "pattern": "^company-profile/[a-z0-9][a-z0-9-]{1,62}/suggestions/suggestions/sug_[0-7][0-9A-HJKMNP-TV-Z]{25}/[a-z0-9][a-z0-9-]{1,62}/[A-Za-z0-9._-]+\\.diff$"
+        },
+        "baseCommit": {
+          "description": "Commit of the repo's default branch the diff applies cleanly to",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/gitCommit"
+        },
+        "mergeCommit": {
+          "description": "Merge (or squash) commit that landed the diff on the default branch; present exactly when status is merged or reverted. The retention check tests whether mergeCommit is an ancestor of the default branch head at retentionCheckedAt",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/gitCommit"
+        },
+        "revertCommit": {
+          "description": "Commit on the default branch that reverted mergeCommit; present exactly when status is reverted",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/gitCommit"
+        },
+        "revertPrUrl": {
+          "description": "Pull or merge request that carried the revert, when it went through one; only for status reverted",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/url"
+        },
+        "linesAdded": {
+          "description": "Count of + lines in the diff, excluding headers",
+          "type": "integer",
+          "minimum": 0
+        },
+        "linesRemoved": {
+          "description": "Count of - lines in the diff, excluding headers",
+          "type": "integer",
+          "minimum": 0
+        },
+        "filesChanged": {
+          "description": "Number of distinct files the diff touches",
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "suggestion": {
+      "description": "One proposed change and its lifecycle: proposed -> surfaced -> accepted|rejected; accepted -> merged -> (reverted); any open state -> superseded|expired. Timestamps must be present exactly as the status implies: surfacedAt from surfaced onward, decidedAt and decidedBy from accepted/rejected/merged/reverted, mergedAt and repos[].mergeCommit for merged and reverted, revertedAt and repos[].revertCommit for reverted only, closedAt and (for superseded) supersededBy for superseded and expired only",
+      "type": "object",
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "surfaced"
+              }
+            }
+          },
+          "then": {
+            "required": [ "surfacedAt" ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [ "merged", "reverted" ]
+              }
+            }
+          },
+          "then": {
+            "required": [ "mergedAt" ],
+            "properties": {
+              "repos": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [ "mergeCommit" ],
+                  "properties": {
+                    "mergeCommit": true
+                  }
+                }
+              }
+            }
+          },
+          "else": {
+            "not": {
+              "required": [ "mergedAt" ]
+            },
+            "properties": {
+              "repos": {
+                "type": "array",
+                "items": {
+                  "not": {
+                    "required": [ "mergeCommit" ]
+                  },
+                  "properties": {
+                    "mergeCommit": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "reverted"
+              }
+            }
+          },
+          "then": {
+            "required": [ "revertedAt" ],
+            "properties": {
+              "repos": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [ "revertCommit" ],
+                  "properties": {
+                    "revertCommit": true,
+                    "revertPrUrl": true
+                  }
+                }
+              }
+            }
+          },
+          "else": {
+            "not": {
+              "required": [ "revertedAt" ]
+            },
+            "properties": {
+              "repos": {
+                "type": "array",
+                "items": {
+                  "not": {
+                    "anyOf": [
+                      {
+                        "required": [ "revertCommit" ]
+                      },
+                      {
+                        "required": [ "revertPrUrl" ]
+                      }
+                    ]
+                  },
+                  "properties": {
+                    "revertCommit": true,
+                    "revertPrUrl": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "superseded"
+              }
+            }
+          },
+          "then": {
+            "required": [ "supersededBy" ]
+          },
+          "else": {
+            "not": {
+              "required": [ "supersededBy" ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [ "superseded", "expired" ]
+              }
+            }
+          },
+          "then": {
+            "required": [ "closedAt" ]
+          },
+          "else": {
+            "not": {
+              "required": [ "closedAt" ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "category": {
+                "const": "other"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "regulatoryRefs": {
+                "type": "array",
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ],
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [ "accepted", "rejected", "merged", "reverted" ]
+          }
+        }
+      },
+      "then": {
+        "required": [ "surfacedAt", "decidedAt", "decidedBy" ]
+      },
+      "required": [
+        "suggestionId",
+        "title",
+        "rationale",
+        "category",
+        "severity",
+        "status",
+        "createdAt",
+        "prUrls",
+        "repos",
+        "findingIds",
+        "controlIds",
+        "regulatoryRefs",
+        "sourceWorkflow",
+        "provenance"
+      ],
+      "properties": {
+        "suggestionId": {
+          "description": "Prefixed ULID; also the directory name under suggestions/suggestions/",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/suggestionId"
+        },
+        "title": {
+          "description": "Imperative one-line summary suitable as a PR title",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "rationale": {
+          "description": "Why the change is needed, what the diff does and what risk it addresses; becomes the PR body",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+        },
+        "category": {
+          "$ref": "#/$defs/category"
+        },
+        "severity": {
+          "description": "Severity of the gap the suggestion closes, inherited from the linked finding",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/severity"
+        },
+        "status": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/suggestion"
+        },
+        "createdAt": {
+          "description": "When the diff was generated",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "surfacedAt": {
+          "description": "When the suggestion was shown to a human (PR opened, ticket raised or report section written); denominator of suggestion_acceptance_rate",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "decidedAt": {
+          "description": "When a human accepted or rejected it; required from accepted, rejected, merged and reverted",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "decidedBy": {
+          "description": "Human (or delegated script) that made the accept/reject decision; never an agent, so a suggestion cannot accept itself",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/actor",
+          "properties": {
+            "type": {
+              "enum": [ "human", "script" ]
+            }
+          }
+        },
+        "decisionNote": {
+          "description": "Reviewer's reason, especially for rejections; feeds prompt tuning",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/nonEmptyString"
+        },
+        "mergedAt": {
+          "description": "When the change landed on the default branch (repos[].mergeCommit); present only for merged and reverted",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "revertedAt": {
+          "description": "When the merged change was reverted (repos[].revertCommit); present only for reverted. Counted by revert rate",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "closedAt": {
+          "description": "When the suggestion was superseded or expired without a decision; present only for those two statuses. Buckets them into the acceptance-rate denominator period",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "supersededBy": {
+          "description": "The newer suggestion that replaced this one; present exactly when status is superseded. The KPI counts a supersession chain once, at its final entry",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/suggestionId"
+        },
+        "retentionCheckedAt": {
+          "description": "When the 30-day retention check ran (mergedAt + 30 days or later); set together with retained",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "retained": {
+          "description": "true when every repos[].mergeCommit was still an ancestor of the default branch head at retentionCheckedAt; feeds 30-day retention",
+          "type": "boolean"
+        },
+        "prUrls": {
+          "description": "Pull or merge requests opened for the suggestion; empty until surfaced as a PR",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/url"
+          }
+        },
+        "repos": {
+          "description": "One entry per repository the suggestion changes",
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/repoChange"
+          }
+        },
+        "findingIds": {
+          "description": "Ledger findings this suggestion remediates",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/findingId"
+          }
+        },
+        "controlIds": {
+          "description": "Ids of control records in the company's soc ledger that the change implements or strengthens (same meaning as controlIds on soc records); each must exist in the ledger and should correspond to a regulatoryRefs entry",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/controlId"
+          }
+        },
+        "regulatoryRefs": {
+          "description": "Regulatory clauses the change helps satisfy; at least one unless category is other",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/regulatoryRef"
+          }
+        },
+        "initiativeId": {
+          "description": "Change-management initiative the suggestion implements, when raised from one",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/initiativeId"
+        },
+        "sourceWorkflow": {
+          "description": "Workflow that generated the diff (usually impl-auto-improvement)",
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/workflows.schema.json"
+        },
+        "provenance": {
+          "description": "Provenance of this suggestion entry, distinct from the index-level provenance. provenance.model must be set: it is a dimension of suggestion_acceptance_rate",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/provenance"
+        }
+      },
+      "unevaluatedProperties": false,
+      "dependentRequired": {
+        "decidedAt": [ "decidedBy" ],
+        "retained": [ "retentionCheckedAt" ],
+        "retentionCheckedAt": [ "mergedAt", "retained" ]
+      }
+    }
+  }
+}

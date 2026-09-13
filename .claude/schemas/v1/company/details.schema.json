@@ -1,0 +1,561 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/company/details.schema.json",
+  "title": "Company details",
+  "description": "Schema for company-profile/<company_id>/details.json, the canonical profile of one regulated entity: legal identity, licences, regulatory categorisation, frameworks in scope, key contacts, critical functions and risk appetite. Every workflow reads this file first to decide which instruments apply",
+  "examples": [
+    {
+      "schemaVersion": "1",
+      "kind": "maxwell.company.details",
+      "companyId": "zenith-securities",
+      "legalName": "Zenith Securities Private Limited",
+      "brandName": "Zenith",
+      "description": "Discount broking and depository participant serving retail investors across India via mobile and web trading platforms",
+      "website": "https://www.zenithsecurities.in",
+      "identifiers": {
+        "cin": "U67120MH2015PTC267890",
+        "pan": "AAACZ1234K",
+        "gstin": "27AAACZ1234K1ZV",
+        "lei": "335800ABCDEFGHIJKL45",
+        "sebiRegistrationNos": [ "INZ000123456", "IN-DP-123-2016" ],
+        "dunsNumber": "860123456"
+      },
+      "headquarters": {
+        "city": "Mumbai",
+        "state": "Maharashtra",
+        "country": "IN"
+      },
+      "jurisdictions": [
+        {
+          "country": "IN",
+          "state": "Maharashtra",
+          "primary": true
+        }
+      ],
+      "entityTypes": [ "stock-broker", "depository-participant" ],
+      "regulatoryRegistrations": [
+        {
+          "regulator": "SEBI",
+          "registrationNo": "INZ000123456",
+          "category": "mid-size-re",
+          "categorisedAt": "2025-04-01",
+          "registeredAt": "2016-02-15",
+          "status": "active"
+        },
+        {
+          "regulator": "SEBI",
+          "registrationNo": "IN-DP-123-2016",
+          "category": "mid-size-re",
+          "categorisedAt": "2025-04-01",
+          "registeredAt": "2016-08-10",
+          "status": "active"
+        }
+      ],
+      "frameworksInScope": [
+        "sebi-cscrf-2024",
+        "cert-in-directions-2022",
+        "dpdp-rules-2025",
+        "iso-27001-2022"
+      ],
+      "contacts": [
+        {
+          "role": "ciso",
+          "name": "Ananya Iyer",
+          "email": "ciso@zenithsecurities.in",
+          "phone": "+912261234567"
+        },
+        {
+          "role": "compliance-officer",
+          "name": "Rohit Menon",
+          "email": "compliance@zenithsecurities.in"
+        },
+        {
+          "role": "designated-officer",
+          "name": "Ananya Iyer",
+          "email": "ciso@zenithsecurities.in",
+          "phone": "+912261234567"
+        }
+      ],
+      "orgSize": {
+        "employees": 420,
+        "techHeadcount": 95,
+        "securityHeadcount": 6
+      },
+      "fiscalYearStart": "04-01",
+      "dataResidency": [ "IN" ],
+      "criticalFunctions": [
+        {
+          "functionId": "order-routing",
+          "name": "Order routing to exchanges",
+          "description": "Acceptance, validation and routing of client orders to NSE and BSE during market hours",
+          "impactTolerance": {
+            "maxOutageMinutes": 30,
+            "maxDataLossMinutes": 0
+          },
+          "appIds": [ "trading-core" ]
+        }
+      ],
+      "riskAppetite": {
+        "statement": "Zero tolerance for client data breaches or unapproved trading downtime during market hours; medium residual risk accepted for internal tooling",
+        "maxAcceptableSeverity": "medium"
+      },
+      "socModel": "m-soc-nse-bse",
+      "auditCadence": {
+        "vaptPerYear": 2,
+        "cyberAuditPerYear": 1,
+        "lastVaptAt": "2026-03-20",
+        "lastCyberAuditAt": "2026-05-30"
+      },
+      "tags": [ "retail-broking", "sebi" ],
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-13T06:30:00Z",
+        "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XA",
+        "workflow": "seed-company",
+        "agent": "company-profiler"
+      }
+    }
+  ],
+  "type": "object",
+  "if": {
+    "required": [ "entityTypes" ],
+    "properties": {
+      "entityTypes": {
+        "contains": {
+          "not": {
+            "enum": [ "fintech-unregulated", "technology-service-provider" ]
+          }
+        }
+      }
+    }
+  },
+  "then": {
+    "properties": {
+      "regulatoryRegistrations": {
+        "minItems": 1
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "kind",
+    "companyId",
+    "legalName",
+    "jurisdictions",
+    "entityTypes",
+    "regulatoryRegistrations",
+    "frameworksInScope",
+    "contacts",
+    "socModel",
+    "provenance"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/schemaVersion"
+    },
+    "kind": {
+      "const": "maxwell.company.details"
+    },
+    "companyId": {
+      "description": "Slug identifying the company; must equal the company-profile/<company_id> folder name",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+    },
+    "legalName": {
+      "description": "Registered legal name exactly as it appears on the certificate of incorporation or licence",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+    },
+    "brandName": {
+      "description": "Trading or brand name used publicly when it differs from the legal name",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+    },
+    "description": {
+      "description": "One-paragraph plain-language summary of what the company does and whom it serves",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+    },
+    "website": {
+      "description": "Primary public website",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/url"
+    },
+    "identifiers": {
+      "$ref": "#/$defs/identifiers"
+    },
+    "headquarters": {
+      "description": "Registered office location",
+      "type": "object",
+      "required": [ "city", "country" ],
+      "properties": {
+        "city": {
+          "description": "City of the registered office",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "state": {
+          "description": "State or province of the registered office",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "country": {
+          "description": "ISO 3166-1 alpha-2 country of the registered office",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/countryCode"
+        }
+      },
+      "additionalProperties": false
+    },
+    "jurisdictions": {
+      "description": "Every jurisdiction in which the company is licensed or supervised, exactly one of them marked primary. Drives which regulators' instruments are considered applicable",
+      "type": "array",
+      "maxItems": 64,
+      "minItems": 1,
+      "uniqueItems": true,
+      "maxContains": 1,
+      "contains": {
+        "required": [ "primary" ],
+        "properties": {
+          "primary": {
+            "const": true
+          }
+        }
+      },
+      "items": {
+        "$ref": "#/$defs/jurisdiction"
+      }
+    },
+    "entityTypes": {
+      "description": "Regulated-entity licence categories the company holds, from the closed entity-types vocabulary. At least one is needed to select applicable instruments",
+      "type": "array",
+      "maxItems": 16,
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "https://maxwell.onfinance.ai/schemas/vocab/entity-types.schema.json"
+      }
+    },
+    "regulatoryRegistrations": {
+      "description": "Licences and registrations with regulators, including the regulator's cyber-resilience categorisation (SEBI CSCRF RE category, RBI UCB tier or cyber level, NBFC scale-based layer). At least one is required unless entityTypes holds only fintech-unregulated or technology-service-provider",
+      "type": "array",
+      "maxItems": 64,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/regulatoryRegistration"
+      }
+    },
+    "frameworksInScope": {
+      "description": "Regulatory instruments and frameworks the company is assessed against. Findings, risks and initiatives cite controls from these instruments first",
+      "type": "array",
+      "maxItems": 64,
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "https://maxwell.onfinance.ai/schemas/vocab/instruments.schema.json"
+      }
+    },
+    "contacts": {
+      "description": "Named accountable persons by governance role. Workflows route approvals, incident reports (designated-officer), grievances (grievance-officer) and audit evidence requests to these contacts",
+      "type": "array",
+      "maxItems": 64,
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/contact"
+      }
+    },
+    "orgSize": {
+      "description": "Headcount figures used to scale expectations such as SOC model and audit cadence",
+      "type": "object",
+      "required": [ "employees" ],
+      "properties": {
+        "employees": {
+          "description": "Total full-time employees",
+          "type": "integer",
+          "minimum": 0
+        },
+        "techHeadcount": {
+          "description": "Employees in engineering, IT and data roles",
+          "type": "integer",
+          "minimum": 0
+        },
+        "securityHeadcount": {
+          "description": "Employees dedicated to information security, including SOC analysts",
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "fiscalYearStart": {
+      "description": "First day of the fiscal year as MM-DD; Indian entities use 04-01",
+      "type": "string",
+      "pattern": "^((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01])|(0[469]|11)-(0[1-9]|[12][0-9]|30)|02-(0[1-9]|[12][0-9]))$"
+    },
+    "dataResidency": {
+      "description": "Countries in which regulated data may be stored at rest. Indian payment and SPDI data is normally restricted to IN",
+      "type": "array",
+      "maxItems": 64,
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/countryCode"
+      }
+    },
+    "criticalFunctions": {
+      "description": "Critical or important business services in the DORA and SEBI CSCRF sense, with impact tolerances. Vendors and applications reference these by functionId, which must be unique within the array (checked by validate-data, not by uniqueItems)",
+      "type": "array",
+      "maxItems": 64,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/criticalFunction"
+      }
+    },
+    "riskAppetite": {
+      "description": "Board-approved risk appetite used to decide which findings may be risk-accepted",
+      "type": "object",
+      "required": [ "statement", "maxAcceptableSeverity" ],
+      "properties": {
+        "statement": {
+          "description": "Risk appetite statement in the board's own words",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+        },
+        "maxAcceptableSeverity": {
+          "description": "Highest finding severity that may be risk-accepted without board escalation",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/severity"
+        }
+      },
+      "additionalProperties": false
+    },
+    "socModel": {
+      "description": "How security monitoring is delivered: in-house SOC, a managed SOC provider, the SEBI Market SOC operated by NSE/BSE for small REs, or none",
+      "enum": [ "in-house", "managed-soc", "m-soc-nse-bse", "none" ]
+    },
+    "auditCadence": {
+      "description": "Mandated frequency of independent security assessments and when they last happened",
+      "type": "object",
+      "required": [ "vaptPerYear", "cyberAuditPerYear" ],
+      "properties": {
+        "vaptPerYear": {
+          "description": "Vulnerability assessment and penetration tests required per fiscal year",
+          "type": "integer",
+          "maximum": 12,
+          "minimum": 0
+        },
+        "cyberAuditPerYear": {
+          "description": "Cyber security or IT audits by a CERT-In empanelled or regulator-approved auditor required per fiscal year",
+          "type": "integer",
+          "maximum": 12,
+          "minimum": 0
+        },
+        "lastVaptAt": {
+          "description": "Date the most recent VAPT report was issued",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/date"
+        },
+        "lastCyberAuditAt": {
+          "description": "Date the most recent cyber audit report was issued",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/date"
+        }
+      },
+      "additionalProperties": false
+    },
+    "tags": {
+      "description": "Free-form lowercase labels for filtering companies",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/tags"
+    },
+    "provenance": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/provenance"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "identifiers": {
+      "description": "Statutory and market identifiers. Keys are closed; leave out any the company does not hold",
+      "type": "object",
+      "minProperties": 1,
+      "properties": {
+        "cin": {
+          "description": "MCA Corporate Identification Number, 21 characters",
+          "type": "string",
+          "pattern": "^[LU][0-9]{5}[A-Z]{2}[0-9]{4}[A-Z]{3}[0-9]{6}$"
+        },
+        "llpin": {
+          "description": "MCA LLP Identification Number for limited liability partnerships",
+          "type": "string",
+          "pattern": "^[A-Z]{3}-[0-9]{4}$"
+        },
+        "pan": {
+          "description": "Income-tax Permanent Account Number",
+          "type": "string",
+          "pattern": "^[A-Z]{5}[0-9]{4}[A-Z]$"
+        },
+        "tan": {
+          "description": "Tax Deduction and Collection Account Number",
+          "type": "string",
+          "pattern": "^[A-Z]{4}[0-9]{5}[A-Z]$"
+        },
+        "gstin": {
+          "description": "Goods and Services Tax Identification Number of the principal place of business",
+          "type": "string",
+          "pattern": "^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$"
+        },
+        "lei": {
+          "description": "ISO 17442 Legal Entity Identifier",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/lei"
+        },
+        "sebiRegistrationNos": {
+          "description": "All SEBI registration numbers held (broker INZ, DP IN-DP, IA INA, RA INH, PMS INP, AMC, AIF and so on)",
+          "type": "array",
+          "maxItems": 32,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^IN[A-Z0-9-]{4,30}$"
+          }
+        },
+        "rbiCorNo": {
+          "description": "RBI Certificate of Registration number for NBFCs, HFCs, PSOs and PPI issuers",
+          "type": "string",
+          "pattern": "^[A-Z0-9][A-Z0-9./-]{2,40}$"
+        },
+        "irdaiRegistrationNo": {
+          "description": "IRDAI registration number for insurers and intermediaries",
+          "type": "string",
+          "pattern": "^[A-Z0-9][A-Z0-9./-]{0,40}$"
+        },
+        "ifscaRegistrationNo": {
+          "description": "IFSCA registration number for GIFT City entities",
+          "type": "string",
+          "pattern": "^[A-Z0-9][A-Z0-9./-]{0,40}$"
+        },
+        "dunsNumber": {
+          "description": "Dun & Bradstreet D-U-N-S number",
+          "type": "string",
+          "pattern": "^[0-9]{9}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "jurisdiction": {
+      "type": "object",
+      "required": [ "country" ],
+      "properties": {
+        "country": {
+          "description": "ISO 3166-1 alpha-2 code of the supervising jurisdiction",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/countryCode"
+        },
+        "state": {
+          "description": "State, province or special zone (for example Maharashtra, GIFT City) when supervision is sub-national",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "primary": {
+          "description": "True for the home jurisdiction whose instruments take precedence",
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "regulatoryRegistration": {
+      "type": "object",
+      "required": [ "regulator", "registrationNo", "category" ],
+      "properties": {
+        "regulator": {
+          "description": "Regulator that issued the registration",
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/regulators.schema.json"
+        },
+        "registrationNo": {
+          "description": "Registration or licence number as issued by the regulator",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "category": {
+          "description": "Regulator's cyber-resilience or supervisory categorisation, from the shared reCategory vocabulary (also used by catalog/instruments applicability.categories)",
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/reCategory"
+        },
+        "categorisedAt": {
+          "description": "Date the current category was assigned; SEBI CSCRF categorisation is re-assessed each fiscal year",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/date"
+        },
+        "registeredAt": {
+          "description": "Date the registration was granted",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/date"
+        },
+        "validUntil": {
+          "description": "Expiry date for time-limited registrations; omit for perpetual ones",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/date"
+        },
+        "status": {
+          "description": "Current standing of the registration with the regulator",
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/registrationStatus"
+        }
+      },
+      "additionalProperties": false
+    },
+    "contactRole": {
+      "description": "Alias of common contactRole, kept so existing $refs to details.schema.json#/$defs/contactRole keep resolving",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/contactRole"
+    },
+    "contact": {
+      "type": "object",
+      "required": [ "role", "name", "email" ],
+      "properties": {
+        "role": {
+          "description": "Governance role the person fills; one person may appear under several roles",
+          "$ref": "#/$defs/contactRole"
+        },
+        "name": {
+          "description": "Full name",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "email": {
+          "description": "Work email address",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/email"
+        },
+        "phone": {
+          "description": "E.164 phone number with country code, digits only after the plus sign",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/phoneE164"
+        }
+      },
+      "additionalProperties": false
+    },
+    "criticalFunction": {
+      "type": "object",
+      "required": [ "functionId", "name", "impactTolerance" ],
+      "properties": {
+        "functionId": {
+          "description": "Slug referenced by vendor services (criticalFunctionRefs) and applications",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+        },
+        "name": {
+          "description": "Business-facing name of the service",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "description": {
+          "description": "What the service does and why its disruption matters to clients or markets",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+        },
+        "impactTolerance": {
+          "description": "Maximum tolerable disruption, expressed as recovery-time and recovery-point objectives",
+          "type": "object",
+          "required": [ "maxOutageMinutes" ],
+          "properties": {
+            "maxOutageMinutes": {
+              "description": "Recovery time objective in minutes; SEBI CSCRF expects 30 minutes for critical systems of MIIs",
+              "type": "integer",
+              "minimum": 0
+            },
+            "maxDataLossMinutes": {
+              "description": "Recovery point objective in minutes; 0 means no data loss is tolerable",
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "additionalProperties": false
+        },
+        "appIds": {
+          "description": "Applications (applications/<app_id>) that deliver this function",
+          "type": "array",
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

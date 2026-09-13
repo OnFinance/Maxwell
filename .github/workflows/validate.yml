@@ -1,0 +1,36 @@
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Install sops and age (validate decrypted demo credentials)
+        run: |
+          set -euo pipefail
+          SOPS_VER=$(curl -fsSL https://api.github.com/repos/getsops/sops/releases/latest | jq -r .tag_name | sed 's/^v//')
+          AGE_VER=$(curl -fsSL https://api.github.com/repos/FiloSottile/age/releases/latest | jq -r .tag_name)
+          curl -fsSL -o /usr/local/bin/sops "https://github.com/getsops/sops/releases/download/v${SOPS_VER}/sops-v${SOPS_VER}.linux.amd64"
+          chmod +x /usr/local/bin/sops
+          curl -fsSL "https://github.com/FiloSottile/age/releases/download/${AGE_VER}/age-${AGE_VER}-linux-amd64.tar.gz" | tar xz
+          sudo mv age/age age/age-keygen /usr/local/bin/
+      - name: Validate workspace
+        env:
+          SOPS_AGE_KEY_FILE: .claude/skills/credentials-sops/references/example-co.demo.age-key.txt
+          MAXWELL_REQUIRE_DECRYPT: "1"
+        run: npm run validate
+      - name: Tests
+        run: npm test

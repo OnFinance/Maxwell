@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/opencode-command.schema.json",
+  "title": "OpenCode command frontmatter",
+  "description": "YAML frontmatter of .agents/commands/<name>.md, generated from .claude/commands by sync-agents-mirror.mjs (never edited by hand). The markdown body is the command template. x-maxwell is copied verbatim from the Claude Code command",
+  "examples": [
+    {
+      "description": "Run every Maxwell validator (layout, schemas, data, frontmatter, workflows, mirror) and report problems by path",
+      "agent": "maxwell",
+      "model": "anthropic/claude-sonnet-5",
+      "subtask": false,
+      "x-maxwell": {
+        "workflow": "validate",
+        "touches": [],
+        "readsCredentials": false
+      }
+    }
+  ],
+  "type": "object",
+  "required": [ "description" ],
+  "properties": {
+    "description": {
+      "description": "One-line help shown in the OpenCode command palette",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/skill.schema.json#/$defs/description"
+    },
+    "agent": {
+      "description": "Agent (key of opencode.json agent or a file in .agents/agents) that executes the command",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/harness/opencode-config.schema.json#/$defs/agentName"
+    },
+    "model": {
+      "description": "Model override in provider/model form, e.g. anthropic/claude-sonnet-5",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/harness/opencode-config.schema.json#/$defs/modelId"
+    },
+    "subtask": {
+      "description": "When true the command runs as a subtask in a fresh context instead of the current session",
+      "type": "boolean"
+    },
+    "x-maxwell": {
+      "description": "Maxwell metadata copied from the canonical Claude Code command",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/claude-command.schema.json#/$defs/xMaxwell"
+    }
+  },
+  "additionalProperties": false
+}
