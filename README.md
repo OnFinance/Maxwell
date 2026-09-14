@@ -297,30 +297,34 @@ candidate before anything is written. Utility commands: `/validate`, `/kpis`, `/
 
 Start `claude` (or `opencode`) in the repository after the [quick start](#quick-start) and ask in plain words. Maxwell
 picks the workflow, tells you which one and on what scope, then runs it against the fictional `example-co` company.
-The second column is the slash command that does the same thing directly.
 
-| # | Ask Maxwell | What runs | Where to look |
-|---:|---|---|---|
-| 1 | "Which controls apply to example-co, and when is each one due?" | `/refresh-soc example-co` | "Control summary" in `summary.md`; control records in `soc/main.jsonl` |
-| 2 | "Has SEBI or RBI changed anything that affects example-co's registrations?" | `/refresh-ctx example-co` | "Regulatory posture" in `summary.md`; drift observations and risks in the ledger |
-| 3 | "RBI repealed a direction we follow. Move example-co onto its replacement." | `soc/migrate-instrument.mjs`, shown as a dry run first | The plan of controls retired and added and findings re-mapped, then the ledger |
-| 4 | "Which of our vendors are critical, and whose SOC 2 report or contract is about to expire?" | `/refresh-vendor-ctx example-co` | "Vendors" in `summary.md`; `vendors/*.json` |
-| 5 | "Where does example-co keep personal and financial data?" | `/refresh-metastore example-co` | `sdlc/metastore.json` and classification-gap observations |
-| 6 | "Pull the latest code for our applications and tell me what drifted." | `/refresh-apps example-co` | `applications/*/repos/*.json` and drift gaps in the ledger |
-| 7 | "Check mcp-gateway's infrastructure code for cloud misconfigurations." | `/probe-iac example-co --app=mcp-gateway` | Findings, with the SARIF export under `kpis/data/raw/sessions/` |
-| 8 | "Are passwords or personal data stored unprotected in db-models?" | `/probe-schemas example-co --app=db-models` | Findings on unprotected PII, SPDI and credential fields |
-| 9 | "Is our CI/CD pipeline pinned, gated and producing a real SBOM?" | `/probe-cicd-env example-co` | Findings on action pinning, secrets, scan gates and SBOMs |
-| 10 | "Is our MCP server safe to point at production data?" | `/probe-agent-graph example-co --app=mcp-gateway` | Findings tagged with OWASP Agentic Top 10 2026 ids |
-| 11 | "Do a security code review of mcp-gateway." | `/execute-scr example-co --app=mcp-gateway` | OWASP ASVS 5 findings, plus NIST SSDF and developer-environment observations |
-| 12 | "What would you check in production, without touching it?" | `/runtime-probe-prod-env example-co --app=mcp-gateway --env=prod --dry-run` | Planned checks and the evidence needed; nothing runs against prod |
-| 13 | "Turn the open findings into a remediation plan with owners and deadlines." | `/impl-change-management example-co` | Initiatives, timelines and tasks under `change_management/` |
-| 14 | "Suggest code fixes for the open findings." | `/impl-auto-improvement example-co --app=mcp-gateway` | Diffs under `suggestions/suggestions/`; your repositories are never changed |
-| 15 | "Write the audit report and tell me what this audit cost." | `/kpis`, then `/report-audit-findings example-co` and `/report-audit-improvements example-co` | Findings, initiatives and KPI sections of `summary.md` |
+1. **"Which controls apply to example-co, and when is each one due?"** Runs `/refresh-soc`; see "Control summary" in
+   `summary.md`.
+2. **"Has SEBI or RBI changed anything that affects example-co's registrations?"** Runs `/refresh-ctx`; see
+   "Regulatory posture" in `summary.md`.
+3. **"RBI repealed a direction we follow. Move example-co onto its replacement."** Runs
+   `soc/migrate-instrument.mjs`, showing the plan as a dry run first.
+4. **"Which of our vendors are critical, and whose SOC 2 report or contract is about to expire?"** Runs
+   `/refresh-vendor-ctx`; see "Vendors" in `summary.md`.
+5. **"Where does example-co keep personal and financial data?"** Runs `/refresh-metastore`; see
+   `sdlc/metastore.json`.
+6. **"Pull the latest code for our applications and tell me what drifted."** Runs `/refresh-apps`.
+7. **"Check mcp-gateway's infrastructure code for cloud misconfigurations."** Runs `/probe-iac --app=mcp-gateway`.
+8. **"Are passwords or personal data stored unprotected in db-models?"** Runs `/probe-schemas --app=db-models`.
+9. **"Is our CI/CD pipeline pinned, gated and producing a real SBOM?"** Runs `/probe-cicd-env`.
+10. **"Is our MCP server safe to point at production data?"** Runs `/probe-agent-graph --app=mcp-gateway`.
+11. **"Do a security code review of mcp-gateway."** Runs `/execute-scr --app=mcp-gateway`.
+12. **"What would you check in production, without touching it?"** Runs `/runtime-probe-prod-env --env=prod --dry-run`;
+    nothing runs against production.
+13. **"Turn the open findings into a remediation plan with owners and deadlines."** Runs `/impl-change-management`;
+    see `change_management/`.
+14. **"Suggest code fixes for the open findings."** Runs `/impl-auto-improvement`; diffs land under
+    `suggestions/suggestions/` and your repositories are never changed.
+15. **"Write the audit report and tell me what this audit cost."** Runs `/kpis`, `/report-audit-findings` and
+    `/report-audit-improvements`; see `summary.md`.
 
-Paths are relative to `company-profile/example-co/` unless they start with `applications/` or `kpis/`. At any time, ask
-"What's the status of example-co?" (`/status example-co`) for open findings by severity, overdue initiatives and
-pending suggestions, or "Where should scans run?" (`/connect-sandbox example-co`) to choose a sandbox. Scanners and
-runtime probes need a sandbox; without one, probes review files manually and runtime checks only plan. Every workflow
+Paths are relative to `company-profile/example-co/`. At any time, ask "What's the status of example-co?" for open
+findings, overdue initiatives and pending suggestions, or "Where should scans run?" to choose a sandbox. Every workflow
 also runs headless: `node .claude/scripts/run-headless.mjs --workflow probe-iac --company example-co --app mcp-gateway`.
 
 ## Regulatory coverage
