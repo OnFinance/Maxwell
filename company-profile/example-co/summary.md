@@ -3,15 +3,15 @@ schemaVersion: "1"
 kind: maxwell.company.summary
 companyId: example-co
 title: Example Capital Markets cyber resilience summary
-version: "4.2.0"
+version: "4.3.0"
 sections: [overview, regulatory-posture, data-flows, vendors, control-summary, open-findings]
 provenance:
   harness: claude-code
-  generatedAt: "2026-09-14T14:41:43Z"
+  generatedAt: "2026-09-14T14:46:47Z"
   sessionId: "453ecc6e-1346-418f-a2c0-1bfcead851c3"
   workflow: manual
   agent: main-session
-  inputsHash: 73c2119c962087e4a4fb0cb2891605b48f73cd2b12cc33ef9656b55f4f3f6b65
+  inputsHash: 591dc9bcf8445815fcae43e66c851a1b62ece56400c2d2531c592c937a94be78
 ---
 # Example Capital Markets — cyber resilience summary
 
@@ -36,9 +36,9 @@ control records as `not-applicable` (each names its successor controls; paragrap
 agreements, has no mapped successor), appended the 176 successor controls that apply to example-co, and re-mapped
 the 6 open vendor findings from paragraphs 19(e) and 22(a) to successor paragraphs 79 and 84-86 (ledger version
 `soc/versions/commit_6.diff`). Existing IT outsourcing agreements had to comply by 2026-04-10 or at renewal. The
-drift `refresh-ctx` raised stays recorded as observation [obs_01M2FH0ZNKQRSBK4RWM938HDWT] and risk
-[rsk_01M2FH0ZPG0XQAA2PZ522ZNGQK] (severity medium, status open) until the next `refresh-ctx` run confirms the
-profile and closes it.
+drift `refresh-ctx` raised is resolved: observation [obs_01M2G651Z4433JB67Q5G0T111A] (result `satisfied`, 2026-09-14T14:46:47Z)
+supersedes [obs_01M2FH0ZNKQRSBK4RWM938HDWT], and risk [rsk_01M2FH0ZPG0XQAA2PZ522ZNGQK] moved through `investigating`
+and `mitigating` to `closed` after the profile, registry and ledger checks passed.
 
 0 escalated claim(s) awaiting human resolution as of this refresh.
 
