@@ -3,15 +3,16 @@ schemaVersion: "1"
 kind: maxwell.company.summary
 companyId: example-co
 title: Example Capital Markets cyber resilience summary
-version: "4.3.0"
+version: "4.4.0"
 sections: [overview, regulatory-posture, data-flows, vendors, control-summary, open-findings]
 provenance:
-  harness: claude-code
-  generatedAt: "2026-09-14T14:46:47Z"
+  harness: opencode
+  generatedAt: "2026-09-14T17:03:20Z"
   sessionId: "453ecc6e-1346-418f-a2c0-1bfcead851c3"
-  workflow: manual
-  agent: main-session
-  inputsHash: 591dc9bcf8445815fcae43e66c851a1b62ece56400c2d2531c592c937a94be78
+  runId: run_01M2GDZ3Q3S5WYCB3MV02QJXZ1
+  workflow: refresh-ctx
+  agent: report-writer
+  inputsHash: e4ef028ac3d76c794bfc3a578126977982e023caa1281b319601a7a24cebe275
 ---
 # Example Capital Markets — cyber resilience summary
 
@@ -25,24 +26,34 @@ Active registrations (`company-profile/example-co/details.json`): SEBI INZ000999
 status active), SEBI IN-DP-999-2016 (category `mid-size-re`, status active, depository participant), RBI
 N-13.09999 (category `nbfc-middle-layer`, status active).
 
-Frameworks in scope: `sebi-cscrf-2024`, `rbi-cyber-tech-directions-2026`, `rbi-outsourcing-risk-directions-2025`,
-`cert-in-directions-2022`, `dpdp-rules-2025`, `iso-27001-2022`.
+Frameworks in scope (8): `sebi-cscrf-2024`, `rbi-cyber-tech-directions-2026`, `rbi-outsourcing-risk-directions-2025`,
+`cert-in-directions-2022`, `dpdp-rules-2025`, `iso-27001-2022`, `dpdp-act-2023`, `rbi-digital-payment-security-2021`.
 
-**Repealed instrument migrated (2026-09-14T14:41:43Z).** RBI repealed `rbi-it-outsourcing-md-2023` on 2025-11-28
-(circular DOR.RRC.REC.302/33-01-010/2025-26) and replaced it with the entity-wise Managing Risks in Outsourcing
-Directions, 2025 (for NBFCs RBI/DOR/2025-26/363), registered as `rbi-outsourcing-risk-directions-2025`.
-`soc/migrate-instrument.mjs` swapped it in `frameworksInScope`, superseded the 64 `rbi-it-outsourcing-md-2023`
-control records as `not-applicable` (each names its successor controls; paragraph 16, the minimum clause set for
-agreements, has no mapped successor), appended the 176 successor controls that apply to example-co, and re-mapped
-the 6 open vendor findings from paragraphs 19(e) and 22(a) to successor paragraphs 79 and 84-86 (ledger version
-`soc/versions/commit_6.diff`). Existing IT outsourcing agreements had to comply by 2026-04-10 or at renewal. The
-drift `refresh-ctx` raised is resolved: observation [obs_01M2G651Z4433JB67Q5G0T111A] (result `satisfied`, 2026-09-14T14:46:47Z)
-supersedes [obs_01M2FH0ZNKQRSBK4RWM938HDWT], and risk [rsk_01M2FH0ZPG0XQAA2PZ522ZNGQK] moved through `investigating`
-and `mitigating` to `closed` after the profile, registry and ledger checks passed.
+**Drift applied this run: 2 × `instrument_became_applicable` on `/frameworksInScope` (both recorded
+2026-09-14T17:03:20Z).**
 
-0 escalated claim(s) awaiting human resolution as of this refresh.
+- `dpdp-act-2023` appended [obs_01M2GH97KXN2WXTZ181R216N5C] (result `not-satisfied`, control `dpdp-rules-2025:1`):
+  the instrument registry lists the MeitY DPDP Act 2023 as applicable to this company's entity types
+  `stock-broker`, `depository-participant` and `nbfc` in jurisdiction `IN`, effective 2025-11-13 and already
+  commenced, while `frameworksInScope` covered the DPDP regime only through `dpdp-rules-2025`.
+- `rbi-digital-payment-security-2021` appended [obs_01M2GH97M1CSN3D82H8M6WM8GN] (result `not-satisfied`, control
+  `rbi-cyber-tech-directions-2026:12`): the registry lists it as applicable to `nbfc` in jurisdiction `IN`,
+  effective 2021-08-18, and it was absent from `frameworksInScope` before this run; the observation carries the
+  registry caveat that its status after RBI's Nov 2025 and Jul 2026 consolidations is not yet verified on
+  rbi.org.in and must be confirmed before citing.
 
-Refresh date: 2026-09-14 (`provenance.generatedAt` 2026-09-14T08:31:29Z).
+1 escalated claim awaiting human resolution as of this refresh: [rsk_01M2GH97M1ZYX3TQJ4BJ0CEE6M] (`high`,
+status `investigating`, control `sebi-cscrf-2024:GV.OC.S2`) — SEBI's Recognised Intermediaries register returns
+"No record(s) available." for DP registration IN-DP-999-2016 while `details.json` lists the
+`depository-participant` entity type backed by that registration as active, so the company may be operating
+depository-participant services without a currently valid SEBI DP registration (or the profile may misstate the
+licence); the claim was not unanimously confirmed (the entity-identity lens refuted, two lenses did not). Per the
+`refresh-ctx` rules the entity type is left in place and the claim is escalated for human resolution against
+CDSL's and NSDL's own DP lists and the SEBI register.
+
+Refresh date: 2026-09-14 (`provenance.generatedAt` 2026-09-14T17:03:20Z).
+
+<!-- source: details.json regulatoryRegistrations and frameworksInScope; soc/main.jsonl kind:observation title "instrument_became_applicable: /frameworksInScope" with provenance.runId run_01M2GDZ3Q3S5WYCB3MV02QJXZ1 (2 records, lines 692-693); escalated claim = kind:risk rsk_01M2GH97M1ZYX3TQJ4BJ0CEE6M (line 694) -->
 
 ## Vendors
 `refresh-vendor-ctx` refreshed this section as of 2026-09-14T10:46:39Z: 0 vendors onboarded, 1 updated

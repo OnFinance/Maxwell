@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.session.meta",
+  "sessionId": "ses_f5f10d3e8ffe4FBr9688aOYH7V",
+  "harness": "opencode",
+  "workflow": "refresh-ctx",
+  "args": {
+    "appIds": [],
+    "envIds": [],
+    "dryRun": false
+  },
+  "startedAt": "2026-09-14T18:26:51Z",
+  "cwd": "/home/priyesh/.cache/maxwell-e2e/opencode-wt",
+  "transcriptPath": "kpis/data/raw/sessions/opencode/ses_f5f10d3e8ffe4FBr9688aOYH7V.jsonl",
+  "sampled": false,
+  "samplingReason": "excluded",
+  "model": "unknown",
+  "invokedBy": {
+    "type": "script",
+    "id": "headless"
+  },
+  "provenance": {
+    "harness": "script",
+    "generatedAt": "2026-09-14T18:26:51Z",
+    "sessionId": "ses_f5f10d3e8ffe4FBr9688aOYH7V",
+    "agent": ".claude/scripts/sessions/ingest.mjs"
+  },
+  "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+  "endedAt": "2026-09-14T18:26:51Z",
+  "exportPath": "kpis/data/raw/sessions/opencode/ses_f5f10d3e8ffe4FBr9688aOYH7V.export.json",
+  "harnessVersion": "1.18.30",
+  "companyId": "example-co"
+}

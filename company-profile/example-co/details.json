@@ -63,7 +63,9 @@
     "rbi-outsourcing-risk-directions-2025",
     "cert-in-directions-2022",
     "dpdp-rules-2025",
-    "iso-27001-2022"
+    "iso-27001-2022",
+    "dpdp-act-2023",
+    "rbi-digital-payment-security-2021"
   ],
   "contacts": [
     {
@@ -125,10 +127,11 @@
     "nbfc"
   ],
   "provenance": {
-    "harness": "script",
-    "generatedAt": "2026-09-14T14:41:43Z",
-    "workflow": "manual",
-    "agent": "soc/migrate-instrument",
-    "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3"
+    "harness": "opencode",
+    "generatedAt": "2026-09-14T17:03:20Z",
+    "workflow": "refresh-ctx",
+    "agent": "validator",
+    "sessionId": "ses_f5ee012d2ffe3tmSBJFARfRDoR",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1"
   }
 }
