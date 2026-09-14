@@ -21,6 +21,11 @@ const onlyCompany = opts('--company')[0];
 const t0 = Date.now();
 
 const registry = JSON.parse(readFileSync('kpis/metrics.json', 'utf8'));
+// refresh-* context-maintenance workflows are not audit work: their sessions add no audit cost and their ledger
+// observations add no control or asset coverage (kpis/metrics.json excludedWorkflows).
+const excludedWorkflows = new Set(registry.excludedWorkflows || []);
+const countsForKpis = (workflow) => !excludedWorkflows.has(workflow || 'manual');
+const observationCounts = (r) => (r.methods || []).some((m) => !excludedWorkflows.has(m));
 const { ajv } = buildAjv();
 const validateDp = getValidator(ajv, 'https://maxwell.onfinance.ai/schemas/v1/kpi/datapoint.schema.json');
 const validateRun = getValidator(ajv, 'https://maxwell.onfinance.ai/schemas/v1/kpi/run.schema.json');
@@ -36,8 +41,8 @@ for (const h of listDir('kpis/data/raw/sessions')) {
   const d = `kpis/data/raw/sessions/${h}`;
   if (!existsSync(d) || !readdirSync(d)) continue;
   for (const f of listDir(d)) {
-    if (f.endsWith('.summary.json')) summaries.push({ file: `${d}/${f}`, ...readJson(`${d}/${f}`) });
-    if (f.endsWith('.meta.json')) metas.push(readJson(`${d}/${f}`));
+    if (f.endsWith('.summary.json')) { const sm = readJson(`${d}/${f}`); if (countsForKpis(sm.workflow)) summaries.push({ file: `${d}/${f}`, ...sm }); }
+    if (f.endsWith('.meta.json')) { const mt = readJson(`${d}/${f}`); if (countsForKpis(mt.workflow)) metas.push(mt); }
   }
 }
 function ledger(company) {
@@ -94,7 +99,7 @@ if (wants('cost_of_audit')) {
     for (const s of sums) { const w = s.workflow || 'manual'; if (!byWf.has(w)) byWf.set(w, []); byWf.get(w).push(s); }
     const runId = key.startsWith('norun:') ? undefined : key;
     const companyId = (sums.find((s) => s.companyId) || {}).companyId;
-    const controlsObserved = companyId ? new Set(ledger(companyId).filter((x) => x.kind === 'observation' && x.provenance && runId && x.provenance.runId === runId).flatMap((x) => x.controlIds || [])).size : 0;
+    const controlsObserved = companyId ? new Set(ledger(companyId).filter((x) => x.kind === 'observation' && x.provenance && runId && x.provenance.runId === runId && observationCounts(x)).flatMap((x) => x.controlIds || [])).size : 0;
     const appsInScope = new Set(r.metas.flatMap((m) => (m.args && m.args.appIds) || [])).size || appsAll.length;
     let runTotal = 0;
     for (const [wf, list] of byWf) {
@@ -137,9 +142,9 @@ for (const company of companies) {
 
   if (wants('cm_coverage')) {
     const controls = recs.filter((r) => r.kind === 'control' && r.implementationStatus !== 'not-applicable');
-    const observed = new Set(recs.filter((r) => r.kind === 'observation' && inPeriod(r.collectedAt || r.recordedAt)).flatMap((r) => r.controlIds || []));
+    const observed = new Set(recs.filter((r) => r.kind === 'observation' && inPeriod(r.collectedAt || r.recordedAt) && observationCounts(r)).flatMap((r) => r.controlIds || []));
     const covered = controls.filter((c) => observed.has(c.id)).length;
-    const assetsObserved = new Set(recs.filter((r) => r.kind === 'observation' && inPeriod(r.collectedAt || r.recordedAt)).flatMap((r) => (r.subjects || []).filter((s) => s.appId && s.envId).map((s) => `${s.appId}/${s.envId}`)));
+    const assetsObserved = new Set(recs.filter((r) => r.kind === 'observation' && inPeriod(r.collectedAt || r.recordedAt) && observationCounts(r)).flatMap((r) => (r.subjects || []).filter((s) => s.appId && s.envId).map((s) => `${s.appId}/${s.envId}`)));
     const openHigh = recs.filter((r) => r.kind === 'finding' && ['open', 'triaged', 'remediating'].includes(r.status) && ['critical', 'high'].includes(r.severity));
     emit({ kpiId: 'cm_coverage', series: 'raw', unit: 'percent', dimensions: dims, value: controls.length ? round((100 * covered) / controls.length, 2) : 0, numerator: covered, denominator: controls.length, sampleSize: controls.length, inputsRef: { files: [files[0]] }, notes: `asset coverage ${assetsObserved.size}/${envPairs.length} (app,env) pairs; high+ findings linked to initiatives ${openHigh.filter((f) => f.initiativeId).length}/${openHigh.length}` });
   }

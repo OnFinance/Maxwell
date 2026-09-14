@@ -118,7 +118,7 @@
       "then": {
         "properties": {
           "samplingReason": {
-            "enum": [ "bundle", "stochastic", "pending" ]
+            "enum": [ "bundle", "stochastic", "pending", "excluded" ]
           }
         }
       }
@@ -231,8 +231,8 @@
       "type": "boolean"
     },
     "samplingReason": {
-      "description": "Why sampled has its value: the registry mode that selected (sampled true) or skipped (sampled false) it, 'forced' when MAXWELL_KPI_SAMPLE=1 overrode the sampler, or 'pending' while the session is still running and no decision has been taken (sampled false only)",
-      "enum": [ "bundle", "stochastic", "all", "forced", "pending" ]
+      "description": "Why sampled has its value: the registry mode that selected (sampled true) or skipped (sampled false) it, 'forced' when MAXWELL_KPI_SAMPLE=1 overrode the sampler, or 'pending' while the session is still running and no decision has been taken (sampled false only), or 'excluded' when kpis/metrics.json excludedWorkflows lists the session's workflow (sampled false only; no summary is written)",
+      "enum": [ "bundle", "stochastic", "all", "forced", "pending", "excluded" ]
     },
     "model": {
       "description": "Primary model id the session was started with (gen_ai.request.model), e.g. 'claude-opus-5'",

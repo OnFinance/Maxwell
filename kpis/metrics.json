@@ -292,6 +292,12 @@
     "rate": 0.2,
     "seed": "maxwell-2026-09"
   },
+  "excludedWorkflows": [
+    "refresh-soc",
+    "refresh-ctx",
+    "refresh-vendor-ctx",
+    "refresh-metastore"
+  ],
   "pricingRef": ".claude/skills/kpi-extraction/references/pricing.json",
   "pagerduty": {
     "enabled": true,

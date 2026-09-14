@@ -16,8 +16,8 @@
   "gitBranch": "main",
   "gitCommit": "14b7198e728fb9659485578ce2d588d21f72f634",
   "transcriptPath": "kpis/data/raw/sessions/claude-code/f0fb0ca1-ccc3-4797-afc8-2bbe384b5053.jsonl",
-  "sampled": true,
-  "samplingReason": "forced",
+  "sampled": false,
+  "samplingReason": "excluded",
   "model": "opus",
   "invokedBy": {
     "type": "script",

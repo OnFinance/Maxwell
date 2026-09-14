@@ -6,7 +6,7 @@
 // 1. Applies the sampling policy from kpis/metrics.json and updates <sid>.meta.json (sampled, samplingReason, endedAt).
 // 2. For sampled sessions copies the transcript (Claude Code JSONL + subagent files, or `opencode export` JSON) into
 //    kpis/data/raw/sessions/<harness>/ (gitignored) and writes <sid>.summary.json validated against the schema.
-import { readFileSync, existsSync, writeFileSync, readdirSync, mkdirSync, statSync, copyFileSync } from 'node:fs';
+import { readFileSync, existsSync, writeFileSync, readdirSync, mkdirSync, statSync, copyFileSync, unlinkSync } from 'node:fs';
 import { join, resolve, relative, basename } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
@@ -53,7 +53,11 @@ function decideSampling() {
     .filter((m) => (m.runId || (m.startedAt || '').slice(0, 10)) === bundleKey && m.sessionId !== sessionId && m.sampled === true);
   return { sampled: siblings.length < (s.bundleSize ?? 10), reason: 'bundle' };
 }
-const decision = decideSampling();
+// Context-maintenance workflows (kpis/metrics.json excludedWorkflows, the refresh-* family) are not audit work:
+// their sessions are recorded but never summarised or costed. Exclusion wins over forced sampling.
+const excludedWorkflows = new Set(registry.excludedWorkflows || []);
+const excluded = excludedWorkflows.has(meta.workflow);
+const decision = excluded ? { sampled: false, reason: 'excluded' } : decideSampling();
 meta.sampled = decision.sampled;
 meta.samplingReason = decision.reason;
 meta.endedAt = meta.endedAt || now();
@@ -121,7 +125,12 @@ const { ajv } = buildAjv();
 const validateMeta = getValidator(ajv, 'https://maxwell.onfinance.ai/schemas/v1/session/meta.schema.json');
 if (!validateMeta(meta)) { console.error(`meta invalid:\n${formatErrors(validateMeta.errors)}`); process.exit(2); }
 writeFileSync(metaPath, JSON.stringify(meta, null, 2) + '\n');
-if (!meta.sampled) { console.log(`session ${sessionId} not sampled (${meta.samplingReason}); meta updated`); process.exit(0); }
+if (!meta.sampled) {
+  const staleSummary = `${dir}/${sessionId}.summary.json`;
+  if (excluded && existsSync(staleSummary)) unlinkSync(staleSummary);
+  console.log(`session ${sessionId} not sampled (${meta.samplingReason}); meta updated`);
+  process.exit(0);
+}
 
 // ---- summary --------------------------------------------------------------------------------------------
 const pricing = loadPricing();

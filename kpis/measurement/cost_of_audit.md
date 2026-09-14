@@ -36,6 +36,11 @@ Prices come from the versioned table `.claude/skills/kpi-extraction/references/p
 (`pricingVersion` is stored on every summary). Thinking tokens are already included in `output_tokens` and are
 reported for information only.
 
+**Excluded workflows.** Sessions of the workflows listed in `kpis/metrics.json` `excludedWorkflows` (the
+`refresh-*` context-maintenance family) are not audit work. They are recorded with `samplingReason: excluded`, get
+no summary, and add nothing to the cost, the session counts or the scale factor. Their observations do not count
+in the per-control denominator.
+
 **Dimensions.** `runId`, `workflow` (from the session meta), `companyId`, `model`, `harness`, and main-thread vs
 subagent (`isSidechain`).
 

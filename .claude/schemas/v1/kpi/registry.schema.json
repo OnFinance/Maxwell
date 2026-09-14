@@ -261,6 +261,12 @@
         "rate": 0.2,
         "seed": "maxwell-2026-09"
       },
+      "excludedWorkflows": [
+        "refresh-soc",
+        "refresh-ctx",
+        "refresh-vendor-ctx",
+        "refresh-metastore"
+      ],
       "pricingRef": ".claude/skills/kpi-extraction/references/pricing.json",
       "pagerduty": {
         "enabled": true,
@@ -430,6 +436,14 @@
         }
       },
       "additionalProperties": false
+    },
+    "excludedWorkflows": {
+      "description": "Workflows whose sessions and ledger observations are left out of every KPI. The refresh-* context-maintenance workflows keep the workspace current and are not audit work, so they add no audit cost and no control or asset coverage",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "https://maxwell.onfinance.ai/schemas/vocab/workflows.schema.json"
+      }
     },
     "pricingRef": {
       "description": "Workspace path of the model pricing table used by cost_of_audit; always the kpi-extraction skill's pricing.json",

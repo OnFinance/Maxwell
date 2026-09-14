@@ -21,6 +21,8 @@ x-maxwell:
 4. **Explain** — every KPI has a methodology document `kpis/measurement/<kpi_id>.md` (frontmatter validated).
 
 ## Rules that keep the numbers defensible
+- The `refresh-*` workflows (`excludedWorkflows` in `kpis/metrics.json`) maintain context and are not audit work:
+  their sessions get `samplingReason: excluded` and no summary, and their observations add no coverage.
 - Cost is always recomputed from tokens with `references/pricing.json` (five buckets: input, output, cache write
   5m, cache write 1h, cache read). Harness-reported cost is a cross-check (`costUsd.reported`, `deltaPct`).
 - Claude Code transcripts are deduplicated per `requestId` keeping the max-total-token record; OpenCode stored

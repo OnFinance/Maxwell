@@ -1238,6 +1238,100 @@
           "model": "claude-opus-5"
         }
       }
+    },
+    {
+      "description": "refresh workflow session excluded from KPIs",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.meta",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "args": {
+          "appIds": [
+            "kite-payments",
+            "kite-web"
+          ],
+          "envIds": [
+            "prod"
+          ],
+          "dryRun": false
+        },
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "cwd": "/srv/maxwell/workspace",
+        "gitBranch": "main",
+        "gitCommit": "9f3c2ab1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+        "transcriptPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.jsonl",
+        "exportPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.export.json",
+        "sampled": false,
+        "samplingReason": "excluded",
+        "model": "claude-opus-5",
+        "invokedBy": {
+          "type": "script",
+          "id": ".github/workflows/nightly-refresh.yml"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T03:41:53Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": "session-ingest-hook",
+          "model": "claude-opus-5"
+        }
+      }
+    },
+    {
+      "description": "excluded reason with sampled true is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.session.meta",
+        "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+        "harness": "claude-code",
+        "harnessVersion": "2.1.14",
+        "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+        "workflow": "refresh-soc",
+        "companyId": "zerodha-broking",
+        "args": {
+          "appIds": [
+            "kite-payments",
+            "kite-web"
+          ],
+          "envIds": [
+            "prod"
+          ],
+          "dryRun": false
+        },
+        "startedAt": "2026-09-12T03:00:05Z",
+        "endedAt": "2026-09-12T03:41:52Z",
+        "cwd": "/srv/maxwell/workspace",
+        "gitBranch": "main",
+        "gitCommit": "9f3c2ab1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+        "transcriptPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.jsonl",
+        "exportPath": "kpis/data/raw/sessions/claude-code/3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b.export.json",
+        "sampled": true,
+        "samplingReason": "excluded",
+        "model": "claude-opus-5",
+        "invokedBy": {
+          "type": "script",
+          "id": ".github/workflows/nightly-refresh.yml"
+        },
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-12T03:41:53Z",
+          "sessionId": "3f7a1c2e-9b4d-4e6f-8a1b-2c3d4e5f6a7b",
+          "runId": "run_01J9Z3XK5N8QW2R4T6Y8A0C2E4",
+          "workflow": "refresh-soc",
+          "agent": "session-ingest-hook",
+          "model": "claude-opus-5"
+        }
+      }
     }
   ]
 }

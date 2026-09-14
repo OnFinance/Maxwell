@@ -23,6 +23,10 @@ A third datapoint, **finding-to-initiative coverage** = open findings with sever
 initiative (`initiativeId` set) ÷ open findings with severity ≥ high, measures whether findings are being turned
 into change work.
 
+**Excluded workflows.** Observations whose `methods` are all in `kpis/metrics.json` `excludedWorkflows` (the
+`refresh-*` family) keep the context current but assess nothing, so they count toward neither control nor asset
+coverage.
+
 **Formula notes.** The ledger is append-only, so "latest record per id" is the last line with that `id` or a
 later line whose `supersedes` points at it. Observations count once per control id listed in `controlIds`.
 
