@@ -3,16 +3,16 @@ schemaVersion: "1"
 kind: maxwell.company.summary
 companyId: example-co
 title: Example Capital Markets cyber resilience summary
-version: "4.5.0"
+version: "4.6.0"
 sections: [overview, regulatory-posture, vendors, data-flows, control-summary, open-findings]
 provenance:
   harness: opencode
-  generatedAt: "2026-09-14T18:35:14Z"
-  sessionId: "453ecc6e-1346-418f-a2c0-1bfcead851c3"
+  generatedAt: "2026-09-14T20:15:18Z"
+  sessionId: "ses_f5e26dec0ffehGBSM4ek1U6vdo"
   runId: run_01M2GDZ3Q3S5WYCB3MV02QJXZ1
-  workflow: refresh-soc
+  workflow: refresh-vendor-ctx
   agent: report-writer
-  inputsHash: f22780bb05471d0aba50cb9ec9b9b895c326e9719226012b7ff2cf5df52650c8
+  inputsHash: 3b881e0c1139930218e6dedd0d0cf6b4d2bbd6211a41080399cba680b1226fd5
 ---
 # Example Capital Markets — cyber resilience summary
 
@@ -56,8 +56,12 @@ Refresh date: 2026-09-14 (`provenance.generatedAt` 2026-09-14T17:03:20Z).
 <!-- source: details.json regulatoryRegistrations and frameworksInScope; soc/main.jsonl kind:observation title "instrument_became_applicable: /frameworksInScope" with provenance.runId run_01M2GDZ3Q3S5WYCB3MV02QJXZ1 (2 records, lines 692-693); escalated claim = kind:risk rsk_01M2GH97M1ZYX3TQJ4BJ0CEE6M (line 694) -->
 
 ## Vendors
-`refresh-vendor-ctx` refreshed this section as of 2026-09-14T10:46:39Z: 0 vendors onboarded, 1 updated
-(`github`, re-read at 2026-09-14T10:46:39Z), 6 new finding(s) raised this run, 0 findings re-seen. Source:
+`refresh-vendor-ctx` refreshed this section as of 2026-09-14T20:15:18Z: 0 vendors onboarded, 1 updated
+(`mongodb-atlas`, re-read at 2026-09-14T20:15:18Z), 6 findings re-seen — the run's ledger write reported
+1 new finding, but every flag this run matched a finding already on the ledger, so all six were superseded
+rather than duplicated and no new finding id was appended ([obs_01M2GVRF8XQRHSY1GTYN4DTKWQ],
+[obs_01M2GWH5Y6PQN67B17YNGV0MK5], [obs_01M2GXD5EJHEBW7GHMMNKHJHV9]; each assesses
+`sebi-cscrf-2024:GV.SC.S3`, result `not-satisfied`). Source:
 `company-profile/example-co/vendors/*.json` (3 files) and vendor-targeted findings in `soc/main.jsonl`.
 
 | Vendor | Legal name | Status | Materiality | Critical functions | Hosting vs. residency | Newest assurance | Expiry | Open findings |
@@ -66,10 +70,10 @@ Refresh date: 2026-09-14 (`provenance.generatedAt` 2026-09-14T17:03:20Z).
 | `github` | GitHub, Inc. | active | material | none (`supportsCriticalFunction: false`; repos back `mcp-gateway`, `db-models`) | GitHub Enterprise Cloud, hosting `US`; no critical function assigned so no residency requirement applies | soc2-type2 (Ernst & Young LLP, period ending 2025-09-30) | 2026-09-30 | [fnd_01M2FS4806WHXANC3Q9QXEAXGF], [fnd_01M2FS481DGTPTR9NJGKAAMF49], [fnd_01M2FS482NWXE7E5MCZY2QMAZ0] |
 | `mongodb-atlas` | MongoDB, Inc. | active | material | order-routing (`mcp-gateway`) | Atlas on AWS ap-south-1, hosting `IN`; app residency requirement `IN` (match) | none on file | n/a | [fnd_01M2FS9EBVSP2DPWN5K2D91QKW], [fnd_01M2FS9ECP3E0MTCRQFEJ97930] |
 
-<!-- source: company-profile/example-co/vendors/*.json services[].hostingCountries vs applications/mcp-gateway/env/*.json residency; open findings = latest kind:finding per id with target.type:vendor and status open in soc/main.jsonl -->
+<!-- source: company-profile/example-co/vendors/*.json services[].hostingCountries vs applications/mcp-gateway/env/*.json residency; open findings = latest kind:finding per id with target.type:vendor and status open in soc/main.jsonl (all six vendor findings re-seen and superseded by this run's records, appended 2026-09-14T20:15:18Z) -->
 
 Expiry note: GitHub's SOC 2 Type II report expires 2026-09-30, 16 days after this run's
-`provenance.generatedAt` (2026-09-14T10:46:39Z), inside the 90-day assurance-expiring window; flagged in
+`provenance.generatedAt` (2026-09-14T20:15:18Z), inside the 90-day assurance-expiring window; flagged in
 [fnd_01M2FS4806WHXANC3Q9QXEAXGF]. `mongodb-atlas` carries no `assurance[]` entry in its vendor file at all.
 
 ## Data flows

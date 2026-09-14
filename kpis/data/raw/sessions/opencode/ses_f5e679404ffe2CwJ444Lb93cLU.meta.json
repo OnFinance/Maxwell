@@ -18,7 +18,7 @@
   "gitCommit": "4658d38dd130ff5b2f21dea32d3dd5ad0099d9c9",
   "transcriptPath": "kpis/data/raw/sessions/opencode/ses_f5e679404ffe2CwJ444Lb93cLU.jsonl",
   "sampled": false,
-  "samplingReason": "pending",
+  "samplingReason": "excluded",
   "model": "unknown",
   "invokedBy": {
     "type": "script",
@@ -30,5 +30,6 @@
     "sessionId": "ses_f5e679404ffe2CwJ444Lb93cLU",
     "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
     "agent": "hooks/session-start"
-  }
+  },
+  "endedAt": "2026-09-14T20:34:57Z"
 }

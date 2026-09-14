@@ -140,6 +140,11 @@
           "name": "Fastly, Inc.",
           "country": "US",
           "role": "Content delivery network for support"
+        },
+        {
+          "name": "Stripe Inc.",
+          "country": "US",
+          "role": "Payment processor for credit-card billing"
         }
       ]
     }
@@ -165,10 +170,10 @@
   },
   "status": "active",
   "provenance": {
-    "harness": "claude-code",
-    "generatedAt": "2026-09-14T09:19:31Z",
-    "sessionId": "126159f4-9c1c-4e90-8283-eed2c0f900a3",
-    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "harness": "opencode",
+    "generatedAt": "2026-09-14T20:15:18Z",
+    "sessionId": "ses_f5e4c3bb2ffe5lHp8gDE9aO1ZM",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
     "workflow": "refresh-vendor-ctx",
     "agent": "vendor-analyst"
   }
