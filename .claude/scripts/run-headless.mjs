@@ -132,14 +132,14 @@ if (harness === 'claude-code') {
   const log = opencodeSessionLog();
   if (existsSync(log)) {
     const ids = new Set(readFileSync(log, 'utf8').split('\n').filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter((e) => e && e.workflow === workflow && e.sessionId && (!e.runId || e.runId === runId)).map((e) => e.sessionId));
-    for (const sid of ids) spawnSync(process.execPath, ['.claude/scripts/sessions/ingest.mjs', '--harness', 'opencode', '--session', sid, '--force'], { stdio: ['ignore', 2, 2], env });
+    for (const sid of ids) spawnSync(process.execPath, ['.claude/scripts/sessions/ingest.mjs', '--harness', 'opencode', '--session', sid, '--force'], { stdio: ['ignore', 2, 2], env: { ...env, MAXWELL_WORKFLOW: workflow, MAXWELL_COMPANY_ID: company } });
   }
 }
 
 if (harness === 'claude-code' && sessionId) {
   const ingestArgs = ['.claude/scripts/sessions/ingest.mjs', '--harness', 'claude-code', '--session', sessionId, '--force', '--outcome', outcome];
   if (reported !== null) ingestArgs.push('--reported', String(reported));
-  const ing = spawnSync(process.execPath, ingestArgs, { encoding: 'utf8', env });
+  const ing = spawnSync(process.execPath, ingestArgs, { encoding: 'utf8', env: { ...env, MAXWELL_WORKFLOW: workflow, MAXWELL_COMPANY_ID: company } });
   process.stderr.write(ing.stdout + ing.stderr);
 }
 console.log(JSON.stringify({ workflow, company, harness, runId, sessionId, reportedCostUsd: reported, outcome, durationMs: Date.now() - started, result: harness === 'claude-code' ? (result && result.result) : result }, null, 2));
