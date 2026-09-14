@@ -72,3 +72,12 @@ specific Indian instrument that applies to the company's `entityTypes` (SEBI CSC
 ## 8. Finishing a task
 1. `npm run validate` is green. 2. Every generated record has provenance. 3. The ledger, master indexes and
 timelines agree with each other. 4. You did not create any file outside the layout. Report what changed by path.
+
+## 9. Running headless
+- Claude Code: `node .claude/scripts/run-headless.mjs --workflow <name> --company <company_id> [--app <id>] [--env <id>] [--dry-run]`.
+  Default model is Opus (`--model opus`). If another model is requested and it hits a usage limit (HTTP 429), the
+  runner retries the whole invocation on `--fallback-model` (default `opus`). Every session is ingested for KPIs.
+- OpenCode: add `--harness opencode`. Default model `anthropic/claude-opus-5` (override with `--model` or
+  `MAXWELL_OPENCODE_MODEL`). OpenCode authenticates from `ANTHROPIC_API_KEY` in the environment, so no interactive
+  `opencode auth login` is needed on headless hosts. Keep the key in the host environment or a secret manager,
+  never in this workspace.

@@ -19,7 +19,7 @@ if (!name || name.startsWith('--')) { console.error('usage: run-workflow.mjs <na
 const file = `.claude/workflows/${name}.js`;
 if (!existsSync(file)) { console.error(`${file} not found`); process.exit(1); }
 const args = JSON.parse(opt('--args', '{}'));
-const model = opt('--model', process.env.MAXWELL_OPENCODE_MODEL);
+const model = opt('--model', process.env.MAXWELL_OPENCODE_MODEL || 'anthropic/claude-opus-5');
 const dryRun = argv.includes('--dry-run');
 const maxConcurrency = Number(opt('--concurrency', Math.max(1, Math.min(16, cpus().length - 2))));
 const defaultAgentType = opt('--agent-type', 'general');
@@ -40,7 +40,9 @@ const progress = (line) => process.stderr.write(`[${name}] ${line}\n`);
 function runOpencode(prompt, { agentType, modelOverride, label }) {
   return new Promise((resolve) => {
     const cliArgs = ['run', '--format', 'json', '--agent', agentType, '--title', `${name}:${label}`];
-    if (modelOverride || model) cliArgs.push('--model', modelOverride || model);
+    const alias = { opus: 'anthropic/claude-opus-5', sonnet: 'anthropic/claude-sonnet-5', haiku: 'anthropic/claude-haiku-4-5-20251001', fable: 'anthropic/claude-fable-5-1' };
+    const chosen = modelOverride ? (alias[modelOverride] || modelOverride) : model;
+    if (chosen) cliArgs.push('--model', chosen);
     if (process.env.MAXWELL_OPENCODE_AUTO === '1') cliArgs.push('--auto');
     cliArgs.push(prompt);
     const child = spawn('opencode', cliArgs, { cwd: process.cwd(), env: { ...process.env, MAXWELL_HARNESS: 'opencode', ...(runId ? { MAXWELL_RUN_ID: runId } : {}) } });

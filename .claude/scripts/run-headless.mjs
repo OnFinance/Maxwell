@@ -1,7 +1,10 @@
 #!/usr/bin/env node
 // Runs one Maxwell workflow headlessly on a harness and ingests the session for KPIs.
 // Usage: run-headless.mjs --workflow <name> --company <id> [--harness claude-code|opencode] [--model opus|provider/model]
-//        [--app <id>]... [--env <id>]... [--dry-run] [--run-id run_...] [--max-turns 400] [--budget-usd <n>]
+//        [--fallback-model <m>] [--app <id>]... [--env <id>]... [--dry-run] [--run-id run_...] [--max-turns 400] [--budget-usd <n>]
+// Model policy: default --model opus. When another model is requested (e.g. fable) Claude Code is given
+// --fallback-model opus so a usage limit or overload on that model continues on Opus instead of failing.
+// OpenCode defaults to anthropic/claude-opus-5 (override with --model or MAXWELL_OPENCODE_MODEL).
 // Claude Code: claude -p --output-format json "/<workflow> <company> ..." (project settings/hooks/skills load from
 //   the workspace; --bare is not used because it requires ANTHROPIC_API_KEY and skips the validation hooks).
 // OpenCode: node .claude/scripts/run-workflow.mjs <workflow> --args '{...}' (headless opencode run sessions).
@@ -29,25 +32,41 @@ const env = { ...process.env, MAXWELL_RUN_ID: runId, MAXWELL_HARNESS: harness, M
 
 let sessionId = null; let reported = null; let outcome = 'success'; let result = null;
 if (harness === 'claude-code') {
-  const model = opt('--model', 'opus');
+  const model = opt('--model', process.env.MAXWELL_MODEL || 'opus');
+  const fallback = opt('--fallback-model', process.env.MAXWELL_FALLBACK_MODEL || (/^(opus|claude-opus)/.test(model) ? '' : 'opus'));
   env.MAXWELL_MODEL = model;
   const prompt = [`/${workflow}`, company, ...apps.map((a) => `--app=${a}`), ...envs.map((e) => `--env=${e}`), ...(dryRun ? ['--dry-run'] : [])].join(' ');
-  const args = ['-p', '--output-format', 'json', '--model', model, '--permission-mode', opt('--permission-mode', 'auto'), '--max-turns', opt('--max-turns', '400'), '--setting-sources', 'project'];
-  if (opt('--budget-usd')) args.push('--max-budget-usd', opt('--budget-usd'));
-  args.push(prompt);
-  console.error(`[run-headless] claude ${args.map((a) => (a.includes(' ') ? JSON.stringify(a) : a)).join(' ')}`);
-  const res = spawnSync('claude', args, { encoding: 'utf8', env, maxBuffer: 1 << 28 });
-  const raw = (res.stdout || '').trim();
-  writeFileSync(`${logDir}/${runId}.${workflow}.export.json`, raw || res.stderr || '');
-  try { result = JSON.parse(raw); } catch { result = null; }
-  if (!result) { console.error(`[run-headless] claude exited ${res.status}: ${(res.stderr || '').slice(-2000)}`); process.exit(res.status || 1); }
-  sessionId = result.session_id;
-  reported = typeof result.total_cost_usd === 'number' ? result.total_cost_usd : null;
-  outcome = result.is_error ? (result.subtype === 'error_max_turns' ? 'max-turns' : result.subtype === 'error_max_budget_usd' ? 'max-budget' : 'error') : 'success';
-  console.error(`[run-headless] session ${sessionId} turns=${result.num_turns} cost=${reported} denials=${(result.permission_denials || []).length} outcome=${outcome}`);
+  // A usage limit on the requested model comes back as a 429 api_error result, which --fallback-model does not
+  // cover (it only handles overload). Retry the whole invocation on the fallback model in that case.
+  const isLimit = (r) => !!r && r.is_error && (r.api_error_status === 429 || /reached your .* limit|usage limit|rate limit/i.test(String(r.result || '')));
+  const attempts = [model, ...(fallback && fallback !== model ? [fallback] : [])];
+  for (let i = 0; i < attempts.length; i += 1) {
+    const m = attempts[i];
+    env.MAXWELL_MODEL = m;
+    const args = ['-p', '--output-format', 'json', '--model', m, '--permission-mode', opt('--permission-mode', 'auto'), '--max-turns', opt('--max-turns', '400'), '--setting-sources', 'project'];
+    if (i === 0 && fallback) args.push('--fallback-model', fallback);
+    if (opt('--budget-usd')) args.push('--max-budget-usd', opt('--budget-usd'));
+    args.push(prompt);
+    console.error(`[run-headless] claude ${args.map((a) => (a.includes(' ') ? JSON.stringify(a) : a)).join(' ')}`);
+    const res = spawnSync('claude', args, { encoding: 'utf8', env, maxBuffer: 1 << 28 });
+    const raw = (res.stdout || '').trim();
+    writeFileSync(`${logDir}/${runId}.${workflow}${i ? '.' + m : ''}.export.json`, raw || res.stderr || '');
+    try { result = JSON.parse(raw); } catch { result = null; }
+    if (!result) { console.error(`[run-headless] claude exited ${res.status}: ${(res.stderr || '').slice(-2000)}`); process.exit(res.status || 1); }
+    sessionId = result.session_id;
+    reported = typeof result.total_cost_usd === 'number' ? result.total_cost_usd : null;
+    outcome = result.is_error ? (result.subtype === 'error_max_turns' ? 'max-turns' : result.subtype === 'error_max_budget_usd' ? 'max-budget' : 'error') : 'success';
+    console.error(`[run-headless] model=${m} session ${sessionId} turns=${result.num_turns} cost=${reported} denials=${(result.permission_denials || []).length} outcome=${outcome}`);
+    if (isLimit(result) && i + 1 < attempts.length) {
+      console.error(`[run-headless] ${m} hit a usage limit; retrying on ${attempts[i + 1]}`);
+      spawnSync(process.execPath, ['.claude/scripts/sessions/ingest.mjs', '--harness', 'claude-code', '--session', sessionId, '--force', '--outcome', 'error'], { encoding: 'utf8', env });
+      continue;
+    }
+    break;
+  }
 } else {
   const args = ['.claude/scripts/run-workflow.mjs', workflow, '--args', JSON.stringify({ companyId: company, appIds: apps, envIds: envs, dryRun, runId })];
-  if (opt('--model')) args.push('--model', opt('--model'));
+  args.push('--model', opt('--model', process.env.MAXWELL_OPENCODE_MODEL || 'anthropic/claude-opus-5'));
   if (dryRun) args.push('--dry-run');
   console.error(`[run-headless] node ${args.join(' ')}`);
   const res = spawnSync(process.execPath, args, { encoding: 'utf8', env, stdio: ['ignore', 'pipe', 'inherit'], maxBuffer: 1 << 28 });
