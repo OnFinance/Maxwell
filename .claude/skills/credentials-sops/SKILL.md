@@ -6,7 +6,7 @@ metadata:
   helper: .claude/scripts/creds/sops.mjs
 x-maxwell:
   kind: runbook
-  workflows: [refresh-ctx, runtime-probe-appcontainers, runtime-probe-devtest-env, runtime-probe-qa-env, runtime-probe-prod-env, runtime-probe-datapipeline, runtime-probe-network-perimeter, runtime-probe-identity-access]
+  workflows: [refresh-ctx, runtime-probe-appcontainers, runtime-probe-devtest-env, runtime-probe-qa-env, runtime-probe-prod-env, runtime-probe-datapipeline, runtime-probe-network-perimeter, runtime-probe-identity-access, refresh-apps]
 ---
 # Credentials (sops/age)
 

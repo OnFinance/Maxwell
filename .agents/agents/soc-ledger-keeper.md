@@ -32,6 +32,7 @@ x-maxwell:
     - refresh-ctx
     - refresh-vendor-ctx
     - refresh-metastore
+    - refresh-apps
     - probe-iac
     - probe-app-chart
     - probe-schemas

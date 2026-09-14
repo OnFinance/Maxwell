@@ -21,7 +21,7 @@ when_to_use: When a report-audit-findings or report-audit-improvements workflow 
 user-invocable: false
 x-maxwell:
   kind: convention
-  workflows: [report-audit-findings, report-audit-improvements, refresh-ctx, refresh-vendor-ctx, refresh-metastore, refresh-soc, impl-change-management, impl-auto-improvement, status]
+  workflows: [report-audit-findings, report-audit-improvements, refresh-ctx, refresh-vendor-ctx, refresh-metastore, refresh-apps, refresh-soc, impl-change-management, impl-auto-improvement, status]
 ---
 # Report templates for `summary.md`
 
@@ -67,6 +67,7 @@ section-ownership table in `.claude/agents/report-writer.md`, which is authorita
 | refresh-ctx | regulatory-posture |
 | refresh-vendor-ctx | vendors |
 | refresh-metastore | data-flows |
+| refresh-apps | applications |
 | refresh-soc | control-summary |
 | probe-*, execute-scr | open-findings, control-summary |
 | runtime-probe-* | control-summary, open-findings |

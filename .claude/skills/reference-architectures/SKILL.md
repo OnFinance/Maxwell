@@ -7,7 +7,7 @@ metadata:
   captured: "2026-09-13"
 x-maxwell:
   kind: catalog
-  workflows: [refresh-ctx, refresh-vendor-ctx, refresh-metastore, runtime-probe-datapipeline, runtime-probe-harnesses, runtime-probe-sandboxes, probe-agent-graph, probe-cicd-env, probe-iac, probe-dev-env]
+  workflows: [refresh-ctx, refresh-vendor-ctx, refresh-metastore, runtime-probe-datapipeline, runtime-probe-harnesses, runtime-probe-sandboxes, probe-agent-graph, probe-cicd-env, probe-iac, probe-dev-env, refresh-apps]
 ---
 # Reference architectures (offline copies)
 

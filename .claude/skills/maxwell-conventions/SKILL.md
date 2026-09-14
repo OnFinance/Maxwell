@@ -12,7 +12,7 @@ when_to_use: Before writing or editing any JSON, JSONL or frontmatter file, when
 user-invocable: false
 x-maxwell:
   kind: convention
-  workflows: [refresh-soc, refresh-ctx, refresh-vendor-ctx, refresh-metastore, probe-iac, probe-app-chart, probe-schemas, probe-cicd-env, probe-agent-graph, execute-scr, probe-sdlc, probe-dev-env, runtime-probe-appcontainers, runtime-probe-devtest-env, runtime-probe-qa-env, runtime-probe-prod-env, runtime-probe-harnesses, runtime-probe-sandboxes, runtime-probe-datapipeline, runtime-probe-network-perimeter, runtime-probe-identity-access, impl-change-management, impl-auto-improvement, report-audit-findings, report-audit-improvements]
+  workflows: [refresh-soc, refresh-ctx, refresh-vendor-ctx, refresh-metastore, probe-iac, probe-app-chart, probe-schemas, probe-cicd-env, probe-agent-graph, execute-scr, probe-sdlc, probe-dev-env, runtime-probe-appcontainers, runtime-probe-devtest-env, runtime-probe-qa-env, runtime-probe-prod-env, runtime-probe-harnesses, runtime-probe-sandboxes, runtime-probe-datapipeline, runtime-probe-network-perimeter, runtime-probe-identity-access, impl-change-management, impl-auto-improvement, report-audit-findings, report-audit-improvements, refresh-apps]
 ---
 # Maxwell conventions
 

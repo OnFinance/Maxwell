@@ -13,7 +13,7 @@ when_to_use: Whenever a workflow cites a regulatoryRef, forms a '<instrumentId>:
 user-invocable: false
 x-maxwell:
   kind: catalog
-  workflows: [refresh-soc, refresh-ctx, refresh-vendor-ctx, refresh-metastore, probe-iac, probe-app-chart, probe-schemas, probe-cicd-env, probe-agent-graph, execute-scr, probe-sdlc, probe-dev-env, runtime-probe-appcontainers, runtime-probe-devtest-env, runtime-probe-qa-env, runtime-probe-prod-env, runtime-probe-harnesses, runtime-probe-sandboxes, runtime-probe-datapipeline, runtime-probe-network-perimeter, runtime-probe-identity-access, impl-change-management, impl-auto-improvement, report-audit-findings, report-audit-improvements]
+  workflows: [refresh-soc, refresh-ctx, refresh-vendor-ctx, refresh-metastore, probe-iac, probe-app-chart, probe-schemas, probe-cicd-env, probe-agent-graph, execute-scr, probe-sdlc, probe-dev-env, runtime-probe-appcontainers, runtime-probe-devtest-env, runtime-probe-qa-env, runtime-probe-prod-env, runtime-probe-harnesses, runtime-probe-sandboxes, runtime-probe-datapipeline, runtime-probe-network-perimeter, runtime-probe-identity-access, impl-change-management, impl-auto-improvement, report-audit-findings, report-audit-improvements, refresh-apps]
 ---
 # Regulatory catalogs
 

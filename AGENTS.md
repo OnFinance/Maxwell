@@ -61,7 +61,7 @@ specific Indian instrument that applies to the company's `entityTypes` (SEBI CSC
 `.claude/skills/regulatory-catalogs/references/sla-table.json`, not from intuition.
 
 ## 7. Workflows, agents, skills
-- The 25 workflows are `.claude/workflows/<name>.js`; invoke them as `/<name> <company_id> [flags]`. They fan out
+- The 26 workflows are `.claude/workflows/<name>.js`; invoke them as `/<name> <company_id> [flags]`. They fan out
   to the specialist subagents in `.claude/agents/` and rely on the skills in `.claude/skills/`.
 - Runtime probes (`runtime-probe-*`) are read-only against target systems, obey
   `.claude/skills/runtime-probe-rules-of-engagement`, and honour `--dry-run` by planning and requesting evidence

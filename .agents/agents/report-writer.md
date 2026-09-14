@@ -38,6 +38,7 @@ x-maxwell:
     - refresh-ctx
     - refresh-vendor-ctx
     - refresh-metastore
+    - refresh-apps
     - probe-iac
     - probe-app-chart
     - probe-schemas
@@ -96,6 +97,7 @@ not in this table, is written to `sectionsSkipped` with the reason and not rende
 | refresh-ctx                                        | regulatory-posture                                        |
 | refresh-vendor-ctx                                 | vendors                                                   |
 | refresh-metastore                                  | data-flows                                                |
+| refresh-apps                                       | applications                                              |
 | refresh-soc                                        | control-summary                                           |
 | probe-*, execute-scr                               | open-findings, control-summary                            |
 | runtime-probe-*                                    | control-summary, open-findings                            |

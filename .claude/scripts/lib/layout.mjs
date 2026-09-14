@@ -56,6 +56,9 @@ export function walkWorkspace(root = '.') {
     for (const entry of readdirSync(dir).sort()) {
       const relPath = rel ? `${rel}/${entry}` : entry;
       const abs = join(dir, entry);
+      // node_modules and .git are skipped by name whatever their type: a git worktree has a .git file and
+      // node_modules may be a symlink to a shared install.
+      if (!rel && SKIP_DIRS.has(entry)) continue;
       const st = lstatSync(abs);
       const isSymlink = st.isSymbolicLink();
       if (st.isDirectory() && !isSymlink) {

@@ -22,6 +22,7 @@
       "Workflow(refresh-ctx)",
       "Workflow(refresh-vendor-ctx)",
       "Workflow(refresh-metastore)",
+      "Workflow(refresh-apps)",
       "Workflow(probe-iac)",
       "Workflow(probe-app-chart)",
       "Workflow(probe-schemas)",

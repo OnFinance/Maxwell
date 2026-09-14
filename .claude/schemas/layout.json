@@ -5,6 +5,7 @@
   "rootEntries": [
     "CLAUDE.md",
     "AGENTS.md",
+    "README.md",
     "LICENSE",
     ".gitignore",
     ".editorconfig",
@@ -89,6 +90,10 @@
     },
     {
       "glob": "AGENTS.md",
+      "format": "markdown"
+    },
+    {
+      "glob": "README.md",
       "format": "markdown"
     },
     {

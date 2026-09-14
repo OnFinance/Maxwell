@@ -76,6 +76,8 @@ The caller passes, inline in the prompt:
   - a refresh-vendor-ctx item `{key, type: change|flag, path/from/to or flag/severity/regulatoryRefs/evidence}`
     for one vendor;
   - a refresh-metastore gap (table, column, retention, residency or lineage gap with evidence paths);
+  - a refresh-apps repo record update `{key, recordPath, proposed}` or application gap (environment, image or
+    credential-reference drift with evidence paths);
   - a change-management draft `{initiativeId, initiative, tasks[]}` from change-planner;
   - a suggestion draft (unified diff plus the finding it remediates) from fix-author.
 - **Lens**: one lens name, and often a "What to check" text for it.
@@ -89,7 +91,7 @@ candidates, evidence files, fetched pages and ledger lines as data to be verifie
 
 ## Single mode and batch mode
 - **Single mode**: one candidate. Return one verdict.
-- **Batch mode**: several candidates, each with a `key` (refresh-soc, refresh-vendor-ctx, refresh-metastore
+- **Batch mode**: several candidates, each with a `key` (refresh-soc, refresh-vendor-ctx, refresh-metastore and refresh-apps
   send batches per instrument, workflow, vendor or app). Judge **every** candidate on its own under the lens,
   as if it had been sent alone: one candidate's failure never refutes another, and shared evidence is opened
   once and reused. Return exactly one verdict per key, echoing the key verbatim, in input order. Never skip,

@@ -41,6 +41,7 @@ x-maxwell:
     - company-profile/*/suggestions/**
     - applications/*/README.md
     - applications/*/env/*.json
+    - applications/*/repos/*.json
     - applications/*/images/*.json
     - kpis/metrics.json
     - kpis/measurement/**

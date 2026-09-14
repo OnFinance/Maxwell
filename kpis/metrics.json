@@ -296,7 +296,8 @@
     "refresh-soc",
     "refresh-ctx",
     "refresh-vendor-ctx",
-    "refresh-metastore"
+    "refresh-metastore",
+    "refresh-apps"
   ],
   "pricingRef": ".claude/skills/kpi-extraction/references/pricing.json",
   "pagerduty": {
