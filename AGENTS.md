@@ -158,3 +158,13 @@ timelines agree with each other. 4. You did not create any file outside the layo
   `MAXWELL_OPENCODE_MODEL`). OpenCode authenticates from `ANTHROPIC_API_KEY` in the environment, so no interactive
   `opencode auth login` is needed on headless hosts. Keep the key in the host environment or a secret manager,
   never in this workspace.
+
+## 10. Research sources
+- Look up regulator material (RBI, SEBI, IRDAI, NHB, MCA, exchanges, depositories) in ComplianceOS first:
+  `node .claude/scripts/cos/search.mjs search --query "<text>" [--regulator RBI] [--collection clause_content]`.
+  Quote paragraph text only from the official document a hit links to. See skill `complianceos-search`.
+- Use public WebSearch/WebFetch only when ComplianceOS has nothing relevant, fails (exit 3, 4 or 5), or does not
+  cover the source (CERT-In, MeitY, DPDP, CVE databases, vendor portals), and say so in the evidence.
+- If the helper exits 3 (not configured) and a human is chatting with you, ask them in chat for their ComplianceOS
+  email and password and pipe them as JSON to `node .claude/scripts/cos/search.mjs set-credentials`. Never ask in
+  headless runs, never write the login into this workspace, and never read `~/.config/maxwell/` or `~/.cache/maxwell/`.

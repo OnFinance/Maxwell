@@ -291,6 +291,23 @@ node .claude/scripts/creds/sops.mjs encrypt <app_id> /path/to/decrypted-credenti
 
 `credentials.json` holds locators such as environment variable names, Vault paths and ARNs, never secret values.
 
+**Connect ComplianceOS search**
+
+Agents look up regulator circulars, directions and clauses in [ComplianceOS](https://onfinance.ai) first, and use
+public web search only when ComplianceOS has nothing relevant, is unavailable, or does not cover the source (CERT-In,
+MeitY and DPDP material, CVE data, vendor portals). Store a ComplianceOS login once, outside the repository:
+
+```bash
+printf '{"email":"%s","password":"%s"}' "$COS_EMAIL" "$COS_PASSWORD" \
+  | node .claude/scripts/cos/search.mjs set-credentials     # writes ~/.config/maxwell/complianceos.env (0600) and verifies it
+node .claude/scripts/cos/search.mjs status
+node .claude/scripts/cos/search.mjs search --query "managing risks in outsourcing" --regulator RBI
+```
+
+The default host is `https://complianceos-prod.onfinance.ai`; set `MAXWELL_COS_BASE_URL` for another tenant, or
+`MAXWELL_COS_EMAIL` and `MAXWELL_COS_PASSWORD` in the host environment instead of the file. In an interactive session
+without a stored login, Maxwell asks for it in chat. The login needs reCAPTCHA disabled for the tenant's domain.
+
 **Run a workflow**
 
 ```bash
@@ -353,6 +370,12 @@ node .claude/scripts/run-headless.mjs --workflow refresh-apps --company acme-sec
 - **Transcript format.** Claude Code's session transcript format is internal and can change between releases. The
   parser is defensive and records the format version.
 - **Cost figures are estimates.** They use list prices, not your bill.
+- **ComplianceOS login.** ComplianceOS offers only user logins, so Maxwell stores an email and password in
+  `~/.config/maxwell/complianceos.env` (mode 0600) and caches the token for up to 2 hours in `~/.cache/maxwell/`.
+  Agents are instructed never to read either file; OpenCode's shell permissions deny commands that touch them. Add
+  `Read(~/.config/maxwell/**)` and `Read(~/.cache/maxwell/**)` to your Claude Code deny rules to enforce the same
+  there. Use a dedicated read-only account. Credentials typed into a chat stay in
+  that harness's local transcript, so rotate them if a transcript is shared.
 - **`example-co` is fictional.** Its demo age key under `.claude/skills/credentials-sops/references/` protects
   nothing real. Never reuse it.
 

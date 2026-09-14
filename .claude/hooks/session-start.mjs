@@ -4,7 +4,9 @@
 // /<workflow> prompt is seen by user-prompt.mjs). Prints additionalContext JSON for the harness.
 import { readStdinJson, workspaceRoot, writeJson, readJsonIfExists, ulid } from './lib.mjs';
 import { resolve } from 'node:path';
+import { existsSync, readFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
+import { configPaths, resolveCredentials } from '../scripts/lib/complianceos.mjs';
 
 const input = readStdinJson();
 const root = workspaceRoot(input);
@@ -43,5 +45,11 @@ const meta = existing || {
 };
 if (!existing) writeJson(metaPath, meta);
 
-const context = `Maxwell session ${sessionId} (run ${runId}). Workspace: ${root}. Read AGENTS.md before writing. Run \`npm run validate\` before finishing.`;
+// Only whether a ComplianceOS login exists is checked here; the credentials themselves are never read into context.
+const cosPaths = configPaths();
+const cos = resolveCredentials(process.env, existsSync(cosPaths.credentials) ? readFileSync(cosPaths.credentials, 'utf8') : undefined);
+const cosLine = (cos.email && cos.password) || cos.token
+  ? `ComplianceOS search is configured (${cos.baseUrl}): use it before public web search (skill complianceos-search).`
+  : 'ComplianceOS search is NOT configured. If a human is chatting with you, ask them in chat for their ComplianceOS email and password before regulatory research and store them with `node .claude/scripts/cos/search.mjs set-credentials` (skill complianceos-search); in headless runs use the public web search fallback.';
+const context = `Maxwell session ${sessionId} (run ${runId}). Workspace: ${root}. Read AGENTS.md before writing. Run \`npm run validate\` before finishing. ${cosLine}`;
 process.stdout.write(JSON.stringify({ hookSpecificOutput: { hookEventName: 'SessionStart', additionalContext: context } }));

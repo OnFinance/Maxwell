@@ -19,6 +19,8 @@
       "git log*": "allow",
       "sops --decrypt *": "deny",
       "sops -d *": "deny",
+      "*.config/maxwell/*": "deny",
+      "*.cache/maxwell/*": "deny",
       "rm -rf *": "deny",
       "git push --force*": "deny"
     },

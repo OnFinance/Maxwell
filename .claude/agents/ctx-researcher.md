@@ -6,6 +6,7 @@ tools:
   - Grep
   - Glob
   - WebSearch
+  - Bash(node .claude/scripts/cos/search.mjs *)
   - WebFetch
   - Bash(date -u *)
   - Bash(node .claude/scripts/validate-data.mjs *)
@@ -19,6 +20,7 @@ skills:
   - maxwell-conventions
   - regulatory-catalogs
   - reference-architectures
+  - complianceos-search
 effort: high
 color: blue
 x-maxwell:
