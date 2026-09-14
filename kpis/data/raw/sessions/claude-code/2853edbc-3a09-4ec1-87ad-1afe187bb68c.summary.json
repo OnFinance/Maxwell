@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.session.summary",
+  "sessionId": "2853edbc-3a09-4ec1-87ad-1afe187bb68c",
+  "harness": "claude-code",
+  "harnessVersion": "2.1.270",
+  "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+  "workflow": "connect-sandbox",
+  "companyId": "run",
+  "startedAt": "2026-09-14T18:36:43.842Z",
+  "endedAt": "2026-09-14T19:13:53.242Z",
+  "durationMs": 2229400,
+  "turns": 286,
+  "inferenceCalls": 286,
+  "toolCalls": {
+    "total": 284,
+    "byTool": {
+      "Workflow": 1,
+      "Bash": 122,
+      "Grep": 78,
+      "Read": 40,
+      "StructuredOutput": 29,
+      "Glob": 9,
+      "Write": 2,
+      "Edit": 3
+    }
+  },
+  "subagentSessions": 29,
+  "permissionDenials": [],
+  "models": [
+    {
+      "model": "claude-opus-5",
+      "provider": "anthropic",
+      "tokens": {
+        "input": 3828,
+        "output": 165727,
+        "cacheWrite5m": 1962123,
+        "cacheWrite1h": 40588,
+        "cacheRead": 10169712,
+        "thinking": 46240
+      },
+      "webSearchRequests": 0,
+      "webFetchRequests": 0,
+      "costUsd": 21.91632
+    },
+    {
+      "model": "claude-sonnet-5",
+      "provider": "anthropic",
+      "tokens": {
+        "input": 286,
+        "output": 170185,
+        "cacheWrite5m": 645959,
+        "cacheWrite1h": 0,
+        "cacheRead": 13021510,
+        "thinking": 58089
+      },
+      "webSearchRequests": 0,
+      "webFetchRequests": 0,
+      "costUsd": 5.921622
+    }
+  ],
+  "costUsd": {
+    "computed": 27.837942,
+    "reported": 27.894795,
+    "deltaPct": -0.2
+  },
+  "pricingVersion": "2026-09-14",
+  "dedup": {
+    "strategy": "requestId-max-total-tokens",
+    "duplicatesDropped": 641
+  },
+  "filesWritten": [
+    "company-profile/example-co/summary.md",
+    "kpis/data/raw/sessions/2853edbc-3a09-4ec1-87ad-1afe187bb68c/probe-schemas.db-models.onfinance-db-model-master.sarif.export.json",
+    "kpis/data/raw/sessions/2853edbc-3a09-4ec1-87ad-1afe187bb68c/probe-schemas.mcp-gateway.mongodb-mcp-server.sarif.export.json"
+  ],
+  "linesAdded": 0,
+  "linesRemoved": 0,
+  "outcome": "success",
+  "transcriptFormatVersion": "2.1.270",
+  "provenance": {
+    "harness": "script",
+    "generatedAt": "2026-09-14T19:13:53Z",
+    "sessionId": "2853edbc-3a09-4ec1-87ad-1afe187bb68c",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "connect-sandbox",
+    "agent": ".claude/scripts/sessions/ingest.mjs"
+  }
+}

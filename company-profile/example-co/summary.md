@@ -3,16 +3,16 @@ schemaVersion: "1"
 kind: maxwell.company.summary
 companyId: example-co
 title: Example Capital Markets cyber resilience summary
-version: "4.5.0"
+version: "4.6.0"
 sections: [overview, regulatory-posture, data-flows, vendors, control-summary, open-findings]
 provenance:
   harness: claude-code
-  generatedAt: "2026-09-14T18:08:50Z"
-  sessionId: "ba28bc2c-2822-41eb-92a8-b6389d3f1d0d"
+  generatedAt: "2026-09-14T18:36:43Z"
+  sessionId: "2853edbc-3a09-4ec1-87ad-1afe187bb68c"
   runId: "run_01M2FGNVVQ15ZKXZWGW74YWAAQ"
-  workflow: probe-iac
+  workflow: probe-schemas
   agent: report-writer
-  inputsHash: "952ff6750598f8175ae7ac621ced57b3005cb496ce580aee714c274a2cc4c10b"
+  inputsHash: "1c32f623eb64eab5e7abdd9ef9ebcbb2ecaf4d6eb846097f6535d137d291c137"
 ---
 # Example Capital Markets — cyber resilience summary
 
@@ -134,6 +134,26 @@ Coverage divides the controls whose latest record carries a `lastAssessedAt` set
 the applicable (not `not-applicable`) controls; `kpis/measurement/cm_coverage.md` defines the KPI.
 
 ## Open findings
+`probe-schemas` ran against `example-co` this run (`provenance.runId` run_01M2FGNVVQ15ZKXZWGW74YWAAQ,
+`provenance.sessionId` 2853edbc-3a09-4ec1-87ad-1afe187bb68c): 6 new data and API schema finding(s)
+([fnd_01M2GMN60SYB8DHVX3XN4J84G5], [fnd_01M2GMN61NFQDTRGPZ5RMSMTWN], [fnd_01M2GMN62KVM9J9R852X3E3ST7],
+[fnd_01M2GMN63DEDR29P66QTKND8E7], [fnd_01M2GMWPZ5DKN7DNH3D65T47FZ], [fnd_01M2GMWQ01QA647X5MYFGNS1MG]), 3
+re-seen (0 reopened: [fnd_01M2G2AGPX8KWSY1KXGYADK4TK], [fnd_01M2G2AGVRZPBP3VH8FNAYH46V],
+[fnd_01M2G2AGX1GZ9THG6HJ1VPP1EP] superseded with refreshed evidence, `status: open` unchanged), 11
+observation(s) recorded (5 `not-satisfied`, 6 `partial`) [obs_01M2GMN5XBVMCMJ5V8VX8NR0BP],
+[obs_01M2GMN5Y80ZKENZ2Z6TTWZR8K], [obs_01M2GMN5Z4B894SNSBPQRJEPMC], [obs_01M2GMN5ZYPC3SSB8KCNXB8X7T],
+[obs_01M2GMWPRJJM5QFJX3G6NBT6JR], [obs_01M2GMWPSGBCYNXA6S2ZR7ZT5R], [obs_01M2GMWPTCBSW5HH427MNF8GB4],
+[obs_01M2GMWPVB6XWCYHPQM9DMJ8P7], [obs_01M2GMWPWB887N582RCGZ1MNPP], [obs_01M2GMWPXBDB3P7BKCD617KSR8],
+[obs_01M2GMWPY9B54SGT32H9MFQ5KY]. Two new findings target the `db-models` repo
+`onfinance-db-model-master`'s data schema — Zerodha and Binance trading-account credentials persisted in
+plain text with no encryption ([fnd_01M2GMN61NFQDTRGPZ5RMSMTWN]) and no retention, expiry or purge mechanism
+for personal data or trading credentials ([fnd_01M2GMN63DEDR29P66QTKND8E7]) — plus two classification/consent
+gaps in the same repo ([fnd_01M2GMN60SYB8DHVX3XN4J84G5], [fnd_01M2GMN62KVM9J9R852X3E3ST7]). Two more target the
+`mcp-gateway` repo `mongodb-mcp-server`'s API contract: `switch-connection`'s `connectionString` argument
+carries no `isSecret`/classification annotation ([fnd_01M2GMWPZ5DKN7DNH3D65T47FZ]) and `MDB_MCP_DRY_RUN` dumps
+the full resolved config, including `isSecret`-marked fields, with no redaction
+([fnd_01M2GMWQ01QA647X5MYFGNS1MG]).
+
 `probe-iac` ran against `example-co` this run (`provenance.runId` run_01M2FGNVVQ15ZKXZWGW74YWAAQ,
 `provenance.sessionId` ba28bc2c-2822-41eb-92a8-b6389d3f1d0d): 1 new IaC misconfiguration finding
 ([fnd_01M2GJYP56VKDHARQPPFVATT0D]), 0 re-seen (0 reopened), 5 observation(s) recorded (2 `not-satisfied`, 3
@@ -173,7 +193,7 @@ never captured into the workspace image inventory, and a static Docker Hub crede
 already uses OIDC federation for another publish target.
 
 Latest record per finding id in `company-profile/example-co/soc/main.jsonl` with `status` in
-`open | triaged | remediating`, as of `provenance.generatedAt` 2026-09-14T18:08:50Z (23 open: 16 high, 7
+`open | triaged | remediating`, as of `provenance.generatedAt` 2026-09-14T18:36:43Z (29 open: 18 high, 11
 medium, 0 past SLA):
 
 ### High
@@ -182,12 +202,11 @@ medium, 0 past SLA):
 |---|---|---|---|---|---|---|---|---|
 | [fnd_01M2FS4806WHXANC3Q9QXEAXGF] | assurance-expiring: github-cloud SOC 2 Type II report expires 2026-09-30, inside 90-day window | vendor `github` | SEBI sebi-cscrf-2024 GV.SC.S4 (SEBI CSCRF 2024) | 2026-09-14 | 2026-10-14T10:46:39Z | due in 30 d | open | n/a |
 | [fnd_01M2FS9ECP3E0MTCRQFEJ97930] | contract-expiring: ATLAS-2025-1189 ended 2026-05-31, 106 days ago, no renewal evidence | vendor `mongodb-atlas` | SEBI sebi-cscrf-2024 GV.SC.S4 | 2026-09-14 | 2026-10-14T10:46:39Z | due in 30 d | open | n/a |
-| [fnd_01M2G2AGPX8KWSY1KXGYADK4TK] | find tool returns full unmasked documents from pii/financial collections | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.DS.S4 | 2026-09-14 | 2026-09-21T13:14:50Z | due in 7 d | open | n/a |
+| [fnd_01M2G2AGPX8KWSY1KXGYADK4TK] | find/export tools return full unmasked documents from pii/financial-classified collections | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.DS.S4 | 2026-09-14 | 2026-09-21T13:14:50Z | due in 7 d | open | n/a |
 | [fnd_01M2G2AGR581507FMK0EADFKY6] | aggregate tool returns full unmasked pipeline results | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.DS.S4 | 2026-09-14 | 2026-09-21T13:14:50Z | due in 7 d | open | n/a |
 | [fnd_01M2G2AGSC977KASP37WQXYSQA] | export tool writes full unmasked documents to an unencrypted local file | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.DS.S4 | 2026-09-14 | 2026-09-21T13:14:50Z | due in 7 d | open | n/a |
 | [fnd_01M2G2AGTH64FMR4XR77ZAJH7B] | CreateDBUserTool returns a newly generated password in plain text | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S1 | 2026-09-14 | 2026-09-21T13:14:50Z | due in 7 d | open | n/a |
-| [fnd_01M2G2AGVRZPBP3VH8FNAYH46V] | MCP HTTP transport has no default authentication requirement | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S6 | 2026-09-14 | 2026-09-21T13:14:50Z | due in 7 d | open | n/a |
-| [fnd_01M2G2AGX1GZ9THG6HJ1VPP1EP] | Core MongoDB tool arguments accept unbounded, unvalidated input that reaches the driver | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S17 | 2026-09-14 | 2026-09-21T13:14:50Z | due in 7 d | open | n/a |
+| [fnd_01M2G2AGVRZPBP3VH8FNAYH46V] | mcp-gateway's HTTP transport (/mcp) has no default authentication | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S17 | 2026-09-14 | 2026-09-21T13:14:50Z | due in 7 d | open | n/a |
 | [fnd_01M2GH5AS0MM2F8MSFTDP36VV9] | Both Dockerfiles pin `node:24-alpine` with no content digest | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.IP.S1 | 2026-09-14 | 2026-09-21T13:48:42Z | due in 7 d | open | n/a |
 | [fnd_01M2GH5AT8SW3Z6ZTZ73YN7QY6] | Unverified binary download in mcp-publish.yml, and deploy/aws/Dockerfile silently ignores its own version pin | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.IP.S4 | 2026-09-14 | 2026-09-21T13:48:42Z | due in 7 d | open | n/a |
 | [fnd_01M2GH5AVF2ZCBDXD5F25S2VGS] | No dependency/SCA vulnerability scan in any of the 20 CI workflows | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.IP.S12 | 2026-09-14 | 2026-09-21T13:48:42Z | due in 7 d | open | n/a |
@@ -196,6 +215,9 @@ medium, 0 past SLA):
 | [fnd_01M2GH5B1JFJYTA2MGWES48JP5] | SBOM generated by CI is never captured into the workspace image inventory for mcp-gateway | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 GV.SC.S5 | 2026-09-14 | 2026-10-14T13:48:42Z | due in 30 d | open | n/a |
 | [fnd_01M2GH5B2SNX0PD3EKVNVTPAG7] | Docker Hub publish uses a static shared credential instead of the OIDC federation already used elsewhere in the repo | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S1 | 2026-09-14 | 2026-09-21T13:48:42Z | due in 7 d | open | n/a |
 | [fnd_01M2GJYP56VKDHARQPPFVATT0D] | AWS Bedrock AgentCore Dockerfile has no pinned base image or package version | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.IP.S3 | 2026-09-14 | 2026-09-21T18:08:50Z | due in 7 d | open | n/a |
+| [fnd_01M2GMN61NFQDTRGPZ5RMSMTWN] | Zerodha and Binance trading-account credentials persisted in plain text with no encryption | repo `db-models/onfinance-db-model-master` | SEBI sebi-cscrf-2024 PR.DS.S1 | 2026-09-14 | 2026-10-14T18:36:43Z | due in 30 d | open | n/a |
+| [fnd_01M2GMWPZ5DKN7DNH3D65T47FZ] | switch-connection tool's connectionString argument carries no isSecret/classification annotation | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S1 | 2026-09-14 | 2026-09-21T18:36:43Z | due in 7 d | open | n/a |
+| [fnd_01M2GMWQ01QA647X5MYFGNS1MG] | MDB_MCP_DRY_RUN dumps the full resolved config, including isSecret-marked fields, with no redaction | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S1 | 2026-09-14 | 2026-09-21T18:36:43Z | due in 7 d | open | n/a |
 
 ### Medium
 
@@ -206,9 +228,13 @@ medium, 0 past SLA):
 | [fnd_01M2FS482NWXE7E5MCZY2QMAZ0] | material-without-evidence: github lacks audit rights and a documented exit plan | vendor `github` | SEBI sebi-cscrf-2024 GV.SC.S3 | 2026-09-14 | 2026-12-13T10:46:39Z | due in 90 d | open | n/a |
 | [fnd_01M2FS9EBVSP2DPWN5K2D91QKW] | material-without-evidence: atlas-mumbai has no audit rights, no exit plan, contract lapsed | vendor `mongodb-atlas` | SEBI sebi-cscrf-2024 GV.SC.S3 | 2026-09-14 | 2026-12-13T10:46:39Z | due in 90 d | open | n/a |
 | [fnd_01M2G2AGNMHKF9PCB4C85A3JQ3] | MongoDB MCP tool schemas carry no personal-data classification markers | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 ID.AM.S5 | 2026-09-14 | 2026-09-28T13:14:50Z | due in 14 d | open | n/a |
+| [fnd_01M2G2AGX1GZ9THG6HJ1VPP1EP] | Open EJSON filter/pipeline/document arguments and unbounded database/collection names reach the MongoDB driver directly | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.IP.S2 | 2026-09-14 | 2026-09-28T13:14:50Z | due in 14 d | open | n/a |
 | [fnd_01M2GH5AXYX8NH35F6135G6VB4] | No IaC lint/scan for the checked-in Azure Bicep templates | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.IP.S6 | 2026-09-14 | 2026-09-28T13:48:42Z | due in 14 d | open | n/a |
 | [fnd_01M2GH5B0C1BP3QP8HHA0MJNVY] | Published image is never signed or attested with cosign | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.IP.S2 | 2026-09-14 | 2026-09-28T13:48:42Z | due in 14 d | open | n/a |
+| [fnd_01M2GMN60SYB8DHVX3XN4J84G5] | Metastore-catalogued PII/SPDI columns carry no classification annotation in models.py | repo `db-models/onfinance-db-model-master` | SEBI sebi-cscrf-2024 ID.AM.S5 | 2026-09-14 | 2026-09-28T18:36:43Z | due in 14 d | open | n/a |
+| [fnd_01M2GMN62KVM9J9R852X3E3ST7] | User document has no consent/purpose/notice reference | repo `db-models/onfinance-db-model-master` | SEBI sebi-cscrf-2024 GV.OC.S2 | 2026-09-14 | 2026-09-28T18:36:43Z | due in 14 d | open | n/a |
+| [fnd_01M2GMN63DEDR29P66QTKND8E7] | No retention, expiry or purge mechanism for personal data or trading credentials | repo `db-models/onfinance-db-model-master` | SEBI sebi-cscrf-2024 PR.AA.S13 | 2026-09-14 | 2026-12-13T18:36:43Z | due in 90 d | open | n/a |
 
-<!-- source: latest-state map over soc/main.jsonl kind=finding, filtered to status in open|triaged|remediating; SLA status = ceil((slaDueAt - 2026-09-14T18:08:50Z)/86400000) days -->
+<!-- source: latest-state map over soc/main.jsonl kind=finding, filtered to status in open|triaged|remediating; SLA status = ceil((slaDueAt - 2026-09-14T18:36:43Z)/86400000) days -->
 
 No findings in `risk-accepted`, `false-positive` or `duplicate` this period.
