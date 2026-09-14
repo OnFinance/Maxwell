@@ -369,89 +369,45 @@ not audit work.
 
 ## Quick start
 
-**Prerequisites**
+You need Node.js 22 or later, git, and [Claude Code](https://code.claude.com) (or [OpenCode](https://opencode.ai)).
 
-- Node.js 22 or later, and git
-- [Claude Code](https://code.claude.com) signed in, or an Anthropic API key; [OpenCode](https://opencode.ai) is optional
-- [sops](https://github.com/getsops/sops) and [age](https://github.com/FiloSottile/age) for application credentials
-
-**Set up**
+**1. Install**
 
 ```bash
 git clone https://github.com/OnFinance/Maxwell.git
 cd Maxwell
-npm ci                 # installs the validators and points git at .claude/hooks/git
-npm run validate       # schemas, layout, data, frontmatter, workflows and OpenCode mirror
-npm test               # schema unit tests and script tests
+npm ci && npm run validate
 ```
 
-**Add your company and first application**
+**2. Start Maxwell and add your company**
 
 ```bash
 claude
-> /seed-company acme-securities "Acme Securities Private Limited"
 ```
 
-Then add `applications/<app_id>/` with a README, environment files and repo manifests. Use the schema examples in
-`.claude/schemas/v1/application/` and the `example-co` fixture as templates. Encrypt the credential references:
+> Add my company acme-securities, legal name "Acme Securities Private Limited".
 
-```bash
-age-keygen -o ~/.config/maxwell/acme.age-key.txt      # keep the private key outside the repository
-node .claude/scripts/creds/sops.mjs encrypt <app_id> /path/to/decrypted-credentials.json
-```
+Then add each application under `applications/<app_id>/`, using `applications/mcp-gateway/` as a template. Credentials
+are stored as encrypted references with [sops](https://github.com/getsops/sops) and [age](https://github.com/FiloSottile/age),
+never as values.
 
-`credentials.json` holds locators such as environment variable names, Vault paths and ARNs, never secret values.
+**3. Choose where scans run**
 
-**Connect a sandbox**
+> Where should scans run for acme-securities?
 
-Scanners and runtime probe commands run in a sandbox you choose. Maxwell asks the questions:
+Maxwell asks a few questions and connects Kubernetes, Docker or Podman, E2B, Daytona, Modal, Vercel Sandbox, or this
+machine, then checks the connection. API keys stay outside the repository.
 
-```bash
-claude
-> /connect-sandbox acme-securities
-```
+**4. Connect ComplianceOS**
 
-| Where | Scanners | Runtime probes | Notes |
-|---|---|---|---|
-| Kubernetes (your cluster) | yes | yes | non-root pod per run; add a default-deny egress NetworkPolicy to the namespace |
-| Docker or Podman (this machine) | yes | yes | container per run with no network and a read-only root |
-| [E2B](https://e2b.dev) | yes | no | microVM; BYOC and self-hosting available |
-| [Daytona](https://www.daytona.io) | yes | no | digest-pinned image; BYOC custom regions |
-| [Modal](https://modal.com) | yes | no | `ap-south` region in Mumbai |
-| [Vercel Sandbox](https://vercel.com/docs/sandbox) | yes | no | `bom1` region in Mumbai |
-| This machine | yes | yes | no isolation |
+Maxwell asks for your ComplianceOS login in chat the first time it needs to look up a regulation. To get a read-only
+account, email team@onfinance.in.
 
-Runtime probes never use a hosted sandbox, because their commands carry the target environment's credentials. The
-choice is saved in `company-profile/<company_id>/sdlc/executor.json`; provider API keys stay in
-`~/.config/maxwell/sandbox/`, outside the repository. If the company restricts data residency to India, Maxwell
-offers only the Mumbai regions unless you explicitly accept otherwise. `node .claude/scripts/sandbox/connect.mjs test
---company <company_id>` re-runs the connection check.
+**5. Ask your first question**
 
-**Connect ComplianceOS search**
+> Has SEBI or RBI changed anything that affects acme-securities?
 
-Agents look up regulator circulars, directions and clauses in [ComplianceOS](https://onfinance.ai) first, and use
-public web search only when ComplianceOS has nothing relevant, is unavailable, or does not cover the source (CERT-In,
-MeitY and DPDP material, CVE data, vendor portals). Store a ComplianceOS login once, outside the repository:
-
-```bash
-printf '{"email":"%s","password":"%s"}' "$COS_EMAIL" "$COS_PASSWORD" \
-  | node .claude/scripts/cos/search.mjs set-credentials     # writes ~/.config/maxwell/complianceos.env (0600) and verifies it
-node .claude/scripts/cos/search.mjs status
-node .claude/scripts/cos/search.mjs search --query "managing risks in outsourcing" --regulator RBI
-```
-
-The default host is `https://complianceos-prod.onfinance.ai`; set `MAXWELL_COS_BASE_URL` for another tenant, or
-`MAXWELL_COS_EMAIL` and `MAXWELL_COS_PASSWORD` in the host environment instead of the file. In an interactive session
-without a stored login, Maxwell asks for it in chat. To get a read-only ComplianceOS login for Maxwell, email
-team@onfinance.in.
-
-**Run a workflow**
-
-```bash
-claude
-> /refresh-ctx acme-securities
-> /status acme-securities
-```
+See [Use cases to try](#use-cases-to-try) for more.
 
 ## Running headless
 
