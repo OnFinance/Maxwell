@@ -3,16 +3,16 @@ schemaVersion: "1"
 kind: maxwell.company.summary
 companyId: example-co
 title: Example Capital Markets cyber resilience summary
-version: "4.6.0"
+version: "4.7.0"
 sections: [overview, regulatory-posture, data-flows, vendors, control-summary, open-findings]
 provenance:
   harness: claude-code
-  generatedAt: "2026-09-14T18:36:43Z"
-  sessionId: "2853edbc-3a09-4ec1-87ad-1afe187bb68c"
+  generatedAt: "2026-09-14T19:14:04Z"
+  sessionId: "25584b4f-cb91-4da7-9198-1c6516a03390"
   runId: "run_01M2FGNVVQ15ZKXZWGW74YWAAQ"
-  workflow: probe-schemas
+  workflow: probe-agent-graph
   agent: report-writer
-  inputsHash: "1c32f623eb64eab5e7abdd9ef9ebcbb2ecaf4d6eb846097f6535d137d291c137"
+  inputsHash: "a9176feb3bf92aecd34e625e83596381eafd078959be42a9a881e22506be6637"
 ---
 # Example Capital Markets — cyber resilience summary
 
@@ -192,8 +192,20 @@ policy declares, published images that are never signed/attested with cosign, a 
 never captured into the workspace image inventory, and a static Docker Hub credential where the same repo
 already uses OIDC federation for another publish target.
 
+`probe-agent-graph` ran against `example-co` this run (`provenance.runId` run_01M2FGNVVQ15ZKXZWGW74YWAAQ,
+`provenance.sessionId` 25584b4f-cb91-4da7-9198-1c6516a03390): 3 new agent-graph finding(s) against the OWASP
+Agentic AI Top 10 2026 (`owasp-agentic-top10-2026`) ([fnd_01M2GPBK5MBCAFFV7KNH83JV1F],
+[fnd_01M2GPBK5MSHBXGGFSRYHPXQY2], [fnd_01M2GPBK5MB962TKED1TFBTF3A]), 0 re-seen (0 reopened), 5 observation(s)
+recorded [obs_01M2GPBK5JXJTXXTT6R2YA05PN], [obs_01M2GPBK5M3198JC7AD8BMB21H]. All 3 new findings target the
+`mcp-gateway` repo `mongodb-mcp-server`: the elicitation-based confirmation for destructive MongoDB/Atlas
+tools auto-approves when the client omits elicitation support
+([fnd_01M2GPBK5MBCAFFV7KNH83JV1F], SEBI sebi-cscrf-2024 PR.AA.S3), write/delete MongoDB and Atlas tool
+categories are enabled by default with no allow-list ([fnd_01M2GPBK5MSHBXGGFSRYHPXQY2], SEBI sebi-cscrf-2024
+PR.AA.S3), and the streamable HTTP transport has no authentication by default
+([fnd_01M2GPBK5MB962TKED1TFBTF3A], SEBI sebi-cscrf-2024 PR.AA.S17).
+
 Latest record per finding id in `company-profile/example-co/soc/main.jsonl` with `status` in
-`open | triaged | remediating`, as of `provenance.generatedAt` 2026-09-14T18:36:43Z (29 open: 18 high, 11
+`open | triaged | remediating`, as of `provenance.generatedAt` 2026-09-14T19:14:04Z (32 open: 21 high, 11
 medium, 0 past SLA):
 
 ### High
@@ -218,6 +230,9 @@ medium, 0 past SLA):
 | [fnd_01M2GMN61NFQDTRGPZ5RMSMTWN] | Zerodha and Binance trading-account credentials persisted in plain text with no encryption | repo `db-models/onfinance-db-model-master` | SEBI sebi-cscrf-2024 PR.DS.S1 | 2026-09-14 | 2026-10-14T18:36:43Z | due in 30 d | open | n/a |
 | [fnd_01M2GMWPZ5DKN7DNH3D65T47FZ] | switch-connection tool's connectionString argument carries no isSecret/classification annotation | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S1 | 2026-09-14 | 2026-09-21T18:36:43Z | due in 7 d | open | n/a |
 | [fnd_01M2GMWQ01QA647X5MYFGNS1MG] | MDB_MCP_DRY_RUN dumps the full resolved config, including isSecret-marked fields, with no redaction | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S1 | 2026-09-14 | 2026-09-21T18:36:43Z | due in 7 d | open | n/a |
+| [fnd_01M2GPBK5MBCAFFV7KNH83JV1F] | Elicitation-based approval for destructive MongoDB/Atlas tools auto-approves when the client omits elicitation support | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S3 (OWASP Agentic AI Top 10 2026 ASI09) | 2026-09-14 | 2026-09-21T19:14:04Z | due in 7 d | open | n/a |
+| [fnd_01M2GPBK5MSHBXGGFSRYHPXQY2] | Write/delete MongoDB and Atlas tool categories are enabled by default with no allow-list | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S3 | 2026-09-14 | 2026-09-21T19:14:04Z | due in 7 d | open | n/a |
+| [fnd_01M2GPBK5MB962TKED1TFBTF3A] | Streamable HTTP transport has no authentication by default | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S17 | 2026-09-14 | 2026-09-21T19:14:04Z | due in 7 d | open | n/a |
 
 ### Medium
 
@@ -235,6 +250,6 @@ medium, 0 past SLA):
 | [fnd_01M2GMN62KVM9J9R852X3E3ST7] | User document has no consent/purpose/notice reference | repo `db-models/onfinance-db-model-master` | SEBI sebi-cscrf-2024 GV.OC.S2 | 2026-09-14 | 2026-09-28T18:36:43Z | due in 14 d | open | n/a |
 | [fnd_01M2GMN63DEDR29P66QTKND8E7] | No retention, expiry or purge mechanism for personal data or trading credentials | repo `db-models/onfinance-db-model-master` | SEBI sebi-cscrf-2024 PR.AA.S13 | 2026-09-14 | 2026-12-13T18:36:43Z | due in 90 d | open | n/a |
 
-<!-- source: latest-state map over soc/main.jsonl kind=finding, filtered to status in open|triaged|remediating; SLA status = ceil((slaDueAt - 2026-09-14T18:36:43Z)/86400000) days -->
+<!-- source: latest-state map over soc/main.jsonl kind=finding, filtered to status in open|triaged|remediating; SLA status = ceil((slaDueAt - 2026-09-14T19:14:04Z)/86400000) days -->
 
 No findings in `risk-accepted`, `false-positive` or `duplicate` this period.

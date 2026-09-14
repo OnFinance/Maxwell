@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.session.summary",
+  "sessionId": "25584b4f-cb91-4da7-9198-1c6516a03390",
+  "harness": "claude-code",
+  "harnessVersion": "2.1.270",
+  "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+  "workflow": "probe-agent-graph",
+  "companyId": "example-co",
+  "startedAt": "2026-09-14T19:14:04.422Z",
+  "endedAt": "2026-09-14T19:35:45.456Z",
+  "durationMs": 1301034,
+  "turns": 130,
+  "inferenceCalls": 130,
+  "toolCalls": {
+    "total": 128,
+    "byTool": {
+      "Skill": 1,
+      "Workflow": 1,
+      "Bash": 70,
+      "Read": 15,
+      "Write": 1,
+      "StructuredOutput": 11,
+      "Grep": 22,
+      "Glob": 3,
+      "Edit": 4
+    }
+  },
+  "subagentSessions": 11,
+  "permissionDenials": [],
+  "models": [
+    {
+      "model": "claude-opus-5",
+      "provider": "anthropic",
+      "tokens": {
+        "input": 1270,
+        "output": 54517,
+        "cacheWrite5m": 582756,
+        "cacheWrite1h": 35599,
+        "cacheRead": 3382471,
+        "thinking": 10864
+      },
+      "webSearchRequests": 0,
+      "webFetchRequests": 0,
+      "costUsd": 7.058726
+    },
+    {
+      "model": "claude-sonnet-5",
+      "provider": "anthropic",
+      "tokens": {
+        "input": 162,
+        "output": 80500,
+        "cacheWrite5m": 384142,
+        "cacheWrite1h": 0,
+        "cacheRead": 7065588,
+        "thinking": 28035
+      },
+      "webSearchRequests": 0,
+      "webFetchRequests": 0,
+      "costUsd": 3.178797
+    }
+  ],
+  "costUsd": {
+    "computed": 10.237523,
+    "reported": 10.238608,
+    "deltaPct": -0.01
+  },
+  "pricingVersion": "2026-09-14",
+  "dedup": {
+    "strategy": "requestId-max-total-tokens",
+    "duplicatesDropped": 235
+  },
+  "filesWritten": [
+    "company-profile/example-co/summary.md",
+    "kpis/data/raw/sessions/25584b4f-cb91-4da7-9198-1c6516a03390/probe-agent-graph.mcp-gateway.mongodb-mcp-server.sarif.export.json"
+  ],
+  "linesAdded": 0,
+  "linesRemoved": 0,
+  "outcome": "success",
+  "transcriptFormatVersion": "2.1.270",
+  "provenance": {
+    "harness": "script",
+    "generatedAt": "2026-09-14T19:35:46Z",
+    "sessionId": "25584b4f-cb91-4da7-9198-1c6516a03390",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "probe-agent-graph",
+    "agent": ".claude/scripts/sessions/ingest.mjs"
+  }
+}
