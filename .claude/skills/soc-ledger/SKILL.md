@@ -40,7 +40,8 @@ Ratios that indicate a healthy ledger: one observation per probe run per subject
 - New identity: new id, no `supersedes`.
 - Same identity, newer state (control re-assessed, finding status change, risk re-rated, incident progressed):
   append a full record with the **same id** and `supersedes: <same id>`. `append.mjs` refuses a duplicate id
-  without `supersedes` and refuses `supersedes` pointing at an id that does not exist.
+  without `supersedes` and refuses `supersedes` pointing at an id that does not exist. Pass a `.jsonl` file (one
+  record per line) to append a batch: every record is checked first and the batch is appended all-or-nothing.
 - Observation refreshed: new `obs_` id with `supersedes: <old obs id>`; `expiresAt` of the old one is moot.
 - Legitimately repeating observations (same id re-appended by a scheduled job) need `--allow-duplicate-id`.
 - The latest state of any id is its **last line**. Everything earlier is history and must stay readable.

@@ -60,7 +60,10 @@ Inputs from `company-profile/<c>/details.json`: `entityTypes`, `jurisdictions`,
    in another applicable entry's `supersedes` follows the same rule, and `draft` or `in-abeyance` entries are not
    cited as binding. Current repeals: `rbi-it-outsourcing-md-2023` (28 Nov 2025, successor
    `rbi-outsourcing-risk-directions-2025`); `rbi-cyber-security-framework-2016` and `rbi-it-governance-md-2023`
-   (31 Jul 2026, successor `rbi-cyber-tech-directions-2026`).
+   (31 Jul 2026, successor `rbi-cyber-tech-directions-2026`). To move a company onto the successor run
+   `node .claude/scripts/soc/migrate-instrument.mjs <company_id> --from <repealed id> [--dry-run]`: it swaps
+   `frameworksInScope`, supersedes the old controls as `not-applicable` naming their successor controls, appends
+   the successor controls that apply, re-maps open findings, risks and incidents, and writes a version diff.
 6. **Scope versus applicability.** `frameworksInScope` is what the company is assessed against. An applicable
    instrument missing from it is drift: `refresh-ctx` reports it (observation plus risk), it does not silently
    add it. Findings cite instruments in scope; add an applicable-but-unscoped instrument only as a second ref.

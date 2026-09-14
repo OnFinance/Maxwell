@@ -116,7 +116,8 @@ Maxwell/
 ## 3. Writing to the state-of-controls ledger (`soc/main.jsonl`)
 The ledger is append-only. One JSON object per line, `kind` in `control|observation|finding|risk|incident`.
 Never rewrite or delete lines; supersede by appending a new record that references the old id. Use the helper
-`node .claude/scripts/soc/append.mjs <company_id> <record.json>` which validates and appends atomically, and
+`node .claude/scripts/soc/append.mjs <company_id> <record.json | records.jsonl>` which validates and appends
+atomically (a JSONL batch all-or-nothing), and
 `node .claude/scripts/soc/version.mjs <company_id>` at the end of a refresh workflow to write
 `versions/commit_<n>.diff`. Findings carry a stable `fingerprint` so re-runs update rather than duplicate.
 

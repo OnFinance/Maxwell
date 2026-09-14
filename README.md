@@ -353,8 +353,9 @@ node .claude/scripts/run-headless.mjs --workflow refresh-apps --company acme-sec
   without `MAXWELL_SCHEMA_EDIT=1`, hand edits to the generated `.agents/` mirror, and secret-shaped content.
 - **Post-write validation.** Every JSON, JSONL or frontmatter file an agent writes is validated immediately, and
   errors go back to the agent.
-- **Ledger helpers.** `soc/append.mjs` validates and appends one record, refusing duplicate ids. `soc/version.mjs`
-  writes `versions/commit_<n>.diff` and detects tampering with the append-only history.
+- **Ledger helpers.** `soc/append.mjs` validates and appends one record or a JSONL batch (all-or-nothing), refusing
+  duplicate ids. `soc/version.mjs` writes `versions/commit_<n>.diff` and detects tampering with the append-only
+  history. `soc/migrate-instrument.mjs` moves a company off a repealed instrument onto its successor.
 - **Git hooks and CI.** Staged files are validated on commit, the full suite and tests run on push, and
   `.github/workflows/validate.yml` repeats both in CI.
 
