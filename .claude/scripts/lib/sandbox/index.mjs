@@ -10,9 +10,10 @@ import * as e2b from './backends/e2b.mjs';
 import * as daytona from './backends/daytona.mjs';
 import * as modal from './backends/modal.mjs';
 import * as vercel from './backends/vercel.mjs';
+import * as lambdaMicrovms from './backends/lambda-microvms.mjs';
 import { ExecutorError, HOSTED, RUNTIME_PROVIDERS, limitsOf } from './common.mjs';
 
-export const BACKENDS = { host, docker, kubernetes, e2b, daytona, modal, vercel };
+export const BACKENDS = { host, docker, kubernetes, e2b, daytona, modal, vercel, 'lambda-microvms': lambdaMicrovms };
 export const EXECUTOR_SCHEMA = 'https://maxwell.onfinance.ai/schemas/v1/company/executor.schema.json';
 
 export const executorPath = (companyId, root = '.') => join(root, 'company-profile', companyId, 'sdlc', 'executor.json');

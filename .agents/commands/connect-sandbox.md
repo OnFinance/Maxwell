@@ -3,9 +3,9 @@
 description: >-
   Connect Maxwell to a sandbox for pinned scanners and runtime probe commands -
   asks where to run them (Kubernetes, Docker or Podman, E2B, Daytona, Modal,
-  Vercel Sandbox, or this machine), stores the choice and any provider
-  credentials outside the workspace, and verifies the connection with a pinned
-  tool
+  Vercel Sandbox, AWS Lambda MicroVMs, or this machine), stores the choice and
+  any provider credentials outside the workspace, and verifies the connection
+  with a pinned tool
 x-maxwell:
   workflow: connect-sandbox
   touches:
@@ -23,10 +23,11 @@ takes at most four options, and the user can always answer "Other".
 2. **Scanners.** Ask "Where should Maxwell run pinned scanners (semgrep, trivy, checkov, gitleaks and others)?" with:
    - Kubernetes (your cluster): a non-root pod per scan; needs a namespace with a default-deny egress NetworkPolicy
    - Docker or Podman (this machine): a network-less, read-only container per scan
-   - Hosted sandbox: E2B, Daytona, Modal or Vercel Sandbox
+   - Hosted sandbox: AWS Lambda MicroVMs, Modal, Vercel Sandbox, E2B or Daytona
    - This machine, no isolation: pinned, checksum-verified binaries run directly on the host
-   If the user picks a hosted sandbox, ask which one, with each option's residency from `options` in its description
-   (Modal `ap-south` and Vercel `bom1` are in Mumbai; E2B and Daytona document no Indian region outside BYOC).
+   If the user picks a hosted sandbox, ask which one with these options, each with its residency from `options`:
+   AWS Lambda MicroVMs (your AWS account; `ap-south-1` is Mumbai), Modal (`ap-south` is Mumbai), Vercel Sandbox
+   (`bom1` is Mumbai), and E2B or Daytona (no Indian region outside BYOC; ask which of the two if chosen).
    If they answer Other with "none", scanners are disabled and probes review checkouts manually.
 
 3. **Runtime probes.** Ask "Where should runtime probe commands (kubectl, aws, gcloud, az, curl) run?" with:
@@ -38,6 +39,11 @@ takes at most four options, and the user can always answer "Other".
    - Kubernetes: the namespace, and the name of the environment variable that holds the executor cluster's
      kubeconfig path (suggest `MAXWELL_EXECUTOR_KUBECONFIG`); optionally context and service account.
    - Vercel Sandbox: team id (`team_...`) and project id (`prj_...`). Modal or Vercel: offer the Mumbai region.
+   - AWS Lambda MicroVMs: the region (offer `ap-south-1`, Mumbai), the build role ARN Lambda assumes to read the runner
+     artifact, the S3 bucket for that artifact (same account and region; it receives a Dockerfile and the runner,
+     never a checkout), and the ARN of a customer-managed VPC egress network connector whose security group has no
+     outbound rules. Optionally the AWS profile name. Maxwell stores no AWS key: the user signs in on this machine
+     with that profile, SSO or an instance role. Never offer the AWS-managed `INTERNET_EGRESS` connector.
    - Hosted API keys (`E2B_API_KEY`, `DAYTONA_API_KEY`, `MODAL_TOKEN_ID` and `MODAL_TOKEN_SECRET`, `VERCEL_TOKEN`):
      ask the user to paste them in chat, or to set them in their own shell before Maxwell runs. Say that anything
      typed into chat stays in this session's local transcript. Never repeat a key back, never write it to a file
@@ -48,12 +54,14 @@ takes at most four options, and the user can always answer "Other".
 5. Run the set command, sending credentials only on stdin as one JSON object (use `echo '{}'` when there are none):
    `printf '%s' '{"E2B_API_KEY":"..."}' | node .claude/scripts/sandbox/connect.mjs set --company $1 --static <provider> --runtime <provider> [--region <r>] [--network none|package-registries] [--settings '<non-secret JSON>'] [--runtime-settings '<non-secret JSON>'] [--accept-residency]`
    Python scanners on E2B or Vercel Sandbox install inside the sandbox, so offer `--network package-registries`
-   there; every other provider works with `--network none`.
+   there; every other provider works with `--network none` (AWS Lambda MicroVMs accepts only `none`).
 
 6. Run `node .claude/scripts/sandbox/connect.mjs test --company $1` and report each check: provider, the pinned tool
    and version that ran, and pass or fail with the message. On failure, say what to fix (missing variable, missing
-   NetworkPolicy, Docker not running, wrong team or project) and offer to run the test again.
+   NetworkPolicy, Docker not running, wrong team or project, AWS sign-in expired, or an egress connector that still
+   allows outbound traffic) and offer to run the test again. On AWS Lambda MicroVMs the first test builds the runner
+   image, which takes a few minutes.
 
 Finish with one short paragraph: where scanners and runtime commands now run, where credentials are stored
-(`~/.config/maxwell/sandbox/`, outside the workspace), and that `company-profile/$1/sdlc/executor.json` records the
-choice without any secret.
+(`~/.config/maxwell/sandbox/`, outside the workspace, or the user's own AWS sign-in), and that
+`company-profile/$1/sdlc/executor.json` records the choice without any secret.

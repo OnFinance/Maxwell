@@ -398,7 +398,8 @@ never as values.
 
 > Where should scans run for acme-securities?
 
-Maxwell asks a few questions and connects Kubernetes, Docker or Podman, E2B, Daytona, Modal, Vercel Sandbox, or this
+Maxwell asks a few questions and connects Kubernetes, Docker or Podman, E2B, Daytona, Modal, Vercel Sandbox, AWS
+Lambda MicroVMs, or this
 machine, then checks the connection. API keys stay outside the repository.
 
 **4. Connect ComplianceOS**

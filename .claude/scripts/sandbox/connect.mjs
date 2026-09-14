@@ -22,7 +22,7 @@ import { ExecutorError, HOSTED, RUNTIME_PROVIDERS, limitsOf } from '../lib/sandb
 
 const WORKSPACE = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 const now = () => new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
-const INDIA_REGIONS = { modal: ['ap-south'], vercel: ['bom1'] };
+const INDIA_REGIONS = { modal: ['ap-south'], vercel: ['bom1'], 'lambda-microvms': ['ap-south-1'] };
 
 export const OPTIONS = {
   static: [
@@ -32,6 +32,7 @@ export const OPTIONS = {
     { provider: 'daytona', label: 'Daytona', hosting: 'hosted', isolation: 'sandbox per scan from the digest-pinned base image, all network blocked', residency: 'US and EU; BYOC custom regions', indiaRegion: null, settings: { required: [], optional: ['target', 'apiUrl'] }, credentials: PROVIDER_CREDENTIALS.daytona },
     { provider: 'modal', label: 'Modal', hosting: 'hosted', isolation: 'sandbox per scan from the digest-pinned base image, network blocked', residency: 'region selectable; ap-south is Mumbai', indiaRegion: 'ap-south', settings: { required: [], optional: ['environment', 'appName'] }, credentials: PROVIDER_CREDENTIALS.modal },
     { provider: 'vercel', label: 'Vercel Sandbox', hosting: 'hosted', isolation: 'microVM per scan, deny-all network policy', residency: 'region selectable; bom1 is Mumbai', indiaRegion: 'bom1', settings: { required: ['teamId', 'projectId'], optional: [] }, credentials: PROVIDER_CREDENTIALS.vercel, notes: 'Python scanners need network package-registries' },
+    { provider: 'lambda-microvms', label: 'AWS Lambda MicroVMs (your AWS account)', hosting: 'hosted', isolation: 'Firecracker microVM (ARM64) per scan from a Maxwell runner image on a digest-pinned base; ingress only through Lambda\'s token-authenticated endpoint, egress only through your VPC egress connector, whose security group must allow no outbound traffic', residency: 'your AWS account and region; ap-south-1 is Mumbai', indiaRegion: 'ap-south-1', settings: { required: ['buildRoleArn', 'artifactBucket', 'egressConnectorArn'], optional: ['profile', 'baseImageVersion'] }, credentials: PROVIDER_CREDENTIALS['lambda-microvms'], hostNeeds: 'AWS credentials on this machine from the SDK default chain (the profile setting, SSO or an instance role) allowed to create and read MicroVM images, run, read and terminate MicroVMs, create MicroVM auth tokens and put objects in artifactBucket; no AWS key is stored by Maxwell', notes: 'the first scan builds the runner image once per account, region and size, which takes a few minutes; Python scanners use arm64 wheels, so no network is needed' },
     { provider: 'host', label: 'This machine, no isolation', hosting: 'self-hosted', isolation: 'none: pinned, checksum-verified binaries run directly on the host', residency: 'this machine', settings: { required: [], optional: [] }, credentials: [] },
     { provider: 'none', label: 'No scanners', hosting: 'none', isolation: 'scanners never run; static probes review checkouts manually', settings: { required: [], optional: [] }, credentials: [] },
   ],
@@ -93,6 +94,11 @@ async function smokeStatic(config, manifest) {
     const r = await BACKENDS[ex.provider].runTool({ manifest, tool, argv: tool.versionCheck.args, repoDir, resultPath: join(repoDir, 'result'), network: ex.network, limits: { ...ex.limits, timeoutSeconds: 300 }, region: ex.region, providerConfig: ex.providerConfig });
     if (r.exitCode !== 0) throw new ExecutorError('check-failed', `gitleaks exited ${r.exitCode} in ${ex.provider}`);
     const messages = [`gitleaks ${tool.version} ran in ${ex.provider} and printed its pinned version (${r.provenance.versionOutput || tool.version})`];
+    if (BACKENDS[ex.provider].checkEgress) {
+      const egress = await BACKENDS[ex.provider].checkEgress({ manifest, providerConfig: ex.providerConfig, region: ex.region, limits: ex.limits });
+      if (!egress.ok) throw new ExecutorError('check-failed', egress.detail);
+      messages.push(egress.detail);
+    }
     if (ex.provider === 'kubernetes') {
       const { path: kubectl } = await ensureHostTool(manifest, 'kubectl');
       const cfg = ex.providerConfig;
@@ -142,6 +148,7 @@ async function main() {
       if (!OPTIONS.static.some((o) => o.provider === staticProvider)) fail('usage', `--static must be one of ${OPTIONS.static.map((o) => o.provider).join(', ')}`);
       if (![...RUNTIME_PROVIDERS, 'none'].includes(runtimeProvider)) fail('usage', `--runtime must be one of ${[...RUNTIME_PROVIDERS, 'none'].join(', ')}; hosted sandboxes never receive target credentials`);
       if (flags.network && !['none', 'package-registries'].includes(flags.network)) fail('usage', '--network must be none or package-registries');
+      if (staticProvider === 'lambda-microvms' && flags.network && flags.network !== 'none') fail('usage', 'lambda-microvms runs scanners only with --network none: egress is whatever its VPC egress connector allows');
       const details = JSON.parse(readFileSync(join(WORKSPACE, 'company-profile', flags.company, 'details.json'), 'utf8'));
       const indiaOnly = Array.isArray(details.dataResidency) && details.dataResidency.length > 0 && details.dataResidency.every((c) => c === 'IN');
       if (indiaOnly && HOSTED.includes(staticProvider) && !(INDIA_REGIONS[staticProvider] || []).includes(flags.region) && !flags['accept-residency']) {

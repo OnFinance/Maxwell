@@ -1,6 +1,6 @@
 ---
 name: sandbox-executors
-description: Where Maxwell runs pinned scanners and read-only runtime probe commands - company-profile/<company_id>/sdlc/executor.json set by /connect-sandbox (Kubernetes, Docker or Podman, E2B, Daytona, Modal, Vercel Sandbox or this machine), and node .claude/scripts/sandbox/exec.mjs, the only way a runtime probe runs a command. Load before any runtime probe command, and when scan.mjs or exec.mjs report no executor, a blocked environment or missing access.
+description: Where Maxwell runs pinned scanners and read-only runtime probe commands - company-profile/<company_id>/sdlc/executor.json set by /connect-sandbox (Kubernetes, Docker or Podman, E2B, Daytona, Modal, Vercel Sandbox, AWS Lambda MicroVMs or this machine), and node .claude/scripts/sandbox/exec.mjs, the only way a runtime probe runs a command. Load before any runtime probe command, and when scan.mjs or exec.mjs report no executor, a blocked environment or missing access.
 license: AGPL-3.0-only
 compatibility: Node 22 and the Maxwell workspace layout; kubectl and jq come from the pinned toolchain; docker or podman for the docker executor
 metadata:
@@ -22,7 +22,7 @@ never read that directory.
 
 | Scope | Providers | Notes |
 | --- | --- | --- |
-| `static`: scanners over checkouts (`toolchain/scan.mjs`) | `kubernetes`, `docker`, `e2b`, `daytona`, `modal`, `vercel`, `host`, `none` | Hosted sandboxes get only the checkout and the pinned tool. Modal `ap-south` and Vercel `bom1` run in Mumbai |
+| `static`: scanners over checkouts (`toolchain/scan.mjs`) | `kubernetes`, `docker`, `e2b`, `daytona`, `modal`, `vercel`, `lambda-microvms`, `host`, `none` | Hosted sandboxes get only the checkout and the pinned tool. Modal `ap-south`, Vercel `bom1` and AWS Lambda MicroVMs `ap-south-1` (in the company's own AWS account) run in Mumbai |
 | `runtime`: commands against live environments (`sandbox/exec.mjs`) | `kubernetes`, `docker`, `host`, `none` | Never hosted: these commands carry the target's credentials. `none` makes runtime probes plan-only |
 
 Every executor runs the pinned build from the `scanner-toolchain` skill: image digests in containers, checksum-verified
