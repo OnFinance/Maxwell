@@ -172,21 +172,73 @@ Maxwell ships 26 workflows. Context workflows keep the company profile and inven
 repositories and live environments into evidence, and the remediation and reporting workflows act on the ledger.
 
 ```mermaid
-%%{init: {"themeVariables": {"fontSize": "18px"}, "flowchart": {"nodeSpacing": 40, "rankSpacing": 50}}}%%
-flowchart TB
-  CTX["CONTEXT MAINTENANCE · excluded from KPIs<br/>refresh-ctx · regulator registers and drift<br/>refresh-soc · control inventory and SLAs<br/>refresh-vendor-ctx · third-party register<br/>refresh-metastore · tables, PII, lineage<br/>refresh-apps · repos, images, environments"]
-  STATIC["STATIC PROBES · repo checkouts only<br/>probe-iac · infrastructure as code<br/>probe-app-chart · Helm and Kubernetes<br/>probe-schemas · data and API schemas<br/>probe-cicd-env · pipelines and SBOM<br/>probe-agent-graph · LLM agents and MCP<br/>execute-scr · secure code review<br/>↳ probe-sdlc · NIST SSDF practices<br/>↳ probe-dev-env · developer configuration"]
-  RUNTIME["RUNTIME PROBES · read-only<br/>runtime-probe-appcontainers · workloads<br/>↳ devtest-env · qa-env · prod-env<br/>runtime-probe-harnesses · agent harnesses<br/>runtime-probe-sandboxes · isolation<br/>runtime-probe-datapipeline · pipelines<br/>runtime-probe-network-perimeter · exposure<br/>runtime-probe-identity-access · IAM"]
-  LEDGER[("soc/main.jsonl<br/>append-only control ledger")]
-  FIX["REMEDIATION<br/>impl-change-management · initiatives and tasks<br/>impl-auto-improvement · fix diffs for review"]
-  REPORT["REPORTING<br/>report-audit-findings · findings and coverage<br/>report-audit-improvements · initiatives and KPIs"]
-  CTX -- "profile, catalogs, apps" --> STATIC
-  CTX -- "profile, catalogs, apps" --> RUNTIME
-  STATIC -- "refuted findings" --> LEDGER
-  RUNTIME -- "refuted findings" --> LEDGER
-  LEDGER --> FIX
-  LEDGER --> REPORT
-  FIX --> REPORT
+%%{init: {"themeVariables": {"fontSize": "15px"}, "flowchart": {"nodeSpacing": 14, "rankSpacing": 70, "curve": "linear"}}}%%
+flowchart LR
+  STATE["State<br/>1. company-profile/#lt;company_id#gt;/: details.json, summary.md, sdlc/, vendors/,<br/>soc/ (main.jsonl, versions/commit_n.diff), change_management/ (master.json,<br/>initiatives/#lt;initiative_id#gt;/ timeline.json, tasks/task_n.json), suggestions/<br/>2. applications/#lt;app_id#gt;/: README.md, env/, repos/, images/, credentials.json<br/>3. kpis/: metrics.json, measurement/, data/#lt;kpi_id#gt;/, data/raw/<br/>4. cves/: search/, data/<br/>5. .claude/: scripts, schemas, commands, agents, workflows, skills"]
+  KPIS["KPIs<br/>1. Cost of audit<br/>2. Change management<br/>a) Actionability<br/>b) Coverage<br/>c) Time to implementation<br/>3. Acceptance rate of auto-improvement suggestions<br/>4. Incident rate"]
+  MX(["Maxwell"])
+  rsoc(["refresh-soc"])
+  rctx(["refresh-ctx"])
+  rven(["refresh-vendor-ctx"])
+  rmeta(["refresh-metastore"])
+  rapps(["refresh-apps"])
+  piac(["probe-iac"])
+  pchart(["probe-app-chart"])
+  pschema(["probe-schemas"])
+  scr(["execute-scr"])
+  psdlc(["probe-sdlc"])
+  pcicd(["probe-cicd-env"])
+  pdev(["probe-dev-env"])
+  pagent(["probe-agent-graph"])
+  rcont(["runtime-probe-appcontainers"])
+  rdev(["runtime-probe-devtest-env"])
+  rqa(["runtime-probe-qa-env"])
+  rprod(["runtime-probe-prod-env"])
+  rharn(["runtime-probe-harnesses"])
+  rsand(["runtime-probe-sandboxes"])
+  rpipe(["runtime-probe-datapipeline"])
+  rnet(["runtime-probe-network-perimeter"])
+  riam(["runtime-probe-identity-access"])
+  icm(["impl-change-management"])
+  iai(["impl-auto-improvement"])
+  raf(["report-audit-findings"])
+  rai(["report-audit-improvements"])
+  STATE <--- MX
+  KPIS <--- MX
+  MX --> rsoc
+  MX --> rctx
+  rctx --> rven
+  MX --> rmeta
+  MX --> rapps
+  MX --> piac
+  MX --> pchart
+  pchart --> pschema
+  MX --> scr
+  MX --> psdlc
+  psdlc --> pcicd
+  psdlc --> pdev
+  MX --> pagent
+  MX --> rcont
+  rcont --> rdev
+  rcont --> rqa
+  rcont --> rprod
+  MX --> rharn
+  MX --> rsand
+  MX --> rpipe
+  MX --> rnet
+  MX --> riam
+  MX --> icm
+  MX --> iai
+  MX --> raf
+  MX --> rai
+  linkStyle 0,1,15,16,17,18,19,20,21,22,23 stroke:#c62828,stroke-width:1.5px
+  linkStyle 2,3,4,5,6 stroke:#43a047,stroke-width:1.5px
+  linkStyle 7,8,9,10,11,12,13,14 stroke:#3949ab,stroke-width:1.5px
+  linkStyle 24,25,26,27 stroke:#8e7cc3,stroke-width:1.5px
+  classDef wf fill:#f5f5f5,stroke:#555,stroke-width:1px,stroke-dasharray:4 3,color:#222
+  classDef box fill:#fafafa,stroke:#555,stroke-width:1px,stroke-dasharray:4 3,color:#222,text-align:left
+  class MX,rsoc,rctx,rven,rmeta,rapps,piac,pchart,pschema,scr,psdlc,pcicd,pdev,pagent,rcont,rdev,rqa,rprod,rharn,rsand,rpipe,rnet,riam,icm,iai,raf,rai wf
+  class STATE,KPIS box
 ```
 
 Invoke a workflow as `/<name> <company_id> [--app=<app_id>] [--env=<env_id>] [--dry-run]` in an interactive
