@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.session.summary",
+  "sessionId": "314aa113-98aa-471e-941d-e1aa88798b5a",
+  "harness": "claude-code",
+  "harnessVersion": "2.1.270",
+  "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+  "workflow": "probe-schemas",
+  "companyId": "example-co",
+  "startedAt": "2026-09-14T13:14:51.013Z",
+  "endedAt": "2026-09-14T13:48:33.614Z",
+  "durationMs": 2022601,
+  "turns": 268,
+  "inferenceCalls": 268,
+  "toolCalls": {
+    "total": 266,
+    "byTool": {
+      "Workflow": 1,
+      "Bash": 124,
+      "Grep": 73,
+      "Glob": 10,
+      "Read": 34,
+      "StructuredOutput": 21,
+      "Write": 1,
+      "Edit": 2
+    }
+  },
+  "subagentSessions": 21,
+  "permissionDenials": [],
+  "models": [
+    {
+      "model": "claude-opus-5",
+      "provider": "anthropic",
+      "tokens": {
+        "input": 276,
+        "output": 86766,
+        "cacheWrite5m": 1250910,
+        "cacheWrite1h": 43465,
+        "cacheRead": 10398900,
+        "thinking": 23016
+      },
+      "webSearchRequests": 0,
+      "webFetchRequests": 0,
+      "costUsd": 15.622818
+    },
+    {
+      "model": "claude-sonnet-5",
+      "provider": "anthropic",
+      "tokens": {
+        "input": 262,
+        "output": 158626,
+        "cacheWrite5m": 575665,
+        "cacheWrite1h": 0,
+        "cacheRead": 10699240,
+        "thinking": 57776
+      },
+      "webSearchRequests": 0,
+      "webFetchRequests": 0,
+      "costUsd": 5.165795
+    }
+  ],
+  "costUsd": {
+    "computed": 20.788613,
+    "reported": 20.918924,
+    "deltaPct": -0.62
+  },
+  "pricingVersion": "2026-09-13",
+  "dedup": {
+    "strategy": "requestId-max-total-tokens",
+    "duplicatesDropped": 362
+  },
+  "filesWritten": [
+    "company-profile/example-co/summary.md",
+    "kpis/data/raw/sessions/314aa113-98aa-471e-941d-e1aa88798b5a/probe-schemas.mcp-gateway.mongodb-mcp-server.sarif.export.json"
+  ],
+  "linesAdded": 0,
+  "linesRemoved": 0,
+  "outcome": "success",
+  "transcriptFormatVersion": "2.1.270",
+  "provenance": {
+    "harness": "script",
+    "generatedAt": "2026-09-14T13:48:34Z",
+    "sessionId": "314aa113-98aa-471e-941d-e1aa88798b5a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "probe-schemas",
+    "agent": ".claude/scripts/sessions/ingest.mjs"
+  }
+}
