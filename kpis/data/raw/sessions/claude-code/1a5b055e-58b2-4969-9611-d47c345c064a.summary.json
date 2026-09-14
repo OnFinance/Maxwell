@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.session.summary",
+  "sessionId": "1a5b055e-58b2-4969-9611-d47c345c064a",
+  "harness": "claude-code",
+  "harnessVersion": "2.1.270",
+  "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+  "workflow": "probe-cicd-env",
+  "companyId": "example-co",
+  "startedAt": "2026-09-14T17:22:00.369Z",
+  "endedAt": "2026-09-14T18:08:20.666Z",
+  "durationMs": 2780297,
+  "turns": 249,
+  "inferenceCalls": 249,
+  "toolCalls": {
+    "total": 247,
+    "byTool": {
+      "Workflow": 1,
+      "Bash": 63,
+      "Grep": 93,
+      "StructuredOutput": 29,
+      "Read": 44,
+      "Glob": 14,
+      "Write": 1,
+      "Edit": 2
+    }
+  },
+  "subagentSessions": 29,
+  "permissionDenials": [],
+  "models": [
+    {
+      "model": "claude-opus-5",
+      "provider": "anthropic",
+      "tokens": {
+        "input": 4696,
+        "output": 193003,
+        "cacheWrite5m": 2257415,
+        "cacheWrite1h": 41386,
+        "cacheRead": 12952707,
+        "thinking": 57684
+      },
+      "webSearchRequests": 0,
+      "webFetchRequests": 0,
+      "costUsd": 25.847612
+    },
+    {
+      "model": "claude-sonnet-5",
+      "provider": "anthropic",
+      "tokens": {
+        "input": 154,
+        "output": 138955,
+        "cacheWrite5m": 494179,
+        "cacheWrite1h": 0,
+        "cacheRead": 7862462,
+        "thinking": 49704
+      },
+      "webSearchRequests": 0,
+      "webFetchRequests": 0,
+      "costUsd": 4.197798
+    }
+  ],
+  "costUsd": {
+    "computed": 30.04541,
+    "reported": 30.093883,
+    "deltaPct": -0.16
+  },
+  "pricingVersion": "2026-09-14",
+  "dedup": {
+    "strategy": "requestId-max-total-tokens",
+    "duplicatesDropped": 651
+  },
+  "filesWritten": [
+    "company-profile/example-co/summary.md",
+    "kpis/data/raw/sessions/1a5b055e-58b2-4969-9611-d47c345c064a/probe-cicd-env.mcp-gateway.mongodb-mcp-server.sarif.export.json"
+  ],
+  "linesAdded": 0,
+  "linesRemoved": 0,
+  "outcome": "success",
+  "transcriptFormatVersion": "2.1.270",
+  "provenance": {
+    "harness": "script",
+    "generatedAt": "2026-09-14T18:08:21Z",
+    "sessionId": "1a5b055e-58b2-4969-9611-d47c345c064a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "probe-cicd-env",
+    "agent": ".claude/scripts/sessions/ingest.mjs"
+  }
+}
