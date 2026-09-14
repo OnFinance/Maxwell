@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.session.summary",
+  "sessionId": "1313863d-dc83-4635-9a3c-65042c349fd1",
+  "harness": "claude-code",
+  "harnessVersion": "2.1.270",
+  "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+  "workflow": "runtime-probe-appcontainers",
+  "companyId": "example-co",
+  "startedAt": "2026-09-14T21:01:14.110Z",
+  "endedAt": "2026-09-14T21:12:19.553Z",
+  "durationMs": 665443,
+  "turns": 71,
+  "inferenceCalls": 71,
+  "toolCalls": {
+    "total": 69,
+    "byTool": {
+      "Skill": 1,
+      "Workflow": 1,
+      "Bash": 45,
+      "StructuredOutput": 14,
+      "Read": 4,
+      "Edit": 4
+    }
+  },
+  "subagentSessions": 10,
+  "permissionDenials": [],
+  "models": [
+    {
+      "model": "claude-opus-5",
+      "provider": "anthropic",
+      "tokens": {
+        "input": 202,
+        "output": 16405,
+        "cacheWrite5m": 50644,
+        "cacheWrite1h": 37366,
+        "cacheRead": 357388,
+        "thinking": 607
+      },
+      "webSearchRequests": 0,
+      "webFetchRequests": 0,
+      "costUsd": 1.280014
+    },
+    {
+      "model": "claude-sonnet-5",
+      "provider": "anthropic",
+      "tokens": {
+        "input": 122,
+        "output": 66597,
+        "cacheWrite5m": 567235,
+        "cacheWrite1h": 0,
+        "cacheRead": 3748642,
+        "thinking": 5475
+      },
+      "webSearchRequests": 0,
+      "webFetchRequests": 0,
+      "costUsd": 2.83403
+    }
+  ],
+  "costUsd": {
+    "computed": 4.114044,
+    "reported": 4.143537,
+    "deltaPct": -0.71
+  },
+  "pricingVersion": "2026-09-14",
+  "dedup": {
+    "strategy": "requestId-max-total-tokens",
+    "duplicatesDropped": 69
+  },
+  "filesWritten": [
+    "company-profile/example-co/summary.md"
+  ],
+  "linesAdded": 0,
+  "linesRemoved": 0,
+  "outcome": "success",
+  "transcriptFormatVersion": "2.1.270",
+  "provenance": {
+    "harness": "script",
+    "generatedAt": "2026-09-14T21:12:20Z",
+    "sessionId": "1313863d-dc83-4635-9a3c-65042c349fd1",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "runtime-probe-appcontainers",
+    "agent": ".claude/scripts/sessions/ingest.mjs"
+  }
+}

@@ -3,16 +3,16 @@ schemaVersion: "1"
 kind: maxwell.company.summary
 companyId: example-co
 title: Example Capital Markets cyber resilience summary
-version: "4.8.0"
+version: "4.9.0"
 sections: [overview, regulatory-posture, data-flows, vendors, control-summary, open-findings]
 provenance:
   harness: claude-code
-  generatedAt: "2026-09-14T19:35:56Z"
-  sessionId: "d39b9417-293b-4271-b6af-ce77f681e83f"
+  generatedAt: "2026-09-14T21:01:13Z"
+  sessionId: "1313863d-dc83-4635-9a3c-65042c349fd1"
   runId: "run_01M2FGNVVQ15ZKXZWGW74YWAAQ"
-  workflow: execute-scr
+  workflow: runtime-probe-appcontainers
   agent: report-writer
-  inputsHash: "115cd2166224ef5ca37077a7b093a33df20373f702d57747b3f1332b92319812"
+  inputsHash: "da26174da2c46c9332bf65bbcb30b48a97e1f530d152aa32f2f73b207776c16e"
 ---
 # Example Capital Markets — cyber resilience summary
 
@@ -147,6 +147,29 @@ Maxwell observed 30 of 478 applicable controls in this period (6 %); this run's 
 environments were skipped this run: `execute-scr` probes repos, policy and config in the workspace, not live
 environments.
 
+**runtime-probe-appcontainers, dry run (2026-09-14T21:01:13Z, `provenance.runId`
+run_01M2FGNVVQ15ZKXZWGW74YWAAQ).** This run recorded 4 new observations, all `result: inconclusive`; none of
+them assessed any control's effectiveness or moved `implementationStatus`, and the effectiveness/coverage
+table above is unchanged by this run. The 4 environments in scope were each blocked or dry-run rather than
+executed, so no container-hardening evidence (CNT-01..CNT-11) exists for any of them yet:
+
+| Environment | Outcome | Blocker | Observation |
+|---|---|---|---|
+| `db-models/dev` | blocked | `probeAccess.method` is `none`: evidence must be requested from humans | [obs_01M2GVQ333MP1VY4QEND1B9GF8] |
+| `mcp-gateway/dev` | dry-run | no target command executed (dry-run mode); additionally CNT-01, CNT-09, CNT-10 cannot be evaluated because `applications/mcp-gateway/images/*.json` has no image record | [obs_01M2GVQE6G63H0ZVN7W8AY1Y8V] |
+| `mcp-gateway/qa` | dry-run | no target command executed (dry-run mode); credential locator `qa-kubeconfig-ro` could not be decrypted in this sandbox (age key absent), independent of the dry-run status | [obs_01M2GVQDP375E0FEC0QG9RBYGT] |
+| `mcp-gateway/prod` | blocked | PROD_GATING: `args.envIds` did not name `mcp-gateway/prod` explicitly, so no command ran against a production, pii/financial-classified, internet/partner-facing environment | [obs_01M2GVPXVCHE4ZQSMHA3EQBZYE] |
+
+These 4 observations together cite 16 controls as coverage gaps, none of which may be described as assessed
+on their strength: `sebi-cscrf-2024:GV.SC.S5`, `sebi-cscrf-2024:PR.DS.S6`, `sebi-cscrf-2024:PR.DS.S1`,
+`sebi-cscrf-2024:PR.IP.S1`, `sebi-cscrf-2024:PR.IP.S12`, `sebi-cscrf-2024:PR.MA.S3`, `sebi-cscrf-2024:PR.AA.S1`,
+`sebi-cscrf-2024:PR.AA.S3`, `sebi-cscrf-2024:PR.AA.S8`, `sebi-cscrf-2024:PR.AA.S9`,
+`sebi-cscrf-2024:DE.CM.S1`, `sebi-cscrf-2024:DE.CM.S2`, `cert-in-directions-2022:Dir-iv`,
+`dpdp-rules-2025:6(1)(b)`, `dpdp-rules-2025:6(1)(c)`, `dpdp-rules-2025:6(1)(e)`. All 4 environments remain
+`implementationStatus: unknown` / `effectiveness: not-tested` on their control records, unchanged by this run;
+0 controls were assessed by runtime-probe-appcontainers this period, and 0 findings or risks were raised from
+it (dry-run/blocked results are never converted to findings).
+
 ## Open findings
 `probe-schemas` ran against `example-co` this run (`provenance.runId` run_01M2FGNVVQ15ZKXZWGW74YWAAQ,
 `provenance.sessionId` 2853edbc-3a09-4ec1-87ad-1afe187bb68c): 6 new data and API schema finding(s)
@@ -238,8 +261,16 @@ policy requiring one ([fnd_01M2GSSNY7B64D39NPE9K8Z80F]). The developer-environme
 `db-models`' `dev` environment declares `secretsBackend: other` instead of the policy-mandated
 `aws-secrets-manager` ([fnd_01M2GTZHA1AH7R8PAPGHNCWMJJ]).
 
+`runtime-probe-appcontainers` ran against `example-co` this run (`provenance.runId`
+run_01M2FGNVVQ15ZKXZWGW74YWAAQ, `provenance.sessionId` 1313863d-dc83-4635-9a3c-65042c349fd1, dry run): 0 new
+findings, 0 re-seen. Environments `db-models/dev` and `mcp-gateway/prod` were blocked, `mcp-gateway/dev` and
+`mcp-gateway/qa` were dry-run only ([obs_01M2GVQ333MP1VY4QEND1B9GF8], [obs_01M2GVQE6G63H0ZVN7W8AY1Y8V],
+[obs_01M2GVQDP375E0FEC0QG9RBYGT], [obs_01M2GVPXVCHE4ZQSMHA3EQBZYE], see Control summary); an inconclusive
+dry-run or blocked observation is never converted into a finding, so the open-findings table below is
+unchanged by this run.
+
 Latest record per finding id in `company-profile/example-co/soc/main.jsonl` with `status` in
-`open | triaged | remediating`, as of `provenance.generatedAt` 2026-09-14T19:35:56Z (39 open: 23 high, 16
+`open | triaged | remediating`, as of `provenance.generatedAt` 2026-09-14T21:01:13Z (39 open: 23 high, 16
 medium, 0 past SLA):
 
 ### High
@@ -291,6 +322,6 @@ medium, 0 past SLA):
 | [fnd_01M2GSSNXD1T94MJ6Q346HV4S6] | Claimed blocking unit-tests gate cannot run on db-models repo because it has no CI system | repo `db-models/onfinance-db-model-master` | SEBI sebi-cscrf-2024 PR.IP.S6 | 2026-09-14 | 2026-09-28T19:35:56Z | due in 14 d | open | n/a |
 | [fnd_01M2GSSNY7B64D39NPE9K8Z80F] | No lockfile committed for db-models' only Python package manifest despite policy requiring one | repo `db-models/onfinance-db-model-master` | SEBI sebi-cscrf-2024 PR.IP.S2 | 2026-09-14 | 2026-09-28T19:35:56Z | due in 14 d | open | n/a |
 
-<!-- source: latest-state map over soc/main.jsonl kind=finding, filtered to status in open|triaged|remediating; SLA status = ceil((slaDueAt - 2026-09-14T19:35:56Z)/86400000) days -->
+<!-- source: latest-state map over soc/main.jsonl kind=finding, filtered to status in open|triaged|remediating; SLA status = ceil((slaDueAt - 2026-09-14T21:01:13Z)/86400000) days -->
 
 No findings in `risk-accepted`, `false-positive` or `duplicate` this period.
