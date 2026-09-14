@@ -13,6 +13,7 @@ import { spawnSync } from 'node:child_process';
 import { writeFileSync, mkdirSync, readFileSync, existsSync } from 'node:fs';
 import { randomUUID } from 'node:crypto';
 import { ulid } from '../hooks/lib.mjs';
+import { workflowStatus } from './lib/workflow-status.mjs';
 
 const argv = process.argv.slice(2);
 const opt = (f, d) => { const i = argv.indexOf(f); return i >= 0 ? argv[i + 1] : d; };
@@ -30,6 +31,10 @@ const started = Date.now();
 const logDir = `kpis/data/raw/sessions/${harness}`;
 mkdirSync(logDir, { recursive: true });
 const env = { ...process.env, MAXWELL_RUN_ID: runId, MAXWELL_HARNESS: harness, MAXWELL_INVOKED_BY: process.env.MAXWELL_INVOKED_BY || '', MAXWELL_KPI_SAMPLE: '1' };
+// claude -p waits for a background workflow only CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS of idle time (10 min by
+// default), then stops it and drops its result while still reporting success. Maxwell workflows fan out to many
+// agents, so allow 4 hours; completion is verified from the transcript below either way.
+if (!env.CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS) env.CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS = String(4 * 60 * 60 * 1000);
 
 let sessionId = null; let reported = null; let outcome = 'success'; let result = null;
 // Workflows are deterministic scripts: they cannot read the clock, so the run timestamp is taken once here.
@@ -73,6 +78,15 @@ if (harness === 'claude-code') {
     reported = typeof result.total_cost_usd === 'number' ? result.total_cost_usd : null;
     outcome = result.is_error ? (result.subtype === 'error_max_turns' ? 'max-turns' : result.subtype === 'error_max_budget_usd' ? 'max-budget' : 'error') : 'success';
     console.error(`[run-headless] model=${m} session ${sessionId} turns=${result.num_turns} cost=${reported} denials=${(result.permission_denials || []).length} outcome=${outcome}`);
+    if (!utility.has(workflow) && outcome === 'success') {
+      const wf = workflowStatus(sessionId);
+      if (!wf.launched || wf.status !== 'completed') {
+        outcome = 'error';
+        console.error(`[run-headless] ${workflow} did not complete: launched=${wf.launched} status=${wf.status || 'none'} (transcript ${wf.transcript || 'not found'})`);
+      } else {
+        console.error(`[run-headless] ${workflow} completed (task-notification status ${wf.status})`);
+      }
+    }
     if (isLimit(result) && i + 1 < attempts.length) {
       console.error(`[run-headless] ${m} hit a usage limit; retrying on ${attempts[i + 1]}`);
       spawnSync(process.execPath, ['.claude/scripts/sessions/ingest.mjs', '--harness', 'claude-code', '--session', sessionId, '--force', '--outcome', 'error'], { encoding: 'utf8', env });

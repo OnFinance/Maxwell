@@ -74,11 +74,11 @@
   ],
   "linesAdded": 0,
   "linesRemoved": 0,
-  "outcome": "success",
+  "outcome": "error",
   "transcriptFormatVersion": "2.1.270",
   "provenance": {
     "harness": "script",
-    "generatedAt": "2026-09-14T09:50:52Z",
+    "generatedAt": "2026-09-14T09:53:52Z",
     "sessionId": "21de7bcb-5f8c-4a3f-9ef8-4d016f683b26",
     "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
     "workflow": "probe-iac",
