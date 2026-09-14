@@ -73,20 +73,92 @@ flowchart LR
 ## Workspace layout
 
 ```
-company-profile/<company_id>/
-  details.json  summary.md  sdlc/{policy.json, metastore.json}  vendors/<vendor_id>.json
-  soc/{main.jsonl, versions/commit_<n>.diff}                     # state-of-controls ledger
-  change_management/{master.json, initiatives/<init_id>/{timeline.json, tasks/task_<n>.json}}
-  suggestions/{master.json, suggestions/<sug_id>/<repo_id>/<name>.diff}
-applications/<app_id>/
-  README.md  env/<env_id>.json  repos/<repo_id>.json  images/<image_id>.json  credentials.json (sops-encrypted)
-kpis/
-  metrics.json  measurement/{<kpi_id>.md, runs.jsonl}  data/<kpi_id>/series.jsonl  data/raw/{sessions, pagerduty}
-cves/
-  search/<q_id>.json  data/<vuln_id>.json
-.claude/   scripts  schemas  commands  agents  workflows  skills  hooks  settings.json   # canonical
-.agents/   scripts  schemas  commands  agents  workflows  skills  hooks                 # generated for OpenCode
-AGENTS.md  CLAUDE.md  README.md  opencode.json  package.json
+Maxwell/
+├── .agents/                              # generated OpenCode mirror of .claude/ (never edit by hand)
+│   ├── agents/
+│   ├── commands/
+│   ├── hooks/
+│   ├── schemas -> ../.claude/schemas
+│   ├── scripts -> ../.claude/scripts
+│   ├── skills/
+│   └── workflows/
+├── .claude/                              # canonical harness assets
+│   ├── agents/
+│   ├── commands/
+│   ├── hooks/
+│   ├── schemas/
+│   ├── scripts/
+│   ├── skills/
+│   ├── workflows/
+│   └── settings.json
+├── .github/
+│   └── workflows/
+│       └── validate.yml
+├── applications/
+│   └── <app_id>/
+│       ├── env/
+│       │   └── <env_id>.json
+│       ├── images/
+│       │   ├── <image_id>.cdx.json       # CycloneDX SBOM
+│       │   └── <image_id>.json
+│       ├── repos/
+│       │   ├── <repo_id>/                # gitignored checkout
+│       │   └── <repo_id>.json
+│       ├── README.md
+│       └── credentials.json              # sops/age-encrypted references, never values
+├── company-profile/
+│   └── <company_id>/
+│       ├── change_management/
+│       │   ├── initiatives/
+│       │   │   └── <init_id>/
+│       │   │       ├── tasks/
+│       │   │       │   └── task_<n>.json
+│       │   │       └── timeline.json
+│       │   └── master.json
+│       ├── sdlc/
+│       │   ├── metastore.json
+│       │   └── policy.json
+│       ├── soc/
+│       │   ├── versions/
+│       │   │   └── commit_<n>.diff
+│       │   └── main.jsonl                # append-only state-of-controls ledger
+│       ├── suggestions/
+│       │   ├── suggestions/
+│       │   │   └── <sug_id>/
+│       │   │       └── <repo_id>/
+│       │   │           └── <name>.diff
+│       │   └── master.json
+│       ├── vendors/
+│       │   └── <vendor_id>.json
+│       ├── details.json
+│       └── summary.md
+├── cves/
+│   ├── data/
+│   │   └── <vuln_id>.json
+│   └── search/
+│       └── <q_id>.json
+├── kpis/
+│   ├── data/
+│   │   ├── <kpi_id>/
+│   │   │   └── series.jsonl
+│   │   └── raw/
+│   │       ├── pagerduty/
+│   │       └── sessions/
+│   │           ├── claude-code/
+│   │           └── opencode/
+│   ├── measurement/
+│   │   ├── <kpi_id>.md
+│   │   └── runs.jsonl
+│   └── metrics.json
+├── .editorconfig
+├── .gitignore
+├── AGENTS.md
+├── CLAUDE.md
+├── LICENSE
+├── README.md
+├── opencode.json
+├── package-lock.json
+└── package.json
 ```
 
 Repository checkouts under `applications/<app_id>/repos/<repo_id>/` are gitignored. Only the JSON manifests are
