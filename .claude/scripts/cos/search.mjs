@@ -1,12 +1,15 @@
 #!/usr/bin/env node
 // ComplianceOS search: Maxwell's first source for regulator circulars, directions, clauses and requirements.
 //   search --query <text> [--collection regulatory_communication] [--in <field>] [--regulator RBI,SEBI]
-//          [--doc-type <t>] [--from YYYY-MM-DD] [--to YYYY-MM-DD] [--top-k 10] [--offset 0] [--no-rerank]
-//          [--latest-version] [--fields a,b] [--raw]
+//          [--doc-type <t>] [--circular <regulatory_communication id>] [--from YYYY-MM-DD] [--to YYYY-MM-DD]
+//          [--top-k 10] [--offset 0] [--rerank] [--latest-version] [--fields a,b]
+//          [--full-text [--max-chars 20000]] [--raw] [--keep-unmatched] [--include-email]
 //   status                      configured? token cached? (no network, never prints secrets)
 //   set-credentials [--no-verify]   read {"email","password"[,"baseUrl"]} JSON on stdin, store it outside the
 //                               workspace (mode 0600) and verify it with a login
 //   login | logout              force a fresh token | drop the cached token
+// Hits that do not contain the query terms, email-ingested items and duplicates are dropped (counted in
+// "dropped"); regulator names are inferred from circular numbers and titles.
 // Exit codes: 0 ok, 2 usage, 3 not configured, 4 login rejected or CAPTCHA required, 5 unreachable or rate
 // limited. Errors are one JSON object on stderr with a "fallback" instruction: public web search.
 import { parseArgs } from 'node:util';
@@ -21,6 +24,7 @@ import {
 const WORKSPACE = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 const EXIT = { usage: 2, 'not-configured': 3, 'auth-failed': 4, 'captcha-required': 4, unreachable: 5, 'rate-limited': 5 };
 const FALLBACK = 'Fall back to public WebSearch/WebFetch for this lookup (official regulator sites first) and say in the evidence that ComplianceOS was not used.';
+const DEFAULT_MAX_CHARS = 20000;
 const nowIso = () => new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
 const isoFromEpoch = (s) => (s ? new Date(s * 1000).toISOString().replace(/\.\d{3}Z$/, 'Z') : undefined);
 
@@ -60,9 +64,11 @@ try {
     options: {
       query: { type: 'string', short: 'q' }, collection: { type: 'string' }, in: { type: 'string' },
       regulator: { type: 'string', multiple: true }, 'doc-type': { type: 'string', multiple: true },
+      circular: { type: 'string', multiple: true },
       from: { type: 'string' }, to: { type: 'string' }, 'top-k': { type: 'string' }, offset: { type: 'string' },
-      'no-rerank': { type: 'boolean' }, 'latest-version': { type: 'boolean' }, fields: { type: 'string' },
-      raw: { type: 'boolean' }, 'no-verify': { type: 'boolean' },
+      rerank: { type: 'boolean' }, 'no-rerank': { type: 'boolean' }, 'latest-version': { type: 'boolean' }, fields: { type: 'string' },
+      'full-text': { type: 'boolean' }, 'max-chars': { type: 'string' }, raw: { type: 'boolean' },
+      'keep-unmatched': { type: 'boolean' }, 'include-email': { type: 'boolean' }, 'no-verify': { type: 'boolean' },
     },
   });
 } catch (err) { fail('usage', err.message); }
@@ -121,15 +127,21 @@ async function main() {
       return;
     case 'search': {
       if (flags.collection && !COLLECTIONS.includes(flags.collection)) fail('usage', `--collection must be one of ${COLLECTIONS.join(', ')}`);
+      const maxChars = flags['max-chars'] === undefined ? DEFAULT_MAX_CHARS : Number(flags['max-chars']);
+      if (!Number.isInteger(maxChars) || maxChars < 1 || maxChars > 200000) fail('usage', '--max-chars must be an integer from 1 to 200000');
       const c = creds();
       if (!((c.email && c.password) || c.token)) fail('not-configured', 'ComplianceOS credentials are not configured');
       const opts = {
         collection: flags.collection, query: flags.query, in: flags.in, regulator: flags.regulator, docType: flags['doc-type'],
-        from: flags.from, to: flags.to, topK: flags['top-k'], offset: flags.offset, rerank: !flags['no-rerank'],
-        latestVersion: flags['latest-version'], fields: flags.fields,
+        circular: flags.circular, from: flags.from, to: flags.to, topK: flags['top-k'], offset: flags.offset,
+        rerank: Boolean(flags.rerank) && !flags['no-rerank'], latestVersion: flags['latest-version'], fields: flags.fields,
       };
       const { body, response } = await clientFor(c).search(opts);
-      console.log(JSON.stringify(normaliseResults(response, { baseUrl: c.baseUrl, collection: body.collection, query: body.query, retrievedAt: nowIso(), raw: flags.raw }), null, 2));
+      console.log(JSON.stringify(normaliseResults(response, {
+        baseUrl: c.baseUrl, collection: body.collection, query: body.query, retrievedAt: nowIso(), raw: flags.raw,
+        limit: flags['top-k'] === undefined ? 10 : Number(flags['top-k']), regulators: flags.regulator,
+        includeEmail: flags['include-email'], keepUnmatched: flags['keep-unmatched'], fullText: flags['full-text'] ? maxChars : 0,
+      }), null, 2));
       return;
     }
     default:

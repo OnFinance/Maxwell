@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  buildSearchBody, createClient, formatEnvFile, isInside, jwtExpiry, maskEmail, normaliseResults, parseEnvFile,
-  resolveCredentials, DEFAULT_BASE_URL,
+  buildSearchBody, createClient, formatEnvFile, inferRegulator, isInside, jwtExpiry, maskEmail, normaliseResults,
+  parseEnvFile, queryTerms, relevance, requiredMatches, resolveCredentials, DEFAULT_BASE_URL,
 } from '../lib/complianceos.mjs';
 
 // A syntactically valid JWT with only an exp claim, built at run time.
@@ -26,17 +26,22 @@ function memoryStore() {
   return { read: () => entry, write: (e) => { entry = e; }, clear: () => { entry = undefined; } };
 }
 
-test('buildSearchBody defaults to a reranked plain query on regulatory_communication', () => {
-  assert.deepEqual(buildSearchBody({ query: 'outsourcing' }), { collection: 'regulatory_communication', query: 'outsourcing', top_k: 10, offset: 0, rerank: true });
+test('buildSearchBody defaults to a reranked plain query on regulatory_communication, over-fetching for filtering', () => {
+  assert.deepEqual(buildSearchBody({ query: 'outsourcing' }), { collection: 'regulatory_communication', query: 'outsourcing', top_k: 30, offset: 0, rerank: false });
+  assert.equal(buildSearchBody({ query: 'x', rerank: true }).rerank, true);
+  assert.equal(buildSearchBody({ query: 'x', topK: 200 }).top_k, 200);
 });
 
 test('buildSearchBody maps field queries, filters, dates and projections', () => {
-  const body = buildSearchBody({ query: 'cyber incident', in: 'title', regulator: ['RBI,SEBI'], docType: 'Master Direction', from: '2025-01-01', to: '2026-09-14', topK: '50', offset: '10', rerank: false, latestVersion: true, fields: 'title, pdf_url' });
+  const regulatorId = '689c7a9bc81134693e239f07';
+  const body = buildSearchBody({ query: 'cyber incident', in: 'title', regulator: [`RBI,${regulatorId}`], docType: 'master_direction', circular: 'c1', from: '2025-01-01', to: '2026-09-14', topK: '50', offset: '10', rerank: false, latestVersion: true, fields: 'title, circular_number' });
   assert.deepEqual(body, {
-    collection: 'regulatory_communication', query: [{ in: 'title', content: 'cyber incident' }], top_k: 50, offset: 10, rerank: false,
+    collection: 'regulatory_communication', query: [{ in: 'title', content: 'cyber incident' }], top_k: 150, offset: 10, rerank: false,
     from: '2025-01-01', to: '2026-09-14', latest_version: true,
-    self_filter: [{ field: 'regulator', values: ['RBI', 'SEBI'] }, { field: 'doc_type', values: ['Master Direction'] }],
-    retrieve_fields: ['title', 'pdf_url'],
+    // Names are matched client-side; only the id reaches the server.
+    self_filter: [{ field: 'regulator', values: [regulatorId] }, { field: 'doc_type', values: ['master_direction'] }],
+    cross_filter: [{ collection: 'regulatory_communication', _ids: ['c1'] }],
+    retrieve_fields: ['title', 'circular_number'],
   });
 });
 
@@ -46,15 +51,57 @@ test('buildSearchBody rejects empty queries, bad page sizes and bad dates', () =
   assert.throws(() => buildSearchBody({ query: 'x', from: '14/09/2026' }), { code: 'usage' });
 });
 
-test('normaliseResults keeps a compact, stable view of each hit', () => {
-  const out = normaliseResults({ data: [{ _id: 'a1', circular_title: 'Managing Risks in Outsourcing', circular_number: 'RBI/DOR/2025-26/363', regulator: 'RBI', pdf_url: 'https://rbi.org.in/x.pdf', description: 'x'.repeat(900), score: 0.9, extra: 1 }], total: 1, collection: 'regulatory_communication' }, { baseUrl: DEFAULT_BASE_URL, query: 'outsourcing', retrievedAt: '2026-09-14T12:00:00Z' });
-  assert.equal(out.source, 'complianceos');
-  assert.equal(out.total, 1);
-  const [hit] = out.results;
-  assert.deepEqual(Object.keys(hit), ['id', 'title', 'reference', 'regulator', 'url', 'summary', 'score']);
-  assert.equal(hit.reference, 'RBI/DOR/2025-26/363');
-  assert.equal(hit.summary.length, 800);
-  assert.equal(normaliseResults({ data: [{ _id: 'a1', extra: 1 }] }, { raw: true }).results[0].raw.extra, 1);
+// Shapes observed in live regulatory_communication documents (2026-09-14), trimmed.
+const rbiKyc = {
+  _id: '66a1', circular_number: 'DOR.AML.REC.No.88/14.01.002/202526', circular_title: 'Reserve Bank of India (Commercial Banks - Know Your Customer) Directions, 2025',
+  regulator: '689c7a9bc81134693e239f07', doc_type: 'master_circular', circular_status: 'draft', created_at: '2025-11-28T10:00:00.000000',
+  dates: [{ date_type: 'issue', date_value: '2025-11-28T00:00:00' }, { date_type: 'effective', date_value: '2025-11-28T00:00:00' }],
+  notes: [{ note_content: 'Consolidated KYC directions for commercial banks.' }], circular_file_url: 's3://bucket/kyc.pdf',
+  markdown_text: '# Know Your Customer Directions\n\n1. These Directions apply to all commercial banks.',
+};
+const sebiCscrf = (id, number) => ({
+  _id: id, circular_number: number, circular_title: 'Cybersecurity and Cyber Resilience Framework (CSCRF) for SEBI Regulated Entities (REs)',
+  regulator: '6895da2f2c1f8f514b53579b', doc_type: 'circular', created_at: '2025-06-30T13:54:14.507000',
+});
+const sebiMutualFunds = { _id: '66b1', circular_number: 'HO/(92)2026IMDPOD2/I/6961/2026', circular_title: 'Borrowing by Mutual Funds', regulator: '6895da2f2c1f8f514b53579b', doc_type: 'circular' };
+const emailDraft = { _id: '66c1', circular_title: 'Request to Initiate RBI Regulatory Assessment for NBFC', doc_type: 'email_ingestion', addressees: ['someone@example.com'], email_subject: 'Request to Initiate RBI Regulatory Assessment for NBFC', regulator: null };
+
+test('normaliseResults drops padding the service returns for queries with no real match', () => {
+  const out = normaliseResults({ data: [sebiMutualFunds, rbiKyc] }, { query: 'Reserve Bank of India Know Your Customer', limit: 10 });
+  assert.deepEqual(out.results.map((r) => r.id), ['66a1']);
+  assert.equal(out.dropped.unmatched, 1);
+  assert.equal(normaliseResults({ data: [sebiMutualFunds] }, { query: 'Reserve Bank of India Know Your Customer', keepUnmatched: true }).returned, 1);
+});
+
+test('normaliseResults infers regulators, reads dates and notes, hides private links and filters by regulator name', () => {
+  const out = normaliseResults({ data: [rbiKyc, sebiCscrf('66d1', 'SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113'), sebiMutualFunds] }, { query: [{ in: '', content: '' }], limit: 10 });
+  assert.deepEqual(out.results.map((r) => r.regulator), ['RBI', 'SEBI', 'SEBI']);
+  const [kyc] = out.results;
+  assert.deepEqual([kyc.issuedOn, kyc.effectiveOn, kyc.regulatorId, kyc.summary, kyc.url], ['2025-11-28', '2025-11-28', '689c7a9bc81134693e239f07', 'Consolidated KYC directions for commercial banks.', undefined]);
+  const rbiOnly = normaliseResults({ data: [rbiKyc, sebiMutualFunds] }, { query: '', regulators: ['rbi'] });
+  assert.deepEqual([rbiOnly.returned, rbiOnly.dropped.regulator], [1, 1]);
+});
+
+test('normaliseResults drops email-ingested items and duplicate copies of a circular', () => {
+  const out = normaliseResults({ data: [emailDraft, sebiCscrf('66d1', 'SEBI/HO/ ITD-1/ITD_CSC_EXT/P/CIR/2024/113'), sebiCscrf('66d2', 'SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113')] }, { query: 'Cybersecurity Resilience Framework' });
+  assert.deepEqual(out.results.map((r) => r.id), ['66d1']);
+  assert.deepEqual(out.dropped, { email: 1, unmatched: 0, regulator: 0, duplicate: 1 });
+  assert.equal(normaliseResults({ data: [emailDraft] }, { query: 'RBI Regulatory Assessment', includeEmail: true }).returned, 1);
+});
+
+test('normaliseResults adds truncated full text on request and never leaks email fields in raw output', () => {
+  const [hit] = normaliseResults({ data: [{ ...rbiKyc, email_subject: 'x', addressees: ['a@example.com'] }] }, { query: 'Know Your Customer', fullText: 20, raw: true, includeEmail: true }).results;
+  assert.equal(hit.text.length, 20);
+  assert.equal(hit.raw.circular_number, rbiKyc.circular_number);
+  assert.equal(['email_subject', 'addressees', 'markdown_text'].some((k) => k in hit.raw), false);
+});
+
+test('relevance helpers: terms, plural-insensitive prefix matching, required matches', () => {
+  assert.deepEqual(queryTerms('Managing Risks in Outsourcing of IT services'), ['managing', 'risks', 'outsourcing', 'services']);
+  assert.deepEqual(relevance({ circular_title: 'Managing Risk in Outsourcing' }, ['managing', 'risks', 'outsourcing']), { matched: 3, of: 3 });
+  assert.deepEqual([requiredMatches(1), requiredMatches(2), requiredMatches(3), requiredMatches(6)], [1, 2, 3, 5]);
+  assert.equal(inferRegulator({ circular_title: 'SECURITIES AND EXCHANGE BOARD OF INDIA NOTIFICATION' }), 'SEBI');
+  assert.equal(inferRegulator({ circular_title: 'Operating Circular: Reserve Bank incident response' }), undefined);
 });
 
 test('env file round-trips passwords with quotes, equals and hashes', () => {
