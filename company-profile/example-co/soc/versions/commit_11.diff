@@ -1,0 +1,13 @@
+# maxwell-soc-version: 11
+# maxwell-soc-company: example-co
+# maxwell-soc-generated-at: 2026-09-14T20:14:07Z
+# maxwell-soc-session: 453ecc6e-1346-418f-a2c0-1bfcead851c3
+# maxwell-soc-workflow: refresh-soc
+# maxwell-soc-from: 1da188388d1653f73a26854eb9c59eda7747ca0ee00de21ddd5b5f1114742f41
+# maxwell-soc-to: 48bd9f0d18d503d5fe2612509e78f5c2d0659d4e83efdbe1275db53a0895a8b0
+# maxwell-soc-lines: 712
+# maxwell-soc-added: 1
+--- a/soc/main.jsonl
++++ b/soc/main.jsonl
+@@ -711,0 +712,1 @@
++{"id":"obs_01M2GRVY1F5CGHGAQSSX2Q0A5Q","schemaVersion":"1","kind":"observation","companyId":"example-co","recordedAt":"2026-09-14T18:35:14Z","title":"refresh-soc regenerated summary.md sections control-summary","methods":["refresh-soc"],"collectedAt":"2026-09-14T18:35:14Z","subjects":[{"type":"company"}],"controlIds":["sebi-cscrf-2024:GV.SC.S3","sebi-cscrf-2024:GV.SC.S7","rbi-cyber-tech-directions-2026:12","rbi-cyber-tech-directions-2026:126","rbi-cyber-tech-directions-2026:174","rbi-cyber-tech-directions-2026:182","rbi-cyber-tech-directions-2026:77","rbi-cyber-tech-directions-2026:134","dpdp-rules-2025:1","dpdp-rules-2025:6(1)(f)","dpdp-rules-2025:Sch1.B.10","dpdp-rules-2025:Sch1.B.11","dpdp-rules-2025:Sch1.B.12","dpdp-rules-2025:Sch1.B.13"],"result":"not-applicable","evidence":[{"type":"workspace-file","ref":"company-profile/example-co/summary.md","sha256":"a9b5c126229276577a708fc1a7102bd2a9bf007b42c759e2af7a194a291e68d8"}],"provenance":{"harness":"opencode","generatedAt":"2026-09-14T18:35:14Z","sessionId":"453ecc6e-1346-418f-a2c0-1bfcead851c3","runId":"run_01M2GDZ3Q3S5WYCB3MV02QJXZ1","workflow":"refresh-soc","agent":"report-writer"}}

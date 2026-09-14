@@ -3,16 +3,16 @@ schemaVersion: "1"
 kind: maxwell.company.summary
 companyId: example-co
 title: Example Capital Markets cyber resilience summary
-version: "4.4.0"
-sections: [overview, regulatory-posture, data-flows, vendors, control-summary, open-findings]
+version: "4.5.0"
+sections: [overview, regulatory-posture, vendors, data-flows, control-summary, open-findings]
 provenance:
   harness: opencode
-  generatedAt: "2026-09-14T17:03:20Z"
+  generatedAt: "2026-09-14T18:35:14Z"
   sessionId: "453ecc6e-1346-418f-a2c0-1bfcead851c3"
   runId: run_01M2GDZ3Q3S5WYCB3MV02QJXZ1
-  workflow: refresh-ctx
+  workflow: refresh-soc
   agent: report-writer
-  inputsHash: e4ef028ac3d76c794bfc3a578126977982e023caa1281b319601a7a24cebe275
+  inputsHash: f22780bb05471d0aba50cb9ec9b9b895c326e9719226012b7ff2cf5df52650c8
 ---
 # Example Capital Markets — cyber resilience summary
 
@@ -124,24 +124,45 @@ mongodb-mcp-server (3): evidence-request for target inventory/residency
 <!-- source: sdlc/metastore.json catalogs[].schemas[].tables[].columns[] counted by pii:true; soc/main.jsonl kind:observation with provenance.workflow:refresh-metastore and provenance.runId:run_01M2FGNVVQ15ZKXZWGW74YWAAQ -->
 
 ## Control summary
-Latest control record per id in `company-profile/example-co/soc/main.jsonl` after the `rbi-it-outsourcing-md-2023`
-migration at 2026-09-14T14:41:43Z: 540 records, 476 applicable. `refresh-soc` created 360 of them at
-2026-09-14T09:55:06Z; since then `probe-iac` and `probe-schemas` re-assessed 19 controls from their observations.
+Latest control record per id (last line per record id, supersession chain respected) in `company-profile/example-co/soc/main.jsonl`
+as of `provenance.generatedAt` 2026-09-14T18:35:14Z, grouped by instrument: 544 control records, 478 applicable, 66
+not-applicable. `refresh-soc` created 360 of them at 2026-09-14T09:55:06Z; `probe-iac` and `probe-schemas` have since
+re-assessed 19 controls from their observations; the instrument migration at 2026-09-14T14:41:43Z added the 176
+`rbi-outsourcing-risk-directions-2025` controls and superseded the 64 `rbi-it-outsourcing-md-2023` controls as
+not-applicable; this run added 4 new controls and re-assessed 10.
 
-| Instrument | Controls | Not applicable | Effective | Partially effective | Ineffective | Not tested | Coverage |
-|---|---|---|---|---|---|---|---|
-| `sebi-cscrf-2024` (SEBI CSCRF 2024) | 124 | 0 | 0 | 4 | 7 | 113 | 9 % (11 of 124) |
-| `rbi-cyber-tech-directions-2026` (RBI Cyber Tech Directions 2026) | 99 | 0 | 0 | 1 | 1 | 97 | 2 % (2 of 99) |
-| `rbi-outsourcing-risk-directions-2025` (RBI Outsourcing Directions 2025) | 176 | 0 | 0 | 0 | 0 | 176 | 0 % (0 of 176) |
-| `dpdp-rules-2025` (DPDP Rules 2025) | 48 | 0 | 0 | 2 | 3 | 43 | 10 % (5 of 48) |
-| `cert-in-directions-2022` (CERT-In Directions 2022) | 29 | 0 | 0 | 0 | 1 | 28 | 3 % (1 of 29) |
-| `rbi-it-outsourcing-md-2023` (repealed 2025-11-28) | 64 | 64 | 0 | 0 | 0 | 0 | n/a |
-| **Total** | **540** | **64** | **0** | **7** | **12** | **457** | **4 % (19 of 476)** |
+- `sebi-cscrf-2024` (SEBI CSCRF 2024): 124 controls; 0 effective, 4 partially effective, 8 ineffective, 112 not tested; coverage 12 % (15 observed of 124).
+- `rbi-cyber-tech-directions-2026` (RBI Cyber Tech Directions 2026): 99 controls, 2 not applicable; 0 effective, 0 partially effective, 1 ineffective, 96 not tested of 97 applicable; coverage 2 % (2 observed of 97).
+- `rbi-outsourcing-risk-directions-2025` (RBI Outsourcing Directions 2025): 176 controls; 0 effective, 0 partially effective, 0 ineffective, 176 not tested; coverage 0 % (0 observed of 176).
+- `dpdp-rules-2025` (DPDP Rules 2025): 52 controls; 0 effective, 2 partially effective, 4 ineffective, 46 not tested; coverage 13 % (7 observed of 52).
+- `cert-in-directions-2022` (CERT-In Directions 2022): 29 controls; 0 effective, 0 partially effective, 1 ineffective, 28 not tested; coverage 3 % (1 observed of 29).
+- `rbi-it-outsourcing-md-2023` (repealed 2025-11-28): 64 controls, all 64 not applicable; excluded from the effectiveness counts and from coverage.
+- Total: 544 controls (478 applicable); 0 effective, 6 partially effective, 14 ineffective, 458 not tested; coverage 5 % (25 observed of 478).
 
-<!-- source: latest-state map over soc/main.jsonl kind=control, grouped by id prefix before ':'; not-applicable counted separately, the rest by effectiveness -->
+This run (`refresh-soc`, runId `run_01M2GDZ3Q3S5WYCB3MV02QJXZ1`, `recordedAt` 2026-09-14T18:35:14Z) appended 14 control
+records. 4 new: `dpdp-rules-2025:Sch1.B.10`, `dpdp-rules-2025:Sch1.B.11`, `dpdp-rules-2025:Sch1.B.12` and
+`dpdp-rules-2025:Sch1.B.13` (category Consent Manager), all `not-tested`, `nextDueAt` set from this run. 10 re-assessed:
+`sebi-cscrf-2024:GV.SC.S3` now `ineffective`, `lastAssessedAt` 2026-09-14T10:46:39Z from the `refresh-vendor-ctx`
+observation [obs_01M2FS9EB1DXGYJVY2AQEZD8KB], with the `nextDueAt` its record was missing restored (cadence event-driven
+per catalog); `rbi-cyber-tech-directions-2026:12` now `ineffective`, `lastAssessedAt` 2026-09-14T17:03:20Z from
+[obs_01M2GH97M1CSN3D82H8M6WM8GN]; `dpdp-rules-2025:1` now `ineffective`, `lastAssessedAt` 2026-09-14T17:03:20Z from
+[obs_01M2GH97KXN2WXTZ181R216N5C]; `rbi-cyber-tech-directions-2026:77` and `rbi-cyber-tech-directions-2026:134` moved to
+`not-applicable` (catalog applicability no longer intersects the company's entity types and RE categories), keeping their
+probe-era effectiveness (`ineffective`, `partially-effective`) as history; `sebi-cscrf-2024:GV.SC.S7`,
+`rbi-cyber-tech-directions-2026:126`, `rbi-cyber-tech-directions-2026:174`, `rbi-cyber-tech-directions-2026:182` and
+`dpdp-rules-2025:6(1)(f)` re-assessed still `not-tested`, with missing `nextDueAt` values restored. Reconciliation this run:
+0 findings resolved by the absent-twice rule, 0 findings and 0 risks reopened after expired acceptances, 0 SLA dates
+recomputed.
 
-Coverage divides the controls whose latest record carries a `lastAssessedAt` set from an observation `result` by
-the applicable (not `not-applicable`) controls; `kpis/measurement/cm_coverage.md` defines the KPI.
+Maxwell observed 25 of the 478 applicable controls in this period (5 %); 5 controls were inconclusive for lack of access
+([obs_01M2FTV6K4Q25G1JT58HAZDV36], [obs_01M2FTV6MCKCJTVHDHHP02KJ2V], [obs_01M2FTV6NJKW6VW58KFH78E5AV]); 0 environments
+were skipped (no runtime probe ran and the ledger records no freeze, window or credential skip). Coverage basis: applicable
+control ids named in the `controlIds` of at least one of the 45 ledger observations (39 substantive, 6 report-generation,
+all collected on 2026-09-14), over the 478 applicable controls; this mirrors `cm_coverage`
+(kpis/measurement/cm_coverage.md), except that the KPI's `excludedWorkflows` (kpis/metrics.json) drops `refresh-*`
+observations, which would give 18 of 478 (4 %).
+
+<!-- source: latest-state map over soc/main.jsonl kind=control (710 lines, last line per record id), grouped by instrument id prefix before ':'; effectiveness counts exclude implementationStatus not-applicable; coverage = applicable control ids in controlIds of the 45 kind=observation records -->
 
 ## Open findings
 `probe-schemas` ran against `example-co` this run (`provenance.runId` run_01M2FGNVVQ15ZKXZWGW74YWAAQ,
