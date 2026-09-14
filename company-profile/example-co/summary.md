@@ -3,16 +3,16 @@ schemaVersion: "1"
 kind: maxwell.company.summary
 companyId: example-co
 title: Example Capital Markets cyber resilience summary
-version: "0.2.0"
-sections: [overview, regulatory-posture]
+version: "1.0.0"
+sections: [overview, regulatory-posture, control-summary]
 provenance:
   harness: claude-code
-  generatedAt: "2026-09-14T08:31:29Z"
-  sessionId: f0fb0ca1-ccc3-4797-afc8-2bbe384b5053
+  generatedAt: "2026-09-14T09:55:06Z"
+  sessionId: e4a62ad8-92cf-47bf-8040-ded1816a822f
   runId: run_01M2FGNVVQ15ZKXZWGW74YWAAQ
-  workflow: refresh-ctx
+  workflow: refresh-soc
   agent: report-writer
-  inputsHash: 9d97c579a8dde931542cf19f2d31ba879428228f2b68ee31d0ba7228281d0a02
+  inputsHash: 4a17c354a535673374e94a8f88bc823107877ca388a8ce6bdcf2b23d601a0cc1
 ---
 # Example Capital Markets — cyber resilience summary
 
@@ -41,3 +41,34 @@ profile itself was left unchanged this run; the regime change is recorded as obs
 0 escalated claim(s) awaiting human resolution as of this refresh.
 
 Refresh date: 2026-09-14 (`provenance.generatedAt` 2026-09-14T08:31:29Z).
+
+## Control summary
+`refresh-soc` reconciled the ledger this run: 360 new control records, 1 re-assessed
+(`sebi-cscrf-2024:GV.SC.S3`, supersession recorded at 2026-09-14T09:19:31Z), 0 findings resolved by the
+absent-twice rule, 0 findings and 0 risks reopened after expired acceptances, 0 SLA dates recomputed.
+
+Latest control record per id in `company-profile/example-co/soc/main.jsonl` (362 total), grouped by
+instrument (per-family breakdown within each instrument is uniform: every control is `not-tested`, so
+category-level rows carry no additional information this run):
+
+| Instrument | Controls | Effective | Partially effective | Ineffective | Not tested | Coverage |
+|---|---|---|---|---|---|---|
+| `sebi-cscrf-2024` (SEBI CSCRF 2024) | 124 | 0 | 0 | 0 | 124 | 0 % (0 of 124) |
+| `rbi-cyber-tech-directions-2026` (RBI Cyber Tech Directions 2026) | 97 | 0 | 0 | 0 | 97 | 0 % (0 of 97) |
+| `rbi-it-outsourcing-md-2023` (RBI IT Outsourcing MD 2023) | 64 | 0 | 0 | 0 | 64 | 0 % (0 of 64) |
+| `dpdp-rules-2025` (DPDP Rules 2025) | 48 | 0 | 0 | 0 | 48 | 0 % (0 of 48) |
+| `cert-in-directions-2022` (CERT-In Directions 2022) | 29 | 0 | 0 | 0 | 29 | 0 % (0 of 29) |
+| **Total** | **362** | **0** | **0** | **0** | **362** | **0 % (0 of 362)** |
+
+<!-- source: latest-state map over soc/main.jsonl kind=control, grouped by id prefix before ':', counted by effectiveness -->
+
+Coverage mirrors `cm_coverage` (methodology: `kpis/measurement/cm_coverage.md`): a control counts as observed
+when its latest record carries a `lastAssessedAt` set from an observation `result`. None of the 362 applicable
+controls has one yet.
+
+Maxwell observed 0 of 362 applicable controls in this period (0 %); 0 controls were inconclusive for lack of
+access; 0 environments were skipped (freeze / window / no credentials). The only non-`not-applicable`
+observation recorded this run, [obs_01M2FH0ZNKQRSBK4RWM938HDWT], is a `refresh-ctx` regulatory-drift finding
+(`result: not-satisfied`) against `` `rbi-cyber-tech-directions-2026:12` ``, not a control assessment against
+evidence, so it was not reconciled into that control's `effectiveness`/`lastAssessedAt` and does not count
+toward coverage.
