@@ -63,6 +63,9 @@ export function walkWorkspace(root = '.') {
       const isSymlink = st.isSymbolicLink();
       if (st.isDirectory() && !isSymlink) {
         if (SKIP_DIRS.has(entry)) continue;
+        // .claude/worktrees/ holds transient git worktrees Claude Code creates for isolated agents; they are
+        // gitignored copies of the repository, not workspace content.
+        if (relPath === '.claude/worktrees') continue;
         // applications/<app>/repos/<repo>/ checkouts are gitignored and not validated.
         if (/^applications\/[^/]+\/repos\/[^/]+$/.test(relPath)) { out.push({ relPath, isDir: true, isSymlink: false, checkout: true }); continue; }
         out.push({ relPath, isDir: true, isSymlink: false });

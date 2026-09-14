@@ -10,3 +10,5 @@ applications/*/credentials.dec.json
 kpis/data/raw/sessions/*/*.jsonl
 kpis/data/raw/sessions/*/*.export.json
 .DS_Store
+# transient git worktrees Claude Code creates for isolated agents
+.claude/worktrees/

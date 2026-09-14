@@ -15,7 +15,8 @@ for (const entry of readdirSync('.')) {
 for (const [dir, allowed] of Object.entries(layout.harnessDirs)) {
   if (!existsSync(dir)) { problems.push(`missing harness directory ${dir}`); continue; }
   const allow = new Set(allowed);
-  for (const entry of readdirSync(dir)) if (!allow.has(entry)) problems.push(`${dir}/${entry} is not allowed. Allowed: ${allowed.join(', ')}`);
+  // worktrees/ is where Claude Code puts isolated agent worktrees: transient and gitignored.
+  for (const entry of readdirSync(dir)) if (!allow.has(entry) && !(dir === '.claude' && entry === 'worktrees')) problems.push(`${dir}/${entry} is not allowed. Allowed: ${allowed.join(', ')}`);
   for (const required of allowed) if (!existsSync(`${dir}/${required}`)) problems.push(`${dir}/${required} is required but missing`);
 }
 
