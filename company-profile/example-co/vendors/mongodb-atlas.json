@@ -4,7 +4,9 @@
   "companyId": "example-co",
   "vendorId": "mongodb-atlas",
   "legalName": "MongoDB, Inc.",
+  "lei": "549300TPTG69WKWE1Z37",
   "country": "US",
+  "website": "https://www.mongodb.com/atlas",
   "intraGroup": false,
   "services": [
     {
@@ -22,12 +24,127 @@
       ],
       "hostingCountries": [
         "IN"
+      ],
+      "subcontractors": [
+        {
+          "name": "Amazon Web Services, Inc.",
+          "country": "US",
+          "role": "Cloud provider hosting the Atlas clusters and the personal data stored in them (AWS ap-south-1 for this service)"
+        },
+        {
+          "name": "MongoDB Ltd.",
+          "country": "IE",
+          "role": "Affiliate technical support"
+        },
+        {
+          "name": "MongoDB Canada, Inc.",
+          "country": "CA",
+          "role": "Affiliate technical support"
+        },
+        {
+          "name": "MongoDB Australia Pty Ltd.",
+          "country": "AU",
+          "role": "Affiliate technical support"
+        },
+        {
+          "name": "MongoDB Israel Inc.",
+          "country": "IL",
+          "role": "Affiliate technical support"
+        },
+        {
+          "name": "MongoDB France SARL",
+          "country": "FR",
+          "role": "Affiliate technical support"
+        },
+        {
+          "name": "MongoDB Software India Private Limited",
+          "country": "IN",
+          "role": "Affiliate technical support"
+        },
+        {
+          "name": "MongoDB Italy S.R.L",
+          "country": "IT",
+          "role": "Affiliate technical support"
+        },
+        {
+          "name": "MongoDB España, S.L.",
+          "country": "ES",
+          "role": "Affiliate technical support (Spain and Portugal)"
+        },
+        {
+          "name": "MongoDB Serviços de Software No Brasil Ltda",
+          "country": "BR",
+          "role": "Affiliate technical support"
+        },
+        {
+          "name": "MongoDB Singapore Pte. Ltd.",
+          "country": "SG",
+          "role": "Affiliate technical support"
+        },
+        {
+          "name": "MongoDB Poland",
+          "country": "PL",
+          "role": "Affiliate technical support"
+        },
+        {
+          "name": "MongoDB Deutsche GmbH",
+          "country": "DE",
+          "role": "Affiliate technical support"
+        },
+        {
+          "name": "MongoDB UK Limited",
+          "country": "GB",
+          "role": "Affiliate technical support"
+        },
+        {
+          "name": "Okta, Inc.",
+          "country": "US",
+          "role": "Authentication services"
+        },
+        {
+          "name": "Twilio, Inc.",
+          "country": "US",
+          "role": "2FA and SMS alerts"
+        },
+        {
+          "name": "Salesforce.com, Inc.",
+          "country": "US",
+          "role": "Support portal"
+        },
+        {
+          "name": "Intercom R&D Unlimited Co.",
+          "country": "US",
+          "role": "Chat support"
+        },
+        {
+          "name": "Talkdesk, Inc.",
+          "country": "US",
+          "role": "Voice support"
+        },
+        {
+          "name": "Google Inc.",
+          "country": "US",
+          "role": "Email support"
+        },
+        {
+          "name": "Box, Inc.",
+          "country": "US",
+          "role": "File sharing for remote consulting services"
+        },
+        {
+          "name": "Coveo Software Corp.",
+          "country": "CA",
+          "role": "Support search functionality"
+        },
+        {
+          "name": "Fastly, Inc.",
+          "country": "US",
+          "role": "Content delivery network for support"
+        }
       ]
     }
   ],
   "materiality": "material",
-  "status": "active",
-  "website": "https://www.mongodb.com/atlas",
   "contract": {
     "type": "standalone",
     "reference": "ATLAS-2025-1189",
@@ -40,16 +157,19 @@
     "subcontractingAllowed": true,
     "dataReturnAndDeletion": true
   },
-  "provenance": {
-    "harness": "human",
-    "generatedAt": "2026-09-14T00:00:00Z",
-    "workflow": "refresh-vendor-ctx",
-    "agent": "maxwell-maintainers"
-  },
   "lastAssessment": {
     "date": "2026-06-15",
     "rating": "medium",
     "assessor": "vendor-risk@example-co.invalid",
     "findingIds": []
+  },
+  "status": "active",
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T09:19:31Z",
+    "sessionId": "126159f4-9c1c-4e90-8283-eed2c0f900a3",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "refresh-vendor-ctx",
+    "agent": "vendor-analyst"
   }
 }

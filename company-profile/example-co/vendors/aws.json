@@ -4,8 +4,14 @@
   "companyId": "example-co",
   "vendorId": "aws",
   "legalName": "Amazon Web Services, Inc.",
+  "lei": "2549000I2PRQGGIGCA75",
   "country": "US",
   "intraGroup": false,
+  "ultimateParent": {
+    "legalName": "Amazon.com, Inc.",
+    "lei": "ZXTILKJKG63JELOEG630",
+    "country": "US"
+  },
   "services": [
     {
       "serviceId": "aws-mumbai",
@@ -22,6 +28,13 @@
       ],
       "hostingCountries": [
         "IN"
+      ],
+      "subcontractors": [
+        {
+          "name": "Amazon Data Services India Private Limited",
+          "country": "IN",
+          "role": "AWS infrastructure entity operating the Asia Pacific (Mumbai) Region"
+        }
       ]
     }
   ],
@@ -52,10 +65,12 @@
     }
   ],
   "provenance": {
-    "harness": "human",
-    "generatedAt": "2026-09-14T00:00:00Z",
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T09:19:31Z",
+    "sessionId": "126159f4-9c1c-4e90-8283-eed2c0f900a3",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
     "workflow": "refresh-vendor-ctx",
-    "agent": "maxwell-maintainers"
+    "agent": "vendor-analyst"
   },
   "lastAssessment": {
     "date": "2026-06-15",

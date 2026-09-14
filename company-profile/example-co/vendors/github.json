@@ -18,6 +18,168 @@
       ],
       "hostingCountries": [
         "US"
+      ],
+      "subcontractors": [
+        {
+          "name": "Amazon Web Services Inc (AWS)",
+          "country": "US",
+          "role": "Cloud Hosted Infrastructure, Data Hosting, AI Inference and AI Services"
+        },
+        {
+          "name": "Cloudflare",
+          "country": "US",
+          "role": "Content delivery service"
+        },
+        {
+          "name": "DataDome Solutions, Inc.",
+          "country": "US",
+          "role": "Security management"
+        },
+        {
+          "name": "DataDome Solutions, Inc.",
+          "country": "FR",
+          "role": "Security management"
+        },
+        {
+          "name": "Elasticsearch, Inc.",
+          "country": "US",
+          "role": "Cloud Hosted Infrastructure"
+        },
+        {
+          "name": "Fastly",
+          "country": "US",
+          "role": "Content delivery service"
+        },
+        {
+          "name": "FullStory, Inc.",
+          "country": "US",
+          "role": "Customer support ticketing analysis"
+        },
+        {
+          "name": "Google Cloud Platform (GCP)",
+          "country": "US",
+          "role": "Cloud Hosted Infrastructure, AI Inference and AI Services"
+        },
+        {
+          "name": "Google Cloud Platform (GCP)",
+          "country": "BE",
+          "role": "Cloud Hosted Infrastructure, AI Inference and AI Services"
+        },
+        {
+          "name": "Google Cloud Platform (GCP)",
+          "country": "SG",
+          "role": "Cloud Hosted Infrastructure, AI Inference and AI Services"
+        },
+        {
+          "name": "Hewlett-Packard Limited",
+          "country": "US",
+          "role": "Cloud Hosted Infrastructure"
+        },
+        {
+          "name": "LambdaTest",
+          "country": "US",
+          "role": "Cloud Hosted Infrastructure"
+        },
+        {
+          "name": "Microsoft (Azure)",
+          "country": "US",
+          "role": "Cloud Hosted Infrastructure, Data Hosting, AI Inference and AI Services"
+        },
+        {
+          "name": "Microsoft (Azure)",
+          "country": "CA",
+          "role": "Cloud Hosted Infrastructure, Data Hosting, AI Inference and AI Services"
+        },
+        {
+          "name": "Microsoft (Azure)",
+          "country": "CL",
+          "role": "Cloud Hosted Infrastructure, Data Hosting, AI Inference and AI Services"
+        },
+        {
+          "name": "Microsoft (Azure)",
+          "country": "MX",
+          "role": "Cloud Hosted Infrastructure, Data Hosting, AI Inference and AI Services"
+        },
+        {
+          "name": "Microsoft (Azure)",
+          "country": "US",
+          "role": "Cognitive Services and customer support ticketing analysis"
+        },
+        {
+          "name": "Moveworks",
+          "country": "US",
+          "role": "Customer support ticketing analysis"
+        },
+        {
+          "name": "NexMo Inc (Vonage)",
+          "country": "US",
+          "role": "SMS notification provider for 2 Factor Authentication"
+        },
+        {
+          "name": "Obsidian Security",
+          "country": "US",
+          "role": "Security management"
+        },
+        {
+          "name": "Oracle America, Inc.",
+          "country": "US",
+          "role": "Cloud Hosted Infrastructure"
+        },
+        {
+          "name": "Pusher",
+          "country": "US",
+          "role": "Building and managing real-time infrastructure for web and mobile applications"
+        },
+        {
+          "name": "Tines Automation Inc.",
+          "country": "US",
+          "role": "Security management"
+        },
+        {
+          "name": "Twilio (SendGrid)",
+          "country": "US",
+          "role": "SMS notification provider for 2 Factor Authentication"
+        },
+        {
+          "name": "Zendesk",
+          "country": "US",
+          "role": "Customer support ticketing system"
+        },
+        {
+          "name": "GitHub Australia Pty Ltd",
+          "country": "AU",
+          "role": "GitHub Subsidiary"
+        },
+        {
+          "name": "GitHub BV",
+          "country": "NL",
+          "role": "GitHub Subsidiary"
+        },
+        {
+          "name": "GitHub Canada ULC",
+          "country": "CA",
+          "role": "GitHub Subsidiary"
+        },
+        {
+          "name": "GitHub Germany GmbH",
+          "country": "DE",
+          "role": "GitHub Subsidiary"
+        },
+        {
+          "name": "GitHub India Pty Ltd",
+          "country": "IN",
+          "role": "GitHub Subsidiary"
+        },
+        {
+          "name": "npm Inc",
+          "country": "US",
+          "role": "GitHub Subsidiary"
+        },
+        {
+          "name": "Semmle Inc",
+          "country": "US",
+          "role": "GitHub Subsidiary"
+        }
       ]
     }
   ],
@@ -36,10 +198,12 @@
     }
   ],
   "provenance": {
-    "harness": "human",
-    "generatedAt": "2026-09-14T00:00:00Z",
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T09:19:31Z",
+    "sessionId": "126159f4-9c1c-4e90-8283-eed2c0f900a3",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
     "workflow": "refresh-vendor-ctx",
-    "agent": "maxwell-maintainers"
+    "agent": "vendor-analyst"
   },
   "lastAssessment": {
     "date": "2026-06-15",
