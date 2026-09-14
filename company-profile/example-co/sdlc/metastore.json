@@ -2,7 +2,7 @@
   "schemaVersion": "1",
   "kind": "maxwell.company.metastore",
   "companyId": "example-co",
-  "snapshotAt": "2026-09-14T11:10:49Z",
+  "snapshotAt": "2026-09-14T21:59:48Z",
   "catalogs": [
     {
       "catalogId": "db-models-mongodb",
@@ -1070,6 +1070,18 @@
                   "pii": false
                 },
                 {
+                  "name": "insight_entity_relevance",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_event_relevance",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
                   "name": "insight_order",
                   "dataType": "FloatField",
                   "dataClassification": [ "internal" ],
@@ -1632,15 +1644,54 @@
           ]
         }
       ]
+    },
+    {
+      "catalogId": "mcp-gateway-mongodb",
+      "type": "other",
+      "endpointRef": "prod-kubeconfig-ro",
+      "appId": "mcp-gateway",
+      "schemas": []
     }
   ],
-  "pipelines": [],
+  "pipelines": [
+    {
+      "pipelineId": "mongodb-mcp-tool-handler",
+      "name": "MongoDB MCP tool-call handler: find, aggregate, insert, update and delete tools run against the runtime-configured MongoDB cluster",
+      "orchestrator": "custom",
+      "owner": "info@mongodb.com",
+      "sourceRepo": {
+        "appId": "mcp-gateway",
+        "repoId": "mongodb-mcp-server"
+      }
+    },
+    {
+      "pipelineId": "mongodb-mcp-export-tool",
+      "name": "MongoDB MCP export tool streaming find/aggregate results to plaintext EJSON JSON files in the host exports folder (5-minute expiry, deleted recursively on shutdown)",
+      "orchestrator": "custom",
+      "owner": "info@mongodb.com",
+      "sourceRepo": {
+        "appId": "mcp-gateway",
+        "repoId": "mongodb-mcp-server"
+      }
+    },
+    {
+      "pipelineId": "mongodb-mcp-telemetry",
+      "name": "MongoDB MCP telemetry batch sender: device_id, session_id and tool events to the MongoDB Atlas cloud telemetry API",
+      "orchestrator": "custom",
+      "schedule": "every 30 seconds",
+      "owner": "info@mongodb.com",
+      "sourceRepo": {
+        "appId": "mcp-gateway",
+        "repoId": "mongodb-mcp-server"
+      }
+    }
+  ],
   "lineage": [],
   "provenance": {
-    "harness": "claude-code",
-    "generatedAt": "2026-09-14T11:10:49Z",
-    "sessionId": "cb91f6b0-eba0-4378-9168-48137e203b72",
-    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "harness": "opencode",
+    "generatedAt": "2026-09-14T21:59:48Z",
+    "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
     "workflow": "refresh-metastore",
     "agent": "validator"
   }
