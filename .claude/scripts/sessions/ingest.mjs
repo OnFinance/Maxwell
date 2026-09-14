@@ -6,13 +6,13 @@
 // 1. Applies the sampling policy from kpis/metrics.json and updates <sid>.meta.json (sampled, samplingReason, endedAt).
 // 2. For sampled sessions copies the transcript (Claude Code JSONL + subagent files, or `opencode export` JSON) into
 //    kpis/data/raw/sessions/<harness>/ (gitignored) and writes <sid>.summary.json validated against the schema.
-import { readFileSync, existsSync, writeFileSync, readdirSync, mkdirSync, statSync, copyFileSync, unlinkSync } from 'node:fs';
+import { readFileSync, existsSync, writeFileSync, readdirSync, mkdirSync, statSync, copyFileSync, unlinkSync, mkdtempSync, openSync, closeSync, rmSync } from 'node:fs';
 import { join, resolve, relative, basename } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { homedir } from 'node:os';
+import { homedir, tmpdir } from 'node:os';
 import { buildAjv, getValidator, formatErrors } from '../lib/schemas.mjs';
-import { loadPricing, resolveModel, costUsd, canonicalModelId } from '../lib/pricing.mjs';
+import { loadPricing, resolveModel, costUsd, canonicalModelId, providerOf } from '../lib/pricing.mjs';
 import { parseClaudeTranscript, parseClaudeSubagents, parseOpencodeExport, newStats } from '../lib/transcript.mjs';
 
 const argv = process.argv.slice(2);
@@ -104,8 +104,17 @@ if (meta.sampled) {
     const given = opt('--transcript');
     if (given && existsSync(given)) doc = JSON.parse(readFileSync(given, 'utf8'));
     else {
-      const res = spawnSync('opencode', ['export', sessionId], { encoding: 'utf8', cwd: root, maxBuffer: 1 << 28 });
-      if (res.status === 0) { try { doc = JSON.parse(res.stdout); } catch { doc = null; } }
+      // Written to a file, not read from a pipe: opencode 1.18 exits before a large export is flushed to a pipe, so
+      // piped output stops mid-JSON (146 KB of a 1.1 MB export in the e2e run).
+      const tmp = mkdtempSync(join(tmpdir(), 'maxwell-export-'));
+      const out = openSync(join(tmp, 'export.json'), 'w');
+      try {
+        const res = spawnSync('opencode', ['export', sessionId], { cwd: root, stdio: ['ignore', out, 'ignore'], timeout: 300000 });
+        if (res.status === 0) { try { doc = JSON.parse(readFileSync(join(tmp, 'export.json'), 'utf8')); } catch { doc = null; } }
+      } finally {
+        closeSync(out);
+        rmSync(tmp, { recursive: true, force: true });
+      }
     }
     if (!doc) { console.error(`opencode export ${sessionId} failed; pass --transcript <export.json>`); meta.sampled = false; meta.samplingReason = 'pending'; }
     else {
@@ -142,7 +151,7 @@ for (const [raw, entry] of stats.models) {
   if (usd !== null) computed += usd;
   models.push({
     model: canonicalModelId(pricing, raw),
-    provider: raw.includes('/') ? raw.split('/')[0].replace('anthropic', 'anthropic') : 'anthropic',
+    provider: providerOf(pricing, raw),
     tokens: { input: entry.tokens.input, output: entry.tokens.output, cacheWrite5m: entry.tokens.cacheWrite5m, cacheWrite1h: entry.tokens.cacheWrite1h, cacheRead: entry.tokens.cacheRead, thinking: entry.tokens.thinking || null },
     webSearchRequests: entry.webSearchRequests,
     webFetchRequests: entry.webFetchRequests,

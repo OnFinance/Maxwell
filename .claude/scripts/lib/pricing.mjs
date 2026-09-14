@@ -29,6 +29,18 @@ export function costUsd(price, tokens, webSearchRequests = 0) {
   return Math.round(usd * 1e6) / 1e6;
 }
 
+// The gen_ai provider of a model for session summaries: the pricing entry's provider, else the OpenCode provider prefix
+// when it is a well-known name in common.schema.json genAiProvider, else "other" (unprefixed ids are Claude Code models).
+export function providerOf(pricing, raw, schemaPath = '.claude/schemas/v1/common.schema.json') {
+  const price = resolveModel(pricing, raw);
+  if (price && price.provider) return price.provider;
+  const name = String(raw || '');
+  if (!name.includes('/')) return 'anthropic';
+  const known = JSON.parse(readFileSync(schemaPath, 'utf8')).$defs.genAiProvider.enum;
+  const prefix = name.split('/')[0];
+  return known.includes(prefix) ? prefix : 'other';
+}
+
 export function canonicalModelId(pricing, raw) {
   const m = resolveModel(pricing, raw);
   return m ? m.model : String(raw).replace(/\[1m\]$/, '').split('/').pop();

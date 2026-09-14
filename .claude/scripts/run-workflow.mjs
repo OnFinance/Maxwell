@@ -11,6 +11,8 @@ import { spawn } from 'node:child_process';
 import { cpus } from 'node:os';
 import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
+import { dirname } from 'node:path';
+import { opencodeSessionLog } from './lib/workflow-status.mjs';
 
 const argv = process.argv.slice(2);
 const name = argv[0];
@@ -27,8 +29,8 @@ const dryRun = argv.includes('--dry-run');
 const maxConcurrency = Number(opt('--concurrency', process.env.MAXWELL_OPENCODE_CONCURRENCY || Math.max(1, Math.min(16, cpus().length - 2))));
 const defaultAgentType = opt('--agent-type', 'general');
 const runId = process.env.MAXWELL_RUN_ID;
-const logDir = 'kpis/data/raw/sessions/opencode';
-mkdirSync(logDir, { recursive: true });
+const sessionLog = opencodeSessionLog();
+mkdirSync(dirname(sessionLog), { recursive: true });
 
 const ajv = new Ajv2020({ strict: false, allErrors: true });
 addFormats(ajv);
@@ -66,7 +68,7 @@ function runOpencode(prompt, { agentType, modelOverride, label }) {
         if (part && part.tokens && typeof part.tokens.output === 'number') outputTokens += part.tokens.output;
       }
       if (!text) text = stdout.trim();
-      appendFileSync(`${logDir}/run-workflow.log`, JSON.stringify({ at: new Date().toISOString(), workflow: name, label, sessionId, code, events: events.length }) + '\n');
+      appendFileSync(sessionLog, JSON.stringify({ at: new Date().toISOString(), workflow: name, ...(runId ? { runId } : {}), label, sessionId, code, events: events.length }) + '\n');
       resolve({ code, text, stderr, sessionId });
     });
   });
