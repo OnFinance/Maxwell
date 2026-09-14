@@ -35,7 +35,8 @@ const meta = existing || {
   gitCommit: git(['rev-parse', 'HEAD']),
   transcriptPath: `kpis/data/raw/sessions/${harness}/${sessionId}.jsonl`,
   sampled: false,
-  samplingReason: 'all',
+  // The sampling decision is taken by sessions/ingest.mjs when the session ends; until then the session is pending.
+  samplingReason: 'pending',
   model: process.env.MAXWELL_MODEL || 'unknown',
   invokedBy: { type: process.env.MAXWELL_INVOKED_BY ? 'human' : 'script', id: process.env.MAXWELL_INVOKED_BY || 'headless' },
   provenance: { harness: 'script', generatedAt: new Date().toISOString().replace(/\.\d{3}Z$/, 'Z'), sessionId, runId, agent: 'hooks/session-start' },
