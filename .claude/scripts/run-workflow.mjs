@@ -20,8 +20,11 @@ const file = `.claude/workflows/${name}.js`;
 if (!existsSync(file)) { console.error(`${file} not found`); process.exit(1); }
 const args = JSON.parse(opt('--args', '{}'));
 const model = opt('--model', process.env.MAXWELL_OPENCODE_MODEL || 'anthropic/claude-opus-5');
+// Workflow scripts pin Claude aliases (opus, sonnet, haiku, fable). When the configured model is not Anthropic's,
+// every pinned alias runs on the configured model instead of a provider this OpenCode may not be logged in to.
+const aliasTarget = model && !model.startsWith('anthropic/') ? model : null;
 const dryRun = argv.includes('--dry-run');
-const maxConcurrency = Number(opt('--concurrency', Math.max(1, Math.min(16, cpus().length - 2))));
+const maxConcurrency = Number(opt('--concurrency', process.env.MAXWELL_OPENCODE_CONCURRENCY || Math.max(1, Math.min(16, cpus().length - 2))));
 const defaultAgentType = opt('--agent-type', 'general');
 const runId = process.env.MAXWELL_RUN_ID;
 const logDir = 'kpis/data/raw/sessions/opencode';
@@ -41,11 +44,13 @@ function runOpencode(prompt, { agentType, modelOverride, label }) {
   return new Promise((resolve) => {
     const cliArgs = ['run', '--format', 'json', '--agent', agentType, '--title', `${name}:${label}`];
     const alias = { opus: 'anthropic/claude-opus-5', sonnet: 'anthropic/claude-sonnet-5', haiku: 'anthropic/claude-haiku-4-5-20251001', fable: 'anthropic/claude-fable-5-1' };
-    const chosen = modelOverride ? (alias[modelOverride] || modelOverride) : model;
+    const pinned = modelOverride ? (alias[modelOverride] || modelOverride) : null;
+    const chosen = pinned ? (aliasTarget && pinned.startsWith('anthropic/') ? aliasTarget : pinned) : model;
     if (chosen) cliArgs.push('--model', chosen);
     if (process.env.MAXWELL_OPENCODE_AUTO === '1') cliArgs.push('--auto');
     cliArgs.push(prompt);
-    const child = spawn('opencode', cliArgs, { cwd: process.cwd(), env: { ...process.env, MAXWELL_HARNESS: 'opencode', ...(runId ? { MAXWELL_RUN_ID: runId } : {}) } });
+    // stdin closed: opencode run reads a piped stdin as part of the message and waits for it to end.
+    const child = spawn('opencode', cliArgs, { cwd: process.cwd(), stdio: ['ignore', 'pipe', 'pipe'], env: { ...process.env, MAXWELL_HARNESS: 'opencode', ...(runId ? { MAXWELL_RUN_ID: runId } : {}) } });
     let stdout = ''; let stderr = '';
     child.stdout.on('data', (d) => { stdout += d; });
     child.stderr.on('data', (d) => { stderr += d; });

@@ -8,7 +8,7 @@ metadata:
   version: "1.0.0"
   sarifVersion: "2.1.0"
   sarifSchema: https://json.schemastore.org/sarif-2.1.0.json
-allowed-tools: Read Grep Glob Write Bash(node .claude/scripts/*) Bash(node -e *) Bash(helm template *) Bash(kustomize build *) Bash(sha256sum *) Bash(jq *)
+allowed-tools: Read Grep Glob Write Bash(node .claude/scripts/*) Bash(node -e *) Bash(sha256sum *) Bash(jq *)
 when_to_use: Whenever a static probe runs a scanner or reviews code, IaC, charts, schemas, CI configuration or agent graphs by hand and must record the results; and whenever the soc-ledger-keeper converts a *.sarif.export.json into ledger observations and findings
 user-invocable: false
 x-maxwell:

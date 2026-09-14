@@ -13,7 +13,7 @@ description: >-
   in the workflow's Write stage after refutation. Marks status instead of
   deleting; never contacts a vendor; read-only against vendors and target
   systems.
-mode: subagent
+mode: all
 permission:
   read: allow
   edit: allow

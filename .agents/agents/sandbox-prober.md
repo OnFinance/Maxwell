@@ -15,7 +15,7 @@ description: >-
   export under kpis/data/raw/sessions and returns candidate ledger records with
   catalog defaultSeverity. Never execs into a sandbox, mutates targets or
   appends to the ledger.
-mode: subagent
+mode: all
 model: anthropic/claude-sonnet-5
 permission:
   read: allow

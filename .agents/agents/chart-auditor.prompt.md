@@ -1,4 +1,4 @@
-> **Execution.** Every scanner in this file runs only through `node .claude/scripts/toolchain/scan.mjs`, which runs the
+> **Execution.** Every scanner and renderer (helm, kustomize) in this file runs only through `node .claude/scripts/toolchain/scan.mjs`, which runs the
 > version pinned in the scanner-toolchain skill inside the company's sandbox; never call a scanner binary. Commands
 > written below as `<tool> <args>` mean `scan.mjs --tool <tool> ... -- <args>` with `{src}` and `{result}`. When it
 > exits 3 (no executor) review the checkout manually and list the tool in `skipped`.

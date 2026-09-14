@@ -13,7 +13,7 @@ description: >-
   Writes nothing: refuters verify, soc-ledger-keeper records and the validator
   patches the profile. Read-only against target systems; an empty drifts array
   is the normal answer.
-mode: subagent
+mode: all
 permission:
   read: allow
   edit: deny

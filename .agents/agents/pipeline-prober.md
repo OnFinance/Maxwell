@@ -16,7 +16,7 @@ description: >-
   reads an object, message or row. Writes only its OCSF export under
   kpis/data/raw/sessions and returns candidate ledger records with catalog
   defaultSeverity. Never mutates targets.
-mode: subagent
+mode: all
 model: anthropic/claude-sonnet-5
 permission:
   read: allow

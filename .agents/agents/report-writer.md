@@ -15,7 +15,7 @@ description: >-
   or report-audit-* workflow. Returns the sections written and skipped, the new
   report version and inputsHash, and the counts behind every headline number (in
   the caller's output schema when one is supplied)
-mode: subagent
+mode: all
 model: anthropic/claude-sonnet-5
 permission:
   read: allow

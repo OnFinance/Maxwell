@@ -11,7 +11,7 @@ description: >-
   retention and lineage edges, and never invents a table it did not see.
   Read-only against databases and repos; the endpointRef it records is a
   credentials key, never a URL or secret.
-mode: subagent
+mode: all
 permission:
   read: allow
   edit: deny

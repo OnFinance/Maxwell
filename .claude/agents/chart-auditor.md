@@ -10,11 +10,6 @@ tools:
   - Bash(git -C * ls-files *)
   - Bash(git -C * grep *)
   - Bash(git -C * rev-parse *)
-  - Bash(helm template *)
-  - Bash(helm lint *)
-  - Bash(helm show *)
-  - Bash(helm dependency list *)
-  - Bash(kustomize build *)
   - Bash(kube-score score *)
   - Bash(jq *)
   - Bash(yq *)
@@ -57,7 +52,7 @@ x-maxwell:
     - nist-800-53-r5
     - nist-ssdf-800-218
 ---
-> **Execution.** Every scanner in this file runs only through `node .claude/scripts/toolchain/scan.mjs`, which runs the
+> **Execution.** Every scanner and renderer (helm, kustomize) in this file runs only through `node .claude/scripts/toolchain/scan.mjs`, which runs the
 > version pinned in the scanner-toolchain skill inside the company's sandbox; never call a scanner binary. Commands
 > written below as `<tool> <args>` mean `scan.mjs --tool <tool> ... -- <args>` with `{src}` and `{result}`. When it
 > exits 3 (no executor) review the checkout manually and list the tool in `skipped`.

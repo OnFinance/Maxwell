@@ -9,7 +9,7 @@ description: >-
   and credential references with what the repos now declare. Propose-only inside
   refresh-apps: returns record updates and drift gaps for the refuter and
   validator; never writes workspace files and never reads credential values.
-mode: subagent
+mode: all
 permission:
   read: allow
   edit: deny

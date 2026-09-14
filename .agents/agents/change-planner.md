@@ -11,7 +11,7 @@ description: >-
   tasks/task_<n>.json itself. Every initiative stays proposed with no approver;
   never closes or edits human-edited tasks; never touches the ledger or target
   systems.
-mode: subagent
+mode: all
 permission:
   read: allow
   edit: allow

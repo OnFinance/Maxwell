@@ -10,7 +10,7 @@ description: >-
   Outsourcing (cloud) and RBI Directions 2026 hard requirements, then CIS/NIST.
   Read-only against repos and cloud accounts; never appends to the ledger, never
   runs terraform apply/plan against live credentials.
-mode: subagent
+mode: all
 model: anthropic/claude-sonnet-5
 permission:
   read: allow

@@ -25,7 +25,6 @@ frameworks where they help. Maxwell is designed to run headlessly on [Claude Cod
 - [Quick start](#quick-start)
 - [Running headless](#running-headless)
 - [Validation and guardrails](#validation-and-guardrails)
-- [Security model and known limitations](#security-model-and-known-limitations)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -451,31 +450,15 @@ node .claude/scripts/run-headless.mjs --workflow refresh-apps --company acme-sec
   history. `soc/migrate-instrument.mjs` moves a company off a repealed instrument onto its successor.
 - **Git hooks and CI.** Staged files are validated on commit, the full suite and tests run on push, and
   `.github/workflows/validate.yml` repeats both in CI.
-
-## Security model and known limitations
-
-- **Read-only by design.** Runtime probes use read-only credentials and read-only command families. Production
-  requires explicit environment ids, allowed windows and rate limits. The rules are enforced by permission rules,
-  hooks and the rules-of-engagement skill.
-- **Sandboxed execution.** Scanners and runtime probe commands run in the executor chosen with `/connect-sandbox`:
-  Kubernetes, Docker or Podman, E2B, Daytona, Modal, Vercel Sandbox, or this machine. Scanners get the checkout
-  read-only with no network. Runtime commands use only self-hosted executors, pass the command allow-list in
-  `.claude/skills/runtime-probe-rules-of-engagement/references/command-allowlist.json`, and receive credentials as
-  mounted files, never as arguments. The hosted sandbox SDKs are pinned by lockfile and covered by mocked tests; run
-  the connection check against your own account before relying on them.
-- **Pinned scanners.** Every scanner and runtime CLI is pinned in
-  `.claude/skills/scanner-toolchain/references/toolchain.json` by exact version, release sha256 per platform (checked
-  against the project's checksum file, or recorded at pin time where the project publishes none), image digest, and
-  hash-locked requirements for Python tools installed with a pinned `uv`. The version each tool prints is checked
-  before its output is used, and every SARIF run records the pin it ran with.
-- **ComplianceOS login.** ComplianceOS offers only user logins, so Maxwell stores an email and password in
-  `~/.config/maxwell/complianceos.env` (mode 0600) and caches the token for up to 2 hours in `~/.cache/maxwell/`.
-  Claude Code deny rules (`Read(~/.config/maxwell/**)`, `Read(~/.cache/maxwell/**)`) block its file tools from
-  both paths, OpenCode's shell permissions deny commands that touch them, and agents are instructed never to read
-  them. Use a dedicated read-only account; request one from team@onfinance.in. Credentials typed into a chat stay
-  in that harness's local transcript, so rotate them if a transcript is shared.
-- **`example-co` is fictional.** Its demo age key under `.claude/skills/credentials-sops/references/` protects
-  nothing real. Never reuse it.
+- **Read-only runtime probes.** Runtime probes use read-only credentials and read-only command families. Production
+  needs explicit environment ids, allowed windows and rate limits, all enforced before a command runs.
+- **Sandboxed, pinned execution.** Scanners and runtime commands run only through `toolchain/scan.mjs` and
+  `sandbox/exec.mjs`, in the sandbox chosen with `/connect-sandbox`, at the versions pinned in
+  `.claude/skills/scanner-toolchain/references/toolchain.json`: exact version, sha256 per platform, image digest and
+  hash-locked Python installs. Each sandbox is verified by running a pinned tool when it is connected.
+- **Secrets stay out of the repository.** Application credentials are sops/age-encrypted references, and ComplianceOS
+  and sandbox logins live in `~/.config/maxwell/`, which agents are denied. The `example-co` demo age key protects
+  nothing real; never reuse it.
 
 ## Contributing
 

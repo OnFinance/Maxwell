@@ -11,7 +11,7 @@ description: >-
   and registers it in suggestions/master.json as proposed). Also runs the
   read-only 30-day retention check on merged suggestions. Never edits target
   repos in place, never commits, pushes or opens PRs.
-mode: subagent
+mode: all
 permission:
   read: allow
   edit: allow

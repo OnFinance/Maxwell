@@ -192,3 +192,11 @@ test('a Python scanner on a hosted VM needs the package-registries network', asy
     assert.equal(existsSync(f.resultPath), false);
   } finally { f.cleanup(); }
 });
+
+test('renderers only render: helm template, lint or show and kustomize build', () => {
+  assert.equal(checkToolArgs('helm', ['template', '{src}/charts/api', '-f', '{src}/charts/api/values.yaml']).ok, true);
+  assert.equal(checkToolArgs('kustomize', ['build', '{src}/overlays/prod']).ok, true);
+  assert.match(checkToolArgs('helm', ['install', 'api', '{src}/charts/api']).reason, /only helm template/);
+  assert.match(checkToolArgs('helm', ['dependency', 'update', '{src}/charts/api']).reason, /only helm template/);
+  assert.match(checkToolArgs('kustomize', ['edit', 'set', 'image', '{src}']).reason, /only kustomize build/);
+});

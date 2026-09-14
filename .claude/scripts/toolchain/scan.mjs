@@ -71,7 +71,7 @@ if (!flags['from-stdout'] && !argv.some((a) => a.includes('{result}'))) fail('us
 async function main() {
   const manifest = loadToolchain();
   const tool = getTool(manifest, flags.tool);
-  if (tool.category !== 'scanner') fail('policy', `${tool.name} is a ${tool.category}, not a scanner`);
+  if (!['scanner', 'renderer'].includes(tool.category)) fail('policy', `${tool.name} is a ${tool.category}, not a scanner or renderer`);
   const config = loadExecutor(flags.company, { root: WORKSPACE });
   const executor = staticExecutor(config);
   applyCredentials(executor.provider);

@@ -9,7 +9,7 @@ description: >-
   via soc/version.mjs. Also serves as the read-only scout and propose-only
   reconciler when a workflow names that mode, then appending nothing. Never
   edits or deletes ledger lines; read-only against target systems.
-mode: subagent
+mode: all
 model: anthropic/claude-sonnet-5
 permission:
   read: allow

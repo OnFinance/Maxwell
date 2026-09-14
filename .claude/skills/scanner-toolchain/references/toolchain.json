@@ -9,290 +9,6 @@
   ],
   "tools": [
     {
-      "name": "jq",
-      "category": "helper",
-      "version": "1.8.2",
-      "source": "https://github.com/jqlang/jq/releases/tag/jq-1.8.2",
-      "versionCheck": {
-        "args": [
-          "--version"
-        ],
-        "expect": "1.8.2"
-      },
-      "artifacts": {
-        "linux-amd64": {
-          "url": "https://github.com/jqlang/jq/releases/download/jq-1.8.2/jq-linux-amd64",
-          "sha256": "b1c22172dd303f3be49e935aa56aa48a8b7a46e0bc838b4997d3bb451495870f",
-          "sha256Source": "upstream-checksums",
-          "archive": "none"
-        },
-        "linux-arm64": {
-          "url": "https://github.com/jqlang/jq/releases/download/jq-1.8.2/jq-linux-arm64",
-          "sha256": "8b85c817833814ddca00a144c33705546355afccf0cf39b188f3cdb48b852309",
-          "sha256Source": "upstream-checksums",
-          "archive": "none"
-        },
-        "darwin-arm64": {
-          "url": "https://github.com/jqlang/jq/releases/download/jq-1.8.2/jq-macos-arm64",
-          "sha256": "2d75340ba57a4b4b4c8708a21c2dc8e958a48aaa8bba13b27f77f6e4c0eca07e",
-          "sha256Source": "upstream-checksums",
-          "archive": "none"
-        }
-      }
-    },
-    {
-      "name": "uv",
-      "category": "helper",
-      "version": "0.12.13",
-      "versionCheck": {
-        "args": [
-          "--version"
-        ],
-        "expect": "0.12.13"
-      },
-      "source": "https://github.com/astral-sh/uv/releases/tag/0.12.13",
-      "artifacts": {
-        "linux-amd64": {
-          "url": "https://github.com/astral-sh/uv/releases/download/0.12.13/uv-x86_64-unknown-linux-gnu.tar.gz",
-          "sha256": "745765a3b6e360ad76743599ae5c42e9278c7edf8bbff9fc76d05bf2623a04dd",
-          "sha256Source": "upstream-checksums-verified",
-          "archive": "tar.gz",
-          "binaryPath": "uv-x86_64-unknown-linux-gnu/uv",
-          "verifiedVersionOutput": "uv 0.12.13 (x86_64-unknown-linux-gnu)"
-        },
-        "linux-arm64": {
-          "url": "https://github.com/astral-sh/uv/releases/download/0.12.13/uv-aarch64-unknown-linux-gnu.tar.gz",
-          "sha256": "2eaa5d94f5db7b3a1a092156b9420459e42ab0217d917fe74a876309cef9b5e9",
-          "sha256Source": "upstream-checksums",
-          "archive": "tar.gz",
-          "binaryPath": "uv-x86_64-unknown-linux-gnu/uv"
-        },
-        "darwin-arm64": {
-          "url": "https://github.com/astral-sh/uv/releases/download/0.12.13/uv-aarch64-apple-darwin.tar.gz",
-          "sha256": "7e6ddb9316acc00f2296c82ff4d99977870ee34b2f0ddcae9444d714db9364ed",
-          "sha256Source": "upstream-checksums",
-          "archive": "tar.gz",
-          "binaryPath": "uv-x86_64-unknown-linux-gnu/uv"
-        }
-      },
-      "image": {
-        "ref": "ghcr.io/astral-sh/uv:0.12.13",
-        "digest": "sha256:b485bd65cc2cf1c9a93b3554012c9c3778cf7b1b5fd3d3096ce9e1226c97e1e6",
-        "invoke": "/uv",
-        "user": "",
-        "platforms": [
-          "linux/amd64",
-          "linux/arm64"
-        ]
-      }
-    },
-    {
-      "name": "aws",
-      "category": "runtime-cli",
-      "version": "2.36.44",
-      "source": "https://github.com/aws/aws-cli",
-      "versionCheck": {
-        "args": [
-          "--version"
-        ],
-        "expect": "2.36.44"
-      },
-      "image": {
-        "ref": "docker.io/amazon/aws-cli:2.36.44",
-        "digest": "sha256:e8467f2c319f9bc9a1471808a69949a76915e9c95eaf4a09ece9f9e85fd32747",
-        "invoke": "/usr/local/bin/aws",
-        "user": "",
-        "platforms": [
-          "linux/amd64",
-          "linux/arm64"
-        ]
-      }
-    },
-    {
-      "name": "az",
-      "category": "runtime-cli",
-      "version": "2.90.0",
-      "source": "https://github.com/Azure/azure-cli/releases",
-      "versionCheck": {
-        "args": [
-          "version"
-        ],
-        "expect": "2.90.0"
-      },
-      "image": {
-        "ref": "mcr.microsoft.com/azure-cli:2.90.0",
-        "digest": "sha256:e3768dde8142efa45d8f356a317aaac77abd7da15ba3719b0a150e9453f251db",
-        "invoke": "az",
-        "user": "",
-        "platforms": [
-          "linux/amd64",
-          "linux/arm64"
-        ]
-      }
-    },
-    {
-      "name": "crane",
-      "category": "runtime-cli",
-      "version": "0.22.1",
-      "source": "https://github.com/google/go-containerregistry/releases",
-      "versionCheck": {
-        "args": [
-          "version"
-        ],
-        "expect": "0.22.1"
-      },
-      "image": {
-        "ref": "gcr.io/go-containerregistry/crane:v0.22.1",
-        "digest": "sha256:1f968817b95790bed063f71175aa6b8ff879fa17064020415f3e18bb6e6a36e1",
-        "invoke": "/ko-app/crane",
-        "user": "65532",
-        "platforms": [
-          "linux/amd64",
-          "linux/arm64"
-        ]
-      }
-    },
-    {
-      "name": "curl",
-      "category": "runtime-cli",
-      "version": "8.22.0",
-      "source": "https://github.com/curl/curl/releases",
-      "versionCheck": {
-        "args": [
-          "--version"
-        ],
-        "expect": "8.22.0"
-      },
-      "image": {
-        "ref": "docker.io/curlimages/curl:8.22.0",
-        "digest": "sha256:58adaa4e8dca9c988bae2aba4ab3434a0bb2da16bbe3f92dec39ec7785166777",
-        "invoke": "curl",
-        "user": "curl_user",
-        "platforms": [
-          "linux/386",
-          "linux/amd64",
-          "linux/arm",
-          "linux/arm64",
-          "linux/ppc64le"
-        ]
-      }
-    },
-    {
-      "name": "docker",
-      "category": "runtime-cli",
-      "version": "29.8.0",
-      "source": "https://github.com/docker/cli/releases",
-      "versionCheck": {
-        "args": [
-          "--version"
-        ],
-        "expect": "29.8.0"
-      },
-      "image": {
-        "ref": "docker.io/library/docker:29.8.0-cli",
-        "digest": "sha256:eccaacfeed644c7de222ff047483568cb988dde95476fbaaf10ea2d04921bb66",
-        "invoke": "docker",
-        "user": "",
-        "platforms": [
-          "linux/amd64",
-          "linux/arm",
-          "linux/arm64"
-        ]
-      }
-    },
-    {
-      "name": "gcloud",
-      "category": "runtime-cli",
-      "version": "584.0.0",
-      "source": "https://cloud.google.com/sdk/docs/release-notes",
-      "versionCheck": {
-        "args": [
-          "version"
-        ],
-        "expect": "584.0.0"
-      },
-      "image": {
-        "ref": "gcr.io/google.com/cloudsdktool/google-cloud-cli:584.0.0-slim",
-        "digest": "sha256:9bf51bc7c410ab15cd5c7412a8b5f120489056679d3c4db7a7f029f72d5a433a",
-        "invoke": "gcloud",
-        "user": "",
-        "platforms": [
-          "linux/amd64",
-          "linux/arm64"
-        ]
-      }
-    },
-    {
-      "name": "kubectl",
-      "category": "runtime-cli",
-      "version": "1.37.0",
-      "source": "https://github.com/kubernetes/kubernetes/releases/tag/v1.37.0",
-      "versionCheck": {
-        "args": [
-          "version",
-          "--client"
-        ],
-        "expect": "1.37.0"
-      },
-      "artifacts": {
-        "linux-amd64": {
-          "url": "https://dl.k8s.io/release/v1.37.0/bin/linux/amd64/kubectl",
-          "sha256": "6129359f4e1f3848a5572ccb0b26cf28b8ca08cef38c95a765b2f64a2c961a2f",
-          "sha256Source": "upstream-sidecar",
-          "archive": "none"
-        },
-        "linux-arm64": {
-          "url": "https://dl.k8s.io/release/v1.37.0/bin/linux/arm64/kubectl",
-          "sha256": "922df28df248cc00a9e025f947704f1d1482de64ece54cfe57e61f19eaf1eef3",
-          "sha256Source": "upstream-sidecar",
-          "archive": "none"
-        },
-        "darwin-arm64": {
-          "url": "https://dl.k8s.io/release/v1.37.0/bin/darwin/arm64/kubectl",
-          "sha256": "583beedaebe422e71d3f1a96acef8b1fef86ea2f09a45ad01aa6c9ce287c1380",
-          "sha256Source": "upstream-sidecar",
-          "archive": "none"
-        }
-      },
-      "image": {
-        "ref": "registry.k8s.io/kubectl:v1.37.0",
-        "digest": "sha256:5ed410ebac5dc976cc717098994dcdb29bbbd38f6bd65f582311f5be4ba719cf",
-        "invoke": "/bin/kubectl",
-        "user": "0",
-        "platforms": [
-          "linux/amd64",
-          "linux/arm64",
-          "linux/ppc64le",
-          "linux/s390x"
-        ]
-      }
-    },
-    {
-      "name": "openssl",
-      "category": "runtime-cli",
-      "version": "3.5.8",
-      "source": "https://github.com/openssl/openssl/releases",
-      "versionCheck": {
-        "args": [
-          "version"
-        ],
-        "expect": "3.5.8"
-      },
-      "image": {
-        "ref": "docker.io/alpine/openssl:3.5.8",
-        "digest": "sha256:f6def4887e8413b228b66f314d0bcf5c25b128d918a258f3b0b9d66a0327edcb",
-        "invoke": "openssl",
-        "user": "",
-        "platforms": [
-          "linux/amd64",
-          "linux/arm",
-          "linux/arm64",
-          "linux/ppc64le",
-          "linux/s390x"
-        ]
-      }
-    },
-    {
       "name": "actionlint",
       "category": "scanner",
       "version": "1.7.12",
@@ -336,6 +52,26 @@
           "linux/amd64",
           "linux/arm64"
         ]
+      }
+    },
+    {
+      "name": "ansible-lint",
+      "category": "scanner",
+      "version": "26.8.0",
+      "source": "https://pypi.org/project/ansible-lint/26.8.0/",
+      "versionCheck": {
+        "args": [
+          "--version"
+        ],
+        "expect": "26.8.0"
+      },
+      "python": {
+        "package": "ansible-lint",
+        "lock": "locks/ansible-lint.txt",
+        "lockSha256": "875857fb21b676f13c7745e1a077be70bc02235f464fffdc1895d10f941796f3",
+        "packages": 36,
+        "installer": "uv",
+        "pythonVersion": "3.12"
       }
     },
     {
@@ -403,6 +139,26 @@
           "linux/ppc64le",
           "linux/s390x"
         ]
+      }
+    },
+    {
+      "name": "cfn-lint",
+      "category": "scanner",
+      "version": "1.56.3",
+      "source": "https://pypi.org/project/cfn-lint/1.56.3/",
+      "versionCheck": {
+        "args": [
+          "--version"
+        ],
+        "expect": "1.56.3"
+      },
+      "python": {
+        "package": "cfn-lint",
+        "lock": "locks/cfn-lint.txt",
+        "lockSha256": "f9a103d16afa2c89fd79110e590c872646c5aec13b193a49c65f96fe7960502c",
+        "packages": 10,
+        "installer": "uv",
+        "pythonVersion": "3.12"
       }
     },
     {
@@ -1112,6 +868,383 @@
         "digest": "sha256:a2eb396d886c053073405c7a980f2139ba2248ec172243cfa3841e57196e8101",
         "invoke": "/usr/bin/zizmor",
         "user": "0",
+        "platforms": [
+          "linux/amd64",
+          "linux/arm64"
+        ]
+      }
+    },
+    {
+      "name": "helm",
+      "category": "renderer",
+      "version": "4.3.0",
+      "source": "https://github.com/helm/helm/releases/tag/v4.3.0",
+      "versionCheck": {
+        "args": [
+          "version",
+          "--short"
+        ],
+        "expect": "4.3.0"
+      },
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://get.helm.sh/helm-v4.3.0-linux-amd64.tar.gz",
+          "sha256": "86584a54def73570558f66f5111cc53dfed56689637ae32c1201205d494f54fb",
+          "sha256Source": "upstream-checksums-verified",
+          "archive": "tar.gz",
+          "binaryPath": "linux-amd64/helm",
+          "verifiedVersionOutput": "v4.3.0+gbec5b06"
+        },
+        "linux-arm64": {
+          "url": "https://get.helm.sh/helm-v4.3.0-linux-arm64.tar.gz",
+          "sha256": "31c5794dd55c66a51e6b7d2e2ac7a114ae8b1de41ff1d9ba51748ac973b06a08",
+          "sha256Source": "upstream-sidecar",
+          "archive": "tar.gz",
+          "binaryPath": "linux-arm64/helm"
+        },
+        "darwin-arm64": {
+          "url": "https://get.helm.sh/helm-v4.3.0-darwin-arm64.tar.gz",
+          "sha256": "d3870437e1e95b67f8edbde964156c84a26503f560821d40c542441658934fba",
+          "sha256Source": "upstream-sidecar",
+          "archive": "tar.gz",
+          "binaryPath": "darwin-arm64/helm"
+        }
+      },
+      "image": {
+        "ref": "docker.io/alpine/helm:4.3.0",
+        "digest": "sha256:a6cf54599ccb99d90cf0712b30f03fdb3cab062e6b94e0418cc4db7e8a1464b2",
+        "invoke": "helm",
+        "user": "",
+        "platforms": [
+          "linux/amd64",
+          "linux/arm",
+          "linux/arm64",
+          "linux/ppc64le",
+          "linux/s390x"
+        ]
+      }
+    },
+    {
+      "name": "kustomize",
+      "category": "renderer",
+      "version": "5.8.1",
+      "source": "https://github.com/kubernetes-sigs/kustomize/releases/tag/kustomize/v5.8.1",
+      "versionCheck": {
+        "args": [
+          "version"
+        ],
+        "expect": "5.8.1"
+      },
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/v5.8.1/kustomize_v5.8.1_linux_amd64.tar.gz",
+          "sha256": "029a7f0f4e1932c52a0476cf02a0fd855c0bb85694b82c338fc648dcb53a819d",
+          "sha256Source": "upstream-checksums-verified",
+          "archive": "tar.gz",
+          "binaryPath": "kustomize",
+          "verifiedVersionOutput": "v5.8.1"
+        },
+        "linux-arm64": {
+          "url": "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/v5.8.1/kustomize_v5.8.1_linux_arm64.tar.gz",
+          "sha256": "0953ea3e476f66d6ddfcd911d750f5167b9365aa9491b2326398e289fef2c142",
+          "sha256Source": "upstream-checksums",
+          "archive": "tar.gz",
+          "binaryPath": "kustomize"
+        },
+        "darwin-arm64": {
+          "url": "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/v5.8.1/kustomize_v5.8.1_darwin_arm64.tar.gz",
+          "sha256": "8886f8a78474e608cc81234f729fda188a9767da23e28925802f00ece2bab288",
+          "sha256Source": "upstream-checksums",
+          "archive": "tar.gz",
+          "binaryPath": "kustomize"
+        }
+      },
+      "image": {
+        "ref": "registry.k8s.io/kustomize/kustomize:v5.8.1",
+        "digest": "sha256:899fcd3bc898160e62bcaf82932b0cb29ba38d16272353db2e7acbba82129429",
+        "invoke": "/app/kustomize",
+        "user": "",
+        "platforms": []
+      }
+    },
+    {
+      "name": "aws",
+      "category": "runtime-cli",
+      "version": "2.36.44",
+      "source": "https://github.com/aws/aws-cli",
+      "versionCheck": {
+        "args": [
+          "--version"
+        ],
+        "expect": "2.36.44"
+      },
+      "image": {
+        "ref": "docker.io/amazon/aws-cli:2.36.44",
+        "digest": "sha256:e8467f2c319f9bc9a1471808a69949a76915e9c95eaf4a09ece9f9e85fd32747",
+        "invoke": "/usr/local/bin/aws",
+        "user": "",
+        "platforms": [
+          "linux/amd64",
+          "linux/arm64"
+        ]
+      }
+    },
+    {
+      "name": "az",
+      "category": "runtime-cli",
+      "version": "2.90.0",
+      "source": "https://github.com/Azure/azure-cli/releases",
+      "versionCheck": {
+        "args": [
+          "version"
+        ],
+        "expect": "2.90.0"
+      },
+      "image": {
+        "ref": "mcr.microsoft.com/azure-cli:2.90.0",
+        "digest": "sha256:e3768dde8142efa45d8f356a317aaac77abd7da15ba3719b0a150e9453f251db",
+        "invoke": "az",
+        "user": "",
+        "platforms": [
+          "linux/amd64",
+          "linux/arm64"
+        ]
+      }
+    },
+    {
+      "name": "crane",
+      "category": "runtime-cli",
+      "version": "0.22.1",
+      "source": "https://github.com/google/go-containerregistry/releases",
+      "versionCheck": {
+        "args": [
+          "version"
+        ],
+        "expect": "0.22.1"
+      },
+      "image": {
+        "ref": "gcr.io/go-containerregistry/crane:v0.22.1",
+        "digest": "sha256:1f968817b95790bed063f71175aa6b8ff879fa17064020415f3e18bb6e6a36e1",
+        "invoke": "/ko-app/crane",
+        "user": "65532",
+        "platforms": [
+          "linux/amd64",
+          "linux/arm64"
+        ]
+      }
+    },
+    {
+      "name": "curl",
+      "category": "runtime-cli",
+      "version": "8.22.0",
+      "source": "https://github.com/curl/curl/releases",
+      "versionCheck": {
+        "args": [
+          "--version"
+        ],
+        "expect": "8.22.0"
+      },
+      "image": {
+        "ref": "docker.io/curlimages/curl:8.22.0",
+        "digest": "sha256:58adaa4e8dca9c988bae2aba4ab3434a0bb2da16bbe3f92dec39ec7785166777",
+        "invoke": "curl",
+        "user": "curl_user",
+        "platforms": [
+          "linux/386",
+          "linux/amd64",
+          "linux/arm",
+          "linux/arm64",
+          "linux/ppc64le"
+        ]
+      }
+    },
+    {
+      "name": "docker",
+      "category": "runtime-cli",
+      "version": "29.8.0",
+      "source": "https://github.com/docker/cli/releases",
+      "versionCheck": {
+        "args": [
+          "--version"
+        ],
+        "expect": "29.8.0"
+      },
+      "image": {
+        "ref": "docker.io/library/docker:29.8.0-cli",
+        "digest": "sha256:eccaacfeed644c7de222ff047483568cb988dde95476fbaaf10ea2d04921bb66",
+        "invoke": "docker",
+        "user": "",
+        "platforms": [
+          "linux/amd64",
+          "linux/arm",
+          "linux/arm64"
+        ]
+      }
+    },
+    {
+      "name": "gcloud",
+      "category": "runtime-cli",
+      "version": "584.0.0",
+      "source": "https://cloud.google.com/sdk/docs/release-notes",
+      "versionCheck": {
+        "args": [
+          "version"
+        ],
+        "expect": "584.0.0"
+      },
+      "image": {
+        "ref": "gcr.io/google.com/cloudsdktool/google-cloud-cli:584.0.0-slim",
+        "digest": "sha256:9bf51bc7c410ab15cd5c7412a8b5f120489056679d3c4db7a7f029f72d5a433a",
+        "invoke": "gcloud",
+        "user": "",
+        "platforms": [
+          "linux/amd64",
+          "linux/arm64"
+        ]
+      }
+    },
+    {
+      "name": "kubectl",
+      "category": "runtime-cli",
+      "version": "1.37.0",
+      "source": "https://github.com/kubernetes/kubernetes/releases/tag/v1.37.0",
+      "versionCheck": {
+        "args": [
+          "version",
+          "--client"
+        ],
+        "expect": "1.37.0"
+      },
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://dl.k8s.io/release/v1.37.0/bin/linux/amd64/kubectl",
+          "sha256": "6129359f4e1f3848a5572ccb0b26cf28b8ca08cef38c95a765b2f64a2c961a2f",
+          "sha256Source": "upstream-sidecar",
+          "archive": "none"
+        },
+        "linux-arm64": {
+          "url": "https://dl.k8s.io/release/v1.37.0/bin/linux/arm64/kubectl",
+          "sha256": "922df28df248cc00a9e025f947704f1d1482de64ece54cfe57e61f19eaf1eef3",
+          "sha256Source": "upstream-sidecar",
+          "archive": "none"
+        },
+        "darwin-arm64": {
+          "url": "https://dl.k8s.io/release/v1.37.0/bin/darwin/arm64/kubectl",
+          "sha256": "583beedaebe422e71d3f1a96acef8b1fef86ea2f09a45ad01aa6c9ce287c1380",
+          "sha256Source": "upstream-sidecar",
+          "archive": "none"
+        }
+      },
+      "image": {
+        "ref": "registry.k8s.io/kubectl:v1.37.0",
+        "digest": "sha256:5ed410ebac5dc976cc717098994dcdb29bbbd38f6bd65f582311f5be4ba719cf",
+        "invoke": "/bin/kubectl",
+        "user": "0",
+        "platforms": [
+          "linux/amd64",
+          "linux/arm64",
+          "linux/ppc64le",
+          "linux/s390x"
+        ]
+      }
+    },
+    {
+      "name": "openssl",
+      "category": "runtime-cli",
+      "version": "3.5.8",
+      "source": "https://github.com/openssl/openssl/releases",
+      "versionCheck": {
+        "args": [
+          "version"
+        ],
+        "expect": "3.5.8"
+      },
+      "image": {
+        "ref": "docker.io/alpine/openssl:3.5.8",
+        "digest": "sha256:f6def4887e8413b228b66f314d0bcf5c25b128d918a258f3b0b9d66a0327edcb",
+        "invoke": "openssl",
+        "user": "",
+        "platforms": [
+          "linux/amd64",
+          "linux/arm",
+          "linux/arm64",
+          "linux/ppc64le",
+          "linux/s390x"
+        ]
+      }
+    },
+    {
+      "name": "jq",
+      "category": "helper",
+      "version": "1.8.2",
+      "source": "https://github.com/jqlang/jq/releases/tag/jq-1.8.2",
+      "versionCheck": {
+        "args": [
+          "--version"
+        ],
+        "expect": "1.8.2"
+      },
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://github.com/jqlang/jq/releases/download/jq-1.8.2/jq-linux-amd64",
+          "sha256": "b1c22172dd303f3be49e935aa56aa48a8b7a46e0bc838b4997d3bb451495870f",
+          "sha256Source": "upstream-checksums",
+          "archive": "none"
+        },
+        "linux-arm64": {
+          "url": "https://github.com/jqlang/jq/releases/download/jq-1.8.2/jq-linux-arm64",
+          "sha256": "8b85c817833814ddca00a144c33705546355afccf0cf39b188f3cdb48b852309",
+          "sha256Source": "upstream-checksums",
+          "archive": "none"
+        },
+        "darwin-arm64": {
+          "url": "https://github.com/jqlang/jq/releases/download/jq-1.8.2/jq-macos-arm64",
+          "sha256": "2d75340ba57a4b4b4c8708a21c2dc8e958a48aaa8bba13b27f77f6e4c0eca07e",
+          "sha256Source": "upstream-checksums",
+          "archive": "none"
+        }
+      }
+    },
+    {
+      "name": "uv",
+      "category": "helper",
+      "version": "0.12.13",
+      "versionCheck": {
+        "args": [
+          "--version"
+        ],
+        "expect": "0.12.13"
+      },
+      "source": "https://github.com/astral-sh/uv/releases/tag/0.12.13",
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://github.com/astral-sh/uv/releases/download/0.12.13/uv-x86_64-unknown-linux-gnu.tar.gz",
+          "sha256": "745765a3b6e360ad76743599ae5c42e9278c7edf8bbff9fc76d05bf2623a04dd",
+          "sha256Source": "upstream-checksums-verified",
+          "archive": "tar.gz",
+          "binaryPath": "uv-x86_64-unknown-linux-gnu/uv",
+          "verifiedVersionOutput": "uv 0.12.13 (x86_64-unknown-linux-gnu)"
+        },
+        "linux-arm64": {
+          "url": "https://github.com/astral-sh/uv/releases/download/0.12.13/uv-aarch64-unknown-linux-gnu.tar.gz",
+          "sha256": "2eaa5d94f5db7b3a1a092156b9420459e42ab0217d917fe74a876309cef9b5e9",
+          "sha256Source": "upstream-checksums",
+          "archive": "tar.gz",
+          "binaryPath": "uv-x86_64-unknown-linux-gnu/uv"
+        },
+        "darwin-arm64": {
+          "url": "https://github.com/astral-sh/uv/releases/download/0.12.13/uv-aarch64-apple-darwin.tar.gz",
+          "sha256": "7e6ddb9316acc00f2296c82ff4d99977870ee34b2f0ddcae9444d714db9364ed",
+          "sha256Source": "upstream-checksums",
+          "archive": "tar.gz",
+          "binaryPath": "uv-x86_64-unknown-linux-gnu/uv"
+        }
+      },
+      "image": {
+        "ref": "ghcr.io/astral-sh/uv:0.12.13",
+        "digest": "sha256:b485bd65cc2cf1c9a93b3554012c9c3778cf7b1b5fd3d3096ce9e1226c97e1e6",
+        "invoke": "/uv",
+        "user": "",
         "platforms": [
           "linux/amd64",
           "linux/arm64"

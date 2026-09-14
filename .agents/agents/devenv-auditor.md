@@ -15,7 +15,7 @@ description: >-
   Agentic Top 10 and CSA MCP. Read-only: never runs a container, installs a
   dependency, loads a dump or decrypts a credential, and never appends to the
   ledger.
-mode: subagent
+mode: all
 model: anthropic/claude-sonnet-5
 permission:
   read: allow

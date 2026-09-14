@@ -15,7 +15,7 @@ description: >-
   http-only. Dry run writes no file. Writes only its OCSF export under
   kpis/data/raw/sessions and returns candidate ledger records with catalog
   defaultSeverity. Never scans or mutates targets.
-mode: subagent
+mode: all
 model: anthropic/claude-sonnet-5
 permission:
   read: allow

@@ -14,7 +14,7 @@ description: >-
   2025, RBI IT Outsourcing and CERT-In 2022, with LLM Top 10, NIST AI 600-1 and
   MITRE ATLAS as extra refs. Read-only: never invokes an agent, MCP server or
   model, never appends to the ledger.
-mode: subagent
+mode: all
 model: anthropic/claude-sonnet-5
 permission:
   read: allow

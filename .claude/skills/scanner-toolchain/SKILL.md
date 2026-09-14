@@ -53,6 +53,8 @@ packs and flags that upload results are refused.
 | spectral | `lint -f sarif -o {result} {src}/openapi.yaml` |
 | gosec | `-fmt sarif -out {result} {src}/...` |
 | bandit | `-r {src} -f json -o {result}` (bandit has no SARIF formatter; write the SARIF log from its JSON) |
+| cfn-lint, ansible-lint | `-f sarif --output-file {result} {src}/template.yaml` and `-f sarif --sarif-file {result} {src}/playbooks` |
+| helm, kustomize (renderers) | `template {src}/<chart> -f {src}/<chart>/values.yaml` and `build {src}/<overlay>`, with `--from-stdout` |
 | syft, grype | `dir:{src} -o cyclonedx-json={result}` and `dir:{src} -o sarif --file {result}` |
 
 ## 2. What you get

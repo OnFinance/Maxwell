@@ -13,7 +13,7 @@ description: >-
   scenario and CVSS, mapped first to SEBI CSCRF, DPDP Rules 2025, CERT-In 2022
   and RBI Directions 2026 hard requirements. Read-only: never builds, runs,
   installs or fetches anything and never appends to the ledger.
-mode: subagent
+mode: all
 model: anthropic/claude-opus-5
 permission:
   read: allow

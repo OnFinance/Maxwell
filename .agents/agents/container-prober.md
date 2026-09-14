@@ -14,7 +14,7 @@ description: >-
   only its OCSF export under kpis/data/raw/sessions and returns candidate ledger
   records cited from loaded catalogs (SEBI CSCRF, CERT-In, DPDP) with catalog
   defaultSeverity. Never mutates targets or appends to the ledger.
-mode: subagent
+mode: all
 model: anthropic/claude-sonnet-5
 permission:
   read: allow

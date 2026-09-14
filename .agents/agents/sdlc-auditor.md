@@ -15,7 +15,7 @@ description: >-
   policy, DPDP Rules 2025 and RBI Directions 2026, then NIST SSDF. Read-only:
   reads git metadata offline, never calls an SCM API, never appends to the
   ledger.
-mode: subagent
+mode: all
 model: anthropic/claude-sonnet-5
 permission:
   read: allow

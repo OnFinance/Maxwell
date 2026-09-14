@@ -14,7 +14,7 @@ description: >-
   the caller's schema. Defaults to refuted=true when evidence is missing.
   Read-only: never writes or runs commands; only network use is WebFetch of the
   candidate's cited URL under source-authenticity
-mode: subagent
+mode: all
 permission:
   read: allow
   edit: deny

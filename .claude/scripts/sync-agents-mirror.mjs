@@ -65,13 +65,15 @@ const body = (content) => content.replace(/^\n+/, '').replace(/\n+$/, '') + '\n'
 
 export function convertAgent(src) {
   const { data, content } = matter(src);
-  const fm = { description: data.description, mode: 'subagent' };
+  // mode all, not subagent: `opencode run --agent <name>` falls back to the default agent for a subagent-only agent
+  // (OpenCode 1.18), which silently drops the agent's prompt and permissions.
+  const fm = { description: data.description, mode: 'all' };
   const model = toOpenCodeModel(data.model);
   if (model) fm.model = model;
   const permission = toPermission(data.tools, data.disallowedTools);
   if (permission) fm.permission = permission;
   if (data['x-maxwell']) fm['x-maxwell'] = data['x-maxwell'];
-  return { md: stringify(body(content), fm), prompt: body(content), config: { description: data.description, mode: 'subagent', ...(model ? { model } : {}), ...(permission ? { permission } : {}) } };
+  return { md: stringify(body(content), fm), prompt: body(content), config: { description: data.description, mode: 'all', ...(model ? { model } : {}), ...(permission ? { permission } : {}) } };
 }
 
 export function convertCommand(src) {

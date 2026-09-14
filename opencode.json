@@ -29,7 +29,7 @@
   "agent": {
     "agent-graph-auditor": {
       "description": "Static probe for the probe-agent-graph workflow. Maps and audits LLM agent and harness code in applications/<app_id>/repos/<repo_id>/ checkouts: Claude Code and OpenCode configs (.claude/, opencode.json, AGENTS.md, CLAUDE.md), agent frameworks (LangGraph, CrewAI, AutoGen, Semantic Kernel, Vercel AI SDK, Anthropic/OpenAI tool-use code), MCP server definitions, tool schemas, prompt files, memory and RAG stores. Returns candidate observations and findings (SARIF-backed), each tagged with exactly one OWASP Agentic Top 10 2026 ASI01-ASI10 id, on tool permission scope, prompt-injection surfaces, budgets and turn caps, egress control, secrets in prompts, human-in-the-loop for regulated actions and CSA MCP practices, mapped to SEBI CSCRF, DPDP Rules 2025, RBI IT Outsourcing and CERT-In 2022, with LLM Top 10, NIST AI 600-1 and MITRE ATLAS as extra refs. Read-only: never invokes an agent, MCP server or model, never appends to the ledger.",
-      "mode": "subagent",
+      "mode": "all",
       "model": "anthropic/claude-sonnet-5",
       "permission": {
         "read": "allow",
@@ -50,7 +50,7 @@
     },
     "app-cataloguer": {
       "description": "Keeps applications/<app_id>/ current for refresh-apps. Syncs Maxwell's gitignored checkout of each application repo to the remote default branch (clone or fetch, never push or edit), re-derives the repo record from the checkout (pinnedCommit, languages, build and CI system, manifests, IaC, Helm, agent-code and CODEOWNERS flags) and compares environment files, image records and credential references with what the repos now declare. Propose-only inside refresh-apps: returns record updates and drift gaps for the refuter and validator; never writes workspace files and never reads credential values.",
-      "mode": "subagent",
+      "mode": "all",
       "permission": {
         "read": "allow",
         "edit": "deny",
@@ -70,7 +70,7 @@
     },
     "change-planner": {
       "description": "Turns open findings and risks in a company's soc ledger into ITIL-typed remediation initiatives for impl-change-management. In that workflow it drafts one initiative per scouted group (owner from details.json contacts, dueAt from the regulatory SLA table, 1 to 6 tasks with testable acceptance criteria, a verification method and a root cause) and returns the draft for refutation, after which the validator writes it; in a standalone run it writes change_management/master.json, initiatives/<init_id>/timeline.json and tasks/task_<n>.json itself. Every initiative stays proposed with no approver; never closes or edits human-edited tasks; never touches the ledger or target systems.",
-      "mode": "subagent",
+      "mode": "all",
       "permission": {
         "read": "allow",
         "edit": "allow",
@@ -90,7 +90,7 @@
     },
     "chart-auditor": {
       "description": "Static probe for the probe-app-chart workflow. Renders and reads Helm charts, Kustomize overlays and raw Kubernetes manifests in applications/<app_id>/repos/<repo_id>/ checkouts and returns candidate observations and findings (SARIF-backed) on pod securityContext (runAsNonRoot, readOnlyRootFilesystem, capabilities, privilege escalation, host namespaces), resource requests and limits, NetworkPolicy coverage, secrets handling, image tags versus digests and registries, RBAC scope and Pod Security Admission, mapped to SEBI CSCRF, CERT-In 2022, DPDP Rules 2025, RBI IT Outsourcing (cloud) and RBI Directions 2026 hard requirements, then CIS/NIST. Read-only: renders templates locally, never touches a cluster, never appends to the ledger.",
-      "mode": "subagent",
+      "mode": "all",
       "model": "anthropic/claude-sonnet-5",
       "permission": {
         "read": "allow",
@@ -111,7 +111,7 @@
     },
     "cicd-auditor": {
       "description": "Static probe for the probe-cicd-env workflow. Reads GitHub Actions, GitLab CI, Jenkins, Azure Pipelines, CircleCI, Buildkite, Tekton and Argo definitions plus CI Dockerfiles and the repo record's branchProtection in applications/<app_id>/repos/<repo_id>/ checkouts and returns candidate observations and findings (SARIF-backed) on unpinned actions and images, secrets exposure and OIDC use, missing SAST/SCA/secret/container/IaC scanners, SBOM generation that is absent OR empty (checked against applications/<app_id>/images/*.cdx.json and tagged sbom-missing/sbom-empty), image signing and SLSA attestation, branch protection, deploy gates and release pinning, mapped to SEBI CSCRF GV.SC/PR.DS/PR.IP, CERT-In 2022, RBI IT Outsourcing (cloud) and NIST SSDF. Read-only: never triggers a pipeline, never contacts a registry or SCM API, never appends to the ledger.",
-      "mode": "subagent",
+      "mode": "all",
       "model": "anthropic/claude-sonnet-5",
       "permission": {
         "read": "allow",
@@ -132,7 +132,7 @@
     },
     "container-prober": {
       "description": "Read-only runtime probe of running container workloads (Kubernetes pods, ECS tasks, Docker hosts) in one application environment of a regulated Indian financial-services company. Spawned by runtime-probe-appcontainers, -devtest-env, -qa-env and -prod-env. Checks image digests against applications/<app>/images, non-root UID, read-only root FS, capabilities and host namespaces, resource limits, secrets as env vars, log shipping, 180-day log retention in India, registry-scan patch level and SBOM presence. Obeys runtime-probe-rules-of-engagement: every blocker collected as BLOCKED, prod gating via envIds or the workflow's own check, run timestamp from now or one date -u, jq redaction inside every command. Dry run writes no file. Writes only its OCSF export under kpis/data/raw/sessions and returns candidate ledger records cited from loaded catalogs (SEBI CSCRF, CERT-In, DPDP) with catalog defaultSeverity. Never mutates targets or appends to the ledger.",
-      "mode": "subagent",
+      "mode": "all",
       "model": "anthropic/claude-sonnet-5",
       "permission": {
         "read": "allow",
@@ -153,7 +153,7 @@
     },
     "ctx-researcher": {
       "description": "Research unit of refresh-ctx for one regulated Indian financial-services company. Builds the Snapshot skeleton of company-profile/<company_id>/details.json, rechecks one worklist unit (registration:<regulator>:<no>, entity-type:<type>, company:listing, company:frameworks, environment:<env file>) or runs one discovery lens (registers, corporate, regulatory-change) against the regulators' own registers, MCA and exchange files under the grounding contract and the bias-toward-no-op rule, and returns drift items in the workflow's closed drift vocabulary with fetched evidence URLs (or workspace: refs for hosting drift). Writes nothing: refuters verify, soc-ledger-keeper records and the validator patches the profile. Read-only against target systems; an empty drifts array is the normal answer.",
-      "mode": "subagent",
+      "mode": "all",
       "permission": {
         "read": "allow",
         "edit": "deny",
@@ -173,7 +173,7 @@
     },
     "devenv-auditor": {
       "description": "Static probe for probe-dev-env (also run inline by execute-scr). Audits how developers build and run an application: committed .env files, key material and local credentials, dev containers and docker-compose files, pre-commit and secrets hooks, toolchain and lockfile pinning, editor tasks and AI-assistant configuration (.claude/settings*.json, .mcp.json, .cursor, opencode.json, AGENTS.md), dev dumps and fixtures with real-looking PAN, Aadhaar, account, card or mobile numbers, insecure local-run defaults, and dev/test environment records holding production data classes or weak exposure, residency or log retention. Counts sensitive-data matches without printing values and returns one observation per area plus findings with a SARIF log, mapped first to DPDP Rules 2025, SEBI CSCRF and CERT-In 2022, then NIST SSDF, ISO 27001, OWASP Agentic Top 10 and CSA MCP. Read-only: never runs a container, installs a dependency, loads a dump or decrypts a credential, and never appends to the ledger.",
-      "mode": "subagent",
+      "mode": "all",
       "model": "anthropic/claude-sonnet-5",
       "permission": {
         "read": "allow",
@@ -194,7 +194,7 @@
     },
     "fix-author": {
       "description": "Writes reviewable unified diffs that fix confirmed ledger findings for impl-auto-improvement, following .claude/skills/diff-suggestions/SKILL.md. Reads the repo checkout under applications/<app_id>/repos/<repo_id>/ at its pinned commit, stages one minimal single-category diff per finding in a /tmp scratch tree, proves it with git apply --check and returns it (or, outside the workflow, writes it to company-profile/<company_id>/suggestions/suggestions/<sug_id>/<repo_id>/<name>.diff and registers it in suggestions/master.json as proposed). Also runs the read-only 30-day retention check on merged suggestions. Never edits target repos in place, never commits, pushes or opens PRs.",
-      "mode": "subagent",
+      "mode": "all",
       "permission": {
         "read": "allow",
         "edit": "allow",
@@ -214,7 +214,7 @@
     },
     "harness-prober": {
       "description": "Read-only runtime probe of deployed AI agent harnesses (Claude Code, OpenCode, claude -p task images, platform agents) in one application environment of a regulated Indian financial-services company. Spawned by runtime-probe-harnesses. From jq-projected task definitions, pod specs, ConfigMaps and host process flags it checks tool allow/deny lists, budget, turn and timeout caps, model pinning and region, prompt-logging flags, egress class, MCP servers, settings isolation, image integrity and a 180-day India audit trail. Obeys runtime-probe-rules-of-engagement: every blocker collected as BLOCKED, prod gating via envIds or the workflow's own check, run timestamp from now or one date -u, redaction inside every command. Dry run writes no file; never reads prompt bodies or steers a run. Writes only its OCSF export under kpis/data/raw/sessions and returns candidate ledger records cited from loaded catalogs with catalog defaultSeverity. Never mutates targets or appends to the ledger.",
-      "mode": "subagent",
+      "mode": "all",
       "model": "anthropic/claude-sonnet-5",
       "permission": {
         "read": "allow",
@@ -235,7 +235,7 @@
     },
     "iac-auditor": {
       "description": "Static probe for the probe-iac workflow. Reads Terraform/OpenTofu, CloudFormation, Pulumi and Ansible in applications/<app_id>/repos/<repo_id>/ checkouts and returns candidate observations and findings (SARIF-backed) on public exposure, encryption at rest and in transit, IAM wildcards, logging and retention, network segmentation, secrets in code, state backends and drift controls, mapped to SEBI CSCRF, CERT-In 2022, DPDP Rules 2025, RBI IT Outsourcing (cloud) and RBI Directions 2026 hard requirements, then CIS/NIST. Read-only against repos and cloud accounts; never appends to the ledger, never runs terraform apply/plan against live credentials.",
-      "mode": "subagent",
+      "mode": "all",
       "model": "anthropic/claude-sonnet-5",
       "permission": {
         "read": "allow",
@@ -256,7 +256,7 @@
     },
     "iam-prober": {
       "description": "Read-only runtime probe of identity and access for one application environment of a regulated Indian financial-services company. Spawned by runtime-probe-identity-access. Inspects AWS IAM, Identity Center and SCPs, GCP IAM, Azure RBAC, Kubernetes RBAC and secrets-backend policies for: a read-only probe identity, wildcard policies, MFA on root, console and remote access, key age and rotation, workload identity over static keys, cluster-admin and escalate/bind bindings, break-glass monitoring, leavers with live access, recorded privileged sessions and CloudTrail in India, and access review age. Uses jq-projected get/list/simulate calls that pseudonymise user names in the pipeline, CloudTrail lookup-events and Access Analyzer list-findings-v2. Obeys runtime-probe-rules-of-engagement: every blocker collected as BLOCKED, prod gating via envIds or the workflow's check. Dry run writes no file. Returns candidate ledger records with catalog defaultSeverity. Never generates reports, assumes roles or reads secrets.",
-      "mode": "subagent",
+      "mode": "all",
       "model": "anthropic/claude-sonnet-5",
       "permission": {
         "read": "allow",
@@ -277,7 +277,7 @@
     },
     "metastore-cataloguer": {
       "description": "Catalogues data for company-profile/<company_id>/sdlc/metastore.json in refresh-metastore (propose-only per repo there: returns a catalogue fragment and gap proposals that the validator merges and writes; writes the file itself only in a standalone run) by reading catalog exports, DDL, migrations, ORM models and pipeline code in the application repo checkouts. Names datasets and jobs the OpenLineage/OpenMetadata way, classifies every column (pii, spdi, financial, cardholder, regulatory) with DPDP-aware heuristics, records retention and lineage edges, and never invents a table it did not see. Read-only against databases and repos; the endpointRef it records is a credentials key, never a URL or secret.",
-      "mode": "subagent",
+      "mode": "all",
       "permission": {
         "read": "allow",
         "edit": "deny",
@@ -297,7 +297,7 @@
     },
     "network-prober": {
       "description": "Read-only runtime probe of one application environment's network perimeter at a regulated Indian financial-services company. Spawned by runtime-probe-network-perimeter. Enumerates exposure from configuration (security groups, NACLs, load balancers, WAF, DNS, VPC routing, flow logs, Ingress, NetworkPolicy) and runs only the RoE safe checks against declared urls[]: HEAD/GET of / and four well-known paths plus one openssl handshake per TLS version. Checks undeclared exposure, open non-HTTPS ingress, admin planes behind VPN and MFA, TLS, HSTS and headers, CORS, WAF mode and logging, dangling DNS, default-deny policies, governed egress and 180-day flow logs in India. Obeys runtime-probe-rules-of-engagement: every blocker collected as BLOCKED; an unresolved locator blocks the whole environment unless method is http-only. Dry run writes no file. Writes only its OCSF export under kpis/data/raw/sessions and returns candidate ledger records with catalog defaultSeverity. Never scans or mutates targets.",
-      "mode": "subagent",
+      "mode": "all",
       "model": "anthropic/claude-sonnet-5",
       "permission": {
         "read": "allow",
@@ -318,7 +318,7 @@
     },
     "pipeline-prober": {
       "description": "Read-only runtime probe of one application environment's data pipelines (outbox, queues, buckets, managed databases, retention jobs, backups) at a regulated Indian financial-services company. Spawned by runtime-probe-datapipeline. Checks queue idempotency and DLQs, bucket versioning and object lock, lineage to image digest and SBOM, retention enforcement, PII in intermediate stores, encryption and CMK rotation, store exposure, India residency and backup/restore evidence against sdlc/metastore.json, using jq-projected cloud describe/get/list calls and CronJob status. It excludes SQL clients (stricter than the RoE), so database-internal facts become evidence requests. Obeys runtime-probe-rules-of-engagement: every blocker collected as BLOCKED, prod gating via envIds or the workflow's own check. Dry run writes no file; never reads an object, message or row. Writes only its OCSF export under kpis/data/raw/sessions and returns candidate ledger records with catalog defaultSeverity. Never mutates targets.",
-      "mode": "subagent",
+      "mode": "all",
       "model": "anthropic/claude-sonnet-5",
       "permission": {
         "read": "allow",
@@ -339,7 +339,7 @@
     },
     "refuter": {
       "description": "Adversarial verifier called before a candidate is written: ledger records, refresh-soc control/transition/SLA proposals, refresh-ctx drift claims, refresh-vendor-ctx changes, refresh-metastore gaps, change-planner drafts and fix-author diffs. Judges one candidate or a keyed batch through one lens (correctness, evidence, regulatory-mapping, exploitability, reproduction, actionability, dates-and-cadence, temporal-validity, entity-identity, source-authenticity, production-safety, or the caller's \"What to check\" text) against the ledger, applications records, cves/data, regulatory catalogs, SLA table, sdlc/policy.json and raw session exports. Returns one verdict per candidate (refuted, confidence, reason, corrections, checked, unverifiable) in the caller's schema. Defaults to refuted=true when evidence is missing. Read-only: never writes or runs commands; only network use is WebFetch of the candidate's cited URL under source-authenticity",
-      "mode": "subagent",
+      "mode": "all",
       "permission": {
         "read": "allow",
         "edit": "deny",
@@ -359,7 +359,7 @@
     },
     "report-writer": {
       "description": "Regenerates only the sections of company-profile/<company_id>/summary.md that the calling workflow names (or, when it names none, the default row of the ownership table in this agent), from the soc ledger, change_management and suggestions masters, details.json, sdlc policy and metastore, vendors and kpis/data/<kpi_id>/series.jsonl, using the layouts in .claude/skills/report-templates. Every figure it writes is counted or copied from a workspace file and cited by record id ([fnd_…], [obs_…], [rsk_…], [inc_…], [init_…], [sug_…] or `<instrumentId>:<controlId>`); it never invents numbers, never edits sections it was not asked for, never appends to the ledger and never writes any file other than summary.md. Spawn it as the summary step of any refresh-*, probe-*, execute-scr, runtime-probe-*, impl-* or report-audit-* workflow. Returns the sections written and skipped, the new report version and inputsHash, and the counts behind every headline number (in the caller's output schema when one is supplied)",
-      "mode": "subagent",
+      "mode": "all",
       "model": "anthropic/claude-sonnet-5",
       "permission": {
         "read": "allow",
@@ -380,7 +380,7 @@
     },
     "sandbox-prober": {
       "description": "Read-only runtime probe of agent and code-execution sandbox isolation in sandbox-tier environments only, at a regulated Indian financial-services company. Spawned by runtime-probe-sandboxes. Checks sandbox UID, seccomp and AppArmor/SELinux, isolation backend (gVisor, Kata, Firecracker or runc), egress with no route to prod, tmpfs-only writable paths, single-use hosts and expiry, process guards, ptrace/dumpable hardening, workspace scan gates, resource ceilings and absence of production data, using jq-projected kubectl and cloud describe calls plus the RoE SSH read list on idle hosts. Obeys runtime-probe-rules-of-engagement: every blocker collected as BLOCKED, run timestamp from now or one date -u, redaction inside every command; /proc-level facts become evidence requests. Dry run writes no file. Writes only its OCSF export under kpis/data/raw/sessions and returns candidate ledger records with catalog defaultSeverity. Never execs into a sandbox, mutates targets or appends to the ledger.",
-      "mode": "subagent",
+      "mode": "all",
       "model": "anthropic/claude-sonnet-5",
       "permission": {
         "read": "allow",
@@ -401,7 +401,7 @@
     },
     "schema-auditor": {
       "description": "Static probe for the probe-schemas workflow. Reads database DDL and migrations (SQL, Flyway, Liquibase, Alembic, Prisma, Django, Rails), ORM and validation models, API contracts (OpenAPI, GraphQL, protobuf, Avro, AsyncAPI, JSON Schema) in applications/<app_id>/repos/<repo_id>/ checkouts and returns candidate observations and findings (SARIF-backed) on PII/SPDI fields without classification or encryption/masking, retention and erasure gaps, unbounded or weakly-typed fields, monetary precision, integrity constraints on ledger tables, unauthenticated or unbounded API operations and residency hints, mapped first to DPDP Rules 2025, SEBI CSCRF, CERT-In 2022 and RBI Directions 2026 hard requirements, then OWASP ASVS 5.0, PCI DSS and NIST. Read-only: never connects to a database or API, never modifies a checkout, never appends to the ledger.",
-      "mode": "subagent",
+      "mode": "all",
       "model": "anthropic/claude-sonnet-5",
       "permission": {
         "read": "allow",
@@ -422,7 +422,7 @@
     },
     "sdlc-auditor": {
       "description": "Static probe for probe-sdlc (also run inline by execute-scr). Compares the claims in company-profile/<company_id>/sdlc/policy.json - branching and signed commits, code review and CODEOWNERS, CI gates, release process and deployment windows, secrets management, dependency and SBOM policy, AI coding policy and the ssdfMapping it asserts - with what the workspace and the checkouts show: repo records (branchProtection, codeownersPresent), CODEOWNERS coverage, PR templates, first-parent history for unreviewed direct pushes and signature status, CI configuration versus claimed gates, coverage thresholds, lockfiles, registries and SBOMs. Assesses one company-level target plus each repo and returns one observation per NIST SSDF 1.1 practice and one finding per gap (ruleId ssdf-<task with hyphens>), mapped first to SEBI CSCRF, CERT-In audit policy, DPDP Rules 2025 and RBI Directions 2026, then NIST SSDF. Read-only: reads git metadata offline, never calls an SCM API, never appends to the ledger.",
-      "mode": "subagent",
+      "mode": "all",
       "model": "anthropic/claude-sonnet-5",
       "permission": {
         "read": "allow",
@@ -443,7 +443,7 @@
     },
     "secure-code-reviewer": {
       "description": "Static secure code review for the execute-scr workflow. Reviews application source in one applications/<app_id>/repos/<repo_id>/ checkout against the OWASP ASVS 5.0 level and chapters the workflow selects, tracing source to sink: authentication and sessions, authorisation and IDOR on client/account ids, injection (SQL/NoSQL/command/template/XXE), SSRF, deserialisation, file handling, cryptography and TLS verification, hard-coded secrets, logging of PAN/Aadhaar/card/OTP data, error leakage and payment/order business logic. Runs offline SAST where installed, writes a SARIF log, and returns observations (one per ASVS chapter) and findings with CWE, data flow, exploit scenario and CVSS, mapped first to SEBI CSCRF, DPDP Rules 2025, CERT-In 2022 and RBI Directions 2026 hard requirements. Read-only: never builds, runs, installs or fetches anything and never appends to the ledger.",
-      "mode": "subagent",
+      "mode": "all",
       "model": "anthropic/claude-opus-5",
       "permission": {
         "read": "allow",
@@ -464,7 +464,7 @@
     },
     "soc-ledger-keeper": {
       "description": "The only agent that appends to company-profile/<company_id>/soc/main.jsonl and writes soc/versions/commit_<n>.diff. Every workflow hands it proposed control, observation, finding, risk and incident records; it mints ids, recomputes finding fingerprints, checks supersedes chains, provenance, regulatoryRefs and SLA fields, then appends via node .claude/scripts/soc/append.mjs and versions via soc/version.mjs. Also serves as the read-only scout and propose-only reconciler when a workflow names that mode, then appending nothing. Never edits or deletes ledger lines; read-only against target systems.",
-      "mode": "subagent",
+      "mode": "all",
       "model": "anthropic/claude-sonnet-5",
       "permission": {
         "read": "allow",
@@ -485,7 +485,7 @@
     },
     "validator": {
       "description": "Schema gate and materialiser for write stages. Gate mode (every workflow's last write step): runs validate-data.mjs on the named files, then npm run validate, explains each failure by the schema rule it breaks, fixes the content of in-scope files with the minimal change, re-runs until green and runs npm run sync:agents when the mirror is stale. Materialise mode (impl-change-management initiatives/timelines/tasks, impl-auto-improvement diffs and suggestions/master.json, refresh-ctx details.json and env patches, summary.md frontmatter): writes caller-supplied, already refuted drafts exactly, minting ULIDs and timestamps only where told. Never edits .claude/schemas/**, never writes soc/main.jsonl (proposes a superseding record for soc-ledger-keeper instead), never invents evidence, severities or clauses, never decrypts credentials. Returns validationGreen, files fixed or written, in-scope and out-of-scope failures, and schemaIssues",
-      "mode": "subagent",
+      "mode": "all",
       "model": "anthropic/claude-sonnet-5",
       "permission": {
         "read": "allow",
@@ -506,7 +506,7 @@
     },
     "vendor-analyst": {
       "description": "Scouts, refreshes, onboards and writes the ICT third-party register company-profile/<company_id>/vendors/<vendor_id>.json for refresh-vendor-ctx, from contract and assurance evidence the company holds plus public sources (GLEIF LEI, MCA master data, vendor trust portals and sub-processor lists). Returns JSON-pointer changes, a proposedDocument for a newly referenced vendor (status onboarding) and flags (assurance-expiring, contract-expiring, residency-conflict, material-without-evidence, critical-without-function, fourth-party-unknown, concentration, public-incident) mapped to RBI IT Outsourcing MD 2023, SEBI CSCRF GV.SC and DORA RoI; writes a vendor file only in the workflow's Write stage after refutation. Marks status instead of deleting; never contacts a vendor; read-only against vendors and target systems.",
-      "mode": "subagent",
+      "mode": "all",
       "permission": {
         "read": "allow",
         "edit": "allow",

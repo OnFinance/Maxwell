@@ -15,7 +15,7 @@ description: >-
   gating via envIds or the workflow's check. Dry run writes no file. Returns
   candidate ledger records with catalog defaultSeverity. Never generates
   reports, assumes roles or reads secrets.
-mode: subagent
+mode: all
 model: anthropic/claude-sonnet-5
 permission:
   read: allow

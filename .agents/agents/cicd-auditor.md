@@ -13,7 +13,7 @@ description: >-
   release pinning, mapped to SEBI CSCRF GV.SC/PR.DS/PR.IP, CERT-In 2022, RBI IT
   Outsourcing (cloud) and NIST SSDF. Read-only: never triggers a pipeline, never
   contacts a registry or SCM API, never appends to the ledger.
-mode: subagent
+mode: all
 model: anthropic/claude-sonnet-5
 permission:
   read: allow

@@ -13,7 +13,7 @@ description: >-
   2026 hard requirements, then OWASP ASVS 5.0, PCI DSS and NIST. Read-only:
   never connects to a database or API, never modifies a checkout, never appends
   to the ledger.
-mode: subagent
+mode: all
 model: anthropic/claude-sonnet-5
 permission:
   read: allow

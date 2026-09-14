@@ -14,7 +14,7 @@ description: >-
   for soc-ledger-keeper instead), never invents evidence, severities or clauses,
   never decrypts credentials. Returns validationGreen, files fixed or written,
   in-scope and out-of-scope failures, and schemaIssues
-mode: subagent
+mode: all
 model: anthropic/claude-sonnet-5
 permission:
   read: allow
