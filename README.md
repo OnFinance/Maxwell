@@ -521,8 +521,6 @@ node .claude/scripts/run-headless.mjs --workflow refresh-apps --company acme-sec
 - **`example-co` is fictional.** Its demo age key under `.claude/skills/credentials-sops/references/` protects
   nothing real. Never reuse it.
 
-Report security issues privately to the maintainers at OnFinance rather than in public issues.
-
 ## Contributing
 
 1. Read `AGENTS.md`. Everything in it binds human contributors too.
