@@ -32,7 +32,7 @@ if (harness === 'claude-code') {
   const model = opt('--model', 'opus');
   env.MAXWELL_MODEL = model;
   const prompt = [`/${workflow}`, company, ...apps.map((a) => `--app=${a}`), ...envs.map((e) => `--env=${e}`), ...(dryRun ? ['--dry-run'] : [])].join(' ');
-  const args = ['-p', '--output-format', 'json', '--model', model, '--permission-mode', opt('--permission-mode', 'acceptEdits'), '--max-turns', opt('--max-turns', '400'), '--setting-sources', 'project'];
+  const args = ['-p', '--output-format', 'json', '--model', model, '--permission-mode', opt('--permission-mode', 'auto'), '--max-turns', opt('--max-turns', '400'), '--setting-sources', 'project'];
   if (opt('--budget-usd')) args.push('--max-budget-usd', opt('--budget-usd'));
   args.push(prompt);
   console.error(`[run-headless] claude ${args.map((a) => (a.includes(' ') ? JSON.stringify(a) : a)).join(' ')}`);
