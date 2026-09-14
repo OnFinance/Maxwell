@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.session.summary",
+  "sessionId": "ba28bc2c-2822-41eb-92a8-b6389d3f1d0d",
+  "harness": "claude-code",
+  "harnessVersion": "2.1.270",
+  "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+  "workflow": "probe-iac",
+  "companyId": "example-co",
+  "startedAt": "2026-09-14T18:08:51.290Z",
+  "endedAt": "2026-09-14T18:36:32.831Z",
+  "durationMs": 1661541,
+  "turns": 166,
+  "inferenceCalls": 166,
+  "toolCalls": {
+    "total": 164,
+    "byTool": {
+      "Workflow": 1,
+      "Bash": 89,
+      "Edit": 5,
+      "StructuredOutput": 13,
+      "Grep": 32,
+      "Read": 20,
+      "Glob": 3,
+      "Write": 1
+    }
+  },
+  "subagentSessions": 13,
+  "permissionDenials": [],
+  "models": [
+    {
+      "model": "claude-opus-5",
+      "provider": "anthropic",
+      "tokens": {
+        "input": 1784,
+        "output": 64666,
+        "cacheWrite5m": 754962,
+        "cacheWrite1h": 39143,
+        "cacheRead": 4649824,
+        "thinking": 17028
+      },
+      "webSearchRequests": 0,
+      "webFetchRequests": 0,
+      "costUsd": 9.060425
+    },
+    {
+      "model": "claude-sonnet-5",
+      "provider": "anthropic",
+      "tokens": {
+        "input": 200,
+        "output": 89362,
+        "cacheWrite5m": 344303,
+        "cacheWrite1h": 0,
+        "cacheRead": 7798524,
+        "thinking": 31309
+      },
+      "webSearchRequests": 0,
+      "webFetchRequests": 0,
+      "costUsd": 3.314482
+    }
+  ],
+  "costUsd": {
+    "computed": 12.374907,
+    "reported": 12.37844,
+    "deltaPct": -0.03
+  },
+  "pricingVersion": "2026-09-14",
+  "dedup": {
+    "strategy": "requestId-max-total-tokens",
+    "duplicatesDropped": 281
+  },
+  "filesWritten": [
+    "company-profile/example-co/summary.md",
+    "kpis/data/raw/sessions/ba28bc2c-2822-41eb-92a8-b6389d3f1d0d/probe-iac.mcp-gateway.mongodb-mcp-server.sarif.export.json"
+  ],
+  "linesAdded": 0,
+  "linesRemoved": 0,
+  "outcome": "success",
+  "transcriptFormatVersion": "2.1.270",
+  "provenance": {
+    "harness": "script",
+    "generatedAt": "2026-09-14T18:36:33Z",
+    "sessionId": "ba28bc2c-2822-41eb-92a8-b6389d3f1d0d",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "probe-iac",
+    "agent": ".claude/scripts/sessions/ingest.mjs"
+  }
+}
