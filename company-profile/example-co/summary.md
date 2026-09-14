@@ -3,16 +3,16 @@ schemaVersion: "1"
 kind: maxwell.company.summary
 companyId: example-co
 title: Example Capital Markets cyber resilience summary
-version: "1.0.0"
-sections: [overview, regulatory-posture, control-summary]
+version: "2.0.0"
+sections: [overview, regulatory-posture, vendors, control-summary]
 provenance:
   harness: claude-code
-  generatedAt: "2026-09-14T09:55:06Z"
-  sessionId: e4a62ad8-92cf-47bf-8040-ded1816a822f
+  generatedAt: "2026-09-14T10:46:39Z"
+  sessionId: 30803fac-c775-4bd4-b5a5-82ebddf41fac
   runId: run_01M2FGNVVQ15ZKXZWGW74YWAAQ
-  workflow: refresh-soc
+  workflow: refresh-vendor-ctx
   agent: report-writer
-  inputsHash: 4a17c354a535673374e94a8f88bc823107877ca388a8ce6bdcf2b23d601a0cc1
+  inputsHash: d01538e3b9f91b0ab123ecdf7dbb5f376eb368af763ef2b501c859f3ec4a316d
 ---
 # Example Capital Markets — cyber resilience summary
 
@@ -41,6 +41,23 @@ profile itself was left unchanged this run; the regime change is recorded as obs
 0 escalated claim(s) awaiting human resolution as of this refresh.
 
 Refresh date: 2026-09-14 (`provenance.generatedAt` 2026-09-14T08:31:29Z).
+
+## Vendors
+`refresh-vendor-ctx` refreshed this section as of 2026-09-14T10:46:39Z: 0 vendors onboarded, 1 updated
+(`github`, re-read at 2026-09-14T10:46:39Z), 6 new finding(s) raised this run, 0 findings re-seen. Source:
+`company-profile/example-co/vendors/*.json` (3 files) and vendor-targeted findings in `soc/main.jsonl`.
+
+| Vendor | Legal name | Status | Materiality | Critical functions | Hosting vs. residency | Newest assurance | Expiry | Open findings |
+|---|---|---|---|---|---|---|---|---|
+| `aws` | Amazon Web Services, Inc. | active | material | order-routing (`mcp-gateway`) | AWS ap-south-1, hosting `IN`; app residency requirement `IN` (match) | soc2-type2 (Ernst & Young LLP, period ending 2026-03-31) | 2027-03-31 | [fnd_01M2FRY4TTS6M3JJD1F1P7J0TQ] |
+| `github` | GitHub, Inc. | active | material | none (`supportsCriticalFunction: false`; repos back `mcp-gateway`, `db-models`) | GitHub Enterprise Cloud, hosting `US`; no critical function assigned so no residency requirement applies | soc2-type2 (Ernst & Young LLP, period ending 2025-09-30) | 2026-09-30 | [fnd_01M2FS4806WHXANC3Q9QXEAXGF], [fnd_01M2FS481DGTPTR9NJGKAAMF49], [fnd_01M2FS482NWXE7E5MCZY2QMAZ0] |
+| `mongodb-atlas` | MongoDB, Inc. | active | material | order-routing (`mcp-gateway`) | Atlas on AWS ap-south-1, hosting `IN`; app residency requirement `IN` (match) | none on file | n/a | [fnd_01M2FS9EBVSP2DPWN5K2D91QKW], [fnd_01M2FS9ECP3E0MTCRQFEJ97930] |
+
+<!-- source: company-profile/example-co/vendors/*.json services[].hostingCountries vs applications/mcp-gateway/env/*.json residency; open findings = latest kind:finding per id with target.type:vendor and status open in soc/main.jsonl -->
+
+Expiry note: GitHub's SOC 2 Type II report expires 2026-09-30, 16 days after this run's
+`provenance.generatedAt` (2026-09-14T10:46:39Z), inside the 90-day assurance-expiring window; flagged in
+[fnd_01M2FS4806WHXANC3Q9QXEAXGF]. `mongodb-atlas` carries no `assurance[]` entry in its vendor file at all.
 
 ## Control summary
 `refresh-soc` reconciled the ledger this run: 360 new control records, 1 re-assessed

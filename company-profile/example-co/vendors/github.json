@@ -4,8 +4,14 @@
   "companyId": "example-co",
   "vendorId": "github",
   "legalName": "GitHub, Inc.",
+  "lei": "6354003LMZZAKOPXLX69",
   "country": "US",
   "intraGroup": false,
+  "ultimateParent": {
+    "legalName": "Microsoft Corporation",
+    "lei": "INR2EJN1ERAN0W5ZP974",
+    "country": "US"
+  },
   "services": [
     {
       "serviceId": "github-cloud",
@@ -24,6 +30,16 @@
           "name": "Amazon Web Services Inc (AWS)",
           "country": "US",
           "role": "Cloud Hosted Infrastructure, Data Hosting, AI Inference and AI Services"
+        },
+        {
+          "name": "Anthropic PBC",
+          "country": "US",
+          "role": "AI Inference and AI Services"
+        },
+        {
+          "name": "Cerebras Systems Inc.",
+          "country": "US",
+          "role": "AI Inference and AI Services"
         },
         {
           "name": "Cloudflare",
@@ -49,6 +65,21 @@
           "name": "Fastly",
           "country": "US",
           "role": "Content delivery service"
+        },
+        {
+          "name": "Fireworks AI",
+          "country": "US",
+          "role": "AI Inference and AI Services"
+        },
+        {
+          "name": "Fireworks AI",
+          "country": "DE",
+          "role": "AI Inference and AI Services"
+        },
+        {
+          "name": "Fireworks AI",
+          "country": "IS",
+          "role": "AI Inference and AI Services"
         },
         {
           "name": "FullStory, Inc.",
@@ -106,6 +137,61 @@
           "role": "Cognitive Services and customer support ticketing analysis"
         },
         {
+          "name": "Microsoft",
+          "country": "US",
+          "role": "Technical Services"
+        },
+        {
+          "name": "Microsoft",
+          "country": "AU",
+          "role": "Technical Services"
+        },
+        {
+          "name": "Microsoft",
+          "country": "BR",
+          "role": "Technical Services"
+        },
+        {
+          "name": "Microsoft",
+          "country": "CA",
+          "role": "Technical Services"
+        },
+        {
+          "name": "Microsoft",
+          "country": "FR",
+          "role": "Technical Services"
+        },
+        {
+          "name": "Microsoft",
+          "country": "JP",
+          "role": "Technical Services"
+        },
+        {
+          "name": "Microsoft",
+          "country": "NO",
+          "role": "Technical Services"
+        },
+        {
+          "name": "Microsoft",
+          "country": "ES",
+          "role": "Technical Services"
+        },
+        {
+          "name": "Microsoft",
+          "country": "SE",
+          "role": "Technical Services"
+        },
+        {
+          "name": "Microsoft",
+          "country": "CH",
+          "role": "Technical Services"
+        },
+        {
+          "name": "Microsoft",
+          "country": "GB",
+          "role": "Technical Services"
+        },
+        {
           "name": "Moveworks",
           "country": "US",
           "role": "Customer support ticketing analysis"
@@ -119,6 +205,11 @@
           "name": "Obsidian Security",
           "country": "US",
           "role": "Security management"
+        },
+        {
+          "name": "OpenAI",
+          "country": "US",
+          "role": "AI Inference and AI Services"
         },
         {
           "name": "Oracle America, Inc.",
@@ -139,6 +230,11 @@
           "name": "Twilio (SendGrid)",
           "country": "US",
           "role": "SMS notification provider for 2 Factor Authentication"
+        },
+        {
+          "name": "xAI",
+          "country": "US",
+          "role": "AI Inference and AI Services"
         },
         {
           "name": "Zendesk",
@@ -199,8 +295,8 @@
   ],
   "provenance": {
     "harness": "claude-code",
-    "generatedAt": "2026-09-14T09:19:31Z",
-    "sessionId": "126159f4-9c1c-4e90-8283-eed2c0f900a3",
+    "generatedAt": "2026-09-14T10:46:39Z",
+    "sessionId": "30803fac-c775-4bd4-b5a5-82ebddf41fac",
     "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
     "workflow": "refresh-vendor-ctx",
     "agent": "vendor-analyst"
