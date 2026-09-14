@@ -1,0 +1,165 @@
+diff --git a/src/tools/args.ts b/src/tools/args.ts
+index f670b9e..e351721 100644
+--- a/src/tools/args.ts
++++ b/src/tools/args.ts
+@@ -1,5 +1,6 @@
+ import { z, type ZodString } from "zod";
+ import { EJSON } from "bson";
++import { withClassification } from "./mongodb/dataClassification.js";
+
+ const NO_UNICODE_REGEX = /^[\x20-\x7E]*$/;
+ export const NO_UNICODE_ERROR = "String cannot contain special characters or Unicode symbols";
+@@ -84,7 +85,12 @@ export function toEJSON<T extends object | undefined>(value: T): T {
+ }
+
+ // The runtime schema is a ZodPipe (object → EJSON transform), but we advertise
+-// it as a ZodRecord so the public API surface renders cleanly as { [key: string]: unknown }
++// it as a ZodRecord so the public API surface renders cleanly as { [key: string]: unknown }.
++// EJSON arguments carry filters, documents, updates and pipeline stages that reach client data, so they are
++// labelled with the client-data classification (metadata only, validation is unchanged).
+ export function zEJSON(): z.ZodRecord<z.ZodString, z.ZodUnknown> {
+-    return z.object({}).loose().transform(toEJSON) as unknown as z.ZodRecord<z.ZodString, z.ZodUnknown>;
++    return withClassification(z.object({}).loose().transform(toEJSON)) as unknown as z.ZodRecord<
++        z.ZodString,
++        z.ZodUnknown
++    >;
+ }
+diff --git a/src/tools/mongodb/dataClassification.ts b/src/tools/mongodb/dataClassification.ts
+new file mode 100644
+index 0000000..670968a
+--- /dev/null
++++ b/src/tools/mongodb/dataClassification.ts
+@@ -0,0 +1,32 @@
++import type { z } from "zod";
++
++// Data classification labels for MongoDB MCP tool arguments. Filters, projections, documents, updates and
++// aggregation stages are forwarded to the connected cluster, whose client-data and order collections hold
++// personal and financial data, so these arguments take the highest classification of the connected stores.
++// The labels are published in the JSON Schema of each argument so MCP clients and gateways can apply
++// personal-data handling rules (masking, logging, retention) without parsing the prose descriptions.
++export const DATA_CLASSIFICATION_LEVELS = ["public", "internal", "confidential", "restricted"] as const;
++export const DATA_CLASSIFICATION_FLAGS = ["pii", "spdi", "financial"] as const;
++
++export type DataClassificationLabel =
++    | (typeof DATA_CLASSIFICATION_LEVELS)[number]
++    | (typeof DATA_CLASSIFICATION_FLAGS)[number];
++
++export const DATA_CLASSIFICATION_META_KEY = "x-data-classification";
++export const DPDP_CATEGORY_META_KEY = "x-dpdp-category";
++
++export const CLIENT_DATA_CLASSIFICATION: readonly DataClassificationLabel[] = ["restricted", "pii", "financial"];
++
++/**
++ * Attaches data classification metadata to a schema. Only metadata is added: the returned schema accepts
++ * and rejects exactly the same values as the input schema.
++ */
++export function withClassification<T extends z.ZodType>(
++    schema: T,
++    labels: readonly DataClassificationLabel[] = CLIENT_DATA_CLASSIFICATION
++): T {
++    return schema.meta({
++        [DATA_CLASSIFICATION_META_KEY]: [...labels],
++        [DPDP_CATEGORY_META_KEY]: "personal-data",
++    });
++}
+diff --git a/src/tools/mongodb/mongodbSchemas.ts b/src/tools/mongodb/mongodbSchemas.ts
+index 5305234..445a36a 100644
+--- a/src/tools/mongodb/mongodbSchemas.ts
++++ b/src/tools/mongodb/mongodbSchemas.ts
+@@ -1,5 +1,6 @@
+ import z from "zod";
+ import { zEJSON } from "../args.js";
++import { withClassification } from "./dataClassification.js";
+
+ export const AnyAggregateStage = zEJSON();
+
+@@ -94,13 +95,17 @@ const zAutoEmbedVectorSearchStageParams = zCommonVectorSearchStageParams.extend(
+         ),
+ });
+
+-export const VectorSearchStage = z.object({
+-    $vectorSearch: z.union([
+-        zClassicVectorSearchStageParams.describe(
+-            "Classic vector search using 'queryVector'. Use this when the indexed field has a classic vector index (type: 'vector'). Note to LLM: Use the collection-indexes tool to verify the target field has a classic vector index before using 'queryVector'."
+-        ),
+-        zAutoEmbedVectorSearchStageParams.describe(
+-            "Auto-embed vector search using 'query'. Use this when the indexed field has an auto-embed index (type: 'autoEmbed'). Note to LLM: Use the collection-indexes tool to verify the target field has an auto-embed index before using 'query'."
+-        ),
+-    ]),
+-});
++// $vectorSearch stages carry client-data filters and query text, so the stage is classified like other
++// client-data arguments (AnyAggregateStage is classified through zEJSON).
++export const VectorSearchStage = withClassification(
++    z.object({
++        $vectorSearch: z.union([
++            zClassicVectorSearchStageParams.describe(
++                "Classic vector search using 'queryVector'. Use this when the indexed field has a classic vector index (type: 'vector'). Note to LLM: Use the collection-indexes tool to verify the target field has a classic vector index before using 'queryVector'."
++            ),
++            zAutoEmbedVectorSearchStageParams.describe(
++                "Auto-embed vector search using 'query'. Use this when the indexed field has an auto-embed index (type: 'autoEmbed'). Note to LLM: Use the collection-indexes tool to verify the target field has an auto-embed index before using 'query'."
++            ),
++        ]),
++    })
++);
+diff --git a/src/tools/mongodb/read/find.ts b/src/tools/mongodb/read/find.ts
+index 0cc9f1e..f5b773a 100644
+--- a/src/tools/mongodb/read/find.ts
++++ b/src/tools/mongodb/read/find.ts
+@@ -12,14 +12,13 @@ import { ONE_MB, QUERY_COUNT_MAX_TIME_MS_CAP, CURSOR_LIMITS_TO_LLM_TEXT } from "
+ import { zEJSON } from "../../args.js";
+ import { LogId } from "../../../common/logging/index.js";
+ import { SortDirectionSchema } from "../mongodbSchemas.js";
++import { withClassification } from "../dataClassification.js";
+
+ export const FindArgs = {
+     filter: zEJSON()
+         .optional()
+         .describe("The query filter, matching the syntax of the query argument of db.collection.find()"),
+-    projection: z
+-        .object({})
+-        .passthrough()
++    projection: withClassification(z.object({}).passthrough())
+         .optional()
+         .describe("The projection, matching the syntax of the projection argument of db.collection.find()"),
+     limit: z.number().optional().default(10).describe("The maximum number of documents to return"),
+diff --git a/tests/unit/tools/mongodb/dataClassification.test.ts b/tests/unit/tools/mongodb/dataClassification.test.ts
+new file mode 100644
+index 0000000..f1cb0ee
+--- /dev/null
++++ b/tests/unit/tools/mongodb/dataClassification.test.ts
+@@ -0,0 +1,35 @@
++import { describe, it, expect } from "vitest";
++import { z } from "zod";
++import { zEJSON } from "../../../../src/tools/args.js";
++import { AnyAggregateStage, VectorSearchStage } from "../../../../src/tools/mongodb/mongodbSchemas.js";
++import { FindArgs } from "../../../../src/tools/mongodb/read/find.js";
++import {
++    CLIENT_DATA_CLASSIFICATION,
++    DATA_CLASSIFICATION_META_KEY,
++    DPDP_CATEGORY_META_KEY,
++} from "../../../../src/tools/mongodb/dataClassification.js";
++
++function inputJsonSchema(schema: z.ZodType): Record<string, unknown> {
++    return z.toJSONSchema(schema, { io: "input" }) as Record<string, unknown>;
++}
++
++describe("data classification metadata", () => {
++    it.each([
++        ["zEJSON", zEJSON()],
++        ["AnyAggregateStage", AnyAggregateStage],
++        ["VectorSearchStage", VectorSearchStage],
++        ["FindArgs.filter", FindArgs.filter],
++        ["FindArgs.projection", FindArgs.projection],
++    ] as [string, z.ZodType][])("%s advertises x-data-classification in its JSON Schema", (_name, schema) => {
++        const jsonSchema = inputJsonSchema(schema);
++        expect(jsonSchema[DATA_CLASSIFICATION_META_KEY]).toEqual([...CLIENT_DATA_CLASSIFICATION]);
++        expect(jsonSchema[DPDP_CATEGORY_META_KEY]).toBe("personal-data");
++    });
++
++    it("does not change which arguments are accepted", () => {
++        expect(zEJSON().parse({ name: "value" })).toEqual({ name: "value" });
++        expect(() => zEJSON().parse("not-an-object")).toThrow();
++        expect(FindArgs.projection.parse({ name: 1 })).toEqual({ name: 1 });
++        expect(FindArgs.projection.parse(undefined)).toBeUndefined();
++    });
++});

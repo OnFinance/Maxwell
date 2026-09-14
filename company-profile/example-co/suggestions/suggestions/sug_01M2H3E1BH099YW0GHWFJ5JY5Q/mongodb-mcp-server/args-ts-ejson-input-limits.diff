@@ -1,0 +1,185 @@
+diff --git a/src/tools/args.ts b/src/tools/args.ts
+index f670b9e..99cb16b 100644
+--- a/src/tools/args.ts
++++ b/src/tools/args.ts
+@@ -83,8 +83,79 @@ export function toEJSON<T extends object | undefined>(value: T): T {
+     return EJSON.deserialize(value, { relaxed: false }) as T;
+ }
+
++export const MAX_EJSON_BYTES = 1_048_576;
++export const MAX_EJSON_DEPTH = 20;
++export const MAX_EJSON_KEYS = 200;
++const FORBIDDEN_EJSON_OPERATORS = ["$where", "$function", "$accumulator"];
++
++export const EJSON_TOO_LARGE_ERROR = `Argument must be ${MAX_EJSON_BYTES} bytes or less when serialized as JSON`;
++export const EJSON_TOO_DEEP_ERROR = `Argument cannot be nested more than ${MAX_EJSON_DEPTH} levels deep`;
++export const EJSON_TOO_MANY_KEYS_ERROR = `Objects in the argument cannot have more than ${MAX_EJSON_KEYS} keys`;
++export const EJSON_FORBIDDEN_OPERATOR_ERROR =
++    "Argument cannot contain the server-side JavaScript operators $where, $function or $accumulator";
++
++function findNestedEJSONViolation(value: unknown, depth: number): string | undefined {
++    if (value === null || typeof value !== "object") {
++        return undefined;
++    }
++
++    if (depth > MAX_EJSON_DEPTH) {
++        return EJSON_TOO_DEEP_ERROR;
++    }
++
++    if (Array.isArray(value)) {
++        for (const item of value) {
++            const violation = findNestedEJSONViolation(item, depth + 1);
++            if (violation) {
++                return violation;
++            }
++        }
++        return undefined;
++    }
++
++    const keys = Object.keys(value);
++    if (keys.length > MAX_EJSON_KEYS) {
++        return EJSON_TOO_MANY_KEYS_ERROR;
++    }
++
++    for (const key of keys) {
++        if (FORBIDDEN_EJSON_OPERATORS.includes(key)) {
++            return EJSON_FORBIDDEN_OPERATOR_ERROR;
++        }
++
++        const violation = findNestedEJSONViolation((value as Record<string, unknown>)[key], depth + 1);
++        if (violation) {
++            return violation;
++        }
++    }
++
++    return undefined;
++}
++
++function getEJSONLimitViolation(value: object): string | undefined {
++    const violation = findNestedEJSONViolation(value, 1);
++    if (violation) {
++        return violation;
++    }
++
++    // Measured only after the depth check passed, so JSON.stringify never walks an unbounded structure
++    if (Buffer.byteLength(JSON.stringify(value), "utf8") > MAX_EJSON_BYTES) {
++        return EJSON_TOO_LARGE_ERROR;
++    }
++
++    return undefined;
++}
++
+ // The runtime schema is a ZodPipe (object → EJSON transform), but we advertise
+ // it as a ZodRecord so the public API surface renders cleanly as { [key: string]: unknown }
+ export function zEJSON(): z.ZodRecord<z.ZodString, z.ZodUnknown> {
+-    return z.object({}).loose().transform(toEJSON) as unknown as z.ZodRecord<z.ZodString, z.ZodUnknown>;
++    return z
++        .looseObject({})
++        .superRefine((value, ctx) => {
++            const violation = getEJSONLimitViolation(value);
++            if (violation) {
++                ctx.addIssue({ code: "custom", message: violation });
++            }
++        })
++        .transform(toEJSON) as unknown as z.ZodRecord<z.ZodString, z.ZodUnknown>;
+ }
+diff --git a/tests/unit/args.test.ts b/tests/unit/args.test.ts
+index 5cfe036..e70fa3e 100644
+--- a/tests/unit/args.test.ts
++++ b/tests/unit/args.test.ts
+@@ -1,4 +1,5 @@
+ import { describe, expect, it } from "vitest";
++import { ObjectId } from "bson";
+ import {
+     AtlasArgs,
+     CommonArgs,
+@@ -7,6 +8,14 @@ import {
+     ALLOWED_REGION_CHARACTERS_ERROR,
+     ALLOWED_CLUSTER_NAME_CHARACTERS_ERROR,
+     NO_UNICODE_ERROR,
++    EJSON_FORBIDDEN_OPERATOR_ERROR,
++    EJSON_TOO_DEEP_ERROR,
++    EJSON_TOO_LARGE_ERROR,
++    EJSON_TOO_MANY_KEYS_ERROR,
++    MAX_EJSON_BYTES,
++    MAX_EJSON_DEPTH,
++    MAX_EJSON_KEYS,
++    zEJSON,
+ } from "../../src/tools/args.js";
+
+ describe("Tool args", () => {
+@@ -351,6 +360,74 @@ describe("Tool args", () => {
+         });
+     });
+
++    describe("zEJSON", () => {
++        const nested = (levels: number): Record<string, unknown> => {
++            let value: Record<string, unknown> = {};
++            for (let i = 1; i < levels; i++) {
++                value = { a: value };
++            }
++            return value;
++        };
++
++        const withKeys = (count: number): Record<string, number> =>
++            Object.fromEntries(Array.from({ length: count }, (_, i) => [`key${i}`, i]));
++
++        const issueMessage = (value: unknown): string | undefined =>
++            zEJSON().safeParse(value).error?.issues[0]?.message;
++
++        it("should accept EJSON type keys and query operators and convert them", () => {
++            const result = zEJSON().safeParse({
++                _id: { $oid: "507f1f77bcf86cd799439011" },
++                ts: { $gt: { $date: "2026-01-01T00:00:00Z" } },
++            });
++
++            expect(result.success).toBe(true);
++            const data = result.data as { _id: unknown; ts: { $gt: unknown } };
++            expect(data._id).toBeInstanceOf(ObjectId);
++            expect(data.ts.$gt).toBeInstanceOf(Date);
++        });
++
++        it("should accept arguments at the limits", () => {
++            const query = { $and: [{ age: { $gte: 18 } }, { status: { $in: ["A", "B"] } }] };
++
++            expect(zEJSON().safeParse(query).success).toBe(true);
++            expect(zEJSON().safeParse(nested(MAX_EJSON_DEPTH)).success).toBe(true);
++            expect(zEJSON().safeParse(withKeys(MAX_EJSON_KEYS)).success).toBe(true);
++        });
++
++        it("should reject an argument larger than MAX_EJSON_BYTES", () => {
++            const value = { blob: "a".repeat(2 * MAX_EJSON_BYTES) };
++            expect(zEJSON().safeParse(value).success).toBe(false);
++            expect(issueMessage(value)).toBe(EJSON_TOO_LARGE_ERROR);
++        });
++
++        it("should reject an argument nested deeper than MAX_EJSON_DEPTH", () => {
++            const value = nested(MAX_EJSON_DEPTH + 1);
++            expect(zEJSON().safeParse(value).success).toBe(false);
++            expect(issueMessage(value)).toBe(EJSON_TOO_DEEP_ERROR);
++        });
++
++        it("should reject an object with more than MAX_EJSON_KEYS keys", () => {
++            const value = withKeys(MAX_EJSON_KEYS + 1);
++            expect(zEJSON().safeParse(value).success).toBe(false);
++            expect(issueMessage(value)).toBe(EJSON_TOO_MANY_KEYS_ERROR);
++        });
++
++        it("should reject server-side JavaScript operators at any depth", () => {
++            const values = [
++                { $where: "this.a > 1" },
++                { $expr: { $function: { body: "function () { return true; }", args: [], lang: "js" } } },
++                { $and: [{ status: "A" }, { $where: "true" }] },
++                { $group: { _id: null, total: { $accumulator: {} } } },
++            ];
++
++            values.forEach((value) => {
++                expect(zEJSON().safeParse(value).success).toBe(false);
++                expect(issueMessage(value)).toBe(EJSON_FORBIDDEN_OPERATOR_ERROR);
++            });
++        });
++    });
++
+     describe("Edge Cases and Security", () => {
+         it("should handle empty strings appropriately", () => {
+             const schema = CommonArgs.string();

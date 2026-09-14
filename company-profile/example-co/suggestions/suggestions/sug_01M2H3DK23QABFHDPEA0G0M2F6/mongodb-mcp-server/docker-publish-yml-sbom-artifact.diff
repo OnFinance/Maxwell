@@ -1,0 +1,47 @@
+diff --git a/.github/workflows/docker-publish.yml b/.github/workflows/docker-publish.yml
+index 11af538..52d560c 100644
+--- a/.github/workflows/docker-publish.yml
++++ b/.github/workflows/docker-publish.yml
+@@ -76,6 +76,7 @@ jobs:
+           password: "${{ secrets.DOCKERHUB_PASSWORD }}"
+
+       - name: Build and push image to dockerhub registry
++        id: build
+         uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf
+         with:
+           context: .
+@@ -87,3 +88,34 @@ jobs:
+           sbom: true
+           build-args: |
+             VERSION=${{ steps.docker-tags.outputs.VERSION }}
++
++      - name: Generate CycloneDX SBOM for the pushed image digest
++        env:
++          SYFT_VERSION: "1.51.1"
++          SYFT_LINUX_AMD64_SHA256: "8fcb33017a0dc1058298c923c436d19dfa68ae93968e0b423248542e3afb9fc3"
++          DOCKERHUB_REPOSITORY: "${{ vars.DOCKERHUB_IMAGE_REPOSITORY }}"
++          IMAGE_DIGEST: "${{ steps.build.outputs.digest }}"
++        run: |
++          set -euo pipefail
++
++          SYFT_TARBALL="syft_${SYFT_VERSION}_linux_amd64.tar.gz"
++          curl -sSfL -o "${RUNNER_TEMP}/${SYFT_TARBALL}" \
++            "https://github.com/anchore/syft/releases/download/v${SYFT_VERSION}/${SYFT_TARBALL}"
++          echo "${SYFT_LINUX_AMD64_SHA256}  ${RUNNER_TEMP}/${SYFT_TARBALL}" | sha256sum --check --strict
++          tar -xzf "${RUNNER_TEMP}/${SYFT_TARBALL}" -C "${RUNNER_TEMP}" syft
++
++          echo "${IMAGE_DIGEST}" > image-digest.txt
++          "${RUNNER_TEMP}/syft" scan "registry:docker.io/${DOCKERHUB_REPOSITORY}@${IMAGE_DIGEST}" \
++            --platform linux/amd64 \
++            --output cyclonedx-json=sbom.cdx.json
++          echo "::notice::CycloneDX SBOM generated for ${DOCKERHUB_REPOSITORY}@${IMAGE_DIGEST}"
++
++      - name: Upload SBOM and image digest
++        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
++        with:
++          name: mcp-gateway-sbom-${{ steps.docker-tags.outputs.VERSION }}
++          path: |
++            sbom.cdx.json
++            image-digest.txt
++          if-no-files-found: error
++          retention-days: 90

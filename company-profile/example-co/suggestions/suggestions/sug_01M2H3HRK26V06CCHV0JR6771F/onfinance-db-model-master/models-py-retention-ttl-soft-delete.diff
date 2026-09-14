@@ -1,0 +1,28 @@
+diff --git a/onfinance_db_model_master/models.py b/onfinance_db_model_master/models.py
+index 80827fc..81e9e35 100644
+--- a/onfinance_db_model_master/models.py
++++ b/onfinance_db_model_master/models.py
+@@ -13,6 +13,11 @@ class Secrets(Document):
+     apiSecrets = StringField()
+     accessToken = StringField()
+     accountName = StringField()
++    expires_at = DateTimeField(required=True)
++    meta = {
++        "collection": "secrets",
++        "indexes": [{"fields": ["expires_at"], "expireAfterSeconds": 0}],
++    }
+
+ class Webinar(Document):
+     webinar_name = StringField(required=True, unique=True)
+@@ -426,6 +431,11 @@ class User(Document):
+     user_chats_today = IntField(default = 0)
+     users_banned = ListField(StringField(),default = list)
+     discussions_banned = ListField(StringField(),default = list)
++    is_active = BooleanField(default=True)
++    deleted_at = DateTimeField()
++    consent_withdrawn_at = DateTimeField()
++    retention_until = DateTimeField()
++    meta = {"collection": "user", "indexes": ["retention_until"]}
+
+ class Notifications(Document):
+     notif_title = StringField(required=True)

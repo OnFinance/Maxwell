@@ -3,16 +3,16 @@ schemaVersion: "1"
 kind: maxwell.company.summary
 companyId: example-co
 title: Example Capital Markets cyber resilience summary
-version: "5.0.0"
-sections: [overview, regulatory-posture, data-flows, vendors, control-summary, open-findings, initiatives]
+version: "5.1.0"
+sections: [overview, regulatory-posture, data-flows, vendors, control-summary, open-findings, initiatives, suggestions]
 provenance:
   harness: claude-code
-  generatedAt: "2026-09-14T21:12:30Z"
-  sessionId: "01b78802-3bc9-4e5c-9948-b23539a1495a"
+  generatedAt: "2026-09-14T22:49:19Z"
+  sessionId: "10a167a6-d35d-4c6d-8429-91eb2b64120e"
   runId: "run_01M2FGNVVQ15ZKXZWGW74YWAAQ"
-  workflow: impl-change-management
+  workflow: impl-auto-improvement
   agent: report-writer
-  inputsHash: "2627f966c26957b13b4542380e0dfb59c0fe35035153edfd2676a733fdf23107"
+  inputsHash: "92b71c5a3d94ea56106b0e7c4a4fca35916c5dac6dbb94cf16be2ab27d774d9f"
 ---
 # Example Capital Markets — cyber resilience summary
 
@@ -411,3 +411,30 @@ observations from `report-audit-findings`), grouped by initiative:
 | [init_01M2GWQEVKZM0584YS6JR7F6JA] | task_3 | Add a CODEOWNERS file to onfinance-db-model-master | probe-sdlc |
 | [init_01M2GWQEVKZM0584YS6JR7F6JA] | task_4 | Enforce code-owner review in branch protection and set codeownersEnforced in the SDLC policy | probe-sdlc |
 | [init_01M2GWQJEHZ635MEEPXE7ATHXG] | task_6 | Re-assess the audit controls in the ledger and re-run probe-sdlc to confirm the gap is closed | probe-sdlc |
+
+## Suggestions
+`impl-auto-improvement` refreshed this section as of `provenance.generatedAt` 2026-09-14T22:49:19Z (early
+refresh; `report-audit-improvements` remains the owner of record). Source:
+`company-profile/example-co/suggestions/master.json` (1 entry). New this run:
+[sug_01M2H3EJHK5HE9BQCBFKTGCGBP]; no suggestion merged, reverted or retention-checked this run.
+
+| Id | Title | Category | Severity | Status | Repo | +/- lines | Surfaced | Decided by | PR |
+|---|---|---|---|---|---|---|---|---|---|
+| [sug_01M2H3EJHK5HE9BQCBFKTGCGBP] | Add a blocking check-iac job that scans the Azure Bicep templates with checkov | cicd-gate | medium | proposed | `mcp-gateway/mongodb-mcp-server` | +25/-0 | not yet surfaced | n/a | none |
+
+<!-- source: suggestions/master.json suggestions[]; finding fnd_01M2GH5AXYX8NH35F6135G6VB4 ("No IaC lint/scan for the checked-in Azure Bicep templates", medium, open-findings section) -->
+
+### Acceptance (this period)
+Computed per `kpis/measurement/suggestion_acceptance_rate.md` v1.0.0 over the 1 suggestion in
+`suggestions/master.json`: 1 `proposed`, 0 `surfaced`, 0 `accepted`, 0 `rejected`, 0 `merged`, 0 `reverted`,
+0 `expired`, 0 `superseded`.
+
+- `acceptance_rate = |accepted∪merged∪reverted| / |accepted∪merged∪reverted∪rejected∪expired| = 0/0`:
+  not computed — no suggestion has been decided (surfaced then accepted/rejected/expired) this period.
+- `merge_rate = |merged∪reverted| / |accepted∪merged∪reverted| = 0/0`: not computed.
+- `revert_rate = |reverted within 30 d of mergedAt| / |merged∪reverted| = 0/0`: not computed.
+- `retention_30d = |merged with retentionCheckedAt ≥ mergedAt+30d and retained=true| / |merged checked| = 0/0`:
+  not computed — no suggestion has been merged yet, so no retention check is due.
+
+### Rejections
+No suggestions rejected this period.

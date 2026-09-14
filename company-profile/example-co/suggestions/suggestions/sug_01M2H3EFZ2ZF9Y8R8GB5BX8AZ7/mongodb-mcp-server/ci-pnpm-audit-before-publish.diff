@@ -1,0 +1,33 @@
+diff --git a/.github/workflows/docker-publish.yml b/.github/workflows/docker-publish.yml
+index 11af538..14edf3c 100644
+--- a/.github/workflows/docker-publish.yml
++++ b/.github/workflows/docker-publish.yml
+@@ -28,6 +28,14 @@ jobs:
+         with:
+           persist-credentials: false
+
++      - uses: pnpm/action-setup@v5
++      - uses: actions/setup-node@v6
++        with:
++          node-version-file: package.json
++
++      - name: Audit production dependencies
++        run: pnpm audit --prod --audit-level high
++
+       - name: Generate Docker tags
+         id: docker-tags
+         env:
+diff --git a/.github/workflows/publish.yml b/.github/workflows/publish.yml
+index afaa959..81a1c08 100644
+--- a/.github/workflows/publish.yml
++++ b/.github/workflows/publish.yml
+@@ -90,6 +90,9 @@ jobs:
+           registry-url: "https://registry.npmjs.org"
+           cache: "pnpm"
+
++      - name: Audit production dependencies
++        run: pnpm audit --prod --audit-level high
++
+       - name: Build
+         run: |
+           pnpm install --frozen-lockfile

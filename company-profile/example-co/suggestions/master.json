@@ -2,12 +2,76 @@
   "schemaVersion": "1",
   "kind": "maxwell.sug.master",
   "companyId": "example-co",
-  "updatedAt": "2026-09-14T00:00:00Z",
-  "suggestions": [],
+  "updatedAt": "2026-09-14T22:49:19Z",
+  "suggestions": [
+    {
+      "suggestionId": "sug_01M2H3EJHK5HE9BQCBFKTGCGBP",
+      "title": "Add a blocking check-iac job that scans the Azure Bicep templates with checkov",
+      "rationale": "Why: SEBI CSCRF 2024 PR.IP.S6 requires software testing to verify that products are built to secure design and coding practices and that known flaws are addressed. It maps to ISO 27001:2022 A.8.28, NIST SSDF PW.8.2 and NIST CSF 2.0 PR.PS-06. Finding fnd_01M2GH5AXYX8NH35F6135G6VB4 (medium, rule CICD-GATE-05, raised by probe-cicd-env) shows that mongodb-mcp-server ships Azure Bicep templates in deploy/azure/bicep, but none of its 20 GitHub Actions workflows lint or scan them. A misconfiguration there, such as external ingress, insecure transport or secret handling on the Container App, can merge without any check.\n\nWhat the diff changes: it adds one job, check-iac, to .github/workflows/check.yml. The job runs on the workflow's existing triggers (push to main, pull_request). It starts with the same monitor and checkout steps as the other jobs (GitHubSecurityLab/actions-permissions/monitor@v1, actions/checkout@v6 with persist-credentials: false). It then compiles deploy/azure/bicep/main.bicep with az bicep build into RUNNER_TEMP and runs checkov 3.3.17 against deploy/azure/bicep with the bicep and arm frameworks. Checkov runs from the image pinned in Maxwell's scanner toolchain, docker.io/bridgecrew/checkov:3.3.17@sha256:41c4701c6a56d8952e5aba7a420f871c8b70b57da94eb4f142dcdf7295bb0be3. There is no --soft-fail, so any failed check fails the job. The SARIF is uploaded with github/codeql-action/upload-sarif@v4 under category checkov whenever the file exists, including after a failed scan. The workflow-level permissions: {} stays as it is. Only this job gets contents: read and security-events: write, the same scope codeql.yml uses. No Azure login, secrets or new hostnames are involved. The diff is 25 added lines, 0 removed, 1 file, and it implements init_01M2GWJK9ABSB5MBW1DHB4HNR3 task_2. Task_2 asks for a hash-pinned pip install; this diff uses the digest-pinned image instead because the hash lock is 2428 lines and cannot fit a reviewable diff.\n\nHow to verify: (1) On the PR, the Checks workflow shows a check-iac job, and its SARIF appears under Code scanning with tool name checkov. (2) A throwaway PR that sets ingress allowInsecure: true in main.bicep makes check-iac fail. Close it unmerged. (3) The job YAML contains no --soft-fail, and permissions are limited to contents: read and security-events: write.\n\nFollow-ups this diff does not cover: task_1 must first baseline the templates and fix, or justify with checkov:skip, the current failures. Until then this blocking job will fail on main, so merge it after task_1 or together with it. Task_3 must add check-iac to the required status checks on main, which is a repository setting. Upload-sarif cannot write on pull requests from forks, which already affects codeql.yml as well. The checkov image digest must be bumped together with the toolchain pin.",
+      "category": "cicd-gate",
+      "severity": "medium",
+      "status": "surfaced",
+      "createdAt": "2026-09-14T22:49:19Z",
+      "surfacedAt": "2026-09-14T22:49:19Z",
+      "prUrls": [],
+      "repos": [
+        {
+          "appId": "mcp-gateway",
+          "repoId": "mongodb-mcp-server",
+          "diffPath": "company-profile/example-co/suggestions/suggestions/sug_01M2H3EJHK5HE9BQCBFKTGCGBP/mongodb-mcp-server/check-yml-check-iac-job.diff",
+          "baseCommit": "aaa72a040db4c32f3d6488d5e28e2892a68e9ee0",
+          "linesAdded": 25,
+          "linesRemoved": 0,
+          "filesChanged": 1
+        }
+      ],
+      "findingIds": [
+        "fnd_01M2GH5AXYX8NH35F6135G6VB4"
+      ],
+      "controlIds": [
+        "PR.IP.S6"
+      ],
+      "regulatoryRefs": [
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "PR.IP.S6"
+        },
+        {
+          "regulator": "ISO",
+          "instrument": "iso-27001-2022",
+          "controlId": "A.8.28"
+        },
+        {
+          "regulator": "NIST",
+          "instrument": "nist-ssdf-800-218",
+          "controlId": "PW.8.2"
+        },
+        {
+          "regulator": "NIST",
+          "instrument": "nist-csf-2.0",
+          "controlId": "PR.PS-06"
+        }
+      ],
+      "initiativeId": "init_01M2GWJK9ABSB5MBW1DHB4HNR3",
+      "sourceWorkflow": "impl-auto-improvement",
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-14T22:49:19Z",
+        "sessionId": "10a167a6-d35d-4c6d-8429-91eb2b64120e",
+        "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+        "workflow": "impl-auto-improvement",
+        "agent": "fix-author",
+        "model": "claude-opus-5"
+      }
+    }
+  ],
   "provenance": {
-    "harness": "human",
-    "generatedAt": "2026-09-14T00:00:00Z",
-    "workflow": "seed-company",
-    "agent": "maxwell-maintainers"
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T22:49:19Z",
+    "sessionId": "10a167a6-d35d-4c6d-8429-91eb2b64120e",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-auto-improvement",
+    "agent": "validator"
   }
 }

@@ -1,0 +1,61 @@
+diff --git a/README.md b/README.md
+index 5f9d3a1..cefd62e 100644
+--- a/README.md
++++ b/README.md
+@@ -450,7 +450,7 @@ The MongoDB MCP Server can be configured using multiple methods, with the follow
+ | `MDB_MCP_MONITORING_SERVER_PORT` / `--monitoringServerPort`                                    | `<not set>`                                                                                                                                        | Port number for the monitoring HTTP server (only used when transport is 'http'). If provided, `monitoringServerHost` must also be set.                                                                   |
+ | `MDB_MCP_NOTIFICATION_TIMEOUT_MS` / `--notificationTimeoutMs`                                  | `540000`                                                                                                                                           | Notification timeout for a client to be aware of disconnect (only applies to http transport).                                                                                                            |
+ | `MDB_MCP_PREVIEW_FEATURES` / `--previewFeatures`                                               | `""`                                                                                                                                               | Comma separated values of preview features that are enabled.                                                                                                                                             |
+-| `MDB_MCP_READ_ONLY` / `--readOnly`                                                             | `false`                                                                                                                                            | When set to true, only allows read, connect, and metadata operation types, disabling create/update/delete operations.                                                                                    |
++| `MDB_MCP_READ_ONLY` / `--readOnly`                                                             | `true`                                                                                                                                             | When set to true, only allows read, connect, and metadata operation types, disabling create/update/delete operations.                                                                                    |
+ | `MDB_MCP_TELEMETRY` / `--telemetry`                                                            | `"enabled"`                                                                                                                                        | When set to disabled, disables telemetry collection.                                                                                                                                                     |
+ | `MDB_MCP_TRANSPORT` / `--transport`                                                            | `"stdio"`                                                                                                                                          | Either 'stdio' or 'http'.                                                                                                                                                                                |
+ | `MDB_MCP_VOYAGE_API_KEY` / `--voyageApiKey`                                                    | `""`                                                                                                                                               | API key for Voyage AI embeddings service (required for creating Atlas Local deployments with auto-embed vector search capabilities).                                                                     |
+@@ -530,6 +530,8 @@ The `readOnly` configuration option allows you to restrict the MCP server to onl
+
+ This is useful for scenarios where you want to provide access to MongoDB data for analysis without allowing any modifications to the data or infrastructure.
+
++Read-only mode is enabled by default. To allow tools with "create", "update" or "delete" operation types, explicitly opt out with `MDB_MCP_READ_ONLY=false` or `--readOnly false`.
++
+ You can enable read-only mode using:
+
+ - **Environment variable**: `export MDB_MCP_READ_ONLY=true`
+diff --git a/src/common/config/userConfig.ts b/src/common/config/userConfig.ts
+index 9b041b1..2c3bd33 100644
+--- a/src/common/config/userConfig.ts
++++ b/src/common/config/userConfig.ts
+@@ -94,7 +94,7 @@ const ServerConfigSchema = z.object({
+         .register(configRegistry, { overrideBehavior: "merge" }),
+     readOnly: z
+         .preprocess(parseBoolean, z.boolean())
+-        .default(false)
++        .default(true)
+         .describe(
+             "When set to true, only allows read, connect, and metadata operation types, disabling create/update/delete operations."
+         )
+diff --git a/tests/integration/helpers.ts b/tests/integration/helpers.ts
+index c6dd331..dce7180 100644
+--- a/tests/integration/helpers.ts
++++ b/tests/integration/helpers.ts
+@@ -49,6 +49,8 @@ export interface IntegrationTest {
+ }
+ export const defaultTestConfig: UserConfig = {
+     ...UserConfigSchema.parse({}),
++    // Integration tests exercise write tools, so opt out of the read-only default explicitly.
++    readOnly: false,
+     telemetry: "disabled",
+     loggers: ["stderr"],
+ };
+diff --git a/tests/unit/common/config.test.ts b/tests/unit/common/config.test.ts
+index 9d01ad9..0bf3eb8 100644
+--- a/tests/unit/common/config.test.ts
++++ b/tests/unit/common/config.test.ts
+@@ -24,7 +24,7 @@ const expectedDefaults = {
+     exportCleanupIntervalMs: 2 * 60 * 1000, // 2 minutes
+     disabledTools: [],
+     telemetry: "enabled",
+-    readOnly: false,
++    readOnly: true,
+     indexCheck: false,
+     deepInspect: true,
+     confirmationRequiredTools: [

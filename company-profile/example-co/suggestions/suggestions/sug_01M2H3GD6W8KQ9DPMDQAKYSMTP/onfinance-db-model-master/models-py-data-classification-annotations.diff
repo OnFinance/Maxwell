@@ -1,0 +1,195 @@
+diff --git a/onfinance_db_model_master/models.py b/onfinance_db_model_master/models.py
+index 80827fc..9d2dc4a 100644
+--- a/onfinance_db_model_master/models.py
++++ b/onfinance_db_model_master/models.py
+@@ -5,14 +5,21 @@ from mongoengine import DateTimeField, EmbeddedDocument, StringField, URLField
+ from mongoengine import ReferenceField, EmbeddedDocumentListField, ListField
+ from mongoengine import IntField, FloatField, BooleanField, DateField, DictField
+
++# Data classification: every field that stores personal or restricted data
++# carries a data_classification keyword whose labels (public, internal,
++# confidential, restricted, financial, plus the pii and spdi flags) mirror the
++# approved data inventory for the db-models-mongodb catalog. MongoEngine keeps
++# unknown field keywords as attributes, so the labels are readable at runtime
++# (for example User.user_email.data_classification) and stored documents are
++# unchanged. Keep the labels in sync when adding or changing a field.
+ class Secrets(Document):
+-    apiKey = StringField()
+-    zerodha_username = StringField()
+-    zerodha_password = StringField()
+-    zerodha_2fa = StringField()
+-    apiSecrets = StringField()
+-    accessToken = StringField()
+-    accountName = StringField()
++    apiKey = StringField(data_classification=["restricted"])
++    zerodha_username = StringField(data_classification=["restricted", "pii"])
++    zerodha_password = StringField(data_classification=["restricted", "spdi", "pii"])
++    zerodha_2fa = StringField(data_classification=["restricted", "spdi", "pii"])
++    apiSecrets = StringField(data_classification=["restricted", "spdi", "pii"])
++    accessToken = StringField(data_classification=["restricted", "spdi", "pii"])
++    accountName = StringField(data_classification=["confidential", "pii"])
+
+ class Webinar(Document):
+     webinar_name = StringField(required=True, unique=True)
+@@ -26,27 +33,27 @@ class Communities(Document):
+     community_name = StringField(required=True, unique=True)
+     community_image_url = URLField(required=True)
+     community_url = URLField(required=True)
+-    community_admin_name = StringField(required=True)
++    community_admin_name = StringField(required=True, data_classification=["pii"])
+     community_metadata = ListField(StringField)
+
+
+ class Discussions(EmbeddedDocument):
+-    discussion_author_img = StringField(required=True)
+-    discussion_author_name = StringField(required=True)
+-    discussion_author_username = StringField(required=True)
++    discussion_author_img = StringField(required=True, data_classification=["pii"])
++    discussion_author_name = StringField(required=True, data_classification=["pii"])
++    discussion_author_username = StringField(required=True, data_classification=["pii"])
+     discussion_content = StringField(required=True)
+     discussion_platform = StringField(
+         required=True, choices=["Reddit", "Twitter", "Telegram", "Discord"]
+     )
+     published_date = DateTimeField()
+     total_engagement = IntField()
+-    discussion_url = URLField()
++    discussion_url = URLField(data_classification=["confidential", "pii"])
+     discussion_sentiment = FloatField()
+     discussion_tags = ListField(StringField)
+
+
+ class ExpertOutlooks(EmbeddedDocument):
+-    expert_name = StringField(required=True)
++    expert_name = StringField(required=True, data_classification=["pii"])
+     recommendation_time = DateField(required=True)
+     recommended_price = FloatField()
+     current_returns = FloatField()
+@@ -67,12 +74,12 @@ class PurchaseOption(EmbeddedDocument):
+
+
+ class SubDiscussions(EmbeddedDocument):
+-    author_id = StringField()
+-    author_name = StringField()
++    author_id = StringField(data_classification=["pii"])
++    author_name = StringField(data_classification=["pii"])
+     published_date = DateTimeField()
+     num_likes = IntField(default=0)
+     comment_text = StringField()
+-    banned_by = ListField(StringField(),default = list)
++    banned_by = ListField(StringField(),default = list, data_classification=["pii"])
+
+
+ class NewDiscussionsTag(EmbeddedDocument):
+@@ -84,15 +91,15 @@ class NewDiscussionsTag(EmbeddedDocument):
+ class NewDiscussions(Document):
+     og_platform = StringField()
+     entity_name = StringField(required=True)
+-    author_id = StringField()
+-    author_name = StringField()
+-    author_profile_pic = StringField()
++    author_id = StringField(data_classification=["pii"])
++    author_name = StringField(data_classification=["pii"])
++    author_profile_pic = StringField(data_classification=["pii"])
+     comment_text = StringField(required=True)
+     published_date = DateTimeField()
+     tags = EmbeddedDocumentListField(NewDiscussionsTag)
+     num_likes = IntField(default=0)
+     num_comments = IntField(default=0)
+-    sub_comments = EmbeddedDocumentListField(SubDiscussions)
++    sub_comments = EmbeddedDocumentListField(SubDiscussions, data_classification=["confidential", "pii"])
+
+
+ class Entity(Document):
+@@ -107,8 +114,8 @@ class Entity(Document):
+     technical_analysis = DynamicField()
+     important_links = DynamicField()
+     purchase_options = EmbeddedDocumentListField(PurchaseOption)
+-    social_discussions = EmbeddedDocumentListField(Discussions)
+-    stock_tips = EmbeddedDocumentListField(ExpertOutlooks)
++    social_discussions = EmbeddedDocumentListField(Discussions, data_classification=["confidential", "pii"])
++    stock_tips = EmbeddedDocumentListField(ExpertOutlooks, data_classification=["financial", "pii"])
+     data_feed = URLField()
+     entity_fb_id = StringField()
+     is_entity_complete = BooleanField()
+@@ -385,16 +392,16 @@ class Chat(EmbeddedDocument):
+     chat_time = DateTimeField()
+
+ class User(Document):
+-    user_email = EmailField()
+-    user_phone_number = StringField()
+-    user_password = BinaryField()
+-    user_full_name = StringField(required=True)
++    user_email = EmailField(data_classification=["pii"])
++    user_phone_number = StringField(data_classification=["pii"])
++    user_password = BinaryField(data_classification=["restricted", "spdi", "pii"])
++    user_full_name = StringField(required=True, data_classification=["pii"])
+     user_permission_level = StringField(
+         default="Unauthorized", choices=["Unauthorized", "Authorized", "Admin"]
+     )
+-    referee = StringField()
+-    user_debank_url = URLField()
+-    user_binance_auth_creds = DynamicField()
++    referee = StringField(data_classification=["confidential", "pii"])
++    user_debank_url = URLField(data_classification=["financial", "spdi", "pii"])
++    user_binance_auth_creds = DynamicField(data_classification=["restricted", "financial", "spdi", "pii"])
+     user_entities_watchlisted = EmbeddedDocumentListField(
+         EntitiesWatchlisted, default=list
+     )
+@@ -408,9 +415,9 @@ class User(Document):
+     insights_preferences = ListField(StringField, default=list)
+     user_arrival_origin = StringField()
+     account_creation_date = DateField()
+-    smallcase_id = StringField()
+-    profile_pic_url = URLField()
+-    profile_answers = DynamicField()
++    smallcase_id = StringField(data_classification=["confidential", "pii"])
++    profile_pic_url = URLField(data_classification=["pii"])
++    profile_answers = DynamicField(data_classification=["confidential", "pii"])
+     user_first_auth = StringField()
+     user_crypto_portfolio_value = FloatField()
+     user_equity_portfolio_value = FloatField()
+@@ -418,13 +425,13 @@ class User(Document):
+     user_equity_portfolio_percentage_change = FloatField()
+     user_crypto_integration_time=DateTimeField()
+     user_equity_integration_time=DateTimeField()
+-    smallcase_lead_id = StringField()
++    smallcase_lead_id = StringField(data_classification=["confidential", "pii"])
+     user_country = StringField()
+-    user_fcm_id = StringField()
++    user_fcm_id = StringField(data_classification=["pii"])
+     user_chats = EmbeddedDocumentListField(Chat,default=list)
+     user_discussion_banned = BooleanField(default=False)
+     user_chats_today = IntField(default = 0)
+-    users_banned = ListField(StringField(),default = list)
++    users_banned = ListField(StringField(),default = list, data_classification=["pii"])
+     discussions_banned = ListField(StringField(),default = list)
+
+ class Notifications(Document):
+@@ -480,11 +487,11 @@ class Notifications(Document):
+ class Feedback(Document):
+     feedback_text = StringField()
+     feedback_datetime = DateTimeField()
+-    feedback_uid = StringField()
++    feedback_uid = StringField(data_classification=["pii"])
+
+
+ class Reward(Document):
+-    winning_user = StringField()
++    winning_user = StringField(data_classification=["pii"])
+     reward_amount = IntField(required=True)
+     reward_platform = StringField(required=True)
+     reward_coupon_code = StringField(required=True, unique=True)
+diff --git a/setup.py b/setup.py
+index 1b74150..4a6fc3b 100644
+--- a/setup.py
++++ b/setup.py
+@@ -3,7 +3,7 @@ import setuptools
+
+ setuptools.setup(
+     name="onfinance_db_model_master",
+-    version="1.0.0",
++    version="1.0.1",
+     author="Priyesh Srivastava",
+     author_email="priyesh@onfinance.in",
+     description="-",

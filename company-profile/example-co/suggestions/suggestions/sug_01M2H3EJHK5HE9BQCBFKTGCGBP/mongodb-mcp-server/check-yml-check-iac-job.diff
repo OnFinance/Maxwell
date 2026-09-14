@@ -1,0 +1,33 @@
+diff --git a/.github/workflows/check.yml b/.github/workflows/check.yml
+index ea57b0a..f83ee7d 100644
+--- a/.github/workflows/check.yml
++++ b/.github/workflows/check.yml
+@@ -63,3 +63,28 @@ jobs:
+           pnpm install --prod --frozen-lockfile
+       - name: List available tools
+         run: pnpm dlx @modelcontextprotocol/inspector@0.16.5 --cli --method tools/list -- node dist/esm/index.js
++
++  check-iac:
++    runs-on: ubuntu-latest
++    permissions:
++      contents: read
++      security-events: write
++    steps:
++      - uses: GitHubSecurityLab/actions-permissions/monitor@v1
++      - uses: actions/checkout@v6
++        with:
++          persist-credentials: false
++      - name: Compile Bicep templates
++        run: az bicep build --file deploy/azure/bicep/main.bicep --outfile "${RUNNER_TEMP}/main.json"
++      - name: Scan IaC templates with checkov
++        run: |
++          docker run --rm --volume "${GITHUB_WORKSPACE}:/src" --workdir /src \
++            docker.io/bridgecrew/checkov:3.3.17@sha256:41c4701c6a56d8952e5aba7a420f871c8b70b57da94eb4f142dcdf7295bb0be3 \
++            --directory deploy/azure/bicep --framework bicep arm \
++            --output cli --output sarif --output-file-path console,checkov-results.sarif
++      - name: Upload checkov SARIF
++        if: ${{ always() && hashFiles('checkov-results.sarif') != '' }}
++        uses: github/codeql-action/upload-sarif@v4
++        with:
++          sarif_file: checkov-results.sarif
++          category: checkov

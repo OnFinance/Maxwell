@@ -1,0 +1,20 @@
+diff --git a/.github/pull_request_template.md b/.github/pull_request_template.md
+index 1ebbe37..c70a804 100644
+--- a/.github/pull_request_template.md
++++ b/.github/pull_request_template.md
+@@ -3,3 +3,15 @@
+ ## Checklist
+
+ - [ ] I have signed the [MongoDB CLA](https://www.mongodb.com/legal/contributor-agreement)
++
++## Security and data impact
++
++<!-- Tick each item, or replace the box with a short note explaining why it does not apply. This server backs services that handle pii and financial data. -->
++
++- [ ] Data classes read, written or logged by this change are listed (public / internal / pii / financial), and any change to how personal data is handled is described
++- [ ] Changes to authentication, authorisation or connection-string handling are described (or there are none)
++- [ ] New or changed MCP tools, write-capable operations and outbound network calls are listed (or there are none)
++- [ ] The threat model was reviewed for this change and updated if it adds attack surface
++- [ ] Dependency changes include the matching `pnpm-lock.yaml` update
++- [ ] AI-assisted code was reviewed line by line by a human, and no pii or financial data was shared with AI tools
++- [ ] No secrets, tokens or credentials are added to code, tests, fixtures or logs

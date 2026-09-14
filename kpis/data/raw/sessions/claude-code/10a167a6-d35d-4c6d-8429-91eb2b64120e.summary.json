@@ -1,0 +1,104 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.session.summary",
+  "sessionId": "10a167a6-d35d-4c6d-8429-91eb2b64120e",
+  "harness": "claude-code",
+  "harnessVersion": "2.1.271",
+  "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+  "workflow": "impl-auto-improvement",
+  "companyId": "example-co",
+  "startedAt": "2026-09-14T23:12:00.455Z",
+  "endedAt": "2026-09-14T23:54:22.854Z",
+  "durationMs": 2542399,
+  "turns": 953,
+  "inferenceCalls": 953,
+  "toolCalls": {
+    "total": 951,
+    "byTool": {
+      "Workflow": 1,
+      "Bash": 375,
+      "Glob": 79,
+      "Read": 129,
+      "Grep": 163,
+      "StructuredOutput": 169,
+      "Write": 32,
+      "Edit": 3
+    }
+  },
+  "subagentSessions": 169,
+  "permissionDenials": [],
+  "models": [
+    {
+      "model": "claude-opus-5",
+      "provider": "anthropic",
+      "tokens": {
+        "input": 21968,
+        "output": 865269,
+        "cacheWrite5m": 8368113,
+        "cacheWrite1h": 68436,
+        "cacheRead": 52283233,
+        "thinking": 326995
+      },
+      "webSearchRequests": 0,
+      "webFetchRequests": 0,
+      "costUsd": 100.868248
+    },
+    {
+      "model": "claude-sonnet-5",
+      "provider": "anthropic",
+      "tokens": {
+        "input": 280,
+        "output": 105322,
+        "cacheWrite5m": 1301458,
+        "cacheWrite1h": 0,
+        "cacheRead": 5679058,
+        "thinking": 9464
+      },
+      "webSearchRequests": 0,
+      "webFetchRequests": 0,
+      "costUsd": 5.443237
+    }
+  ],
+  "costUsd": {
+    "computed": 106.311485,
+    "reported": 106.770972,
+    "deltaPct": -0.43
+  },
+  "pricingVersion": "2026-09-14",
+  "dedup": {
+    "strategy": "requestId-max-total-tokens",
+    "duplicatesDropped": 2183
+  },
+  "filesWritten": [
+    "company-profile/example-co/suggestions/master.json",
+    "company-profile/example-co/suggestions/suggestions/sug_01M2H3CT0PWMZKGHPNW9DXZ58Z/mongodb-mcp-server/createdbuser-withhold-generated-password.diff",
+    "company-profile/example-co/suggestions/suggestions/sug_01M2H3D4DRCDG86N75M7MS50QK/mongodb-mcp-server/docker-publish-trivy-image-scan.diff",
+    "company-profile/example-co/suggestions/suggestions/sug_01M2H3DFV22H0GDEMXNS3RGVK7/mongodb-mcp-server/docker-publish-oidc-secrets-manager-login.diff",
+    "company-profile/example-co/suggestions/suggestions/sug_01M2H3DK23QABFHDPEA0G0M2F6/mongodb-mcp-server/docker-publish-yml-sbom-artifact.diff",
+    "company-profile/example-co/suggestions/suggestions/sug_01M2H3DK9WRM101HV7TQACCW5P/mongodb-mcp-server/docker-publish-cosign-keyless-sign.diff",
+    "company-profile/example-co/suggestions/suggestions/sug_01M2H3E1BH099YW0GHWFJ5JY5Q/mongodb-mcp-server/args-ts-ejson-input-limits.diff",
+    "company-profile/example-co/suggestions/suggestions/sug_01M2H3EFZ2ZF9Y8R8GB5BX8AZ7/mongodb-mcp-server/ci-pnpm-audit-before-publish.diff",
+    "company-profile/example-co/suggestions/suggestions/sug_01M2H3EJHK5HE9BQCBFKTGCGBP/mongodb-mcp-server/check-yml-check-iac-job.diff",
+    "company-profile/example-co/suggestions/suggestions/sug_01M2H3G6EBSSH4FT8BZM8HQG9C/mongodb-mcp-server/mongodb-tool-args-data-classification.diff",
+    "company-profile/example-co/suggestions/suggestions/sug_01M2H3GD6W8KQ9DPMDQAKYSMTP/onfinance-db-model-master/models-py-data-classification-annotations.diff",
+    "company-profile/example-co/suggestions/suggestions/sug_01M2H3GNGFDWPJ3KKB7NE1HEKC/onfinance-db-model-master/user-consent-notice-fields.diff",
+    "company-profile/example-co/suggestions/suggestions/sug_01M2H3H639J3KNST678ASTX2V1/onfinance-db-model-master/models-secrets-manager-locators.diff",
+    "company-profile/example-co/suggestions/suggestions/sug_01M2H3HRK26V06CCHV0JR6771F/onfinance-db-model-master/models-py-retention-ttl-soft-delete.diff",
+    "company-profile/example-co/suggestions/suggestions/sug_01M2H3JPRFGT05E29G7N240VMS/mongodb-mcp-server/pull-request-template-security-checklist.diff",
+    "company-profile/example-co/suggestions/suggestions/sug_01M2H3JW5SB1GRNSX0FKN4ZNSW/mongodb-mcp-server/switch-connection-connectionstring-is-secret.diff",
+    "company-profile/example-co/suggestions/suggestions/sug_01M2H3NE53Q451HH3NXSBRZ19J/mongodb-mcp-server/userconfig-readonly-default-true.diff",
+    "company-profile/example-co/summary.md"
+  ],
+  "linesAdded": 0,
+  "linesRemoved": 0,
+  "outcome": "success",
+  "transcriptFormatVersion": "2.1.271",
+  "provenance": {
+    "harness": "script",
+    "generatedAt": "2026-09-14T23:54:23Z",
+    "sessionId": "10a167a6-d35d-4c6d-8429-91eb2b64120e",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-auto-improvement",
+    "agent": ".claude/scripts/sessions/ingest.mjs"
+  }
+}

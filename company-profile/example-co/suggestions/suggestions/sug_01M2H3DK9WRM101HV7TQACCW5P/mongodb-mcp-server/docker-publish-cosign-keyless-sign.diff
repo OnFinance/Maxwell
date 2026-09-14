@@ -1,0 +1,62 @@
+diff --git a/.github/workflows/docker-publish.yml b/.github/workflows/docker-publish.yml
+index 11af538..c7402f0 100644
+--- a/.github/workflows/docker-publish.yml
++++ b/.github/workflows/docker-publish.yml
+@@ -22,6 +22,7 @@ jobs:
+     runs-on: ubuntu-latest
+     permissions:
+       contents: read
++      id-token: write
+     steps:
+       - name: Check out code
+         uses: actions/checkout@v6
+@@ -75,7 +76,11 @@ jobs:
+           username: "${{ secrets.DOCKERHUB_USERNAME }}"
+           password: "${{ secrets.DOCKERHUB_PASSWORD }}"
+
++      - name: Install cosign
++        uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
++
+       - name: Build and push image to dockerhub registry
++        id: build-push
+         uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf
+         with:
+           context: .
+@@ -87,3 +92,13 @@ jobs:
+           sbom: true
+           build-args: |
+             VERSION=${{ steps.docker-tags.outputs.VERSION }}
++
++      - name: Sign the published image with cosign
++        env:
++          DOCKERHUB_REPOSITORY: "${{ vars.DOCKERHUB_IMAGE_REPOSITORY }}"
++          IMAGE_DIGEST: "${{ steps.build-push.outputs.digest }}"
++        run: |
++          set -e
++
++          # Keyless signature bound to this workflow identity, covering every tag and platform of the digest
++          cosign sign --yes --recursive "${DOCKERHUB_REPOSITORY}@${IMAGE_DIGEST}"
+diff --git a/.github/workflows/docker.yml b/.github/workflows/docker.yml
+index 2019d68..ca76611 100644
+--- a/.github/workflows/docker.yml
++++ b/.github/workflows/docker.yml
+@@ -51,6 +51,7 @@ jobs:
+     uses: ./.github/workflows/docker-publish.yml
+     permissions:
+       contents: read
++      id-token: write
+     with:
+       npm_version: ${{ needs.get-version.outputs.VERSION }}
+       release_channel: ${{ needs.get-version.outputs.RELEASE_CHANNEL }}
+diff --git a/.github/workflows/publish.yml b/.github/workflows/publish.yml
+index afaa959..9bcd6c6 100644
+--- a/.github/workflows/publish.yml
++++ b/.github/workflows/publish.yml
+@@ -149,6 +149,7 @@ jobs:
+     uses: ./.github/workflows/docker-publish.yml
+     permissions:
+       contents: read
++      id-token: write
+     with:
+       npm_version: ${{ needs.check.outputs.NPM_VERSION }}
+       release_channel: ${{ needs.check.outputs.RELEASE_CHANNEL }}

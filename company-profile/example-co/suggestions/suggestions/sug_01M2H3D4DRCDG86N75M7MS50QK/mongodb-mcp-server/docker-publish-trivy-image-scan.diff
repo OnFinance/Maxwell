@@ -1,0 +1,31 @@
+diff --git a/.github/workflows/docker-publish.yml b/.github/workflows/docker-publish.yml
+index 11af538..4521308 100644
+--- a/.github/workflows/docker-publish.yml
++++ b/.github/workflows/docker-publish.yml
+@@ -75,6 +75,26 @@ jobs:
+           username: "${{ secrets.DOCKERHUB_USERNAME }}"
+           password: "${{ secrets.DOCKERHUB_PASSWORD }}"
+
++      - name: Build image for vulnerability scan
++        uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf
++        with:
++          context: .
++          platforms: linux/amd64
++          tags: mongodb-mcp-server:scan
++          file: Dockerfile
++          push: false
++          load: true
++          build-args: |
++            VERSION=${{ steps.docker-tags.outputs.VERSION }}
++
++      - name: Scan image for vulnerabilities
++        run: |
++          docker run --rm \
++            -v /var/run/docker.sock:/var/run/docker.sock \
++            docker.io/aquasec/trivy:0.74.0@sha256:62b1e65e8869bc4b4c6aa4fa2b21595256c7c2f6018a9d9ad61caf87187c1969 \
++            image --exit-code 1 --severity CRITICAL,HIGH --ignore-unfixed --no-progress \
++            mongodb-mcp-server:scan
++
+       - name: Build and push image to dockerhub registry
+         uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf
+         with:

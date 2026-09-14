@@ -1,0 +1,30 @@
+diff --git a/onfinance_db_model_master/models.py b/onfinance_db_model_master/models.py
+index 80827fc..783e780 100644
+--- a/onfinance_db_model_master/models.py
++++ b/onfinance_db_model_master/models.py
+@@ -426,6 +426,12 @@ class User(Document):
+     user_chats_today = IntField(default = 0)
+     users_banned = ListField(StringField(),default = list)
+     discussions_banned = ListField(StringField(),default = list)
++    # DPDP Rules 2025 Rule 3: consent artefact, specified purposes and the notice version shown
++    consent_id = StringField()
++    consent_purposes = ListField(StringField(), default=list)
++    notice_version = StringField()
++    consent_given_at = DateTimeField()
++    consent_withdrawn_at = DateTimeField()
+
+ class Notifications(Document):
+     notif_title = StringField(required=True)
+diff --git a/setup.py b/setup.py
+index 1b74150..27bb513 100644
+--- a/setup.py
++++ b/setup.py
+@@ -3,7 +3,7 @@ import setuptools
+
+ setuptools.setup(
+     name="onfinance_db_model_master",
+-    version="1.0.0",
++    version="1.1.0",
+     author="Priyesh Srivastava",
+     author_email="priyesh@onfinance.in",
+     description="-",
