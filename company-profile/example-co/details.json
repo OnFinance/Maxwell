@@ -60,7 +60,7 @@
   "frameworksInScope": [
     "sebi-cscrf-2024",
     "rbi-cyber-tech-directions-2026",
-    "rbi-it-outsourcing-md-2023",
+    "rbi-outsourcing-risk-directions-2025",
     "cert-in-directions-2022",
     "dpdp-rules-2025",
     "iso-27001-2022"
@@ -125,9 +125,10 @@
     "nbfc"
   ],
   "provenance": {
-    "harness": "human",
-    "generatedAt": "2026-09-14T00:00:00Z",
-    "workflow": "seed-company",
-    "agent": "maxwell-maintainers"
+    "harness": "script",
+    "generatedAt": "2026-09-14T14:41:43Z",
+    "workflow": "manual",
+    "agent": "soc/migrate-instrument",
+    "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3"
   }
 }

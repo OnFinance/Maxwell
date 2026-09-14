@@ -3,16 +3,15 @@ schemaVersion: "1"
 kind: maxwell.company.summary
 companyId: example-co
 title: Example Capital Markets cyber resilience summary
-version: "4.1.0"
+version: "4.2.0"
 sections: [overview, regulatory-posture, data-flows, vendors, control-summary, open-findings]
 provenance:
   harness: claude-code
-  generatedAt: "2026-09-14T13:14:50Z"
-  sessionId: "314aa113-98aa-471e-941d-e1aa88798b5a"
-  runId: run_01M2FGNVVQ15ZKXZWGW74YWAAQ
-  workflow: probe-schemas
-  agent: report-writer
-  inputsHash: 2047d7d534d61557e42789b6242b07b0918bbd6bb9069480a0fb5bb5535b3890
+  generatedAt: "2026-09-14T14:41:43Z"
+  sessionId: "453ecc6e-1346-418f-a2c0-1bfcead851c3"
+  workflow: manual
+  agent: main-session
+  inputsHash: 73c2119c962087e4a4fb0cb2891605b48f73cd2b12cc33ef9656b55f4f3f6b65
 ---
 # Example Capital Markets — cyber resilience summary
 
@@ -26,17 +25,20 @@ Active registrations (`company-profile/example-co/details.json`): SEBI INZ000999
 status active), SEBI IN-DP-999-2016 (category `mid-size-re`, status active, depository participant), RBI
 N-13.09999 (category `nbfc-middle-layer`, status active).
 
-Frameworks in scope: `sebi-cscrf-2024`, `rbi-cyber-tech-directions-2026`, `rbi-it-outsourcing-md-2023`,
+Frameworks in scope: `sebi-cscrf-2024`, `rbi-cyber-tech-directions-2026`, `rbi-outsourcing-risk-directions-2025`,
 `cert-in-directions-2022`, `dpdp-rules-2025`, `iso-27001-2022`.
 
-**Drift applied in this run (`regime_overhaul@/frameworksInScope`).** `rbi-it-outsourcing-md-2023` remains
-listed in `frameworksInScope`, but RBI repealed it for NBFCs on 2025-11-28 and replaced it with the Reserve
-Bank of India (NBFC — Managing Risks in Outsourcing) Directions, 2025 (RBI/DOR/2025-26/363), which has no
-vocab id and cannot be expressed via `supersedes[]`. Third-party IT and cyber arrangements outside the
-outsourcing directions already fall under RBI rbi-cyber-tech-directions-2026 paras 126-135, in scope. The
-profile itself was left unchanged this run; the regime change is recorded as observation
-[obs_01M2FH0ZNKQRSBK4RWM938HDWT] anchored on `` `rbi-cyber-tech-directions-2026:12` `` and as risk
-[rsk_01M2FH0ZPG0XQAA2PZ522ZNGQK] (severity medium, status open).
+**Repealed instrument migrated (2026-09-14T14:41:43Z).** RBI repealed `rbi-it-outsourcing-md-2023` on 2025-11-28
+(circular DOR.RRC.REC.302/33-01-010/2025-26) and replaced it with the entity-wise Managing Risks in Outsourcing
+Directions, 2025 (for NBFCs RBI/DOR/2025-26/363), registered as `rbi-outsourcing-risk-directions-2025`.
+`soc/migrate-instrument.mjs` swapped it in `frameworksInScope`, superseded the 64 `rbi-it-outsourcing-md-2023`
+control records as `not-applicable` (each names its successor controls; paragraph 16, the minimum clause set for
+agreements, has no mapped successor), appended the 176 successor controls that apply to example-co, and re-mapped
+the 6 open vendor findings from paragraphs 19(e) and 22(a) to successor paragraphs 79 and 84-86 (ledger version
+`soc/versions/commit_6.diff`). Existing IT outsourcing agreements had to comply by 2026-04-10 or at renewal. The
+drift `refresh-ctx` raised stays recorded as observation [obs_01M2FH0ZNKQRSBK4RWM938HDWT] and risk
+[rsk_01M2FH0ZPG0XQAA2PZ522ZNGQK] (severity medium, status open) until the next `refresh-ctx` run confirms the
+profile and closes it.
 
 0 escalated claim(s) awaiting human resolution as of this refresh.
 
@@ -111,35 +113,24 @@ mongodb-mcp-server (3): evidence-request for target inventory/residency
 <!-- source: sdlc/metastore.json catalogs[].schemas[].tables[].columns[] counted by pii:true; soc/main.jsonl kind:observation with provenance.workflow:refresh-metastore and provenance.runId:run_01M2FGNVVQ15ZKXZWGW74YWAAQ -->
 
 ## Control summary
-`refresh-soc` reconciled the ledger this run: 360 new control records, 1 re-assessed
-(`sebi-cscrf-2024:GV.SC.S3`, supersession recorded at 2026-09-14T09:19:31Z), 0 findings resolved by the
-absent-twice rule, 0 findings and 0 risks reopened after expired acceptances, 0 SLA dates recomputed.
+Latest control record per id in `company-profile/example-co/soc/main.jsonl` after the `rbi-it-outsourcing-md-2023`
+migration at 2026-09-14T14:41:43Z: 540 records, 476 applicable. `refresh-soc` created 360 of them at
+2026-09-14T09:55:06Z; since then `probe-iac` and `probe-schemas` re-assessed 19 controls from their observations.
 
-Latest control record per id in `company-profile/example-co/soc/main.jsonl` (362 total), grouped by
-instrument (per-family breakdown within each instrument is uniform: every control is `not-tested`, so
-category-level rows carry no additional information this run):
+| Instrument | Controls | Not applicable | Effective | Partially effective | Ineffective | Not tested | Coverage |
+|---|---|---|---|---|---|---|---|
+| `sebi-cscrf-2024` (SEBI CSCRF 2024) | 124 | 0 | 0 | 4 | 7 | 113 | 9 % (11 of 124) |
+| `rbi-cyber-tech-directions-2026` (RBI Cyber Tech Directions 2026) | 99 | 0 | 0 | 1 | 1 | 97 | 2 % (2 of 99) |
+| `rbi-outsourcing-risk-directions-2025` (RBI Outsourcing Directions 2025) | 176 | 0 | 0 | 0 | 0 | 176 | 0 % (0 of 176) |
+| `dpdp-rules-2025` (DPDP Rules 2025) | 48 | 0 | 0 | 2 | 3 | 43 | 10 % (5 of 48) |
+| `cert-in-directions-2022` (CERT-In Directions 2022) | 29 | 0 | 0 | 0 | 1 | 28 | 3 % (1 of 29) |
+| `rbi-it-outsourcing-md-2023` (repealed 2025-11-28) | 64 | 64 | 0 | 0 | 0 | 0 | n/a |
+| **Total** | **540** | **64** | **0** | **7** | **12** | **457** | **4 % (19 of 476)** |
 
-| Instrument | Controls | Effective | Partially effective | Ineffective | Not tested | Coverage |
-|---|---|---|---|---|---|---|
-| `sebi-cscrf-2024` (SEBI CSCRF 2024) | 124 | 0 | 0 | 0 | 124 | 0 % (0 of 124) |
-| `rbi-cyber-tech-directions-2026` (RBI Cyber Tech Directions 2026) | 97 | 0 | 0 | 0 | 97 | 0 % (0 of 97) |
-| `rbi-it-outsourcing-md-2023` (RBI IT Outsourcing MD 2023) | 64 | 0 | 0 | 0 | 64 | 0 % (0 of 64) |
-| `dpdp-rules-2025` (DPDP Rules 2025) | 48 | 0 | 0 | 0 | 48 | 0 % (0 of 48) |
-| `cert-in-directions-2022` (CERT-In Directions 2022) | 29 | 0 | 0 | 0 | 29 | 0 % (0 of 29) |
-| **Total** | **362** | **0** | **0** | **0** | **362** | **0 % (0 of 362)** |
+<!-- source: latest-state map over soc/main.jsonl kind=control, grouped by id prefix before ':'; not-applicable counted separately, the rest by effectiveness -->
 
-<!-- source: latest-state map over soc/main.jsonl kind=control, grouped by id prefix before ':', counted by effectiveness -->
-
-Coverage mirrors `cm_coverage` (methodology: `kpis/measurement/cm_coverage.md`): a control counts as observed
-when its latest record carries a `lastAssessedAt` set from an observation `result`. None of the 362 applicable
-controls has one yet.
-
-Maxwell observed 0 of 362 applicable controls in this period (0 %); 0 controls were inconclusive for lack of
-access; 0 environments were skipped (freeze / window / no credentials). The only non-`not-applicable`
-observation recorded this run, [obs_01M2FH0ZNKQRSBK4RWM938HDWT], is a `refresh-ctx` regulatory-drift finding
-(`result: not-satisfied`) against `` `rbi-cyber-tech-directions-2026:12` ``, not a control assessment against
-evidence, so it was not reconciled into that control's `effectiveness`/`lastAssessedAt` and does not count
-toward coverage.
+Coverage divides the controls whose latest record carries a `lastAssessedAt` set from an observation `result` by
+the applicable (not `not-applicable`) controls; `kpis/measurement/cm_coverage.md` defines the KPI.
 
 ## Open findings
 `probe-schemas` ran against `example-co` this run (`provenance.runId` run_01M2FGNVVQ15ZKXZWGW74YWAAQ,
