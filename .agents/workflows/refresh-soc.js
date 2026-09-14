@@ -74,7 +74,8 @@ const scout = await agent(`${common('soc-ledger-keeper')}
 SCOUT (read-only, write nothing). Read ${PROFILE}, ${INSTRUMENTS}, ${LEDGER} (if it exists; an absent or empty ledger is a valid starting point) and the catalog files under ${CATALOG_DIR}/.
 Return:
 - frameworksInScope, entityTypes, reCategories (regulatoryRegistrations[].category, deduplicated), jurisdictions (country codes).
-- instruments: one entry per instrument in frameworksInScope that has an entry in ${INSTRUMENTS} (instrumentId, regulator, catalogFile, catalogPresent = the catalogFile exists, retrievedAt from the catalog, controlCount in the catalog after intersecting each control's applicability with entityTypes/reCategories). Instruments in frameworksInScope with no registry entry or no catalog file go to skipped with the reason.
+- instruments: one entry per instrument in frameworksInScope that has an entry in ${INSTRUMENTS} (instrumentId, regulator, status and supersededBy copied from the registry entry when present, catalogFile, catalogPresent = the catalogFile exists, retrievedAt from the catalog, controlCount in the catalog after intersecting each control's applicability with entityTypes/reCategories). Instruments in frameworksInScope with no registry entry or no catalog file go to skipped with the reason.
+- An instrument whose registry status is repealed or superseded is never applicable and its controls are never rebuilt, even when it is listed in frameworksInScope: return it with its status and supersededBy, and also list it under skipped as '<instrumentId>: <status> on <repealedOn>, successor <supersededBy>' (adding 'successor not in frameworksInScope - run refresh-ctx' when that is so); it may be cited only as a secondary, historical mapping.
 - controls: the LATEST record per control id in the ledger (last line wins): id, instrument (frameworkRefs[0].instrument), implementationStatus, effectiveness, lastAssessedAt, nextDueAt.
 - findingGroups: findings the reconcile rules act on (latest record per id with status open|triaged|remediating|risk-accepted; resolved, false-positive and duplicate findings are not listed, only counted in resolvedCount) grouped by provenance.workflow of their first record: [{workflow, findingIds, openCount, riskAcceptedCount, resolvedCount}]. ${appIds ? `Keep only findings whose target.appId is in ${JSON.stringify(appIds)}${envIds ? ` and, for environment targets, whose target.envId is in ${JSON.stringify(envIds)}` : ''}; count the excluded ones in skipped.` : ''}
 - observationsByWorkflow: [{workflow, count, latestCollectedAt}] for every methods[] value seen.
@@ -91,7 +92,7 @@ Every instrument or finding you excluded must appear in skipped with a reason; n
       entityTypes: { type: 'array', items: { type: 'string' } },
       reCategories: { type: 'array', items: { type: 'string' } },
       jurisdictions: { type: 'array', items: { type: 'string' } },
-      instruments: { type: 'array', items: { type: 'object', required: ['instrumentId', 'regulator', 'catalogFile', 'catalogPresent', 'controlCount'], properties: { instrumentId: { type: 'string' }, regulator: { type: 'string' }, catalogFile: { type: 'string' }, catalogPresent: { type: 'boolean' }, retrievedAt: { type: 'string' }, controlCount: { type: 'integer' } } } },
+      instruments: { type: 'array', items: { type: 'object', required: ['instrumentId', 'regulator', 'catalogFile', 'catalogPresent', 'controlCount'], properties: { instrumentId: { type: 'string' }, regulator: { type: 'string' }, status: { type: 'string' }, supersededBy: { type: 'array', items: { type: 'string' } }, catalogFile: { type: 'string' }, catalogPresent: { type: 'boolean' }, retrievedAt: { type: 'string' }, controlCount: { type: 'integer' } } } },
       controls: { type: 'array', items: { type: 'object', required: ['id', 'instrument', 'implementationStatus'], properties: { id: { type: 'string' }, instrument: { type: 'string' }, implementationStatus: { type: 'string' }, effectiveness: { type: 'string' }, lastAssessedAt: { type: 'string' }, nextDueAt: { type: 'string' } } } },
       findingGroups: { type: 'array', items: { type: 'object', required: ['workflow', 'findingIds', 'openCount'], properties: { workflow: { type: 'string' }, findingIds: { type: 'array', items: { type: 'string' } }, openCount: { type: 'integer' }, resolvedCount: { type: 'integer' }, riskAcceptedCount: { type: 'integer' } } } },
       observationsByWorkflow: { type: 'array', items: { type: 'object', required: ['workflow', 'count'], properties: { workflow: { type: 'string' }, count: { type: 'integer' }, latestCollectedAt: { type: 'string' } } } },
@@ -109,8 +110,11 @@ if (!now) {
 }
 log(`NOW = ${now} (${args && args.now ? 'args.now' : 'read once by the Scout'}); every later prompt uses this literal`);
 for (const s of scout.skipped || []) skipped.push(`scout: ${s}`);
-const instruments = (scout.instruments || []).filter((i) => i.catalogPresent);
-for (const i of (scout.instruments || []).filter((x) => !x.catalogPresent)) skipped.push(`inventory: ${i.instrumentId} has no catalog file at ${i.catalogFile}; controls not rebuilt`);
+// A registry entry with status repealed or superseded is never inventoried; its successors carry the controls.
+const REPEALED = ['repealed', 'superseded'];
+for (const i of (scout.instruments || []).filter((x) => REPEALED.includes(x.status))) skipped.push(`inventory: ${i.instrumentId} is ${i.status} in the registry; controls not rebuilt, cite successor ${(i.supersededBy || []).join(', ') || '(none recorded)'} instead`);
+const instruments = (scout.instruments || []).filter((i) => i.catalogPresent && !REPEALED.includes(i.status));
+for (const i of (scout.instruments || []).filter((x) => !x.catalogPresent && !REPEALED.includes(x.status))) skipped.push(`inventory: ${i.instrumentId} has no catalog file at ${i.catalogFile}; controls not rebuilt`);
 const existingControlIds = (scout.controls || []).map((c) => c.id);
 const findingGroups = (scout.findingGroups || []).filter((g) => g.findingIds && g.findingIds.length);
 log(`Scout: ${scout.frameworksInScope.length} frameworks in scope, ${instruments.length} instruments with catalogs, ${existingControlIds.length} control records, ${findingGroups.reduce((n, g) => n + g.findingIds.length, 0)} findings across ${findingGroups.length} originating workflow(s), ${scout.ledgerLines} ledger lines`);

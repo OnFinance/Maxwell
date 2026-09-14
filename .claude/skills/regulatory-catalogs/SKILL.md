@@ -1,6 +1,6 @@
 ---
 name: regulatory-catalogs
-description: The regulatory reference data every Maxwell finding, risk, control and initiative depends on - references/instruments.json (all 36 vocab instruments with regulator, version, dates, official URL, applicability and the hard numeric obligations such as CERT-In 6 h reporting and 180-day logs, DPDP 72 h breach notice, SEBI CSCRF 1-week patching, RBI DAKSH 6 h), references/sla-table.json (remediation and reporting deadlines with the clause quoted, most-strict-wins), and the OSCAL-lite India catalogs under references/catalogs/. Explains how to select the instruments that bind a company from details.json, how to form control ids and cite regulatoryRefs, how to look up an SLA, and how catalogs are refreshed under the grounding contract. Load before citing any regulation, choosing a severity or SLA, or editing a catalog.
+description: The regulatory reference data every Maxwell finding, risk, control and initiative depends on - references/instruments.json (all 37 vocab instruments with regulator, version, dates, official URL, applicability and the hard numeric obligations such as CERT-In 6 h reporting and 180-day logs, DPDP 72 h breach notice, SEBI CSCRF 1-week patching, RBI DAKSH 6 h), references/sla-table.json (remediation and reporting deadlines with the clause quoted, most-strict-wins), and the OSCAL-lite India catalogs under references/catalogs/. Explains how to select the instruments that bind a company from details.json, how to form control ids and cite regulatoryRefs, how to look up an SLA, and how catalogs are refreshed under the grounding contract. Load before citing any regulation, choosing a severity or SLA, or editing a catalog.
 license: AGPL-3.0-only
 compatibility: Node 22 and the Maxwell workspace layout; catalogs validate against v1/catalog/regulator-catalog.schema.json, the registry against v1/catalog/instruments.schema.json and the SLA table against vocab/sla-table.schema.json. Refreshing catalogs needs WebSearch/WebFetch
 metadata:
@@ -52,10 +52,15 @@ Inputs from `company-profile/<c>/details.json`: `entityTypes`, `jurisdictions`,
    recorded is not excluded by the filter and is assessed against the base obligations until its category is
    captured.
 4. **Registration status.** Ignore registrations whose `status` is not active (surrendered, lapsed, suspended).
-5. **Superseded instruments.** If an applicable instrument appears in another applicable entry's
-   `supersedes`, cite the successor for new records. `rbi-cyber-tech-directions-2026` (31 Jul 2026) repeals
-   `rbi-cyber-security-framework-2016` and `rbi-it-governance-md-2023` for all seven RBI entity classes; open
-   findings citing the old ids are re-mapped (append a superseding record, never edit a line).
+5. **Repealed and superseded instruments.** An entry whose registry `status` is `repealed` or `superseded` is
+   never selected as applicable and is never the primary (first) `regulatoryRef`, even when it is listed in
+   `frameworksInScope`: select the instruments in its `supersededBy` instead, and re-map open findings to them
+   (append a superseding record, never edit a line). The repealed id may appear only in catalog `mappings` or as a
+   secondary, historical ref (for example on a finding first seen before its `repealedOn`). An instrument listed
+   in another applicable entry's `supersedes` follows the same rule, and `draft` or `in-abeyance` entries are not
+   cited as binding. Current repeals: `rbi-it-outsourcing-md-2023` (28 Nov 2025, successor
+   `rbi-outsourcing-risk-directions-2025`); `rbi-cyber-security-framework-2016` and `rbi-it-governance-md-2023`
+   (31 Jul 2026, successor `rbi-cyber-tech-directions-2026`).
 6. **Scope versus applicability.** `frameworksInScope` is what the company is assessed against. An applicable
    instrument missing from it is drift: `refresh-ctx` reports it (observation plus risk), it does not silently
    add it. Findings cite instruments in scope; add an applicable-but-unscoped instrument only as a second ref.
@@ -67,21 +72,27 @@ Typical Indian selections:
 | Company | Primary (cite first) | Always add | Often add |
 | --- | --- | --- | --- |
 | Stock broker / DP (SEBI, mid-size RE) | `sebi-cscrf-2024` | `cert-in-directions-2022`, `dpdp-rules-2025` | `iso-27001-2022`, `nist-ssdf-800-218` |
-| Scheduled commercial bank / SFB / PB | `rbi-cyber-tech-directions-2026` | `cert-in-directions-2022`, `dpdp-rules-2025` | `rbi-digital-payment-security-2021` (confirm status first, see note), `npci-system-audit`, `pci-dss-4.0.1` |
-| NBFC (middle layer and above) | `rbi-cyber-tech-directions-2026` | `cert-in-directions-2022`, `dpdp-rules-2025` | `pci-dss-4.0.1` (card issuers) |
+| Scheduled commercial bank / SFB / PB | `rbi-cyber-tech-directions-2026` | `rbi-outsourcing-risk-directions-2025`, `cert-in-directions-2022`, `dpdp-rules-2025` | `rbi-digital-payment-security-2021` (confirm status first, see note), `npci-system-audit`, `pci-dss-4.0.1` |
+| NBFC (middle layer and above) | `rbi-cyber-tech-directions-2026` | `rbi-outsourcing-risk-directions-2025`, `cert-in-directions-2022`, `dpdp-rules-2025` | `pci-dss-4.0.1` (card issuers) |
 | Insurer / insurance intermediary | `irdai-info-cyber-security-2023` | `cert-in-directions-2022`, `dpdp-rules-2025` | `iso-27001-2022` |
 | TPAP (UPI third-party app provider) | `npci-system-audit` | `cert-in-directions-2022`, `dpdp-rules-2025` | `pci-dss-4.0.1`, `owasp-asvs-5.0` |
 | Payment aggregator / PPI issuer (RBI-authorised) | `cert-in-directions-2022` until the RBI PA/PPI cyber directions get a vocab id (flag the gap in the finding) | `dpdp-rules-2025`; `npci-system-audit` only if the entity is a UPI participant | `pci-dss-4.0.1`, `owasp-asvs-5.0` |
 | Any company running LLM agents | the licence instrument above | `owasp-agentic-top10-2026`, `owasp-llm-top10-2025` | `csa-mcp-security-2025`, `nist-ai-600-1`, `mitre-atlas` |
 
 Notes on RBI entities:
-- `rbi-it-outsourcing-md-2023` was **repealed on 28 Nov 2025** (DOR.RRC.REC.302/33-01-010/2025-26) and replaced
-  by the entity-wise *Reserve Bank of India (<Entity> - Managing Risks in Outsourcing) Directions, 2025*. The
-  successor has no vocab id yet. Do not add the 2023 id as a primary or "always" ref. Cite it only as a secondary
-  or historical ref, for example on a finding first seen before 28 Nov 2025 or where the vendor contract still
-  quotes it. Say in the description that the successor directions apply and that the id is missing from the
-  vocab. For third-party IT and cyber arrangements outside the outsourcing directions, cite
-  `rbi-cyber-tech-directions-2026` paras 126-135.
+- `rbi-it-outsourcing-md-2023` has registry status `repealed` (28 Nov 2025, circular
+  DOR.RRC.REC.302/33-01-010/2025-26). Its successor is `rbi-outsourcing-risk-directions-2025`, the entity-wise
+  *Reserve Bank of India (<Entity> - Managing Risks in Outsourcing) Directions, 2025* for Commercial Banks, SFBs,
+  Payments Banks, Local Area Banks, UCBs, Rural Co-operative Banks, AIFIs, NBFCs and Credit Information Companies.
+  Cite the successor for every outsourcing and vendor-risk record; cite the 2023 id only as a secondary or
+  historical ref (a finding first seen before 28 Nov 2025, or a vendor contract that still quotes it). Control ids
+  follow the NBFC text (`61`, `34(vii)`, `74(xi)`, `97(viii)`); `CB-` and `UCB-` ids cite bank-only clauses, and
+  every control's guidance names the paragraph in the other eight texts. Chapter III (financial services) binds
+  every NBFC layer, all UCB tiers, CBs, SFBs, PBs and RCBs; Chapter IV (IT services) binds NBFCs in the middle
+  layer and above, Tier-3 and Tier-4 UCBs, CBs, SFBs, PBs, LABs, AIFIs and CICs. Existing IT agreements had to
+  comply by 10 Apr 2026 or at renewal, whichever was earlier. LABs and RCBs have no entity-type slug yet, so the
+  catalog cannot be selected for them. For third-party IT and cyber arrangements outside the outsourcing
+  directions, cite `rbi-cyber-tech-directions-2026` paras 126-135.
 - `rbi-digital-payment-security-2021`: its status after RBI's Nov 2025 and Jul 2026 consolidations has not been
   checked on rbi.org.in (see its registry `version`). Add it only after confirming it is still in force.
 - For payment aggregators and PPI issuers, the binding cyber instrument is RBI's own PA/PPI direction, not
@@ -161,7 +172,9 @@ not deadlines for findings; deadlines come only from the SLA table.
      Non-KEV findings skip the BOD rows. The BOD's own answer for non-public, non-KEV assets is "fix on system
      upgrade", which is not a deadline.
    - **Repealed instruments.** Rows for `rbi-it-outsourcing-md-2023` and `rbi-cyber-security-framework-2016`
-     apply only to incidents and findings first seen before the repeal.
+     apply only to incidents and findings first seen before the registry `repealedOn`. Later records use the
+     successor rows: `rbi-outsourcing-risk-directions-2025` para 61 (6 h from detection by the service provider)
+     and `rbi-cyber-tech-directions-2026` para 182.
    **Business days** are always counted as the same number of calendar days (APRA CPS 234 para 36 is 10 days,
    SEC 8-K Item 1.05 is 4 days). A regulator clock never runs out on a weekend because of the conversion.
 4. `most-strict-wins`: take the smallest `days` (for reports compare `hours` when present). Copy that row into
@@ -196,7 +209,8 @@ Counts are `groups[].controls[]` entries at `lastReviewedAt`; recount with
 | --- | --- | --- | --- | --- | --- |
 | SEBI CSCRF 2024 | `catalogs/sebi-cscrf-2024.catalog.json` | SEBI | 26 | 136 | `PR.MA.S3`, `GV.SC.S5`, `Sec-4.3` |
 | RBI Directions 2026 | `catalogs/rbi-cyber-tech-directions-2026.catalog.json` | RBI | 54 | 228 | paragraph number, e.g. `182`, `151`, `28(7)` |
-| RBI IT Outsourcing MD 2023 (**repealed 28 Nov 2025**) | `catalogs/rbi-it-outsourcing-md-2023.catalog.json` | RBI | 13 | 90 | `17(h)`, `13(a)`, `Appendix-I` groups |
+| RBI Outsourcing Directions 2025 (entity-wise Managing Risks in Outsourcing) | `catalogs/rbi-outsourcing-risk-directions-2025.catalog.json` | RBI | 33 | 185 | NBFC-text paragraph, e.g. `61`, `34(vii)`, `97(viii)`; bank-only `CB-12(1)(vi)`, `UCB-33` |
+| RBI IT Outsourcing MD 2023 (**repealed 28 Nov 2025**, historical mappings only) | `catalogs/rbi-it-outsourcing-md-2023.catalog.json` | RBI | 13 | 90 | `17(h)`, `13(a)`, `App-I.6(e)`, `App-II(b)` |
 | IRDAI ICS Guidelines 2023 | `catalogs/irdai-info-cyber-security-2023.catalog.json` | IRDAI | 33 | 103 | `<policy>-<control>`, e.g. `2.16-3.6.1`, `2.10-3.5`, `1.10` |
 | CERT-In Directions 2022 | `catalogs/cert-in-directions-2022.catalog.json` | CERT-In | 6 | 32 | `Dir-ii`, `Annex-I.xi`, `CCSAPG-13.1.2` |
 | DPDP Rules 2025 | `catalogs/dpdp-rules-2025.catalog.json` | MeitY | 14 | 52 | `7(2)(b)`, `Sch1.B.4`, `Act-8(7)` |
@@ -236,8 +250,10 @@ Catalog changes are human-reviewed changes to `.claude/skills/**`, made with the
 - Citing `rbi-cyber-security-framework-2016` or `rbi-it-governance-md-2023` for a new finding after 31 July 2026.
 - Citing `rbi-it-outsourcing-md-2023` as the primary ref, or using its 17(h) 6-hour row for a new incident. It was
   repealed on 28 Nov 2025 by the entity-wise Managing Risks in Outsourcing Directions, 2025. Use
-  `rbi-cyber-tech-directions-2026` (para 182 for incidents) and add the 2023 id only as a secondary or historical
-  ref, noting that the successor has no vocab id.
+  `rbi-outsourcing-risk-directions-2025` (para 61 for provider-detected incidents, 74 for IT contract clauses)
+  and `rbi-cyber-tech-directions-2026` (para 182), and add the 2023 id only as a secondary or historical ref.
+- Selecting an instrument because it is listed in `frameworksInScope` when its registry `status` is `repealed` or
+  `superseded`; select its `supersededBy` successor instead.
 - Applying `cisa-bod-26-04` rows to a non-KEV finding, or to a company that has not adopted the BOD in
   `frameworksInScope`.
 - Matching a `TRIGGER -` row (APRA CPS 230 para 42, NYDFS 500.17(c)(1)) because the incident is critical, when

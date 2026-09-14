@@ -92,8 +92,27 @@
       "severity": "any",
       "days": 1,
       "hours": 6,
-      "basis": "RBI Master Direction on Outsourcing of IT Services 2023, para 17(h): cyber incidents are reported to the RE by the service provider without undue delay \"so that the incident is reported by the RE to the RBI within 6 hours of detection by the TPSP\" (repealed 28 Nov 2025 by the entity-wise Managing Risks in Outsourcing Directions, 2025; for historical incidents only - the RBI 6h clock now comes from rbi-cyber-tech-directions-2026 para 182)",
+      "basis": "RBI Master Direction on Outsourcing of IT Services 2023, para 17(h): cyber incidents are reported to the RE by the service provider without undue delay \"so that the incident is reported by the RE to the RBI within 6 hours of detection by the TPSP\" (repealed 28 Nov 2025 by the entity-wise Managing Risks in Outsourcing Directions, 2025; for historical incidents only - the RBI 6h clock now comes from rbi-outsourcing-risk-directions-2025 para 61 and rbi-cyber-tech-directions-2026 para 182)",
       "url": "https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12486"
+    },
+    {
+      "instrument": "rbi-outsourcing-risk-directions-2025",
+      "controlId": "61",
+      "topic": "incident-reporting",
+      "severity": "any",
+      "days": 1,
+      "hours": 6,
+      "basis": "RBI (Non-Banking Financial Companies - Managing Risks in Outsourcing) Directions, 2025, para 61: \"An NBFC shall ensure that cyber incidents are reported to it by the service provider without undue delay, so that an incident is reported by the NBFC to the RBI within six hours of detection by the service provider\"; the same clause is para 56 of the Commercial Bank, SFB and Payments Bank Directions, para 51 of the UCB Directions and para 14 of the LAB, AIFI and CIC Directions (none in the RCB Directions). The clock runs from detection by the service provider",
+      "url": "https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12941"
+    },
+    {
+      "instrument": "rbi-outsourcing-risk-directions-2025",
+      "controlId": "57(4)",
+      "topic": "grievance-redressal",
+      "severity": "any",
+      "days": 30,
+      "basis": "RBI (Non-Banking Financial Companies - Managing Risks in Outsourcing) Directions, 2025, para 57(4): \"if a complaint is rejected wholly or partly by an NBFC and the complainant is not satisfied with the reply or does not get any reply within 30 days, after the NBFC received the complaint\", the complainant may approach the RBI Ombudsman or the CEPC; the Commercial Banks Directions para 52(3) require \"the time frame fixed for responding to the complaints (maximum 30 days)\" to be placed on the website (SFB and PB 52(3), UCB 47(3), RCB 47(iii))",
+      "url": "https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12941"
     },
     {
       "instrument": "rbi-cyber-security-framework-2016",
@@ -324,9 +343,9 @@
   ],
   "provenance": {
     "harness": "claude-code",
-    "generatedAt": "2026-09-14T07:44:16Z",
+    "generatedAt": "2026-09-14T11:10:00Z",
     "workflow": "manual",
-    "agent": "ctx-researcher",
-    "sessionId": "b157e311-135c-4bae-a87c-99f2362a67a1"
+    "agent": "regulatory-cataloguer",
+    "model": "claude-opus-5"
   }
 }

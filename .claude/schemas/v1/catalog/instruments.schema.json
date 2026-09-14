@@ -93,7 +93,19 @@
   "additionalProperties": false,
   "$defs": {
     "instrument": {
+      "description": "One registry entry. An entry whose status is repealed or superseded must state repealedOn and supersededBy",
       "type": "object",
+      "if": {
+        "required": [ "status" ],
+        "properties": {
+          "status": {
+            "enum": [ "repealed", "superseded" ]
+          }
+        }
+      },
+      "then": {
+        "required": [ "repealedOn", "supersededBy" ]
+      },
       "required": [
         "instrumentId",
         "regulator",
@@ -134,6 +146,29 @@
         "supersedes": {
           "description": "Instruments this one replaces in full; findings citing a superseded instrument should be re-mapped",
           "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/vocab/instruments.schema.json"
+          }
+        },
+        "status": {
+          "description": "Legal status of the instrument; absent means in-force. An instrument whose status is repealed or superseded is never selected as applicable to a company and is never the primary (first) regulatoryRef of a finding, risk, control or initiative: cite the instruments in supersededBy instead. It may still be cited as a secondary, historical cross-reference (a catalog mapping, or a later regulatoryRef on a record first seen before repealedOn). in-abeyance means temporarily suspended by the regulator; draft means published for consultation and not yet binding, so neither is cited as binding",
+          "enum": [
+            "in-force",
+            "repealed",
+            "superseded",
+            "in-abeyance",
+            "draft"
+          ]
+        },
+        "repealedOn": {
+          "description": "Date the repeal or supersession took effect, as stated in the repealing instrument or circular. Records first seen on or after this date must cite the successor as their primary regulatoryRef; the repealed instrument may appear only as a secondary, historical cross-reference",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/date"
+        },
+        "supersededBy": {
+          "description": "Instruments that replace this one. When status is repealed or superseded, agents select these instead, use them as the primary regulatoryRef and re-map open findings to them; the repealed instrument may be cited only as a secondary, historical cross-reference",
+          "type": "array",
+          "minItems": 1,
           "uniqueItems": true,
           "items": {
             "$ref": "https://maxwell.onfinance.ai/schemas/vocab/instruments.schema.json"

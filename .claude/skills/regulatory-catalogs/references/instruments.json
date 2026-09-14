@@ -343,6 +343,11 @@
       "issuedOn": "2023-11-07",
       "effectiveFrom": "2024-04-01",
       "supersedes": [],
+      "status": "repealed",
+      "repealedOn": "2026-07-31",
+      "supersededBy": [
+        "rbi-cyber-tech-directions-2026"
+      ],
       "url": "https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12562",
       "applicability": {
         "entityTypes": [
@@ -395,6 +400,11 @@
       "issuedOn": "2016-06-02",
       "effectiveFrom": "2016-06-02",
       "supersedes": [],
+      "status": "repealed",
+      "repealedOn": "2026-07-31",
+      "supersededBy": [
+        "rbi-cyber-tech-directions-2026"
+      ],
       "url": "https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=10435",
       "applicability": {
         "entityTypes": [
@@ -427,6 +437,11 @@
       "issuedOn": "2023-04-10",
       "effectiveFrom": "2023-10-01",
       "supersedes": [],
+      "status": "repealed",
+      "repealedOn": "2025-11-28",
+      "supersededBy": [
+        "rbi-outsourcing-risk-directions-2025"
+      ],
       "url": "https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12486",
       "applicability": {
         "entityTypes": [
@@ -451,11 +466,11 @@
           "not-categorised"
         ]
       },
-      "structure": "REPEALED 28.11.2025: cite only for historical findings or as a secondary ref (successor has no vocab id). Paras cited as 17(h), 13(a); Appendix I cloud, II SOC outsourcing as Appendix-I",
+      "structure": "REPEALED 28.11.2025, successor rbi-outsourcing-risk-directions-2025; secondary or historical ref only. Paras cited as 17(h), 13(a); Appendix I cloud App-I.n, II SOC App-II(x)",
       "hardRequirements": [
         {
           "topic": "incident-reporting",
-          "requirement": "(Repealed 28.11.2025; historical findings only - the RBI 6-hour clock now comes from rbi-cyber-tech-directions-2026 para 182) The RE shall ensure cyber incidents are reported to it by the service provider without undue delay, so that the incident is reported by the RE to the RBI within 6 hours of detection by the TPSP",
+          "requirement": "(Repealed 28.11.2025; historical findings only - the RBI 6-hour clock now comes from rbi-outsourcing-risk-directions-2025 para 61 and rbi-cyber-tech-directions-2026 para 182) The RE shall ensure cyber incidents are reported to it by the service provider without undue delay, so that the incident is reported by the RE to the RBI within 6 hours of detection by the TPSP",
           "value": 6,
           "unit": "hours",
           "controlId": "17(h)"
@@ -476,6 +491,133 @@
         }
       ],
       "catalogFile": ".claude/skills/regulatory-catalogs/references/catalogs/rbi-it-outsourcing-md-2023.catalog.json",
+      "lastReviewedAt": "2026-09-14"
+    },
+    {
+      "instrumentId": "rbi-outsourcing-risk-directions-2025",
+      "regulator": "RBI",
+      "title": "Reserve Bank of India (<Entity class> – Managing Risks in Outsourcing) Directions, 2025",
+      "shortName": "RBI Outsourcing Directions 2025",
+      "version": "RBI/DOR/2025-26/363 DOR.ORG.REC.No.282/21-04-158/2025-26 (NBFCs); RBI/DOR/2025-26/171 CBs; 202 SFBs; 220 PBs; 245 LABs; 293 UCBs; 318 RCBs; 337 AIFIs; 379 CICs",
+      "issuedOn": "2025-11-28",
+      "effectiveFrom": "2025-11-28",
+      "supersedes": [
+        "rbi-it-outsourcing-md-2023"
+      ],
+      "status": "in-force",
+      "url": "https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12941",
+      "applicability": {
+        "entityTypes": [
+          "scheduled-commercial-bank",
+          "small-finance-bank",
+          "payments-bank",
+          "urban-cooperative-bank",
+          "all-india-financial-institution",
+          "nbfc",
+          "nbfc-p2p",
+          "housing-finance-company",
+          "credit-information-company"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "categories": [
+          "tier-1",
+          "tier-2",
+          "tier-3",
+          "tier-4",
+          "level-1",
+          "level-2",
+          "level-3",
+          "level-4",
+          "nbfc-base-layer",
+          "nbfc-middle-layer",
+          "nbfc-upper-layer",
+          "nbfc-top-layer",
+          "not-categorised"
+        ]
+      },
+      "structure": "Ids are NBFC Directions paragraph numbers with sub-paragraph, e.g. 61, 34(vii), 97(viii); CB-/UCB- ids cite clauses absent from the NBFC text; guidance lists sibling paragraphs",
+      "hardRequirements": [
+        {
+          "topic": "incident-reporting",
+          "requirement": "An NBFC shall ensure that cyber incidents are reported to it by the service provider without undue delay, so that an incident is reported by the NBFC to the RBI within six hours of detection by the service provider",
+          "value": 6,
+          "unit": "hours",
+          "controlId": "61"
+        },
+        {
+          "topic": "breach-notification",
+          "requirement": "The NBFC shall immediately notify RBI in the event of breach of security and leakage of confidential customer related information (no number of hours is stated)",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "28"
+        },
+        {
+          "topic": "board-reporting",
+          "requirement": "Central record of all material outsourcing of financial services, updated promptly, with half yearly reviews placed before the Board or Risk Management Committee",
+          "value": 2,
+          "unit": "per-year",
+          "controlId": "36"
+        },
+        {
+          "topic": "vendor-due-diligence",
+          "requirement": "At least on an annual basis, review the financial and operational condition of the service provider to assess its ability to continue to meet its outsourcing obligations",
+          "value": 1,
+          "unit": "per-year",
+          "controlId": "38"
+        },
+        {
+          "topic": "audit-cadence",
+          "requirement": "Regular audits of service providers (including sub-contractors); frequency determined by the nature and extent of risk and impact of the arrangement",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "76"
+        },
+        {
+          "topic": "audit-cadence",
+          "requirement": "UCBs and RCBs: regular audits of outsourcing arrangements, at least annually, by internal or external auditors",
+          "value": 1,
+          "unit": "per-year",
+          "controlId": "UCB-33"
+        },
+        {
+          "topic": "data-localisation",
+          "requirement": "IT outsourcing agreements provide for storage of data only in India (as applicable) as per extant regulatory requirements",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "74(vi)"
+        },
+        {
+          "topic": "data-localisation",
+          "requirement": "Offshore outsourcing of financial services: ensure that all original records continue to be maintained in India",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "53(viii)"
+        },
+        {
+          "topic": "mfa",
+          "requirement": "Implement multi-factor authentication for access to cloud applications",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "97(viii)"
+        },
+        {
+          "topic": "grievance-redressal",
+          "requirement": "If a complaint is rejected wholly or partly, or no reply is received within 30 days after the NBFC received it, the complainant may approach the RBI Ombudsman or the CEPC of the RBI Regional Office",
+          "value": 30,
+          "unit": "days",
+          "controlId": "57(4)"
+        },
+        {
+          "topic": "compliance-reporting",
+          "requirement": "Banks: ensure submission of an Annual Compliance Certificate on contracts for outsourcing of financial services, audit periodicity, major audit findings and action taken (DoS RBI; UCBs to RBI Regional Office; RCBs to NABARD)",
+          "value": 1,
+          "unit": "per-year",
+          "controlId": "CB-12(1)(vi)"
+        }
+      ],
+      "catalogFile": ".claude/skills/regulatory-catalogs/references/catalogs/rbi-outsourcing-risk-directions-2025.catalog.json",
       "lastReviewedAt": "2026-09-14"
     },
     {
@@ -2242,9 +2384,9 @@
   ],
   "provenance": {
     "harness": "claude-code",
-    "generatedAt": "2026-09-14T07:44:16Z",
+    "generatedAt": "2026-09-14T11:10:00Z",
     "workflow": "manual",
-    "agent": "ctx-researcher",
-    "sessionId": "b157e311-135c-4bae-a87c-99f2362a67a1"
+    "agent": "regulatory-cataloguer",
+    "model": "claude-opus-5"
   }
 }

@@ -2739,6 +2739,11 @@
               "regulator": "RBI",
               "instrument": "rbi-it-outsourcing-md-2023",
               "controlId": "17(c)"
+            },
+            {
+              "regulator": "RBI",
+              "instrument": "rbi-outsourcing-risk-directions-2025",
+              "controlId": "68"
             }
           ],
           "probeWorkflows": [
@@ -2801,6 +2806,11 @@
               "regulator": "RBI",
               "instrument": "rbi-it-outsourcing-md-2023",
               "controlId": "17(c)"
+            },
+            {
+              "regulator": "RBI",
+              "instrument": "rbi-outsourcing-risk-directions-2025",
+              "controlId": "68"
             }
           ],
           "probeWorkflows": [
@@ -6864,8 +6874,18 @@
             },
             {
               "regulator": "RBI",
+              "instrument": "rbi-outsourcing-risk-directions-2025",
+              "controlId": "29"
+            },
+            {
+              "regulator": "RBI",
               "instrument": "rbi-it-outsourcing-md-2023",
               "controlId": "17(j)"
+            },
+            {
+              "regulator": "RBI",
+              "instrument": "rbi-outsourcing-risk-directions-2025",
+              "controlId": "67"
             },
             {
               "regulator": "SEBI",
@@ -6935,8 +6955,18 @@
             },
             {
               "regulator": "RBI",
+              "instrument": "rbi-outsourcing-risk-directions-2025",
+              "controlId": "9"
+            },
+            {
+              "regulator": "RBI",
               "instrument": "rbi-it-outsourcing-md-2023",
               "controlId": "19(e)"
+            },
+            {
+              "regulator": "RBI",
+              "instrument": "rbi-outsourcing-risk-directions-2025",
+              "controlId": "79"
             }
           ],
           "probeWorkflows": [
@@ -6983,8 +7013,18 @@
             },
             {
               "regulator": "RBI",
+              "instrument": "rbi-outsourcing-risk-directions-2025",
+              "controlId": "60"
+            },
+            {
+              "regulator": "RBI",
               "instrument": "rbi-it-outsourcing-md-2023",
               "controlId": "13(a)"
+            },
+            {
+              "regulator": "RBI",
+              "instrument": "rbi-outsourcing-risk-directions-2025",
+              "controlId": "29"
             }
           ],
           "probeWorkflows": [
@@ -7031,8 +7071,18 @@
             },
             {
               "regulator": "RBI",
+              "instrument": "rbi-outsourcing-risk-directions-2025",
+              "controlId": "75"
+            },
+            {
+              "regulator": "RBI",
               "instrument": "rbi-it-outsourcing-md-2023",
               "controlId": "19(f)"
+            },
+            {
+              "regulator": "RBI",
+              "instrument": "rbi-outsourcing-risk-directions-2025",
+              "controlId": "80"
             },
             {
               "regulator": "SEBI",
@@ -7088,8 +7138,18 @@
             },
             {
               "regulator": "RBI",
+              "instrument": "rbi-outsourcing-risk-directions-2025",
+              "controlId": "62"
+            },
+            {
+              "regulator": "RBI",
               "instrument": "rbi-it-outsourcing-md-2023",
               "controlId": "10"
+            },
+            {
+              "regulator": "RBI",
+              "instrument": "rbi-outsourcing-risk-directions-2025",
+              "controlId": "13"
             }
           ],
           "probeWorkflows": [
@@ -7134,6 +7194,11 @@
               "regulator": "RBI",
               "instrument": "rbi-it-outsourcing-md-2023",
               "controlId": "6"
+            },
+            {
+              "regulator": "RBI",
+              "instrument": "rbi-outsourcing-risk-directions-2025",
+              "controlId": "18"
             }
           ],
           "probeWorkflows": [
@@ -7179,8 +7244,18 @@
             },
             {
               "regulator": "RBI",
+              "instrument": "rbi-outsourcing-risk-directions-2025",
+              "controlId": "74(i)"
+            },
+            {
+              "regulator": "RBI",
               "instrument": "rbi-it-outsourcing-md-2023",
               "controlId": "16(o)"
+            },
+            {
+              "regulator": "RBI",
+              "instrument": "rbi-outsourcing-risk-directions-2025",
+              "controlId": "74(xii)"
             }
           ],
           "probeWorkflows": [
@@ -7226,8 +7301,18 @@
             },
             {
               "regulator": "RBI",
+              "instrument": "rbi-outsourcing-risk-directions-2025",
+              "controlId": "74(xii)"
+            },
+            {
+              "regulator": "RBI",
               "instrument": "rbi-it-outsourcing-md-2023",
               "controlId": "19(h)"
+            },
+            {
+              "regulator": "RBI",
+              "instrument": "rbi-outsourcing-risk-directions-2025",
+              "controlId": "81"
             }
           ],
           "probeWorkflows": [
@@ -7275,8 +7360,18 @@
             },
             {
               "regulator": "RBI",
+              "instrument": "rbi-outsourcing-risk-directions-2025",
+              "controlId": "74(vi)"
+            },
+            {
+              "regulator": "RBI",
               "instrument": "rbi-it-outsourcing-md-2023",
               "controlId": "21(d)"
+            },
+            {
+              "regulator": "RBI",
+              "instrument": "rbi-outsourcing-risk-directions-2025",
+              "controlId": "94(v)"
             },
             {
               "regulator": "MeitY",
@@ -7499,6 +7594,11 @@
               "regulator": "RBI",
               "instrument": "rbi-it-outsourcing-md-2023",
               "controlId": "17(h)"
+            },
+            {
+              "regulator": "RBI",
+              "instrument": "rbi-outsourcing-risk-directions-2025",
+              "controlId": "61"
             }
           ],
           "probeWorkflows": [
@@ -9563,6 +9663,11 @@
               "controlId": "18(a)"
             },
             {
+              "regulator": "RBI",
+              "instrument": "rbi-outsourcing-risk-directions-2025",
+              "controlId": "83"
+            },
+            {
               "regulator": "SEBI",
               "instrument": "sebi-cscrf-2024",
               "controlId": "GV.SC.S6"
@@ -10045,6 +10150,11 @@
               "regulator": "RBI",
               "instrument": "rbi-it-outsourcing-md-2023",
               "controlId": "17(h)"
+            },
+            {
+              "regulator": "RBI",
+              "instrument": "rbi-outsourcing-risk-directions-2025",
+              "controlId": "61"
             },
             {
               "regulator": "MeitY",
@@ -11622,6 +11732,11 @@
               "regulator": "RBI",
               "instrument": "rbi-it-outsourcing-md-2023",
               "controlId": "App-II(b)"
+            },
+            {
+              "regulator": "RBI",
+              "instrument": "rbi-outsourcing-risk-directions-2025",
+              "controlId": "95(ii)"
             }
           ],
           "probeWorkflows": [
@@ -11787,6 +11902,11 @@
               "regulator": "RBI",
               "instrument": "rbi-it-outsourcing-md-2023",
               "controlId": "App-I.6(e)"
+            },
+            {
+              "regulator": "RBI",
+              "instrument": "rbi-outsourcing-risk-directions-2025",
+              "controlId": "97(xi)"
             }
           ],
           "probeWorkflows": [
@@ -12190,6 +12310,11 @@
               "regulator": "RBI",
               "instrument": "rbi-it-outsourcing-md-2023",
               "controlId": "App-II(c)"
+            },
+            {
+              "regulator": "RBI",
+              "instrument": "rbi-outsourcing-risk-directions-2025",
+              "controlId": "95(iii)"
             }
           ],
           "probeWorkflows": [

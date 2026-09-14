@@ -862,6 +862,93 @@
           "generatedAt": "2026-09-01T09:00:00Z"
         }
       }
+    },
+    {
+      "description": "repealed instrument with repealedOn and supersededBy",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.instruments",
+        "instruments": [
+          {
+            "instrumentId": "rbi-it-outsourcing-md-2023",
+            "regulator": "RBI",
+            "title": "Reserve Bank of India (Outsourcing of Information Technology Services) Directions, 2023",
+            "shortName": "RBI IT Outsourcing MD 2023 (repealed)",
+            "issuedOn": "2023-04-10",
+            "effectiveFrom": "2023-10-01",
+            "status": "repealed",
+            "repealedOn": "2025-11-28",
+            "supersededBy": [
+              "rbi-outsourcing-risk-directions-2025"
+            ],
+            "url": "https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12486",
+            "applicability": {
+              "entityTypes": [
+                "nbfc"
+              ],
+              "jurisdictions": [
+                "IN"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "description": "unknown status value is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.instruments",
+        "instruments": [
+          {
+            "instrumentId": "rbi-it-outsourcing-md-2023",
+            "regulator": "RBI",
+            "title": "Reserve Bank of India (Outsourcing of Information Technology Services) Directions, 2023",
+            "shortName": "RBI IT Outsourcing MD 2023",
+            "status": "withdrawn",
+            "url": "https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12486",
+            "applicability": {
+              "entityTypes": [
+                "nbfc"
+              ],
+              "jurisdictions": [
+                "IN"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "description": "repealed instrument without repealedOn is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.instruments",
+        "instruments": [
+          {
+            "instrumentId": "rbi-it-outsourcing-md-2023",
+            "regulator": "RBI",
+            "title": "Reserve Bank of India (Outsourcing of Information Technology Services) Directions, 2023",
+            "shortName": "RBI IT Outsourcing MD 2023",
+            "status": "repealed",
+            "supersededBy": [
+              "rbi-outsourcing-risk-directions-2025"
+            ],
+            "url": "https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12486",
+            "applicability": {
+              "entityTypes": [
+                "nbfc"
+              ],
+              "jurisdictions": [
+                "IN"
+              ]
+            }
+          }
+        ]
+      }
     }
   ]
 }

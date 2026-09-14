@@ -934,6 +934,11 @@
               "regulator": "RBI",
               "instrument": "rbi-it-outsourcing-md-2023",
               "controlId": "16(i)"
+            },
+            {
+              "regulator": "RBI",
+              "instrument": "rbi-outsourcing-risk-directions-2025",
+              "controlId": "34(v)"
             }
           ],
           "probeWorkflows": [
