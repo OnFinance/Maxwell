@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.session.summary",
+  "sessionId": "5eb9ad75-2cd9-42d5-90dc-a2c8c54b5f51",
+  "harness": "claude-code",
+  "harnessVersion": "2.1.270",
+  "runId": "run_01M2FB49N62CEDRW8T1SG2S33Z",
+  "workflow": "status",
+  "companyId": "example-co",
+  "startedAt": "2026-09-14T06:54:30.907Z",
+  "endedAt": "2026-09-14T06:54:59.716Z",
+  "durationMs": 28809,
+  "turns": 7,
+  "inferenceCalls": 7,
+  "toolCalls": {
+    "total": 6,
+    "byTool": {
+      "Skill": 1,
+      "Bash": 4,
+      "Read": 1
+    }
+  },
+  "subagentSessions": 0,
+  "permissionDenials": [
+    {
+      "toolName": "unknown",
+      "reason": "user-rejected"
+    },
+    {
+      "toolName": "unknown",
+      "reason": "user-rejected"
+    },
+    {
+      "toolName": "unknown",
+      "reason": "user-rejected"
+    }
+  ],
+  "models": [
+    {
+      "model": "claude-sonnet-5",
+      "provider": "anthropic",
+      "tokens": {
+        "input": 14,
+        "output": 1951,
+        "cacheWrite5m": 0,
+        "cacheWrite1h": 26661,
+        "cacheRead": 268046,
+        "thinking": 154
+      },
+      "webSearchRequests": 0,
+      "webFetchRequests": 0,
+      "costUsd": 0.179791
+    }
+  ],
+  "costUsd": {
+    "computed": 0.179791,
+    "reported": 0.179791,
+    "deltaPct": 0
+  },
+  "pricingVersion": "2026-09-13",
+  "dedup": {
+    "strategy": "requestId-max-total-tokens",
+    "duplicatesDropped": 8
+  },
+  "filesWritten": [],
+  "linesAdded": 0,
+  "linesRemoved": 0,
+  "outcome": "success",
+  "transcriptFormatVersion": "2.1.270",
+  "provenance": {
+    "harness": "script",
+    "generatedAt": "2026-09-14T06:55:00Z",
+    "sessionId": "5eb9ad75-2cd9-42d5-90dc-a2c8c54b5f51",
+    "runId": "run_01M2FB49N62CEDRW8T1SG2S33Z",
+    "workflow": "status",
+    "agent": ".claude/scripts/sessions/ingest.mjs"
+  }
+}

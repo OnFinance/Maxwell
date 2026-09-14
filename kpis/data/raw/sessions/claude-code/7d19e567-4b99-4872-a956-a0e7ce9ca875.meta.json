@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.session.meta",
+  "sessionId": "7d19e567-4b99-4872-a956-a0e7ce9ca875",
+  "harness": "claude-code",
+  "harnessVersion": "2.1.270",
+  "runId": "run_01M2FBZX819NVCG18RGTPEXWT5",
+  "workflow": "status",
+  "args": {
+    "appIds": [],
+    "envIds": [],
+    "dryRun": false
+  },
+  "startedAt": "2026-09-14T07:09:35Z",
+  "cwd": "/home/priyesh/Maxwell",
+  "gitBranch": "main",
+  "gitCommit": "8bc7a514241f35da078b2e6ade0eceb34e6a3733",
+  "transcriptPath": "kpis/data/raw/sessions/claude-code/7d19e567-4b99-4872-a956-a0e7ce9ca875.jsonl",
+  "sampled": true,
+  "samplingReason": "forced",
+  "model": "fable",
+  "invokedBy": {
+    "type": "script",
+    "id": "headless"
+  },
+  "provenance": {
+    "harness": "script",
+    "generatedAt": "2026-09-14T07:09:35Z",
+    "sessionId": "7d19e567-4b99-4872-a956-a0e7ce9ca875",
+    "runId": "run_01M2FBZX819NVCG18RGTPEXWT5",
+    "agent": "hooks/session-start"
+  },
+  "companyId": "example-co",
+  "endedAt": "2026-09-14T07:09:36Z"
+}
