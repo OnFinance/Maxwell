@@ -29,8 +29,13 @@ const now = () => new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
 const semver = (v) => { const m = /(\d+)\.(\d+)\.(\d+)/.exec(String(v || '')); return m ? `${m[1]}.${m[2]}.${m[3]}` : '0.0.0'; };
 const registry = JSON.parse(readFileSync('kpis/metrics.json', 'utf8'));
 const metaPath = `${dir}/${sessionId}.meta.json`;
+// When no hook recorded the session, the runner names its workflow and company in the environment (as for
+// session-start.mjs); only vocabulary workflows and slug company ids are accepted.
+const workflowVocab = JSON.parse(readFileSync(new URL('../../schemas/vocab/workflows.schema.json', import.meta.url), 'utf8')).enum;
+const envWorkflow = workflowVocab.includes(process.env.MAXWELL_WORKFLOW) ? process.env.MAXWELL_WORKFLOW : 'manual';
+const envCompany = /^[a-z0-9][a-z0-9-]{1,62}$/.test(process.env.MAXWELL_COMPANY_ID || '') ? process.env.MAXWELL_COMPANY_ID : null;
 const meta = existsSync(metaPath) ? JSON.parse(readFileSync(metaPath, 'utf8')) : {
-  schemaVersion: '1', kind: 'maxwell.session.meta', sessionId, harness, workflow: 'manual',
+  schemaVersion: '1', kind: 'maxwell.session.meta', sessionId, harness, workflow: envWorkflow, ...(envCompany ? { companyId: envCompany } : {}),
   args: { appIds: [], envIds: [], dryRun: false }, startedAt: now(), cwd: root,
   transcriptPath: `${dir}/${sessionId}.jsonl`, sampled: false, samplingReason: 'pending', model: process.env.MAXWELL_MODEL || 'unknown',
   invokedBy: { type: 'script', id: 'headless' }, provenance: { harness: 'script', generatedAt: now(), sessionId, agent: '.claude/scripts/sessions/ingest.mjs' },
