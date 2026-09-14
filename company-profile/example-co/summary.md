@@ -3,16 +3,16 @@ schemaVersion: "1"
 kind: maxwell.company.summary
 companyId: example-co
 title: Example Capital Markets cyber resilience summary
-version: "3.0.0"
-sections: [overview, regulatory-posture, data-flows, vendors, control-summary]
+version: "4.0.0"
+sections: [overview, regulatory-posture, data-flows, vendors, control-summary, open-findings]
 provenance:
   harness: claude-code
-  generatedAt: "2026-09-14T11:10:49Z"
-  sessionId: "cb91f6b0-eba0-4378-9168-48137e203b72"
+  generatedAt: "2026-09-14T11:33:17Z"
+  sessionId: "b471e06f-d067-44c8-a82b-52614ac7344e"
   runId: run_01M2FGNVVQ15ZKXZWGW74YWAAQ
-  workflow: refresh-metastore
+  workflow: probe-iac
   agent: report-writer
-  inputsHash: c55740a47c5d0ed5a451d0d866bdcf3483c65e3c828977cb131c2a49d832b083
+  inputsHash: 22f4002013e37955e565cd0668b3f2c93da7475c50f8bdc848118ede632b9d78
 ---
 # Example Capital Markets — cyber resilience summary
 
@@ -140,3 +140,34 @@ observation recorded this run, [obs_01M2FH0ZNKQRSBK4RWM938HDWT], is a `refresh-c
 (`result: not-satisfied`) against `` `rbi-cyber-tech-directions-2026:12` ``, not a control assessment against
 evidence, so it was not reconciled into that control's `effectiveness`/`lastAssessedAt` and does not count
 toward coverage.
+
+## Open findings
+`probe-iac` ran against `example-co` this run (`provenance.runId` run_01M2FGNVVQ15ZKXZWGW74YWAAQ,
+`provenance.sessionId` b471e06f-d067-44c8-a82b-52614ac7344e): 0 new IaC-misconfiguration finding(s), 0 re-seen
+(0 reopened), 10 observation(s) recorded (8 `not-satisfied`, 2 `partial`, 1 `satisfied` against the controls
+probed) [obs_01M2FVWKAN4DRFH28B84CAGWXP]..[obs_01M2FVWKNVPDN4FV1B9FQ0YEWH]. None of the ten observations
+produced a candidate finding this run, so the table below is unchanged from the pre-existing ledger state:
+6 open findings, all raised by `refresh-vendor-ctx`, none of them IaC-related.
+
+Latest record per finding id in `company-profile/example-co/soc/main.jsonl` with `status` in
+`open | triaged | remediating`, as of `provenance.generatedAt` 2026-09-14T11:33:17Z (6 open, 0 past SLA):
+
+### High
+
+| Id | Title | Target | Regulatory ref | First seen | SLA due | SLA status | Status | Initiative |
+|---|---|---|---|---|---|---|---|---|
+| [fnd_01M2FS4806WHXANC3Q9QXEAXGF] | assurance-expiring: github-cloud SOC 2 Type II report expires 2026-09-30, inside 90-day window | vendor `github` | SEBI sebi-cscrf-2024 GV.SC.S4 (SEBI CSCRF 2024) | 2026-09-14 | 2026-10-14T10:46:39Z | due in 30 d | open | n/a |
+| [fnd_01M2FS9ECP3E0MTCRQFEJ97930] | contract-expiring: ATLAS-2025-1189 ended 2026-05-31, 106 days ago, no renewal evidence | vendor `mongodb-atlas` | SEBI sebi-cscrf-2024 GV.SC.S4 | 2026-09-14 | 2026-10-14T10:46:39Z | due in 30 d | open | n/a |
+
+### Medium
+
+| Id | Title | Target | Regulatory ref | First seen | SLA due | SLA status | Status | Initiative |
+|---|---|---|---|---|---|---|---|---|
+| [fnd_01M2FRY4TTS6M3JJD1F1P7J0TQ] | material-without-evidence: aws-mumbai (order-routing, pii/financial) has no documented exit plan | vendor `aws` | SEBI sebi-cscrf-2024 GV.SC.S3 | 2026-09-14 | 2026-12-13T10:46:39Z | due in 90 d | open | n/a |
+| [fnd_01M2FS481DGTPTR9NJGKAAMF49] | contract-expiring: GH-ENT-2025-07 ended 2026-06-30, 76 days before now, no renewal evidence | vendor `github` | SEBI sebi-cscrf-2024 GV.SC.S3 | 2026-09-14 | 2026-12-13T10:46:39Z | due in 90 d | open | n/a |
+| [fnd_01M2FS482NWXE7E5MCZY2QMAZ0] | material-without-evidence: github lacks audit rights and a documented exit plan | vendor `github` | SEBI sebi-cscrf-2024 GV.SC.S3 | 2026-09-14 | 2026-12-13T10:46:39Z | due in 90 d | open | n/a |
+| [fnd_01M2FS9EBVSP2DPWN5K2D91QKW] | material-without-evidence: atlas-mumbai has no audit rights, no exit plan, contract lapsed | vendor `mongodb-atlas` | SEBI sebi-cscrf-2024 GV.SC.S3 | 2026-09-14 | 2026-12-13T10:46:39Z | due in 90 d | open | n/a |
+
+<!-- source: latest-state map over soc/main.jsonl kind=finding, filtered to status in open|triaged|remediating; SLA status = ceil((slaDueAt - 2026-09-14T11:33:17Z)/86400000) days -->
+
+No findings in `risk-accepted`, `false-positive` or `duplicate` this period.
