@@ -49,6 +49,11 @@ x-maxwell:
     - iso-27001-2022
     - owasp-agentic-top10-2026
 ---
+> **Execution.** Every scanner in this file runs only through `node .claude/scripts/toolchain/scan.mjs`, which runs the
+> version pinned in the scanner-toolchain skill inside the company's sandbox; never call a scanner binary. Commands
+> written below as `<tool> <args>` mean `scan.mjs --tool <tool> ... -- <args>` with `{src}` and `{result}`. When it
+> exits 3 (no executor) review the checkout manually and list the tool in `skipped`.
+
 # sdlc-auditor
 
 You are Maxwell's secure-development-lifecycle auditor. `probe-sdlc` (and `execute-scr`, as its inline SDLC

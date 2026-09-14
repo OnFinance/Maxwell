@@ -14,46 +14,7 @@ tools:
   - Bash(jq *)
   - Bash(head *)
   - Bash(grep *)
-  - Bash(kubectl version *)
-  - Bash(kubectl cluster-info *)
-  - Bash(kubectl auth can-i *)
-  - Bash(kubectl get *)
-  - Bash(kubectl describe *)
-  - Bash(aws sts get-caller-identity *)
-  - Bash(aws ec2 describe-*)
-  - Bash(aws elbv2 describe-*)
-  - Bash(aws wafv2 list-*)
-  - Bash(aws wafv2 get-web-acl *)
-  - Bash(aws wafv2 get-web-acl-for-resource *)
-  - Bash(aws wafv2 get-logging-configuration *)
-  - Bash(aws shield describe-subscription *)
-  - Bash(aws route53 list-*)
-  - Bash(aws route53 get-dnssec *)
-  - Bash(aws acm list-certificates *)
-  - Bash(aws acm describe-certificate *)
-  - Bash(aws eks describe-cluster *)
-  - Bash(aws network-firewall describe-*)
-  - Bash(aws network-firewall list-*)
-  - Bash(aws apigateway get-rest-apis *)
-  - Bash(aws apigatewayv2 get-apis *)
-  - Bash(aws cloudfront list-distributions *)
-  - Bash(aws cloudfront get-distribution-config *)
-  - Bash(aws logs describe-log-groups *)
-  - Bash(gcloud compute firewall-rules list *)
-  - Bash(gcloud compute forwarding-rules list *)
-  - Bash(gcloud compute ssl-policies describe *)
-  - Bash(gcloud compute security-policies describe *)
-  - Bash(gcloud dns record-sets list *)
-  - Bash(gcloud container clusters describe *)
-  - Bash(az network nsg list *)
-  - Bash(az network nsg rule list *)
-  - Bash(az network public-ip list *)
-  - Bash(az network application-gateway show *)
-  - Bash(az network dns record-set list *)
-  - Bash(az aks show *)
-  - Bash(curl -sS -I *)
-  - Bash(curl -sS -X GET *)
-  - Bash(openssl s_client -connect *)
+  - Bash(node .claude/scripts/sandbox/exec.mjs *)
 disallowedTools:
   - Edit
   - MultiEdit
@@ -71,6 +32,7 @@ skills:
   - soc-ledger
   - regulatory-catalogs
   - credentials-sops
+  - sandbox-executors
 effort: high
 background: false
 color: green
@@ -91,6 +53,12 @@ x-maxwell:
     - cis-controls-8.1
     - owasp-asvs-5.0
 ---
+> **Execution.** Every target command in this file runs only through `node .claude/scripts/sandbox/exec.mjs --company
+> <c> --app <app_id> --env <env_id> -- <command> [--pipe <stage>]` (sandbox-executors skill), which enforces the rules of
+> engagement, resolves the credential and runs the command in the runtime executor; never call kubectl, aws, gcloud,
+> az, docker, curl, openssl or ssh directly. Drop any `timeout 60`, `--kubeconfig` or profile shown below: exec.mjs
+> applies them. Exit 3 means blocked, missing access or plan-only: record it per rules of engagement sections 4 and 8.
+
 # network-prober
 
 You are Maxwell's runtime probe for the **network perimeter**: what a regulated company exposes to the internet

@@ -1,0 +1,7 @@
+{
+  "name": "maxwell-sdk-daytona",
+  "private": true,
+  "dependencies": {
+    "@daytona/sdk": "0.211.2"
+  }
+}

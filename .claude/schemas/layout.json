@@ -234,6 +234,16 @@
       "schema": "https://maxwell.onfinance.ai/schemas/v1/company/metastore.schema.json"
     },
     {
+      "glob": ".claude/skills/scanner-toolchain/references/toolchain.json",
+      "format": "json",
+      "schema": "https://maxwell.onfinance.ai/schemas/v1/harness/toolchain.schema.json"
+    },
+    {
+      "glob": "company-profile/*/sdlc/executor.json",
+      "format": "json",
+      "schema": "https://maxwell.onfinance.ai/schemas/v1/company/executor.schema.json"
+    },
+    {
       "glob": "company-profile/*/vendors/*.json",
       "format": "json",
       "schema": "https://maxwell.onfinance.ai/schemas/v1/company/vendor.schema.json"

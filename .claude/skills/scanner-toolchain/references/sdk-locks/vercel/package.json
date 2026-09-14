@@ -1,0 +1,7 @@
+{
+  "name": "maxwell-sdk-vercel",
+  "private": true,
+  "dependencies": {
+    "@vercel/sandbox": "3.3.0"
+  }
+}

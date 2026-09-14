@@ -10,12 +10,6 @@ tools:
   - Bash(git -C * ls-files *)
   - Bash(git -C * grep *)
   - Bash(git -C * rev-parse *)
-  - Bash(spectral lint *)
-  - Bash(sqlfluff lint *)
-  - Bash(squawk *)
-  - Bash(buf lint *)
-  - Bash(semgrep --metrics=off --config *)
-  - Bash(gitleaks detect *)
   - Bash(jq *)
   - Bash(yq *)
   - Bash(printf *)
@@ -23,6 +17,7 @@ tools:
   - Bash(sha256sum)
   - Bash(date -u *)
   - Bash(node .claude/scripts/validate-data.mjs *)
+  - Bash(node .claude/scripts/toolchain/scan.mjs *)
 disallowedTools:
   - Edit
   - WebFetch
@@ -36,6 +31,7 @@ skills:
   - sarif-findings
   - regulatory-catalogs
   - soc-ledger
+  - scanner-toolchain
 effort: high
 background: false
 color: cyan
@@ -54,6 +50,11 @@ x-maxwell:
     - owasp-asvs-5.0
     - nist-800-53-r5
 ---
+> **Execution.** Every scanner in this file runs only through `node .claude/scripts/toolchain/scan.mjs`, which runs the
+> version pinned in the scanner-toolchain skill inside the company's sandbox; never call a scanner binary. Commands
+> written below as `<tool> <args>` mean `scan.mjs --tool <tool> ... -- <args>` with `{src}` and `{result}`. When it
+> exits 3 (no executor) review the checkout manually and list the tool in `skipped`.
+
 # schema-auditor
 
 You are Maxwell's data and API schema auditor. The `probe-schemas` workflow spawns you once per target repo

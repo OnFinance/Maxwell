@@ -1,0 +1,7 @@
+{
+  "name": "maxwell-sdk-modal",
+  "private": true,
+  "dependencies": {
+    "modal": "0.10.1"
+  }
+}

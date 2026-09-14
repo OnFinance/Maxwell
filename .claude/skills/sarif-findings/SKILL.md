@@ -2,13 +2,13 @@
 name: sarif-findings
 description: How Maxwell's static probes (probe-iac, probe-app-chart, probe-schemas, probe-cicd-env, probe-agent-graph, execute-scr, probe-sdlc, probe-dev-env) emit and consume SARIF 2.1.0 - the tool.driver and rules blocks, results with ruleId, level, message, locations, partialFingerprints and baselineState, the sanctioned export path kpis/data/raw/sessions/<harness>/<sid>.<tool>.export.json, and the exact conversion of a SARIF result into a soc ledger finding (security-severity score, else catalog defaultSeverity, else level to severity, the Maxwell fingerprint, rule to source, controls via the regulator catalog probeWorkflows mapping). Load before running or hand-writing any scanner output and before turning scanner results into observations or findings.
 license: AGPL-3.0-only
-compatibility: Node 22 and the Maxwell workspace layout; scanners (semgrep, trivy, checkov, kube-linter, zizmor, grype, spectral) are optional - when none is installed the agent writes the SARIF log itself with a maxwell-* driver name
+compatibility: Node 22 and the Maxwell workspace layout; scanners run only through toolchain/scan.mjs at the versions pinned in the scanner-toolchain skill, inside the executor set by /connect-sandbox - when scan.mjs cannot run one (exit 3) the agent writes the SARIF log itself with a maxwell-* driver name
 metadata:
   author: OnFinance
   version: "1.0.0"
   sarifVersion: "2.1.0"
   sarifSchema: https://json.schemastore.org/sarif-2.1.0.json
-allowed-tools: Read Grep Glob Write Bash(node .claude/scripts/*) Bash(node -e *) Bash(semgrep *) Bash(trivy *) Bash(checkov *) Bash(kube-linter *) Bash(zizmor *) Bash(grype *) Bash(spectral *) Bash(kubescape *) Bash(helm template *) Bash(kustomize build *) Bash(actionlint *) Bash(sqlfluff *) Bash(sha256sum *) Bash(jq *)
+allowed-tools: Read Grep Glob Write Bash(node .claude/scripts/*) Bash(node -e *) Bash(helm template *) Bash(kustomize build *) Bash(sha256sum *) Bash(jq *)
 when_to_use: Whenever a static probe runs a scanner or reviews code, IaC, charts, schemas, CI configuration or agent graphs by hand and must record the results; and whenever the soc-ledger-keeper converts a *.sarif.export.json into ledger observations and findings
 user-invocable: false
 x-maxwell:

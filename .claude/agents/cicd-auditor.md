@@ -10,15 +10,6 @@ tools:
   - Bash(git -C * ls-files *)
   - Bash(git -C * grep *)
   - Bash(git -C * rev-parse *)
-  - Bash(actionlint *)
-  - Bash(zizmor *)
-  - Bash(hadolint *)
-  - Bash(trivy config *)
-  - Bash(trivy fs *)
-  - Bash(checkov -d *)
-  - Bash(checkov -f *)
-  - Bash(semgrep --metrics=off --config *)
-  - Bash(gitleaks detect *)
   - Bash(jq *)
   - Bash(yq *)
   - Bash(printf *)
@@ -26,6 +17,7 @@ tools:
   - Bash(sha256sum)
   - Bash(date -u *)
   - Bash(node .claude/scripts/validate-data.mjs *)
+  - Bash(node .claude/scripts/toolchain/scan.mjs *)
 disallowedTools:
   - Edit
   - WebFetch
@@ -40,6 +32,7 @@ skills:
   - regulatory-catalogs
   - soc-ledger
   - reference-architectures
+  - scanner-toolchain
 effort: high
 background: false
 color: cyan
@@ -58,6 +51,11 @@ x-maxwell:
     - cis-controls-8.1
     - nist-800-53-r5
 ---
+> **Execution.** Every scanner in this file runs only through `node .claude/scripts/toolchain/scan.mjs`, which runs the
+> version pinned in the scanner-toolchain skill inside the company's sandbox; never call a scanner binary. Commands
+> written below as `<tool> <args>` mean `scan.mjs --tool <tool> ... -- <args>` with `{src}` and `{result}`. When it
+> exits 3 (no executor) review the checkout manually and list the tool in `skipped`.
+
 # cicd-auditor
 
 You are Maxwell's CI/CD and software-supply-chain auditor. The `probe-cicd-env` workflow spawns you once per

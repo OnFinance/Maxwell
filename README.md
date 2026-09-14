@@ -58,7 +58,7 @@ flowchart LR
   end
   A -- "validated writes" --> WS[("Workspace<br/>company-profile/ applications/<br/>kpis/ cves/")]
   H["Hooks: write guard,<br/>post-write validation"] -. "block invalid writes" .-> WS
-  WS --> V["npm run validate<br/>44 JSON Schemas"]
+  WS --> V["npm run validate<br/>46 JSON Schemas"]
   Harness -- "session transcript" --> K["KPI ingest and compute"]
   K --> WS
 ```
@@ -117,6 +117,7 @@ Maxwell/
 │       │   │       └── timeline.json
 │       │   └── master.json
 │       ├── sdlc/
+│       │   ├── executor.json             # where scanners and runtime probes run
 │       │   ├── metastore.json
 │       │   └── policy.json
 │       ├── soc/
@@ -191,7 +192,7 @@ flowchart TB
 Invoke a workflow as `/<name> <company_id> [--app=<app_id>] [--env=<env_id>] [--dry-run]` in an interactive
 session, or through the [headless runner](#running-headless). Every workflow has a `refuter` agent challenge each
 candidate before anything is written. Utility commands: `/validate`, `/kpis`, `/seed-company <company_id>`,
-`/status <company_id>`.
+`/status <company_id>`, `/connect-sandbox <company_id>`.
 
 <details>
 <summary>What each workflow does</summary>
@@ -348,6 +349,31 @@ node .claude/scripts/creds/sops.mjs encrypt <app_id> /path/to/decrypted-credenti
 
 `credentials.json` holds locators such as environment variable names, Vault paths and ARNs, never secret values.
 
+**Connect a sandbox**
+
+Scanners and runtime probe commands run in a sandbox you choose. Maxwell asks the questions:
+
+```bash
+claude
+> /connect-sandbox acme-securities
+```
+
+| Where | Scanners | Runtime probes | Notes |
+|---|---|---|---|
+| Kubernetes (your cluster) | yes | yes | non-root pod per run; add a default-deny egress NetworkPolicy to the namespace |
+| Docker or Podman (this machine) | yes | yes | container per run with no network and a read-only root |
+| [E2B](https://e2b.dev) | yes | no | microVM; BYOC and self-hosting available |
+| [Daytona](https://www.daytona.io) | yes | no | digest-pinned image; BYOC custom regions |
+| [Modal](https://modal.com) | yes | no | `ap-south` region in Mumbai |
+| [Vercel Sandbox](https://vercel.com/docs/sandbox) | yes | no | `bom1` region in Mumbai |
+| This machine | yes | yes | no isolation |
+
+Runtime probes never use a hosted sandbox, because their commands carry the target environment's credentials. The
+choice is saved in `company-profile/<company_id>/sdlc/executor.json`; provider API keys stay in
+`~/.config/maxwell/sandbox/`, outside the repository. If the company restricts data residency to India, Maxwell
+offers only the Mumbai regions unless you explicitly accept otherwise. `node .claude/scripts/sandbox/connect.mjs test
+--company <company_id>` re-runs the connection check.
+
 **Connect ComplianceOS search**
 
 Agents look up regulator circulars, directions and clauses in [ComplianceOS](https://onfinance.ai) first, and use
@@ -402,7 +428,7 @@ node .claude/scripts/run-headless.mjs --workflow refresh-apps --company acme-sec
 
 ## Validation and guardrails
 
-- **Schemas.** 44 JSON Schemas under `.claude/schemas/`, checked for metaschema validity, lint and formatting with
+- **Schemas.** 46 JSON Schemas under `.claude/schemas/`, checked for metaschema validity, lint and formatting with
   [`@sourcemeta/jsonschema`](https://github.com/sourcemeta/jsonschema). Each has unit tests with valid and invalid
   cases.
 - **Closed vocabularies.** Regulators, instruments, workflows, entity types and status lifecycles live in
@@ -422,13 +448,17 @@ node .claude/scripts/run-headless.mjs --workflow refresh-apps --company acme-sec
 - **Read-only by design.** Runtime probes use read-only credentials and read-only command families. Production
   requires explicit environment ids, allowed windows and rate limits. The rules are enforced by permission rules,
   hooks and the rules-of-engagement skill.
-- **No execution sandbox yet.** Probe commands run from the machine hosting the harness. A container or in-cluster
-  executor is planned.
-- **Scanners are not pinned yet.** Static probes use tools such as semgrep, gitleaks, trivy and checkov when
-  installed, and otherwise fall back to manual review, which is less reproducible. A pinned scanner image is planned.
-- **Transcript format.** Claude Code's session transcript format is internal and can change between releases. The
-  parser is defensive and records the format version.
-- **Cost figures are estimates.** They use list prices, not your bill.
+- **Sandboxed execution.** Scanners and runtime probe commands run in the executor chosen with `/connect-sandbox`:
+  Kubernetes, Docker or Podman, E2B, Daytona, Modal, Vercel Sandbox, or this machine. Scanners get the checkout
+  read-only with no network. Runtime commands use only self-hosted executors, pass the command allow-list in
+  `.claude/skills/runtime-probe-rules-of-engagement/references/command-allowlist.json`, and receive credentials as
+  mounted files, never as arguments. The hosted sandbox SDKs are pinned by lockfile and covered by mocked tests; run
+  the connection check against your own account before relying on them.
+- **Pinned scanners.** Every scanner and runtime CLI is pinned in
+  `.claude/skills/scanner-toolchain/references/toolchain.json` by exact version, release sha256 per platform (checked
+  against the project's checksum file, or recorded at pin time where the project publishes none), image digest, and
+  hash-locked requirements for Python tools installed with a pinned `uv`. The version each tool prints is checked
+  before its output is used, and every SARIF run records the pin it ran with.
 - **ComplianceOS login.** ComplianceOS offers only user logins, so Maxwell stores an email and password in
   `~/.config/maxwell/complianceos.env` (mode 0600) and caches the token for up to 2 hours in `~/.cache/maxwell/`.
   Claude Code deny rules (`Read(~/.config/maxwell/**)`, `Read(~/.cache/maxwell/**)`) block its file tools from

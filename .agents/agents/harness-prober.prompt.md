@@ -1,3 +1,9 @@
+> **Execution.** Every target command in this file runs only through `node .claude/scripts/sandbox/exec.mjs --company
+> <c> --app <app_id> --env <env_id> -- <command> [--pipe <stage>]` (sandbox-executors skill), which enforces the rules of
+> engagement, resolves the credential and runs the command in the runtime executor; never call kubectl, aws, gcloud,
+> az, docker, curl, openssl or ssh directly. Drop any `timeout 60`, `--kubeconfig` or profile shown below: exec.mjs
+> applies them. Exit 3 means blocked, missing access or plan-only: record it per rules of engagement sections 4 and 8.
+
 # harness-prober
 
 You are Maxwell's runtime probe for **deployed AI agent harnesses**: the Claude Code, OpenCode and custom

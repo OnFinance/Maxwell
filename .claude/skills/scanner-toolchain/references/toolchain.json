@@ -1,0 +1,1170 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.toolchain",
+  "pinnedAt": "2026-09-14T15:11:33Z",
+  "platforms": [
+    "linux-amd64",
+    "linux-arm64",
+    "darwin-arm64"
+  ],
+  "tools": [
+    {
+      "name": "jq",
+      "category": "helper",
+      "version": "1.8.2",
+      "source": "https://github.com/jqlang/jq/releases/tag/jq-1.8.2",
+      "versionCheck": {
+        "args": [
+          "--version"
+        ],
+        "expect": "1.8.2"
+      },
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://github.com/jqlang/jq/releases/download/jq-1.8.2/jq-linux-amd64",
+          "sha256": "b1c22172dd303f3be49e935aa56aa48a8b7a46e0bc838b4997d3bb451495870f",
+          "sha256Source": "upstream-checksums",
+          "archive": "none"
+        },
+        "linux-arm64": {
+          "url": "https://github.com/jqlang/jq/releases/download/jq-1.8.2/jq-linux-arm64",
+          "sha256": "8b85c817833814ddca00a144c33705546355afccf0cf39b188f3cdb48b852309",
+          "sha256Source": "upstream-checksums",
+          "archive": "none"
+        },
+        "darwin-arm64": {
+          "url": "https://github.com/jqlang/jq/releases/download/jq-1.8.2/jq-macos-arm64",
+          "sha256": "2d75340ba57a4b4b4c8708a21c2dc8e958a48aaa8bba13b27f77f6e4c0eca07e",
+          "sha256Source": "upstream-checksums",
+          "archive": "none"
+        }
+      }
+    },
+    {
+      "name": "uv",
+      "category": "helper",
+      "version": "0.12.13",
+      "versionCheck": {
+        "args": [
+          "--version"
+        ],
+        "expect": "0.12.13"
+      },
+      "source": "https://github.com/astral-sh/uv/releases/tag/0.12.13",
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://github.com/astral-sh/uv/releases/download/0.12.13/uv-x86_64-unknown-linux-gnu.tar.gz",
+          "sha256": "745765a3b6e360ad76743599ae5c42e9278c7edf8bbff9fc76d05bf2623a04dd",
+          "sha256Source": "upstream-checksums-verified",
+          "archive": "tar.gz",
+          "binaryPath": "uv-x86_64-unknown-linux-gnu/uv",
+          "verifiedVersionOutput": "uv 0.12.13 (x86_64-unknown-linux-gnu)"
+        },
+        "linux-arm64": {
+          "url": "https://github.com/astral-sh/uv/releases/download/0.12.13/uv-aarch64-unknown-linux-gnu.tar.gz",
+          "sha256": "2eaa5d94f5db7b3a1a092156b9420459e42ab0217d917fe74a876309cef9b5e9",
+          "sha256Source": "upstream-checksums",
+          "archive": "tar.gz",
+          "binaryPath": "uv-x86_64-unknown-linux-gnu/uv"
+        },
+        "darwin-arm64": {
+          "url": "https://github.com/astral-sh/uv/releases/download/0.12.13/uv-aarch64-apple-darwin.tar.gz",
+          "sha256": "7e6ddb9316acc00f2296c82ff4d99977870ee34b2f0ddcae9444d714db9364ed",
+          "sha256Source": "upstream-checksums",
+          "archive": "tar.gz",
+          "binaryPath": "uv-x86_64-unknown-linux-gnu/uv"
+        }
+      },
+      "image": {
+        "ref": "ghcr.io/astral-sh/uv:0.12.13",
+        "digest": "sha256:b485bd65cc2cf1c9a93b3554012c9c3778cf7b1b5fd3d3096ce9e1226c97e1e6",
+        "invoke": "/uv",
+        "user": "",
+        "platforms": [
+          "linux/amd64",
+          "linux/arm64"
+        ]
+      }
+    },
+    {
+      "name": "aws",
+      "category": "runtime-cli",
+      "version": "2.36.44",
+      "source": "https://github.com/aws/aws-cli",
+      "versionCheck": {
+        "args": [
+          "--version"
+        ],
+        "expect": "2.36.44"
+      },
+      "image": {
+        "ref": "docker.io/amazon/aws-cli:2.36.44",
+        "digest": "sha256:e8467f2c319f9bc9a1471808a69949a76915e9c95eaf4a09ece9f9e85fd32747",
+        "invoke": "/usr/local/bin/aws",
+        "user": "",
+        "platforms": [
+          "linux/amd64",
+          "linux/arm64"
+        ]
+      }
+    },
+    {
+      "name": "az",
+      "category": "runtime-cli",
+      "version": "2.90.0",
+      "source": "https://github.com/Azure/azure-cli/releases",
+      "versionCheck": {
+        "args": [
+          "version"
+        ],
+        "expect": "2.90.0"
+      },
+      "image": {
+        "ref": "mcr.microsoft.com/azure-cli:2.90.0",
+        "digest": "sha256:e3768dde8142efa45d8f356a317aaac77abd7da15ba3719b0a150e9453f251db",
+        "invoke": "az",
+        "user": "",
+        "platforms": [
+          "linux/amd64",
+          "linux/arm64"
+        ]
+      }
+    },
+    {
+      "name": "crane",
+      "category": "runtime-cli",
+      "version": "0.22.1",
+      "source": "https://github.com/google/go-containerregistry/releases",
+      "versionCheck": {
+        "args": [
+          "version"
+        ],
+        "expect": "0.22.1"
+      },
+      "image": {
+        "ref": "gcr.io/go-containerregistry/crane:v0.22.1",
+        "digest": "sha256:1f968817b95790bed063f71175aa6b8ff879fa17064020415f3e18bb6e6a36e1",
+        "invoke": "/ko-app/crane",
+        "user": "65532",
+        "platforms": [
+          "linux/amd64",
+          "linux/arm64"
+        ]
+      }
+    },
+    {
+      "name": "curl",
+      "category": "runtime-cli",
+      "version": "8.22.0",
+      "source": "https://github.com/curl/curl/releases",
+      "versionCheck": {
+        "args": [
+          "--version"
+        ],
+        "expect": "8.22.0"
+      },
+      "image": {
+        "ref": "docker.io/curlimages/curl:8.22.0",
+        "digest": "sha256:58adaa4e8dca9c988bae2aba4ab3434a0bb2da16bbe3f92dec39ec7785166777",
+        "invoke": "curl",
+        "user": "curl_user",
+        "platforms": [
+          "linux/386",
+          "linux/amd64",
+          "linux/arm",
+          "linux/arm64",
+          "linux/ppc64le"
+        ]
+      }
+    },
+    {
+      "name": "docker",
+      "category": "runtime-cli",
+      "version": "29.8.0",
+      "source": "https://github.com/docker/cli/releases",
+      "versionCheck": {
+        "args": [
+          "--version"
+        ],
+        "expect": "29.8.0"
+      },
+      "image": {
+        "ref": "docker.io/library/docker:29.8.0-cli",
+        "digest": "sha256:eccaacfeed644c7de222ff047483568cb988dde95476fbaaf10ea2d04921bb66",
+        "invoke": "docker",
+        "user": "",
+        "platforms": [
+          "linux/amd64",
+          "linux/arm",
+          "linux/arm64"
+        ]
+      }
+    },
+    {
+      "name": "gcloud",
+      "category": "runtime-cli",
+      "version": "584.0.0",
+      "source": "https://cloud.google.com/sdk/docs/release-notes",
+      "versionCheck": {
+        "args": [
+          "version"
+        ],
+        "expect": "584.0.0"
+      },
+      "image": {
+        "ref": "gcr.io/google.com/cloudsdktool/google-cloud-cli:584.0.0-slim",
+        "digest": "sha256:9bf51bc7c410ab15cd5c7412a8b5f120489056679d3c4db7a7f029f72d5a433a",
+        "invoke": "gcloud",
+        "user": "",
+        "platforms": [
+          "linux/amd64",
+          "linux/arm64"
+        ]
+      }
+    },
+    {
+      "name": "kubectl",
+      "category": "runtime-cli",
+      "version": "1.37.0",
+      "source": "https://github.com/kubernetes/kubernetes/releases/tag/v1.37.0",
+      "versionCheck": {
+        "args": [
+          "version",
+          "--client"
+        ],
+        "expect": "1.37.0"
+      },
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://dl.k8s.io/release/v1.37.0/bin/linux/amd64/kubectl",
+          "sha256": "6129359f4e1f3848a5572ccb0b26cf28b8ca08cef38c95a765b2f64a2c961a2f",
+          "sha256Source": "upstream-sidecar",
+          "archive": "none"
+        },
+        "linux-arm64": {
+          "url": "https://dl.k8s.io/release/v1.37.0/bin/linux/arm64/kubectl",
+          "sha256": "922df28df248cc00a9e025f947704f1d1482de64ece54cfe57e61f19eaf1eef3",
+          "sha256Source": "upstream-sidecar",
+          "archive": "none"
+        },
+        "darwin-arm64": {
+          "url": "https://dl.k8s.io/release/v1.37.0/bin/darwin/arm64/kubectl",
+          "sha256": "583beedaebe422e71d3f1a96acef8b1fef86ea2f09a45ad01aa6c9ce287c1380",
+          "sha256Source": "upstream-sidecar",
+          "archive": "none"
+        }
+      },
+      "image": {
+        "ref": "registry.k8s.io/kubectl:v1.37.0",
+        "digest": "sha256:5ed410ebac5dc976cc717098994dcdb29bbbd38f6bd65f582311f5be4ba719cf",
+        "invoke": "/bin/kubectl",
+        "user": "0",
+        "platforms": [
+          "linux/amd64",
+          "linux/arm64",
+          "linux/ppc64le",
+          "linux/s390x"
+        ]
+      }
+    },
+    {
+      "name": "openssl",
+      "category": "runtime-cli",
+      "version": "3.5.8",
+      "source": "https://github.com/openssl/openssl/releases",
+      "versionCheck": {
+        "args": [
+          "version"
+        ],
+        "expect": "3.5.8"
+      },
+      "image": {
+        "ref": "docker.io/alpine/openssl:3.5.8",
+        "digest": "sha256:f6def4887e8413b228b66f314d0bcf5c25b128d918a258f3b0b9d66a0327edcb",
+        "invoke": "openssl",
+        "user": "",
+        "platforms": [
+          "linux/amd64",
+          "linux/arm",
+          "linux/arm64",
+          "linux/ppc64le",
+          "linux/s390x"
+        ]
+      }
+    },
+    {
+      "name": "actionlint",
+      "category": "scanner",
+      "version": "1.7.12",
+      "versionCheck": {
+        "args": [
+          "-version"
+        ],
+        "expect": "1.7.12"
+      },
+      "source": "https://github.com/rhysd/actionlint/releases/tag/v1.7.12",
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz",
+          "sha256": "8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8",
+          "sha256Source": "upstream-checksums-verified",
+          "archive": "tar.gz",
+          "binaryPath": "actionlint",
+          "verifiedVersionOutput": "1.7.12"
+        },
+        "linux-arm64": {
+          "url": "https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_arm64.tar.gz",
+          "sha256": "325e971b6ba9bfa504672e29be93c24981eeb1c07576d730e9f7c8805afff0c6",
+          "sha256Source": "upstream-checksums",
+          "archive": "tar.gz",
+          "binaryPath": "actionlint"
+        },
+        "darwin-arm64": {
+          "url": "https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_darwin_arm64.tar.gz",
+          "sha256": "aba9ced2dee8d27fecca3dc7feb1a7f9a52caefa1eb46f3271ea66b6e0e6953f",
+          "sha256Source": "upstream-checksums",
+          "archive": "tar.gz",
+          "binaryPath": "actionlint"
+        }
+      },
+      "image": {
+        "ref": "docker.io/rhysd/actionlint:1.7.12",
+        "digest": "sha256:b1934ee5f1c509618f2508e6eb47ee0d3520686341fec936f3b79331f9315667",
+        "invoke": "/usr/local/bin/actionlint",
+        "user": "guest",
+        "platforms": [
+          "linux/amd64",
+          "linux/arm64"
+        ]
+      }
+    },
+    {
+      "name": "bandit",
+      "category": "scanner",
+      "version": "1.9.4",
+      "versionCheck": {
+        "args": [
+          "--version"
+        ],
+        "expect": "1.9.4"
+      },
+      "source": "https://pypi.org/project/bandit/1.9.4/",
+      "python": {
+        "package": "bandit",
+        "lock": "locks/bandit.txt",
+        "lockSha256": "10d15788daea94fed740bca153ee10027146cbc00fa5ec9b935a098e36aab2f7",
+        "packages": 9,
+        "installer": "uv",
+        "pythonVersion": "3.12"
+      }
+    },
+    {
+      "name": "buf",
+      "category": "scanner",
+      "version": "1.73.0",
+      "versionCheck": {
+        "args": [
+          "--version"
+        ],
+        "expect": "1.73.0"
+      },
+      "source": "https://github.com/bufbuild/buf/releases/tag/v1.73.0",
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://github.com/bufbuild/buf/releases/download/v1.73.0/buf-Linux-x86_64",
+          "sha256": "8f2986298ad08f0cc1bf999b9797b7c383adf32d7edf0f73d6f1e1a701baeac1",
+          "sha256Source": "upstream-checksums-verified",
+          "archive": "none",
+          "verifiedVersionOutput": "1.73.0"
+        },
+        "linux-arm64": {
+          "url": "https://github.com/bufbuild/buf/releases/download/v1.73.0/buf-Linux-aarch64",
+          "sha256": "902b75267db7f4391e99b7fa0756050e5354234cc0437ef50eee9c788950c7a3",
+          "sha256Source": "upstream-checksums",
+          "archive": "none"
+        },
+        "darwin-arm64": {
+          "url": "https://github.com/bufbuild/buf/releases/download/v1.73.0/buf-Darwin-arm64",
+          "sha256": "6e6df0fef4522e4e43dfe7c341873c3f2c29ceb45a9dfa5e0bad5580b8b2022f",
+          "sha256Source": "upstream-checksums",
+          "archive": "none"
+        }
+      },
+      "image": {
+        "ref": "docker.io/bufbuild/buf:1.73.0",
+        "digest": "sha256:75d8f756f0919dcded71e67968a91adfe55fe4dd62c4900c57bbfcd7fe625608",
+        "invoke": "/usr/local/bin/buf",
+        "user": "",
+        "platforms": [
+          "linux/386",
+          "linux/amd64",
+          "linux/arm",
+          "linux/arm64",
+          "linux/ppc64le",
+          "linux/s390x"
+        ]
+      }
+    },
+    {
+      "name": "checkov",
+      "category": "scanner",
+      "version": "3.3.17",
+      "versionCheck": {
+        "args": [
+          "--version"
+        ],
+        "expect": "3.3.17"
+      },
+      "source": "https://pypi.org/project/checkov/3.3.17/",
+      "python": {
+        "package": "checkov",
+        "lock": "locks/checkov.txt",
+        "lockSha256": "e7b086cb3c80de101ed67469f8c28f212c1bc7577baafea98fceb3094d4a4db8",
+        "packages": 104,
+        "installer": "uv",
+        "pythonVersion": "3.12"
+      },
+      "image": {
+        "ref": "docker.io/bridgecrew/checkov:3.3.17",
+        "digest": "sha256:41c4701c6a56d8952e5aba7a420f871c8b70b57da94eb4f142dcdf7295bb0be3",
+        "invoke": "checkov",
+        "user": "",
+        "platforms": [
+          "linux/amd64",
+          "linux/arm64"
+        ]
+      }
+    },
+    {
+      "name": "cosign",
+      "category": "scanner",
+      "version": "3.1.3",
+      "versionCheck": {
+        "args": [
+          "version"
+        ],
+        "expect": "3.1.3"
+      },
+      "source": "https://github.com/sigstore/cosign/releases/tag/v3.1.3",
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://github.com/sigstore/cosign/releases/download/v3.1.3/cosign-linux-amd64",
+          "sha256": "4629c757b7618056f8ddd7e2625ae9fdd94c0372a65049520bc7d9df9efc7f71",
+          "sha256Source": "upstream-checksums-verified",
+          "archive": "none",
+          "verifiedVersionOutput": "______   ______        _______. __    _______ .__   __."
+        },
+        "linux-arm64": {
+          "url": "https://github.com/sigstore/cosign/releases/download/v3.1.3/cosign-linux-arm64",
+          "sha256": "c5d324e091826b0d7a78eb16fef316450b4eb9aaec045611c08ba06f5e73220a",
+          "sha256Source": "upstream-checksums",
+          "archive": "none"
+        },
+        "darwin-arm64": {
+          "url": "https://github.com/sigstore/cosign/releases/download/v3.1.3/cosign-darwin-arm64",
+          "sha256": "5cf948c2f4dfe59687bdd0b8523709067383e03982cc543475c8a7dc70e92a76",
+          "sha256Source": "upstream-checksums",
+          "archive": "none"
+        }
+      },
+      "image": {
+        "ref": "ghcr.io/sigstore/cosign/cosign:v3.1.3",
+        "digest": "sha256:9e5c2f2edc34351160407ca3416c61855bdf9403c3c5936e0f0be7fc261611b8",
+        "invoke": "/ko-app/cosign",
+        "user": "65532",
+        "platforms": [
+          "linux/amd64",
+          "linux/arm",
+          "linux/arm64",
+          "linux/ppc64le",
+          "linux/riscv64",
+          "linux/s390x"
+        ]
+      }
+    },
+    {
+      "name": "gitleaks",
+      "category": "scanner",
+      "version": "8.30.1",
+      "versionCheck": {
+        "args": [
+          "version"
+        ],
+        "expect": "8.30.1"
+      },
+      "source": "https://github.com/gitleaks/gitleaks/releases/tag/v8.30.1",
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz",
+          "sha256": "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb",
+          "sha256Source": "upstream-checksums-verified",
+          "archive": "tar.gz",
+          "binaryPath": "gitleaks",
+          "verifiedVersionOutput": "8.30.1"
+        },
+        "linux-arm64": {
+          "url": "https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_arm64.tar.gz",
+          "sha256": "e4a487ee7ccd7d3a7f7ec08657610aa3606637dab924210b3aee62570fb4b080",
+          "sha256Source": "upstream-checksums",
+          "archive": "tar.gz",
+          "binaryPath": "gitleaks"
+        },
+        "darwin-arm64": {
+          "url": "https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_darwin_arm64.tar.gz",
+          "sha256": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5",
+          "sha256Source": "upstream-checksums",
+          "archive": "tar.gz",
+          "binaryPath": "gitleaks"
+        }
+      },
+      "image": {
+        "ref": "ghcr.io/gitleaks/gitleaks:v8.30.1",
+        "digest": "sha256:c00b6bd0aeb3071cbcb79009cb16a60dd9e0a7c60e2be9ab65d25e6bc8abbb7f",
+        "invoke": "gitleaks",
+        "user": "",
+        "platforms": [
+          "linux/amd64",
+          "linux/arm64"
+        ]
+      }
+    },
+    {
+      "name": "gosec",
+      "category": "scanner",
+      "version": "2.29.0",
+      "versionCheck": {
+        "args": [
+          "-version"
+        ],
+        "expect": "2.29.0"
+      },
+      "source": "https://github.com/securego/gosec/releases/tag/v2.29.0",
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://github.com/securego/gosec/releases/download/v2.29.0/gosec_2.29.0_linux_amd64.tar.gz",
+          "sha256": "6431b119741c1f4a50fdfcf94e782e16b9e642afc8c7fa9b5d39d48bf3003095",
+          "sha256Source": "upstream-checksums-verified",
+          "archive": "tar.gz",
+          "binaryPath": "gosec",
+          "verifiedVersionOutput": "Version: 2.29.0"
+        },
+        "linux-arm64": {
+          "url": "https://github.com/securego/gosec/releases/download/v2.29.0/gosec_2.29.0_linux_arm64.tar.gz",
+          "sha256": "c71244ec8d37488fd479d0d26990968fee03ece48b305d8224ac0c1ebd66e87c",
+          "sha256Source": "upstream-checksums",
+          "archive": "tar.gz",
+          "binaryPath": "gosec"
+        },
+        "darwin-arm64": {
+          "url": "https://github.com/securego/gosec/releases/download/v2.29.0/gosec_2.29.0_darwin_arm64.tar.gz",
+          "sha256": "7ab6a92c1983b7cb9df12b3ac20fb270afa43cfa12a143c354edae3109c763e5",
+          "sha256Source": "upstream-checksums",
+          "archive": "tar.gz",
+          "binaryPath": "gosec"
+        }
+      }
+    },
+    {
+      "name": "grype",
+      "category": "scanner",
+      "version": "0.118.0",
+      "versionCheck": {
+        "args": [
+          "version"
+        ],
+        "expect": "0.118.0"
+      },
+      "source": "https://github.com/anchore/grype/releases/tag/v0.118.0",
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://github.com/anchore/grype/releases/download/v0.118.0/grype_0.118.0_linux_amd64.tar.gz",
+          "sha256": "1d444c5e7360471815f7158f71935fcecc68a3c417d85c7344f770854300bba2",
+          "sha256Source": "upstream-checksums-verified",
+          "archive": "tar.gz",
+          "binaryPath": "grype",
+          "verifiedVersionOutput": "Application:         grype"
+        },
+        "linux-arm64": {
+          "url": "https://github.com/anchore/grype/releases/download/v0.118.0/grype_0.118.0_linux_arm64.tar.gz",
+          "sha256": "32aceeb8ee837244775fcb522372c8b3a47914986385f3148f4ee2c930482a84",
+          "sha256Source": "upstream-checksums",
+          "archive": "tar.gz",
+          "binaryPath": "grype"
+        },
+        "darwin-arm64": {
+          "url": "https://github.com/anchore/grype/releases/download/v0.118.0/grype_0.118.0_darwin_arm64.tar.gz",
+          "sha256": "938f050bb5076c8aa761867b39843abad2414dfe4cc82b7d36886e634f49c640",
+          "sha256Source": "upstream-checksums",
+          "archive": "tar.gz",
+          "binaryPath": "grype"
+        }
+      },
+      "image": {
+        "ref": "docker.io/anchore/grype:v0.118.0",
+        "digest": "sha256:8a93fc48da96bd6ec5981279d099b69de11541dc68fdf222fb9161f8ff284af7",
+        "invoke": "/grype",
+        "user": "",
+        "platforms": [
+          "linux/amd64",
+          "linux/arm64",
+          "linux/ppc64le",
+          "linux/s390x"
+        ]
+      }
+    },
+    {
+      "name": "hadolint",
+      "category": "scanner",
+      "version": "2.15.1",
+      "versionCheck": {
+        "args": [
+          "--version"
+        ],
+        "expect": "2.15.1"
+      },
+      "source": "https://github.com/hadolint/hadolint/releases/tag/v2.15.1",
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://github.com/hadolint/hadolint/releases/download/v2.15.1/hadolint-linux-x86_64",
+          "sha256": "c7187db94eeeeca956519a6af171adc31453941a1e777961f6e680f697c8c507",
+          "sha256Source": "upstream-checksums-verified",
+          "archive": "none",
+          "verifiedVersionOutput": "Haskell Dockerfile Linter 2.15.1"
+        },
+        "linux-arm64": {
+          "url": "https://github.com/hadolint/hadolint/releases/download/v2.15.1/hadolint-linux-arm64",
+          "sha256": "f6198ef8090f404dbb771abfee086eb8c48ac177f30da7fd3510aca35b344b5d",
+          "sha256Source": "upstream-checksums",
+          "archive": "none"
+        },
+        "darwin-arm64": {
+          "url": "https://github.com/hadolint/hadolint/releases/download/v2.15.1/hadolint-macos-arm64",
+          "sha256": "5c09f3213f8e40406abe048233d985eebef336d4a6a20021be47fadb6cf480a2",
+          "sha256Source": "upstream-checksums",
+          "archive": "none"
+        }
+      },
+      "image": {
+        "ref": "docker.io/hadolint/hadolint:v2.15.1",
+        "digest": "sha256:32dac94127fd60b7b7e3fbfc65e1383b9b5e25c9bfd7b8536de7a539fe68a12d",
+        "invoke": "/bin/hadolint",
+        "user": "",
+        "platforms": [
+          "linux/amd64",
+          "linux/arm64"
+        ]
+      }
+    },
+    {
+      "name": "kube-linter",
+      "category": "scanner",
+      "version": "0.8.3",
+      "versionCheck": {
+        "args": [
+          "version"
+        ],
+        "expect": "0.8.3"
+      },
+      "source": "https://github.com/stackrox/kube-linter/releases/tag/v0.8.3",
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://github.com/stackrox/kube-linter/releases/download/v0.8.3/kube-linter-linux",
+          "sha256": "618d299a3e2839c8ca9d86fce0db617be0fba41f0fecbbbfb7fbf1c04299fae1",
+          "sha256Source": "computed-at-pin",
+          "archive": "none",
+          "verifiedVersionOutput": "0.8.3"
+        },
+        "linux-arm64": {
+          "url": "https://github.com/stackrox/kube-linter/releases/download/v0.8.3/kube-linter-linux_arm64",
+          "sha256": "9c39d35252e0dcafb16b26197b9e93ba578e44eb402c3c6660fc94e08f94094f",
+          "sha256Source": "computed-at-pin",
+          "archive": "none"
+        },
+        "darwin-arm64": {
+          "url": "https://github.com/stackrox/kube-linter/releases/download/v0.8.3/kube-linter-darwin_arm64",
+          "sha256": "662277a6a267ba2cb1371b56539a371872ef142b196fa0d87195e4213773cdf8",
+          "sha256Source": "computed-at-pin",
+          "archive": "none"
+        }
+      },
+      "image": {
+        "ref": "docker.io/stackrox/kube-linter:v0.8.3",
+        "digest": "sha256:f2bfce7879206d32f69ab6572c376f916643f54ca291ac38cf7d01ef591ff3f9",
+        "invoke": "/kube-linter",
+        "user": "",
+        "platforms": [
+          "linux/amd64",
+          "linux/arm64"
+        ]
+      }
+    },
+    {
+      "name": "kubeconform",
+      "category": "scanner",
+      "version": "0.8.0",
+      "versionCheck": {
+        "args": [
+          "-v"
+        ],
+        "expect": "0.8.0"
+      },
+      "source": "https://github.com/yannh/kubeconform/releases/tag/v0.8.0",
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://github.com/yannh/kubeconform/releases/download/v0.8.0/kubeconform-linux-amd64.tar.gz",
+          "sha256": "9bc2bffbf71f261128533edaf912153948b7ff238f9a531ae6d34466ec287883",
+          "sha256Source": "upstream-checksums-verified",
+          "archive": "tar.gz",
+          "binaryPath": "kubeconform",
+          "verifiedVersionOutput": "v0.8.0"
+        },
+        "linux-arm64": {
+          "url": "https://github.com/yannh/kubeconform/releases/download/v0.8.0/kubeconform-linux-arm64.tar.gz",
+          "sha256": "1f53fc8e81258197a35e8603054162a5af1de8c5af13746c71ab680d9534ed87",
+          "sha256Source": "upstream-checksums",
+          "archive": "tar.gz",
+          "binaryPath": "kubeconform"
+        },
+        "darwin-arm64": {
+          "url": "https://github.com/yannh/kubeconform/releases/download/v0.8.0/kubeconform-darwin-arm64.tar.gz",
+          "sha256": "f84f4dfbebf4a6b0b230385fa065a39ea35e02608c2b50d025dcf64775a69d67",
+          "sha256Source": "upstream-checksums",
+          "archive": "tar.gz",
+          "binaryPath": "kubeconform"
+        }
+      },
+      "image": {
+        "ref": "ghcr.io/yannh/kubeconform:v0.8.0",
+        "digest": "sha256:faffaf43f95aa6425306e1ab8d6fcad72acb9049158f38e574c085ea1ec0f64e",
+        "invoke": "/kubeconform",
+        "user": "",
+        "platforms": [
+          "linux/amd64",
+          "linux/arm64"
+        ]
+      }
+    },
+    {
+      "name": "kubescape",
+      "category": "scanner",
+      "version": "4.0.14",
+      "versionCheck": {
+        "args": [
+          "version"
+        ],
+        "expect": "4.0.14"
+      },
+      "source": "https://github.com/kubescape/kubescape/releases/tag/v4.0.14",
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://github.com/kubescape/kubescape/releases/download/v4.0.14/kubescape_4.0.14_linux_amd64",
+          "sha256": "5d987374013ae5b6d9508146d51d5ee62c0d4c638313154f69be35123269badf",
+          "sha256Source": "upstream-checksums-verified",
+          "archive": "none",
+          "verifiedVersionOutput": "Your current version is: v4.0.14"
+        },
+        "linux-arm64": {
+          "url": "https://github.com/kubescape/kubescape/releases/download/v4.0.14/kubescape_4.0.14_linux_arm64",
+          "sha256": "89422fc2e1fcf0ca44764bd51721e26249edf7fb01231442f21584324882b381",
+          "sha256Source": "upstream-checksums",
+          "archive": "none"
+        },
+        "darwin-arm64": {
+          "url": "https://github.com/kubescape/kubescape/releases/download/v4.0.14/kubescape_4.0.14_darwin_arm64",
+          "sha256": "34d963aaf6fa0b92b9105c779652f2c3e37574c24eb4ecbbf8ce5fa94874d401",
+          "sha256Source": "upstream-checksums",
+          "archive": "none"
+        }
+      },
+      "image": {
+        "ref": "quay.io/kubescape/kubescape-cli:v4.0.14",
+        "digest": "sha256:ef86229277241117bebe2b632cef2aa842d1dea5b24d57849d2294c1c5d3bde1",
+        "invoke": "kubescape",
+        "user": "nonroot",
+        "platforms": [
+          "linux/amd64",
+          "linux/arm64"
+        ]
+      }
+    },
+    {
+      "name": "semgrep",
+      "category": "scanner",
+      "version": "1.177.0",
+      "versionCheck": {
+        "args": [
+          "--version"
+        ],
+        "expect": "1.177.0"
+      },
+      "source": "https://pypi.org/project/semgrep/1.177.0/",
+      "python": {
+        "package": "semgrep",
+        "lock": "locks/semgrep.txt",
+        "lockSha256": "a5f27614663d0a04aa2e36efb086c82df0b8fa1696b0e2fb88f0b9f8e9b09582",
+        "packages": 68,
+        "installer": "uv",
+        "pythonVersion": "3.12"
+      },
+      "image": {
+        "ref": "docker.io/semgrep/semgrep:1.177.0",
+        "digest": "sha256:acaac22ffc7b7cc5926de0751b223bce0b2491c33d18422fa72f632c78d81198",
+        "invoke": "semgrep",
+        "user": "",
+        "platforms": [
+          "linux/amd64",
+          "linux/arm64"
+        ]
+      }
+    },
+    {
+      "name": "spectral",
+      "category": "scanner",
+      "version": "6.16.3",
+      "versionCheck": {
+        "args": [
+          "--version"
+        ],
+        "expect": "6.16.3"
+      },
+      "source": "https://github.com/stoplightio/spectral/releases/tag/v6.16.3",
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://github.com/stoplightio/spectral/releases/download/v6.16.3/spectral-linux-x64",
+          "sha256": "b90ac8da7b804d04052b9db8d4ea5028d29fba9bc69b02dc85d46e5fcc476452",
+          "sha256Source": "computed-at-pin",
+          "archive": "none",
+          "verifiedVersionOutput": "6.16.3"
+        },
+        "linux-arm64": {
+          "url": "https://github.com/stoplightio/spectral/releases/download/v6.16.3/spectral-linux-arm64",
+          "sha256": "fdaf5f04d74dbc293a7c4895b1430a40ffeb3ee6f84d0998d33dd4bee1aa5954",
+          "sha256Source": "computed-at-pin",
+          "archive": "none"
+        },
+        "darwin-arm64": {
+          "url": "https://github.com/stoplightio/spectral/releases/download/v6.16.3/spectral-macos-arm64",
+          "sha256": "d01857a60831def88c310078708c7a990c17f2ad3e2a09b4e84c57e1c02e8f06",
+          "sha256Source": "computed-at-pin",
+          "archive": "none"
+        }
+      },
+      "image": {
+        "ref": "docker.io/stoplight/spectral:6.16.3",
+        "digest": "sha256:a07aa4455367b9501b574423b684ab0ef3ee42556089013583318ec015249050",
+        "invoke": "spectral",
+        "user": "",
+        "platforms": []
+      }
+    },
+    {
+      "name": "sqlfluff",
+      "category": "scanner",
+      "version": "4.3.0",
+      "versionCheck": {
+        "args": [
+          "--version"
+        ],
+        "expect": "4.3.0"
+      },
+      "source": "https://pypi.org/project/sqlfluff/4.3.0/",
+      "python": {
+        "package": "sqlfluff",
+        "lock": "locks/sqlfluff.txt",
+        "lockSha256": "c9a515f82877fd03780fc313da3cc45c0e227f04b055a9591ae81ab0ba50852b",
+        "packages": 16,
+        "installer": "uv",
+        "pythonVersion": "3.12"
+      },
+      "image": {
+        "ref": "docker.io/sqlfluff/sqlfluff:4.3.0",
+        "digest": "sha256:8003e7099a43661bb972bb29b6c66ef0954545586a047bd88cdbdfb6d758f144",
+        "invoke": "sqlfluff",
+        "user": "",
+        "platforms": [
+          "linux/amd64",
+          "linux/arm64"
+        ]
+      }
+    },
+    {
+      "name": "squawk",
+      "category": "scanner",
+      "version": "2.65.0",
+      "versionCheck": {
+        "args": [
+          "--version"
+        ],
+        "expect": "2.65.0"
+      },
+      "source": "https://github.com/sbdchd/squawk/releases/tag/v2.65.0",
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://github.com/sbdchd/squawk/releases/download/v2.65.0/squawk-linux-x64",
+          "sha256": "9b7b2b9529a469647e32c6346e8d5a8a760857cbe2ee94ccb37f60e408babffb",
+          "sha256Source": "computed-at-pin",
+          "archive": "none",
+          "verifiedVersionOutput": "squawk 2.65.0"
+        },
+        "linux-arm64": {
+          "url": "https://github.com/sbdchd/squawk/releases/download/v2.65.0/squawk-linux-arm64",
+          "sha256": "df11165f09629da80319e51434a6e4d2f27825801769879e15011d0091218bee",
+          "sha256Source": "computed-at-pin",
+          "archive": "none"
+        },
+        "darwin-arm64": {
+          "url": "https://github.com/sbdchd/squawk/releases/download/v2.65.0/squawk-darwin-arm64",
+          "sha256": "05b140108aaa04404ed8a0e600dc83ab5c678cac929e621df6f08eb189bdfe5f",
+          "sha256Source": "computed-at-pin",
+          "archive": "none"
+        }
+      },
+      "image": {
+        "ref": "ghcr.io/sbdchd/squawk:2.65.0",
+        "digest": "sha256:6906f7808f2b9683ebc7ef263527d9ca449b5489368ad77409a879c462a832b8",
+        "invoke": "squawk",
+        "user": "squawk",
+        "platforms": [
+          "linux/amd64"
+        ]
+      }
+    },
+    {
+      "name": "syft",
+      "category": "scanner",
+      "version": "1.51.1",
+      "versionCheck": {
+        "args": [
+          "version"
+        ],
+        "expect": "1.51.1"
+      },
+      "source": "https://github.com/anchore/syft/releases/tag/v1.51.1",
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://github.com/anchore/syft/releases/download/v1.51.1/syft_1.51.1_linux_amd64.tar.gz",
+          "sha256": "8fcb33017a0dc1058298c923c436d19dfa68ae93968e0b423248542e3afb9fc3",
+          "sha256Source": "upstream-checksums-verified",
+          "archive": "tar.gz",
+          "binaryPath": "syft",
+          "verifiedVersionOutput": "Application:   syft"
+        },
+        "linux-arm64": {
+          "url": "https://github.com/anchore/syft/releases/download/v1.51.1/syft_1.51.1_linux_arm64.tar.gz",
+          "sha256": "a7fd2b784e6664acd44719270574f6cd8c6864fc2b1700bf9099bd1cccda7d7f",
+          "sha256Source": "upstream-checksums",
+          "archive": "tar.gz",
+          "binaryPath": "syft"
+        },
+        "darwin-arm64": {
+          "url": "https://github.com/anchore/syft/releases/download/v1.51.1/syft_1.51.1_darwin_arm64.tar.gz",
+          "sha256": "ac063af3b9874769deb7ea1e6d76841e68f9e3bb50cd654226fc977de65532c1",
+          "sha256Source": "upstream-checksums",
+          "archive": "tar.gz",
+          "binaryPath": "syft"
+        }
+      },
+      "image": {
+        "ref": "docker.io/anchore/syft:v1.51.1",
+        "digest": "sha256:95fe0835e5bebc6f8b1f8acef68d47d63d594ef4c0f25c097ff853b23cbac74c",
+        "invoke": "/syft",
+        "user": "",
+        "platforms": [
+          "linux/amd64",
+          "linux/arm64",
+          "linux/ppc64le",
+          "linux/riscv64",
+          "linux/s390x"
+        ]
+      }
+    },
+    {
+      "name": "trivy",
+      "category": "scanner",
+      "version": "0.74.0",
+      "versionCheck": {
+        "args": [
+          "--version"
+        ],
+        "expect": "0.74.0"
+      },
+      "source": "https://github.com/aquasecurity/trivy/releases/tag/v0.74.0",
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://github.com/aquasecurity/trivy/releases/download/v0.74.0/trivy_0.74.0_Linux-64bit.tar.gz",
+          "sha256": "2ae6fe3ee734b7fdf11335663e18c75ea12dccc76062f09f164a3b0f8be4371a",
+          "sha256Source": "upstream-checksums-verified",
+          "archive": "tar.gz",
+          "binaryPath": "trivy",
+          "verifiedVersionOutput": "Version: 0.74.0"
+        },
+        "linux-arm64": {
+          "url": "https://github.com/aquasecurity/trivy/releases/download/v0.74.0/trivy_0.74.0_Linux-ARM64.tar.gz",
+          "sha256": "b94ce1976bbf3c15b514b605ee88be7c6d94a29be2302847ff01cb794d47aad5",
+          "sha256Source": "upstream-checksums",
+          "archive": "tar.gz",
+          "binaryPath": "trivy"
+        },
+        "darwin-arm64": {
+          "url": "https://github.com/aquasecurity/trivy/releases/download/v0.74.0/trivy_0.74.0_macOS-ARM64.tar.gz",
+          "sha256": "1caada5e0e2091909357c7525d3aa76f4b660b13821bc143b190c7483e31cc11",
+          "sha256Source": "upstream-checksums",
+          "archive": "tar.gz",
+          "binaryPath": "trivy"
+        }
+      },
+      "image": {
+        "ref": "docker.io/aquasec/trivy:0.74.0",
+        "digest": "sha256:62b1e65e8869bc4b4c6aa4fa2b21595256c7c2f6018a9d9ad61caf87187c1969",
+        "invoke": "trivy",
+        "user": "",
+        "platforms": [
+          "linux/amd64",
+          "linux/arm64",
+          "linux/ppc64le",
+          "linux/s390x"
+        ]
+      }
+    },
+    {
+      "name": "trufflehog",
+      "category": "scanner",
+      "version": "3.97.4",
+      "versionCheck": {
+        "args": [
+          "--version"
+        ],
+        "expect": "3.97.4"
+      },
+      "source": "https://github.com/trufflesecurity/trufflehog/releases/tag/v3.97.4",
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://github.com/trufflesecurity/trufflehog/releases/download/v3.97.4/trufflehog_3.97.4_linux_amd64.tar.gz",
+          "sha256": "dc24007c2f233bd61c05beabeb44aa27ea9b43288166279209abe0458c5ce76b",
+          "sha256Source": "upstream-checksums-verified",
+          "archive": "tar.gz",
+          "binaryPath": "trufflehog",
+          "verifiedVersionOutput": "trufflehog 3.97.4"
+        },
+        "linux-arm64": {
+          "url": "https://github.com/trufflesecurity/trufflehog/releases/download/v3.97.4/trufflehog_3.97.4_linux_arm64.tar.gz",
+          "sha256": "7e65e771d2a247964056aa5edba0f8ae3945895e5dce867fe0ffbc7b0128239a",
+          "sha256Source": "upstream-checksums",
+          "archive": "tar.gz",
+          "binaryPath": "trufflehog"
+        },
+        "darwin-arm64": {
+          "url": "https://github.com/trufflesecurity/trufflehog/releases/download/v3.97.4/trufflehog_3.97.4_darwin_arm64.tar.gz",
+          "sha256": "57e2a41c1e196cf96cae49ca2151f5e9207be2f5c41349b5ea49cb5dcfc606b7",
+          "sha256Source": "upstream-checksums",
+          "archive": "tar.gz",
+          "binaryPath": "trufflehog"
+        }
+      },
+      "image": {
+        "ref": "docker.io/trufflesecurity/trufflehog:3.97.4",
+        "digest": "sha256:562bc231afa9de3d04de44cfe624252b08207de1fc3cebc5e7ed92bed7f279e4",
+        "invoke": "trufflehog",
+        "user": "",
+        "platforms": [
+          "linux/amd64",
+          "linux/arm64"
+        ]
+      }
+    },
+    {
+      "name": "zizmor",
+      "category": "scanner",
+      "version": "1.30.1",
+      "versionCheck": {
+        "args": [
+          "--version"
+        ],
+        "expect": "1.30.1"
+      },
+      "source": "https://github.com/zizmorcore/zizmor/releases/tag/v1.30.1",
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://github.com/zizmorcore/zizmor/releases/download/v1.30.1/zizmor-x86_64-unknown-linux-gnu.tar.gz",
+          "sha256": "e65324f4430c2717591937edcec90ccbefaf14c174f8ec9415e03ca875b46e1a",
+          "sha256Source": "computed-at-pin",
+          "archive": "tar.gz",
+          "binaryPath": "zizmor",
+          "verifiedVersionOutput": "zizmor 1.30.1"
+        },
+        "linux-arm64": {
+          "url": "https://github.com/zizmorcore/zizmor/releases/download/v1.30.1/zizmor-aarch64-unknown-linux-gnu.tar.gz",
+          "sha256": "7ff1dce33bdd18fd2a4affe63bdd47efcccca97b2cec1c1863ec26e9e2647540",
+          "sha256Source": "computed-at-pin",
+          "archive": "tar.gz",
+          "binaryPath": "zizmor"
+        },
+        "darwin-arm64": {
+          "url": "https://github.com/zizmorcore/zizmor/releases/download/v1.30.1/zizmor-aarch64-apple-darwin.tar.gz",
+          "sha256": "e28d22b087f9ebb8d99da6e740d348c930f559961c7c3f12badda54f882195a2",
+          "sha256Source": "computed-at-pin",
+          "archive": "tar.gz",
+          "binaryPath": "zizmor"
+        }
+      },
+      "image": {
+        "ref": "ghcr.io/zizmorcore/zizmor:1.30.1",
+        "digest": "sha256:a2eb396d886c053073405c7a980f2139ba2248ec172243cfa3841e57196e8101",
+        "invoke": "/usr/bin/zizmor",
+        "user": "0",
+        "platforms": [
+          "linux/amd64",
+          "linux/arm64"
+        ]
+      }
+    }
+  ],
+  "baseImages": {
+    "static": {
+      "ref": "docker.io/library/debian:bookworm-slim",
+      "digest": "sha256:88200866dfff7ea7f5cbcb6ec7c8a701889efe6fe859fe64d6990e4b07ea4171",
+      "invoke": "/bin/sh",
+      "user": "",
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ]
+    },
+    "python": {
+      "ref": "docker.io/library/python:3.12-slim-bookworm",
+      "digest": "sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+      "invoke": "/bin/sh",
+      "user": "",
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ]
+    }
+  },
+  "sdks": [
+    {
+      "provider": "e2b",
+      "package": "e2b",
+      "version": "2.49.1",
+      "integrity": "sha512-alHohyLEls8Mb2lO++k3UXlOfGbg+Py1UEaxBqK8YJzWKOtXYtCXVPnHmgYiWg5u3MYuejCJxb+aObTYXlET1A=="
+    },
+    {
+      "provider": "daytona",
+      "package": "@daytona/sdk",
+      "version": "0.211.2",
+      "integrity": "sha512-8wPl/3GcgNbu+EPJDhQgMoYot2OlnAgwo3sg/JNPkCsYZFxvDvXIvnDqOQBYj/IJq8IqREBTKDWkMAYgWvzT4g=="
+    },
+    {
+      "provider": "modal",
+      "package": "modal",
+      "version": "0.10.1",
+      "integrity": "sha512-nnsWoVZ4XNLHtCV5/wuu2avQsFkGK6e/KazGPil3VwXI1aKh8jJkpP++lMPKwKQhMpe4N6WJtSRR6NwiolCEkw=="
+    },
+    {
+      "provider": "vercel",
+      "package": "@vercel/sandbox",
+      "version": "3.3.0",
+      "integrity": "sha512-TclqRD2joExyECTrrHsioi3Onw20X2YfpOYEzs3JpJUtAjOKYw2bMeXldKrUg+TB/TT7tPdDu8uKNxj9NE7QUg=="
+    }
+  ]
+}

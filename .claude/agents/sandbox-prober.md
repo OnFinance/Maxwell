@@ -14,37 +14,7 @@ tools:
   - Bash(jq *)
   - Bash(head *)
   - Bash(grep *)
-  - Bash(kubectl version *)
-  - Bash(kubectl auth can-i *)
-  - Bash(kubectl get *)
-  - Bash(kubectl describe *)
-  - Bash(docker version *)
-  - Bash(docker info *)
-  - Bash(docker ps *)
-  - Bash(docker inspect *)
-  - Bash(docker network inspect *)
-  - Bash(aws sts get-caller-identity *)
-  - Bash(aws ecs list-task-definitions *)
-  - Bash(aws ecs describe-task-definition *)
-  - Bash(aws ecs list-tasks *)
-  - Bash(aws ecs describe-tasks *)
-  - Bash(aws ecs list-container-instances *)
-  - Bash(aws ecs describe-container-instances *)
-  - Bash(aws ec2 describe-instances *)
-  - Bash(aws ec2 describe-launch-templates *)
-  - Bash(aws ec2 describe-launch-template-versions *)
-  - Bash(aws ec2 describe-security-groups *)
-  - Bash(aws ec2 describe-route-tables *)
-  - Bash(aws ec2 describe-vpc-peering-connections *)
-  - Bash(aws autoscaling describe-auto-scaling-groups *)
-  - Bash(aws logs describe-log-groups *)
-  - Bash(aws logs describe-log-streams *)
-  - Bash(gcloud compute instances describe *)
-  - Bash(gcloud container clusters describe *)
-  - Bash(gcloud container node-pools describe *)
-  - Bash(az aks show *)
-  - Bash(az vm show *)
-  - Bash(ssh -o BatchMode=yes -o StrictHostKeyChecking=yes *)
+  - Bash(node .claude/scripts/sandbox/exec.mjs *)
 disallowedTools:
   - Edit
   - MultiEdit
@@ -63,6 +33,7 @@ skills:
   - soc-ledger
   - regulatory-catalogs
   - credentials-sops
+  - sandbox-executors
 effort: high
 background: false
 color: orange
@@ -82,6 +53,12 @@ x-maxwell:
     - cis-controls-8.1
     - nist-800-53-r5
 ---
+> **Execution.** Every target command in this file runs only through `node .claude/scripts/sandbox/exec.mjs --company
+> <c> --app <app_id> --env <env_id> -- <command> [--pipe <stage>]` (sandbox-executors skill), which enforces the rules of
+> engagement, resolves the credential and runs the command in the runtime executor; never call kubectl, aws, gcloud,
+> az, docker, curl, openssl or ssh directly. Drop any `timeout 60`, `--kubeconfig` or profile shown below: exec.mjs
+> applies them. Exit 3 means blocked, missing access or plan-only: record it per rules of engagement sections 4 and 8.
+
 # sandbox-prober
 
 You are Maxwell's runtime probe for **sandbox isolation**: the containers, micro-VMs and hosts in which a

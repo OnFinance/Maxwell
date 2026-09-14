@@ -1,0 +1,383 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/company/executor.schema.json",
+  "title": "Probe executor",
+  "description": "Schema for company-profile/<company_id>/sdlc/executor.json: where Maxwell runs pinned scanners over repository checkouts (static) and read-only runtime probe commands (runtime). Written by /connect-sandbox after the user chooses. No secret is stored here: provider credentials live outside the workspace in ~/.config/maxwell/sandbox/<provider>.env. Runtime probes use only self-hosted executors, so target credentials never reach a hosted sandbox provider",
+  "examples": [
+    {
+      "schemaVersion": "1",
+      "kind": "maxwell.company.executor",
+      "companyId": "zenith-securities",
+      "static": {
+        "provider": "modal",
+        "region": "ap-south",
+        "network": "none",
+        "cpu": 2,
+        "memoryMb": 4096,
+        "timeoutSeconds": 900
+      },
+      "runtime": {
+        "provider": "kubernetes",
+        "timeoutSeconds": 120
+      },
+      "providers": {
+        "kubernetes": {
+          "kubeconfigEnv": "MAXWELL_EXECUTOR_KUBECONFIG",
+          "context": "maxwell-mumbai",
+          "namespace": "maxwell-probes",
+          "serviceAccount": "maxwell-probe"
+        },
+        "modal": {
+          "environment": "main",
+          "appName": "maxwell-scanners"
+        }
+      },
+      "verification": [
+        {
+          "at": "2026-09-14T16:00:00Z",
+          "scope": "static",
+          "provider": "modal",
+          "result": "passed",
+          "tool": "gitleaks",
+          "toolVersion": "8.30.1",
+          "message": "gitleaks version printed 8.30.1 inside a network-blocked sandbox"
+        }
+      ],
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-14T16:00:00Z",
+        "sessionId": "8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b",
+        "workflow": "manual",
+        "agent": "connect-sandbox"
+      }
+    }
+  ],
+  "type": "object",
+  "allOf": [
+    {
+      "if": {
+        "anyOf": [
+          {
+            "required": [ "static" ],
+            "properties": {
+              "static": {
+                "required": [ "provider" ],
+                "properties": {
+                  "provider": {
+                    "const": "kubernetes"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "required": [ "runtime" ],
+            "properties": {
+              "runtime": {
+                "required": [ "provider" ],
+                "properties": {
+                  "provider": {
+                    "const": "kubernetes"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "then": {
+        "required": [ "providers" ],
+        "properties": {
+          "providers": {
+            "required": [ "kubernetes" ],
+            "properties": {
+              "kubernetes": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [ "static" ],
+        "properties": {
+          "static": {
+            "required": [ "provider" ],
+            "properties": {
+              "provider": {
+                "const": "vercel"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "required": [ "providers" ],
+        "properties": {
+          "providers": {
+            "required": [ "vercel" ],
+            "properties": {
+              "vercel": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "required": [
+    "schemaVersion",
+    "kind",
+    "companyId",
+    "static",
+    "runtime",
+    "provenance"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/schemaVersion"
+    },
+    "kind": {
+      "const": "maxwell.company.executor"
+    },
+    "companyId": {
+      "description": "Slug identifying the company; must equal the company-profile/<company_id> folder name",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+    },
+    "static": {
+      "description": "Executor for pinned scanners over repository checkouts",
+      "type": "object",
+      "required": [ "provider" ],
+      "properties": {
+        "provider": {
+          "description": "docker and kubernetes are self-hosted; e2b, daytona, modal and vercel are hosted sandboxes; host runs on the machine hosting the harness with no isolation; none disables scanners (probes fall back to manual review)",
+          "enum": [
+            "docker",
+            "kubernetes",
+            "e2b",
+            "daytona",
+            "modal",
+            "vercel",
+            "host",
+            "none"
+          ]
+        },
+        "region": {
+          "description": "Provider region the sandbox runs in, for data residency (Modal ap-south and Vercel bom1 are in Mumbai)",
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]{0,31}$"
+        },
+        "network": {
+          "description": "none blocks all egress; package-registries allows only PyPI and GitHub release downloads, needed when a Python scanner must be installed inside a sandbox that cannot run its pinned image",
+          "enum": [ "none", "package-registries" ]
+        },
+        "cpu": {
+          "type": "integer",
+          "maximum": 32,
+          "minimum": 1
+        },
+        "memoryMb": {
+          "type": "integer",
+          "maximum": 65536,
+          "minimum": 512
+        },
+        "timeoutSeconds": {
+          "type": "integer",
+          "maximum": 14400,
+          "minimum": 60
+        }
+      },
+      "additionalProperties": false
+    },
+    "runtime": {
+      "description": "Executor for read-only runtime probe commands. Hosted providers are not allowed: the commands carry the target environment's credentials",
+      "type": "object",
+      "required": [ "provider" ],
+      "properties": {
+        "provider": {
+          "description": "none makes runtime probes plan-only, as with --dry-run",
+          "enum": [ "docker", "kubernetes", "host", "none" ]
+        },
+        "timeoutSeconds": {
+          "type": "integer",
+          "maximum": 600,
+          "minimum": 10
+        }
+      },
+      "additionalProperties": false
+    },
+    "providers": {
+      "description": "Non-secret settings per provider",
+      "type": "object",
+      "properties": {
+        "docker": {
+          "type": "object",
+          "properties": {
+            "engine": {
+              "description": "Container CLI to call",
+              "enum": [ "docker", "podman" ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "kubernetes": {
+          "type": "object",
+          "required": [ "kubeconfigEnv", "namespace" ],
+          "properties": {
+            "kubeconfigEnv": {
+              "description": "Name of the environment variable holding the path to the executor cluster's kubeconfig (not a target cluster)",
+              "$ref": "#/$defs/envVarName"
+            },
+            "context": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9._@:/-]{1,128}$"
+            },
+            "namespace": {
+              "$ref": "#/$defs/dnsLabel"
+            },
+            "serviceAccount": {
+              "$ref": "#/$defs/dnsLabel"
+            },
+            "imagePullSecret": {
+              "$ref": "#/$defs/dnsLabel"
+            },
+            "nodeSelector": {
+              "type": "object",
+              "maxProperties": 8,
+              "propertyNames": {
+                "pattern": "^[A-Za-z0-9./_-]{1,253}$"
+              },
+              "additionalProperties": {
+                "type": "string",
+                "maxLength": 63
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "e2b": {
+          "type": "object",
+          "properties": {
+            "domain": {
+              "description": "E2B API domain; set for a self-hosted or BYOC deployment",
+              "$ref": "#/$defs/hostname"
+            }
+          },
+          "additionalProperties": false
+        },
+        "daytona": {
+          "type": "object",
+          "properties": {
+            "apiUrl": {
+              "type": "string",
+              "pattern": "^https://[A-Za-z0-9.-]+(:[0-9]+)?(/[A-Za-z0-9._/-]*)?$"
+            },
+            "target": {
+              "description": "Daytona region or custom (BYOC) region name",
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]{0,31}$"
+            }
+          },
+          "additionalProperties": false
+        },
+        "modal": {
+          "type": "object",
+          "properties": {
+            "environment": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]{0,31}$"
+            },
+            "appName": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]{0,63}$"
+            }
+          },
+          "additionalProperties": false
+        },
+        "vercel": {
+          "type": "object",
+          "required": [ "teamId", "projectId" ],
+          "properties": {
+            "teamId": {
+              "type": "string",
+              "pattern": "^team_[A-Za-z0-9]{8,64}$"
+            },
+            "projectId": {
+              "type": "string",
+              "pattern": "^prj_[A-Za-z0-9]{8,64}$"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "verification": {
+      "description": "Most recent connection checks, newest last",
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "required": [ "at", "scope", "provider", "result" ],
+        "properties": {
+          "at": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+          },
+          "scope": {
+            "enum": [ "static", "runtime" ]
+          },
+          "provider": {
+            "enum": [
+              "docker",
+              "kubernetes",
+              "e2b",
+              "daytona",
+              "modal",
+              "vercel",
+              "host"
+            ]
+          },
+          "result": {
+            "enum": [ "passed", "failed" ]
+          },
+          "tool": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]{0,39}$"
+          },
+          "toolVersion": {
+            "type": "string",
+            "maxLength": 64
+          },
+          "message": {
+            "type": "string",
+            "maxLength": 500
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "provenance": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/provenance"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "envVarName": {
+      "description": "Name of an environment variable, never its value",
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+    },
+    "dnsLabel": {
+      "description": "Kubernetes object name (RFC 1123 label)",
+      "type": "string",
+      "pattern": "^[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?$"
+    },
+    "hostname": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$"
+    }
+  }
+}

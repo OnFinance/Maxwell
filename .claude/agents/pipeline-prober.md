@@ -14,41 +14,7 @@ tools:
   - Bash(jq *)
   - Bash(head *)
   - Bash(grep *)
-  - Bash(kubectl auth can-i *)
-  - Bash(kubectl get *)
-  - Bash(kubectl describe *)
-  - Bash(aws sts get-caller-identity *)
-  - Bash(aws s3api list-buckets *)
-  - Bash(aws s3api get-bucket-*)
-  - Bash(aws s3api get-object-lock-configuration *)
-  - Bash(aws s3api get-public-access-block *)
-  - Bash(aws sqs list-queues *)
-  - Bash(aws sqs get-queue-attributes *)
-  - Bash(aws sqs list-dead-letter-source-queues *)
-  - Bash(aws rds describe-*)
-  - Bash(aws backup list-*)
-  - Bash(aws backup get-backup-plan *)
-  - Bash(aws backup describe-backup-vault *)
-  - Bash(aws kms describe-key *)
-  - Bash(aws kms list-aliases *)
-  - Bash(aws kms get-key-rotation-status *)
-  - Bash(aws ecs describe-task-definition *)
-  - Bash(aws ecr describe-images *)
-  - Bash(aws events list-rules *)
-  - Bash(aws events describe-rule *)
-  - Bash(aws cloudwatch describe-alarms *)
-  - Bash(aws macie2 list-findings *)
-  - Bash(aws macie2 get-finding-statistics *)
-  - Bash(gcloud storage buckets describe *)
-  - Bash(gcloud pubsub topics describe *)
-  - Bash(gcloud pubsub subscriptions describe *)
-  - Bash(gcloud sql instances describe *)
-  - Bash(gcloud sql backups list *)
-  - Bash(gcloud kms keys describe *)
-  - Bash(az storage account show *)
-  - Bash(az postgres flexible-server show *)
-  - Bash(az servicebus queue show *)
-  - Bash(az backup vault show *)
+  - Bash(node .claude/scripts/sandbox/exec.mjs *)
 disallowedTools:
   - Edit
   - MultiEdit
@@ -67,6 +33,7 @@ skills:
   - soc-ledger
   - regulatory-catalogs
   - credentials-sops
+  - sandbox-executors
 effort: high
 background: false
 color: blue
@@ -87,6 +54,12 @@ x-maxwell:
     - pci-dss-4.0.1
     - nist-800-53-r5
 ---
+> **Execution.** Every target command in this file runs only through `node .claude/scripts/sandbox/exec.mjs --company
+> <c> --app <app_id> --env <env_id> -- <command> [--pipe <stage>]` (sandbox-executors skill), which enforces the rules of
+> engagement, resolves the credential and runs the command in the runtime executor; never call kubectl, aws, gcloud,
+> az, docker, curl, openssl or ssh directly. Drop any `timeout 60`, `--kubeconfig` or profile shown below: exec.mjs
+> applies them. Exit 3 means blocked, missing access or plan-only: record it per rules of engagement sections 4 and 8.
+
 # pipeline-prober
 
 You are Maxwell's runtime probe for **data pipelines**: the outbox, queues, buckets, databases, retention jobs and

@@ -11,27 +11,11 @@ allowed-tools:
   - Read
   - Grep
   - Glob
-  - Bash(node .claude/scripts/*)
+  - Bash(node .claude/scripts/sandbox/exec.mjs *)
+  - Bash(node .claude/scripts/creds/sops.mjs get *)
   - Bash(date -u *)
-  - Bash(timeout 60 kubectl get *)
-  - Bash(timeout 60 kubectl describe *)
-  - Bash(timeout 60 kubectl logs *)
-  - Bash(timeout 60 kubectl top *)
-  - Bash(timeout 60 kubectl auth can-i *)
-  - Bash(timeout 60 docker inspect *)
-  - Bash(timeout 60 docker ps *)
-  - Bash(timeout 60 docker images *)
-  - Bash(kubectl get *)
-  - Bash(kubectl describe *)
-  - Bash(kubectl logs *)
-  - Bash(kubectl top *)
-  - Bash(kubectl auth can-i *)
-  - Bash(docker inspect *)
-  - Bash(docker ps *)
-  - Bash(docker images *)
-  - Bash(head -c *)
+  - Bash(sha256sum *)
   - Bash(jq *)
-  - Bash(sha256sum kpis/data/raw/sessions/*)
 when_to_use: Whenever a workflow name starts with runtime-probe- or an agent name ends in -prober, before the first command against a target environment and again before writing any observation from probe output
 user-invocable: false
 x-maxwell:
@@ -77,14 +61,19 @@ Evaluate `changeFreeze[]` before `allowedWindows`, and record every failed check
 blocker list.
 
 ## 2. Allowed and forbidden command families
-Only these families may run. Anything not listed is forbidden, including "harmless" variants. Every command is
-run as `timeout 60 <command>` and its output is capped with `| head -c 1048576` (after any redaction stage).
+Only these families may run. Anything not listed is forbidden, including "harmless" variants.
 
-Permissions: the skill's `allowed-tools` pre-approve the `kubectl`/`docker` read families (with and without the
-`timeout 60` prefix), `head -c`, `jq`, `date -u` and `sha256sum` of export files. Every other family below
-(cloud CLIs, `ssh`, `curl`, `openssl`, `psql`, `crane`, `cosign`) is not pre-approved and always prompts;
-`.claude/settings.json` asks for `ssh` and `curl` explicitly. An unattended run must have them granted in the
-prober agent's own tool list; never widen a pattern to get past a prompt.
+Every target command runs through `node .claude/scripts/sandbox/exec.mjs --company <c> --app <app_id> --env <env_id>
+-- <command> [--pipe <stage>]` (sandbox-executors skill), never directly. `exec.mjs` enforces this section
+mechanically before anything runs: the verb allow-list in `references/command-allowlist.json` (the machine-checked
+form of the table below; a family missing there is refused), the always-forbidden secret-returning and write verbs,
+credential and endpoint flags, no logs and no secrets on `prod`/`dr`, key-only secret listings, pipe stages limited to
+`jq`, `grep` and `head -c`, the 60-second timeout and the 1 MiB output cap. It also re-checks section 1 (freezes,
+windows, rate limit) on a fresh clock and resolves the credential locator itself (section 3). The command runs in the
+company's runtime executor (`sdlc/executor.json`: kubernetes, docker or host) with CLIs pinned by image digest; with
+no runtime executor it exits 3 and the probe is plan-only (section 4). `read-only SQL` (`psql`) is not in the
+allow-list and is recorded as missing access. The table stays authoritative for intent: never phrase a command to get
+past a refusal.
 
 | Method | Allowed | Forbidden (never, even with `--dry-run=client`) |
 |---|---|---|

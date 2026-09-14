@@ -54,6 +54,7 @@ Maxwell/
 │       │   │       └── timeline.json
 │       │   └── master.json
 │       ├── sdlc/
+│       │   ├── executor.json             # where scanners and runtime probes run
 │       │   ├── metastore.json
 │       │   └── policy.json
 │       ├── soc/
@@ -145,7 +146,7 @@ specific Indian instrument that applies to the company's `entityTypes` (SEBI CSC
   `.claude/skills/runtime-probe-rules-of-engagement`, and honour `--dry-run` by planning and requesting evidence
   instead of executing.
 - Reports are written to `summary.md` sections and `soc` observations, never to new files.
-- Utility commands: `/validate`, `/kpis`, `/seed-company`, `/status`.
+- Utility commands: `/validate`, `/kpis`, `/seed-company`, `/status`, `/connect-sandbox`.
 
 ## 8. Finishing a task
 1. `npm run validate` is green. 2. Every generated record has provenance. 3. The ledger, master indexes and
@@ -170,3 +171,14 @@ timelines agree with each other. 4. You did not create any file outside the layo
   email and password and pipe them as JSON to `node .claude/scripts/cos/search.mjs set-credentials`; a user without
   an account can request a read-only one from team@onfinance.in. Never ask in headless runs, never write the login
   into this workspace, and never read `~/.config/maxwell/` or `~/.cache/maxwell/`.
+
+## 11. Running scanners and probe commands
+- Scanners run only through `node .claude/scripts/toolchain/scan.mjs` at the versions pinned in
+  `.claude/skills/scanner-toolchain/references/toolchain.json` (exact version, sha256 per platform, image digest or
+  hash-locked Python lock). Never call a scanner binary or install one another way. See skill `scanner-toolchain`.
+- Runtime probe commands run only through `node .claude/scripts/sandbox/exec.mjs`, which enforces the rules of
+  engagement and resolves credentials itself. Never call kubectl, aws, gcloud, az, docker, curl, openssl or ssh
+  directly. See skill `sandbox-executors`.
+- Where they run is `company-profile/<company_id>/sdlc/executor.json`, set only by `/connect-sandbox`. Exit 3 from
+  either helper means no executor, a blocked environment or missing access: in an interactive session suggest
+  `/connect-sandbox`; in a headless run review manually or write a plan-only observation, and record why.

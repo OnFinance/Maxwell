@@ -8,7 +8,7 @@ import vm from 'node:vm';
 const problems = [];
 const WF_DIR = '.claude/workflows';
 const vocab = JSON.parse(readFileSync('.claude/schemas/vocab/workflows.schema.json', 'utf8')).enum;
-const utility = new Set(['validate', 'kpis', 'seed-company', 'status', 'manual']);
+const utility = new Set(['validate', 'kpis', 'seed-company', 'status', 'connect-sandbox', 'manual']);
 const expected = vocab.filter((n) => !utility.has(n));
 
 const BANNED = [

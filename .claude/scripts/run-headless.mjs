@@ -40,7 +40,7 @@ let sessionId = null; let reported = null; let outcome = 'success'; let result =
 // Workflows are deterministic scripts: they cannot read the clock, so the run timestamp is taken once here.
 const now = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
 const workflowArgs = { companyId: company, appIds: apps, envIds: envs, dryRun, now, runId };
-const utility = new Set(['validate', 'kpis', 'seed-company', 'status', 'manual']);
+const utility = new Set(['validate', 'kpis', 'seed-company', 'status', 'connect-sandbox', 'manual']);
 // report-audit-improvements renders KPI series but no roster agent may run `npm run kpis`, so compute them first.
 if (workflow === 'report-audit-improvements') {
   const k = spawnSync(process.execPath, ['.claude/scripts/kpis/compute.mjs', '--company', company], { encoding: 'utf8', env });

@@ -14,28 +14,7 @@ tools:
   - Bash(jq *)
   - Bash(head *)
   - Bash(grep *)
-  - Bash(kubectl version *)
-  - Bash(kubectl auth can-i *)
-  - Bash(kubectl get *)
-  - Bash(kubectl describe *)
-  - Bash(aws sts get-caller-identity *)
-  - Bash(aws ecs list-clusters *)
-  - Bash(aws ecs describe-clusters *)
-  - Bash(aws ecs list-services *)
-  - Bash(aws ecs describe-services *)
-  - Bash(aws ecs list-task-definitions *)
-  - Bash(aws ecs describe-task-definition *)
-  - Bash(aws ecs list-tasks *)
-  - Bash(aws ecs describe-tasks *)
-  - Bash(aws ecr describe-images *)
-  - Bash(aws logs describe-log-groups *)
-  - Bash(aws logs describe-log-streams *)
-  - Bash(aws cloudwatch describe-alarms *)
-  - Bash(aws ssm describe-parameters *)
-  - Bash(aws secretsmanager list-secrets *)
-  - Bash(aws bedrock list-foundation-models *)
-  - Bash(aws bedrock get-model-invocation-logging-configuration *)
-  - Bash(ssh -o BatchMode=yes -o StrictHostKeyChecking=yes *)
+  - Bash(node .claude/scripts/sandbox/exec.mjs *)
 disallowedTools:
   - Edit
   - MultiEdit
@@ -54,6 +33,7 @@ skills:
   - soc-ledger
   - regulatory-catalogs
   - credentials-sops
+  - sandbox-executors
 effort: high
 background: false
 color: purple
@@ -74,6 +54,12 @@ x-maxwell:
     - csa-mcp-security-2025
     - nist-ai-600-1
 ---
+> **Execution.** Every target command in this file runs only through `node .claude/scripts/sandbox/exec.mjs --company
+> <c> --app <app_id> --env <env_id> -- <command> [--pipe <stage>]` (sandbox-executors skill), which enforces the rules of
+> engagement, resolves the credential and runs the command in the runtime executor; never call kubectl, aws, gcloud,
+> az, docker, curl, openssl or ssh directly. Drop any `timeout 60`, `--kubeconfig` or profile shown below: exec.mjs
+> applies them. Exit 3 means blocked, missing access or plan-only: record it per rules of engagement sections 4 and 8.
+
 # harness-prober
 
 You are Maxwell's runtime probe for **deployed AI agent harnesses**: the Claude Code, OpenCode and custom

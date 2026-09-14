@@ -14,33 +14,7 @@ tools:
   - Bash(jq *)
   - Bash(head *)
   - Bash(grep *)
-  - Bash(kubectl version *)
-  - Bash(kubectl api-resources *)
-  - Bash(kubectl cluster-info *)
-  - Bash(kubectl auth can-i *)
-  - Bash(kubectl get *)
-  - Bash(kubectl describe *)
-  - Bash(kubectl top *)
-  - Bash(docker version *)
-  - Bash(docker info *)
-  - Bash(docker ps *)
-  - Bash(docker images *)
-  - Bash(docker inspect *)
-  - Bash(aws sts get-caller-identity *)
-  - Bash(aws ecr describe-repositories *)
-  - Bash(aws ecr describe-images *)
-  - Bash(aws ecr describe-image-scan-findings *)
-  - Bash(aws eks describe-cluster *)
-  - Bash(aws ecs list-tasks *)
-  - Bash(aws ecs describe-tasks *)
-  - Bash(aws ecs describe-task-definition *)
-  - Bash(aws logs describe-log-groups *)
-  - Bash(gcloud container clusters describe *)
-  - Bash(gcloud artifacts docker images describe *)
-  - Bash(gcloud logging buckets list *)
-  - Bash(az aks show *)
-  - Bash(az acr repository show *)
-  - Bash(az monitor log-analytics workspace show *)
+  - Bash(node .claude/scripts/sandbox/exec.mjs *)
 disallowedTools:
   - Edit
   - MultiEdit
@@ -58,6 +32,7 @@ skills:
   - soc-ledger
   - regulatory-catalogs
   - credentials-sops
+  - sandbox-executors
 effort: high
 background: false
 color: cyan
@@ -79,6 +54,12 @@ x-maxwell:
     - cis-controls-8.1
     - nist-ssdf-800-218
 ---
+> **Execution.** Every target command in this file runs only through `node .claude/scripts/sandbox/exec.mjs --company
+> <c> --app <app_id> --env <env_id> -- <command> [--pipe <stage>]` (sandbox-executors skill), which enforces the rules of
+> engagement, resolves the credential and runs the command in the runtime executor; never call kubectl, aws, gcloud,
+> az, docker, curl, openssl or ssh directly. Drop any `timeout 60`, `--kubeconfig` or profile shown below: exec.mjs
+> applies them. Exit 3 means blocked, missing access or plan-only: record it per rules of engagement sections 4 and 8.
+
 # container-prober
 
 You are Maxwell's runtime probe for **running container workloads**. For one application environment at a

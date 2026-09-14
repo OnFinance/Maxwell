@@ -14,49 +14,7 @@ tools:
   - Bash(jq *)
   - Bash(head *)
   - Bash(grep *)
-  - Bash(kubectl version *)
-  - Bash(kubectl auth can-i *)
-  - Bash(kubectl get *)
-  - Bash(kubectl describe *)
-  - Bash(aws sts get-caller-identity *)
-  - Bash(aws iam get-*)
-  - Bash(aws iam list-*)
-  - Bash(aws iam simulate-principal-policy *)
-  - Bash(aws accessanalyzer list-*)
-  - Bash(aws sso-admin list-*)
-  - Bash(aws sso-admin describe-permission-set *)
-  - Bash(aws identitystore list-*)
-  - Bash(aws organizations describe-organization *)
-  - Bash(aws organizations list-policies *)
-  - Bash(aws organizations describe-policy *)
-  - Bash(aws cloudtrail lookup-events *)
-  - Bash(aws cloudtrail describe-trails *)
-  - Bash(aws cloudtrail get-trail-status *)
-  - Bash(aws cloudwatch describe-alarms *)
-  - Bash(aws secretsmanager list-secrets *)
-  - Bash(aws secretsmanager describe-secret *)
-  - Bash(aws secretsmanager get-resource-policy *)
-  - Bash(aws kms list-keys *)
-  - Bash(aws kms list-aliases *)
-  - Bash(aws kms get-key-policy *)
-  - Bash(aws kms get-key-rotation-status *)
-  - Bash(aws ssm describe-sessions *)
-  - Bash(aws ssm get-document *)
-  - Bash(aws eks describe-cluster *)
-  - Bash(aws eks list-access-entries *)
-  - Bash(aws eks describe-access-entry *)
-  - Bash(aws eks list-associated-access-policies *)
-  - Bash(aws ecs describe-task-definition *)
-  - Bash(gcloud projects get-iam-policy *)
-  - Bash(gcloud iam service-accounts list *)
-  - Bash(gcloud iam service-accounts keys list *)
-  - Bash(gcloud iam roles describe *)
-  - Bash(az role assignment list *)
-  - Bash(az role definition list *)
-  - Bash(az ad user list *)
-  - Bash(az ad sp list *)
-  - Bash(az ad app credential list *)
-  - Bash(az monitor activity-log list *)
+  - Bash(node .claude/scripts/sandbox/exec.mjs *)
 disallowedTools:
   - Edit
   - MultiEdit
@@ -74,6 +32,7 @@ skills:
   - soc-ledger
   - regulatory-catalogs
   - credentials-sops
+  - sandbox-executors
 effort: high
 background: false
 color: red
@@ -94,6 +53,12 @@ x-maxwell:
     - nist-800-53-r5
     - iso-27001-2022
 ---
+> **Execution.** Every target command in this file runs only through `node .claude/scripts/sandbox/exec.mjs --company
+> <c> --app <app_id> --env <env_id> -- <command> [--pipe <stage>]` (sandbox-executors skill), which enforces the rules of
+> engagement, resolves the credential and runs the command in the runtime executor; never call kubectl, aws, gcloud,
+> az, docker, curl, openssl or ssh directly. Drop any `timeout 60`, `--kubeconfig` or profile shown below: exec.mjs
+> applies them. Exit 3 means blocked, missing access or plan-only: record it per rules of engagement sections 4 and 8.
+
 # iam-prober
 
 You are Maxwell's runtime probe for **identity and access**: who and what can act on a regulated company's cloud

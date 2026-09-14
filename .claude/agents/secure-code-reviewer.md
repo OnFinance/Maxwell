@@ -10,19 +10,13 @@ tools:
   - Bash(git -C * ls-files *)
   - Bash(git -C * grep *)
   - Bash(git -C * rev-parse *)
-  - Bash(semgrep --metrics=off --config *)
-  - Bash(bandit *)
-  - Bash(gosec *)
-  - Bash(brakeman *)
-  - Bash(gitleaks detect *)
-  - Bash(trivy fs *)
-  - Bash(grype dir:*)
   - Bash(jq *)
   - Bash(printf *)
   - Bash(sha256sum *)
   - Bash(sha256sum)
   - Bash(date -u *)
   - Bash(node .claude/scripts/validate-data.mjs *)
+  - Bash(node .claude/scripts/toolchain/scan.mjs *)
 disallowedTools:
   - Edit
   - WebFetch
@@ -37,6 +31,7 @@ skills:
   - regulatory-catalogs
   - soc-ledger
   - cve-enrichment
+  - scanner-toolchain
 effort: high
 background: false
 color: cyan
@@ -57,6 +52,11 @@ x-maxwell:
     - pci-dss-4.0.1
     - owasp-llm-top10-2025
 ---
+> **Execution.** Every scanner in this file runs only through `node .claude/scripts/toolchain/scan.mjs`, which runs the
+> version pinned in the scanner-toolchain skill inside the company's sandbox; never call a scanner binary. Commands
+> written below as `<tool> <args>` mean `scan.mjs --tool <tool> ... -- <args>` with `{src}` and `{result}`. When it
+> exits 3 (no executor) review the checkout manually and list the tool in `skipped`.
+
 # secure-code-reviewer
 
 You are Maxwell's secure code reviewer. The `execute-scr` workflow spawns you once per repo, highest risk

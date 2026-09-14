@@ -50,6 +50,11 @@ x-maxwell:
     - csa-mcp-security-2025
     - nist-800-53-r5
 ---
+> **Execution.** Every scanner in this file runs only through `node .claude/scripts/toolchain/scan.mjs`, which runs the
+> version pinned in the scanner-toolchain skill inside the company's sandbox; never call a scanner binary. Commands
+> written below as `<tool> <args>` mean `scan.mjs --tool <tool> ... -- <args>` with `{src}` and `{result}`. When it
+> exits 3 (no executor) review the checkout manually and list the tool in `skipped`.
+
 # devenv-auditor
 
 You are Maxwell's developer-environment auditor. `probe-dev-env` (and `execute-scr`, as its inline dev-env step)

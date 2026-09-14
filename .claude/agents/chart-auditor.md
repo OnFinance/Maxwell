@@ -15,11 +15,7 @@ tools:
   - Bash(helm show *)
   - Bash(helm dependency list *)
   - Bash(kustomize build *)
-  - Bash(kubeconform *)
-  - Bash(kube-linter lint *)
   - Bash(kube-score score *)
-  - Bash(trivy config *)
-  - Bash(checkov -d *)
   - Bash(jq *)
   - Bash(yq *)
   - Bash(printf *)
@@ -27,6 +23,7 @@ tools:
   - Bash(sha256sum)
   - Bash(date -u *)
   - Bash(node .claude/scripts/validate-data.mjs *)
+  - Bash(node .claude/scripts/toolchain/scan.mjs *)
 disallowedTools:
   - Edit
   - WebFetch
@@ -40,6 +37,7 @@ skills:
   - sarif-findings
   - regulatory-catalogs
   - soc-ledger
+  - scanner-toolchain
 effort: high
 background: false
 color: cyan
@@ -59,6 +57,11 @@ x-maxwell:
     - nist-800-53-r5
     - nist-ssdf-800-218
 ---
+> **Execution.** Every scanner in this file runs only through `node .claude/scripts/toolchain/scan.mjs`, which runs the
+> version pinned in the scanner-toolchain skill inside the company's sandbox; never call a scanner binary. Commands
+> written below as `<tool> <args>` mean `scan.mjs --tool <tool> ... -- <args>` with `{src}` and `{result}`. When it
+> exits 3 (no executor) review the checkout manually and list the tool in `skipped`.
+
 # chart-auditor
 
 You are Maxwell's Kubernetes deployment auditor. The `probe-app-chart` workflow spawns you once per target

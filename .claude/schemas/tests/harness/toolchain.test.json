@@ -1,0 +1,103 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/v1/harness/toolchain.schema.json",
+  "tests": [
+    {
+      "description": "binary tool with a verified archive, a digest-pinned image and a hash-locked Python tool",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.toolchain",
+        "pinnedAt": "2026-09-14T15:40:00Z",
+        "platforms": [ "linux-amd64" ],
+        "tools": [
+          {
+            "name": "trivy",
+            "category": "scanner",
+            "version": "0.74.0",
+            "source": "https://github.com/aquasecurity/trivy/releases/tag/v0.74.0",
+            "versionCheck": { "args": [ "--version" ], "expect": "0.74.0" },
+            "artifacts": {
+              "linux-amd64": {
+                "url": "https://github.com/aquasecurity/trivy/releases/download/v0.74.0/trivy_0.74.0_Linux-64bit.tar.gz",
+                "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "sha256Source": "upstream-checksums-verified",
+                "archive": "tar.gz",
+                "binaryPath": "trivy"
+              }
+            },
+            "image": { "ref": "docker.io/aquasec/trivy:0.74.0", "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "invoke": "trivy", "user": "", "platforms": [ "linux/amd64", "linux/arm64" ] }
+          },
+          {
+            "name": "bandit",
+            "category": "scanner",
+            "version": "1.9.4",
+            "source": "https://pypi.org/project/bandit/1.9.4/",
+            "versionCheck": { "args": [ "--version" ], "expect": "1.9.4" },
+            "python": { "package": "bandit", "lock": "locks/bandit.txt", "lockSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc", "packages": 9, "installer": "uv", "pythonVersion": "3.12" }
+          }
+        ],
+        "baseImages": {
+          "static": { "ref": "docker.io/library/debian:bookworm-slim", "digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", "invoke": "/bin/sh" },
+          "python": { "ref": "docker.io/library/python:3.12-slim-bookworm", "digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", "invoke": "/bin/sh" }
+        },
+        "sdks": [
+          { "provider": "e2b", "package": "e2b", "version": "2.49.1", "integrity": "sha512-alHohyLEls8MbZGVtbWVudGVzdA==" }
+        ]
+      }
+    },
+    {
+      "description": "a tar.gz artifact must name the binary inside it",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1", "kind": "maxwell.toolchain", "pinnedAt": "2026-09-14T15:40:00Z", "platforms": [ "linux-amd64" ],
+        "tools": [ { "name": "trivy", "category": "scanner", "version": "0.74.0", "source": "https://github.com/aquasecurity/trivy", "versionCheck": { "args": [ "--version" ], "expect": "0.74.0" },
+          "artifacts": { "linux-amd64": { "url": "https://example.com/trivy.tar.gz", "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "sha256Source": "upstream-checksums", "archive": "tar.gz" } } } ],
+        "baseImages": { "static": { "ref": "docker.io/library/debian:bookworm-slim", "digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", "invoke": "/bin/sh" }, "python": { "ref": "docker.io/library/python:3.12-slim", "digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", "invoke": "/bin/sh" } },
+        "sdks": []
+      }
+    },
+    {
+      "description": "a tool with no artifact, image or Python lock cannot be run pinned",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1", "kind": "maxwell.toolchain", "pinnedAt": "2026-09-14T15:40:00Z", "platforms": [ "linux-amd64" ],
+        "tools": [ { "name": "tfsec", "category": "scanner", "version": "1.28.14", "source": "https://github.com/aquasecurity/tfsec", "versionCheck": { "args": [ "--version" ], "expect": "1.28.14" } } ],
+        "baseImages": { "static": { "ref": "docker.io/library/debian:bookworm-slim", "digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", "invoke": "/bin/sh" }, "python": { "ref": "docker.io/library/python:3.12-slim", "digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", "invoke": "/bin/sh" } },
+        "sdks": []
+      }
+    },
+    {
+      "description": "versions are exact, never a range",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1", "kind": "maxwell.toolchain", "pinnedAt": "2026-09-14T15:40:00Z", "platforms": [ "linux-amd64" ],
+        "tools": [ { "name": "gitleaks", "category": "scanner", "version": "^8.30", "source": "https://github.com/gitleaks/gitleaks", "versionCheck": { "args": [ "version" ], "expect": "8.30" },
+          "image": { "ref": "ghcr.io/gitleaks/gitleaks:latest", "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "invoke": "gitleaks" } } ],
+        "baseImages": { "static": { "ref": "docker.io/library/debian:bookworm-slim", "digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", "invoke": "/bin/sh" }, "python": { "ref": "docker.io/library/python:3.12-slim", "digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", "invoke": "/bin/sh" } },
+        "sdks": []
+      }
+    },
+    {
+      "description": "an image must be pinned by a sha256 digest",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1", "kind": "maxwell.toolchain", "pinnedAt": "2026-09-14T15:40:00Z", "platforms": [ "linux-amd64" ],
+        "tools": [ { "name": "gitleaks", "category": "scanner", "version": "8.30.1", "source": "https://github.com/gitleaks/gitleaks", "versionCheck": { "args": [ "version" ], "expect": "8.30.1" },
+          "image": { "ref": "ghcr.io/gitleaks/gitleaks:v8.30.1", "digest": "v8.30.1", "invoke": "gitleaks" } } ],
+        "baseImages": { "static": { "ref": "docker.io/library/debian:bookworm-slim", "digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", "invoke": "/bin/sh" }, "python": { "ref": "docker.io/library/python:3.12-slim", "digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", "invoke": "/bin/sh" } },
+        "sdks": []
+      }
+    },
+    {
+      "description": "an unrecorded checksum provenance is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1", "kind": "maxwell.toolchain", "pinnedAt": "2026-09-14T15:40:00Z", "platforms": [ "linux-amd64" ],
+        "tools": [ { "name": "jq", "category": "helper", "version": "1.8.2", "source": "https://github.com/jqlang/jq", "versionCheck": { "args": [ "--version" ], "expect": "1.8.2" },
+          "artifacts": { "linux-amd64": { "url": "https://example.com/jq", "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "sha256Source": "trust-me", "archive": "none" } } } ],
+        "baseImages": { "static": { "ref": "docker.io/library/debian:bookworm-slim", "digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", "invoke": "/bin/sh" }, "python": { "ref": "docker.io/library/python:3.12-slim", "digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", "invoke": "/bin/sh" } },
+        "sdks": []
+      }
+    }
+  ]
+}
