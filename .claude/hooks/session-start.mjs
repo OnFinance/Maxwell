@@ -22,6 +22,12 @@ const version = harness === 'claude-code'
   ? (spawnSync('claude', ['--version'], { encoding: 'utf8' }).stdout || '').trim().split(' ')[0] || 'unknown'
   : (process.env.MAXWELL_HARNESS_VERSION || 'unknown');
 
+// Headless OpenCode agent sessions start from plain prompts, not /<workflow>, so run-workflow.mjs names the workflow and
+// company in the environment. Only vocabulary workflows and slug company ids are accepted.
+const workflows = JSON.parse(readFileSync(new URL('../schemas/vocab/workflows.schema.json', import.meta.url), 'utf8')).enum;
+const envWorkflow = workflows.includes(process.env.MAXWELL_WORKFLOW) ? process.env.MAXWELL_WORKFLOW : null;
+const envCompany = /^[a-z0-9][a-z0-9-]{1,62}$/.test(process.env.MAXWELL_COMPANY_ID || '') ? process.env.MAXWELL_COMPANY_ID : null;
+
 const meta = existing || {
   schemaVersion: '1',
   kind: 'maxwell.session.meta',
@@ -29,7 +35,8 @@ const meta = existing || {
   harness,
   harnessVersion: version,
   runId,
-  workflow: 'manual',
+  workflow: envWorkflow || 'manual',
+  ...(envCompany ? { companyId: envCompany } : {}),
   args: { appIds: [], envIds: [], dryRun: false },
   startedAt: new Date().toISOString().replace(/\.\d{3}Z$/, 'Z'),
   cwd: root,

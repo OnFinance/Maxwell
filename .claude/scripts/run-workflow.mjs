@@ -52,7 +52,7 @@ function runOpencode(prompt, { agentType, modelOverride, label }) {
     if (process.env.MAXWELL_OPENCODE_AUTO === '1') cliArgs.push('--auto');
     cliArgs.push(prompt);
     // stdin closed: opencode run reads a piped stdin as part of the message and waits for it to end.
-    const child = spawn('opencode', cliArgs, { cwd: process.cwd(), stdio: ['ignore', 'pipe', 'pipe'], env: { ...process.env, MAXWELL_HARNESS: 'opencode', ...(runId ? { MAXWELL_RUN_ID: runId } : {}) } });
+    const child = spawn('opencode', cliArgs, { cwd: process.cwd(), stdio: ['ignore', 'pipe', 'pipe'], env: { ...process.env, MAXWELL_HARNESS: 'opencode', MAXWELL_WORKFLOW: name, ...(typeof args.companyId === 'string' ? { MAXWELL_COMPANY_ID: args.companyId } : {}), ...(runId ? { MAXWELL_RUN_ID: runId } : {}) } });
     let stdout = ''; let stderr = '';
     child.stdout.on('data', (d) => { stdout += d; });
     child.stderr.on('data', (d) => { stderr += d; });
