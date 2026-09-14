@@ -3,16 +3,16 @@ schemaVersion: "1"
 kind: maxwell.company.summary
 companyId: example-co
 title: Example Capital Markets cyber resilience summary
-version: "2.0.0"
-sections: [overview, regulatory-posture, vendors, control-summary]
+version: "3.0.0"
+sections: [overview, regulatory-posture, data-flows, vendors, control-summary]
 provenance:
   harness: claude-code
-  generatedAt: "2026-09-14T10:46:39Z"
-  sessionId: 30803fac-c775-4bd4-b5a5-82ebddf41fac
+  generatedAt: "2026-09-14T11:10:49Z"
+  sessionId: "cb91f6b0-eba0-4378-9168-48137e203b72"
   runId: run_01M2FGNVVQ15ZKXZWGW74YWAAQ
-  workflow: refresh-vendor-ctx
+  workflow: refresh-metastore
   agent: report-writer
-  inputsHash: d01538e3b9f91b0ab123ecdf7dbb5f376eb368af763ef2b501c859f3ec4a316d
+  inputsHash: c55740a47c5d0ed5a451d0d866bdcf3483c65e3c828977cb131c2a49d832b083
 ---
 # Example Capital Markets — cyber resilience summary
 
@@ -58,6 +58,57 @@ Refresh date: 2026-09-14 (`provenance.generatedAt` 2026-09-14T08:31:29Z).
 Expiry note: GitHub's SOC 2 Type II report expires 2026-09-30, 16 days after this run's
 `provenance.generatedAt` (2026-09-14T10:46:39Z), inside the 90-day assurance-expiring window; flagged in
 [fnd_01M2FS4806WHXANC3Q9QXEAXGF]. `mongodb-atlas` carries no `assurance[]` entry in its vendor file at all.
+
+## Data flows
+`refresh-metastore` catalogued this run: 1 catalog (0 carried forward, 0 dropped), 14 tables, 36 PII columns,
+0 pipelines, 0 lineage edges, 12 confirmed gap(s), from `company-profile/example-co/sdlc/metastore.json`
+(`snapshotAt` 2026-09-14T11:10:49Z).
+
+### Catalogs by application
+
+| App | Catalog | Type | Tables | PII columns | Residency |
+|---|---|---|---|---|---|
+| `db-models` | `db-models-mongodb` | other (MongoDB document store; no document-store catalog type exists yet, see `schema-gap` below) | 14 | 36 | unknown — endpoint and region not resolvable (`endpointRef: db-models-mongodb-ro` is a placeholder, not a resolvable locator) [obs_01M2FTMXD2BWZNQ5TE51A42A5P] |
+
+Table-level counts (columns / of which PII), all under schema `default`: `secrets` 7/6, `webinar` 4/0,
+`communities` 5/1, `new_discussions` 20/7, `entity` 48/7, `insights_raw` 23/0, `insights_raw_crypto` 23/0,
+`insights_raw_us_stocks` 23/0, `insights` 24/0, `user` 54/13, `notifications` 8/0, `feedback` 3/1, `reward`
+9/1, `cached_chats` 2/0 (sum: 14 tables, 36 pii columns). `secrets` and `user` also carry `spdi` and
+`financial`-classified columns (trading-account credentials, portfolio holdings and values)
+[obs_01M2FTMXD2S83CCJ9B0H279E2R].
+
+`mcp-gateway`'s repo `mongodb-mcp-server` recorded no catalog: it is a generic MongoDB MCP client whose
+database, collections and fields come from a connection string supplied at runtime, so nothing could be
+recorded from code [obs_01M2FTV6HWRF2KFZCSKGXQ4EC8]. It is the only application backing the
+`order-routing` critical function (`details.json` `criticalFunctions[0]`).
+
+### Pipelines and lineage
+`pipelines: []` and `lineage: []` in `sdlc/metastore.json` — no orchestrator, source repo, schedule or
+OpenLineage edge is recorded this run, so no source -> job -> sink chain carrying pii, spdi, cardholder or
+financial data can be shown.
+
+### Retention versus in-scope instruments
+No table in `db-models-mongodb` carries a `retentionDays` value (all null in `sdlc/metastore.json`), so no
+recorded retention period can be compared against the in-scope instruments' data- and log-retention periods
+(`dpdp-rules-2025:8(3)` data-retention 1 year, `dpdp-rules-2025:6(1)(e)` log-retention 1 year,
+`cert-in-directions-2022:Dir-v`/`Dir-vi` data-retention 5 years, `cert-in-directions-2022:Dir-iv` log-retention
+180 days): no record-keeping period stated by an in-scope instrument is present in the metastore to compare.
+This is itself an evidence request: `user`, `secrets` and several other collections hold personal data with
+no retention setting, TTL index or expiry field in code [obs_01M2FTMXD2QGV91CGDAFY0YQ0S]. For `mcp-gateway`,
+log retention is configured outside the repo (env files state prod 365 days, qa 180 days via a Wazuh SIEM) and
+is requested for confirmation against `cert-in-directions-2022:Dir-iv` (180 days) and
+`rbi-cyber-tech-directions-2026:95` [obs_01M2FTV6MCKCJTVHDHHP02KJ2V].
+
+### Confirmed gaps (12)
+db-models / onfinance-db-model-master (9): 1 endpointRef-missing [obs_01M2FTMXD2BWZNQ5TE51A42A5P], 3
+evidence-request [obs_01M2FTMXD2QGV91CGDAFY0YQ0S], 4 classification-conflict
+[obs_01M2FTMXD2S83CCJ9B0H279E2R], 1 schema-gap [obs_01M2FTN49XKFG0B4JAZRP4P6X1]. mcp-gateway /
+mongodb-mcp-server (3): evidence-request for target inventory/residency
+[obs_01M2FTV6K4Q25G1JT58HAZDV36], log retention [obs_01M2FTV6MCKCJTVHDHHP02KJ2V], and telemetry PII transfer
+[obs_01M2FTV6NJKW6VW58KFH78E5AV]. Catalogue-level summaries: [obs_01M2FTMXD188SPBHGHF4AMHN97],
+[obs_01M2FTV6HWRF2KFZCSKGXQ4EC8].
+
+<!-- source: sdlc/metastore.json catalogs[].schemas[].tables[].columns[] counted by pii:true; soc/main.jsonl kind:observation with provenance.workflow:refresh-metastore and provenance.runId:run_01M2FGNVVQ15ZKXZWGW74YWAAQ -->
 
 ## Control summary
 `refresh-soc` reconciled the ledger this run: 360 new control records, 1 re-assessed

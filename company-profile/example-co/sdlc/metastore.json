@@ -1,0 +1,1647 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.company.metastore",
+  "companyId": "example-co",
+  "snapshotAt": "2026-09-14T11:10:49Z",
+  "catalogs": [
+    {
+      "catalogId": "db-models-mongodb",
+      "type": "other",
+      "endpointRef": "db-models-mongodb-ro",
+      "appId": "db-models",
+      "schemas": [
+        {
+          "name": "default",
+          "tables": [
+            {
+              "name": "secrets",
+              "fullyQualifiedName": "db-models-mongodb.default.secrets",
+              "columns": [
+                {
+                  "name": "apiKey",
+                  "dataType": "StringField",
+                  "dataClassification": [ "restricted" ],
+                  "pii": false
+                },
+                {
+                  "name": "zerodha_username",
+                  "dataType": "StringField",
+                  "dataClassification": [ "restricted", "pii" ],
+                  "pii": true
+                },
+                {
+                  "name": "zerodha_password",
+                  "dataType": "StringField",
+                  "dataClassification": [ "restricted", "spdi", "pii" ],
+                  "pii": true
+                },
+                {
+                  "name": "zerodha_2fa",
+                  "dataType": "StringField",
+                  "dataClassification": [ "restricted", "spdi", "pii" ],
+                  "pii": true
+                },
+                {
+                  "name": "apiSecrets",
+                  "dataType": "StringField",
+                  "dataClassification": [ "restricted", "spdi", "pii" ],
+                  "pii": true
+                },
+                {
+                  "name": "accessToken",
+                  "dataType": "StringField",
+                  "dataClassification": [ "restricted", "spdi", "pii" ],
+                  "pii": true
+                },
+                {
+                  "name": "accountName",
+                  "dataType": "StringField",
+                  "dataClassification": [ "confidential", "pii" ],
+                  "pii": true
+                }
+              ],
+              "format": "native"
+            },
+            {
+              "name": "webinar",
+              "fullyQualifiedName": "db-models-mongodb.default.webinar",
+              "columns": [
+                {
+                  "name": "webinar_name",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "webinar_url",
+                  "dataType": "URLField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "webinar_image_url",
+                  "dataType": "URLField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "webinar_metadata",
+                  "dataType": "ListField(StringField)",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                }
+              ],
+              "format": "native"
+            },
+            {
+              "name": "communities",
+              "fullyQualifiedName": "db-models-mongodb.default.communities",
+              "columns": [
+                {
+                  "name": "community_name",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "community_image_url",
+                  "dataType": "URLField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "community_url",
+                  "dataType": "URLField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "community_admin_name",
+                  "dataType": "StringField",
+                  "dataClassification": [ "pii" ],
+                  "pii": true
+                },
+                {
+                  "name": "community_metadata",
+                  "dataType": "ListField(StringField)",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                }
+              ],
+              "format": "native"
+            },
+            {
+              "name": "new_discussions",
+              "fullyQualifiedName": "db-models-mongodb.default.new_discussions",
+              "columns": [
+                {
+                  "name": "og_platform",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "entity_name",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "author_id",
+                  "dataType": "StringField",
+                  "dataClassification": [ "pii" ],
+                  "pii": true
+                },
+                {
+                  "name": "author_name",
+                  "dataType": "StringField",
+                  "dataClassification": [ "pii" ],
+                  "pii": true
+                },
+                {
+                  "name": "author_profile_pic",
+                  "dataType": "StringField",
+                  "dataClassification": [ "pii" ],
+                  "pii": true
+                },
+                {
+                  "name": "comment_text",
+                  "dataType": "StringField",
+                  "dataClassification": [ "confidential" ],
+                  "pii": false
+                },
+                {
+                  "name": "published_date",
+                  "dataType": "DateTimeField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "tags",
+                  "dataType": "EmbeddedDocumentListField(NewDiscussionsTag)",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "tags.tag_type",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "tags.tag_content",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "tags.tag_metadata",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "num_likes",
+                  "dataType": "IntField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "num_comments",
+                  "dataType": "IntField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "sub_comments",
+                  "dataType": "EmbeddedDocumentListField(SubDiscussions)",
+                  "dataClassification": [ "confidential", "pii" ],
+                  "pii": true
+                },
+                {
+                  "name": "sub_comments.author_id",
+                  "dataType": "StringField",
+                  "dataClassification": [ "pii" ],
+                  "pii": true
+                },
+                {
+                  "name": "sub_comments.author_name",
+                  "dataType": "StringField",
+                  "dataClassification": [ "pii" ],
+                  "pii": true
+                },
+                {
+                  "name": "sub_comments.published_date",
+                  "dataType": "DateTimeField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "sub_comments.num_likes",
+                  "dataType": "IntField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "sub_comments.comment_text",
+                  "dataType": "StringField",
+                  "dataClassification": [ "confidential" ],
+                  "pii": false
+                },
+                {
+                  "name": "sub_comments.banned_by",
+                  "dataType": "ListField(StringField())",
+                  "dataClassification": [ "pii" ],
+                  "pii": true
+                }
+              ],
+              "format": "native"
+            },
+            {
+              "name": "entity",
+              "fullyQualifiedName": "db-models-mongodb.default.entity",
+              "columns": [
+                {
+                  "name": "entity_type",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "entity_name",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "entity_ticker",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "entity_ticker_alt",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "entity_icon_url",
+                  "dataType": "URLField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "entity_index",
+                  "dataType": "ListField(StringField())",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "entity_sector",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "fundamental_analysis",
+                  "dataType": "DynamicField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "technical_analysis",
+                  "dataType": "DynamicField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "important_links",
+                  "dataType": "DynamicField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "purchase_options",
+                  "dataType": "EmbeddedDocumentListField(PurchaseOption)",
+                  "dataClassification": [ "financial" ],
+                  "pii": false
+                },
+                {
+                  "name": "purchase_options.link",
+                  "dataType": "URLField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "purchase_options.name",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "purchase_options.icon",
+                  "dataType": "URLField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "purchase_options.spread",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "financial" ],
+                  "pii": false
+                },
+                {
+                  "name": "purchase_options.volume",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "financial" ],
+                  "pii": false
+                },
+                {
+                  "name": "purchase_options.price",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "financial" ],
+                  "pii": false
+                },
+                {
+                  "name": "social_discussions",
+                  "dataType": "EmbeddedDocumentListField(Discussions)",
+                  "dataClassification": [ "confidential", "pii" ],
+                  "pii": true
+                },
+                {
+                  "name": "social_discussions.discussion_author_img",
+                  "dataType": "StringField",
+                  "dataClassification": [ "pii" ],
+                  "pii": true
+                },
+                {
+                  "name": "social_discussions.discussion_author_name",
+                  "dataType": "StringField",
+                  "dataClassification": [ "pii" ],
+                  "pii": true
+                },
+                {
+                  "name": "social_discussions.discussion_author_username",
+                  "dataType": "StringField",
+                  "dataClassification": [ "pii" ],
+                  "pii": true
+                },
+                {
+                  "name": "social_discussions.discussion_content",
+                  "dataType": "StringField",
+                  "dataClassification": [ "confidential" ],
+                  "pii": false
+                },
+                {
+                  "name": "social_discussions.discussion_platform",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "social_discussions.published_date",
+                  "dataType": "DateTimeField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "social_discussions.total_engagement",
+                  "dataType": "IntField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "social_discussions.discussion_url",
+                  "dataType": "URLField",
+                  "dataClassification": [ "confidential", "pii" ],
+                  "pii": true
+                },
+                {
+                  "name": "social_discussions.discussion_sentiment",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "social_discussions.discussion_tags",
+                  "dataType": "ListField(StringField)",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "stock_tips",
+                  "dataType": "EmbeddedDocumentListField(ExpertOutlooks)",
+                  "dataClassification": [ "financial", "pii" ],
+                  "pii": true
+                },
+                {
+                  "name": "stock_tips.expert_name",
+                  "dataType": "StringField",
+                  "dataClassification": [ "pii" ],
+                  "pii": true
+                },
+                {
+                  "name": "stock_tips.recommendation_time",
+                  "dataType": "DateField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "stock_tips.recommended_price",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "financial" ],
+                  "pii": false
+                },
+                {
+                  "name": "stock_tips.current_returns",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "financial" ],
+                  "pii": false
+                },
+                {
+                  "name": "stock_tips.tip_rationale",
+                  "dataType": "ListField(StringField)",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "stock_tips.target_price",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "financial" ],
+                  "pii": false
+                },
+                {
+                  "name": "stock_tips.stoploss_price",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "financial" ],
+                  "pii": false
+                },
+                {
+                  "name": "stock_tips.timeframe",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "stock_tips.expert_recommendation",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "data_feed",
+                  "dataType": "URLField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "entity_fb_id",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "is_entity_complete",
+                  "dataType": "BooleanField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "entity_ecosystem",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "entity_ecosystem_rank",
+                  "dataType": "IntField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "entity_exchange",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "tag",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "tag_validity",
+                  "dataType": "DateTimeField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "technical_pattern",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "technical_sentiment",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                }
+              ],
+              "format": "native"
+            },
+            {
+              "name": "insights_raw",
+              "fullyQualifiedName": "db-models-mongodb.default.insights_raw",
+              "columns": [
+                {
+                  "name": "insight_title",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_description",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_published_date",
+                  "dataType": "DateTimeField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_publish_price",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "financial" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_read_time",
+                  "dataType": "IntField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_source",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_img_url",
+                  "dataType": "URLField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_source_page_url",
+                  "dataType": "URLField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_event_group",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_signal_sentiment",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_sentiment",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_event_sentiment",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_signal_relevance",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_relevance",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_event_relevance",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_order",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_id",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_name",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_index",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_sector",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_ticker",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_logo",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_type",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                }
+              ],
+              "format": "native"
+            },
+            {
+              "name": "insights_raw_crypto",
+              "fullyQualifiedName": "db-models-mongodb.default.insights_raw_crypto",
+              "columns": [
+                {
+                  "name": "insight_title",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_description",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_published_date",
+                  "dataType": "DateTimeField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_publish_price",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "financial" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_read_time",
+                  "dataType": "IntField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_source",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_img_url",
+                  "dataType": "URLField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_source_page_url",
+                  "dataType": "URLField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_event_group",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_signal_sentiment",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_sentiment",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_event_sentiment",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_signal_relevance",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_relevance",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_event_relevance",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_order",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_id",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_name",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_index",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_sector",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_ticker",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_logo",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_type",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                }
+              ],
+              "format": "native"
+            },
+            {
+              "name": "insights_raw_us_stocks",
+              "fullyQualifiedName": "db-models-mongodb.default.insights_raw_us_stocks",
+              "columns": [
+                {
+                  "name": "insight_title",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_description",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_published_date",
+                  "dataType": "DateTimeField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_publish_price",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "financial" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_read_time",
+                  "dataType": "IntField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_source",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_img_url",
+                  "dataType": "URLField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_source_page_url",
+                  "dataType": "URLField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_event_group",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_signal_sentiment",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_sentiment",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_event_sentiment",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_signal_relevance",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_relevance",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_event_relevance",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_order",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_id",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_name",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_index",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_sector",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_ticker",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_logo",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_type",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                }
+              ],
+              "format": "native"
+            },
+            {
+              "name": "insights",
+              "fullyQualifiedName": "db-models-mongodb.default.insights",
+              "columns": [
+                {
+                  "name": "insight_title",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_description",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_published_date",
+                  "dataType": "DateTimeField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_publish_price",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "financial" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_read_time",
+                  "dataType": "IntField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_source",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_img_url",
+                  "dataType": "URLField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_source_page_url",
+                  "dataType": "URLField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_event_group",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_signal_sentiment",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_sentiment",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_event_sentiment",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_signal_relevance",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_order",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_id",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_name",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_index",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_sector",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_ticker",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_logo",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_entity_type",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insight_likes",
+                  "dataType": "IntField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "technical_pattern",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "technical_sentiment",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                }
+              ],
+              "format": "native"
+            },
+            {
+              "name": "user",
+              "fullyQualifiedName": "db-models-mongodb.default.user",
+              "columns": [
+                {
+                  "name": "user_email",
+                  "dataType": "EmailField",
+                  "dataClassification": [ "pii" ],
+                  "pii": true
+                },
+                {
+                  "name": "user_phone_number",
+                  "dataType": "StringField",
+                  "dataClassification": [ "pii" ],
+                  "pii": true
+                },
+                {
+                  "name": "user_password",
+                  "dataType": "BinaryField",
+                  "dataClassification": [ "restricted", "spdi", "pii" ],
+                  "pii": true
+                },
+                {
+                  "name": "user_full_name",
+                  "dataType": "StringField",
+                  "dataClassification": [ "pii" ],
+                  "pii": true
+                },
+                {
+                  "name": "user_permission_level",
+                  "dataType": "StringField",
+                  "dataClassification": [ "confidential" ],
+                  "pii": false
+                },
+                {
+                  "name": "referee",
+                  "dataType": "StringField",
+                  "dataClassification": [ "confidential", "pii" ],
+                  "pii": true
+                },
+                {
+                  "name": "user_debank_url",
+                  "dataType": "URLField",
+                  "dataClassification": [ "financial", "spdi", "pii" ],
+                  "pii": true
+                },
+                {
+                  "name": "user_binance_auth_creds",
+                  "dataType": "DynamicField",
+                  "dataClassification": [ "restricted", "financial", "spdi", "pii" ],
+                  "pii": true
+                },
+                {
+                  "name": "user_entities_watchlisted",
+                  "dataType": "EmbeddedDocumentListField(EntitiesWatchlisted)",
+                  "dataClassification": [ "confidential" ],
+                  "pii": false
+                },
+                {
+                  "name": "user_entities_watchlisted.entity_id",
+                  "dataType": "ReferenceField(Entity)",
+                  "dataClassification": [ "confidential" ],
+                  "pii": false
+                },
+                {
+                  "name": "user_entities_watchlisted.invocation_timestamp",
+                  "dataType": "DateField",
+                  "dataClassification": [ "confidential" ],
+                  "pii": false
+                },
+                {
+                  "name": "user_insights_bookmarked",
+                  "dataType": "EmbeddedDocumentListField(InsightsBookmarked)",
+                  "dataClassification": [ "confidential" ],
+                  "pii": false
+                },
+                {
+                  "name": "user_insights_bookmarked.insight_id",
+                  "dataType": "ReferenceField(Insights)",
+                  "dataClassification": [ "confidential" ],
+                  "pii": false
+                },
+                {
+                  "name": "user_insights_bookmarked.invocation_timestamp",
+                  "dataType": "DateField",
+                  "dataClassification": [ "confidential" ],
+                  "pii": false
+                },
+                {
+                  "name": "user_entities_explored",
+                  "dataType": "EmbeddedDocumentListField(EntitiesExplored)",
+                  "dataClassification": [ "confidential" ],
+                  "pii": false
+                },
+                {
+                  "name": "user_entities_explored.entity_id",
+                  "dataType": "ReferenceField(Entity)",
+                  "dataClassification": [ "confidential" ],
+                  "pii": false
+                },
+                {
+                  "name": "user_entities_explored.invocation_timestamp",
+                  "dataType": "DateField",
+                  "dataClassification": [ "confidential" ],
+                  "pii": false
+                },
+                {
+                  "name": "user_insights_read",
+                  "dataType": "EmbeddedDocumentListField(InsightsRead)",
+                  "dataClassification": [ "confidential" ],
+                  "pii": false
+                },
+                {
+                  "name": "user_insights_read.insight_id",
+                  "dataType": "ReferenceField(Insights)",
+                  "dataClassification": [ "confidential" ],
+                  "pii": false
+                },
+                {
+                  "name": "user_insights_read.invocation_timestamp",
+                  "dataType": "DateField",
+                  "dataClassification": [ "confidential" ],
+                  "pii": false
+                },
+                {
+                  "name": "user_portfolio_holdings",
+                  "dataType": "EmbeddedDocumentListField(Holdings)",
+                  "dataClassification": [ "financial" ],
+                  "pii": false
+                },
+                {
+                  "name": "user_portfolio_holdings.purchased_instrument",
+                  "dataType": "ReferenceField(Entity)",
+                  "dataClassification": [ "financial" ],
+                  "pii": false
+                },
+                {
+                  "name": "user_portfolio_holdings.purchase_platform",
+                  "dataType": "StringField",
+                  "dataClassification": [ "confidential" ],
+                  "pii": false
+                },
+                {
+                  "name": "user_portfolio_holdings.purchase_time",
+                  "dataType": "DateField",
+                  "dataClassification": [ "financial" ],
+                  "pii": false
+                },
+                {
+                  "name": "user_portfolio_holdings.purchase_price",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "financial" ],
+                  "pii": false
+                },
+                {
+                  "name": "user_portfolio_holdings.purchase_qty",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "financial" ],
+                  "pii": false
+                },
+                {
+                  "name": "user_portfolio_holdings.portfolio_exposure",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "financial" ],
+                  "pii": false
+                },
+                {
+                  "name": "user_portfolio_holdings.purchase_platform_logo",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "notification_topic_subscriptions",
+                  "dataType": "ListField(StringField)",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "insights_preferences",
+                  "dataType": "ListField(StringField)",
+                  "dataClassification": [ "confidential" ],
+                  "pii": false
+                },
+                {
+                  "name": "user_arrival_origin",
+                  "dataType": "StringField",
+                  "dataClassification": [ "confidential" ],
+                  "pii": false
+                },
+                {
+                  "name": "account_creation_date",
+                  "dataType": "DateField",
+                  "dataClassification": [ "confidential" ],
+                  "pii": false
+                },
+                {
+                  "name": "smallcase_id",
+                  "dataType": "StringField",
+                  "dataClassification": [ "confidential", "pii" ],
+                  "pii": true
+                },
+                {
+                  "name": "profile_pic_url",
+                  "dataType": "URLField",
+                  "dataClassification": [ "pii" ],
+                  "pii": true
+                },
+                {
+                  "name": "profile_answers",
+                  "dataType": "DynamicField",
+                  "dataClassification": [ "confidential", "pii" ],
+                  "pii": true
+                },
+                {
+                  "name": "user_first_auth",
+                  "dataType": "StringField",
+                  "dataClassification": [ "confidential" ],
+                  "pii": false
+                },
+                {
+                  "name": "user_crypto_portfolio_value",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "financial" ],
+                  "pii": false
+                },
+                {
+                  "name": "user_equity_portfolio_value",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "financial" ],
+                  "pii": false
+                },
+                {
+                  "name": "user_crypto_portfolio_percentage_change",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "financial" ],
+                  "pii": false
+                },
+                {
+                  "name": "user_equity_portfolio_percentage_change",
+                  "dataType": "FloatField",
+                  "dataClassification": [ "financial" ],
+                  "pii": false
+                },
+                {
+                  "name": "user_crypto_integration_time",
+                  "dataType": "DateTimeField",
+                  "dataClassification": [ "confidential" ],
+                  "pii": false
+                },
+                {
+                  "name": "user_equity_integration_time",
+                  "dataType": "DateTimeField",
+                  "dataClassification": [ "confidential" ],
+                  "pii": false
+                },
+                {
+                  "name": "smallcase_lead_id",
+                  "dataType": "StringField",
+                  "dataClassification": [ "confidential", "pii" ],
+                  "pii": true
+                },
+                {
+                  "name": "user_country",
+                  "dataType": "StringField",
+                  "dataClassification": [ "confidential" ],
+                  "pii": false
+                },
+                {
+                  "name": "user_fcm_id",
+                  "dataType": "StringField",
+                  "dataClassification": [ "pii" ],
+                  "pii": true
+                },
+                {
+                  "name": "user_chats",
+                  "dataType": "EmbeddedDocumentListField(Chat)",
+                  "dataClassification": [ "confidential" ],
+                  "pii": false
+                },
+                {
+                  "name": "user_chats.prompt",
+                  "dataType": "StringField",
+                  "dataClassification": [ "confidential" ],
+                  "pii": false
+                },
+                {
+                  "name": "user_chats.message",
+                  "dataType": "StringField",
+                  "dataClassification": [ "confidential" ],
+                  "pii": false
+                },
+                {
+                  "name": "user_chats.images",
+                  "dataType": "ListField(StringField)",
+                  "dataClassification": [ "confidential" ],
+                  "pii": false
+                },
+                {
+                  "name": "user_chats.chat_time",
+                  "dataType": "DateTimeField",
+                  "dataClassification": [ "confidential" ],
+                  "pii": false
+                },
+                {
+                  "name": "user_discussion_banned",
+                  "dataType": "BooleanField",
+                  "dataClassification": [ "confidential" ],
+                  "pii": false
+                },
+                {
+                  "name": "user_chats_today",
+                  "dataType": "IntField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "users_banned",
+                  "dataType": "ListField(StringField())",
+                  "dataClassification": [ "pii" ],
+                  "pii": true
+                },
+                {
+                  "name": "discussions_banned",
+                  "dataType": "ListField(StringField())",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                }
+              ],
+              "format": "native"
+            },
+            {
+              "name": "notifications",
+              "fullyQualifiedName": "db-models-mongodb.default.notifications",
+              "columns": [
+                {
+                  "name": "notif_title",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "notif_description",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "notif_icon",
+                  "dataType": "URLField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "notif_publish_time",
+                  "dataType": "DateTimeField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "notif_type",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "notif_priority",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "notif_entity_mentioned",
+                  "dataType": "ReferenceField(Entity)",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "notif_image",
+                  "dataType": "URLField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                }
+              ],
+              "format": "native"
+            },
+            {
+              "name": "feedback",
+              "fullyQualifiedName": "db-models-mongodb.default.feedback",
+              "columns": [
+                {
+                  "name": "feedback_text",
+                  "dataType": "StringField",
+                  "dataClassification": [ "confidential" ],
+                  "pii": false
+                },
+                {
+                  "name": "feedback_datetime",
+                  "dataType": "DateTimeField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "feedback_uid",
+                  "dataType": "StringField",
+                  "dataClassification": [ "pii" ],
+                  "pii": true
+                }
+              ],
+              "format": "native"
+            },
+            {
+              "name": "reward",
+              "fullyQualifiedName": "db-models-mongodb.default.reward",
+              "columns": [
+                {
+                  "name": "winning_user",
+                  "dataType": "StringField",
+                  "dataClassification": [ "pii" ],
+                  "pii": true
+                },
+                {
+                  "name": "reward_amount",
+                  "dataType": "IntField",
+                  "dataClassification": [ "financial" ],
+                  "pii": false
+                },
+                {
+                  "name": "reward_platform",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "reward_coupon_code",
+                  "dataType": "StringField",
+                  "dataClassification": [ "confidential" ],
+                  "pii": false
+                },
+                {
+                  "name": "og_entry_date",
+                  "dataType": "DateTimeField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "winning_date",
+                  "dataType": "DateTimeField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "reward_win_reason",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "reward_logo_url",
+                  "dataType": "StringField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                },
+                {
+                  "name": "has_scratched",
+                  "dataType": "BooleanField",
+                  "dataClassification": [ "internal" ],
+                  "pii": false
+                }
+              ],
+              "format": "native"
+            },
+            {
+              "name": "cached_chats",
+              "fullyQualifiedName": "db-models-mongodb.default.cached_chats",
+              "columns": [
+                {
+                  "name": "prompt",
+                  "dataType": "StringField",
+                  "dataClassification": [ "confidential" ],
+                  "pii": false
+                },
+                {
+                  "name": "anwser",
+                  "dataType": "StringField",
+                  "dataClassification": [ "confidential" ],
+                  "pii": false
+                }
+              ],
+              "format": "native"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "pipelines": [],
+  "lineage": [],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T11:10:49Z",
+    "sessionId": "cb91f6b0-eba0-4378-9168-48137e203b72",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "refresh-metastore",
+    "agent": "validator"
+  }
+}
