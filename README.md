@@ -8,7 +8,7 @@ It is built for Indian regulated entities first: SEBI, RBI, IRDAI, CERT-In and t
 frameworks where they help. Maxwell is designed to run headlessly on [Claude Code](https://code.claude.com) and
 [OpenCode](https://opencode.ai), on your own infrastructure.
 
-> **Status: early development.** Schemas, guardrails, the six India catalogs and all workflow definitions are in
+> **Status: early development.** Schemas, guardrails, the seven India catalogs and all workflow definitions are in
 > place. End-to-end runs against the fictional `example-co` company are in progress. Expect breaking changes.
 
 ---
@@ -19,6 +19,7 @@ frameworks where they help. Maxwell is designed to run headlessly on [Claude Cod
 - [How it works](#how-it-works)
 - [Workspace layout](#workspace-layout)
 - [Workflows](#workflows)
+- [Use cases to try](#use-cases-to-try)
 - [Regulatory coverage](#regulatory-coverage)
 - [KPIs](#kpis)
 - [Quick start](#quick-start)
@@ -166,8 +167,68 @@ committed. `AGENTS.md` holds the operating rules for both harnesses, and `CLAUDE
 
 ## Workflows
 
-Invoke a workflow as `/<name> <company_id>` in an interactive session, or through the headless runner below.
-Every workflow accepts `appIds`, `envIds` and `dryRun`.
+Maxwell ships 26 workflows. Context workflows keep the company profile and inventories current, probes turn
+repositories and live environments into evidence, and the remediation and reporting workflows act on the ledger.
+
+```mermaid
+flowchart LR
+  subgraph CTX["Context maintenance (excluded from KPIs)"]
+    direction TB
+    rctx["refresh-ctx<br/>regulator registers and drift"]
+    rsoc["refresh-soc<br/>control inventory and SLAs"]
+    rven["refresh-vendor-ctx<br/>third-party register"]
+    rmeta["refresh-metastore<br/>tables, PII columns, lineage"]
+    rapps["refresh-apps<br/>repos, images, environments"]
+  end
+  subgraph STATIC["Static probes: repo checkouts only"]
+    direction TB
+    piac["probe-iac<br/>Terraform, CloudFormation, Pulumi, Ansible, CDK"]
+    pchart["probe-app-chart<br/>Helm, Kustomize, Kubernetes"]
+    pschema["probe-schemas<br/>migrations, ORM, OpenAPI, events"]
+    pcicd["probe-cicd-env<br/>pipelines, secrets, SBOM"]
+    pagent["probe-agent-graph<br/>LLM agents and MCP servers"]
+    scr["execute-scr<br/>secure code review"]
+    psdlc["probe-sdlc<br/>NIST SSDF practices"]
+    pdev["probe-dev-env<br/>developer configuration"]
+    scr --> psdlc
+    scr --> pdev
+  end
+  subgraph RUNTIME["Runtime probes: read-only, rules of engagement"]
+    direction TB
+    rcont["runtime-probe-appcontainers<br/>+ devtest-env, qa-env, prod-env"]
+    rharn["runtime-probe-harnesses<br/>deployed agent harnesses"]
+    rsand["runtime-probe-sandboxes<br/>sandbox isolation"]
+    rpipe["runtime-probe-datapipeline<br/>pipelines, retention, residency"]
+    rnet["runtime-probe-network-perimeter<br/>exposure, TLS, WAF, egress"]
+    riam["runtime-probe-identity-access<br/>IAM, MFA, RBAC, PAM"]
+  end
+  LEDGER[("soc/main.jsonl<br/>append-only control ledger")]
+  subgraph FIX["Remediation"]
+    direction TB
+    icm["impl-change-management<br/>initiatives, owners, SLA tasks"]
+    iai["impl-auto-improvement<br/>fix diffs, repo never modified"]
+  end
+  subgraph REPORT["Reporting"]
+    direction TB
+    raf["report-audit-findings<br/>findings, risks, coverage"]
+    rai["report-audit-improvements<br/>initiatives, suggestions, KPIs"]
+  end
+  CTX -. "catalogs, apps, metastore" .-> STATIC
+  CTX -. "catalogs, apps, metastore" .-> RUNTIME
+  CTX --> LEDGER
+  STATIC --> LEDGER
+  RUNTIME --> LEDGER
+  LEDGER --> FIX
+  LEDGER --> REPORT
+  FIX --> REPORT
+```
+
+Invoke a workflow as `/<name> <company_id> [--app=<app_id>] [--env=<env_id>] [--dry-run]` in an interactive session,
+or through the [headless runner](#running-headless). Every workflow has a `refuter` agent challenge each candidate before anything is written. Utility commands: `/validate`, `/kpis`,
+`/seed-company <company_id>`, `/status <company_id>`.
+
+<details>
+<summary>What each workflow does</summary>
 
 **Context maintenance.** These keep the workspace current and are excluded from KPIs.
 
@@ -212,19 +273,49 @@ Every workflow accepts `appIds`, `envIds` and `dryRun`.
 | `report-audit-findings` | Rewrites the findings sections of `summary.md` after refuting every number. |
 | `report-audit-improvements` | Rewrites the initiatives, suggestion-acceptance and KPI sections of `summary.md`. |
 
-Utility commands: `/validate`, `/kpis`, `/seed-company <company_id>`, `/status <company_id>`.
+</details>
+
+## Use cases to try
+
+Each of these runs against the fictional `example-co` company in this repository. Start `claude` in the repository
+root after the [quick start](#quick-start) and paste the command. Runtime probes need access to a live environment,
+but `--dry-run` works without it.
+
+| # | Try this | Command | Where to look |
+|---:|---|---|---|
+| 1 | Which controls apply to us, and when is each due for re-assessment? | `/refresh-soc example-co` | `soc/main.jsonl` control records; "Control summary" in `summary.md` |
+| 2 | Has a regulator changed anything that affects our registrations? | `/refresh-ctx example-co` | Drift observations and risks in the ledger; "Regulatory posture" in `summary.md` |
+| 3 | A regulation we follow was repealed. Move onto its successor. | `node .claude/scripts/soc/migrate-instrument.mjs example-co --from <repealed_id> --dry-run` | A plan of controls retired and added and findings re-mapped; drop `--dry-run` to apply. Already applied to `example-co` for `rbi-it-outsourcing-md-2023` |
+| 4 | Which vendors are material, and whose assurance or contract is expiring? | `/refresh-vendor-ctx example-co` | `vendors/*.json`, vendor findings, "Vendors" in `summary.md` |
+| 5 | Where does personal and financial data live? | `/refresh-metastore example-co` | `sdlc/metastore.json` and classification-gap observations |
+| 6 | Do our application records still match the repositories? | `/refresh-apps example-co` | `applications/*/repos/*.json` and drift gaps in the ledger |
+| 7 | Any cloud or container misconfigurations in our infrastructure code? | `/probe-iac example-co --app=mcp-gateway` | Findings, with the SARIF export under `kpis/data/raw/sessions/<session_id>/` |
+| 8 | Are personal data or credentials stored without protection? | `/probe-schemas example-co --app=db-models` | Findings on unprotected PII, SPDI and credential fields |
+| 9 | Is our CI/CD pinned, gated and producing a real SBOM? | `/probe-cicd-env example-co` | Findings on action pinning, secrets, scan gates and SBOM presence |
+| 10 | Is our AI agent or MCP server safe to point at production data? | `/probe-agent-graph example-co --app=mcp-gateway` | Findings tagged with OWASP Agentic Top 10 2026 ids |
+| 11 | Review the code the way a security auditor would. | `/execute-scr example-co --app=mcp-gateway` | OWASP ASVS 5 findings, plus NIST SSDF and developer-environment observations |
+| 12 | What would a production probe check, before anything touches production? | `/runtime-probe-prod-env example-co --app=mcp-gateway --env=prod --dry-run` | `inconclusive` observations listing the planned checks and the evidence needed; nothing runs against prod |
+| 13 | Turn open findings into a remediation plan with owners and deadlines. | `/impl-change-management example-co` | Initiatives, timelines and tasks under `change_management/` |
+| 14 | Get proposed code fixes to review. | `/impl-auto-improvement example-co --app=mcp-gateway` | Diffs under `suggestions/suggestions/<sug_id>/`, registered in `suggestions/master.json`; the repository is never changed |
+| 15 | Produce an audit-ready report and see what the audit cost. | `/kpis`, then `/report-audit-findings example-co` and `/report-audit-improvements example-co` | Findings, initiatives and KPI sections of `summary.md`; `kpis/data/<kpi_id>/series.jsonl` |
+
+Paths are relative to `company-profile/example-co/` unless they start with `applications/`, `kpis/` or `.claude/`.
+Run `/status example-co` at any point for open findings by severity, overdue initiatives and pending suggestions.
+Every workflow also runs headless, for example
+`node .claude/scripts/run-headless.mjs --workflow probe-iac --company example-co --app mcp-gateway`.
 
 ## Regulatory coverage
 
-Six India catalogs ship with control-level detail. A registry in
+Seven India catalogs ship with control-level detail. A registry in
 `.claude/skills/regulatory-catalogs/references/instruments.json` records the issuer, version, dates, applicability
-and hard numeric obligations of 36 instruments.
+and hard numeric obligations of 37 instruments.
 
 | Instrument | Controls |
 |---|---:|
 | SEBI Cybersecurity and Cyber Resilience Framework (CSCRF), 2024 | 136 |
 | RBI Cybersecurity and Technology Risk Directions, 2026 | 228 |
-| RBI Master Direction on Outsourcing of IT Services, 2023 | 90 |
+| RBI Managing Risks in Outsourcing Directions, 2025 | 185 |
+| RBI Master Direction on Outsourcing of IT Services, 2023 (repealed 28 Nov 2025; historical mappings only) | 90 |
 | IRDAI Information and Cyber Security Guidelines, 2023 | 103 |
 | CERT-In Directions under section 70B(6), 2022 | 32 |
 | Digital Personal Data Protection Rules, 2025 | 52 |
