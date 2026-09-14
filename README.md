@@ -296,32 +296,33 @@ candidate before anything is written. Utility commands: `/validate`, `/kpis`, `/
 
 ## Use cases to try
 
-Each of these runs against the fictional `example-co` company in this repository. Start `claude` in the repository
-root after the [quick start](#quick-start) and paste the command. Runtime probes need access to a live environment,
-but `--dry-run` works without it.
+Start `claude` (or `opencode`) in the repository after the [quick start](#quick-start) and ask in plain words. Maxwell
+picks the workflow, tells you which one and on what scope, then runs it against the fictional `example-co` company.
+The second column is the slash command that does the same thing directly.
 
-| # | Try this | Command | Where to look |
+| # | Ask Maxwell | What runs | Where to look |
 |---:|---|---|---|
-| 1 | Which controls apply to us, and when is each due for re-assessment? | `/refresh-soc example-co` | `soc/main.jsonl` control records; "Control summary" in `summary.md` |
-| 2 | Has a regulator changed anything that affects our registrations? | `/refresh-ctx example-co` | Drift observations and risks in the ledger; "Regulatory posture" in `summary.md` |
-| 3 | A regulation we follow was repealed. Move onto its successor. | `node .claude/scripts/soc/migrate-instrument.mjs example-co --from <repealed_id> --dry-run` | A plan of controls retired and added and findings re-mapped; drop `--dry-run` to apply. Already applied to `example-co` for `rbi-it-outsourcing-md-2023` |
-| 4 | Which vendors are material, and whose assurance or contract is expiring? | `/refresh-vendor-ctx example-co` | `vendors/*.json`, vendor findings, "Vendors" in `summary.md` |
-| 5 | Where does personal and financial data live? | `/refresh-metastore example-co` | `sdlc/metastore.json` and classification-gap observations |
-| 6 | Do our application records still match the repositories? | `/refresh-apps example-co` | `applications/*/repos/*.json` and drift gaps in the ledger |
-| 7 | Any cloud or container misconfigurations in our infrastructure code? | `/probe-iac example-co --app=mcp-gateway` | Findings, with the SARIF export under `kpis/data/raw/sessions/<session_id>/` |
-| 8 | Are personal data or credentials stored without protection? | `/probe-schemas example-co --app=db-models` | Findings on unprotected PII, SPDI and credential fields |
-| 9 | Is our CI/CD pinned, gated and producing a real SBOM? | `/probe-cicd-env example-co` | Findings on action pinning, secrets, scan gates and SBOM presence |
-| 10 | Is our AI agent or MCP server safe to point at production data? | `/probe-agent-graph example-co --app=mcp-gateway` | Findings tagged with OWASP Agentic Top 10 2026 ids |
-| 11 | Review the code the way a security auditor would. | `/execute-scr example-co --app=mcp-gateway` | OWASP ASVS 5 findings, plus NIST SSDF and developer-environment observations |
-| 12 | What would a production probe check, before anything touches production? | `/runtime-probe-prod-env example-co --app=mcp-gateway --env=prod --dry-run` | `inconclusive` observations listing the planned checks and the evidence needed; nothing runs against prod |
-| 13 | Turn open findings into a remediation plan with owners and deadlines. | `/impl-change-management example-co` | Initiatives, timelines and tasks under `change_management/` |
-| 14 | Get proposed code fixes to review. | `/impl-auto-improvement example-co --app=mcp-gateway` | Diffs under `suggestions/suggestions/<sug_id>/`, registered in `suggestions/master.json`; the repository is never changed |
-| 15 | Produce an audit-ready report and see what the audit cost. | `/kpis`, then `/report-audit-findings example-co` and `/report-audit-improvements example-co` | Findings, initiatives and KPI sections of `summary.md`; `kpis/data/<kpi_id>/series.jsonl` |
+| 1 | "Which controls apply to example-co, and when is each one due?" | `/refresh-soc example-co` | "Control summary" in `summary.md`; control records in `soc/main.jsonl` |
+| 2 | "Has SEBI or RBI changed anything that affects example-co's registrations?" | `/refresh-ctx example-co` | "Regulatory posture" in `summary.md`; drift observations and risks in the ledger |
+| 3 | "RBI repealed a direction we follow. Move example-co onto its replacement." | `soc/migrate-instrument.mjs`, shown as a dry run first | The plan of controls retired and added and findings re-mapped, then the ledger |
+| 4 | "Which of our vendors are critical, and whose SOC 2 report or contract is about to expire?" | `/refresh-vendor-ctx example-co` | "Vendors" in `summary.md`; `vendors/*.json` |
+| 5 | "Where does example-co keep personal and financial data?" | `/refresh-metastore example-co` | `sdlc/metastore.json` and classification-gap observations |
+| 6 | "Pull the latest code for our applications and tell me what drifted." | `/refresh-apps example-co` | `applications/*/repos/*.json` and drift gaps in the ledger |
+| 7 | "Check mcp-gateway's infrastructure code for cloud misconfigurations." | `/probe-iac example-co --app=mcp-gateway` | Findings, with the SARIF export under `kpis/data/raw/sessions/` |
+| 8 | "Are passwords or personal data stored unprotected in db-models?" | `/probe-schemas example-co --app=db-models` | Findings on unprotected PII, SPDI and credential fields |
+| 9 | "Is our CI/CD pipeline pinned, gated and producing a real SBOM?" | `/probe-cicd-env example-co` | Findings on action pinning, secrets, scan gates and SBOMs |
+| 10 | "Is our MCP server safe to point at production data?" | `/probe-agent-graph example-co --app=mcp-gateway` | Findings tagged with OWASP Agentic Top 10 2026 ids |
+| 11 | "Do a security code review of mcp-gateway." | `/execute-scr example-co --app=mcp-gateway` | OWASP ASVS 5 findings, plus NIST SSDF and developer-environment observations |
+| 12 | "What would you check in production, without touching it?" | `/runtime-probe-prod-env example-co --app=mcp-gateway --env=prod --dry-run` | Planned checks and the evidence needed; nothing runs against prod |
+| 13 | "Turn the open findings into a remediation plan with owners and deadlines." | `/impl-change-management example-co` | Initiatives, timelines and tasks under `change_management/` |
+| 14 | "Suggest code fixes for the open findings." | `/impl-auto-improvement example-co --app=mcp-gateway` | Diffs under `suggestions/suggestions/`; your repositories are never changed |
+| 15 | "Write the audit report and tell me what this audit cost." | `/kpis`, then `/report-audit-findings example-co` and `/report-audit-improvements example-co` | Findings, initiatives and KPI sections of `summary.md` |
 
-Paths are relative to `company-profile/example-co/` unless they start with `applications/`, `kpis/` or `.claude/`.
-Run `/status example-co` at any point for open findings by severity, overdue initiatives and pending suggestions.
-Every workflow also runs headless, for example
-`node .claude/scripts/run-headless.mjs --workflow probe-iac --company example-co --app mcp-gateway`.
+Paths are relative to `company-profile/example-co/` unless they start with `applications/` or `kpis/`. At any time, ask
+"What's the status of example-co?" (`/status example-co`) for open findings by severity, overdue initiatives and
+pending suggestions, or "Where should scans run?" (`/connect-sandbox example-co`) to choose a sandbox. Scanners and
+runtime probes need a sandbox; without one, probes review files manually and runtime checks only plan. Every workflow
+also runs headless: `node .claude/scripts/run-headless.mjs --workflow probe-iac --company example-co --app mcp-gateway`.
 
 ## Regulatory coverage
 

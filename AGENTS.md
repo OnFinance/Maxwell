@@ -147,6 +147,10 @@ specific Indian instrument that applies to the company's `entityTypes` (SEBI CSC
   instead of executing.
 - Reports are written to `summary.md` sections and `soc` observations, never to new files.
 - Utility commands: `/validate`, `/kpis`, `/seed-company`, `/status`, `/connect-sandbox`.
+- Plain-language requests ("check mcp-gateway's infrastructure code", "who are our critical vendors?") map to the
+  workflow whose purpose matches; the README "Use cases to try" table lists common phrasings. Before starting, tell
+  the user which workflow you will run and its scope (company, applications, environments, dry run); ask only when the
+  company or a production environment is ambiguous. Invoke the workflow itself rather than doing its work by hand.
 
 ## 8. Finishing a task
 1. `npm run validate` is green. 2. Every generated record has provenance. 3. The ledger, master indexes and
