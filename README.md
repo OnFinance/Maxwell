@@ -171,61 +171,27 @@ Maxwell ships 26 workflows. Context workflows keep the company profile and inven
 repositories and live environments into evidence, and the remediation and reporting workflows act on the ledger.
 
 ```mermaid
-flowchart LR
-  subgraph CTX["Context maintenance (excluded from KPIs)"]
-    direction TB
-    rctx["refresh-ctx<br/>regulator registers and drift"]
-    rsoc["refresh-soc<br/>control inventory and SLAs"]
-    rven["refresh-vendor-ctx<br/>third-party register"]
-    rmeta["refresh-metastore<br/>tables, PII columns, lineage"]
-    rapps["refresh-apps<br/>repos, images, environments"]
-  end
-  subgraph STATIC["Static probes: repo checkouts only"]
-    direction TB
-    piac["probe-iac<br/>Terraform, CloudFormation, Pulumi, Ansible, CDK"]
-    pchart["probe-app-chart<br/>Helm, Kustomize, Kubernetes"]
-    pschema["probe-schemas<br/>migrations, ORM, OpenAPI, events"]
-    pcicd["probe-cicd-env<br/>pipelines, secrets, SBOM"]
-    pagent["probe-agent-graph<br/>LLM agents and MCP servers"]
-    scr["execute-scr<br/>secure code review"]
-    psdlc["probe-sdlc<br/>NIST SSDF practices"]
-    pdev["probe-dev-env<br/>developer configuration"]
-    scr --> psdlc
-    scr --> pdev
-  end
-  subgraph RUNTIME["Runtime probes: read-only, rules of engagement"]
-    direction TB
-    rcont["runtime-probe-appcontainers<br/>+ devtest-env, qa-env, prod-env"]
-    rharn["runtime-probe-harnesses<br/>deployed agent harnesses"]
-    rsand["runtime-probe-sandboxes<br/>sandbox isolation"]
-    rpipe["runtime-probe-datapipeline<br/>pipelines, retention, residency"]
-    rnet["runtime-probe-network-perimeter<br/>exposure, TLS, WAF, egress"]
-    riam["runtime-probe-identity-access<br/>IAM, MFA, RBAC, PAM"]
-  end
+%%{init: {"themeVariables": {"fontSize": "18px"}, "flowchart": {"nodeSpacing": 40, "rankSpacing": 50}}}%%
+flowchart TB
+  CTX["CONTEXT MAINTENANCE · excluded from KPIs<br/>refresh-ctx · regulator registers and drift<br/>refresh-soc · control inventory and SLAs<br/>refresh-vendor-ctx · third-party register<br/>refresh-metastore · tables, PII, lineage<br/>refresh-apps · repos, images, environments"]
+  STATIC["STATIC PROBES · repo checkouts only<br/>probe-iac · infrastructure as code<br/>probe-app-chart · Helm and Kubernetes<br/>probe-schemas · data and API schemas<br/>probe-cicd-env · pipelines and SBOM<br/>probe-agent-graph · LLM agents and MCP<br/>execute-scr · secure code review<br/>↳ probe-sdlc · NIST SSDF practices<br/>↳ probe-dev-env · developer configuration"]
+  RUNTIME["RUNTIME PROBES · read-only<br/>runtime-probe-appcontainers · workloads<br/>↳ devtest-env · qa-env · prod-env<br/>runtime-probe-harnesses · agent harnesses<br/>runtime-probe-sandboxes · isolation<br/>runtime-probe-datapipeline · pipelines<br/>runtime-probe-network-perimeter · exposure<br/>runtime-probe-identity-access · IAM"]
   LEDGER[("soc/main.jsonl<br/>append-only control ledger")]
-  subgraph FIX["Remediation"]
-    direction TB
-    icm["impl-change-management<br/>initiatives, owners, SLA tasks"]
-    iai["impl-auto-improvement<br/>fix diffs, repo never modified"]
-  end
-  subgraph REPORT["Reporting"]
-    direction TB
-    raf["report-audit-findings<br/>findings, risks, coverage"]
-    rai["report-audit-improvements<br/>initiatives, suggestions, KPIs"]
-  end
-  CTX -. "catalogs, apps, metastore" .-> STATIC
-  CTX -. "catalogs, apps, metastore" .-> RUNTIME
-  CTX --> LEDGER
-  STATIC --> LEDGER
-  RUNTIME --> LEDGER
+  FIX["REMEDIATION<br/>impl-change-management · initiatives and tasks<br/>impl-auto-improvement · fix diffs for review"]
+  REPORT["REPORTING<br/>report-audit-findings · findings and coverage<br/>report-audit-improvements · initiatives and KPIs"]
+  CTX -- "profile, catalogs, apps" --> STATIC
+  CTX -- "profile, catalogs, apps" --> RUNTIME
+  STATIC -- "refuted findings" --> LEDGER
+  RUNTIME -- "refuted findings" --> LEDGER
   LEDGER --> FIX
   LEDGER --> REPORT
   FIX --> REPORT
 ```
 
-Invoke a workflow as `/<name> <company_id> [--app=<app_id>] [--env=<env_id>] [--dry-run]` in an interactive session,
-or through the [headless runner](#running-headless). Every workflow has a `refuter` agent challenge each candidate before anything is written. Utility commands: `/validate`, `/kpis`,
-`/seed-company <company_id>`, `/status <company_id>`.
+Invoke a workflow as `/<name> <company_id> [--app=<app_id>] [--env=<env_id>] [--dry-run]` in an interactive
+session, or through the [headless runner](#running-headless). Every workflow has a `refuter` agent challenge each
+candidate before anything is written. Utility commands: `/validate`, `/kpis`, `/seed-company <company_id>`,
+`/status <company_id>`.
 
 <details>
 <summary>What each workflow does</summary>
@@ -397,7 +363,8 @@ node .claude/scripts/cos/search.mjs search --query "managing risks in outsourcin
 
 The default host is `https://complianceos-prod.onfinance.ai`; set `MAXWELL_COS_BASE_URL` for another tenant, or
 `MAXWELL_COS_EMAIL` and `MAXWELL_COS_PASSWORD` in the host environment instead of the file. In an interactive session
-without a stored login, Maxwell asks for it in chat. The login needs reCAPTCHA disabled for the tenant's domain.
+without a stored login, Maxwell asks for it in chat. To get a read-only ComplianceOS login for Maxwell, email
+team@onfinance.in.
 
 **Run a workflow**
 
@@ -464,10 +431,10 @@ node .claude/scripts/run-headless.mjs --workflow refresh-apps --company acme-sec
 - **Cost figures are estimates.** They use list prices, not your bill.
 - **ComplianceOS login.** ComplianceOS offers only user logins, so Maxwell stores an email and password in
   `~/.config/maxwell/complianceos.env` (mode 0600) and caches the token for up to 2 hours in `~/.cache/maxwell/`.
-  Agents are instructed never to read either file; OpenCode's shell permissions deny commands that touch them. Add
-  `Read(~/.config/maxwell/**)` and `Read(~/.cache/maxwell/**)` to your Claude Code deny rules to enforce the same
-  there. Use a dedicated read-only account. Credentials typed into a chat stay in
-  that harness's local transcript, so rotate them if a transcript is shared.
+  Claude Code deny rules (`Read(~/.config/maxwell/**)`, `Read(~/.cache/maxwell/**)`) block its file tools from
+  both paths, OpenCode's shell permissions deny commands that touch them, and agents are instructed never to read
+  them. Use a dedicated read-only account; request one from team@onfinance.in. Credentials typed into a chat stay
+  in that harness's local transcript, so rotate them if a transcript is shared.
 - **`example-co` is fictional.** Its demo age key under `.claude/skills/credentials-sops/references/` protects
   nothing real. Never reuse it.
 

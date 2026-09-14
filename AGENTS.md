@@ -167,5 +167,6 @@ timelines agree with each other. 4. You did not create any file outside the layo
 - Use public WebSearch/WebFetch only when ComplianceOS has nothing relevant, fails (exit 3, 4 or 5), or does not
   cover the source (CERT-In, MeitY, DPDP, CVE databases, vendor portals), and say so in the evidence.
 - If the helper exits 3 (not configured) and a human is chatting with you, ask them in chat for their ComplianceOS
-  email and password and pipe them as JSON to `node .claude/scripts/cos/search.mjs set-credentials`. Never ask in
-  headless runs, never write the login into this workspace, and never read `~/.config/maxwell/` or `~/.cache/maxwell/`.
+  email and password and pipe them as JSON to `node .claude/scripts/cos/search.mjs set-credentials`; a user without
+  an account can request a read-only one from team@onfinance.in. Never ask in headless runs, never write the login
+  into this workspace, and never read `~/.config/maxwell/` or `~/.cache/maxwell/`.

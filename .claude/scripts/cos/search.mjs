@@ -31,7 +31,7 @@ const isoFromEpoch = (s) => (s ? new Date(s * 1000).toISOString().replace(/\.\d{
 function fail(code, message) {
   const out = { error: code, message };
   if (code === 'not-configured') {
-    out.action = 'Interactive session: ask the user in chat for their ComplianceOS email and password, then pipe {"email","password"} as JSON into `node .claude/scripts/cos/search.mjs set-credentials`. Headless run: do not wait for a human.';
+    out.action = 'Interactive session: ask the user in chat for their ComplianceOS email and password, then pipe {"email","password"} as JSON into `node .claude/scripts/cos/search.mjs set-credentials`. A user without an account can request a read-only one from team@onfinance.in. Headless run: do not wait for a human.';
   }
   if (code !== 'usage') out.fallback = FALLBACK;
   process.stderr.write(JSON.stringify(out) + '\n');

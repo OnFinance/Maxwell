@@ -121,6 +121,8 @@
       "Read(~/.aws/**)",
       "Read(~/.config/gcloud/**)",
       "Read(~/.kube/**)",
+      "Read(~/.config/maxwell/**)",
+      "Read(~/.cache/maxwell/**)",
       "Bash(sops --decrypt *)",
       "Bash(sops -d *)",
       "Bash(rm -rf *)",

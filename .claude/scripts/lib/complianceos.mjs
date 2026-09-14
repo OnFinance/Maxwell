@@ -266,7 +266,7 @@ export function createClient({ baseUrl, email, password, token, fetchImpl = glob
     const json = await readJsonBody(res);
     if (!res.ok || !json.token) {
       const detail = describeError(json);
-      if (/captcha/i.test(detail)) throw new ComplianceOsError('captcha-required', `login needs a CAPTCHA on ${baseUrl}: ask the ComplianceOS admins to add the domain to CAPTCHA_DISABLED_DOMAINS or use MAXWELL_COS_TOKEN`, res.status);
+      if (/captcha/i.test(detail)) throw new ComplianceOsError('captcha-required', `login needs a CAPTCHA on ${baseUrl}: request a read-only login without CAPTCHA from team@onfinance.in, or use MAXWELL_COS_TOKEN`, res.status);
       if (res.status >= 500) throw new ComplianceOsError('unreachable', `login failed with HTTP ${res.status}`, res.status);
       throw new ComplianceOsError('auth-failed', `login rejected with HTTP ${res.status}${detail ? `: ${detail}` : ''}`, res.status);
     }

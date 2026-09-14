@@ -88,8 +88,8 @@ token in `~/.cache/maxwell/`. `status` reports whether a login is configured wit
 | --- | --- | --- |
 | 0 | - | use the results (an empty `results` list is a real "not found") |
 | 2 | `usage` | fix the flags and retry |
-| 3 | `not-configured` | **interactive session**: ask the user in chat for their ComplianceOS email and password, then pipe them as JSON on stdin to `node .claude/scripts/cos/search.mjs set-credentials`; it stores and verifies them. **Headless run or subagent**: do not ask, fall back to public search for this run and say so in your result |
-| 4 | `auth-failed`, `captcha-required` | tell the user the login was rejected or needs a CAPTCHA exemption for the domain; fall back to public search |
+| 3 | `not-configured` | **interactive session**: ask the user in chat for their ComplianceOS email and password, then pipe them as JSON on stdin to `node .claude/scripts/cos/search.mjs set-credentials`; it stores and verifies them. A user without a ComplianceOS account can request a read-only one from team@onfinance.in. **Headless run or subagent**: do not ask, fall back to public search for this run and say so in your result |
+| 4 | `auth-failed`, `captcha-required` | tell the user the login was rejected, or that it cannot be used without a person solving a CAPTCHA, and that team@onfinance.in can issue a working read-only login; fall back to public search |
 | 5 | `unreachable`, `rate-limited` | wait once for a rate limit, otherwise fall back to public search |
 
 Rules:

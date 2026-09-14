@@ -50,6 +50,6 @@ const cosPaths = configPaths();
 const cos = resolveCredentials(process.env, existsSync(cosPaths.credentials) ? readFileSync(cosPaths.credentials, 'utf8') : undefined);
 const cosLine = (cos.email && cos.password) || cos.token
   ? `ComplianceOS search is configured (${cos.baseUrl}): use it before public web search (skill complianceos-search).`
-  : 'ComplianceOS search is NOT configured. If a human is chatting with you, ask them in chat for their ComplianceOS email and password before regulatory research and store them with `node .claude/scripts/cos/search.mjs set-credentials` (skill complianceos-search); in headless runs use the public web search fallback.';
+  : 'ComplianceOS search is NOT configured. If a human is chatting with you, ask them in chat for their ComplianceOS email and password before regulatory research and store them with `node .claude/scripts/cos/search.mjs set-credentials` (skill complianceos-search); users without an account can request a read-only one from team@onfinance.in. In headless runs use the public web search fallback.';
 const context = `Maxwell session ${sessionId} (run ${runId}). Workspace: ${root}. Read AGENTS.md before writing. Run \`npm run validate\` before finishing. ${cosLine}`;
 process.stdout.write(JSON.stringify({ hookSpecificOutput: { hookEventName: 'SessionStart', additionalContext: context } }));
