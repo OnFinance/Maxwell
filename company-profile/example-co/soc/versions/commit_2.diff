@@ -1,0 +1,13 @@
+# maxwell-soc-version: 2
+# maxwell-soc-company: example-co
+# maxwell-soc-generated-at: 2026-09-14T08:40:14Z
+# maxwell-soc-session: f0fb0ca1-ccc3-4797-afc8-2bbe384b5053
+# maxwell-soc-workflow: refresh-ctx
+# maxwell-soc-from: e4b8a8f79600d225d30aed98e45657cc518b321858cd973d7520fdb0158dafe9
+# maxwell-soc-to: 8091b3268f50cec8a0915d76284fab79923c7690429ed4c0b50d52ff10ad4231
+# maxwell-soc-lines: 4
+# maxwell-soc-added: 1
+--- a/soc/main.jsonl
++++ b/soc/main.jsonl
+@@ -3,0 +4,1 @@
++{"schemaVersion":"1","kind":"observation","id":"obs_01M2FH5J5KX1GE4Q5BT6KNPNPK","companyId":"example-co","title":"refresh-ctx regenerated summary.md sections regulatory-posture","methods":["refresh-ctx"],"collectedAt":"2026-09-14T08:31:29Z","subjects":[{"type":"company"}],"controlIds":["rbi-cyber-tech-directions-2026:12"],"result":"not-applicable","evidence":[{"type":"workspace-file","ref":"company-profile/example-co/summary.md","sha256":"b4ff6a4e4f22c45d729ebee7a4dd288ec5f93f8310b5c1d42fc1b2d94b51ed20"}],"recordedAt":"2026-09-14T08:31:29Z","provenance":{"harness":"claude-code","generatedAt":"2026-09-14T08:31:29Z","sessionId":"f0fb0ca1-ccc3-4797-afc8-2bbe384b5053","runId":"run_01M2FGNVVQ15ZKXZWGW74YWAAQ","workflow":"refresh-ctx","agent":"report-writer"}}
