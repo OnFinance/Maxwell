@@ -1272,6 +1272,15 @@
         "linux/amd64",
         "linux/arm64"
       ]
+    },
+    "microvm": {
+      "ref": "public.ecr.aws/lambda/microvms:al2023-minimal",
+      "digest": "sha256:05cb9b38d841e7ff1b693dc9e894909612f340bf99ec97d426e8000a5bbe96c3",
+      "invoke": "/bin/sh",
+      "user": "",
+      "platforms": [
+        "linux/arm64"
+      ]
     }
   },
   "sdks": [
@@ -1298,6 +1307,19 @@
       "package": "@vercel/sandbox",
       "version": "3.3.0",
       "integrity": "sha512-TclqRD2joExyECTrrHsioi3Onw20X2YfpOYEzs3JpJUtAjOKYw2bMeXldKrUg+TB/TT7tPdDu8uKNxj9NE7QUg=="
+    },
+    {
+      "provider": "lambda-microvms",
+      "package": "@aws-sdk/client-lambda-microvms",
+      "version": "3.1131.0",
+      "integrity": "sha512-PJiQj3UTvMlf2EnTabJHf2MASiutwaB4CvyleFMPD4oQL1DGcweSaFNQ/n3FKC7aDmubON40Ad5Bewv1ZUsSAg==",
+      "companions": [
+        {
+          "package": "@aws-sdk/client-s3",
+          "version": "3.1131.0",
+          "integrity": "sha512-jMw3q5sYNvWJRngkNwdS3H2WPBcdqhdrOez+7fBUB26fpH/2+TaJcDdlzdjgLTMhFTq2eOyXBSy1T/4A6CL/Lw=="
+        }
+      ]
     }
   ]
 }

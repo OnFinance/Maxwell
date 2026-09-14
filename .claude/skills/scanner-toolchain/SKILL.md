@@ -2,7 +2,7 @@
 name: scanner-toolchain
 description: How static probes run security scanners - only through node .claude/scripts/toolchain/scan.mjs, which runs the version pinned in references/toolchain.json (exact version, per-platform sha256, image digest or hash-locked Python lock) inside the company's configured sandbox, checks the printed version, redacts secrets and stamps SARIF with the pin. Load before running semgrep, trivy, checkov, gitleaks, trufflehog, kube-linter, kubeconform, kubescape, hadolint, actionlint, zizmor, spectral, sqlfluff, squawk, buf, gosec, bandit, syft, grype or cosign over a checkout.
 license: AGPL-3.0-only
-compatibility: Node 22 and the Maxwell workspace layout; a scanner executor set by /connect-sandbox (docker, kubernetes, e2b, daytona, modal, vercel or host)
+compatibility: Node 22 and the Maxwell workspace layout; a scanner executor set by /connect-sandbox (docker, kubernetes, e2b, daytona, modal, vercel, lambda-microvms or host)
 metadata:
   author: OnFinance
   version: 1.0.0

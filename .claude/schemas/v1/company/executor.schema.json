@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://maxwell.onfinance.ai/schemas/v1/company/executor.schema.json",
   "title": "Probe executor",
-  "description": "Schema for company-profile/<company_id>/sdlc/executor.json: where Maxwell runs pinned scanners over repository checkouts (static) and read-only runtime probe commands (runtime). Written by /connect-sandbox after the user chooses. No secret is stored here: provider credentials live outside the workspace in ~/.config/maxwell/sandbox/<provider>.env. Runtime probes use only self-hosted executors, so target credentials never reach a hosted sandbox provider",
+  "description": "Schema for company-profile/<company_id>/sdlc/executor.json: where Maxwell runs pinned scanners over repository checkouts (static) and read-only runtime probe commands (runtime). Written by /connect-sandbox after the user chooses. No secret is stored here: provider credentials live outside the workspace in ~/.config/maxwell/sandbox/<provider>.env. Hosted scanner sandboxes include AWS Lambda MicroVMs in the customer's own account. Runtime probes use only self-hosted executors, so target credentials never reach a hosted sandbox provider",
   "examples": [
     {
       "schemaVersion": "1",
@@ -126,6 +126,42 @@
           }
         }
       }
+    },
+    {
+      "if": {
+        "required": [ "static" ],
+        "properties": {
+          "static": {
+            "required": [ "provider" ],
+            "properties": {
+              "provider": {
+                "const": "lambda-microvms"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "required": [ "providers" ],
+        "properties": {
+          "static": {
+            "required": [ "region" ],
+            "properties": {
+              "region": {
+                "type": "string"
+              }
+            }
+          },
+          "providers": {
+            "required": [ "lambda-microvms" ],
+            "properties": {
+              "lambda-microvms": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
     }
   ],
   "required": [
@@ -153,7 +189,7 @@
       "required": [ "provider" ],
       "properties": {
         "provider": {
-          "description": "docker and kubernetes are self-hosted; e2b, daytona, modal and vercel are hosted sandboxes; host runs on the machine hosting the harness with no isolation; none disables scanners (probes fall back to manual review)",
+          "description": "docker and kubernetes are self-hosted; e2b, daytona, modal, vercel and lambda-microvms (AWS Lambda MicroVMs in your own AWS account) are hosted sandboxes; host runs on the machine hosting the harness with no isolation; none disables scanners (probes fall back to manual review)",
           "enum": [
             "docker",
             "kubernetes",
@@ -161,12 +197,13 @@
             "daytona",
             "modal",
             "vercel",
+            "lambda-microvms",
             "host",
             "none"
           ]
         },
         "region": {
-          "description": "Provider region the sandbox runs in, for data residency (Modal ap-south and Vercel bom1 are in Mumbai)",
+          "description": "Provider region the sandbox runs in, for data residency (Modal ap-south, Vercel bom1 and AWS ap-south-1 are in Mumbai)",
           "type": "string",
           "pattern": "^[a-z0-9][a-z0-9-]{0,31}$"
         },
@@ -311,6 +348,39 @@
             }
           },
           "additionalProperties": false
+        },
+        "lambda-microvms": {
+          "description": "AWS Lambda MicroVMs in your own account; credentials come from the AWS SDK default chain on the harness host, never from this file",
+          "type": "object",
+          "required": [ "buildRoleArn", "artifactBucket", "egressConnectorArn" ],
+          "properties": {
+            "buildRoleArn": {
+              "description": "IAM role Lambda assumes while building the Maxwell runner image; it only needs to read the runner artifact from artifactBucket",
+              "type": "string",
+              "pattern": "^arn:aws[a-z-]*:iam::[0-9]{12}:role/[A-Za-z0-9+=,.@_/-]{1,512}$"
+            },
+            "artifactBucket": {
+              "description": "S3 bucket in the same account and region that receives the runner image artifact (a Dockerfile and the runner, never a checkout)",
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]$"
+            },
+            "egressConnectorArn": {
+              "description": "Customer-managed Lambda VPC egress network connector; its security group must allow no outbound traffic, so scanners cannot reach any network. AWS-managed connectors such as INTERNET_EGRESS are rejected",
+              "type": "string",
+              "pattern": "^arn:aws[a-z-]*:lambda:[a-z0-9-]+:[0-9]{12}:network-connector:[A-Za-z0-9_/:-]{1,256}$"
+            },
+            "profile": {
+              "description": "AWS shared-config profile the SDK uses on the harness host (a name, never a key)",
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.+=@-]{1,64}$"
+            },
+            "baseImageVersion": {
+              "description": "Pins the Lambda-managed MicroVM base image version; omit to build on the latest available version",
+              "type": "string",
+              "pattern": "^[A-Za-z0-9._-]{1,64}$"
+            }
+          },
+          "additionalProperties": false
         }
       },
       "additionalProperties": false
@@ -337,6 +407,7 @@
               "daytona",
               "modal",
               "vercel",
+              "lambda-microvms",
               "host"
             ]
           },

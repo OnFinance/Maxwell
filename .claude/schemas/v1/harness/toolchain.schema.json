@@ -121,7 +121,7 @@
       }
     },
     "baseImages": {
-      "description": "Pinned base images that run a verified binary or a hash-locked Python install when a tool ships no image of its own",
+      "description": "Pinned base images that run a verified binary or a hash-locked Python install when a tool ships no image of its own; microvm is the container base of the AWS Lambda MicroVMs scan runner (ARM64)",
       "type": "object",
       "required": [ "static", "python" ],
       "properties": {
@@ -129,6 +129,9 @@
           "$ref": "#/$defs/image"
         },
         "python": {
+          "$ref": "#/$defs/image"
+        },
+        "microvm": {
           "$ref": "#/$defs/image"
         }
       },
@@ -359,7 +362,7 @@
       "required": [ "provider", "package", "version", "integrity" ],
       "properties": {
         "provider": {
-          "enum": [ "e2b", "daytona", "modal", "vercel" ]
+          "enum": [ "e2b", "daytona", "modal", "vercel", "lambda-microvms" ]
         },
         "package": {
           "type": "string",
@@ -372,6 +375,30 @@
           "description": "npm dist.integrity of the pinned version",
           "type": "string",
           "pattern": "^sha512-[A-Za-z0-9+/]+={0,2}$"
+        },
+        "companions": {
+          "description": "Further packages the provider SDK loads, pinned the same way and installed from the same lockfile",
+          "type": "array",
+          "maxItems": 4,
+          "items": {
+            "type": "object",
+            "required": [ "package", "version", "integrity" ],
+            "properties": {
+              "package": {
+                "type": "string",
+                "pattern": "^(@[a-z0-9-]+/)?[a-z0-9.-]+$"
+              },
+              "version": {
+                "$ref": "#/$defs/version"
+              },
+              "integrity": {
+                "description": "npm dist.integrity of the pinned version",
+                "type": "string",
+                "pattern": "^sha512-[A-Za-z0-9+/]+={0,2}$"
+              }
+            },
+            "additionalProperties": false
+          }
         }
       },
       "additionalProperties": false

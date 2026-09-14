@@ -55,6 +55,46 @@
       }
     },
     {
+      "description": "AWS Lambda MicroVMs in Mumbai with a customer-managed egress connector and no stored key",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1", "kind": "maxwell.company.executor", "companyId": "example-co",
+        "static": { "provider": "lambda-microvms", "region": "ap-south-1", "network": "none", "memoryMb": 4096 }, "runtime": { "provider": "none" },
+        "providers": { "lambda-microvms": { "buildRoleArn": "arn:aws:iam::123456789012:role/maxwell-microvm-build", "artifactBucket": "maxwell-artifacts-mumbai", "egressConnectorArn": "arn:aws:lambda:ap-south-1:123456789012:network-connector:maxwell-no-egress", "profile": "maxwell" } },
+        "provenance": { "harness": "human", "generatedAt": "2026-09-14T16:00:00Z" }
+      }
+    },
+    {
+      "description": "AWS Lambda MicroVMs needs a region",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1", "kind": "maxwell.company.executor", "companyId": "example-co",
+        "static": { "provider": "lambda-microvms" }, "runtime": { "provider": "none" },
+        "providers": { "lambda-microvms": { "buildRoleArn": "arn:aws:iam::123456789012:role/maxwell-microvm-build", "artifactBucket": "maxwell-artifacts-mumbai", "egressConnectorArn": "arn:aws:lambda:ap-south-1:123456789012:network-connector:maxwell-no-egress" } },
+        "provenance": { "harness": "human", "generatedAt": "2026-09-14T16:00:00Z" }
+      }
+    },
+    {
+      "description": "the AWS-managed internet egress connector is not an egress block",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1", "kind": "maxwell.company.executor", "companyId": "example-co",
+        "static": { "provider": "lambda-microvms", "region": "ap-south-1" }, "runtime": { "provider": "none" },
+        "providers": { "lambda-microvms": { "buildRoleArn": "arn:aws:iam::123456789012:role/maxwell-microvm-build", "artifactBucket": "maxwell-artifacts-mumbai", "egressConnectorArn": "arn:aws:lambda:ap-south-1:aws:network-connector:aws-network-connector:INTERNET_EGRESS" } },
+        "provenance": { "harness": "human", "generatedAt": "2026-09-14T16:00:00Z" }
+      }
+    },
+    {
+      "description": "an AWS secret key cannot be stored with the MicroVMs settings",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1", "kind": "maxwell.company.executor", "companyId": "example-co",
+        "static": { "provider": "lambda-microvms", "region": "ap-south-1" }, "runtime": { "provider": "none" },
+        "providers": { "lambda-microvms": { "buildRoleArn": "arn:aws:iam::123456789012:role/maxwell-microvm-build", "artifactBucket": "maxwell-artifacts-mumbai", "egressConnectorArn": "arn:aws:lambda:ap-south-1:123456789012:network-connector:maxwell-no-egress", "secretAccessKey": "notarealkey" } },
+        "provenance": { "harness": "human", "generatedAt": "2026-09-14T16:00:00Z" }
+      }
+    },
+    {
       "description": "a kubeconfig is referenced by environment variable name, never inlined",
       "valid": false,
       "data": {

@@ -1,9 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { spawn, spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { existsSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { createServer } from 'node:net';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { packBundle } from '../lib/sandbox/common.mjs';
+import * as lambdaMicrovms from '../lib/sandbox/backends/lambda-microvms.mjs';
 import { checkToolArgs } from '../lib/sandbox/scan-policy.mjs';
 import { applyCredentials, readCredentials, writeCredentials } from '../lib/sandbox/credentials.mjs';
 import { runArgs } from '../lib/sandbox/backends/docker.mjs';
@@ -97,7 +101,8 @@ function hostedFixture() {
   const repo = tmp();
   writeFileSync(join(repo, 'main.tf'), 'resource "x" "y" {}\n');
   const bin = Buffer.from('#!/bin/sh\necho faketool 1.2.3\n');
-  const tool = { name: 'faketool', category: 'scanner', version: '1.2.3', versionCheck: { args: ['--version'], expect: '1.2.3' }, artifacts: { 'linux-amd64': { url: 'https://example.com/faketool', sha256: createHash('sha256').update(bin).digest('hex'), sha256Source: 'computed-at-pin', archive: 'none' } } };
+  const artifact = { url: 'https://example.com/faketool', sha256: createHash('sha256').update(bin).digest('hex'), sha256Source: 'computed-at-pin', archive: 'none' };
+  const tool = { name: 'faketool', category: 'scanner', version: '1.2.3', versionCheck: { args: ['--version'], expect: '1.2.3' }, artifacts: { 'linux-amd64': artifact, 'linux-arm64': artifact } };
   const manifest = { tools: [tool], sdks: [], baseImages: { static: { ref: 'docker.io/library/debian:bookworm-slim', digest: digest('e'), invoke: '/bin/sh' }, python: { ref: 'docker.io/library/python:3.12-slim-bookworm', digest: digest('f'), invoke: '/bin/sh' } } };
   const fetchImpl = async () => ({ ok: true, status: 200, arrayBuffer: async () => bin.buffer.slice(bin.byteOffset, bin.byteOffset + bin.length) });
   const resultPath = join(repo, 'result.out');
@@ -199,4 +204,137 @@ test('renderers only render: helm template, lint or show and kustomize build', (
   assert.match(checkToolArgs('helm', ['install', 'api', '{src}/charts/api']).reason, /only helm template/);
   assert.match(checkToolArgs('helm', ['dependency', 'update', '{src}/charts/api']).reason, /only helm template/);
   assert.match(checkToolArgs('kustomize', ['edit', 'set', 'image', '{src}']).reason, /only kustomize build/);
+});
+
+test('lambda-microvms: runner image built once, VPC egress connector, token-authenticated runner, arm64 binary, MicroVM terminated', async () => {
+  const f = hostedFixture();
+  const calls = { sent: [], s3: [], http: [], terminated: 0, config: null };
+  let imageState = null;
+  const command = (name) => class { constructor(input) { this.name = name; this.input = input; } };
+  const mv = Object.fromEntries(['GetMicrovmImageCommand', 'CreateMicrovmImageCommand', 'GetMicrovmImageVersionCommand', 'RunMicrovmCommand', 'GetMicrovmCommand', 'CreateMicrovmAuthTokenCommand', 'TerminateMicrovmCommand'].map((n) => [n, command(n)]));
+  mv.LambdaMicrovmsClient = class {
+    constructor(config) { calls.config = config; }
+    async send(c) {
+      calls.sent.push([c.name, c.input]);
+      switch (c.name) {
+        case 'GetMicrovmImageCommand':
+          if (!imageState) throw Object.assign(new Error('not found'), { name: 'ResourceNotFoundException' });
+          if (imageState === 'CREATING') { imageState = 'CREATED'; return { state: 'CREATING', imageArn: 'arn:img' }; }
+          return { state: 'CREATED', imageArn: 'arn:img', latestActiveImageVersion: '1' };
+        case 'CreateMicrovmImageCommand': imageState = 'CREATING'; return { state: 'CREATING', imageArn: 'arn:img' };
+        case 'GetMicrovmImageVersionCommand': return { state: 'SUCCESSFUL', baseImageVersion: '2026.09.01' };
+        case 'RunMicrovmCommand': return { microvmId: 'mvm-1', state: 'PENDING', endpoint: 'abc.lambda-microvm.ap-south-1.on.aws' };
+        case 'GetMicrovmCommand': return { microvmId: 'mvm-1', state: 'RUNNING', endpoint: 'abc.lambda-microvm.ap-south-1.on.aws' };
+        case 'CreateMicrovmAuthTokenCommand': return { authToken: { 'X-aws-proxy-auth': 'jwe-token' } };
+        case 'TerminateMicrovmCommand': calls.terminated += 1; return {};
+        default: throw new Error(`unexpected ${c.name}`);
+      }
+    }
+  };
+  const s3 = { PutObjectCommand: command('PutObjectCommand'), S3Client: class { async send(c) { calls.s3.push(c.input); return {}; } } };
+  const jobs = [];
+  const http = async (url, init) => {
+    calls.http.push({ url, auth: init.headers['X-aws-proxy-auth'], port: init.headers['X-aws-proxy-port'] });
+    const path = new URL(url).pathname;
+    const reply = (status, body) => {
+      const bytes = Buffer.from(typeof body === 'string' ? body : JSON.stringify(body));
+      return { ok: status < 300, status, text: async () => bytes.toString(), arrayBuffer: async () => bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.length) };
+    };
+    if (path === '/maxwell/v1/bundle') return reply(200, { bytes: init.body.length });
+    if (path === '/maxwell/v1/exec') { jobs.push(JSON.parse(init.body)); return reply(202, { jobId: String(jobs.length - 1) }); }
+    if (path.startsWith('/maxwell/v1/jobs/')) return reply(200, { state: 'done', exitCode: 0, stdout: jobs[Number(path.split('/').pop())].argv.includes('--version') ? 'faketool 1.2.3' : '', stderr: '' });
+    if (path === '/maxwell/v1/result') return reply(200, 'ok');
+    return reply(404, {});
+  };
+  const providerConfig = { buildRoleArn: 'arn:aws:iam::123456789012:role/maxwell-microvm-build', artifactBucket: 'maxwell-artifacts-mumbai', egressConnectorArn: 'arn:aws:lambda:ap-south-1:123456789012:network-connector:maxwell-no-egress', profile: 'maxwell' };
+  const manifest = { ...f.manifest, baseImages: { ...f.manifest.baseImages, microvm: { ref: 'public.ecr.aws/lambda/microvms:al2023-minimal', digest: digest('9'), invoke: '/bin/sh', platforms: ['linux/arm64'] } } };
+  const deps = { loadSdk: async (m, provider, o = {}) => (o.pkg === '@aws-sdk/client-s3' ? s3 : mv), fetchImpl: f.fetchImpl, http, sleep: async () => {} };
+  const sent = (name) => calls.sent.filter(([n]) => n === name).map(([, input]) => input);
+  try {
+    const r = await lambdaMicrovms.runTool({ ...job(f), manifest, region: 'ap-south-1', providerConfig, deps });
+    const [create] = sent('CreateMicrovmImageCommand');
+    assert.deepEqual(create.cpuConfigurations, [{ architecture: 'ARM_64' }]);
+    assert.deepEqual(create.logging, { disabled: {} }, 'nothing from a scan reaches CloudWatch');
+    assert.equal(create.buildRoleArn, providerConfig.buildRoleArn);
+    assert.equal(create.baseImageArn, 'arn:aws:lambda:ap-south-1:aws:microvm-image:al2023-1');
+    assert.match(create.codeArtifact.uri, /^s3:\/\/maxwell-artifacts-mumbai\/maxwell\/microvm-runner\/maxwell-runner-[0-9a-f]{16}-2048\.zip$/);
+    assert.equal(calls.s3[0].Bucket, 'maxwell-artifacts-mumbai');
+    assert.deepEqual(calls.config, { region: 'ap-south-1', profile: 'maxwell' });
+    const [run] = sent('RunMicrovmCommand');
+    assert.deepEqual(run.egressNetworkConnectors, [providerConfig.egressConnectorArn]);
+    assert.deepEqual(run.ingressNetworkConnectors, ['arn:aws:lambda:ap-south-1:aws:network-connector:aws-network-connector:ALL_INGRESS']);
+    assert.deepEqual(run.logging, { disabled: {} });
+    assert.deepEqual(sent('CreateMicrovmAuthTokenCommand')[0].allowedPorts, [{ port: 8080 }]);
+    assert.ok(calls.http.length > 0 && calls.http.every((h) => h.auth === 'jwe-token' && h.port === '8080' && h.url.startsWith('https://abc.lambda-microvm.ap-south-1.on.aws/')));
+    const toolRun = jobs.find((j) => j.argv[0] === '/tmp/maxwell/opt/faketool' && j.argv.includes('/tmp/maxwell/out/result'));
+    assert.ok(toolRun, 'the tool runs as argv with the sandbox paths');
+    assert.equal(toolRun.env.HOME, '/tmp/maxwell/home');
+    assert.equal(readFileSync(f.resultPath, 'utf8'), 'ok');
+    assert.equal(r.provenance.artifactSha256, f.tool.artifacts['linux-arm64'].sha256);
+    assert.equal(r.provenance.baseImageVersion, '2026.09.01');
+    assert.equal(r.provenance.image, `public.ecr.aws/lambda/microvms:al2023-minimal@${digest('9')}`);
+    assert.equal(calls.terminated, 1);
+    await lambdaMicrovms.runTool({ ...job(f), manifest, region: 'ap-south-1', providerConfig, deps });
+    assert.equal(sent('CreateMicrovmImageCommand').length, 1, 'the runner image is built once and reused');
+    assert.equal(calls.terminated, 2);
+    await assert.rejects(lambdaMicrovms.runTool({ ...job(f), manifest, providerConfig, deps }), { code: 'not-configured' });
+    await assert.rejects(lambdaMicrovms.runTool({ ...job(f), manifest, region: 'ap-south-1', providerConfig: { ...providerConfig, egressConnectorArn: undefined }, deps }), { code: 'not-configured' });
+    await assert.rejects(lambdaMicrovms.runTool({ ...job(f, { network: 'package-registries' }), manifest, region: 'ap-south-1', providerConfig, deps }), { code: 'invalid-config' });
+  } finally { f.cleanup(); }
+});
+
+test('lambda-microvms runner: unpacks only inside its root, runs argv with the environment it is given, serves only the result', async (t) => {
+  if (spawnSync('python3', ['-c', 'import tarfile; tarfile.data_filter'], { encoding: 'utf8' }).status !== 0) return t.skip('needs python3 with tarfile extraction filters');
+  const dir = tmp();
+  const root = join(dir, 'root');
+  const repo = join(dir, 'repo');
+  mkdirSync(repo);
+  writeFileSync(join(repo, 'main.tf'), 'resource "x" "y" {}\n');
+  writeFileSync(join(dir, 'runner.py'), lambdaMicrovms.RUNNER_PY);
+  const port = await new Promise((resolve) => { const s = createServer().listen(0, '127.0.0.1', () => { const p = s.address().port; s.close(() => resolve(p)); }); });
+  const child = spawn('python3', [join(dir, 'runner.py')], { env: { PATH: process.env.PATH, MAXWELL_RUNNER_ROOT: root, MAXWELL_RUNNER_PORT: String(port) }, stdio: 'ignore' });
+  const base = `http://127.0.0.1:${port}`;
+  const pause = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  try {
+    for (let i = 0; ; i++) {
+      const up = await fetch(`${base}/maxwell/v1/health`).then((res) => res.ok, () => false);
+      if (up) break;
+      if (i > 100) throw new Error('the runner did not start');
+      await pause(100);
+    }
+    assert.equal((await fetch(`${base}/aws/lambda-microvms/runtime/v1/ready`, { method: 'POST' })).status, 200);
+    const bundle = packBundle(repo, join(dir, 'bundle.tgz'));
+    assert.equal((await fetch(`${base}/maxwell/v1/bundle`, { method: 'PUT', body: readFileSync(bundle) })).status, 200);
+    assert.equal(readFileSync(join(root, 'src', 'main.tf'), 'utf8'), 'resource "x" "y" {}\n');
+    const exec = async (body) => {
+      const res = await fetch(`${base}/maxwell/v1/exec`, { method: 'POST', body: JSON.stringify(body) });
+      if (res.status !== 202) return { status: res.status };
+      const { jobId } = await res.json();
+      for (;;) {
+        const state = await (await fetch(`${base}/maxwell/v1/jobs/${jobId}`)).json();
+        if (state.state === 'done') return state;
+        await pause(50);
+      }
+    };
+    const ran = await exec({ argv: ['python3', '-c', 'import os, sys; open(sys.argv[1], "w").write("result"); print(sorted(os.environ))', join(root, 'out', 'result')], cwd: root, env: { PATH: process.env.PATH, HOME: join(root, 'home') }, timeoutSeconds: 30 });
+    assert.equal(ran.exitCode, 0, ran.stderr);
+    assert.ok(ran.stdout.includes("'HOME'") && !ran.stdout.includes('MAXWELL_RUNNER'), 'commands get only the environment Maxwell sends');
+    assert.equal(await (await fetch(`${base}/maxwell/v1/result`)).text(), 'result');
+    assert.equal((await exec({ argv: ['true'], cwd: '/etc' })).status, 400);
+    assert.equal((await exec({ argv: 'rm -rf /' })).status, 400);
+    const slow = await exec({ argv: ['sleep', '5'], cwd: root, env: { PATH: process.env.PATH }, timeoutSeconds: 1 });
+    assert.equal(slow.timedOut, true);
+    const evil = join(dir, 'evil.tgz');
+    spawnSync('python3', ['-c', 'import io, sys, tarfile\nt = tarfile.open(sys.argv[1], "w:gz")\ni = tarfile.TarInfo("../escaped")\ni.size = 1\nt.addfile(i, io.BytesIO(b"x"))\nt.close()', evil]);
+    assert.equal((await fetch(`${base}/maxwell/v1/bundle`, { method: 'PUT', body: readFileSync(evil) })).status, 400);
+    assert.equal(existsSync(join(dir, 'escaped')), false, 'a bundle cannot write outside the runner root');
+    const zipPath = join(dir, 'runner.zip');
+    writeFileSync(zipPath, lambdaMicrovms.runnerArtifact({ baseImages: { microvm: { ref: 'public.ecr.aws/lambda/microvms:al2023-minimal', digest: digest('9') } } }, 2048).zip);
+    const listed = spawnSync('python3', ['-c', 'import sys, zipfile\nz = zipfile.ZipFile(sys.argv[1])\nassert z.testzip() is None\nprint(",".join(z.namelist()))\nprint(z.read("Dockerfile").decode().splitlines()[0])', zipPath], { encoding: 'utf8' });
+    assert.equal(listed.status, 0, listed.stderr);
+    assert.equal(listed.stdout, `Dockerfile,runner.py\nFROM public.ecr.aws/lambda/microvms:al2023-minimal@${digest('9')}\n`);
+  } finally {
+    child.kill();
+    rmSync(dir, { recursive: true, force: true });
+  }
 });

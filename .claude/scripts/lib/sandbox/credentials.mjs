@@ -12,6 +12,8 @@ export const PROVIDER_CREDENTIALS = {
   daytona: ['DAYTONA_API_KEY'],
   modal: ['MODAL_TOKEN_ID', 'MODAL_TOKEN_SECRET'],
   vercel: ['VERCEL_TOKEN'],
+  // The AWS SDK default chain (a profile, SSO or an instance role); long-lived AWS keys are never stored.
+  'lambda-microvms': [],
   docker: [],
   kubernetes: [],
   host: [],

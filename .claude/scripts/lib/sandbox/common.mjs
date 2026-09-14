@@ -6,8 +6,8 @@ export class ExecutorError extends Error {
   constructor(code, message) { super(message); this.code = code; }
 }
 
-export const PROVIDERS = ['docker', 'kubernetes', 'e2b', 'daytona', 'modal', 'vercel', 'host'];
-export const HOSTED = ['e2b', 'daytona', 'modal', 'vercel'];
+export const PROVIDERS = ['docker', 'kubernetes', 'e2b', 'daytona', 'modal', 'vercel', 'lambda-microvms', 'host'];
+export const HOSTED = ['e2b', 'daytona', 'modal', 'vercel', 'lambda-microvms'];
 export const RUNTIME_PROVIDERS = ['docker', 'kubernetes', 'host'];
 
 // Paths a scanner sees inside a sandbox. Agents write {src} (the checkout, read-only) and {result} (the one file the
