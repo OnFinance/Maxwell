@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.app.repo",
+  "appId": "db-models",
+  "repoId": "onfinance-db-model-master",
+  "url": "https://github.com/OnFinance/onfinance_db_model_master.git",
+  "host": "github",
+  "visibility": "public",
+  "defaultBranch": "master",
+  "pinnedCommit": "70b3633e171a1b8d389b27bb901c84c34a0e9bf6",
+  "lastFetchedAt": "2026-09-14T00:00:00Z",
+  "languages": [
+    "python"
+  ],
+  "buildSystem": "pip",
+  "ciSystem": "none",
+  "packageManifests": [
+    "setup.py"
+  ],
+  "containsIac": false,
+  "containsHelmChart": false,
+  "containsAgentCode": false,
+  "codeownersPresent": false,
+  "localCheckout": "applications/db-models/repos/onfinance-db-model-master",
+  "provenance": {
+    "harness": "human",
+    "generatedAt": "2026-09-14T00:00:00Z",
+    "workflow": "refresh-ctx",
+    "agent": "ctx-researcher"
+  }
+}

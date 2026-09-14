@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.app.environment",
+  "appId": "mcp-gateway",
+  "envId": "prod",
+  "tier": "prod",
+  "exposure": "partner",
+  "hosting": {
+    "provider": "aws",
+    "region": "ap-south-1",
+    "accountRef": "example-co-prod",
+    "cluster": "eks-prod-mumbai",
+    "namespace": "mcp-gateway"
+  },
+  "secretsBackend": "aws-secrets-manager",
+  "observability": {
+    "logsRetentionDays": 365,
+    "logsInIndia": true,
+    "siem": "Wazuh (self-hosted, ap-south-1)"
+  },
+  "dataClassification": [
+    "pii",
+    "financial"
+  ],
+  "residency": [
+    "IN"
+  ],
+  "probeAccess": {
+    "credentialKey": "prod-kubeconfig-ro",
+    "method": "kubeconfig",
+    "readOnly": true,
+    "allowedWindows": [
+      {
+        "daysOfWeek": [
+          "mon",
+          "tue",
+          "wed",
+          "thu",
+          "fri"
+        ],
+        "startUtc": "16:30",
+        "endUtc": "23:30"
+      }
+    ],
+    "rateLimitPerMinute": 30
+  },
+  "iac": [
+    {
+      "repoId": "mongodb-mcp-server",
+      "path": "deploy",
+      "tool": "other"
+    }
+  ],
+  "provenance": {
+    "harness": "human",
+    "generatedAt": "2026-09-14T00:00:00Z",
+    "workflow": "refresh-ctx",
+    "agent": "ctx-researcher"
+  }
+}

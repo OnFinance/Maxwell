@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.app.environment",
+  "appId": "mcp-gateway",
+  "envId": "qa",
+  "tier": "qa",
+  "exposure": "internal",
+  "hosting": {
+    "provider": "aws",
+    "region": "ap-south-1",
+    "accountRef": "example-co-nonprod",
+    "cluster": "eks-nonprod-mumbai",
+    "namespace": "mcp-gateway-qa"
+  },
+  "secretsBackend": "aws-secrets-manager",
+  "observability": {
+    "logsRetentionDays": 180,
+    "logsInIndia": true
+  },
+  "dataClassification": [
+    "pii",
+    "financial"
+  ],
+  "residency": [
+    "IN"
+  ],
+  "probeAccess": {
+    "credentialKey": "qa-kubeconfig-ro",
+    "method": "kubeconfig",
+    "readOnly": true,
+    "rateLimitPerMinute": 60
+  },
+  "iac": [
+    {
+      "repoId": "mongodb-mcp-server",
+      "path": "deploy",
+      "tool": "other"
+    }
+  ],
+  "provenance": {
+    "harness": "human",
+    "generatedAt": "2026-09-14T00:00:00Z",
+    "workflow": "refresh-ctx",
+    "agent": "ctx-researcher"
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.company.vendor",
+  "companyId": "example-co",
+  "vendorId": "aws",
+  "legalName": "Amazon Web Services, Inc.",
+  "country": "US",
+  "intraGroup": false,
+  "services": [
+    {
+      "serviceId": "aws-mumbai",
+      "type": "cloud-iaas",
+      "description": "EKS, RDS and S3 hosting in ap-south-1",
+      "criticality": "critical",
+      "supportsCriticalFunction": true,
+      "criticalFunctionRefs": [
+        "order-routing"
+      ],
+      "dataAccessed": [
+        "pii",
+        "financial"
+      ],
+      "hostingCountries": [
+        "IN"
+      ]
+    }
+  ],
+  "materiality": "material",
+  "status": "active",
+  "website": "https://aws.amazon.com",
+  "contract": {
+    "type": "overarching",
+    "reference": "AWS-EA-2025-0042",
+    "startDate": "2025-04-01",
+    "endDate": "2028-03-31",
+    "noticePeriodDays": 90,
+    "exitPlanDocumented": false,
+    "governingLaw": "IN",
+    "rightToAudit": true,
+    "subcontractingAllowed": true,
+    "dataReturnAndDeletion": true
+  },
+  "assurance": [
+    {
+      "type": "soc2-type2",
+      "issuer": "Ernst & Young LLP",
+      "periodStart": "2025-04-01",
+      "periodEnd": "2026-03-31",
+      "expiresAt": "2027-03-31",
+      "scope": "AWS ap-south-1 in-scope services",
+      "exceptionsCount": 0
+    }
+  ],
+  "provenance": {
+    "harness": "human",
+    "generatedAt": "2026-09-14T00:00:00Z",
+    "workflow": "refresh-vendor-ctx",
+    "agent": "maxwell-maintainers"
+  },
+  "lastAssessment": {
+    "date": "2026-06-15",
+    "rating": "medium",
+    "assessor": "vendor-risk@example-co.invalid",
+    "findingIds": []
+  }
+}

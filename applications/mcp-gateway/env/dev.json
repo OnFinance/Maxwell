@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.app.environment",
+  "appId": "mcp-gateway",
+  "envId": "dev",
+  "tier": "dev",
+  "exposure": "internal",
+  "hosting": {
+    "provider": "other",
+    "region": "local",
+    "accountRef": "developer-laptops"
+  },
+  "secretsBackend": "kubernetes-secrets",
+  "observability": {
+    "logsRetentionDays": 30,
+    "logsInIndia": true
+  },
+  "dataClassification": [
+    "internal"
+  ],
+  "residency": [
+    "IN"
+  ],
+  "probeAccess": {
+    "credentialKey": "dev-docker-socket",
+    "method": "docker-socket",
+    "readOnly": true,
+    "rateLimitPerMinute": 60
+  },
+  "iac": [
+    {
+      "repoId": "mongodb-mcp-server",
+      "path": "Dockerfile",
+      "tool": "other"
+    }
+  ],
+  "provenance": {
+    "harness": "human",
+    "generatedAt": "2026-09-14T00:00:00Z",
+    "workflow": "refresh-ctx",
+    "agent": "ctx-researcher"
+  }
+}

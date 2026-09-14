@@ -1,0 +1,133 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.company.details",
+  "companyId": "example-co",
+  "legalName": "Example Capital Markets Private Limited",
+  "brandName": "ExampleCo",
+  "description": "Fictional fixture: a mid-size SEBI-registered discount broker and depository participant with a middle-layer NBFC margin-funding arm, used to exercise Maxwell workflows end to end",
+  "website": "https://example-co.invalid",
+  "identifiers": {
+    "cin": "U67120MH2016PTC999999",
+    "pan": "AAACE9999E",
+    "sebiRegistrationNos": [
+      "INZ000999999",
+      "IN-DP-999-2016"
+    ]
+  },
+  "headquarters": {
+    "city": "Mumbai",
+    "state": "Maharashtra",
+    "country": "IN"
+  },
+  "jurisdictions": [
+    {
+      "country": "IN",
+      "state": "Maharashtra",
+      "primary": true
+    }
+  ],
+  "entityTypes": [
+    "stock-broker",
+    "depository-participant",
+    "nbfc"
+  ],
+  "regulatoryRegistrations": [
+    {
+      "regulator": "SEBI",
+      "registrationNo": "INZ000999999",
+      "category": "mid-size-re",
+      "categorisedAt": "2025-04-01",
+      "registeredAt": "2016-06-01",
+      "status": "active"
+    },
+    {
+      "regulator": "SEBI",
+      "registrationNo": "IN-DP-999-2016",
+      "category": "mid-size-re",
+      "categorisedAt": "2025-04-01",
+      "registeredAt": "2016-09-01",
+      "status": "active"
+    },
+    {
+      "regulator": "RBI",
+      "registrationNo": "N-13.09999",
+      "category": "nbfc-middle-layer",
+      "categorisedAt": "2025-10-01",
+      "registeredAt": "2019-03-15",
+      "status": "active"
+    }
+  ],
+  "frameworksInScope": [
+    "sebi-cscrf-2024",
+    "rbi-cyber-tech-directions-2026",
+    "rbi-it-outsourcing-md-2023",
+    "cert-in-directions-2022",
+    "dpdp-rules-2025",
+    "iso-27001-2022"
+  ],
+  "contacts": [
+    {
+      "role": "ciso",
+      "name": "Meera Krishnan",
+      "email": "ciso@example-co.invalid"
+    },
+    {
+      "role": "cto",
+      "name": "Arjun Desai",
+      "email": "cto@example-co.invalid"
+    },
+    {
+      "role": "compliance-officer",
+      "name": "Farah Sheikh",
+      "email": "compliance@example-co.invalid"
+    },
+    {
+      "role": "dpo",
+      "name": "Farah Sheikh",
+      "email": "dpo@example-co.invalid"
+    }
+  ],
+  "orgSize": {
+    "employees": 310,
+    "techHeadcount": 70,
+    "securityHeadcount": 4
+  },
+  "fiscalYearStart": "04-01",
+  "dataResidency": [
+    "IN"
+  ],
+  "criticalFunctions": [
+    {
+      "functionId": "order-routing",
+      "name": "Order routing to exchanges",
+      "description": "Acceptance, validation and routing of client orders to NSE and BSE during market hours",
+      "impactTolerance": {
+        "maxOutageMinutes": 30,
+        "maxDataLossMinutes": 0
+      },
+      "appIds": [
+        "mcp-gateway"
+      ]
+    }
+  ],
+  "riskAppetite": {
+    "statement": "Zero tolerance for client data breaches; medium residual risk accepted for internal tooling",
+    "maxAcceptableSeverity": "medium"
+  },
+  "socModel": "m-soc-nse-bse",
+  "auditCadence": {
+    "vaptPerYear": 2,
+    "cyberAuditPerYear": 1
+  },
+  "tags": [
+    "fixture",
+    "retail-broking",
+    "nbfc"
+  ],
+  "provenance": {
+    "harness": "human",
+    "generatedAt": "2026-09-14T00:00:00Z",
+    "workflow": "seed-company",
+    "agent": "maxwell-maintainers"
+  }
+}

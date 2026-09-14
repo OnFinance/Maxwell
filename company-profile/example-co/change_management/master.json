@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.master",
+  "companyId": "example-co",
+  "updatedAt": "2026-09-14T00:00:00Z",
+  "counters": {
+    "open": 0,
+    "closed": 0,
+    "cancelled": 0,
+    "overdue": 0
+  },
+  "initiatives": [],
+  "provenance": {
+    "harness": "human",
+    "generatedAt": "2026-09-14T00:00:00Z",
+    "workflow": "seed-company",
+    "agent": "maxwell-maintainers"
+  }
+}

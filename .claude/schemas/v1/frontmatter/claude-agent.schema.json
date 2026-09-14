@@ -48,16 +48,20 @@
   "allOf": [
     {
       "if": {
+        "type": "object",
         "required": [ "name" ],
         "properties": {
           "name": {
+            "type": "string",
             "pattern": "^runtime-probe-"
           }
         }
       },
       "then": {
+        "type": "object",
         "properties": {
           "x-maxwell": {
+            "type": "object",
             "properties": {
               "role": {
                 "const": "runtime-probe"
@@ -69,9 +73,11 @@
     },
     {
       "if": {
+        "type": "object",
         "required": [ "x-maxwell" ],
         "properties": {
           "x-maxwell": {
+            "type": "object",
             "required": [ "role" ],
             "properties": {
               "role": {
@@ -82,8 +88,10 @@
         }
       },
       "then": {
+        "type": "object",
         "properties": {
           "name": {
+            "type": "string",
             "pattern": "^runtime-probe-"
           }
         }
@@ -211,6 +219,7 @@
       "description": "Role of the agent in the Maxwell pipeline, the workflows that may spawn it, the workspace paths it may write, whether it is read-only against target systems, and the instruments it specialises in. Agents with role runtime-probe must set readOnlyTargets true and may only serve runtime-probe-* workflows",
       "type": "object",
       "if": {
+        "type": "object",
         "properties": {
           "role": {
             "const": "runtime-probe"
@@ -218,13 +227,16 @@
         }
       },
       "then": {
+        "type": "object",
         "required": [ "readOnlyTargets" ],
         "properties": {
           "readOnlyTargets": {
             "const": true
           },
           "workflows": {
+            "type": "array",
             "items": {
+              "type": "string",
               "pattern": "^runtime-probe-"
             }
           }

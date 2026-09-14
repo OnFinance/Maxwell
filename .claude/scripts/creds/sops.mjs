@@ -6,7 +6,9 @@
 //   get <app_id> <key>                  print one entry as JSON
 //   recipients <app_id>                 print the age recipients the file is encrypted to
 // Key material: SOPS_AGE_KEY_FILE (decrypt) and SOPS_AGE_RECIPIENTS or the "sopsRecipients" field (encrypt).
-import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { buildAjv, getValidator, formatErrors } from '../lib/schemas.mjs';
 
@@ -36,7 +38,11 @@ switch (cmd) {
     if (doc.appId !== appId) { console.error(`appId ${doc.appId} != ${appId}`); process.exit(2); }
     const recipients = process.env.SOPS_AGE_RECIPIENTS || (doc.sopsRecipients || []).join(',');
     if (!recipients) { console.error('no age recipients: set SOPS_AGE_RECIPIENTS or sopsRecipients[] in the document'); process.exit(2); }
-    const out = sops(['--encrypt', '--age', recipients, '--input-type', 'json', '--output-type', 'json', '/dev/stdin'], JSON.stringify(doc, null, 2));
+    const tmp = mkdtempSync(join(tmpdir(), 'maxwell-creds-'));
+    const tmpFile = join(tmp, 'credentials.json');
+    writeFileSync(tmpFile, JSON.stringify(doc, null, 2), { mode: 0o600 });
+    let out;
+    try { out = sops(['--encrypt', '--age', recipients, '--input-type', 'json', '--output-type', 'json', tmpFile]); } finally { rmSync(tmp, { recursive: true, force: true }); }
     writeFileSync(target, out.endsWith('\n') ? out : out + '\n');
     console.log(`${target} written (encrypted to ${recipients.split(',').length} recipient(s))`);
     break;

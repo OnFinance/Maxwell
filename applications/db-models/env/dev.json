@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.app.environment",
+  "appId": "db-models",
+  "envId": "dev",
+  "tier": "dev",
+  "exposure": "isolated",
+  "hosting": {
+    "provider": "other",
+    "region": "local",
+    "accountRef": "developer-laptops"
+  },
+  "secretsBackend": "other",
+  "observability": {
+    "logsRetentionDays": 0,
+    "logsInIndia": true
+  },
+  "dataClassification": [
+    "internal"
+  ],
+  "residency": [
+    "IN"
+  ],
+  "probeAccess": {
+    "method": "none",
+    "readOnly": true
+  },
+  "iac": [],
+  "provenance": {
+    "harness": "human",
+    "generatedAt": "2026-09-14T00:00:00Z",
+    "workflow": "refresh-ctx",
+    "agent": "ctx-researcher"
+  }
+}

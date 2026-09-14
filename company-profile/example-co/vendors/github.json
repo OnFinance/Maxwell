@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.company.vendor",
+  "companyId": "example-co",
+  "vendorId": "github",
+  "legalName": "GitHub, Inc.",
+  "country": "US",
+  "intraGroup": false,
+  "services": [
+    {
+      "serviceId": "github-cloud",
+      "type": "software-development",
+      "description": "Source hosting, GitHub Actions CI and package registry",
+      "criticality": "important",
+      "supportsCriticalFunction": false,
+      "dataAccessed": [
+        "confidential"
+      ],
+      "hostingCountries": [
+        "US"
+      ]
+    }
+  ],
+  "materiality": "material",
+  "status": "active",
+  "website": "https://github.com",
+  "assurance": [
+    {
+      "type": "soc2-type2",
+      "issuer": "Ernst & Young LLP",
+      "periodStart": "2024-10-01",
+      "periodEnd": "2025-09-30",
+      "expiresAt": "2026-09-30",
+      "scope": "GitHub Enterprise Cloud",
+      "exceptionsCount": 0
+    }
+  ],
+  "provenance": {
+    "harness": "human",
+    "generatedAt": "2026-09-14T00:00:00Z",
+    "workflow": "refresh-vendor-ctx",
+    "agent": "maxwell-maintainers"
+  },
+  "lastAssessment": {
+    "date": "2026-06-15",
+    "rating": "low",
+    "assessor": "vendor-risk@example-co.invalid",
+    "findingIds": []
+  },
+  "contract": {
+    "type": "standalone",
+    "reference": "GH-ENT-2025-07",
+    "startDate": "2025-07-01",
+    "endDate": "2026-06-30",
+    "noticePeriodDays": 30,
+    "exitPlanDocumented": false,
+    "governingLaw": "US",
+    "rightToAudit": false,
+    "subcontractingAllowed": true,
+    "dataReturnAndDeletion": true
+  }
+}

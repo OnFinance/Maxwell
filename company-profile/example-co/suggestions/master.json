@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.sug.master",
+  "companyId": "example-co",
+  "updatedAt": "2026-09-14T00:00:00Z",
+  "suggestions": [],
+  "provenance": {
+    "harness": "human",
+    "generatedAt": "2026-09-14T00:00:00Z",
+    "workflow": "seed-company",
+    "agent": "maxwell-maintainers"
+  }
+}
