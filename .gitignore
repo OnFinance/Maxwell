@@ -1,4 +1,4 @@
-node_modules/
+node_modules
 # cloned application sources (manifests are committed, checkouts are not)
 applications/*/repos/*/
 # decrypted credentials must never be committed
