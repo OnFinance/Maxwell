@@ -17,7 +17,33 @@ permission:
   edit: allow
   write: allow
   patch: allow
-  bash: allow
+  bash:
+    '*': deny
+    node .claude/scripts/validate-data.mjs *: allow
+    node -e *: allow
+    git -C applications/* rev-parse *: allow
+    git -C applications/* status *: allow
+    git -C applications/* log *: allow
+    git -C applications/* show *: allow
+    git -C applications/* ls-files *: allow
+    git -C applications/* apply --check *: allow
+    git -C applications/* merge-base --is-ancestor *: allow
+    mktemp -d /tmp/maxwell-diff.*: allow
+    mkdir -p /tmp/maxwell-diff.*: allow
+    cp applications/* /tmp/maxwell-diff.*: allow
+    git -C /tmp/maxwell-diff.* diff --no-index *: allow
+    awk '/^diff --git /*: allow
+    rm -rf /tmp/maxwell-diff.*: allow
+    sops --decrypt *: deny
+    sops -d *: deny
+    rm -rf *: deny
+    git push --force *: deny
+    ssh *: deny
+    curl *: deny
+    git push *: deny
+    '*.config/maxwell/*': deny
+    '*.cache/maxwell/*': deny
+    git push --force*: deny
   webfetch: deny
   glob: allow
   grep: allow
@@ -26,6 +52,10 @@ permission:
   task: deny
   todowrite: deny
   todoread: deny
+  external_directory:
+    '*': deny
+    ~/.local/share/opencode/tool-output/*: allow
+    /tmp/opencode/*: allow
 x-maxwell:
   role: author
   workflows:

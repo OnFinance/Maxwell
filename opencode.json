@@ -34,9 +34,36 @@
       "permission": {
         "read": "allow",
         "edit": "deny",
-        "write": "allow",
+        "write": {
+          "*": "deny",
+          "kpis/data/raw/sessions/**": "allow"
+        },
         "patch": "deny",
-        "bash": "allow",
+        "bash": {
+          "*": "deny",
+          "git -C * log *": "allow",
+          "git -C * ls-files *": "allow",
+          "git -C * grep *": "allow",
+          "git -C * rev-parse *": "allow",
+          "jq *": "allow",
+          "yq *": "allow",
+          "printf *": "allow",
+          "sha256sum *": "allow",
+          "sha256sum": "allow",
+          "date -u *": "allow",
+          "node .claude/scripts/validate-data.mjs *": "allow",
+          "node .claude/scripts/toolchain/scan.mjs *": "allow",
+          "sops --decrypt *": "deny",
+          "sops -d *": "deny",
+          "rm -rf *": "deny",
+          "git push --force *": "deny",
+          "ssh *": "deny",
+          "curl *": "deny",
+          "git push *": "deny",
+          "*.config/maxwell/*": "deny",
+          "*.cache/maxwell/*": "deny",
+          "git push --force*": "deny"
+        },
         "webfetch": "deny",
         "glob": "allow",
         "grep": "allow",
@@ -44,7 +71,12 @@
         "skill": "deny",
         "task": "deny",
         "todowrite": "deny",
-        "todoread": "deny"
+        "todoread": "deny",
+        "external_directory": {
+          "*": "deny",
+          "~/.local/share/opencode/tool-output/*": "allow",
+          "/tmp/opencode/*": "allow"
+        }
       },
       "prompt": "{file:./.agents/agents/agent-graph-auditor.prompt.md}"
     },
@@ -56,7 +88,30 @@
         "edit": "deny",
         "write": "deny",
         "patch": "deny",
-        "bash": "allow",
+        "bash": {
+          "*": "deny",
+          "git clone *": "allow",
+          "git ls-remote *": "allow",
+          "git -C applications/* fetch *": "allow",
+          "git -C applications/* checkout --detach *": "allow",
+          "git -C applications/* rev-parse *": "allow",
+          "git -C applications/* rev-list *": "allow",
+          "git -C applications/* log *": "allow",
+          "git -C applications/* ls-files *": "allow",
+          "git -C applications/* show *": "allow",
+          "node .claude/scripts/creds/sops.mjs get *": "allow",
+          "node .claude/scripts/validate-data.mjs *": "allow",
+          "sops --decrypt *": "deny",
+          "sops -d *": "deny",
+          "rm -rf *": "deny",
+          "git push --force *": "deny",
+          "ssh *": "deny",
+          "curl *": "deny",
+          "git push *": "deny",
+          "*.config/maxwell/*": "deny",
+          "*.cache/maxwell/*": "deny",
+          "git push --force*": "deny"
+        },
         "webfetch": "deny",
         "glob": "allow",
         "grep": "allow",
@@ -64,7 +119,12 @@
         "skill": "deny",
         "task": "deny",
         "todowrite": "deny",
-        "todoread": "deny"
+        "todoread": "deny",
+        "external_directory": {
+          "*": "deny",
+          "~/.local/share/opencode/tool-output/*": "allow",
+          "/tmp/opencode/*": "allow"
+        }
       },
       "prompt": "{file:./.agents/agents/app-cataloguer.prompt.md}"
     },
@@ -76,7 +136,21 @@
         "edit": "allow",
         "write": "allow",
         "patch": "allow",
-        "bash": "allow",
+        "bash": {
+          "*": "deny",
+          "node .claude/scripts/validate-data.mjs *": "allow",
+          "node -e *": "allow",
+          "sops --decrypt *": "deny",
+          "sops -d *": "deny",
+          "rm -rf *": "deny",
+          "git push --force *": "deny",
+          "ssh *": "deny",
+          "curl *": "deny",
+          "git push *": "deny",
+          "*.config/maxwell/*": "deny",
+          "*.cache/maxwell/*": "deny",
+          "git push --force*": "deny"
+        },
         "webfetch": "deny",
         "glob": "allow",
         "grep": "allow",
@@ -84,7 +158,12 @@
         "skill": "deny",
         "task": "deny",
         "todowrite": "deny",
-        "todoread": "deny"
+        "todoread": "deny",
+        "external_directory": {
+          "*": "deny",
+          "~/.local/share/opencode/tool-output/*": "allow",
+          "/tmp/opencode/*": "allow"
+        }
       },
       "prompt": "{file:./.agents/agents/change-planner.prompt.md}"
     },
@@ -95,9 +174,37 @@
       "permission": {
         "read": "allow",
         "edit": "deny",
-        "write": "allow",
+        "write": {
+          "*": "deny",
+          "kpis/data/raw/sessions/**": "allow"
+        },
         "patch": "deny",
-        "bash": "allow",
+        "bash": {
+          "*": "deny",
+          "git -C * log *": "allow",
+          "git -C * ls-files *": "allow",
+          "git -C * grep *": "allow",
+          "git -C * rev-parse *": "allow",
+          "kube-score score *": "allow",
+          "jq *": "allow",
+          "yq *": "allow",
+          "printf *": "allow",
+          "sha256sum *": "allow",
+          "sha256sum": "allow",
+          "date -u *": "allow",
+          "node .claude/scripts/validate-data.mjs *": "allow",
+          "node .claude/scripts/toolchain/scan.mjs *": "allow",
+          "sops --decrypt *": "deny",
+          "sops -d *": "deny",
+          "rm -rf *": "deny",
+          "git push --force *": "deny",
+          "ssh *": "deny",
+          "curl *": "deny",
+          "git push *": "deny",
+          "*.config/maxwell/*": "deny",
+          "*.cache/maxwell/*": "deny",
+          "git push --force*": "deny"
+        },
         "webfetch": "deny",
         "glob": "allow",
         "grep": "allow",
@@ -105,7 +212,12 @@
         "skill": "deny",
         "task": "deny",
         "todowrite": "deny",
-        "todoread": "deny"
+        "todoread": "deny",
+        "external_directory": {
+          "*": "deny",
+          "~/.local/share/opencode/tool-output/*": "allow",
+          "/tmp/opencode/*": "allow"
+        }
       },
       "prompt": "{file:./.agents/agents/chart-auditor.prompt.md}"
     },
@@ -116,9 +228,36 @@
       "permission": {
         "read": "allow",
         "edit": "deny",
-        "write": "allow",
+        "write": {
+          "*": "deny",
+          "kpis/data/raw/sessions/**": "allow"
+        },
         "patch": "deny",
-        "bash": "allow",
+        "bash": {
+          "*": "deny",
+          "git -C * log *": "allow",
+          "git -C * ls-files *": "allow",
+          "git -C * grep *": "allow",
+          "git -C * rev-parse *": "allow",
+          "jq *": "allow",
+          "yq *": "allow",
+          "printf *": "allow",
+          "sha256sum *": "allow",
+          "sha256sum": "allow",
+          "date -u *": "allow",
+          "node .claude/scripts/validate-data.mjs *": "allow",
+          "node .claude/scripts/toolchain/scan.mjs *": "allow",
+          "sops --decrypt *": "deny",
+          "sops -d *": "deny",
+          "rm -rf *": "deny",
+          "git push --force *": "deny",
+          "ssh *": "deny",
+          "curl *": "deny",
+          "git push *": "deny",
+          "*.config/maxwell/*": "deny",
+          "*.cache/maxwell/*": "deny",
+          "git push --force*": "deny"
+        },
         "webfetch": "deny",
         "glob": "allow",
         "grep": "allow",
@@ -126,7 +265,12 @@
         "skill": "deny",
         "task": "deny",
         "todowrite": "deny",
-        "todoread": "deny"
+        "todoread": "deny",
+        "external_directory": {
+          "*": "deny",
+          "~/.local/share/opencode/tool-output/*": "allow",
+          "/tmp/opencode/*": "allow"
+        }
       },
       "prompt": "{file:./.agents/agents/cicd-auditor.prompt.md}"
     },
@@ -139,7 +283,28 @@
         "edit": "deny",
         "write": "allow",
         "patch": "deny",
-        "bash": "allow",
+        "bash": {
+          "*": "deny",
+          "node .claude/scripts/creds/sops.mjs get *": "allow",
+          "node -e \"import('./.claude/hooks/lib.mjs')*": "allow",
+          "date -u *": "allow",
+          "printf *": "allow",
+          "sha256sum *": "allow",
+          "jq *": "allow",
+          "head *": "allow",
+          "grep *": "allow",
+          "node .claude/scripts/sandbox/exec.mjs *": "allow",
+          "sops --decrypt *": "deny",
+          "sops -d *": "deny",
+          "rm -rf *": "deny",
+          "git push --force *": "deny",
+          "ssh *": "deny",
+          "curl *": "deny",
+          "git push *": "deny",
+          "*.config/maxwell/*": "deny",
+          "*.cache/maxwell/*": "deny",
+          "git push --force*": "deny"
+        },
         "webfetch": "deny",
         "glob": "allow",
         "grep": "allow",
@@ -147,7 +312,12 @@
         "skill": "deny",
         "task": "deny",
         "todowrite": "deny",
-        "todoread": "deny"
+        "todoread": "deny",
+        "external_directory": {
+          "*": "deny",
+          "~/.local/share/opencode/tool-output/*": "allow",
+          "/tmp/opencode/*": "allow"
+        }
       },
       "prompt": "{file:./.agents/agents/container-prober.prompt.md}"
     },
@@ -159,7 +329,22 @@
         "edit": "deny",
         "write": "deny",
         "patch": "deny",
-        "bash": "allow",
+        "bash": {
+          "*": "deny",
+          "node .claude/scripts/cos/search.mjs *": "allow",
+          "date -u *": "allow",
+          "node .claude/scripts/validate-data.mjs *": "allow",
+          "sops --decrypt *": "deny",
+          "sops -d *": "deny",
+          "rm -rf *": "deny",
+          "git push --force *": "deny",
+          "ssh *": "deny",
+          "curl *": "deny",
+          "git push *": "deny",
+          "*.config/maxwell/*": "deny",
+          "*.cache/maxwell/*": "deny",
+          "git push --force*": "deny"
+        },
         "webfetch": "allow",
         "glob": "allow",
         "grep": "allow",
@@ -167,7 +352,12 @@
         "skill": "deny",
         "task": "deny",
         "todowrite": "deny",
-        "todoread": "deny"
+        "todoread": "deny",
+        "external_directory": {
+          "*": "deny",
+          "~/.local/share/opencode/tool-output/*": "allow",
+          "/tmp/opencode/*": "allow"
+        }
       },
       "prompt": "{file:./.agents/agents/ctx-researcher.prompt.md}"
     },
@@ -178,9 +368,38 @@
       "permission": {
         "read": "allow",
         "edit": "deny",
-        "write": "allow",
+        "write": {
+          "*": "deny",
+          "kpis/data/raw/sessions/**": "allow"
+        },
         "patch": "deny",
-        "bash": "allow",
+        "bash": {
+          "*": "deny",
+          "git -C * log *": "allow",
+          "git -C * ls-files *": "allow",
+          "git -C * grep *": "allow",
+          "git -C * check-ignore *": "allow",
+          "git -C * rev-parse *": "allow",
+          "jq *": "allow",
+          "yq *": "allow",
+          "printf *": "allow",
+          "sha256sum *": "allow",
+          "sha256sum": "allow",
+          "date -u *": "allow",
+          "node .claude/scripts/validate-data.mjs *": "allow",
+          "node .claude/scripts/creds/sops.mjs get *": "allow",
+          "node .claude/scripts/toolchain/scan.mjs *": "allow",
+          "sops --decrypt *": "deny",
+          "sops -d *": "deny",
+          "rm -rf *": "deny",
+          "git push --force *": "deny",
+          "ssh *": "deny",
+          "curl *": "deny",
+          "git push *": "deny",
+          "*.config/maxwell/*": "deny",
+          "*.cache/maxwell/*": "deny",
+          "git push --force*": "deny"
+        },
         "webfetch": "deny",
         "glob": "allow",
         "grep": "allow",
@@ -188,7 +407,12 @@
         "skill": "deny",
         "task": "deny",
         "todowrite": "deny",
-        "todoread": "deny"
+        "todoread": "deny",
+        "external_directory": {
+          "*": "deny",
+          "~/.local/share/opencode/tool-output/*": "allow",
+          "/tmp/opencode/*": "allow"
+        }
       },
       "prompt": "{file:./.agents/agents/devenv-auditor.prompt.md}"
     },
@@ -200,7 +424,34 @@
         "edit": "allow",
         "write": "allow",
         "patch": "allow",
-        "bash": "allow",
+        "bash": {
+          "*": "deny",
+          "node .claude/scripts/validate-data.mjs *": "allow",
+          "node -e *": "allow",
+          "git -C applications/* rev-parse *": "allow",
+          "git -C applications/* status *": "allow",
+          "git -C applications/* log *": "allow",
+          "git -C applications/* show *": "allow",
+          "git -C applications/* ls-files *": "allow",
+          "git -C applications/* apply --check *": "allow",
+          "git -C applications/* merge-base --is-ancestor *": "allow",
+          "mktemp -d /tmp/maxwell-diff.*": "allow",
+          "mkdir -p /tmp/maxwell-diff.*": "allow",
+          "cp applications/* /tmp/maxwell-diff.*": "allow",
+          "git -C /tmp/maxwell-diff.* diff --no-index *": "allow",
+          "awk '/^diff --git /*": "allow",
+          "rm -rf /tmp/maxwell-diff.*": "allow",
+          "sops --decrypt *": "deny",
+          "sops -d *": "deny",
+          "rm -rf *": "deny",
+          "git push --force *": "deny",
+          "ssh *": "deny",
+          "curl *": "deny",
+          "git push *": "deny",
+          "*.config/maxwell/*": "deny",
+          "*.cache/maxwell/*": "deny",
+          "git push --force*": "deny"
+        },
         "webfetch": "deny",
         "glob": "allow",
         "grep": "allow",
@@ -208,7 +459,12 @@
         "skill": "deny",
         "task": "deny",
         "todowrite": "deny",
-        "todoread": "deny"
+        "todoread": "deny",
+        "external_directory": {
+          "*": "deny",
+          "~/.local/share/opencode/tool-output/*": "allow",
+          "/tmp/opencode/*": "allow"
+        }
       },
       "prompt": "{file:./.agents/agents/fix-author.prompt.md}"
     },
@@ -221,7 +477,28 @@
         "edit": "deny",
         "write": "allow",
         "patch": "deny",
-        "bash": "allow",
+        "bash": {
+          "*": "deny",
+          "node .claude/scripts/creds/sops.mjs get *": "allow",
+          "node -e \"import('./.claude/hooks/lib.mjs')*": "allow",
+          "date -u *": "allow",
+          "printf *": "allow",
+          "sha256sum *": "allow",
+          "jq *": "allow",
+          "head *": "allow",
+          "grep *": "allow",
+          "node .claude/scripts/sandbox/exec.mjs *": "allow",
+          "sops --decrypt *": "deny",
+          "sops -d *": "deny",
+          "rm -rf *": "deny",
+          "git push --force *": "deny",
+          "ssh *": "deny",
+          "curl *": "deny",
+          "git push *": "deny",
+          "*.config/maxwell/*": "deny",
+          "*.cache/maxwell/*": "deny",
+          "git push --force*": "deny"
+        },
         "webfetch": "deny",
         "glob": "allow",
         "grep": "allow",
@@ -229,7 +506,12 @@
         "skill": "deny",
         "task": "deny",
         "todowrite": "deny",
-        "todoread": "deny"
+        "todoread": "deny",
+        "external_directory": {
+          "*": "deny",
+          "~/.local/share/opencode/tool-output/*": "allow",
+          "/tmp/opencode/*": "allow"
+        }
       },
       "prompt": "{file:./.agents/agents/harness-prober.prompt.md}"
     },
@@ -240,9 +522,37 @@
       "permission": {
         "read": "allow",
         "edit": "deny",
-        "write": "allow",
+        "write": {
+          "*": "deny",
+          "kpis/data/raw/sessions/**": "allow"
+        },
         "patch": "deny",
-        "bash": "allow",
+        "bash": {
+          "*": "deny",
+          "git -C * log *": "allow",
+          "git -C * ls-files *": "allow",
+          "git -C * grep *": "allow",
+          "git -C * rev-parse *": "allow",
+          "jq *": "allow",
+          "yq *": "allow",
+          "printf *": "allow",
+          "sha256sum *": "allow",
+          "sha256sum": "allow",
+          "date -u *": "allow",
+          "node .claude/scripts/validate-data.mjs *": "allow",
+          "node .claude/scripts/creds/sops.mjs get *": "allow",
+          "node .claude/scripts/toolchain/scan.mjs *": "allow",
+          "sops --decrypt *": "deny",
+          "sops -d *": "deny",
+          "rm -rf *": "deny",
+          "git push --force *": "deny",
+          "ssh *": "deny",
+          "curl *": "deny",
+          "git push *": "deny",
+          "*.config/maxwell/*": "deny",
+          "*.cache/maxwell/*": "deny",
+          "git push --force*": "deny"
+        },
         "webfetch": "deny",
         "glob": "allow",
         "grep": "allow",
@@ -250,7 +560,12 @@
         "skill": "deny",
         "task": "deny",
         "todowrite": "deny",
-        "todoread": "deny"
+        "todoread": "deny",
+        "external_directory": {
+          "*": "deny",
+          "~/.local/share/opencode/tool-output/*": "allow",
+          "/tmp/opencode/*": "allow"
+        }
       },
       "prompt": "{file:./.agents/agents/iac-auditor.prompt.md}"
     },
@@ -263,7 +578,28 @@
         "edit": "deny",
         "write": "allow",
         "patch": "deny",
-        "bash": "allow",
+        "bash": {
+          "*": "deny",
+          "node .claude/scripts/creds/sops.mjs get *": "allow",
+          "node -e \"import('./.claude/hooks/lib.mjs')*": "allow",
+          "date -u *": "allow",
+          "printf *": "allow",
+          "sha256sum *": "allow",
+          "jq *": "allow",
+          "head *": "allow",
+          "grep *": "allow",
+          "node .claude/scripts/sandbox/exec.mjs *": "allow",
+          "sops --decrypt *": "deny",
+          "sops -d *": "deny",
+          "rm -rf *": "deny",
+          "git push --force *": "deny",
+          "ssh *": "deny",
+          "curl *": "deny",
+          "git push *": "deny",
+          "*.config/maxwell/*": "deny",
+          "*.cache/maxwell/*": "deny",
+          "git push --force*": "deny"
+        },
         "webfetch": "deny",
         "glob": "allow",
         "grep": "allow",
@@ -271,7 +607,12 @@
         "skill": "deny",
         "task": "deny",
         "todowrite": "deny",
-        "todoread": "deny"
+        "todoread": "deny",
+        "external_directory": {
+          "*": "deny",
+          "~/.local/share/opencode/tool-output/*": "allow",
+          "/tmp/opencode/*": "allow"
+        }
       },
       "prompt": "{file:./.agents/agents/iam-prober.prompt.md}"
     },
@@ -283,7 +624,23 @@
         "edit": "deny",
         "write": "allow",
         "patch": "deny",
-        "bash": "allow",
+        "bash": {
+          "*": "deny",
+          "node .claude/scripts/validate-data.mjs *": "allow",
+          "node .claude/scripts/creds/sops.mjs get *": "allow",
+          "git -C applications/* log *": "allow",
+          "git -C applications/* ls-files *": "allow",
+          "sops --decrypt *": "deny",
+          "sops -d *": "deny",
+          "rm -rf *": "deny",
+          "git push --force *": "deny",
+          "ssh *": "deny",
+          "curl *": "deny",
+          "git push *": "deny",
+          "*.config/maxwell/*": "deny",
+          "*.cache/maxwell/*": "deny",
+          "git push --force*": "deny"
+        },
         "webfetch": "deny",
         "glob": "allow",
         "grep": "allow",
@@ -291,7 +648,12 @@
         "skill": "deny",
         "task": "deny",
         "todowrite": "deny",
-        "todoread": "deny"
+        "todoread": "deny",
+        "external_directory": {
+          "*": "deny",
+          "~/.local/share/opencode/tool-output/*": "allow",
+          "/tmp/opencode/*": "allow"
+        }
       },
       "prompt": "{file:./.agents/agents/metastore-cataloguer.prompt.md}"
     },
@@ -304,7 +666,28 @@
         "edit": "deny",
         "write": "allow",
         "patch": "deny",
-        "bash": "allow",
+        "bash": {
+          "*": "deny",
+          "node .claude/scripts/creds/sops.mjs get *": "allow",
+          "node -e \"import('./.claude/hooks/lib.mjs')*": "allow",
+          "date -u *": "allow",
+          "printf *": "allow",
+          "sha256sum *": "allow",
+          "jq *": "allow",
+          "head *": "allow",
+          "grep *": "allow",
+          "node .claude/scripts/sandbox/exec.mjs *": "allow",
+          "sops --decrypt *": "deny",
+          "sops -d *": "deny",
+          "rm -rf *": "deny",
+          "git push --force *": "deny",
+          "ssh *": "deny",
+          "curl *": "deny",
+          "git push *": "deny",
+          "*.config/maxwell/*": "deny",
+          "*.cache/maxwell/*": "deny",
+          "git push --force*": "deny"
+        },
         "webfetch": "deny",
         "glob": "allow",
         "grep": "allow",
@@ -312,7 +695,12 @@
         "skill": "deny",
         "task": "deny",
         "todowrite": "deny",
-        "todoread": "deny"
+        "todoread": "deny",
+        "external_directory": {
+          "*": "deny",
+          "~/.local/share/opencode/tool-output/*": "allow",
+          "/tmp/opencode/*": "allow"
+        }
       },
       "prompt": "{file:./.agents/agents/network-prober.prompt.md}"
     },
@@ -325,7 +713,28 @@
         "edit": "deny",
         "write": "allow",
         "patch": "deny",
-        "bash": "allow",
+        "bash": {
+          "*": "deny",
+          "node .claude/scripts/creds/sops.mjs get *": "allow",
+          "node -e \"import('./.claude/hooks/lib.mjs')*": "allow",
+          "date -u *": "allow",
+          "printf *": "allow",
+          "sha256sum *": "allow",
+          "jq *": "allow",
+          "head *": "allow",
+          "grep *": "allow",
+          "node .claude/scripts/sandbox/exec.mjs *": "allow",
+          "sops --decrypt *": "deny",
+          "sops -d *": "deny",
+          "rm -rf *": "deny",
+          "git push --force *": "deny",
+          "ssh *": "deny",
+          "curl *": "deny",
+          "git push *": "deny",
+          "*.config/maxwell/*": "deny",
+          "*.cache/maxwell/*": "deny",
+          "git push --force*": "deny"
+        },
         "webfetch": "deny",
         "glob": "allow",
         "grep": "allow",
@@ -333,7 +742,12 @@
         "skill": "deny",
         "task": "deny",
         "todowrite": "deny",
-        "todoread": "deny"
+        "todoread": "deny",
+        "external_directory": {
+          "*": "deny",
+          "~/.local/share/opencode/tool-output/*": "allow",
+          "/tmp/opencode/*": "allow"
+        }
       },
       "prompt": "{file:./.agents/agents/pipeline-prober.prompt.md}"
     },
@@ -346,14 +760,19 @@
         "write": "deny",
         "patch": "deny",
         "bash": "deny",
-        "webfetch": "deny",
+        "webfetch": "allow",
         "glob": "allow",
         "grep": "allow",
         "list": "allow",
         "skill": "deny",
         "task": "deny",
         "todowrite": "deny",
-        "todoread": "deny"
+        "todoread": "deny",
+        "external_directory": {
+          "*": "deny",
+          "~/.local/share/opencode/tool-output/*": "allow",
+          "/tmp/opencode/*": "allow"
+        }
       },
       "prompt": "{file:./.agents/agents/refuter.prompt.md}"
     },
@@ -366,7 +785,24 @@
         "edit": "allow",
         "write": "allow",
         "patch": "allow",
-        "bash": "allow",
+        "bash": {
+          "*": "deny",
+          "npm run validate*": "allow",
+          "node .claude/scripts/validate-data.mjs *": "allow",
+          "cat *": "allow",
+          "sha256sum *": "allow",
+          "wc *": "allow",
+          "sops --decrypt *": "deny",
+          "sops -d *": "deny",
+          "rm -rf *": "deny",
+          "git push --force *": "deny",
+          "ssh *": "deny",
+          "curl *": "deny",
+          "git push *": "deny",
+          "*.config/maxwell/*": "deny",
+          "*.cache/maxwell/*": "deny",
+          "git push --force*": "deny"
+        },
         "webfetch": "deny",
         "glob": "allow",
         "grep": "allow",
@@ -374,7 +810,12 @@
         "skill": "deny",
         "task": "deny",
         "todowrite": "deny",
-        "todoread": "deny"
+        "todoread": "deny",
+        "external_directory": {
+          "*": "deny",
+          "~/.local/share/opencode/tool-output/*": "allow",
+          "/tmp/opencode/*": "allow"
+        }
       },
       "prompt": "{file:./.agents/agents/report-writer.prompt.md}"
     },
@@ -387,7 +828,28 @@
         "edit": "deny",
         "write": "allow",
         "patch": "deny",
-        "bash": "allow",
+        "bash": {
+          "*": "deny",
+          "node .claude/scripts/creds/sops.mjs get *": "allow",
+          "node -e \"import('./.claude/hooks/lib.mjs')*": "allow",
+          "date -u *": "allow",
+          "printf *": "allow",
+          "sha256sum *": "allow",
+          "jq *": "allow",
+          "head *": "allow",
+          "grep *": "allow",
+          "node .claude/scripts/sandbox/exec.mjs *": "allow",
+          "sops --decrypt *": "deny",
+          "sops -d *": "deny",
+          "rm -rf *": "deny",
+          "git push --force *": "deny",
+          "ssh *": "deny",
+          "curl *": "deny",
+          "git push *": "deny",
+          "*.config/maxwell/*": "deny",
+          "*.cache/maxwell/*": "deny",
+          "git push --force*": "deny"
+        },
         "webfetch": "deny",
         "glob": "allow",
         "grep": "allow",
@@ -395,7 +857,12 @@
         "skill": "deny",
         "task": "deny",
         "todowrite": "deny",
-        "todoread": "deny"
+        "todoread": "deny",
+        "external_directory": {
+          "*": "deny",
+          "~/.local/share/opencode/tool-output/*": "allow",
+          "/tmp/opencode/*": "allow"
+        }
       },
       "prompt": "{file:./.agents/agents/sandbox-prober.prompt.md}"
     },
@@ -406,9 +873,36 @@
       "permission": {
         "read": "allow",
         "edit": "deny",
-        "write": "allow",
+        "write": {
+          "*": "deny",
+          "kpis/data/raw/sessions/**": "allow"
+        },
         "patch": "deny",
-        "bash": "allow",
+        "bash": {
+          "*": "deny",
+          "git -C * log *": "allow",
+          "git -C * ls-files *": "allow",
+          "git -C * grep *": "allow",
+          "git -C * rev-parse *": "allow",
+          "jq *": "allow",
+          "yq *": "allow",
+          "printf *": "allow",
+          "sha256sum *": "allow",
+          "sha256sum": "allow",
+          "date -u *": "allow",
+          "node .claude/scripts/validate-data.mjs *": "allow",
+          "node .claude/scripts/toolchain/scan.mjs *": "allow",
+          "sops --decrypt *": "deny",
+          "sops -d *": "deny",
+          "rm -rf *": "deny",
+          "git push --force *": "deny",
+          "ssh *": "deny",
+          "curl *": "deny",
+          "git push *": "deny",
+          "*.config/maxwell/*": "deny",
+          "*.cache/maxwell/*": "deny",
+          "git push --force*": "deny"
+        },
         "webfetch": "deny",
         "glob": "allow",
         "grep": "allow",
@@ -416,7 +910,12 @@
         "skill": "deny",
         "task": "deny",
         "todowrite": "deny",
-        "todoread": "deny"
+        "todoread": "deny",
+        "external_directory": {
+          "*": "deny",
+          "~/.local/share/opencode/tool-output/*": "allow",
+          "/tmp/opencode/*": "allow"
+        }
       },
       "prompt": "{file:./.agents/agents/schema-auditor.prompt.md}"
     },
@@ -427,9 +926,37 @@
       "permission": {
         "read": "allow",
         "edit": "deny",
-        "write": "allow",
+        "write": {
+          "*": "deny",
+          "kpis/data/raw/sessions/**": "allow"
+        },
         "patch": "deny",
-        "bash": "allow",
+        "bash": {
+          "*": "deny",
+          "git -C * log *": "allow",
+          "git -C * ls-files *": "allow",
+          "git -C * grep *": "allow",
+          "git -C * rev-parse *": "allow",
+          "git -C * for-each-ref *": "allow",
+          "jq *": "allow",
+          "yq *": "allow",
+          "printf *": "allow",
+          "sha256sum *": "allow",
+          "sha256sum": "allow",
+          "date -u *": "allow",
+          "node .claude/scripts/validate-data.mjs *": "allow",
+          "node .claude/scripts/toolchain/scan.mjs *": "allow",
+          "sops --decrypt *": "deny",
+          "sops -d *": "deny",
+          "rm -rf *": "deny",
+          "git push --force *": "deny",
+          "ssh *": "deny",
+          "curl *": "deny",
+          "git push *": "deny",
+          "*.config/maxwell/*": "deny",
+          "*.cache/maxwell/*": "deny",
+          "git push --force*": "deny"
+        },
         "webfetch": "deny",
         "glob": "allow",
         "grep": "allow",
@@ -437,7 +964,12 @@
         "skill": "deny",
         "task": "deny",
         "todowrite": "deny",
-        "todoread": "deny"
+        "todoread": "deny",
+        "external_directory": {
+          "*": "deny",
+          "~/.local/share/opencode/tool-output/*": "allow",
+          "/tmp/opencode/*": "allow"
+        }
       },
       "prompt": "{file:./.agents/agents/sdlc-auditor.prompt.md}"
     },
@@ -448,9 +980,35 @@
       "permission": {
         "read": "allow",
         "edit": "deny",
-        "write": "allow",
+        "write": {
+          "*": "deny",
+          "kpis/data/raw/sessions/**": "allow"
+        },
         "patch": "deny",
-        "bash": "allow",
+        "bash": {
+          "*": "deny",
+          "git -C * log *": "allow",
+          "git -C * ls-files *": "allow",
+          "git -C * grep *": "allow",
+          "git -C * rev-parse *": "allow",
+          "jq *": "allow",
+          "printf *": "allow",
+          "sha256sum *": "allow",
+          "sha256sum": "allow",
+          "date -u *": "allow",
+          "node .claude/scripts/validate-data.mjs *": "allow",
+          "node .claude/scripts/toolchain/scan.mjs *": "allow",
+          "sops --decrypt *": "deny",
+          "sops -d *": "deny",
+          "rm -rf *": "deny",
+          "git push --force *": "deny",
+          "ssh *": "deny",
+          "curl *": "deny",
+          "git push *": "deny",
+          "*.config/maxwell/*": "deny",
+          "*.cache/maxwell/*": "deny",
+          "git push --force*": "deny"
+        },
         "webfetch": "deny",
         "glob": "allow",
         "grep": "allow",
@@ -458,7 +1016,12 @@
         "skill": "deny",
         "task": "deny",
         "todowrite": "deny",
-        "todoread": "deny"
+        "todoread": "deny",
+        "external_directory": {
+          "*": "deny",
+          "~/.local/share/opencode/tool-output/*": "allow",
+          "/tmp/opencode/*": "allow"
+        }
       },
       "prompt": "{file:./.agents/agents/secure-code-reviewer.prompt.md}"
     },
@@ -471,7 +1034,22 @@
         "edit": "deny",
         "write": "deny",
         "patch": "deny",
-        "bash": "allow",
+        "bash": {
+          "*": "deny",
+          "node .claude/scripts/soc/*": "allow",
+          "node .claude/scripts/validate-data.mjs *": "allow",
+          "node -e *": "allow",
+          "sops --decrypt *": "deny",
+          "sops -d *": "deny",
+          "rm -rf *": "deny",
+          "git push --force *": "deny",
+          "ssh *": "deny",
+          "curl *": "deny",
+          "git push *": "deny",
+          "*.config/maxwell/*": "deny",
+          "*.cache/maxwell/*": "deny",
+          "git push --force*": "deny"
+        },
         "webfetch": "deny",
         "glob": "allow",
         "grep": "allow",
@@ -479,7 +1057,12 @@
         "skill": "deny",
         "task": "deny",
         "todowrite": "deny",
-        "todoread": "deny"
+        "todoread": "deny",
+        "external_directory": {
+          "*": "deny",
+          "~/.local/share/opencode/tool-output/*": "allow",
+          "/tmp/opencode/*": "allow"
+        }
       },
       "prompt": "{file:./.agents/agents/soc-ledger-keeper.prompt.md}"
     },
@@ -492,7 +1075,24 @@
         "edit": "allow",
         "write": "allow",
         "patch": "allow",
-        "bash": "allow",
+        "bash": {
+          "*": "deny",
+          "npm run validate*": "allow",
+          "npm run sync:agents": "allow",
+          "node .claude/scripts/validate-*.mjs *": "allow",
+          "node -e *": "allow",
+          "date -u*": "allow",
+          "sops --decrypt *": "deny",
+          "sops -d *": "deny",
+          "rm -rf *": "deny",
+          "git push --force *": "deny",
+          "ssh *": "deny",
+          "curl *": "deny",
+          "git push *": "deny",
+          "*.config/maxwell/*": "deny",
+          "*.cache/maxwell/*": "deny",
+          "git push --force*": "deny"
+        },
         "webfetch": "deny",
         "glob": "allow",
         "grep": "allow",
@@ -500,7 +1100,12 @@
         "skill": "deny",
         "task": "deny",
         "todowrite": "deny",
-        "todoread": "deny"
+        "todoread": "deny",
+        "external_directory": {
+          "*": "deny",
+          "~/.local/share/opencode/tool-output/*": "allow",
+          "/tmp/opencode/*": "allow"
+        }
       },
       "prompt": "{file:./.agents/agents/validator.prompt.md}"
     },
@@ -512,7 +1117,22 @@
         "edit": "allow",
         "write": "allow",
         "patch": "allow",
-        "bash": "allow",
+        "bash": {
+          "*": "deny",
+          "node .claude/scripts/cos/search.mjs *": "allow",
+          "date -u *": "allow",
+          "node .claude/scripts/validate-data.mjs *": "allow",
+          "sops --decrypt *": "deny",
+          "sops -d *": "deny",
+          "rm -rf *": "deny",
+          "git push --force *": "deny",
+          "ssh *": "deny",
+          "curl *": "deny",
+          "git push *": "deny",
+          "*.config/maxwell/*": "deny",
+          "*.cache/maxwell/*": "deny",
+          "git push --force*": "deny"
+        },
         "webfetch": "allow",
         "glob": "allow",
         "grep": "allow",
@@ -520,7 +1140,12 @@
         "skill": "deny",
         "task": "deny",
         "todowrite": "deny",
-        "todoread": "deny"
+        "todoread": "deny",
+        "external_directory": {
+          "*": "deny",
+          "~/.local/share/opencode/tool-output/*": "allow",
+          "/tmp/opencode/*": "allow"
+        }
       },
       "prompt": "{file:./.agents/agents/vendor-analyst.prompt.md}"
     }

@@ -32,8 +32,16 @@ function toOpenCodeModel(model) {
 }
 
 // Claude tool allow-list -> OpenCode permission map. Anything not listed in `tools` is denied.
+// OpenCode 1.18 flattens each permission object in key order, applies the LAST matching rule (global rules first,
+// then the agent's) and `run --auto` approves whatever is left at "ask". A plain `bash: 'allow'` on an agent would
+// therefore override every global deny, so specifiers become ordered maps: deny everything, allow the agent's own
+// patterns, then re-apply the global denies.
 const OC_TOOLS = ['read', 'edit', 'write', 'patch', 'bash', 'webfetch', 'glob', 'grep', 'list', 'skill', 'task', 'todowrite', 'todoread'];
 const CLAUDE_TO_OC = { Read: ['read'], Edit: ['edit', 'patch'], MultiEdit: ['edit', 'patch'], Write: ['write'], Bash: ['bash'], WebFetch: ['webfetch'], WebSearch: ['webfetch'], Glob: ['glob', 'list'], Grep: ['grep'], Agent: ['task'], Skill: ['skill'], TodoWrite: ['todowrite', 'todoread'] };
+// Tools whose Claude specifier is a pattern OpenCode can match (a command or a workspace path).
+const OC_PATTERN_TOOLS = new Set(['bash', 'edit', 'write', 'patch']);
+// OpenCode's own scratch space outside the workspace (truncated tool output, snapshots); everything else is denied.
+const OC_EXTERNAL_ALLOW = ['~/.local/share/opencode/tool-output/*', '/tmp/opencode/*'];
 // Claude Code accepts tools as a YAML list or a comma/space separated string; specifiers such as
 // 'Bash(kubectl get *)' contain spaces, so a string is split only at parenthesis depth 0.
 function toolTokens(tools) {
@@ -50,27 +58,71 @@ function toolTokens(tools) {
   if (cur) out.push(cur);
   return out;
 }
-function toPermission(tools, disallowed) {
-  const perm = {};
+const specOf = (token) => {
+  const m = /^([A-Za-z]+)\((.*)\)$/s.exec(token);
+  return m ? { tool: m[1], spec: m[2] } : { tool: token, spec: null };
+};
+// Ordered rule map: deny everything, allow `allow`, then deny `deny` (a pattern in both stays denied).
+const ruleMap = (allow, deny) => Object.fromEntries([['*', 'deny'], ...allow.filter((p) => p !== '*' && !deny.includes(p)).map((p) => [p, 'allow']), ...deny.map((p) => [p, 'deny'])]);
+
+// policy: { bashAllow, bashDeny } command patterns from .claude/settings.json and opencode.json (see globalPolicy).
+function toPermission(tools, disallowed, policy = { bashAllow: [], bashDeny: [] }) {
   const allowed = toolTokens(tools);
-  if (allowed.length) {
-    for (const t of OC_TOOLS) perm[t] = 'deny';
-    for (const t of allowed) for (const oc of CLAUDE_TO_OC[t.split('(')[0]] || []) perm[oc] = 'allow';
+  const denied = toolTokens(disallowed);
+  if (!allowed.length && !denied.length) return undefined;
+  const grants = new Map(); // OpenCode tool -> 'allow' | allowed patterns
+  // Several Claude tools share one OpenCode tool (WebSearch and WebFetch are both webfetch), so disallowing one
+  // denies the OpenCode tool only when no other allowed Claude tool still needs it.
+  const deniedTools = new Set(denied.map(specOf).filter((s) => s.spec === null).map((s) => s.tool));
+  for (const { tool, spec } of allowed.map(specOf).filter((s) => !deniedTools.has(s.tool))) {
+    for (const oc of CLAUDE_TO_OC[tool] || []) {
+      const current = grants.get(oc);
+      if (oc === 'bash') grants.set(oc, [...(current || []), ...(spec === null ? policy.bashAllow : [spec])]);
+      else if (spec === null || current === 'allow' || !OC_PATTERN_TOOLS.has(oc)) grants.set(oc, 'allow');
+      else grants.set(oc, [...(current || []), spec]);
+    }
   }
-  for (const t of toolTokens(disallowed)) for (const oc of CLAUDE_TO_OC[t.split('(')[0]] || []) perm[oc] = 'deny';
-  return Object.keys(perm).length ? perm : undefined;
+  const perm = {};
+  if (allowed.length) for (const t of OC_TOOLS) perm[t] = 'deny';
+  const narrowed = new Map(); // OpenCode tool -> denied patterns from disallowedTools specifiers
+  for (const { tool, spec } of denied.map(specOf)) {
+    for (const oc of CLAUDE_TO_OC[tool] || []) {
+      if (spec !== null) {
+        if (grants.has(oc)) narrowed.set(oc, [...(narrowed.get(oc) || []), spec]);
+        continue;
+      }
+      if (!grants.has(oc)) perm[oc] = 'deny';
+    }
+  }
+  for (const [oc, grant] of grants) {
+    const deny = [...(narrowed.get(oc) || []), ...(oc === 'bash' ? policy.bashDeny : [])];
+    if (grant !== 'allow') perm[oc] = ruleMap(grant, deny);
+    else perm[oc] = deny.length ? { '*': 'allow', ...Object.fromEntries(deny.map((p) => [p, 'deny'])) } : 'allow';
+  }
+  perm.external_directory = ruleMap(OC_EXTERNAL_ALLOW, []);
+  return perm;
+}
+
+// Command patterns every agent inherits: the project allow-list (for a bare Bash tool) and the denies. Claude "ask"
+// rules become denies because `opencode run --auto` would approve them unseen.
+function globalPolicy(opencode) {
+  const settings = existsSync('.claude/settings.json') ? JSON.parse(readFileSync('.claude/settings.json', 'utf8')).permissions || {} : {};
+  const bashSpecs = (list) => (list || []).map(specOf).filter((s) => s.tool === 'Bash' && s.spec !== null).map((s) => s.spec);
+  const ocBash = opencode.permission?.bash;
+  const ocDeny = ocBash && typeof ocBash === 'object' ? Object.keys(ocBash).filter((p) => ocBash[p] === 'deny') : [];
+  return { bashAllow: bashSpecs(settings.allow), bashDeny: [...new Set([...bashSpecs(settings.deny), ...bashSpecs(settings.ask), ...ocDeny])] };
 }
 
 const body = (content) => content.replace(/^\n+/, '').replace(/\n+$/, '') + '\n';
 
-export function convertAgent(src) {
+export function convertAgent(src, policy) {
   const { data, content } = matter(src);
   // mode all, not subagent: `opencode run --agent <name>` falls back to the default agent for a subagent-only agent
   // (OpenCode 1.18), which silently drops the agent's prompt and permissions.
   const fm = { description: data.description, mode: 'all' };
   const model = toOpenCodeModel(data.model);
   if (model) fm.model = model;
-  const permission = toPermission(data.tools, data.disallowedTools);
+  const permission = toPermission(data.tools, data.disallowedTools, policy);
   if (permission) fm.permission = permission;
   if (data['x-maxwell']) fm['x-maxwell'] = data['x-maxwell'];
   return { md: stringify(body(content), fm), prompt: body(content), config: { description: data.description, mode: 'all', ...(model ? { model } : {}), ...(permission ? { permission } : {}) } };
@@ -92,9 +144,11 @@ export function computeMirror() {
   const agentConfig = {};
   const commandConfig = {};
   const list = (dir, ext) => (existsSync(dir) ? readdirSync(dir).filter((f) => f.endsWith(ext)).sort() : []);
+  const current = existsSync('opencode.json') ? JSON.parse(readFileSync('opencode.json', 'utf8')) : { $schema: 'https://opencode.ai/config.json' };
+  const policy = globalPolicy(current);
   for (const f of list('.claude/agents', '.md')) {
     const name = f.replace(/\.md$/, '');
-    const a = convertAgent(readFileSync(`.claude/agents/${f}`, 'utf8'));
+    const a = convertAgent(readFileSync(`.claude/agents/${f}`, 'utf8'), policy);
     files.set(`.agents/agents/${name}.md`, a.md);
     files.set(`.agents/agents/${name}.prompt.md`, a.prompt);
     agentConfig[name] = { ...a.config, prompt: `{file:./.agents/agents/${name}.prompt.md}` };
@@ -107,7 +161,6 @@ export function computeMirror() {
   }
   for (const f of list('.claude/workflows', '.js')) files.set(`.agents/workflows/${f}`, readFileSync(`.claude/workflows/${f}`, 'utf8'));
   const links = new Map([['.agents/scripts', '../.claude/scripts'], ['.agents/schemas', '../.claude/schemas']]);
-  const current = existsSync('opencode.json') ? JSON.parse(readFileSync('opencode.json', 'utf8')) : { $schema: 'https://opencode.ai/config.json' };
   const opencode = { ...current, agent: agentConfig, command: commandConfig };
   files.set('opencode.json', JSON.stringify(opencode, null, 2) + '\n');
   return { files, links };

@@ -15,7 +15,29 @@ permission:
   edit: deny
   write: deny
   patch: deny
-  bash: allow
+  bash:
+    '*': deny
+    git clone *: allow
+    git ls-remote *: allow
+    git -C applications/* fetch *: allow
+    git -C applications/* checkout --detach *: allow
+    git -C applications/* rev-parse *: allow
+    git -C applications/* rev-list *: allow
+    git -C applications/* log *: allow
+    git -C applications/* ls-files *: allow
+    git -C applications/* show *: allow
+    node .claude/scripts/creds/sops.mjs get *: allow
+    node .claude/scripts/validate-data.mjs *: allow
+    sops --decrypt *: deny
+    sops -d *: deny
+    rm -rf *: deny
+    git push --force *: deny
+    ssh *: deny
+    curl *: deny
+    git push *: deny
+    '*.config/maxwell/*': deny
+    '*.cache/maxwell/*': deny
+    git push --force*: deny
   webfetch: deny
   glob: allow
   grep: allow
@@ -24,6 +46,10 @@ permission:
   task: deny
   todowrite: deny
   todoread: deny
+  external_directory:
+    '*': deny
+    ~/.local/share/opencode/tool-output/*: allow
+    /tmp/opencode/*: allow
 x-maxwell:
   role: context
   workflows:

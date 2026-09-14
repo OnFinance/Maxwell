@@ -21,7 +21,7 @@ permission:
   write: deny
   patch: deny
   bash: deny
-  webfetch: deny
+  webfetch: allow
   glob: allow
   grep: allow
   list: allow
@@ -29,6 +29,10 @@ permission:
   task: deny
   todowrite: deny
   todoread: deny
+  external_directory:
+    '*': deny
+    ~/.local/share/opencode/tool-output/*: allow
+    /tmp/opencode/*: allow
 x-maxwell:
   role: reviewer
   writes: []

@@ -18,9 +18,33 @@ model: anthropic/claude-opus-5
 permission:
   read: allow
   edit: deny
-  write: allow
+  write:
+    '*': deny
+    kpis/data/raw/sessions/**: allow
   patch: deny
-  bash: allow
+  bash:
+    '*': deny
+    git -C * log *: allow
+    git -C * ls-files *: allow
+    git -C * grep *: allow
+    git -C * rev-parse *: allow
+    jq *: allow
+    printf *: allow
+    sha256sum *: allow
+    sha256sum: allow
+    date -u *: allow
+    node .claude/scripts/validate-data.mjs *: allow
+    node .claude/scripts/toolchain/scan.mjs *: allow
+    sops --decrypt *: deny
+    sops -d *: deny
+    rm -rf *: deny
+    git push --force *: deny
+    ssh *: deny
+    curl *: deny
+    git push *: deny
+    '*.config/maxwell/*': deny
+    '*.cache/maxwell/*': deny
+    git push --force*: deny
   webfetch: deny
   glob: allow
   grep: allow
@@ -29,6 +53,10 @@ permission:
   task: deny
   todowrite: deny
   todoread: deny
+  external_directory:
+    '*': deny
+    ~/.local/share/opencode/tool-output/*: allow
+    /tmp/opencode/*: allow
 x-maxwell:
   role: static-probe
   workflows:

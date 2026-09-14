@@ -21,7 +21,23 @@ permission:
   edit: allow
   write: allow
   patch: allow
-  bash: allow
+  bash:
+    '*': deny
+    npm run validate*: allow
+    'npm run sync:agents': allow
+    node .claude/scripts/validate-*.mjs *: allow
+    node -e *: allow
+    date -u*: allow
+    sops --decrypt *: deny
+    sops -d *: deny
+    rm -rf *: deny
+    git push --force *: deny
+    ssh *: deny
+    curl *: deny
+    git push *: deny
+    '*.config/maxwell/*': deny
+    '*.cache/maxwell/*': deny
+    git push --force*: deny
   webfetch: deny
   glob: allow
   grep: allow
@@ -30,6 +46,10 @@ permission:
   task: deny
   todowrite: deny
   todoread: deny
+  external_directory:
+    '*': deny
+    ~/.local/share/opencode/tool-output/*: allow
+    /tmp/opencode/*: allow
 x-maxwell:
   role: validator
   writes:

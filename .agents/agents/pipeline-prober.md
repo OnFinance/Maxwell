@@ -23,7 +23,27 @@ permission:
   edit: deny
   write: allow
   patch: deny
-  bash: allow
+  bash:
+    '*': deny
+    node .claude/scripts/creds/sops.mjs get *: allow
+    node -e "import('./.claude/hooks/lib.mjs')*: allow
+    date -u *: allow
+    printf *: allow
+    sha256sum *: allow
+    jq *: allow
+    head *: allow
+    grep *: allow
+    node .claude/scripts/sandbox/exec.mjs *: allow
+    sops --decrypt *: deny
+    sops -d *: deny
+    rm -rf *: deny
+    git push --force *: deny
+    ssh *: deny
+    curl *: deny
+    git push *: deny
+    '*.config/maxwell/*': deny
+    '*.cache/maxwell/*': deny
+    git push --force*: deny
   webfetch: deny
   glob: allow
   grep: allow
@@ -32,6 +52,10 @@ permission:
   task: deny
   todowrite: deny
   todoread: deny
+  external_directory:
+    '*': deny
+    ~/.local/share/opencode/tool-output/*: allow
+    /tmp/opencode/*: allow
 x-maxwell:
   role: static-probe
   workflows:
