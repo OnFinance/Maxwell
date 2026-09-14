@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_3",
+  "initiativeId": "init_01M2GWJSJ3JACXRBXFT116SPFH",
+  "companyId": "example-co",
+  "seq": 3,
+  "title": "Mask and restrict ExportTool output files",
+  "description": "In src/tools/mongodb/read/export.ts:68-98, wrap the find/aggregate cursor in a Transform stream that applies maskDocuments (task 2) before ExportsManager.createJSONExport (src/common/exportsManager.ts:157) writes the file. In createJSONExport, create export files with mode 0600 inside exportsPath. For namespaces classified pii or financial, stop returning the plain filesystem path from the isServerRunningLocally() branch (export.ts:131-133) and serve the data only through the resource URI. Lower the exportTimeoutMs default for classified exports so files are purged promptly; the userConfig override only allows lowering it. Keep the change in the same PR series as task 2 and do not change the find/aggregate argument schema.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "An export of a seeded classified collection in dev produces a JSON file whose masked fields hold redacted values (checked by reading the file through the returned resource URI)",
+    "The export file created under exportsPath has permissions 0600 (stat -c %a <file> prints 600)",
+    "For a classified namespace on stdio transport, the tool response contains a resource_link and no text item with the local exportPath",
+    "A probe-schemas re-run no longer reports SCH-API-03 at src/tools/mongodb/read/export.ts"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-schemas",
+    "description": "Re-run probe-schemas on mcp-gateway/mongodb-mcp-server at the merged commit. Expected result: no SCH-API-03 fail result for export.ts, and fingerprint 1811d886... is absent from the SARIF export."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "ExportTool streams the unfiltered cursor to a world-readable local JSON file and exposes its path, with no masking and only best-effort TTL cleanup."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 12,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-18T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_1", "task_2" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

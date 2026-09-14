@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_4",
+  "initiativeId": "init_01M2GWQEVKZM0584YS6JR7F6JA",
+  "companyId": "example-co",
+  "seq": 4,
+  "title": "Enforce code-owner review in branch protection and set codeownersEnforced in the SDLC policy",
+  "description": "Turn on 'Require review from Code Owners' (required_pull_request_reviews.require_code_owner_reviews true) in the branch protection rule or ruleset for OnFinance/mongodb-mcp-server main and OnFinance/onfinance_db_model_master master. Keep the existing required approvals at 1 or more, and keep blocking self-approval. Also turn on 'Include administrators' so the CODEOWNERS file cannot be bypassed. Then change company-profile/example-co/sdlc/policy.json so codeReview.codeownersEnforced is true, as a human-reviewed edit with provenance harness human; the policy owner role is cto. Constraint: switch enforcement on only after tasks 2 and 3 have merged and the task 1 teams have at least two members each, so no open PR is stranded. Tell the engineering teams before switching; no deployment window applies.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "`gh api repos/OnFinance/mongodb-mcp-server/branches/main/protection --jq .required_pull_request_reviews.require_code_owner_reviews` returns true.",
+    "`gh api repos/OnFinance/onfinance_db_model_master/branches/master/protection --jq .required_pull_request_reviews.require_code_owner_reviews` returns true.",
+    "`node -e \"console.log(require('./company-profile/example-co/sdlc/policy.json').codeReview.codeownersEnforced)\"` prints true, and `node .claude/scripts/validate-data.mjs company-profile/example-co/sdlc/policy.json` exits 0."
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-sdlc",
+    "description": "Re-run probe-sdlc for example-co. Expected: the code-review check reads policy.json codeReview.codeownersEnforced true, finds code-owner review required on both default branches, and fingerprint 483d900fc78892034ce3461af56d9a9c81fe97b2438bbdc85a5fca7cad8c583c is not produced."
+  },
+  "rootCause": {
+    "category": "process-gap",
+    "description": "The SDLC policy requires one approver but never required that approver to be the accountable owner. Branch protection was set up to match that policy, so even a correct CODEOWNERS file would only be advisory."
+  },
+  "targets": [
+    {
+      "type": "company"
+    }
+  ],
+  "effortEstimateHours": 3,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-11-16T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_2",
+    "task_3"
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

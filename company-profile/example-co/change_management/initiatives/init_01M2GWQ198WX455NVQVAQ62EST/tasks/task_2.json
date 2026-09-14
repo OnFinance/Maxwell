@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_2",
+  "initiativeId": "init_01M2GWQ198WX455NVQVAQ62EST",
+  "companyId": "example-co",
+  "seq": 2,
+  "title": "Build mongodb-mcp-server from the lockfile at a required exact VERSION",
+  "description": "In deploy/aws/Dockerfile, remove `RUN npm install -g mongodb-mcp-server@latest` (line 9) and replace `ARG VERSION=latest` (line 3) with `ARG VERSION` (no default), followed by a guard `RUN test -n \"$VERSION\" && [ \"$VERSION\" != \"latest\" ]` that fails the build when the argument is missing or floating. Install the server in a builder stage from the repository source at the tag matching VERSION (package.json is currently 1.11.0). Copy package.json and pnpm-lock.yaml, enable corepack for pnpm@10.33.2 (package.json packageManager), run `pnpm install --frozen-lockfile`, then `pnpm run build`. Copy only the built output and production dependencies into the runtime stage based on the task 1 digest. This satisfies sdlc/policy.json dependencyPolicy.lockfilesRequired = true and keeps downloads on allowedRegistries (registry.npmjs.org). Keep USER mcp, the ENV block, EXPOSE 8000 and the ENTRYPOINT unchanged (the runtime stage must put the built binary on the same PATH the ENTRYPOINT invokes, or update the ENTRYPOINT to the built entry script, so `docker run ... --version` still resolves). The VERSION guard must run in the builder stage before any COPY that depends on it, so a missing VERSION fails the build regardless of build context. The LABEL version=${VERSION} now reflects the code that is actually installed.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "`grep -n '@latest\\|VERSION=latest' deploy/aws/Dockerfile` returns no matches",
+    "`docker build --platform linux/arm64 -f deploy/aws/Dockerfile .` without `--build-arg VERSION` exits non-zero at the VERSION guard",
+    "`docker build --platform linux/arm64 --build-arg VERSION=1.11.0 -t mcp-test -f deploy/aws/Dockerfile .` succeeds, and `docker run --rm mcp-test --version` prints 1.11.0",
+    "The build log shows `pnpm install --frozen-lockfile` and no npm install of an unversioned package"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-iac",
+    "description": "Re-run probe-iac for mcp-gateway/mongodb-mcp-server at the merge commit and confirm IAC-DRIFT-01 at deploy/aws/Dockerfile (fingerprint 99dd6cfed47baeff1e52bfb0beac191df32ba69eb42096880ff655464d8fbe4d) is not produced. The expected result is a satisfied observation for sebi-cscrf-2024:PR.IP.S3 on this repo."
+  },
+  "rootCause": {
+    "category": "misconfiguration",
+    "description": "The AgentCore Dockerfile installs mongodb-mcp-server@latest from the registry with no lockfile. The VERSION build argument only stamps a LABEL, so installed code and transitive dependencies change between builds without review."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 5,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-17T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_1" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_1",
+  "initiativeId": "init_01M2GWJSJ3JACXRBXFT116SPFH",
+  "companyId": "example-co",
+  "seq": 1,
+  "title": "Approve a field-level masking map for pii and financial collections",
+  "description": "Produce the classification map the masking layer will enforce. It must list every database.collection in the mcp-gateway client-data and order stores (env qa and prod are classified [pii, financial]) and, for each, the fields to redact, partially mask (for example last 4 digits of PAN, account and phone numbers) or tokenise, plus any fields explicitly allowed through in clear. Commit it as src/common/config/maskingPolicy.json in applications/mcp-gateway/repos/mongodb-mcp-server, with a header naming the DPO approver and the date. Default for unlisted fields in a classified namespace: deny (redact). Masking under DPDP Rule 6(1)(a) must be obfuscation, masking or tokenisation, not just a reduced projection. No deployment in this task.",
+  "owner": {
+    "type": "human",
+    "id": "dpo@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "src/common/config/maskingPolicy.json exists on a branch of mongodb-mcp-server and parses as JSON (node -e \"require('./src/common/config/maskingPolicy.json')\" exits 0)",
+    "The map covers every collection in the client-data and order stores, each with a field rule and a default of redact for unlisted fields",
+    "The file header or the PR description records DPO approval (dpo@example-co.invalid) with a date on or before 2026-09-16"
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "The CISO reviews maskingPolicy.json and the DPO approval in the PR. Compare the collection list with the MongoDB collections listed for qa and prod (listCollections output or the data inventory). Expected result: no pii/financial collection is missing and every entry has an explicit rule."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "No field-level data classification existed for the MongoDB namespaces the MCP gateway exposes, so the tools had nothing to mask against."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 6,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-16T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

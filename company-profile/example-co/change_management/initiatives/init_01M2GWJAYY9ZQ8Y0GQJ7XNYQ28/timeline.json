@@ -1,0 +1,112 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.timeline",
+  "initiativeId": "init_01M2GWJAYY9ZQ8Y0GQJ7XNYQ28",
+  "companyId": "example-co",
+  "events": [
+    {
+      "eventId": "evt_1",
+      "at": "2026-09-14T21:12:30Z",
+      "type": "created",
+      "toStatus": "proposed",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+      "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+      "note": "Raised from findings fnd_01M2GH5AT8SW3Z6ZTZ73YN7QY6 and fnd_01M2GH5AZ5M0KCRXNTEY3DPH69: mcp-publish.yml downloads and runs the mcp-publisher release with no checksum or signature check under id-token: write, the AWS Dockerfile ignores its VERSION pin, and the secrets gate is git-secrets with AWS patterns only instead of the policy's blocking gitleaks gate (SEBI CSCRF PR.IP.S4). Intended approver: ciso@example-co.invalid.",
+      "refs": {
+        "findingId": "fnd_01M2GH5AT8SW3Z6ZTZ73YN7QY6"
+      }
+    },
+    {
+      "eventId": "evt_2",
+      "at": "2026-09-14T21:12:30Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+      "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+      "note": "task_1: pin and checksum-verify the mcp-publisher binary in mcp-publish.yml",
+      "refs": {
+        "taskId": "task_1"
+      }
+    },
+    {
+      "eventId": "evt_3",
+      "at": "2026-09-14T21:12:30Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+      "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+      "note": "task_2: make deploy/aws/Dockerfile install the version named by its VERSION build argument",
+      "refs": {
+        "taskId": "task_2"
+      }
+    },
+    {
+      "eventId": "evt_4",
+      "at": "2026-09-14T21:12:30Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+      "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+      "note": "task_3: replace the git-secrets job in code-health.yml with a pinned gitleaks 8.30.1 scan",
+      "refs": {
+        "taskId": "task_3"
+      }
+    },
+    {
+      "eventId": "evt_5",
+      "at": "2026-09-14T21:12:30Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+      "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+      "note": "task_4: baseline gitleaks over full git history and rotate any live credential it finds",
+      "refs": {
+        "taskId": "task_4"
+      }
+    },
+    {
+      "eventId": "evt_6",
+      "at": "2026-09-14T21:12:30Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+      "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+      "note": "task_5: require the gitleaks job as a status check on the main branch ruleset",
+      "refs": {
+        "taskId": "task_5"
+      }
+    }
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

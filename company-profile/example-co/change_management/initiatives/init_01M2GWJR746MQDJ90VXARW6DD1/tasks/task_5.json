@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_5",
+  "initiativeId": "init_01M2GWJR746MQDJ90VXARW6DD1",
+  "companyId": "example-co",
+  "seq": 5,
+  "title": "Correct the unit-tests gate in sdlc/policy.json to name a runner per language",
+  "description": "Edit company-profile/example-co/sdlc/policy.json ciGates. Keep {gate: unit-tests, tool: vitest, blocking: true} for the TypeScript repos and add {gate: unit-tests, tool: pytest, blocking: true} for Python repos such as onfinance-db-model-master. If the sdlc-policy schema rejects a second unit-tests entry, keep one entry and record the Python runner as a soc observation instead of inventing a field. The ciGates item schema (.claude/schemas/v1/company/sdlc-policy.schema.json) allows only gate, tool, blocking and minSeverityToBlock, so the coverage floors cannot go into policy.json. Record them (the vitest thresholds from task 1, the pytest fail_under from task 3) as a soc observation against sebi-cscrf-2024:PR.IP.S6 with methods [manual] per maxwell-conventions section 6. Merge through a reviewed change with the sdlc policy owner (cto) as reviewer.",
+  "owner": {
+    "type": "human",
+    "id": "ciso@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "`node .claude/scripts/validate-data.mjs company-profile/example-co/sdlc/policy.json` exits 0 and ciGates contains a blocking unit-tests gate whose tool is pytest (or, if the schema forbids it, a soc observation exists recording why).",
+    "company-profile/example-co/soc/main.jsonl contains an observation for sebi-cscrf-2024:PR.IP.S6 recording the enforced coverage floors for mongodb-mcp-server and onfinance-db-model-master, with evidence pointing at vitest.config.ts and .coveragerc at their merge commits."
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "Reviewer opens the policy.json diff and the new soc observation line. Expected: validate-data is green, the unit-tests gate names a runner that applies to each repo language, and the observation's recorded coverage floors match the values in the merged vitest.config.ts and .coveragerc."
+  },
+  "rootCause": {
+    "category": "process-gap",
+    "description": "The SDLC policy states a single vitest unit-test gate for all repositories, which does not apply to the Python db-models repo and records no coverage expectation, so the claimed gate could not be checked against reality."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    },
+    {
+      "type": "repo",
+      "appId": "db-models",
+      "repoId": "onfinance-db-model-master"
+    }
+  ],
+  "effortEstimateHours": 2,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-10-28T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_1",
+    "task_4"
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.timeline",
+  "initiativeId": "init_01M2GWJSJ3JACXRBXFT116SPFH",
+  "companyId": "example-co",
+  "events": [
+    {
+      "eventId": "evt_1",
+      "at": "2026-09-14T21:12:30Z",
+      "type": "created",
+      "toStatus": "proposed",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+      "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+      "note": "Raised from findings fnd_01M2G2AGPX8KWSY1KXGYADK4TK, fnd_01M2G2AGR581507FMK0EADFKY6 and fnd_01M2G2AGSC977KASP37WQXYSQA: FindTool, AggregateTool and ExportTool return or write full unmasked pii/financial documents (SEBI CSCRF PR.DS.S4, DPDP Rule 6(1)(a)). No risk is linked. Refuter confirmed the mapping through the evidence and regulatory-mapping lenses in two passes, correcting the SLA basis from the patch-sla row to the 30-day defaults row (dueAt 2026-10-14T21:12:30Z). Intended approver: ciso@example-co.invalid.",
+      "refs": {
+        "findingId": "fnd_01M2G2AGPX8KWSY1KXGYADK4TK"
+      }
+    },
+    {
+      "eventId": "evt_2",
+      "at": "2026-09-14T21:12:30Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+      "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+      "note": "task_1: approve a field-level masking map for pii and financial collections",
+      "refs": {
+        "taskId": "task_1"
+      }
+    },
+    {
+      "eventId": "evt_3",
+      "at": "2026-09-14T21:12:30Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+      "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+      "note": "task_2: add a shared masking layer and apply it to FindTool and AggregateTool results",
+      "refs": {
+        "taskId": "task_2"
+      }
+    },
+    {
+      "eventId": "evt_4",
+      "at": "2026-09-14T21:12:30Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+      "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+      "note": "task_3: mask and restrict ExportTool output files",
+      "refs": {
+        "taskId": "task_3"
+      }
+    },
+    {
+      "eventId": "evt_5",
+      "at": "2026-09-14T21:12:30Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+      "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+      "note": "task_4: add regression tests that fail when find, aggregate or export return unmasked fields",
+      "refs": {
+        "taskId": "task_4"
+      }
+    },
+    {
+      "eventId": "evt_6",
+      "at": "2026-09-14T21:12:30Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+      "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+      "note": "task_5: roll out the masking release to qa and prod and confirm masked output",
+      "refs": {
+        "taskId": "task_5"
+      }
+    }
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

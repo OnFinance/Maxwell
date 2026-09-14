@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.timeline",
+  "initiativeId": "init_01M2GWK3BJ7Y4PPP919G8NZFRS",
+  "companyId": "example-co",
+  "events": [
+    {
+      "eventId": "evt_1",
+      "at": "2026-09-14T21:12:30Z",
+      "type": "created",
+      "toStatus": "proposed",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+      "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+      "note": "Raised from findings fnd_01M2GH5B2SNX0PD3EKVNVTPAG7 (static Docker Hub credentials in mongodb-mcp-server's publish job) and fnd_01M2GTZHA1AH7R8PAPGHNCWMJJ (db-models dev secretsBackend mismatch). Intended approver: ciso@example-co.invalid",
+      "refs": {
+        "findingId": "fnd_01M2GH5B2SNX0PD3EKVNVTPAG7"
+      }
+    },
+    {
+      "eventId": "evt_2",
+      "at": "2026-09-14T21:12:30Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+      "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+      "note": "task_1: provision a GitHub OIDC role and a vault-held, push-scoped Docker Hub token for mongodb-mcp-server",
+      "refs": {
+        "taskId": "task_1"
+      }
+    },
+    {
+      "eventId": "evt_3",
+      "at": "2026-09-14T21:12:30Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+      "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+      "note": "task_2: switch docker-publish.yml to an OIDC-federated login and remove the static Docker Hub secrets from its callers",
+      "refs": {
+        "taskId": "task_2"
+      }
+    },
+    {
+      "eventId": "evt_4",
+      "at": "2026-09-14T21:12:30Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+      "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+      "note": "task_3: revoke the legacy Docker Hub credential and delete its GitHub secrets",
+      "refs": {
+        "taskId": "task_3"
+      }
+    },
+    {
+      "eventId": "evt_5",
+      "at": "2026-09-14T21:12:30Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+      "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+      "note": "task_4: move db-models dev-tier credentials into AWS Secrets Manager and set dev.json secretsBackend to aws-secrets-manager",
+      "refs": {
+        "taskId": "task_4"
+      }
+    }
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

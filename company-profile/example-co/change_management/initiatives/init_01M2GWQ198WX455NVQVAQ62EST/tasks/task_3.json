@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_3",
+  "initiativeId": "init_01M2GWQ198WX455NVQVAQ62EST",
+  "companyId": "example-co",
+  "seq": 3,
+  "title": "Update deploy/aws/README.md to build a versioned image and deploy it by digest",
+  "description": "Rewrite the Build and Push section of deploy/aws/README.md so operators pass `--build-arg VERSION=<release>`, tag the image `mongodb-mcp-server:<release>` instead of `:latest`, and record the pushed digest from `docker push` output or `aws ecr describe-images`. Operators must point the AgentCore runtime image URI at `<account>.dkr.ecr.us-east-1.amazonaws.com/mongodb-mcp-server@sha256:<digest>`. Add a rollback note: before each runtime update, record the previous image digest so the runtime can be re-pointed. Use placeholders only; do not put account ids or credentials in the README.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "`grep -n ':latest' deploy/aws/README.md` returns no matches",
+    "The README build command includes `--build-arg VERSION=` and the runtime configuration step references an `@sha256:` image URI",
+    "The README contains a rollback step that records the previous image digest"
+  ],
+  "verificationMethod": {
+    "type": "code-review",
+    "description": "The reviewer checks the merged PR diff of deploy/aws/README.md. Expected: no `:latest` tag remains, the build passes --build-arg VERSION, the AgentCore runtime is configured by digest, a rollback step is present, and no secret or account-specific value is added."
+  },
+  "rootCause": {
+    "category": "misconfiguration",
+    "description": "The operator runbook tells people to build without a version argument and push and deploy the mutable :latest tag, which reintroduces unpinned images even after the Dockerfile is fixed."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 1.5,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-18T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_2" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

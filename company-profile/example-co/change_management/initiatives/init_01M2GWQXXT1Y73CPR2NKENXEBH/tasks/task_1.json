@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_1",
+  "initiativeId": "init_01M2GWQXXT1Y73CPR2NKENXEBH",
+  "companyId": "example-co",
+  "seq": 1,
+  "title": "Make Elicitation.requestConfirmation() fail closed when the client lacks elicitation support",
+  "description": "In applications/mcp-gateway/repos/mongodb-mcp-server/src/elicitation.ts, change requestConfirmation() (lines 30-33). When supportsElicitation() is false it must return false, not true, and update the JSDoc (\"True if the user confirms ... or the client does not support elicitation\") to match. When verifyConfirmed() in src/tools/tool.ts (lines 609-615) gets false for a tool in confirmationRequiredTools, the tool must not run. It must return an error telling the caller that the tool needs human confirmation and that the MCP client must declare the elicitation capability. Update tests/unit/elicitation.test.ts: the case at line 63, \"should return true when client does not support elicitation\", must now expect false. In tests/unit/toolBase.test.ts, add a test that a confirmationRequiredTools tool is not executed when the client has no elicitation capability. Do not change requestInput(), which already fails closed. Open the PR against main with at least one reviewer other than the author (releaseProcess.approvalsRequired 1); the CTO should review. Deploy nothing from this task; rollout is task 4.",
+  "owner": {
+    "type": "human",
+    "id": "ciso@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "src/elicitation.ts requestConfirmation() returns false when supportsElicitation() is false, confirmed in the merged diff and by `grep -n -A3 'if (!this.supportsElicitation())' src/elicitation.ts` showing no `return true` in the confirmation path",
+    "`pnpm run test:local` passes, including the updated tests/unit/elicitation.test.ts case now asserting false for a client without elicitation support",
+    "A new unit test in tests/unit/toolBase.test.ts shows that drop-collection (a confirmationRequiredTools entry) returns an error result and does not call the underlying MongoDB operation when the client capabilities omit elicitation",
+    "The PR is merged to main with an approving review from someone other than the author"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-agent-graph",
+    "description": "Re-run probe-agent-graph on mcp-gateway/mongodb-mcp-server at the merged commit. Expected: rule AGENT-ASI09-01 no longer yields a result for src/elicitation.ts (fingerprint f658ce80746ca24360bbbc6ea77d7913bf57efcbcb4882305d7036800cecb0f0), and the observation for sebi-cscrf-2024:PR.AA.S3 no longer cites the auto-approve path."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "The human-in-the-loop check was written to degrade gracefully: requestConfirmation() treats a client with no elicitation capability as consent. The control disappears for exactly the clients that cannot ask a human."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 6,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-16T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "change-manager"
+  }
+}

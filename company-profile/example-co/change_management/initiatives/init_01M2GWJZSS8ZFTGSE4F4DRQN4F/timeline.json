@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.timeline",
+  "initiativeId": "init_01M2GWJZSS8ZFTGSE4F4DRQN4F",
+  "companyId": "example-co",
+  "events": [
+    {
+      "eventId": "evt_1",
+      "at": "2026-09-14T21:12:30Z",
+      "type": "created",
+      "toStatus": "proposed",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+      "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+      "note": "Raised from findings fnd_01M2G2AGNMHKF9PCB4C85A3JQ3 and fnd_01M2GMN60SYB8DHVX3XN4J84G5: PII/SPDI fields in mongodb-mcp-server tool schemas and db-models models.py carry no classification metadata (SEBI CSCRF ID.AM.S5). Proposed as a normal change; intended approver is the CISO (ciso@example-co.invalid).",
+      "refs": {
+        "findingId": "fnd_01M2G2AGNMHKF9PCB4C85A3JQ3"
+      }
+    },
+    {
+      "eventId": "evt_2",
+      "at": "2026-09-14T21:12:30Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+      "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+      "note": "task_1: Approve the field-level classification map for db-models and the MongoDB MCP tool arguments",
+      "refs": {
+        "taskId": "task_1"
+      }
+    },
+    {
+      "eventId": "evt_3",
+      "at": "2026-09-14T21:12:30Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+      "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+      "note": "task_2: Add data_classification metadata to every PII/SPDI field in onfinance_db_model_master/models.py",
+      "refs": {
+        "taskId": "task_2"
+      }
+    },
+    {
+      "eventId": "evt_4",
+      "at": "2026-09-14T21:12:30Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+      "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+      "note": "task_3: Add x-data-classification metadata to the mongodb-mcp-server tool argument schemas",
+      "refs": {
+        "taskId": "task_3"
+      }
+    },
+    {
+      "eventId": "evt_5",
+      "at": "2026-09-14T21:12:30Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+      "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+      "note": "task_4: Add tests that fail when a sensitive field or tool argument loses its classification annotation",
+      "refs": {
+        "taskId": "task_4"
+      }
+    }
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

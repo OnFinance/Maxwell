@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.timeline",
+  "initiativeId": "init_01M2GWJF4XYSA816536HWERV4H",
+  "companyId": "example-co",
+  "events": [
+    {
+      "eventId": "evt_1",
+      "at": "2026-09-14T21:12:30Z",
+      "type": "created",
+      "toStatus": "proposed",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+      "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+      "note": "Raised from finding fnd_01M2FS4806WHXANC3Q9QXEAXGF: GitHub Enterprise Cloud's SOC 2 Type II report (2024-10-01 to 2025-09-30) expires 2026-09-30 with no newer report on file (SEBI CSCRF GV.SC.S4, RBI Outsourcing Directions 2025 para 79). Intended approver: ciso@example-co.invalid.",
+      "refs": {
+        "findingId": "fnd_01M2FS4806WHXANC3Q9QXEAXGF"
+      }
+    },
+    {
+      "eventId": "evt_2",
+      "at": "2026-09-14T21:12:30Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+      "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+      "note": "task_1: request GitHub Enterprise Cloud's current SOC 2 Type II report or a bridge letter",
+      "refs": {
+        "taskId": "task_1"
+      }
+    },
+    {
+      "eventId": "evt_3",
+      "at": "2026-09-14T21:12:30Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+      "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+      "note": "task_2: review the renewed GitHub SOC 2 report's scope, opinion, exceptions and customer-side controls",
+      "refs": {
+        "taskId": "task_2"
+      }
+    },
+    {
+      "eventId": "evt_4",
+      "at": "2026-09-14T21:12:30Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+      "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+      "note": "task_3: record the renewed assurance in vendors/github.json and refresh the GitHub vendor context",
+      "refs": {
+        "taskId": "task_3"
+      }
+    },
+    {
+      "eventId": "evt_5",
+      "at": "2026-09-14T21:12:30Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+      "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+      "note": "task_4: set up a 90-day renewal request for GitHub's assurance reports",
+      "refs": {
+        "taskId": "task_4"
+      }
+    }
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

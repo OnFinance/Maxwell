@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_3",
+  "initiativeId": "init_01M2GWJZSS8ZFTGSE4F4DRQN4F",
+  "companyId": "example-co",
+  "seq": 3,
+  "title": "Add x-data-classification metadata to the mongodb-mcp-server tool argument schemas",
+  "description": "In applications/mcp-gateway/repos/mongodb-mcp-server (pinned commit aaa72a04, branch main), create src/tools/mongodb/dataClassification.ts. It exports the approved labels and a helper, withClassification(schema, labels), that calls Zod 4 .meta({\"x-data-classification\": labels, \"x-dpdp-category\": \"personal-data\"}). Apply the helper to zEJSON() in src/tools/args.ts where it backs filter, projection, document and update arguments, to AnyAggregateStage and the vector-search stage schemas in src/tools/mongodb/mongodbSchemas.ts, and to the .passthrough() schemas in src/tools/mongodb/read/find.ts:22 and create/createIndex.ts:164, using the classification from the task 1 map. Keep validation behaviour unchanged, adding metadata only. Release in the releaseProcess order dev -> qa -> prod with 1 approval and a rollback plan. Before promoting to prod (exposure partner), run tools/list and one find call against qa and confirm existing MCP clients accept the schema.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "The tools/list response from a local or qa build shows x-data-classification on the filter, projection, document, update and pipeline arguments of every mongodb/* tool (checked with jq over the JSON output)",
+    "pnpm test (vitest unit-and-integration) passes on the PR branch, with no change to accepted or rejected argument shapes in the existing tool tests",
+    "A find call through the qa gateway succeeds after deployment, with an unchanged result shape"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-schemas",
+    "description": "Re-run probe-schemas for mcp-gateway/mongodb-mcp-server at the merged commit. Expected: no SCH-PII-01 fail result for src/tools/mongodb/mongodbSchemas.ts, so fingerprint 014e4817400eb27b724472fb10d87ee03186aeab06604ddda8581bfbd41b4b42 is absent from the SARIF export, and the ID.AM.S5 observation for the repo is satisfied."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "The upstream MCP server models tool arguments as opaque EJSON records with prose .describe() hints only; no metadata layer carries the pii/financial classification of the stores the gateway connects to, so masking and access policy cannot key off it."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 12,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-24T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_1"
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

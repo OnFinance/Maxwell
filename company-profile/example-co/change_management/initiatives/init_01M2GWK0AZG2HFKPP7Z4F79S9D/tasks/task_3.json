@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_3",
+  "initiativeId": "init_01M2GWK0AZG2HFKPP7Z4F79S9D",
+  "companyId": "example-co",
+  "seq": 3,
+  "title": "Add tests for the switch-connection secret annotation and redaction",
+  "description": "Extend tests/integration/tools/mongodb/connect/connect.test.ts, which already covers switch-connection, and add a unit test under tests/unit/tools. The tests must assert three things: (a) the tools/list inputSchema for switch-connection marks connectionString as secret; (b) after the tool is invoked, the session keychain holds the supplied URI; (c) the error text for a failing switch-connection call with a credential-bearing URI such as mongodb://user:placeholder@127.0.0.1:1 does not include the credential part. Use only placeholder credentials in fixtures, never a real secret.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "`pnpm test` exits 0, and the run lists the new switch-connection secret-annotation and redaction test cases as passed",
+    "Reverting only the change from task 1 or task 2 locally makes at least one of the new tests fail, which shows the tests guard the control"
+  ],
+  "verificationMethod": {
+    "type": "code-review",
+    "description": "A reviewer reads the new test cases and the CI run on the PR. Expected result: the three assertions (schema metadata, keychain registration, redacted error text) are present, all pass in CI, and the fixtures use placeholder credentials only."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "No test asserts secret handling for tool arguments, so the gap between connect/switch-connection and the config-level connectionString went undetected."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 3,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-18T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_1",
+    "task_2"
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

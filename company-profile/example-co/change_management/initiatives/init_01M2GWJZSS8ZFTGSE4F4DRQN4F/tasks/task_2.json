@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_2",
+  "initiativeId": "init_01M2GWJZSS8ZFTGSE4F4DRQN4F",
+  "companyId": "example-co",
+  "seq": 2,
+  "title": "Add data_classification metadata to every PII/SPDI field in onfinance_db_model_master/models.py",
+  "description": "In applications/db-models/repos/onfinance-db-model-master/onfinance_db_model_master/models.py (pinned commit 70b3633e), add a data_classification keyword argument to each field listed in the task 1 map, for example user_email = EmailField(data_classification=[\"confidential\", \"pii\"]) and zerodha_password = StringField(data_classification=[\"restricted\", \"spdi\", \"pii\"]). MongoEngine 0.24.1 stores unknown field kwargs as attributes and raises TypeError if a kwarg name clashes with an existing BaseField attribute, so keep the name data_classification and confirm it is not in dir(BaseField). Also add a module-level docstring comment pointing to docs/data-classification.md. Do not change field types, required/unique flags or collection names, because the change must not alter stored documents. Bump setup.py version to 1.0.1. The library is dev-only (env dev.json) and consumers upgrade by pin.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "python -c \"import onfinance_db_model_master.models as m; print(m.User.user_email.data_classification, m.Secrets.zerodha_password.data_classification)\" prints the labels from the approved map without error",
+    "Every pii/spdi/restricted column in metastore.json catalog db-models-mongodb has a data_classification attribute on the matching models.py field, and a script comparing the two reports zero gaps",
+    "git diff on models.py shows only added data_classification kwargs and comments, with no change to field types, required, unique or choices"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-schemas",
+    "description": "Re-run probe-schemas for db-models/onfinance-db-model-master at the merged commit. Expected: the SARIF export has no SCH-PII-06 fail result for onfinance_db_model_master/models.py, so fingerprint 3ad57737b286bdf74ce4f42acd9df6dd83c5fe8c3a94e01cc97f8dcb93b57f6e is absent, and the ID.AM.S5 observation for the repo is satisfied."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "models.py was written as plain MongoEngine declarations with no convention for marking sensitive fields, so the PII/SPDI classification in the metastore never reached the code that defines the collections."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "db-models",
+      "repoId": "onfinance-db-model-master"
+    }
+  ],
+  "effortEstimateHours": 6,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-24T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_1"
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_2",
+  "initiativeId": "init_01M2GWQJEHZ635MEEPXE7ATHXG",
+  "companyId": "example-co",
+  "seq": 2,
+  "title": "Confirm the required audit frequency and publish the FY 2026-27 audit calendar",
+  "description": "Determine whether example-co (SEBI mid-size RE; stock broker and depository participant) provides internet-based trading (IBT) or algorithmic trading. If it does, CSCRF Sec-4.4 Table 21 requires at least two cyber audits a year, and the value 1 declared in details.json auditCadence.cyberAuditPerYear is too low. Confirm the RBI NBFC middle-layer and CERT-In CCSAPG 13.1.2 minimums (at least one a year, plus an audit before and after every major change). Publish an audit calendar approved by the IT Committee. It must name the CERT-In empanelled auditor, the audit windows, 100 percent coverage of critical systems (at minimum mcp-gateway, which serves the order-routing critical function, and its MongoDB client-data store) and a documented 25 percent sample of non-critical systems (for example db-models). Then raise a human-reviewed commit to company-profile/example-co/details.json that corrects auditCadence.cyberAuditPerYear and vaptPerYear if needed and sets lastCyberAuditAt and lastVaptAt from the Task 1 evidence.",
+  "owner": {
+    "type": "human",
+    "id": "ciso@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "A written determination exists stating whether example-co offers IBT or algorithmic trading and the resulting minimum number of cyber audits per year, citing CSCRF Sec-4.4 Table 21.",
+    "An audit calendar approved by the IT Committee (minutes reference recorded) lists each audit window, the auditor and the in-scope systems, with mcp-gateway marked as a critical system and 100 percent critical coverage.",
+    "`node .claude/scripts/validate-data.mjs company-profile/example-co/details.json` exits 0 after the reviewed commit, and auditCadence.cyberAuditPerYear equals the determined minimum, with lastCyberAuditAt and lastVaptAt set or intentionally absent."
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "The reviewer compares the calendar's in-scope system list with applications/ and with sdlc/metastore.json, checks the IT Committee minutes reference, and confirms that details.json auditCadence matches the written frequency determination. Expected result: all critical systems are covered, the frequency meets or exceeds CSCRF Table 21, and validate-data passes."
+  },
+  "rootCause": {
+    "category": "process-gap",
+    "description": "The audit frequency in details.json was declared without checking the IBT/algo trigger in CSCRF Table 21, and no calendar ties the declared cadence to named audit windows and scope."
+  },
+  "targets": [
+    {
+      "type": "company"
+    }
+  ],
+  "effortEstimateHours": 10,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-10-12T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_1"
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_1",
+  "initiativeId": "init_01M2GWJMMMHGYZP7M7H6PQJ0FT",
+  "companyId": "example-co",
+  "seq": 1,
+  "title": "Add a keyless cosign sign step to docker-publish.yml",
+  "description": "In applications/mcp-gateway/repos/mongodb-mcp-server/.github/workflows/docker-publish.yml, job build-push: (a) add id-token: write next to contents: read under permissions; (b) add id: build to the 'Build and push image to dockerhub registry' step (docker/build-push-action) so its digest output can be used; (c) after the push, add sigstore/cosign-installer pinned by full commit SHA, then a step that runs cosign sign --yes on every pushed reference as ${DOCKERHUB_REPOSITORY}@${{ steps.build.outputs.digest }} (sign the digest, never a tag), using GitHub OIDC keyless signing (no COSIGN_PRIVATE_KEY secret). In both callers, docker.yml (job docker-push) and publish.yml (job docker-push, currently contents: read only), add id-token: write, because a reusable workflow cannot get more permissions than its caller grants. Constraints: keep every third-party action pinned by full SHA, as the existing steps are; add no new long-lived secrets; test on a prerelease release_channel run before merging to main. No deployment window or change freeze applies (none in sdlc/policy.json or the env files).",
+  "owner": {
+    "type": "human",
+    "id": "ciso@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "grep -n 'cosign sign' .github/workflows/docker-publish.yml returns a step that signs the image by @sha256 digest (steps.build.outputs.digest), not by tag",
+    "docker-publish.yml job build-push, and the docker-push jobs in docker.yml and publish.yml, each declare id-token: write, and sigstore/cosign-installer is pinned to a 40-character commit SHA",
+    "A prerelease run of docker.yml completes, and cosign verify <repo>@<digest> --certificate-identity-regexp '^https://github.com/OnFinance/mongodb-mcp-server/.github/workflows/docker-publish.yml@' --certificate-oidc-issuer https://token.actions.githubusercontent.com exits 0"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-cicd-env",
+    "description": "Re-run probe-cicd-env on mcp-gateway/mongodb-mcp-server at the merged commit. Expected: rule CICD-SIGN-01 no longer yields a result at .github/workflows/docker-publish.yml, and the observation for sebi-cscrf-2024:PR.IP.S2 records a signing step in the pipeline."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "The reusable docker-publish.yml was written with buildx provenance/SBOM only. No signing stage was ever added, and the docker-push jobs in the callers grant no id-token permission, so keyless signing could not run even if a step existed."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 4,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-21T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

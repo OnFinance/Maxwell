@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_2",
+  "initiativeId": "init_01M2GWJK9ABSB5MBW1DHB4HNR3",
+  "companyId": "example-co",
+  "seq": 2,
+  "title": "Add a blocking check-iac job to .github/workflows/check.yml",
+  "description": "Add a job named check-iac to .github/workflows/check.yml in mongodb-mcp-server. It runs on the same triggers as the other jobs (push to main, pull_request). Model its steps on the existing jobs: GitHubSecurityLab/actions-permissions/monitor@v1, then actions/checkout@v6 with persist-credentials: false. The job then runs 'az bicep build --file deploy/azure/bicep/main.bicep --outfile <tmp>/main.json' and checkov 3.3.17, installed from a hash-pinned requirement (pip install --require-hashes) matching the version pinned in the scanner toolchain, with '-d deploy/azure/bicep --framework bicep arm --output sarif'. Do not use --soft-fail, so any failed check fails the job. Upload the SARIF with github/codeql-action/upload-sarif under 'if: always()'. Keep the workflow-level 'permissions: {}' and grant only contents: read and security-events: write at job level. No Azure login or secrets are needed. Follow the policy's single-approval pull request review (approvalsRequired 1); no deployment window applies to a CI-only change.",
+  "owner": {
+    "type": "human",
+    "id": "ciso@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "'.github/workflows/check.yml' on main contains a check-iac job that runs checkov 3.3.17 against deploy/azure/bicep without --soft-fail, and the job-level permissions are limited to contents: read and security-events: write.",
+    "The latest Checks workflow run on main shows check-iac completed successfully, and its SARIF appears under the repository's code scanning alerts with tool name checkov.",
+    "A test pull request that adds a known-failing setting to main.bicep (for example ingress allowInsecure: true) makes check-iac fail, and the pull request is then closed unmerged."
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-cicd-env",
+    "description": "Re-run probe-cicd-env for mcp-gateway/mongodb-mcp-server. Expected result: rule CICD-GATE-05 no longer produces fingerprint 4fc37e101fe1972afc382d0d5fc0e166ac85c932d694ea6a54aae9fc5b52744b, and the PR.IP.S6 observation for the repo shows an IaC scan step present."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "check.yml has only style, generate and dependency jobs. No workflow in the repo runs checkov, tfsec, trivy, kics or a Bicep linter, so template changes reach main unscanned."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 4,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-24T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_1" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_5",
+  "initiativeId": "init_01M2GWJSJ3JACXRBXFT116SPFH",
+  "companyId": "example-co",
+  "seq": 5,
+  "title": "Roll out the masking release to qa and prod and confirm masked output",
+  "description": "After CISO approval of the initiative, build the image from the merged commit and deploy in releaseProcess.environmentsOrder dev -> qa -> prod (EKS ap-south-1), with one approval per releaseProcess.approvalsRequired. mcp-gateway supports the order-routing critical function (30-minute outage tolerance), so deploy prod outside NSE/BSE market hours (09:15-15:30 IST) with the rollback plan ready: revert the PR and redeploy the previous image tag. In qa, call find, aggregate and export on one classified collection from a test MCP client and keep the redacted responses (values masked, no clear-text PII) as evidence. Then update applications/mcp-gateway/repos/mongodb-mcp-server.json pinnedCommit through the normal refresh-ctx process.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "The qa and prod deployments run the image built from the merged masking commit (the deployment image tag or digest matches the release build)",
+    "In qa, find, aggregate and export responses for a classified collection show masked values for every redact field in maskingPolicy.json, with screenshots or response captures (PII removed) attached to the task evidence",
+    "The prod deployment finished outside 09:15-15:30 IST with no order-routing outage above 30 minutes, as shown in the deployment log"
+  ],
+  "verificationMethod": {
+    "type": "manual-test",
+    "description": "From a test MCP client connected to qa, and then prod read-only, run find (limit 5), aggregate ([{$limit:5}]) and export on one classified collection. Expected result: every field marked redact in maskingPolicy.json comes back masked, partial fields show only the allowed suffix, and export returns a resource_link with no local path."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "The running qa and prod gateways serve the unmasked build, so the code fix closes the gap only once it is deployed and checked in those environments."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 6,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-21T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_4" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

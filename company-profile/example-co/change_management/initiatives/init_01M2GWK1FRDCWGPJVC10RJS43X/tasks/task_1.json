@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_1",
+  "initiativeId": "init_01M2GWK1FRDCWGPJVC10RJS43X",
+  "companyId": "example-co",
+  "seq": 1,
+  "title": "Pin the root Dockerfile base image to the node:24-alpine index digest",
+  "description": "In applications/mcp-gateway/repos/mongodb-mcp-server/Dockerfile line 1, replace `FROM node:24-alpine` with `FROM docker.io/library/node:24-alpine@sha256:<index-digest>`. Get the multi-arch OCI image index digest (not a per-platform manifest digest) from `docker buildx imagetools inspect docker.io/library/node:24-alpine`, and record the digest and the date it was resolved in the PR description. Keep the tag next to the digest so Dependabot and reviewers can read it. Build both platforms that .github/workflows/docker-publish.yml publishes (linux/amd64, linux/arm64) on the PR before merge. Ship through the normal release path (1 approval, dev -> qa -> prod per sdlc/policy.json releaseProcess). The policy defines no deploymentWindows and mcp-gateway prod has no changeFreeze. Merge before the finding SLA of 2026-09-21T13:48:42Z.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "`grep -nE '^FROM ' Dockerfile` in the mongodb-mcp-server checkout prints exactly one line matching `FROM docker.io/library/node:24-alpine@sha256:[0-9a-f]{64}`",
+    "`docker buildx imagetools inspect docker.io/library/node:24-alpine@sha256:<pinned digest>` lists both linux/amd64 and linux/arm64 manifests",
+    "The PR's CI build of Dockerfile for linux/amd64,linux/arm64 succeeds, and the PR description records the digest and when it was resolved"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-cicd-env",
+    "description": "Re-run /probe-cicd-env example-co on mcp-gateway/mongodb-mcp-server at the merged commit. Expected: no CICD-PIN-02 result for location Dockerfile, so finding fingerprint 6c113f0c1e613589795d4adeac167a6eb56c9e169f67c99337b4455f30ff5974 is not reproduced, and the observation for sebi-cscrf-2024:PR.IP.S1 on this repo has no unpinned base image."
+  },
+  "rootCause": {
+    "category": "misconfiguration",
+    "description": "The root Dockerfile references the base image only by the mutable tag node:24-alpine. Each docker-publish.yml build therefore pulls whatever the tag points to at that moment, and no vetted digest is recorded."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 2,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-18T13:00:00Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

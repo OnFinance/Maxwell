@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_1",
+  "initiativeId": "init_01M2GWJNM9B7WH4DA9BEK6AQHQ",
+  "companyId": "example-co",
+  "seq": 1,
+  "title": "Add size, depth, key-count and operator limits to zEJSON() in src/tools/args.ts",
+  "description": "In applications/mcp-gateway/repos/mongodb-mcp-server/src/tools/args.ts (lines 86-90), replace the open z.object({}).loose().transform(toEJSON) with a schema that rejects a payload before toEJSON runs when any of these holds: its JSON-serialised size is above an exported MAX_EJSON_BYTES (for example 1 MiB, and never above the configured maxBytesPerQuery); it nests deeper than an exported MAX_EJSON_DEPTH (for example 20); any object has more keys than MAX_EJSON_KEYS (for example 200); or it contains the server-side JavaScript operators $where, $function or $accumulator at any depth. EJSON type keys ($oid, $date, $numberLong and so on) and ordinary query operators ($gt, $in, ...) must still work. Keep the advertised ZodRecord public type unchanged so the MCP tool listing still renders. Add allowed and rejected cases to tests/unit/args.test.ts. Work on a feature branch off main; no deployment happens in this task.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "`pnpm vitest run --project unit-and-integration tests/unit/args.test.ts` passes, and the new tests show that a 2 MiB object, an object nested 21 levels deep, an object with 201 keys, and a filter containing {\"$where\": \"...\"} each fail zEJSON().safeParse with success === false",
+    "The same test file shows that {\"_id\": {\"$oid\": \"<24 hex>\"}, \"ts\": {\"$gt\": {\"$date\": \"2026-01-01T00:00:00Z\"}}} still parses and converts to an ObjectId and a Date",
+    "`git grep -n \"z.object({}).loose()\" src/tools/args.ts` returns no match"
+  ],
+  "verificationMethod": {
+    "type": "code-review",
+    "description": "The reviewer checks the PR diff for src/tools/args.ts and tests/unit/args.test.ts. Each limit must be an exported constant, checked before toEJSON runs, and covered by at least one rejecting test and one accepting test. The reviewer runs `pnpm vitest run --project unit-and-integration tests/unit/args.test.ts`; expected result: all tests pass with no skipped cases."
+  },
+  "rootCause": {
+    "category": "insecure-code",
+    "description": "The shared zEJSON() helper was written as a pass-through so the public API would advertise { [key: string]: unknown }, and it never got a validation stage. Every tool that reuses it gets no input limits."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 6,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-22T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

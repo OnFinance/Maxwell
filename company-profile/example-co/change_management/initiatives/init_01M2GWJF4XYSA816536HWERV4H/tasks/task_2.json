@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_2",
+  "initiativeId": "init_01M2GWJF4XYSA816536HWERV4H",
+  "companyId": "example-co",
+  "seq": 2,
+  "title": "Review the renewed GitHub SOC 2 report's scope, opinion, exceptions and customer-side controls",
+  "description": "Read the report obtained in task 1 and write a review record against SEBI CSCRF GV.SC.S4 and RBI Outsourcing Directions 2025 para 79. The record covers: (a) the auditor's opinion is unqualified; (b) the systems in scope cover source hosting, GitHub Actions and GitHub Packages; (c) every exception in the testing results has a stated impact on example-co; (d) each customer-side control (CUEC) is mapped to an example-co control owner, for example SSO/MFA enforcement, branch protection and Actions secrets handling, with the CTO's input on the engineering items; (e) the subprocessor carve-outs match the subcontractors listed in vendors/github.json. For a bridge letter, record that it is interim and set a follow-up date for the full report.",
+  "owner": {
+    "type": "human",
+    "id": "compliance@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "A signed review record in the GRC store states the opinion type, report period, in-scope services and the exception count",
+    "Every CUEC listed in the report appears in the review record with a named example-co owner and a status (in place or gap)",
+    "Any exception or CUEC marked as a gap has a follow-up item recorded with an owner"
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "The CISO checks the review record against the report: the opinion, period and exception count match the report pages; the number of CUEC rows equals the number of CUECs in the report; and every row names an owner from details.json contacts or engineering. Expected result: no unreviewed exception or CUEC."
+  },
+  "rootCause": {
+    "category": "vendor-gap",
+    "description": "Relying on a provider's SOC 2 report without reviewing its exceptions and customer-side controls leaves the para 79 assurance duty unmet. The expiring entry records exceptionsCount 0 but no CUEC review."
+  },
+  "targets": [
+    {
+      "type": "vendor",
+      "vendorId": "github"
+    }
+  ],
+  "effortEstimateHours": 6,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-10-05T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_1"
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

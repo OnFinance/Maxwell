@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_1",
+  "initiativeId": "init_01M2GWJAYY9ZQ8Y0GQJ7XNYQ28",
+  "companyId": "example-co",
+  "seq": 1,
+  "title": "Pin and checksum-verify the mcp-publisher binary in mcp-publish.yml",
+  "description": "In applications/mcp-gateway/repos/mongodb-mcp-server/.github/workflows/mcp-publish.yml, replace the 'Install MCP Publisher' step (lines 20-22). Today it runs curl -L .../releases/latest/download/mcp-publisher_<os>_<arch>.tar.gz | tar xz. The new step: (a) pins an explicit release tag (env MCP_PUBLISHER_VERSION) instead of latest/download; (b) downloads the tarball to a file instead of piping it into tar; (c) checks the file against a sha256 committed in the workflow (env MCP_PUBLISHER_SHA256_LINUX_AMD64 and _ARM64, taken from the release's published checksums file and confirmed by one person downloading it separately), using echo \"$SHA  file\" | sha256sum -c -, and exits non-zero before tar or any ./mcp-publisher call if the check fails; (d) uses curl -fsSL so HTTP errors fail the step. Where the release publishes cosign or GitHub artifact attestations, also run gh attestation verify or cosign verify-blob and record which was used. Keep permissions id-token: write limited to this job. Do not test with workflow_dispatch of mcp-publish.yml on main, because that publishes to the registry. Test the install step on a feature branch with the Login and Publish steps removed, or run the step script locally. Merge through the normal PR process (1 approval, releaseProcess.approvalsRequired) and outside any release in progress.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "grep -n 'releases/latest' .github/workflows/mcp-publish.yml returns no match, and the download URL contains a literal pinned version tag",
+    "The install step contains a sha256sum -c (or cosign / gh attestation verify) command that runs before tar extraction and before ./mcp-publisher is executed",
+    "A feature-branch run with a deliberately wrong sha256 fails at the verify step and never extracts or executes mcp-publisher; a run with the correct sha256 passes",
+    "probe-cicd-env on mcp-gateway/mongodb-mcp-server no longer emits CICD-PIN-03 for .github/workflows/mcp-publish.yml (fingerprint 454afe95e14049bfd1a5ae7a9be94a2c724c1e2cb7b8661307bdb1187c0cd007)"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-cicd-env",
+    "description": "Re-run probe-cicd-env for app mcp-gateway, repo mongodb-mcp-server after the PR merges and the checkout is refreshed. Expected: no CICD-PIN-03 result for .github/workflows/mcp-publish.yml, and an observation for sebi-cscrf-2024:PR.IP.S4 showing the download is pinned and checksum-verified."
+  },
+  "rootCause": {
+    "category": "misconfiguration",
+    "description": "The publish workflow was copied from the MCP registry quick-start, which installs mcp-publisher from releases/latest through curl | tar with no integrity check. That lets a tampered upstream release run with the job's OIDC publish identity."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 3,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-17T13:00:00Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

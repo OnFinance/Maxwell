@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_1",
+  "initiativeId": "init_01M2GWJF4XYSA816536HWERV4H",
+  "companyId": "example-co",
+  "seq": 1,
+  "title": "Request GitHub Enterprise Cloud's current SOC 2 Type II report or a bridge letter",
+  "description": "Through the GitHub Enterprise account (account manager or GitHub's Enterprise trust portal, under the existing NDA), ask for the SOC 2 Type II report covering the period after 2025-09-30 for GitHub Enterprise Cloud. If the new report is not yet issued, ask for a signed bridge letter covering 2025-10-01 to the date of the request. Ask that scope explicitly include source hosting, GitHub Actions and GitHub Packages, the three services example-co uses. Send the request no later than 2026-09-25 so the evidence arrives before the current report expires on 2026-09-30. Store the document in the company's GRC document store, not in this workspace. This is a documentary change, so no deployment window or change freeze from sdlc/policy.json releaseProcess applies.",
+  "owner": {
+    "type": "human",
+    "id": "compliance@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "A dated written request to GitHub for the post-2025-09-30 SOC 2 Type II report (or bridge letter) exists in the GRC store, sent on or before 2026-09-25",
+    "The report or bridge letter received from GitHub names GitHub Enterprise Cloud in scope, and its period starts no later than 2025-10-01",
+    "The task evidence holds a locator to the received document (GRC store reference and document date), with no copy of the report in the workspace"
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "The CISO opens the GRC store locator in the task evidence and confirms three things: the document is a SOC 2 Type II report or bridge letter issued by the service auditor or GitHub; its subject is GitHub Enterprise Cloud; and its coverage period starts on or before 2025-10-01, leaving no gap after the expiring report."
+  },
+  "rootCause": {
+    "category": "vendor-gap",
+    "description": "GitHub's public trust center and security pages publish no report periods or dates, so the renewal was never pushed to example-co. The only evidence on file is the 2024-10-01 to 2025-09-30 report, expiring 2026-09-30."
+  },
+  "targets": [
+    {
+      "type": "vendor",
+      "vendorId": "github"
+    }
+  ],
+  "effortEstimateHours": 3,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-25T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

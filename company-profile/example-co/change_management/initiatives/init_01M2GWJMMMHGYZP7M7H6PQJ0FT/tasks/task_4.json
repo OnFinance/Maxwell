@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_4",
+  "initiativeId": "init_01M2GWJMMMHGYZP7M7H6PQJ0FT",
+  "companyId": "example-co",
+  "seq": 4,
+  "title": "Re-probe the release pipeline and attach signing evidence to the finding",
+  "description": "After tasks 1 to 3 are merged to main and one real release (latest or prerelease channel) has published through docker-publish.yml, run probe-cicd-env for mcp-gateway on repo mongodb-mcp-server at the new pinned commit. Attach as task evidence: the GitHub Actions run URL, the cosign verify output for the published digest, and the Rekor log index. The evidence lets soc-ledger-keeper reconcile fnd_01M2GH5B0C1BP3QP8HHA0MJNVY under the absence rule. Complete this before the finding's slaDueAt of 2026-09-28T13:48:42Z.",
+  "owner": {
+    "type": "human",
+    "id": "ciso@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "A probe-cicd-env observation with collectedAt after the merge exists in company-profile/example-co/soc/main.jsonl for subject repo mcp-gateway/mongodb-mcp-server with no CICD-SIGN-01 result at .github/workflows/docker-publish.yml",
+    "The task evidence holds the Actions run URL and cosign verify output (exit 0) for the digest published by that run, with a Rekor log index"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-cicd-env",
+    "description": "Run probe-cicd-env scoped to mcp-gateway/mongodb-mcp-server. Expected: the SARIF export contains no CICD-SIGN-01 result for .github/workflows/docker-publish.yml, and the observation for sebi-cscrf-2024:PR.IP.S2 and rbi-outsourcing-risk-directions-2025:97(vii) reports the signing stage as present."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "The finding can only move to resolved once the probe that raised it confirms the signing control exists, so the fix must be proven by re-observation and not just assumed from the merge."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 1.5,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-28T13:48:42Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_1", "task_2", "task_3" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

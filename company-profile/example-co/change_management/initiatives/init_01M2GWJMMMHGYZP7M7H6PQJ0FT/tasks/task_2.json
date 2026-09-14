@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_2",
+  "initiativeId": "init_01M2GWJMMMHGYZP7M7H6PQJ0FT",
+  "companyId": "example-co",
+  "seq": 2,
+  "title": "Attach a cosign SBOM attestation to the signed image digest",
+  "description": "In the same build-push job of .github/workflows/docker-publish.yml, after the sign step from task 1, export the SBOM that buildx already generates (sbom: true) for the pushed digest, for example with docker buildx imagetools inspect <repo>@<digest> --format '{{ json .SBOM }}' written to the runner temp directory. Then run cosign attest --yes --type spdxjson --predicate <file> <repo>@<digest> with keyless OIDC. Keep provenance: mode=max and sbom: true unchanged. Write predicate files only to $RUNNER_TEMP and never commit them. The same action-pinning and no-secret constraints as task 1 apply.",
+  "owner": {
+    "type": "human",
+    "id": "ciso@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "grep -n 'cosign attest' .github/workflows/docker-publish.yml returns a step that attests the @sha256 digest with --type spdxjson (or cyclonedx)",
+    "For the image from the latest prerelease run, cosign verify-attestation --type spdxjson <repo>@<digest> --certificate-identity-regexp '^https://github.com/OnFinance/mongodb-mcp-server/' --certificate-oidc-issuer https://token.actions.githubusercontent.com exits 0 and prints an SBOM predicate listing the mongodb-mcp-server package"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-cicd-env",
+    "description": "Re-run probe-cicd-env on mcp-gateway/mongodb-mcp-server. Expected: the pipeline observation records a cosign attest step bound to the pushed digest, and no CICD-SIGN-01 result for .github/workflows/docker-publish.yml."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "The SBOM and provenance produced by buildx sit in the image index unsigned. No cosign attest step binds them to a verifiable signer identity, so a consumer cannot tell whether they came from the release pipeline."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 3,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-24T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_1" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

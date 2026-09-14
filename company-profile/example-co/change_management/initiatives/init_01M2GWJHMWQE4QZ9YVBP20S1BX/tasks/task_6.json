@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_6",
+  "initiativeId": "init_01M2GWJHMWQE4QZ9YVBP20S1BX",
+  "companyId": "example-co",
+  "seq": 6,
+  "title": "Re-run vendor analysis for AWS, GitHub and MongoDB Atlas and confirm the five findings clear",
+  "description": "After tasks 2-5 are done, run /refresh-vendor-ctx example-co (vendor-analyst) against aws, github and mongodb-atlas. Confirm it raises none of the five fingerprints: 8d364d28... (aws exit plan), 117e4ec1... (GitHub contract), d7ef6b05... (GitHub audit and exit), ebeb3183... (Atlas audit and exit), c42793cb... (Atlas contract). Confirm the control records sebi-cscrf-2024:GV.SC.S3, sebi-cscrf-2024:GV.SC.S4 and rbi-outsourcing-risk-directions-2025:84, 85, 86 get new observations with result satisfied or partial. Attach the observation ids as task evidence. Then run npm run validate. This is read-only analysis of workspace vendor files, with no deployment window.",
+  "owner": {
+    "type": "human",
+    "id": "compliance@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "A refresh-vendor-ctx run after task 5 is complete appends observations for aws, github and mongodb-atlas, and none of the five listed fingerprints is appended as open.",
+    "New observations exist in company-profile/example-co/soc/main.jsonl for sebi-cscrf-2024:GV.SC.S3, sebi-cscrf-2024:GV.SC.S4 and rbi-outsourcing-risk-directions-2025:84/85/86 with result other than not-satisfied.",
+    "npm run validate exits 0 after the run."
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "The CISO reads the latest records in company-profile/example-co/soc/main.jsonl for the refresh-vendor-ctx run. Expected: no open finding with any of the five fingerprints and satisfied or partial observations for the five controls. No probe-* workflow covers vendor contracts, so re-probe does not apply."
+  },
+  "rootCause": {
+    "category": "vendor-gap",
+    "description": "Five findings came from vendor-analyst reading contract fields in the vendor files. Closure needs a fresh vendor analysis showing the contract, audit-right and exit-plan gaps are gone, not just an owner saying so."
+  },
+  "targets": [
+    { "type": "vendor", "vendorId": "aws" },
+    { "type": "vendor", "vendorId": "github" },
+    { "type": "vendor", "vendorId": "mongodb-atlas" }
+  ],
+  "effortEstimateHours": 4,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-10-14T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_2", "task_3", "task_4", "task_5" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

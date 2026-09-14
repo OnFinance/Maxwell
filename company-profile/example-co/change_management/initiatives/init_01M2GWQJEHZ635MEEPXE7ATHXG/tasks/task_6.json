@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_6",
+  "initiativeId": "init_01M2GWQJEHZ635MEEPXE7ATHXG",
+  "companyId": "example-co",
+  "seq": 6,
+  "title": "Re-assess the audit controls in the ledger and re-run probe-sdlc to confirm the gap is closed",
+  "description": "Once Tasks 3-5 are complete, have soc-ledger-keeper append an observation against sebi-cscrf-2024:Sec-4.4 and cert-in-directions-2022:CCSAPG-13.1.2. The observation (methods document-review) cites the Task 1-5 evidence, then the two control records are superseded with the implementationStatus and effectiveness that evidence supports. Then run /probe-sdlc example-co. Under the soc-ledger absence rule, fnd_01M2GS6B87TV7NHZQ8BMGDR4HZ (fingerprint 89d9c73d7be083df67baa72a3c954772a8645f51a31124b26b2cdaeebf33c55f, ruleId ssdf-rv-2-2-no-audit-remediation-loop) resolves only after two distinct runs do not produce it. Schedule the second run before the finding's slaDueAt of 2026-12-13T19:35:56Z.",
+  "owner": {
+    "type": "human",
+    "id": "ciso@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "The latest-state ledger records for sebi-cscrf-2024:Sec-4.4 and cert-in-directions-2022:CCSAPG-13.1.2 no longer show implementationStatus unknown / effectiveness not-tested, and each has evidence[] pointing to the Task 1-5 artefacts.",
+    "The probe-sdlc SARIF export for the run shows no result with ruleId ssdf-rv-2-2-no-audit-remediation-loop for target company:example-co.",
+    "`node .claude/scripts/validate-data.mjs company-profile/example-co/soc/main.jsonl` exits 0 after the appends."
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-sdlc",
+    "description": "Run /probe-sdlc example-co twice as distinct runs after Tasks 3-5 are done. Expected result: neither run produces fingerprint 89d9c73d7be083df67baa72a3c954772a8645f51a31124b26b2cdaeebf33c55f; the observation for sebi-cscrf-2024:Sec-4.4 has result satisfied or partial; and refresh-soc supersedes fnd_01M2GS6B87TV7NHZQ8BMGDR4HZ with status resolved."
+  },
+  "rootCause": {
+    "category": "process-gap",
+    "description": "Control records for the audit obligations were created from the catalog and never re-assessed against real audit evidence, so the ledger could not show whether the audit loop exists."
+  },
+  "targets": [
+    {
+      "type": "company"
+    }
+  ],
+  "effortEstimateHours": 4,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-12-13T19:35:56Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_3",
+    "task_4",
+    "task_5"
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

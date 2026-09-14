@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_2",
+  "initiativeId": "init_01M2GWK0AZG2HFKPP7Z4F79S9D",
+  "companyId": "example-co",
+  "seq": 2,
+  "title": "Register secret-annotated tool arguments in the session keychain",
+  "description": "Make the annotation drive redaction. Before execute() runs (in ToolBase.invoke in src/tools/tool.ts, or at the start of SwitchConnectionTool.execute), register the value of every argument whose schema carries isSecret: true with this.session.keychain.register(value, 'url'). For switch-connection this covers connectionString when it is supplied. redact(rawMessage, this.session.keychain.allSecrets) in tool.ts:819 and the loggers then mask it. Today only connectCluster.ts:148-149 and createDBUser.ts:84-86 register tool-supplied secrets. Constraints: do not register undefined values. Do not change the connection behaviour in session.connectToMongoDB. Merge through the same PR process (1 approval).",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "After switch-connection is called with a connection string, session.keychain.allSecrets contains an entry of kind 'url' whose value equals the supplied string (asserted in a unit test)",
+    "A switch-connection call with an unreachable mongodb:// URI that contains a user:password pair returns an error message and log lines that do not contain the password",
+    "`pnpm test` exits 0 on the PR branch"
+  ],
+  "verificationMethod": {
+    "type": "code-review",
+    "description": "A reviewer inspects the diff to src/tools/tool.ts and/or switchConnection.ts. Expected result: keychain registration is keyed off the isSecret metadata and not a hard-coded field name, it runs before execute() and before handleError redaction, and it skips undefined values. The reviewer also confirms that the tests from task 3 cover this path."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "Redaction in tool.ts only masks values already in the session keychain. Nothing registers tool-argument connection strings there, so without this wiring the isSecret annotation would have no effect on logs or error output."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 4,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-17T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_1"
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

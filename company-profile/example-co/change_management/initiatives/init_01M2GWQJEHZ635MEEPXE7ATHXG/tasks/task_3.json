@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_3",
+  "initiativeId": "init_01M2GWQJEHZ635MEEPXE7ATHXG",
+  "companyId": "example-co",
+  "seq": 3,
+  "title": "Stand up the audit-observation tracking loop with 3-month closure and IT Committee escalation",
+  "description": "Write and adopt a procedure in the ISMS document repository covering four steps. (1) Within 5 working days of receiving each cyber audit or VAPT report, record every observation as a finding in company-profile/example-co/soc/main.jsonl through refresh-soc / soc-ledger-keeper, with slaBasis copied from sla-table.json (sebi-cscrf-2024 Sec-4.4 audit-cadence 90 days for cyber audit observations; Sec-4.3 vapt-cadence 90 days for VAPT observations), a named owner and slaDueAt = report submission + 90 days. (2) Each such finding is linked to an impl-change-management initiative. (3) Observations still open after 3 months go to the IT Committee for approval and must close before the next audit, per CSCRF 4.4.4-4.4.5. (4) The follow-on audit is scheduled within 5 months of report submission. Apply the procedure retrospectively to the open observations identified in Task 1. Technical observations are assigned to the CTO (cto@example-co.invalid) as remediation owner.",
+  "owner": {
+    "type": "human",
+    "id": "ciso@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "The approved procedure document exists in the ISMS repository with a version, approval date and IT Committee minutes reference, and covers ledger recording, 90-day closure, IT Committee escalation and a follow-on audit within 5 months.",
+    "For every open observation listed in Task 1, the latest-state ledger view (soc-ledger skill section 3 command, filtered to kind finding) shows a finding with slaBasis.topic audit-cadence or vapt-cadence, a non-empty initiativeId and a slaDueAt no later than report submission + 90 days.",
+    "An escalation register lists every observation open for more than 3 months, with the IT Committee approval reference, or states that there are none."
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "The reviewer runs the soc-ledger latest-state command on company-profile/example-co/soc/main.jsonl filtered to findings and cross-checks it against the Task 1 observation list and the procedure document. Expected result: a one-to-one match between report observations and ledger findings, each with an initiativeId and a 90-day slaBasis, plus an escalation register entry for any finding past 90 days."
+  },
+  "rootCause": {
+    "category": "process-gap",
+    "description": "There is no defined workflow that turns audit and VAPT observations into owned, dated, tracked remediation items, so closure within the CSCRF 3-month window cannot be demonstrated."
+  },
+  "targets": [
+    {
+      "type": "company"
+    }
+  ],
+  "effortEstimateHours": 16,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-10-26T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_1"
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_5",
+  "initiativeId": "init_01M2GWPZP4P4134Q0ZVY3SEMP0",
+  "companyId": "example-co",
+  "seq": 5,
+  "title": "Roll out retention controls to production with a DPO-reviewed first purge",
+  "description": "Deploy tasks 2-4 to prod after qa sign-off, following sdlc/policy.json releaseProcess (dev -> qa -> prod, 1 approval, rollback plan) and any changeFreeze in applications/db-models/env/*.json. Take an encrypted mongodump of the user and secrets collections first. Backfill secrets.expires_at, create the TTL index, run purge_expired in report-only mode, and have the DPO review the counts. Only then enable erasure. Record the retention period per collection so refresh-metastore can capture it in sdlc/metastore.json.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "In prod, db.secrets.getIndexes() lists expires_at_1 with expireAfterSeconds 0 and db.secrets.countDocuments({expires_at: {$exists: false}}) returns 0",
+    "A report-only purge log with counts, and a DPO approval to enable erasure, both exist and are dated before the first erasing run",
+    "The first erasing prod run log shows counts matching the report-only run, within the users that changed state between the two runs"
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "The CISO reviews the prod deploy record, the pre-deploy backup reference, the getIndexes output, the report-only and first erasing purge logs, and the DPO approval. Expected: all artefacts exist, counts reconcile, and no PII appears in the logs."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "Retention was never enforced in production, so the new controls must be introduced carefully against years of accumulated PII and credentials without erasing records still under statutory retention."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "db-models",
+      "repoId": "onfinance-db-model-master"
+    }
+  ],
+  "effortEstimateHours": 6,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-12-13T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_4" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

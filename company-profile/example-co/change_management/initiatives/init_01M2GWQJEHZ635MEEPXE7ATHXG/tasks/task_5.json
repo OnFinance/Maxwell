@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_5",
+  "initiativeId": "init_01M2GWQJEHZ635MEEPXE7ATHXG",
+  "companyId": "example-co",
+  "seq": 5,
+  "title": "Commission the due cyber audit and set up report submission within one month of completion",
+  "description": "Using the Task 1 result and the Task 2 calendar, commission any cyber audit that is due or overdue from a CERT-In empanelled auditor. Sign the engagement letter with the Task 2 scope (100 percent of critical systems including mcp-gateway, 25 percent sample of non-critical systems), require the Annexure-B format with the MD/CEO declaration and control-wise status from GV.OC.S1 to EV.ST.S5, and fix the fieldwork start date. Set up the submission path: the report is placed before the IT Committee and submitted to the stock exchanges and depositories within one month of audit completion. If an audit was completed within the required period, record its submission acknowledgement instead. Constraints: fieldwork on the qa and prod environments must respect each environment's changeFreeze windows, use read-only access, and stay outside NSE/BSE market hours.",
+  "owner": {
+    "type": "human",
+    "id": "ciso@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "A signed engagement letter with a CERT-In empanelled auditor exists (locator and sha256 recorded), naming the scope, the Annexure-B deliverable and a fieldwork start date on or before 2026-12-13, or a submission acknowledgement exists for an audit completed within the required period.",
+    "The auditor's CERT-In empanelment is evidenced by a reference to the current CERT-In empanelled auditor list, with the retrieval date.",
+    "The IT Committee agenda or minutes schedule the report review, and the schedule shows submission to exchanges and depositories no later than one month after planned audit completion."
+  ],
+  "verificationMethod": {
+    "type": "attestation",
+    "description": "The CISO signs an attestation, countersigned by the IT Committee chair, that lists the engagement letter locator, the auditor's empanelment reference, the fieldwork dates and the planned submission date. Expected result: the attestation exists and every referenced artefact resolves."
+  },
+  "rootCause": {
+    "category": "process-gap",
+    "description": "The declared audit cadence was never turned into an auditor engagement with a fixed scope and submission timeline, so audits do not happen on schedule."
+  },
+  "targets": [
+    {
+      "type": "company"
+    }
+  ],
+  "effortEstimateHours": 14,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-11-30T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_1",
+    "task_2"
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

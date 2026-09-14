@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_4",
+  "initiativeId": "init_01M2GWK1FRDCWGPJVC10RJS43X",
+  "companyId": "example-co",
+  "seq": 4,
+  "title": "Add a blocking CI check that rejects Dockerfile FROM lines without an @sha256 digest",
+  "description": "Add a job to applications/mcp-gateway/repos/mongodb-mcp-server/.github/workflows/check.yml that runs on pull_request and push to main. It finds every Dockerfile in the repo and fails when a `FROM` line references an image without `@sha256:` (allow `FROM scratch` and references to earlier build stages). Pin any third-party action it uses to a full commit SHA, as docker-publish.yml already does. Make the check required for main in branch protection so a later edit cannot reintroduce a floating base image. Merge through the normal PR process with 1 approval. This change does not touch runtime images.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "A PR on main that changes either Dockerfile back to `FROM node:24-alpine` fails the new check, with a message that names the file and line",
+    "The same check passes on main after tasks 1 and 2 are merged, and branch protection for main lists it as a required status check"
+  ],
+  "verificationMethod": {
+    "type": "manual-test",
+    "description": "Open a throwaway draft PR that removes the @sha256 digest from deploy/aws/Dockerfile. Expected: the new check.yml job fails and names deploy/aws/Dockerfile. Close the PR unmerged, then confirm the job is green on main and listed under required status checks in the main branch protection settings."
+  },
+  "rootCause": {
+    "category": "misconfiguration",
+    "description": "The CI gates in sdlc/policy.json (sast, secrets, unit-tests) and the repo's check.yml include no base-image pinning check. That is why the floating FROM tags merged unnoticed, and nothing stops them from coming back."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 3,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-21T13:00:00Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_1", "task_2" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_1",
+  "initiativeId": "init_01M2GWK3BJ7Y4PPP919G8NZFRS",
+  "companyId": "example-co",
+  "seq": 1,
+  "title": "Provision a GitHub OIDC role and a vault-held, push-scoped Docker Hub token for mongodb-mcp-server",
+  "description": "In the AWS account that hosts the company's aws-secrets-manager backend (sdlc/policy.json secretsManagement.backend), do the following. (a) Create or reuse the IAM OIDC identity provider for token.actions.githubusercontent.com. (b) Create an IAM role whose trust policy requires aud=sts.amazonaws.com and sub=repo:OnFinance/mongodb-mcp-server:environment:Production. Its permission policy allows only secretsmanager:GetSecretValue on one secret. (c) In Docker Hub, mint an access token limited to Read & Write on the mongodb-mcp-server image repository, and store the username and token in that one Secrets Manager secret, with a 90-day rotation reminder or schedule matching secretsManagement.rotationDays. Do not delete or change the existing DOCKERHUB_USERNAME/DOCKERHUB_PASSWORD GitHub secrets yet; they are the rollback path until task 3. No deployment window or change freeze applies (policy defines none).",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "The IAM role trust policy exported as JSON names the token.actions.githubusercontent.com federated principal, with StringEquals conditions aud=sts.amazonaws.com and sub=repo:OnFinance/mongodb-mcp-server:environment:Production, and no wildcard sub",
+    "The role's only permission is secretsmanager:GetSecretValue on the single Docker Hub token secret ARN (IAM policy JSON attached as evidence)",
+    "The Secrets Manager secret's description output shows a rotation schedule or tagged next-rotation date no more than 90 days away",
+    "The Docker Hub token settings page (screenshot or export attached) shows the new token scoped to the mongodb-mcp-server repository with no access to other repositories or organisation admin"
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "The CISO reviews the attached IAM trust and permission policy JSON, the Secrets Manager describe-secret output and the Docker Hub token scope screenshot. Expected: the trust is limited to the repo and the Production environment, read is limited to one secret, rotation is 90 days or less, and the token is push-scoped to one repository."
+  },
+  "rootCause": {
+    "category": "misconfiguration",
+    "description": "OIDC federation was set up only for the MCP Registry (mcp-publish.yml uses id-token: write). No federated role or vault-held registry token was ever created for Docker Hub, so the publish job fell back to a static username/password stored as GitHub secrets."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 4,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-17T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

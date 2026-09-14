@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_1",
+  "initiativeId": "init_01M2GWQJEHZ635MEEPXE7ATHXG",
+  "companyId": "example-co",
+  "seq": 1,
+  "title": "Collect the evidence of the last cyber audit and VAPT cycle, or record its absence",
+  "description": "Gather the artefacts SEBI CSCRF Sec-4.4 and CERT-In CCSAPG-13.1.2 expect for the most recent cycle (FY 2025-26 and FY 2026-27 to date): (a) the Annexure-B cyber audit report with the auditor declaration, scope statement, control-wise compliance status and exception table; (b) the IT Committee minutes approving the report; (c) the acknowledgement of submission to the stock exchanges and depositories, with its date; (d) the last two VAPT reports (details.json declares vaptPerYear 2); (e) the closure evidence for each audit and VAPT observation. Store them in the ISMS evidence repository, not in this workspace. For each artefact, record its location and sha256 as task evidence. If no audit was completed in the last 12 months, state that explicitly so Task 5 commissions one. Constraint: record document locators only. Never copy auditor credentials or system secrets into evidence.",
+  "owner": {
+    "type": "human",
+    "id": "ciso@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "An evidence inventory lists, for each of items (a)-(e), a document locator, issue date and sha256, or an explicit 'not available' entry.",
+    "The inventory states the date of the most recent completed cyber audit and the most recent VAPT, or states that none was completed in the last 12 months.",
+    "Each open observation from the last audit and VAPT is listed with its report reference, criticality and submission date."
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "The reviewer opens the evidence inventory and, for each listed artefact, confirms that the locator resolves, the sha256 matches and the issue date lies within the last 12 months. Expected result: every item (a)-(e) is present or explicitly marked 'not available', with no blank entries."
+  },
+  "rootCause": {
+    "category": "process-gap",
+    "description": "No one is assigned to retain and index the cyber audit and VAPT artefacts, so the declared cadence in details.json auditCadence has no evidence behind it, and ledger control sebi-cscrf-2024:Sec-4.4 remains implementationStatus unknown."
+  },
+  "targets": [
+    {
+      "type": "company"
+    }
+  ],
+  "effortEstimateHours": 12,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-28T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

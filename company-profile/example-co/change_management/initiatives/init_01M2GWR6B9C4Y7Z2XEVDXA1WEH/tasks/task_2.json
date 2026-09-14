@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_2",
+  "initiativeId": "init_01M2GWR6B9C4Y7Z2XEVDXA1WEH",
+  "companyId": "example-co",
+  "seq": 2,
+  "title": "Add consent, purpose and notice-version fields to the User document",
+  "description": "In onfinance_db_model_master/models.py, class User(Document) (lines 387-429, repo onfinance-db-model-master, local checkout applications/db-models/repos/onfinance-db-model-master), add five optional fields: consent_id = StringField(); consent_purposes = ListField(StringField(), default=list); notice_version = StringField(); consent_given_at = DateTimeField(); consent_withdrawn_at = DateTimeField(). Validate consent_purposes and notice_version against the purpose and notice ids from task 1 (choices=, or a clean() method that rejects unknown ids). Do not add required=True to any field: existing documents must keep loading and no data migration is in scope. Leave account_creation_date unchanged. In setup.py, bump version from 1.0.0 to 1.1.0. Follow sdlc/policy.json releaseProcess: normal change, one approval, rollback plan required, promotion order dev, qa, prod. db-models has no deploymentWindows or changeFreeze defined.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "grep -nE 'consent_id|consent_purposes|notice_version|consent_given_at|consent_withdrawn_at' onfinance_db_model_master/models.py shows all five fields inside class User",
+    "User(user_full_name='x', consent_purposes=['not-in-register']).validate() raises ValidationError, and a User built with register ids validates.",
+    "A User document stored without any of the new fields loads through User.objects.first() with no FieldDoesNotExist or ValidationError.",
+    "setup.py declares version=\"1.1.0\""
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-schemas",
+    "description": "Run probe-schemas for db-models/onfinance-db-model-master on the merged commit. Expected result: rule SCH-RET-01 no longer reports a fail for onfinance_db_model_master/models.py, the run does not produce fingerprint 3bbf3f6eb8287d913a4d5a671c846297a7b97c1763e33aad781d5fabe870e42a, and the observation for sebi-cscrf-2024:GV.OC.S2 on this repo is satisfied."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "User was designed as a profile-and-activity store. It never got fields linking a record to the consent, purpose and notice under which its personal data was collected, so consent cannot be shown per record."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "db-models",
+      "repoId": "onfinance-db-model-master"
+    }
+  ],
+  "effortEstimateHours": 5,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-25T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_1"
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

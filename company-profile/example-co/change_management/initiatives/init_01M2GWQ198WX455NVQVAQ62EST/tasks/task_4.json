@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_4",
+  "initiativeId": "init_01M2GWQ198WX455NVQVAQ62EST",
+  "companyId": "example-co",
+  "seq": 4,
+  "title": "Add a blocking CI check that rejects unpinned FROM lines and @latest installs",
+  "description": "Add a job to .github/workflows/docker.yml, or a new workflow file under .github/workflows/, that runs on pull requests touching `**/Dockerfile*`. It fails when any `FROM` line lacks `@sha256:`, or when any `RUN` line installs a package with `@latest` or with no version. hadolint rules DL3006/DL3007 plus a grep step are sufficient. Pin every action used in the job by commit SHA. Mark the job as a required status check on main. Scope the check to deploy/aws/Dockerfile until the root Dockerfile is fixed under the initiative for fnd_01M2GH5AS0MM2F8MSFTDP36VV9, then widen it to all Dockerfiles.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "A test PR that changes deploy/aws/Dockerfile back to `FROM node:24-alpine` fails the new job with a message naming the file and line",
+    "A test PR that reintroduces `npm install -g mongodb-mcp-server@latest` fails the same job",
+    "The job passes on main after tasks 1 and 2 are merged",
+    "Branch protection for main lists the job as a required status check"
+  ],
+  "verificationMethod": {
+    "type": "manual-test",
+    "description": "Open two throwaway PRs against mongodb-mcp-server: one reverting line 2 to an undigested FROM, one reintroducing @latest on the npm install. Expected: both show the new check as failed and blocked from merge. Close both PRs unmerged and attach the check-run URLs as task evidence."
+  },
+  "rootCause": {
+    "category": "misconfiguration",
+    "description": "No pipeline gate inspects Dockerfiles for mutable tags or floating package versions, which is how the unpinned AgentCore image reached the default branch unnoticed."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 3,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-19T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_1", "task_2" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

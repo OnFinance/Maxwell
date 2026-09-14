@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_2",
+  "initiativeId": "init_01M2GWJR746MQDJ90VXARW6DD1",
+  "companyId": "example-co",
+  "seq": 2,
+  "title": "Require the coverage-enforcing check in mongodb-mcp-server main branch protection",
+  "description": "In GitHub repository OnFinance/mongodb-mcp-server, add the status check(s) that now fail on the coverage threshold from task 1 (the Code Health 'run-tests' job and/or the 'coverage' job) to the required status checks of branch protection on main, with 'Require branches to be up to date' enabled. This is a repository settings change by a repo admin; record the before and after JSON of the protection rule as evidence. No deployment window applies (CI settings only).",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "`gh api repos/OnFinance/mongodb-mcp-server/branches/main/protection --jq '.required_status_checks.contexts'` lists the coverage-enforcing check name(s) from task 1.",
+    "A pull request whose coverage check is failing shows 'Required' on that check and the merge button stays blocked for non-admin users (screenshot or `gh pr view --json mergeStateStatus` showing BLOCKED attached)."
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "Reviewer inspects the attached `gh api .../branches/main/protection` output before and after the change. Expected: required_status_checks.contexts contains the coverage-enforcing job name, and a blocked PR's mergeStateStatus is BLOCKED while that check fails."
+  },
+  "rootCause": {
+    "category": "process-gap",
+    "description": "Even a failing coverage job would not stop a merge unless it is a required status check. Branch protection on main was never updated to include the unit-test and coverage gate that policy calls blocking."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 1,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-10-21T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_1"
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

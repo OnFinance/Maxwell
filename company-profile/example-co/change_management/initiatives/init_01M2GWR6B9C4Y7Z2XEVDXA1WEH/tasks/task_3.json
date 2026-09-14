@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_3",
+  "initiativeId": "init_01M2GWR6B9C4Y7Z2XEVDXA1WEH",
+  "companyId": "example-co",
+  "seq": 3,
+  "title": "Add tests and a consumer release note for the User consent fields",
+  "description": "Add tests/test_user_consent.py to onfinance-db-model-master. Using mongomock (or mongoengine connect with mongomock://), the tests check four things: (a) a User without consent fields saves and reloads; (b) a User with consent_id, register purpose ids, notice_version and consent_given_at round-trips unchanged; (c) an unknown purpose or notice id fails validation; (d) setting consent_withdrawn_at keeps the earlier consent fields for audit. Add a CHANGELOG.md entry for 1.1.0 that tells consuming internal services to set consent_id, consent_purposes, notice_version and consent_given_at at onboarding, and warns that downgrading to 1.0.0 fails on documents that hold the new fields (mongoengine strict mode). Merge only after one approval, per sdlc/policy.json approvalsRequired.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "python -m pytest tests/test_user_consent.py exits 0 with the four cases (a) to (d) passing",
+    "CHANGELOG.md has a 1.1.0 entry naming the five new fields, the onboarding instruction for consumers and the downgrade warning.",
+    "The pull request that merges tasks 2 and 3 has one approving review recorded before merge."
+  ],
+  "verificationMethod": {
+    "type": "code-review",
+    "description": "A reviewer other than the author checks out the merged commit, runs python -m pytest tests/test_user_consent.py and reads CHANGELOG.md. Expected result: four passing tests covering legacy load, round-trip, invalid-id rejection and withdrawal retention, plus a 1.1.0 changelog entry with the consumer onboarding instruction and the downgrade warning."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "The library had no tests or release notes covering personal-data fields. Consumers would not learn that consent references must be populated, and a regression that drops them would go unnoticed."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "db-models",
+      "repoId": "onfinance-db-model-master"
+    }
+  ],
+  "effortEstimateHours": 3,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-28T18:00:00Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_2"
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

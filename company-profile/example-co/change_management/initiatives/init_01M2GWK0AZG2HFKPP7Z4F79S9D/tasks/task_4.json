@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_4",
+  "initiativeId": "init_01M2GWK0AZG2HFKPP7Z4F79S9D",
+  "companyId": "example-co",
+  "seq": 4,
+  "title": "Release the fix through qa and prod and re-run probe-schemas",
+  "description": "Once the PR is merged to main, deploy the new mcp-gateway build in the sdlc/policy.json releaseProcess order: dev (docker compose), then qa, then prod (EKS ap-south-1). Record the approval (approvalsRequired 1) and keep the rollback plan from this initiative at hand. No deploymentWindows or change freeze are defined in policy.json. Check the qa and prod environment files for a changeFreeze before deploying to prod. Then re-run /probe-schemas for mcp-gateway on the merged commit so that SCH-API-06 is re-evaluated for src/tools/mongodb/connect/switchConnection.ts. Finish before the finding's slaDueAt of 2026-09-21T18:36:43Z.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "The merged commit is deployed in qa and prod, with deployment records (release tag or pipeline run) attached as task evidence",
+    "The probe-schemas SARIF export for mongodb-mcp-server at the merged commit has no SCH-API-06 fail result for src/tools/mongodb/connect/switchConnection.ts, and the ledger has a new observation for sebi-cscrf-2024:PR.AA.S1 from that run",
+    "switch-connection still connects successfully in qa (smoke call returns 'Successfully connected' or the equivalent success text)"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-schemas",
+    "description": "Run /probe-schemas example-co scoped to mcp-gateway on the merged commit. Expected result: rule SCH-API-06 reports no result for src/tools/mongodb/connect/switchConnection.ts (fingerprint fc0f2777...0466 absent). A second clean run resolves fnd_01M2GMWPZ5DKN7DNH3D65T47FZ under the ledger's absence rule."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "The deployed prod and qa gateway builds lack the secret annotation. The control counts as in place only when the running build carries the fix and the probe that raised the finding confirms it."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 3,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-21T18:00:00Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_3"
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

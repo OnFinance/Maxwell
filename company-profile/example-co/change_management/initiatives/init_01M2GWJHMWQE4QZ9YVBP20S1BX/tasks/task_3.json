@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_3",
+  "initiativeId": "init_01M2GWJHMWQE4QZ9YVBP20S1BX",
+  "companyId": "example-co",
+  "seq": 3,
+  "title": "Renew GitHub Enterprise contract GH-ENT-2025-07 with audit rights and an exit clause",
+  "description": "GH-ENT-2025-07 lapsed on 2026-06-30, but GitHub still hosts the mongodb-mcp-server (mcp-gateway) and onfinance-db-model-master (db-models) repos and their github-actions CI. Sign a renewal or amendment using the task 1 clauses: rightToAudit for the entity, SEBI and RBI (a SOC 2 report alone is not enough); an exit clause covering repository, issue and Actions-artefact export within a stated minimum period; data return and deletion. If GitHub refuses the audit clause, escalate to the CISO within 5 working days and record the refusal; do not close the task. Once signed, update company-profile/example-co/vendors/github.json: contract.reference, startDate, endDate (later than 2026-10-14), rightToAudit true. Validate with node .claude/scripts/validate-data.mjs. No repository or CI configuration change is part of this task.",
+  "owner": {
+    "type": "human",
+    "id": "compliance@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "A countersigned GitHub Enterprise renewal or amendment exists with an end date after 2026-10-14 and a right-to-audit clause naming the entity, SEBI and RBI.",
+    "company-profile/example-co/vendors/github.json shows the new contract.reference, contract.endDate later than 2026-10-14 and contract.rightToAudit true, and node .claude/scripts/validate-data.mjs exits 0 on that file."
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "The CISO checks the signed GitHub contract against the updated github.json. Expected: reference and end date match, the audit clause is present, and no clause waives SEBI or RBI access. Fingerprint 117e4ec1... (contract-expiring) must not be re-raised when refresh-vendor-ctx runs in task 6."
+  },
+  "rootCause": {
+    "category": "vendor-gap",
+    "description": "GitHub was bought on a US-law standalone click-through enterprise agreement with no right to audit and no renewal tracking. It lapsed while the vendor kept serving critical application repos."
+  },
+  "targets": [
+    { "type": "vendor", "vendorId": "github" }
+  ],
+  "effortEstimateHours": 16,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-10-14T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_1" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

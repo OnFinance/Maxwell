@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_4",
+  "initiativeId": "init_01M2GWJZSS8ZFTGSE4F4DRQN4F",
+  "companyId": "example-co",
+  "seq": 4,
+  "title": "Add tests that fail when a sensitive field or tool argument loses its classification annotation",
+  "description": "db-models (ciSystem none): add tests/test_data_classification.py. It imports onfinance_db_model_master.models, loads the field map from docs/data-classification.md (or a checked-in JSON copy of it) and asserts that every mapped field has a data_classification attribute equal to the approved labels. Document running pytest before tagging a release in the README. mongodb-mcp-server (GitHub Actions): add tests/unit/tools/mongodb/dataClassification.test.ts, which builds the tool registry, serialises each mongodb/* tool input schema to JSON Schema and asserts x-data-classification is present on every client-data argument, so the existing pnpm test job in CI enforces it. Neither test touches a database or a deployed environment.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "pytest tests/test_data_classification.py passes on the db-models PR branch and fails when the data_classification kwarg is removed from User.user_email",
+    "pnpm vitest run tests/unit/tools/mongodb/dataClassification.test.ts passes on mongodb-mcp-server and fails when withClassification is removed from zEJSON; the GitHub Actions test job on the PR shows the new test executed"
+  ],
+  "verificationMethod": {
+    "type": "code-review",
+    "description": "A reviewer checks out each PR, runs both test commands (expected: pass), deletes one annotation in each repo, re-runs them (expected: fail naming the unannotated field or argument), then restores the annotation. The GitHub Actions run URL for mongodb-mcp-server is attached as evidence."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "No automated check tied the code to the approved classification, so new or renamed fields could silently lose annotations and reopen SCH-PII-01 or SCH-PII-06."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "db-models",
+      "repoId": "onfinance-db-model-master"
+    },
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 8,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-28T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_2",
+    "task_3"
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

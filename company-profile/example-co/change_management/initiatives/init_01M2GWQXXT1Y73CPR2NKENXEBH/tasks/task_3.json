@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_3",
+  "initiativeId": "init_01M2GWQXXT1Y73CPR2NKENXEBH",
+  "companyId": "example-co",
+  "seq": 3,
+  "title": "Record the approved write-tool allow-list and set it in the AWS deployment config",
+  "description": "The CISO and CTO review which ExampleCo agents call mcp-gateway and whether any of them needs a create, update or delete tool. The app README describes query-only use, so the expected result is an empty list. Record the decision in applications/mcp-gateway/repos/mongodb-mcp-server/deploy/aws/README.md: add a row for MDB_MCP_ALLOWED_WRITE_TOOLS to the environment-variable table (lines 40-50) with the approved value, the approver and the decision date. In deploy/aws/Dockerfile, next to `ENV MDB_MCP_DISABLED_TOOLS=atlas-local` (line 13), add `ENV MDB_MCP_ALLOWED_WRITE_TOOLS=<approved list>`. If the approved list is empty, also add `ENV MDB_MCP_READ_ONLY=true`. Keep the default confirmationRequiredTools; do not shorten them. If any write tool is approved, it must also be in confirmationRequiredTools. PR to main with one non-author approval. Deployment happens in task 4.",
+  "owner": {
+    "type": "human",
+    "id": "ciso@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "deploy/aws/Dockerfile on main contains an `ENV MDB_MCP_ALLOWED_WRITE_TOOLS=` line matching the approved list, plus `ENV MDB_MCP_READ_ONLY=true` when that list is empty (check with `grep -n 'MDB_MCP_' deploy/aws/Dockerfile`)",
+    "deploy/aws/README.md has a table row for MDB_MCP_ALLOWED_WRITE_TOOLS naming the approved value, the approver and the decision date",
+    "Every tool in the approved allow-list is also covered by confirmationRequiredTools, confirmed by comparing the Dockerfile env with the userConfig.ts defaults or overrides in the PR",
+    "The PR is merged with an approving review from someone other than the author"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-agent-graph",
+    "description": "Re-run probe-agent-graph on mcp-gateway/mongodb-mcp-server at the merged commit. Expected: the deploy/aws tree configures deny-by-default (the allow-list set, and read-only when no write tools are approved), and neither AGENT-ASI02-01 nor AGENT-ASI09-01 is produced for the repo."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "The AWS deployment config (deploy/aws/Dockerfile) sets only MDB_MCP_DISABLED_TOOLS=atlas-local and never restricts write tools. No approved list says which destructive capabilities agents may use."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 4,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-18T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_2"
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "change-manager"
+  }
+}

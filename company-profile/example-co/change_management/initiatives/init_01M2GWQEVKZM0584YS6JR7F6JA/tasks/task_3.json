@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_3",
+  "initiativeId": "init_01M2GWQEVKZM0584YS6JR7F6JA",
+  "companyId": "example-co",
+  "seq": 3,
+  "title": "Add a CODEOWNERS file to onfinance-db-model-master",
+  "description": "In applications/db-models/repos/onfinance-db-model-master (OnFinance/onfinance_db_model_master, default branch master), create .github/CODEOWNERS. Add a catch-all entry and entries for /onfinance_db_model_master/, /setup.py and /.github/CODEOWNERS, naming the data-model owner team from the task 1 matrix. Deliver it as a pull request approved by someone other than the author (selfApprovalAllowed false). The repository has ciSystem none, so there is no pipeline to adjust. Downstream services that consume the package are unaffected, because no code or version changes.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "`git -C applications/db-models/repos/onfinance-db-model-master show origin/master:.github/CODEOWNERS` exits 0 and shows entries for /onfinance_db_model_master/ and /setup.py, each naming an @OnFinance/ team.",
+    "`gh api repos/OnFinance/onfinance_db_model_master/codeowners/errors --jq '.errors | length'` returns 0.",
+    "After the next refresh-ctx, applications/db-models/repos/onfinance-db-model-master.json records codeownersPresent: true."
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-sdlc",
+    "description": "Re-run probe-sdlc for example-co after refresh-ctx re-fetches onfinance-db-model-master. Expected: the repository record shows codeownersPresent true, and the SSDF PO.2.1 check no longer reports a missing CODEOWNERS file for this shared library."
+  },
+  "rootCause": {
+    "category": "process-gap",
+    "description": "The shared data-model library was treated as an internal utility rather than a security-relevant asset. It was never given an owner, so changes to schemas consumed by internal services need no accountable reviewer."
+  },
+  "targets": [
+    {
+      "type": "company"
+    }
+  ],
+  "effortEstimateHours": 2,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-10-26T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_1"
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

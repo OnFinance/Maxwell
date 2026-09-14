@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_4",
+  "initiativeId": "init_01M2GWQXXT1Y73CPR2NKENXEBH",
+  "companyId": "example-co",
+  "seq": 4,
+  "title": "Roll out the hardened gateway dev, qa, prod and prove destructive calls are refused",
+  "description": "Build the mcp-gateway image from the main commit that contains tasks 1-3. Deploy it one environment at a time following sdlc/policy.json releaseProcess.environmentsOrder (dev via docker compose, then qa, then prod on EKS ap-south-1), with releaseProcess.approvalsRequired 1 for each environment. Before each rollout, record the current image digest as the rollback target. policy.json defines no deploymentWindows and applications/mcp-gateway/env/qa.json and prod.json set no changeFreeze, so agree the prod slot with the CAB. Complete prod by Monday 2026-09-21 12:00 UTC, before the findings' slaDueAt of 2026-09-21T19:14:04Z. In dev and qa, use an MCP client that does not declare the elicitation capability (for example an MCP SDK Client created with empty capabilities). Call tools/list, then call drop-collection on a scratch collection maxwell_cm_canary in a throwaway database created for the test, never a client-data or order database. In prod, run only the non-destructive tools/list check against the gateway endpoint, because prod holds pii and financial data. If any check fails, follow the initiative rollback plan.",
+  "owner": {
+    "type": "human",
+    "id": "ciso@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "In dev and qa, drop-collection called from a client without elicitation capability returns an error result and a following list-collections still shows maxwell_cm_canary",
+    "In dev, qa and prod, tools/list from the gateway shows no create, update or delete tool beyond the allow-list recorded in task 3",
+    "The prod deployment runs the image digest built from the merged commit, and the previous digest is recorded as the rollback target in the task evidence",
+    "Prod rollout finishes before 2026-09-21T19:14:04Z and the scratch database is dropped from qa after the test"
+  ],
+  "verificationMethod": {
+    "type": "manual-test",
+    "description": "probe-agent-graph is a static probe and cannot observe the deployed gateway, so this is a manual test. With an MCP client whose capabilities omit elicitation: in qa, tools/list must show no unapproved write tool, and drop-collection on the scratch collection maxwell_cm_canary must return an error while the collection still exists afterwards. In prod, tools/list must match the approved allow-list. Attach the client transcripts and the before/after image digests as task evidence."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "The deployed qa and prod gateways run a build that has no fail-closed confirmation and no write allow-list, so fixing the code does not reduce risk until the hardened image reaches those environments."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 6,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-21T12:00:00Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_1",
+    "task_2",
+    "task_3"
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "change-manager"
+  }
+}

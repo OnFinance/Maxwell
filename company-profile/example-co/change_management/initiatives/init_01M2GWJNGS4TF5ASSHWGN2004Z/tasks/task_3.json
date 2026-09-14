@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_3",
+  "initiativeId": "init_01M2GWJNGS4TF5ASSHWGN2004Z",
+  "companyId": "example-co",
+  "seq": 3,
+  "title": "Add regression tests for unauthenticated access to the /mcp transports",
+  "description": "Add test cases to tests/integration/transports/streamableHttp.test.ts and tests/unit/transports/streamableHttp.test.ts in mongodb-mcp-server, covering: POST, GET and DELETE /mcp with no credential (expect 401); a wrong credential and a wrong-length credential (expect 401/403 without throwing); a correct credential (MCP initialize succeeds and a tool list is returned); startup refusal on 0.0.0.0 without auth; and loopback opt-out behaviour. Use generated test credentials created inside the test (for example crypto.randomBytes), never literals that look like secrets, so the workspace secret guard is not triggered. The tests must run in the existing github-actions CI job, so a future change that removes the auth gate fails the build.",
+  "owner": {
+    "type": "human",
+    "id": "ciso@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "`pnpm vitest run tests/integration/transports/streamableHttp.test.ts tests/unit/transports/streamableHttp.test.ts` passes on the PR branch and includes named cases for missing, wrong and correct credentials and for startup refusal.",
+    "Temporarily reverting the task 1 middleware on a scratch branch makes at least one of the new tests fail (shown in the PR description or CI log).",
+    "The GitHub Actions run for the merge commit shows the transport test job green."
+  ],
+  "verificationMethod": {
+    "type": "manual-test",
+    "description": "On the PR branch, run `pnpm install --frozen-lockfile && pnpm vitest run tests/integration/transports/streamableHttp.test.ts tests/unit/transports/streamableHttp.test.ts`. Expected: all tests pass and the unauthenticated-request cases assert HTTP 401. Then remove the auth middleware locally and re-run; the unauthenticated cases must fail."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "No test asserted that /mcp rejects unauthenticated requests, so the default-open behaviour was never caught in CI and could regress unnoticed after the fix."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 6,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-18T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_1", "task_2" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

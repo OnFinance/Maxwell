@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_2",
+  "initiativeId": "init_01M2GWPKP2RSJXDMRMC9F47V32",
+  "companyId": "example-co",
+  "seq": 2,
+  "title": "Capture the mcp-gateway SBOM and image record into applications/mcp-gateway/images",
+  "description": "Download the mcp-gateway-sbom-<version> artefact from the first release run after task 1 (`gh run download <run-id> -n mcp-gateway-sbom-<version>`). If no release is cut before this task's due date, generate the SBOM for the image digest currently deployed in prod through `node .claude/scripts/toolchain/scan.mjs` with the pinned syft 1.51.1 instead. Never call syft directly.\nCreate applications/mcp-gateway/images/mongodb-mcp-server.cdx.json from that SBOM. Add the metadata.properties entries maxwell:runId, maxwell:sessionId, maxwell:workflow and maxwell:imageId=mongodb-mcp-server that application/sbom-ref.schema.json requires.\nCreate applications/mcp-gateway/images/mongodb-mcp-server.json (kind maxwell.app.image) with:\n- ref: docker.io/<vars.DOCKERHUB_IMAGE_REPOSITORY>:<version>@sha256:<digest>\n- registry: docker.io\n- repository and digest taken from image-digest.txt\n- builtFrom: repoId mongodb-mcp-server, the release commit and dockerfilePath Dockerfile\n- sbomPath: applications/mcp-gateway/images/mongodb-mcp-server.cdx.json\n- envIds: the mcp-gateway environments (dev, qa, prod) that run this image\n- provenance\nWrite only inside the layout-sanctioned images/ path and never copy registry credentials.",
+  "owner": {
+    "type": "human",
+    "id": "ciso@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "`node .claude/scripts/validate-data.mjs applications/mcp-gateway/images/mongodb-mcp-server.json applications/mcp-gateway/images/mongodb-mcp-server.cdx.json` exits 0",
+    "The digest in mongodb-mcp-server.json equals the image-digest.txt of the captured release run (or the prod-deployed digest in the fallback case) and the metadata.component version in mongodb-mcp-server.cdx.json",
+    "mongodb-mcp-server.json sbomPath resolves to the existing .cdx.json file, and `find applications/mcp-gateway -iname '*.cdx.json'` returns exactly that path"
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "Run `node .claude/scripts/validate-data.mjs` on both image files (expected exit 0). Compare the digest in the image record, the SBOM metadata.component version and the release run's image-digest.txt (expected: all three identical). Confirm the SBOM lists npm components with purls and hashes from the package.json/pnpm lockfile."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "No procedure or owner copies the SBOM produced at release into applications/mcp-gateway/images/, so the workspace has no image record or SBOM for mcp-gateway at all."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 3,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-10-02T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_1"
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

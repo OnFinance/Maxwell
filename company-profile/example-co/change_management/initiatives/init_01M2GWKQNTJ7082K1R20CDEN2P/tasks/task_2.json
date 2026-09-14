@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_2",
+  "initiativeId": "init_01M2GWKQNTJ7082K1R20CDEN2P",
+  "companyId": "example-co",
+  "seq": 2,
+  "title": "Redact isSecret configuration fields in the dry-run config dump",
+  "description": "In applications/mcp-gateway/repos/mongodb-mcp-server/src/transports/dryModeRunner.ts (DryRunModeRunner.dumpConfig, lines 43-46), stop logging JSON.stringify(this.userConfig) raw. Build a copy of UserConfig where every field marked isSecret:true in src/common/config/userConfig.ts (connectionString, apiClientId, apiClientSecret, voyageApiKey and any future isSecret field) is replaced with a fixed redaction marker, or pass the output through the mongodb-redact redact() helper already used by LoggerBase.redactIfNecessary and Telemetry.sendEvents. Derive the redaction list from the isSecret metadata, not a hard-coded list, so new secret fields are covered. Add a unit test. Constraints: same release process as task 1 (normal change, 1 approval, dev -> qa -> prod). No change freeze is recorded.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "Running the server with MDB_MCP_DRY_RUN=true and sentinel non-secret placeholder values (e.g. SENTINEL-DRYRUN-0001) in the connection string, apiClientSecret and voyageApiKey prints a config dump in which no sentinel value appears",
+    "A unit test iterates every isSecret:true field in userConfig.ts and asserts its value is absent from the dumpConfig output, and passes in `pnpm test`",
+    "Re-running probe-schemas produces no SCH-API-06 fail result at src/transports/dryModeRunner.ts"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-schemas",
+    "description": "Re-run probe-schemas on mcp-gateway/mongodb-mcp-server at the merged commit. Expect no SCH-API-06 result for src/transports/dryModeRunner.ts and fingerprint 49267cdf... absent, so the ledger can resolve fnd_01M2GMWQ01QA647X5MYFGNS1MG."
+  },
+  "rootCause": {
+    "category": "insecure-code",
+    "description": "dumpConfig bypasses the codebase's redaction path and serialises the full resolved UserConfig to stdout, ignoring the isSecret markers declared in userConfig.ts."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 4,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-17T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

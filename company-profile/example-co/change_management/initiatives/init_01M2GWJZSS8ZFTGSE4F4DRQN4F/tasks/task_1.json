@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_1",
+  "initiativeId": "init_01M2GWJZSS8ZFTGSE4F4DRQN4F",
+  "companyId": "example-co",
+  "seq": 1,
+  "title": "Approve the field-level classification map for db-models and the MongoDB MCP tool arguments",
+  "description": "Use company-profile/example-co/sdlc/metastore.json (catalog db-models-mongodb, dataClassification and pii per column) to produce the approved label vocabulary (public, internal, confidential, restricted, plus pii and spdi flags) and the field map both repos will annotate against. Scope of the map: (a) every Document and EmbeddedDocument field in onfinance_db_model_master/models.py, covering at minimum secrets.* (models.py:8-15), communities.community_admin_name, new_discussions.author_id/author_name, entity.social_discussions.*, user.user_email/user_phone_number/user_password/user_full_name/user_binance_auth_creds (models.py:388-397), feedback.feedback_uid and reward.winning_user; (b) the mongodb-mcp-server tool arguments that can carry client data: filter, projection, document(s), update, pipeline and the vector-search stage parameters in src/tools/mongodb/mongodbSchemas.ts, src/tools/args.ts (zEJSON) and the read/create/update/delete tools. Because MCP arguments reach the pii and financial client-data and order stores (applications/mcp-gateway/README.md, env qa/prod), those arguments take the highest classification of the connected stores. Commit the map as docs/data-classification.md in both repos through a PR that the DPO approves. No deployment is involved.",
+  "owner": {
+    "type": "human",
+    "id": "dpo@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "docs/data-classification.md exists in a DPO-approved PR on both onfinance_db_model_master (master) and mongodb-mcp-server (main)",
+    "Every column that metastore.json catalog db-models-mongodb marks pii, spdi or restricted appears in the map with the same labels: a column-by-column diff against metastore.json shows zero mismatches",
+    "The map names the classification for each MCP tool argument (filter, projection, document, update, pipeline, vector-search stage) and the metadata key both repos will use (x-data-classification in TypeScript, data_classification in Python)"
+  ],
+  "verificationMethod": {
+    "type": "attestation",
+    "description": "The DPO (dpo@example-co.invalid) records PR approval on both docs/data-classification.md PRs. The reviewer attaches the PR URLs and a script diff of the map against metastore.json showing no missing or mismatched pii/spdi/restricted columns."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "The classifications exist only in the metastore catalogue; no approved field-level vocabulary was ever handed to the engineering repos, so developers had nothing to annotate against."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "db-models",
+      "repoId": "onfinance-db-model-master"
+    },
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 4,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-18T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

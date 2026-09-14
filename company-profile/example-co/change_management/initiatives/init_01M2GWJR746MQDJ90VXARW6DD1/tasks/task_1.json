@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_1",
+  "initiativeId": "init_01M2GWJR746MQDJ90VXARW6DD1",
+  "companyId": "example-co",
+  "seq": 1,
+  "title": "Add enforced vitest coverage thresholds to mongodb-mcp-server",
+  "description": "In applications/mcp-gateway/repos/mongodb-mcp-server (default branch main, pinned aaa72a04), measure current coverage by running `pnpm test` (vitest --coverage --run) on main. Then add `coverage.thresholds` with numeric `lines`, `branches`, `functions` and `statements` to the coverage block of vitest.config.ts (currently lines 30-44, which set only exclude and reporter). Set each value to the floor of the measured baseline. Tests are sharded across jobs whose lcov is merged in the `coverage` job of .github/workflows/code-health.yml (lines 148-191, lcov-result-merger then coverallsapp). So either scope the thresholds to the `unit-and-integration` project run by the run-tests job, or add a step after the merge in the `coverage` job that exits non-zero when the merged coverage/lcov.info falls below the same floor. Either way, the gate must fail the workflow and not only report to Coveralls. Constraints: merge by pull request with 1 approval (releaseProcess.approvalsRequired). sdlc/policy.json defines no deploymentWindows or change freeze, and the change affects CI only.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "vitest.config.ts on main contains coverage.thresholds with numeric lines, branches, functions and statements values no higher than the baseline measured on main (baseline figures recorded in the PR description).",
+    "A throwaway pull request that deletes one unit test file covering src/ code makes the Code Health workflow fail on the coverage threshold (a failing run URL is attached as task evidence), and the same PR without the deletion passes.",
+    "Re-running probe-sdlc on mcp-gateway/mongodb-mcp-server no longer produces fingerprint 7b28ad9bb3c053384d1fe7a3325f28d9a49a5b3a7ae170a36312672e49b5149b (rule ssdf-pw-8-2-no-coverage-threshold)."
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-sdlc",
+    "description": "Re-run probe-sdlc scoped to mcp-gateway/mongodb-mcp-server at the merge commit. Expected: the unit-tests gate observation for sebi-cscrf-2024:PR.IP.S6 reports thresholds present and enforced, and finding fnd_01M2GSDSE000HR9FYWXXSM4ZM3 is not re-produced (fingerprint 7b28ad9b... absent)."
+  },
+  "rootCause": {
+    "category": "process-gap",
+    "description": "The unit-tests gate was defined in policy as blocking, but nobody set a coverage floor. vitest.config.ts only configures exclude and an lcov reporter, so coverage is measured and uploaded but can never fail a build."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 6,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-10-14T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

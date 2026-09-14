@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_4",
+  "initiativeId": "init_01M2GWJAYY9ZQ8Y0GQJ7XNYQ28",
+  "companyId": "example-co",
+  "seq": 4,
+  "title": "Baseline gitleaks over full git history and rotate any live credential it finds",
+  "description": "Before gitleaks is made a required check, run the task 3 configuration (gitleaks 8.30.1, .gitleaks.toml) over the full history of the mongodb-mcp-server checkout at applications/mcp-gateway/repos/mongodb-mcp-server. Use gitleaks git --redact --report-format sarif, run through node .claude/scripts/toolchain/scan.mjs so the pinned binary is used. Triage every hit as live credential, revoked credential, or test fixture. Rotate each live credential in its backend: AWS Secrets Manager per policy.json secretsManagement, or the issuing service for GitHub, npm, JIRA or MongoDB Atlas tokens. Record the rotation date, never the value. Add test fixtures and revoked credentials to a .gitleaksignore file of redacted fingerprints, reviewed in a PR. Never paste a secret value into the PR, the ticket or this workspace.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "gitleaks git --config .gitleaks.toml --exit-code 1 over the full history of main exits 0 once .gitleaksignore is applied",
+    "A triage record in the PR description lists every baseline hit by gitleaks fingerprint (redacted) with its disposition (live-rotated, revoked, fixture), and every live-rotated entry has a rotation date",
+    "No .gitleaksignore entry covers a credential marked live that has not been rotated"
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "The CISO reviews the redacted gitleaks SARIF baseline report, the merged .gitleaksignore PR and the rotation dates. Expected: every baseline hit has a disposition, every live credential shows a rotation date on or before this task's dueAt, and a clean full-history gitleaks run (exit 0) is attached to the PR."
+  },
+  "rootCause": {
+    "category": "misconfiguration",
+    "description": "Because the old gate matched only AWS key patterns, non-AWS secrets may already be in the repository history. Turning on a blocking gate at minSeverityToBlock low without a baseline would block every PR on historical hits."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 4,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-19T13:00:00Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_3" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

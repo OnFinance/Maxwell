@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_3",
+  "initiativeId": "init_01M2GWK1FRDCWGPJVC10RJS43X",
+  "companyId": "example-co",
+  "seq": 3,
+  "title": "Extend Dependabot docker updates to cover deploy/aws so the digest pins stay current",
+  "description": "In applications/mcp-gateway/repos/mongodb-mcp-server/.github/dependabot.yml, the docker entry covers only `directory: \"/\"`. Change it to `directories: [\"/\", \"/deploy/aws\"]`, or add a second docker entry for \"/deploy/aws\", keeping `interval: weekly`. Dependabot then opens reviewed PRs that bump the pinned node:24-alpine digest in both Dockerfiles, so the pin does not freeze the base image and miss Alpine or Node security fixes. Merge through the normal PR process with 1 approval. This change does not touch runtime images.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "`.github/dependabot.yml` on main has a `package-ecosystem: \"docker\"` update whose directories include both \"/\" and \"/deploy/aws\"",
+    "The repository's Dependabot page (Insights > Dependency graph > Dependabot) lists both Dockerfile and deploy/aws/Dockerfile as monitored manifests with a last check that ran without error"
+  ],
+  "verificationMethod": {
+    "type": "code-review",
+    "description": "Review the merged dependabot.yml diff and confirm that the docker ecosystem entry lists \"/deploy/aws\" in addition to \"/\". Then open the GitHub Dependabot status for mongodb-mcp-server and confirm deploy/aws/Dockerfile is monitored with no configuration error."
+  },
+  "rootCause": {
+    "category": "misconfiguration",
+    "description": "Dependabot's docker ecosystem is scoped only to the repository root, so deploy/aws/Dockerfile gets no automated base-image update PRs. A digest pin there would go stale with nobody notified."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 1,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-19T13:00:00Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_1", "task_2" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

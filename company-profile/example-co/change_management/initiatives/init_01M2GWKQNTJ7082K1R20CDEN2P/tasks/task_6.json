@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_6",
+  "initiativeId": "init_01M2GWKQNTJ7082K1R20CDEN2P",
+  "companyId": "example-co",
+  "seq": 6,
+  "title": "Record the DPDP breach-assessment decision for the plaintext credential exposure",
+  "description": "Using the outputs of tasks 4 and 5, assess whether plaintext storage of Zerodha/Binance credentials in the db-models collections (metastore classification restricted/spdi) or disclosure through MCP transcripts and dry-run logs amounts to a personal data breach under dpdp-rules-2025 (security safeguards rule 6(1)(a)/(b)). Decide whether breach notification under rule 7 is required: it is required only if there is evidence of unauthorised access, and if so its 72-hour clock runs from awareness. Record the decision, the evidence considered and the reasoning as a soc ledger observation (methods document-review, controlIds sebi-cscrf-2024:PR.DS.S1 and dpdp-rules-2025:6(1)(a)) handed to soc-ledger-keeper. Coordinate with the CISO on the parallel CERT-In/SEBI 6-hour incident-reporting assessment if unauthorised access is found.",
+  "owner": {
+    "type": "human",
+    "id": "dpo@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "A soc ledger observation exists in company-profile/example-co/soc/main.jsonl with methods document-review, citing dpdp-rules-2025 6(1)(a), that states whether a notifiable personal data breach occurred and references the task 4 and task 5 evidence",
+    "If the decision is notifiable, an incident record with regulatorReportRefs for MeitY (72 h) and CERT-In/SEBI (6 h) exists; if not, the observation states the absence of evidence of unauthorised access that supports that conclusion"
+  ],
+  "verificationMethod": {
+    "type": "attestation",
+    "description": "The DPO signs off on the breach-assessment observation, and the CISO countersigns it in the task evidence. Expected result: a dated, signed decision linked to the ledger observation id, plus an incident id when notification is required."
+  },
+  "rootCause": {
+    "category": "insecure-code",
+    "description": "Plaintext credential handling in code left personal and financial account credentials without DPDP rule 6 safeguards, so the organisation must determine whether the exposure window created a reportable breach."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "db-models",
+      "repoId": "onfinance-db-model-master"
+    },
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 3,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-21T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_4",
+    "task_5"
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

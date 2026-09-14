@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_1",
+  "initiativeId": "init_01M2GWKJWQ5AJJZGZMWK8TKMRA",
+  "companyId": "example-co",
+  "seq": 1,
+  "title": "Add a security and data-impact checklist to the mongodb-mcp-server PR template",
+  "description": "In applications/mcp-gateway/repos/mongodb-mcp-server (OnFinance/mongodb-mcp-server, default branch main), edit .github/pull_request_template.md (5 lines today: 'Proposed changes' plus a MongoDB CLA checkbox). Keep the existing lines unchanged to avoid upstream sync conflicts, and append a '## Security and data impact' section of checkboxes that each need an answer: (1) data classes read, written or logged (public/internal/pii/financial; prod and qa carry pii and financial) and whether personal data handling changes (DPDP Rules 6(1)(g)); (2) authentication, authorisation or connection-string handling changed; (3) new or changed MCP tools, write-capable operations or outbound network calls; (4) threat model reviewed or updated for this change (SEBI CSCRF PR.IP.S2, NIST SSDF PW.7.1); (5) dependency changes come with an updated pnpm lockfile; (6) AI-assisted code reviewed line by line by a human (aiCodingPolicy.humanReviewRequired), with no pii or financial data sent to AI tools (allowedDataClasses public, internal); (7) no secrets added (gitleaks gate). Merge through a PR on protected main with at least one approver other than the author (codeReview.minApprovers 1, selfApprovalAllowed false). No deployment, so no deployment window or change freeze applies.",
+  "owner": {
+    "type": "human",
+    "id": "ciso@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "`git -C applications/mcp-gateway/repos/mongodb-mcp-server show main:.github/pull_request_template.md` contains a '## Security and data impact' heading followed by at least six '- [ ]' checkbox items covering data classes, auth changes, new MCP tools or outbound calls, threat model, lockfile updates and AI-assisted code review",
+    "The original CLA checkbox line is still in the template",
+    "The PR that merged the change shows at least one approval from someone other than the author",
+    "A re-run of probe-sdlc for mcp-gateway/mongodb-mcp-server no longer yields rule ssdf-pw-7-1-no-pr-security-checklist (fingerprint fa0d100e5cc99fa59ad4b8db883a630041af7983199a5da87e42d0384f3c2cb6)"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-sdlc",
+    "description": "Re-run probe-sdlc scoped to mcp-gateway repo mongodb-mcp-server at the new main commit. Expected: the SARIF export has no result for ssdf-pw-7-1-no-pr-security-checklist on .github/pull_request_template.md, and the observation for sebi-cscrf-2024:PR.IP.S2 on this repo does not report the missing checklist."
+  },
+  "rootCause": {
+    "category": "process-gap",
+    "description": "The fork kept the upstream MongoDB 5-line template, which covers only the CLA. When the repo was adopted for mcp-gateway, which handles pii and financial data, nobody was made responsible for adding security review prompts, so codeReview.required is enforced without guidance on what a reviewer must check."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 3,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-23T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

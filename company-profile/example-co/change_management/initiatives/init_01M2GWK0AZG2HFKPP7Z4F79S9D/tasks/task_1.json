@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_1",
+  "initiativeId": "init_01M2GWK0AZG2HFKPP7Z4F79S9D",
+  "companyId": "example-co",
+  "seq": 1,
+  "title": "Annotate SwitchConnectionTool connectionString as a secret",
+  "description": "In applications/mcp-gateway/repos/mongodb-mcp-server/src/tools/mongodb/connect/switchConnection.ts (argsShape.connectionString, lines 13-20 at pinnedCommit aaa72a04), add isSecret: true metadata to the zod schema. Keep .optional() and the existing .describe() text. Use the ConfigFieldMeta key defined in src/common/config/configUtils.ts:33, which userConfig.ts:40-46 already applies to the config-level connectionString. Attach it with a zod registry or .meta() so the field is secret-marked in the tool inputSchema that tool.ts register() publishes (line 717). If the connect tool finding is fixed at the same time, use the same mechanism for both. Constraints: open a PR against main that needs 1 approval (sdlc/policy.json releaseProcess.approvalsRequired). Do not change the argument name, optionality or description, because that would change the public tool contract.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "`grep -n isSecret src/tools/mongodb/connect/switchConnection.ts` in the checkout returns a match inside argsShape.connectionString",
+    "`pnpm run check:types` and `pnpm run build` exit 0 on the PR branch",
+    "The inputSchema that the MCP server returns from tools/list for switch-connection shows connectionString with the secret metadata, while its type (optional string) and description are unchanged"
+  ],
+  "verificationMethod": {
+    "type": "code-review",
+    "description": "A reviewer opens the PR diff for src/tools/mongodb/connect/switchConnection.ts. Expected result: connectionString carries isSecret: true metadata through the same key as userConfig.ts:40-46, and argsShape has no other change. The reviewer also confirms that the CI checks (check:types, build) are green."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "When switch-connection was added, its argsShape did not copy the isSecret metadata that the config-level connectionString has. The tool argument is therefore the one path where a credential-bearing URI enters the server with no secret marking."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 2,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-16T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

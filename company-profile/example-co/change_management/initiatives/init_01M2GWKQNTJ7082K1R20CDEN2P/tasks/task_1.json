@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_1",
+  "initiativeId": "init_01M2GWKQNTJ7082K1R20CDEN2P",
+  "companyId": "example-co",
+  "seq": 1,
+  "title": "Remove the generated password from the CreateDBUserTool result",
+  "description": "In applications/mcp-gateway/repos/mongodb-mcp-server/src/tools/atlas/create/createDBUser.ts (lines 84-96 at aaa72a04), change the success content so it never interpolates the generated password. Return only the username, roles and a note that a password was generated. Deliver the secret out-of-band: either require the caller to supply the password (no auto-generation) or store the generated value in AWS Secrets Manager (company secretsManagement.backend) and return only its locator. Keep the session.keychain.register call. Add a unit test next to the existing atlas tool tests asserting the tool result text does not contain the generated value. Constraints: normal change under sdlc/policy.json releaseProcess (1 approval, rollback plan required, promote dev -> qa -> prod). No deploymentWindows or changeFreeze are recorded for mcp-gateway environments. Due before the finding SLA of 2026-09-21T13:14:50Z.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "`grep -n 'with password' src/tools/atlas/create/createDBUser.ts` in the mongodb-mcp-server checkout returns no match",
+    "A unit test that calls the tool with auto-generated password enabled asserts the returned content text does not contain the generated password and passes in `pnpm test`",
+    "Re-running probe-schemas produces no SCH-API-06 fail result at src/tools/atlas/create/createDBUser.ts"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-schemas",
+    "description": "Re-run probe-schemas on mcp-gateway/mongodb-mcp-server at the merged commit. Expect no SCH-API-06 result for src/tools/atlas/create/createDBUser.ts and fingerprint 58e52ab0... absent, so the ledger can resolve fnd_01M2G2AGTH64FMR4XR77ZAJH7B."
+  },
+  "rootCause": {
+    "category": "insecure-code",
+    "description": "The tool builds its success message with the auto-generated password interpolated into the JSON-RPC result. Keychain redaction only scrubs logger output, not tool-result payloads that reach the MCP client transcript."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 5,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-17T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_4",
+  "initiativeId": "init_01M2GWJR746MQDJ90VXARW6DD1",
+  "companyId": "example-co",
+  "seq": 4,
+  "title": "Stand up a blocking GitHub Actions test pipeline for onfinance-db-model-master",
+  "description": "Create .github/workflows/tests.yml in onfinance-db-model-master. On pull_request to master and push to master it checks out the code, sets up the Python version declared in setup.py (python_requires, or the version the consuming services use), installs requirements-dev.txt with --require-hashes and the package, and runs `pytest --cov` so the .coveragerc fail_under from task 3 fails the job. Pin actions by full commit SHA and set `permissions: contents: read`. Then add the job as a required status check in master branch protection of OnFinance/onfinance_db_model_master. This is scheduled to meet the ledger slaDueAt of fnd_01M2GSSNXD1T94MJ6Q346HV4S6 (2026-09-28T19:35:56Z). CI only, no deployment window applies. After the merge, ask the refresh-ctx owner to update applications/db-models/repos/onfinance-db-model-master.json ciSystem from none to github-actions.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "A pull request to master triggers the tests workflow; `gh run list -R OnFinance/onfinance_db_model_master --workflow tests.yml` shows a completed run on that PR, and a PR that drops coverage below fail_under shows the run as failure.",
+    "`gh api repos/OnFinance/onfinance_db_model_master/branches/master/protection --jq '.required_status_checks.contexts'` includes the tests job name.",
+    "Re-running probe-sdlc on db-models/onfinance-db-model-master no longer produces fingerprint 68fb754f3fd514b4a98c4fba5a1fd4e45ceb7d4f1af2ccd8371390b545a52a82 (rule ssdf-pw-8-2-test-gate-not-enforced)."
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-sdlc",
+    "description": "Re-run probe-sdlc scoped to db-models/onfinance-db-model-master after the workflow merges and the repo record's ciSystem is refreshed. Expected: the PR.IP.S6 unit-tests gate observation is satisfied (CI present, pytest with coverage floor, required check), and finding fnd_01M2GSSNXD1T94MJ6Q346HV4S6 is not re-produced."
+  },
+  "rootCause": {
+    "category": "process-gap",
+    "description": "The shared data-model library was never onboarded to any CI system (ciSystem: none), so changes merge to master with no automated test run and the policy's blocking unit-tests gate exists only on paper for this repo."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "db-models",
+      "repoId": "onfinance-db-model-master"
+    }
+  ],
+  "effortEstimateHours": 5,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-28T19:35:56Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_3"
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

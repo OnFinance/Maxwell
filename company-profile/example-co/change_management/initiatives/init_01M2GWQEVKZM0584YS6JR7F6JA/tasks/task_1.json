@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_1",
+  "initiativeId": "init_01M2GWQEVKZM0584YS6JR7F6JA",
+  "companyId": "example-co",
+  "seq": 1,
+  "title": "Define the security-sensitive path inventory and create named ExampleCo review teams",
+  "description": "Create an approval matrix for code review, owned by the CISO. It lists the security-sensitive paths in each repository and the ExampleCo team accountable for each. mongodb-mcp-server (applications/mcp-gateway/repos/mongodb-mcp-server): deploy/, .github/workflows/, .github/CODEOWNERS, src/, Dockerfile. onfinance-db-model-master (applications/db-models/repos/onfinance-db-model-master): onfinance_db_model_master/, setup.py. Create the matching GitHub teams in the OnFinance organisation, for example @OnFinance/platform-security for CI and deployment paths and @OnFinance/data-model-owners for the shared data-model package. Each team needs at least two members, because sdlc/policy.json codeReview.selfApprovalAllowed is false. Do not use the inherited upstream team @mongodb-js/mcp-server-developers. Record the matrix as evidence on this task. Do not create a file in the Maxwell workspace. Constraint: sdlc/policy.json releaseProcess defines no deploymentWindows and no change freeze applies to organisation settings, but team creation must not remove existing repository collaborators.",
+  "owner": {
+    "type": "human",
+    "id": "ciso@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "An approval matrix signed off by the CISO exists and is attached as task evidence. It lists every path named in the description with exactly one accountable ExampleCo team and a named escalation contact.",
+    "`gh api orgs/OnFinance/teams/<team-slug>/members --jq length` returns 2 or more for every team named in the matrix.",
+    "No row of the matrix names @mongodb-js/mcp-server-developers or any team outside the OnFinance organisation."
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "The compliance officer reviews the attached approval matrix against the path list in this task and runs `gh api orgs/OnFinance/teams/<team-slug>/members --jq length` for each named team. Expected: every path has one ExampleCo owner team, every team has at least 2 members, and the CISO sign-off is present."
+  },
+  "rootCause": {
+    "category": "process-gap",
+    "description": "ExampleCo never defined which code paths are security-sensitive or who must review them. The mongodb-mcp-server fork kept the upstream maintainers' team as its only owner, so no ExampleCo role is accountable for CI, deployment or data-model changes."
+  },
+  "targets": [
+    {
+      "type": "company"
+    }
+  ],
+  "effortEstimateHours": 6,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-10-05T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_4",
+  "initiativeId": "init_01M2GWJSJ3JACXRBXFT116SPFH",
+  "companyId": "example-co",
+  "seq": 4,
+  "title": "Add regression tests that fail when find, aggregate or export return unmasked fields",
+  "description": "Extend tests/integration/tools/mongodb/read/find.test.ts, aggregate.test.ts, aggregateDB.test.ts and export.test.ts in mongodb-mcp-server. Each test seeds a collection listed in a test copy of maskingPolicy.json with synthetic PAN, account-number and phone values (synthetic data only, no real client data) and asserts that the tool output, or the export file, contains no clear-text value for redact fields and only the allowed partial form for partial fields. Add a unit test for src/common/masking.ts covering nested documents, arrays and $lookup output. The tests must run in the existing GitHub Actions workflow so the PR cannot merge while they fail.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "pnpm test on the PR branch passes with the new masking tests, and they fail when maskDocuments is stubbed to return its input unchanged",
+    "The GitHub Actions run on the PR shows the masking tests executed and green",
+    "No test fixture contains real client data (seed values are synthetic and generated in the test file)"
+  ],
+  "verificationMethod": {
+    "type": "code-review",
+    "description": "A reviewer other than the author checks the PR diff: tests exist for find, aggregate, aggregateDB and export; a mutation (maskDocuments returning input unchanged) makes them fail; and CI is green on the final commit. Expected result: reviewer approval recorded on the PR."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "The read-tool integration tests assert result shape and limits but never check data classification, so unmasked output could not be caught in CI."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 8,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-19T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_2", "task_3" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

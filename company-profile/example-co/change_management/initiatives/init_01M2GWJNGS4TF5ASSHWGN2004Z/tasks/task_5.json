@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_5",
+  "initiativeId": "init_01M2GWJNGS4TF5ASSHWGN2004Z",
+  "companyId": "example-co",
+  "seq": 5,
+  "title": "Roll out enforced authentication to qa and prod and confirm unauthenticated /mcp is rejected at runtime",
+  "description": "Deploy the merged build (tasks 1-4) to the mcp-gateway qa environment and then to prod (EKS ap-south-1, prod exposure partner, data classes pii and financial) through the normal release pipeline, following environmentsOrder dev -> qa -> prod. Watch the 401/403 rate and agent error logs for at least 2 hours in qa before promoting to prod, and for 24 hours after prod. Prod must enforce before the earliest linked finding SLA, 2026-09-21T13:14:50Z. If a client breaks, apply the initiative rollbackPlan together with its compensating control; never roll back to an open endpoint. runtime-probe-network-perimeter cannot verify this: applications/mcp-gateway/env/qa.json and prod.json declare no urls[] and use probeAccess.method kubeconfig, so the probe skips connectivity checks and its rules of engagement forbid POST/authentication attempts; prod.json also only allows probing mon-fri 16:30-23:30Z, which excludes this task's 13:14:50Z due time. Verification is instead the platform team's own release-pipeline check of unauthenticated POST/GET /mcp in qa and prod, with the output captured and hashed as task evidence.",
+  "owner": {
+    "type": "human",
+    "id": "ciso@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "The platform team's release-pipeline check of an unauthenticated POST /mcp and GET /mcp against qa records a 401/403 response with no MCP initialize or tool list returned, with output captured and sha256-hashed as task evidence.",
+    "The same release-pipeline check against prod records the same rejection (401/403, no tool list), with output captured and sha256-hashed as task evidence.",
+    "Deployment records show that the prod image digest running after rollout matches the build containing tasks 1-4, and that it was deployed before 2026-09-21T13:14:50Z.",
+    "The consuming agents' error logs for the 24 hours after the prod rollout show no sustained authentication failures from configured clients."
+  ],
+  "verificationMethod": {
+    "type": "manual-test",
+    "description": "The platform team runs its release-pipeline check sending an unauthenticated POST /mcp and GET /mcp against the qa endpoint, then the prod endpoint, through the normal deployment pipeline (not a Maxwell runtime probe, since qa.json/prod.json declare no urls[], use probeAccess.method kubeconfig, and prod.json's probing window mon-fri 16:30-23:30Z excludes this task's 13:14:50Z due time). Expected: both qa and prod return 401/403 with no MCP initialize or tool list; the captured output is attached as evidence and the ledger observation for sebi-cscrf-2024:PR.AA.S17 on mcp-gateway qa and prod is satisfied."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "Running environments served /mcp without authentication because nothing enforced it at deploy time. Only a check of the deployed endpoints proves the control now exists where pii and financial data are reachable."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 6,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-21T13:14:50Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_3", "task_4" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_2",
+  "initiativeId": "init_01M2GWJNGS4TF5ASSHWGN2004Z",
+  "companyId": "example-co",
+  "seq": 2,
+  "title": "Refuse to start the streamable HTTP transport without authentication on non-loopback hosts",
+  "description": "In src/transports/streamableHttp.ts, turn shouldWarnAboutHttpHost() (lines 156-160), which today only logs a warning when httpHost is 0.0.0.0, :: or another non-loopback address, into a startup check that fails. If transport is http and no authentication credential from task 1 is configured, startup must throw a clear error and exit non-zero. The only exception is an explicit opt-out flag (for example an allow-unauthenticated setting, default false) that is honoured only when httpHost is 127.0.0.1, localhost or ::1. Keep the monitoring server's health endpoints reachable so runtime probes and Kubernetes liveness checks still work. Update the httpHeaders and host descriptions in src/common/config/userConfig.ts and the --httpHeaders/MDB_MCP_HTTP_HEADERS entry in server.json so they no longer describe authentication as optional. Constraint: the AWS deploy path sets MDB_MCP_HTTP_HOST=0.0.0.0, so this task must merge together with task 4's deployment configuration or before it, never ship to qa or prod alone.",
+  "owner": {
+    "type": "human",
+    "id": "ciso@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "Starting the server with MDB_MCP_TRANSPORT=http, MDB_MCP_HTTP_HOST=0.0.0.0 and no auth credential exits with a non-zero code and logs an error naming the missing authentication setting; no port is left listening.",
+    "Starting with MDB_MCP_HTTP_HOST=0.0.0.0 and the opt-out flag set still exits non-zero, while 127.0.0.1 with the opt-out flag starts and logs a warning.",
+    "Re-running probe-agent-graph on mongodb-mcp-server at the merged commit does not produce AGENT-MCP-01 for src/transports/mcpHttpServer.ts (fingerprint e2309a05bd40d959bd42ffc15c9c61f16d7b004630e71f9a9a515640a9d61dcb)."
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-agent-graph",
+    "description": "After pinning the merge commit in applications/mcp-gateway/repos/mongodb-mcp-server.json, run /probe-agent-graph example-co --app mcp-gateway. Expected: the SARIF export has no failing AGENT-MCP-01 result for the streamable/HTTP transport, and the observation for sebi-cscrf-2024:PR.AA.S17 on this repo is satisfied."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "The streamable HTTP transport had no startup safeguard. Binding to a network interface without authentication is only logged by shouldWarnAboutHttpHost(), so a deployment like the AWS Dockerfile's 0.0.0.0 bind comes up with an open /mcp endpoint."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 5,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-17T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_1" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

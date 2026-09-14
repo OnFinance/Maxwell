@@ -2,18 +2,1721 @@
   "schemaVersion": "1",
   "kind": "maxwell.cm.master",
   "companyId": "example-co",
-  "updatedAt": "2026-09-14T00:00:00Z",
+  "updatedAt": "2026-09-14T21:12:30Z",
   "counters": {
-    "open": 0,
+    "open": 22,
     "closed": 0,
     "cancelled": 0,
     "overdue": 0
   },
-  "initiatives": [],
+  "initiatives": [
+    {
+      "initiativeId": "init_01M2GWJHMWQE4QZ9YVBP20S1BX",
+      "title": "Renew lapsed material-vendor contracts and document exit plans and audit rights for AWS, GitHub and MongoDB Atlas",
+      "summary": "AWS, GitHub, Atlas back order-routing but lack exit plans/audit rights; GH-ENT-2025-07, ATLAS-2025-1189 lapsed. Renew with audit/exit clauses (SEBI CSCRF GV.SC.S3/S4, RBI Outsourcing 2025 paras 84-86)",
+      "status": "proposed",
+      "severity": "high",
+      "priority": "p2",
+      "changeType": "normal",
+      "owner": {
+        "type": "human",
+        "id": "compliance@example-co.invalid"
+      },
+      "createdAt": "2026-09-14T21:12:30Z",
+      "dueAt": "2026-10-14T21:12:30Z",
+      "rollbackPlan": "This change is contractual and documentary. No production system is reconfigured. (1) Keep the executed AWS-EA-2025-0042, GH-ENT-2025-07 and ATLAS-2025-1189 documents and the pre-change versions of company-profile/example-co/vendors/{aws,github,mongodb-atlas}.json in git. If a renewal or amendment is rejected, signed with defective terms or later voided, git-revert the vendor file edits so the ledger again reflects the true contract state. Keep service running under a written interim extension letter from the vendor until corrected terms are signed. (2) If a revised contract template or IT outsourcing policy section is rejected, restore the previous approved version from the document repository and re-open task 1. (3) Exit-plan feasibility checks (for example, an Atlas export or restore) run only in dev or qa, never prod. Exported test data is deleted and the deletion recorded, so nothing needs rolling back in order-routing.",
+      "riskAssessment": "Blast radius: no runtime change to mcp-gateway, which runs on AWS ap-south-1 (eks-prod-mumbai, partner-exposed, pii and financial data). The risk is legal and continuity exposure while the gaps stay open. MongoDB Atlas (atlas-mumbai, critical, order-routing, impact tolerance 30 min outage and 0 min data loss) runs on lapsed contract ATLAS-2025-1189 (ended 2026-05-31). The vendor could suspend service or refuse data return, and neither the entity, SEBI nor RBI has audit rights. GitHub (GH-ENT-2025-07, ended 2026-06-30) hosts the mcp-gateway and db-models repos and their CI. SLA: no sla-table row exists for vendor-due-diligence under sebi-cscrf-2024, rbi-outsourcing-risk-directions-2025 or any other in-scope instrument, so the table defaults apply (high, 30 days). dueAt = run timestamp 2026-09-14T21:12:30Z + 30 days = 2026-10-14T21:12:30Z. That is 10 h 26 min after the earliest linked finding deadline: fnd_01M2FS9ECP3E0MTCRQFEJ97930 (high, GV.SC.S4) has slaDueAt 2026-10-14T10:46:39Z. Task 2 (the Atlas renewal) is therefore due on that finding's deadline, not the initiative's. No linked finding is past its slaDueAt, no finding is critical and no risk is linked, so this is not an emergency change and no ECAB is convened. Negotiation risks: GitHub and Atlas may refuse bespoke audit clauses. Mitigation: escalate to the CISO before the due date and record any refusal as a risk for a formal decision; the gap is not closed on a vendor attestation alone. Exit-plan checks touch dev/qa only. Any vendor-side configuration change found necessary follows sdlc/policy.json releaseProcess (dev -> qa -> prod, 1 approval, rollback plan) and is scheduled outside NSE/BSE market hours to protect the order-routing tolerance. mcp-gateway prod has no change freeze on record.",
+      "slaBasis": {
+        "source": "defaults",
+        "instrument": "sebi-cscrf-2024",
+        "topic": "vendor-due-diligence",
+        "days": 30
+      },
+      "findingIds": [
+        "fnd_01M2FRY4TTS6M3JJD1F1P7J0TQ",
+        "fnd_01M2FS481DGTPTR9NJGKAAMF49",
+        "fnd_01M2FS482NWXE7E5MCZY2QMAZ0",
+        "fnd_01M2FS9EBVSP2DPWN5K2D91QKW",
+        "fnd_01M2FS9ECP3E0MTCRQFEJ97930"
+      ],
+      "riskIds": [],
+      "controlIds": [
+        "GV.SC.S3",
+        "GV.SC.S4",
+        "84",
+        "85",
+        "86"
+      ],
+      "regulatoryRefs": [
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "GV.SC.S3"
+        },
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "GV.SC.S4"
+        },
+        {
+          "regulator": "RBI",
+          "instrument": "rbi-outsourcing-risk-directions-2025",
+          "controlId": "84"
+        },
+        {
+          "regulator": "RBI",
+          "instrument": "rbi-outsourcing-risk-directions-2025",
+          "controlId": "85"
+        },
+        {
+          "regulator": "RBI",
+          "instrument": "rbi-outsourcing-risk-directions-2025",
+          "controlId": "86"
+        }
+      ],
+      "targets": [
+        {
+          "type": "vendor",
+          "vendorId": "aws"
+        },
+        {
+          "type": "vendor",
+          "vendorId": "github"
+        },
+        {
+          "type": "vendor",
+          "vendorId": "mongodb-atlas"
+        }
+      ],
+      "taskCounts": {
+        "total": 6,
+        "done": 0,
+        "blocked": 0
+      },
+      "suggestionIds": [],
+      "sourceWorkflow": "impl-change-management",
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-14T21:12:30Z",
+        "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+        "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+        "workflow": "impl-change-management",
+        "agent": "validator"
+      }
+    },
+    {
+      "initiativeId": "init_01M2GWJF4XYSA816536HWERV4H",
+      "title": "Obtain and review GitHub Enterprise Cloud's renewed SOC 2 Type II report before the current one expires",
+      "summary": "GitHub Enterprise Cloud's only SOC 2 report expires 2026-09-30, none newer on file. Obtain the renewal or a bridge letter, review it, record in vendors/github.json (SEBI CSCRF GV.SC.S4, RBI para 79).",
+      "status": "proposed",
+      "severity": "high",
+      "priority": "p2",
+      "changeType": "normal",
+      "owner": {
+        "type": "human",
+        "id": "compliance@example-co.invalid"
+      },
+      "createdAt": "2026-09-14T21:12:30Z",
+      "dueAt": "2026-10-14T10:46:39Z",
+      "rollbackPlan": "This is a records and evidence change: no production system, repository or pipeline changes. If a recorded report later turns out to be invalid, out of scope or misattributed, revert the commit that added the new assurance[] entry to company-profile/example-co/vendors/github.json. The previous Ernst & Young entry (expiresAt 2026-09-30) is never deleted, so the file returns to its earlier state. The compliance officer then reopens task 2, and the finding stays open in the ledger until a valid report is on file. If GitHub cannot supply a renewed report or bridge letter by 2026-09-30, keep the finding open and raise a ledger risk for the CISO to decide whether to accept it (acceptedBy, acceptedUntil). The initiative is not closed in that case.",
+      "riskAssessment": "Blast radius: this plan changes no system. The exposure it closes is regulatory and third-party. GitHub Enterprise Cloud hosts source code, GitHub Actions CI and the package registry, with confidential data stored in US regions and a long list of subprocessors. The service is marked criticality 'important' with supportsCriticalFunction false, but refutation noted it indirectly supports mcp-gateway, which serves the order-routing critical function. From 2026-10-01 the company would hold no current assurance on this material vendor, which breaks the ongoing monitoring required by SEBI CSCRF GV.SC.S4 (defaultSeverity high) and the entity assurance duty in RBI Outsourcing Directions 2025 para 79 (defaultSeverity medium). The group severity is high. Timing: the finding's slaDueAt (2026-10-14T10:46:39Z) passes 10h26m before this initiative's dueAt would otherwise fall (2026-10-14T21:12:30Z, counted from the planning run timestamp plus the 30-day default), so dueAt is corrected to the finding's regulatory deadline, 2026-10-14T10:46:39Z. Every task is scheduled to finish by 2026-10-13, and the request is scheduled before the 2026-09-30 expiry. The finding is not past its SLA and has no linked risk, so the change is not an emergency. Mitigations: ask for a bridge letter to cover any gap between periods; use GitHub's ISO/IEC 27001 certificate as interim secondary evidence only; review report exceptions and customer-side controls (CUECs); keep the report under NDA outside the workspace, referenced by locator only. Seen during planning but outside this group and not planned here: vendors/github.json shows contract.endDate 2026-06-30 (lapsed) and rightToAudit false. Both are left for refresh-vendor-ctx to raise.",
+      "slaBasis": {
+        "source": "defaults",
+        "topic": "vendor-due-diligence",
+        "days": 30,
+        "instrument": "sebi-cscrf-2024",
+        "controlId": "GV.SC.S4"
+      },
+      "findingIds": [
+        "fnd_01M2FS4806WHXANC3Q9QXEAXGF"
+      ],
+      "riskIds": [],
+      "controlIds": [
+        "GV.SC.S4",
+        "79"
+      ],
+      "regulatoryRefs": [
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "GV.SC.S4"
+        },
+        {
+          "regulator": "RBI",
+          "instrument": "rbi-outsourcing-risk-directions-2025",
+          "controlId": "79"
+        }
+      ],
+      "targets": [
+        {
+          "type": "vendor",
+          "vendorId": "github"
+        }
+      ],
+      "taskCounts": {
+        "total": 4,
+        "done": 0,
+        "blocked": 0
+      },
+      "suggestionIds": [],
+      "sourceWorkflow": "impl-change-management",
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-14T21:12:30Z",
+        "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+        "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+        "workflow": "impl-change-management",
+        "agent": "validator"
+      }
+    },
+    {
+      "initiativeId": "init_01M2GWJZSS8ZFTGSE4F4DRQN4F",
+      "title": "Annotate PII/SPDI fields with classification metadata in mongodb-mcp-server tool schemas and db-models models.py",
+      "summary": "PII/SPDI fields in mongodb-mcp-server tool schemas and db-models models.py carry no classification markers. Annotate both layers from metastore.json, per SEBI CSCRF ID.AM.S5.",
+      "status": "proposed",
+      "severity": "medium",
+      "priority": "p3",
+      "changeType": "normal",
+      "owner": {
+        "type": "human",
+        "id": "dpo@example-co.invalid"
+      },
+      "createdAt": "2026-09-14T21:12:30Z",
+      "dueAt": "2026-09-28T21:12:30Z",
+      "rollbackPlan": "Both changes add metadata only and need no data migration. db-models: revert the annotation PR on onfinance_db_model_master (branch master) and pin consumers back to onfinance_db_model_master==1.0.0; MongoEngine field kwargs are not stored in MongoDB, so documents already written are unaffected. mcp-gateway: revert the classification PR on mongodb-mcp-server (branch main), then redeploy the previous image through the releaseProcess order dev -> qa -> prod (1 approval), restoring the previous JSON Schema for the MCP tools. Trigger rollback if a tool call fails validation in qa, if an MCP client rejects the new x-data-classification keywords, or if any service that imports models.py fails to import.",
+      "riskAssessment": "Blast radius is low to moderate. (1) db-models is a dev-only library (env dev.json, exposure isolated) that internal services import. Adding a data_classification kwarg to MongoEngine 0.24.1 fields changes only Python attributes, but a kwarg name that clashes with a BaseField attribute raises TypeError at import and would break every consumer; mitigated by the task 4 import test and a version bump to 1.0.1 so consumers upgrade deliberately. (2) mongodb-mcp-server serves prod (EKS ap-south-1, exposure partner, data classes pii and financial). Zod 4 .meta() annotations change the tools/list JSON Schema that LLM clients see; a strict client could reject unknown x- keywords. Mitigated by exercising tools/list and one read tool per collection in qa before prod, with no runtime masking change in this initiative. Neither change alters the data or the access paths. SLA: both findings' slaDueAt (2026-09-28T13:14:50Z and 2026-09-28T18:36:43Z) are still ahead of the run timestamp, so this is not an emergency. The initiative dueAt (2026-09-28T21:12:30Z) falls a few hours after them, so the code tasks are due 2026-09-24 so that probe-schemas can confirm closure before the finding SLAs lapse. Out of scope, noted for refresh-ctx: applications/db-models/env/dev.json declares dataClassification internal, which understates the pii/spdi columns in metastore.json. No change freeze or deploymentWindows are defined in sdlc/policy.json or the env files. The intended approver is the CISO (normal change); no ECAB is needed.",
+      "slaBasis": {
+        "source": "sla-table",
+        "instrument": "sebi-cscrf-2024",
+        "controlId": "PR.MA.S3",
+        "topic": "patch-sla",
+        "days": 14
+      },
+      "findingIds": [
+        "fnd_01M2G2AGNMHKF9PCB4C85A3JQ3",
+        "fnd_01M2GMN60SYB8DHVX3XN4J84G5"
+      ],
+      "riskIds": [],
+      "controlIds": [
+        "ID.AM.S5"
+      ],
+      "regulatoryRefs": [
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "ID.AM.S5"
+        },
+        {
+          "regulator": "MeitY",
+          "instrument": "dpdp-rules-2025",
+          "controlId": "6(1)"
+        },
+        {
+          "regulator": "MeitY",
+          "instrument": "dpdp-rules-2025",
+          "controlId": "6(1)(g)"
+        },
+        {
+          "regulator": "ISO",
+          "instrument": "iso-27001-2022",
+          "controlId": "A.5.12"
+        }
+      ],
+      "targets": [
+        {
+          "type": "repo",
+          "appId": "mcp-gateway",
+          "repoId": "mongodb-mcp-server"
+        },
+        {
+          "type": "repo",
+          "appId": "db-models",
+          "repoId": "onfinance-db-model-master"
+        }
+      ],
+      "taskCounts": {
+        "total": 4,
+        "done": 0,
+        "blocked": 0
+      },
+      "suggestionIds": [],
+      "sourceWorkflow": "impl-change-management",
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-14T21:12:30Z",
+        "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+        "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+        "workflow": "impl-change-management",
+        "agent": "validator"
+      }
+    },
+    {
+      "initiativeId": "init_01M2GWJSJ3JACXRBXFT116SPFH",
+      "title": "Mask pii/financial fields in mongodb-mcp-server find, aggregate and export tool output",
+      "summary": "FindTool, AggregateTool and ExportTool return or write full unmasked pii/financial documents. Add one masking layer to all three paths, as SEBI CSCRF PR.DS.S4 and DPDP Rule 6(1)(a) require.",
+      "status": "proposed",
+      "severity": "high",
+      "priority": "p2",
+      "changeType": "normal",
+      "owner": {
+        "type": "human",
+        "id": "dpo@example-co.invalid"
+      },
+      "createdAt": "2026-09-14T21:12:30Z",
+      "dueAt": "2026-10-14T21:12:30Z",
+      "rollbackPlan": "Every change sits behind one config option: a new maskingPolicy option in src/common/config/userConfig.ts, which defaults to enforce for namespaces classified pii or financial. The changes land as a single PR on mongodb-mcp-server (base commit aaa72a040db4c32f3d6488d5e28e2892a68e9ee0). To roll back: (1) revert the PR merge commit on main; (2) redeploy the previous image tag to qa, then prod, on EKS ap-south-1, following releaseProcess.environmentsOrder dev -> qa -> prod. Nothing to restore in the data layer: the change does not touch MongoDB data, indexes or schemas, it only filters tool output and export files. Export files already written under exportsPath are session-scoped and removed by ExportsManager cleanup (exportTimeoutMs, 300000 ms default). If rollback is used, the three findings stay open and the unmasked exposure returns. Record that as a ciso-approved temporary deviation in the timeline instead of closing the initiative.",
+      "riskAssessment": "Blast radius: mcp-gateway, the MongoDB MCP gateway that ExampleCo AI agents use to query the client-data and order stores. It serves the order-routing critical function (impact tolerance: 30 minutes max outage, 0 minutes data loss). prod exposure is partner; dev and qa are internal. The change only affects read and export output from FindTool (src/tools/mongodb/read/find.ts:108-118), AggregateTool (aggregate.ts:187-192) and ExportTool (export.ts:68-98). Write paths and the MongoDB data are untouched. Main implementation risks: (a) over-masking breaks agent workflows that legitimately need a field, mitigated by a DPO-approved field map with explicit allow-listed exceptions and qa soak tests; (b) EJSON serialisation cost of a masking transform on large cursors, mitigated because masking runs within the existing maxBytesPerQuery / responseBytesLimit caps; (c) a prod deploy disturbing order routing, mitigated by deploying outside NSE/BSE market hours (09:15-15:30 IST) in line with the 30-minute tolerance, with one approval (releaseProcess.approvalsRequired 1) and the documented rollback. Residual exposure while proposed: until approval and rollout, any MCP caller can read full pii/financial documents and export them to local files. riskAppetite has zero tolerance for client data breaches and maxAcceptableSeverity is medium, so this high-severity gap cannot be risk-accepted. Timing: SLA is 7 days from the run timestamp, 2026-09-14T21:12:30Z (sebi-cscrf-2024 patch-sla high row, most-strict-wins). The linked findings' own slaDueAt is 2026-09-21T13:14:50Z, about 8 hours before this initiative's dueAt. It has not passed and no linked risk exists, so this is a normal change, not an emergency change. The refutation record confirmed all three findings through the evidence and regulatory-mapping lenses, with two caveats: DPDP Rule 6(1)(a) takes effect on 2027-05-13, so it is a forward-looking second ref; and the refuter questioned whether patch-sla fits a missing masking feature. The stricter 7-day row is kept so the initiative stays consistent with the ledger slaDueAt. Out of scope: AggregateDBTool (src/tools/mongodb/read/aggregateDB.ts:102) has the same unmasked EJSON return path but no ledger finding. Task 2 wires the shared masker into it as well, and a later probe-schemas run should record it.",
+      "slaBasis": {
+        "source": "defaults",
+        "instrument": "sebi-cscrf-2024",
+        "topic": "encryption",
+        "days": 30
+      },
+      "findingIds": [
+        "fnd_01M2G2AGPX8KWSY1KXGYADK4TK",
+        "fnd_01M2G2AGR581507FMK0EADFKY6",
+        "fnd_01M2G2AGSC977KASP37WQXYSQA"
+      ],
+      "riskIds": [],
+      "controlIds": [
+        "PR.DS.S4",
+        "6(1)(a)"
+      ],
+      "regulatoryRefs": [
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "PR.DS.S4"
+        },
+        {
+          "regulator": "MeitY",
+          "instrument": "dpdp-rules-2025",
+          "controlId": "6(1)(a)"
+        },
+        {
+          "regulator": "OWASP",
+          "instrument": "owasp-asvs-5.0",
+          "controlId": "14.2.6"
+        },
+        {
+          "regulator": "ISO",
+          "instrument": "iso-27001-2022",
+          "controlId": "A.8.11"
+        }
+      ],
+      "targets": [
+        {
+          "type": "repo",
+          "appId": "mcp-gateway",
+          "repoId": "mongodb-mcp-server"
+        }
+      ],
+      "taskCounts": {
+        "total": 5,
+        "done": 0,
+        "blocked": 0
+      },
+      "suggestionIds": [],
+      "sourceWorkflow": "impl-change-management",
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-14T21:12:30Z",
+        "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+        "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+        "workflow": "impl-change-management",
+        "agent": "validator"
+      }
+    },
+    {
+      "initiativeId": "init_01M2GWKQNTJ7082K1R20CDEN2P",
+      "title": "Remove plaintext credentials from MCP tool output, dry-run config dumps and the db-models Secrets document",
+      "summary": "mongodb-mcp-server leaks an Atlas password and secrets in dry-run dumps; db-models stores broker credentials in plaintext. Use Secrets Manager locators, migrate, rotate (SEBI PR.AA.S1/PR.DS.S1).",
+      "status": "proposed",
+      "severity": "high",
+      "priority": "p2",
+      "changeType": "normal",
+      "owner": {
+        "type": "human",
+        "id": "cto@example-co.invalid"
+      },
+      "createdAt": "2026-09-14T21:12:30Z",
+      "dueAt": "2026-09-21T21:12:30Z",
+      "rollbackPlan": "mcp-gateway (tasks 1-2): the changes only alter the text of the atlas-create-db-user tool result and the dry-run stdout dump, with no data migration. Rollback is a git revert of the two PRs on mongodb-mcp-server main and redeploying the previous image digest through dev -> qa -> prod under releaseProcess (1 approval). Do not reintroduce the plaintext password text: if the new out-of-band delivery breaks a client, set the tool to require a caller-supplied password instead. db-models (tasks 3-4): publish the locator-based models as a new major version. Consumers roll back by pinning the previous onfinance-db-model-master version in their lockfile. Before the plaintext fields are $unset, the migration script writes every value to AWS Secrets Manager and exports the document _id-to-ARN mapping. Rolling back the code therefore means reading values back from Secrets Manager, never restoring plaintext into MongoDB. Rotated credentials (tasks 4-5) cannot be un-rotated. If a broker or exchange integration fails after rotation, reissue a new credential into Secrets Manager instead of reverting.",
+      "riskAssessment": "Blast radius. mongodb-mcp-server runs in dev (internal), qa (internal, pii/financial) and prod (partner exposure, pii/financial). Tasks 1-2 touch only the atlas-create-db-user success message and DryRunModeRunner.dumpConfig, which runs and exits before the server starts, so the normal MCP request path is unaffected. The main regression risk is that MCP clients or operators relying on the returned password lose access to newly created Atlas users; a unit test and a documented retrieval path mitigate this. onfinance-db-model-master is a shared Python model library, so removing zerodha_password/zerodha_2fa and changing apiKey/apiSecrets/accessToken/user_binance_auth_creds is a breaking schema change for every consumer. The only recorded environment is dev (isolated, internal), but the metastore classifies these fields restricted/spdi, and any consumer not yet inventoried could break at deploy. Mitigations: release as a major version, run the migration in dev first with a dry-run count, and rotate credentials only after consumers read from Secrets Manager. Exposure already incurred: generated passwords may sit in MCP client transcripts, and dry-run output may sit in container logs (prod logs kept 365 days in Wazuh), so tasks 5-6 rotate those credentials and record a DPDP breach-assessment decision with the DPO. SLA: slaBasis is sebi-cscrf-2024 patch-sla high 7 days from createdAt 2026-09-14T21:12:30Z. No linked finding is past its slaDueAt at run time. The earliest is fnd_01M2G2AGTH64FMR4XR77ZAJH7B at 2026-09-21T13:14:50Z, about 8 hours before the initiative dueAt, so tasks 1 and 2 are due 2026-09-17 to meet the finding SLAs. If db-model consumers cannot migrate within 7 days, the CISO should raise a risk record for a time-bound acceptance rather than extending dueAt. No risk is likely/almost-certain with major/severe impact and no finding is critical, so no emergency change and no ECAB.",
+      "slaBasis": {
+        "source": "sla-table",
+        "instrument": "sebi-cscrf-2024",
+        "controlId": "PR.MA.S3",
+        "topic": "patch-sla",
+        "days": 7
+      },
+      "findingIds": [
+        "fnd_01M2G2AGTH64FMR4XR77ZAJH7B",
+        "fnd_01M2GMN61NFQDTRGPZ5RMSMTWN",
+        "fnd_01M2GMWQ01QA647X5MYFGNS1MG"
+      ],
+      "riskIds": [],
+      "controlIds": [
+        "PR.AA.S1",
+        "PR.DS.S1"
+      ],
+      "regulatoryRefs": [
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "PR.AA.S1"
+        },
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "PR.DS.S1"
+        },
+        {
+          "regulator": "MeitY",
+          "instrument": "dpdp-rules-2025",
+          "controlId": "6(1)(a)"
+        },
+        {
+          "regulator": "MeitY",
+          "instrument": "dpdp-rules-2025",
+          "controlId": "6(1)(b)"
+        },
+        {
+          "regulator": "NIST",
+          "instrument": "nist-csf-2.0",
+          "controlId": "PR.AA-01"
+        },
+        {
+          "regulator": "ISO",
+          "instrument": "iso-27001-2022",
+          "controlId": "A.5.16"
+        },
+        {
+          "regulator": "NIST",
+          "instrument": "nist-800-53-r5",
+          "controlId": "AC-2"
+        },
+        {
+          "regulator": "OWASP",
+          "instrument": "owasp-asvs-5.0",
+          "controlId": "13.3.1"
+        }
+      ],
+      "targets": [
+        {
+          "type": "repo",
+          "appId": "mcp-gateway",
+          "repoId": "mongodb-mcp-server"
+        },
+        {
+          "type": "repo",
+          "appId": "db-models",
+          "repoId": "onfinance-db-model-master"
+        }
+      ],
+      "taskCounts": {
+        "total": 6,
+        "done": 0,
+        "blocked": 0
+      },
+      "suggestionIds": [],
+      "sourceWorkflow": "impl-change-management",
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-14T21:12:30Z",
+        "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+        "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+        "workflow": "impl-change-management",
+        "agent": "validator"
+      }
+    },
+    {
+      "initiativeId": "init_01M2GWK0AZG2HFKPP7Z4F79S9D",
+      "title": "Mark the switch-connection connectionString argument as secret in mongodb-mcp-server",
+      "summary": "switch-connection's connectionString lacks isSecret metadata, so a credential URI is not flagged or redacted. Annotate, wire keychain redaction, test, release (SEBI CSCRF PR.AA.S1).",
+      "status": "proposed",
+      "severity": "high",
+      "priority": "p2",
+      "changeType": "normal",
+      "owner": {
+        "type": "human",
+        "id": "ciso@example-co.invalid"
+      },
+      "createdAt": "2026-09-14T21:12:30Z",
+      "dueAt": "2026-09-21T21:12:30Z",
+      "rollbackPlan": "The change touches only mongodb-mcp-server source: switchConnection.ts, the keychain registration path used by tool invocation, and new tests. It changes no data, database state or configuration. Rollback: git revert the merge commit on main, rebuild and redeploy the previous image tag to qa and then prod (EKS ap-south-1) in the releaseProcess order dev -> qa -> prod. Then confirm that switch-connection still lists and connects (tests/integration/tools/mongodb/connect/connect.test.ts passes on the reverted build). After a rollback, finding fnd_01M2GMWPZ5DKN7DNH3D65T47FZ stays open. A rollback is justified only if clients cannot call switch-connection at all. It is not justified if the only problem is that a secret is masked in logs or errors.",
+      "riskAssessment": "Blast radius: the mcp-gateway application (qa internal, prod partner exposure; data classes pii and financial). Only the switch-connection tool's input schema metadata and the redaction of its argument change. The connect tool shares the same gap, but it is tracked separately and is out of scope here. Risks of the change: (1) MCP clients that parse the tool inputSchema strictly might reject unknown metadata. Mitigation: the integration test lists tools and calls switch-connection end to end, and the change passes qa before prod. (2) Registering the URI in the session keychain could over-redact log lines that legitimately contain host names. Mitigation: register the full connection string as kind 'url' only, and review redacted output in qa. Risk of not changing: live credential-bearing URIs reach clients and logs with no secret marking, which weakens credential management under SEBI CSCRF PR.AA.S1. Timing: the linked finding's slaDueAt is 2026-09-21T18:36:43Z, which is 2 h 36 min earlier than this initiative's dueAt of 2026-09-21T21:12:30Z (createdAt 2026-09-14T21:12:30Z + 7 days, SEBI CSCRF PR.MA.S3 patch-sla high row). All tasks are therefore scheduled to finish before 2026-09-21T18:00:00Z. The finding is high rather than critical and is not yet past its SLA, and no risk is linked, so emergency handling does not apply. sdlc/policy.json defines no deploymentWindows or change freeze. releaseProcess requires 1 approval and a rollback plan.",
+      "slaBasis": {
+        "source": "sla-table",
+        "instrument": "sebi-cscrf-2024",
+        "controlId": "PR.MA.S3",
+        "topic": "patch-sla",
+        "days": 7
+      },
+      "findingIds": [
+        "fnd_01M2GMWPZ5DKN7DNH3D65T47FZ"
+      ],
+      "riskIds": [],
+      "controlIds": [
+        "PR.AA.S1"
+      ],
+      "regulatoryRefs": [
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "PR.AA.S1"
+        },
+        {
+          "regulator": "MeitY",
+          "instrument": "dpdp-rules-2025",
+          "controlId": "6(1)(b)"
+        },
+        {
+          "regulator": "OWASP",
+          "instrument": "owasp-asvs-5.0",
+          "controlId": "13.3.1"
+        }
+      ],
+      "targets": [
+        {
+          "type": "repo",
+          "appId": "mcp-gateway",
+          "repoId": "mongodb-mcp-server"
+        }
+      ],
+      "taskCounts": {
+        "total": 4,
+        "done": 0,
+        "blocked": 0
+      },
+      "suggestionIds": [],
+      "sourceWorkflow": "impl-change-management",
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-14T21:12:30Z",
+        "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+        "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+        "workflow": "impl-change-management",
+        "agent": "validator"
+      }
+    },
+    {
+      "initiativeId": "init_01M2GWK3BJ7Y4PPP919G8NZFRS",
+      "title": "Replace long-lived shared credentials with OIDC-federated and vault-managed secrets for mongodb-mcp-server publishing and the db-models dev tier",
+      "summary": "mongodb-mcp-server's publish job uses static Docker Hub secrets; db-models dev secretsBackend is \"other\" not aws-secrets-manager. Move both to OIDC-federated, vault-managed credentials (SEBI PR.AA.S1)",
+      "status": "proposed",
+      "severity": "high",
+      "priority": "p2",
+      "changeType": "normal",
+      "owner": {
+        "type": "human",
+        "id": "cto@example-co.invalid"
+      },
+      "createdAt": "2026-09-14T21:12:30Z",
+      "dueAt": "2026-09-21T13:48:42Z",
+      "rollbackPlan": "Workflow change (tasks 1-3): revert the merge commit on mongodb-mcp-server. That restores docker/login-action with secrets.DOCKERHUB_USERNAME/PASSWORD in .github/workflows/docker-publish.yml and the secrets: blocks in docker.yml and publish.yml. The old Docker Hub credential and its GitHub secrets are deliberately kept until task 3, after a successful OIDC-based publish, so until then rollback needs only the revert. If rollback is needed after task 3, the CTO mints a new push-scoped Docker Hub access token, stores it as GitHub secrets under the same names, and reverts. The AWS IAM OIDC role and the Secrets Manager secret from task 1 can stay in place, unused, until a new attempt. db-models dev change (task 4): revert the commit that sets applications/db-models/env/dev.json secretsBackend back to \"other\" and restore the previous developer setup notes. The dev secrets in AWS Secrets Manager hold no production data and can stay until they are deleted. Neither rollback touches a running production service.",
+      "riskAssessment": "Blast radius, publishing: docker-publish.yml is a reusable workflow called by docker.yml (docker-push job) and publish.yml (docker-push job). In publish.yml, mcp-publish needs docker-push, so a broken login blocks Docker Hub image publication and the MCP Registry publish for 'latest' releases. The npm publish job runs earlier and is not affected. No runtime service or customer data path changes. Blast radius, db-models dev: the tier runs on developer laptops only (exposure isolated, data classification internal), so the change affects developer onboarding, not a shared environment. Mitigations: (1) scope the IAM role trust policy to repo:OnFinance/mongodb-mcp-server with environment Production, and let it read only the one Docker Hub token secret; (2) use a Docker Hub access token limited to push on the one image repository, rotated by the 90-day rule in sdlc/policy.json secretsManagement.rotationDays; (3) prove the new path with a workflow_dispatch run of docker.yml before revoking the old credential; (4) the CI gitleaks gate (blocking) stays in place. Limitation: Docker Hub has no GitHub OIDC trust of its own, so a registry token still exists. It is held in the policy-mandated vault behind OIDC federation and a least-privilege role, not as a static GitHub secret. Moving the image to an OIDC-native registry would be a separate change. SLA: the initiative dueAt (2026-09-21T13:48:42Z) equals the earliest linked finding's slaDueAt, fnd_01M2GH5B2SNX0PD3EKVNVTPAG7 (sebi-cscrf-2024 PR.MA.S3 patch-sla high, 7 days). Every task is due before that date, so the fix lands inside the finding clock. Neither finding is past its slaDueAt and no linked risk exists, so emergency change does not apply. Policy sets no deploymentWindows and dev.json has no changeFreeze, so no window constraint applies.",
+      "slaBasis": {
+        "source": "sla-table",
+        "instrument": "sebi-cscrf-2024",
+        "controlId": "PR.MA.S3",
+        "topic": "patch-sla",
+        "days": 7
+      },
+      "findingIds": [
+        "fnd_01M2GH5B2SNX0PD3EKVNVTPAG7",
+        "fnd_01M2GTZHA1AH7R8PAPGHNCWMJJ"
+      ],
+      "riskIds": [],
+      "controlIds": [
+        "PR.AA.S1"
+      ],
+      "regulatoryRefs": [
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "PR.AA.S1"
+        },
+        {
+          "regulator": "NIST",
+          "instrument": "nist-800-53-r5",
+          "controlId": "IA-5"
+        },
+        {
+          "regulator": "NIST",
+          "instrument": "nist-ssdf-800-218",
+          "controlId": "PO.5.1"
+        }
+      ],
+      "targets": [
+        {
+          "type": "repo",
+          "appId": "mcp-gateway",
+          "repoId": "mongodb-mcp-server"
+        },
+        {
+          "type": "environment",
+          "appId": "db-models",
+          "envId": "dev"
+        }
+      ],
+      "taskCounts": {
+        "total": 4,
+        "done": 0,
+        "blocked": 0
+      },
+      "suggestionIds": [],
+      "sourceWorkflow": "impl-change-management",
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-14T21:12:30Z",
+        "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+        "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+        "workflow": "impl-change-management",
+        "agent": "validator"
+      }
+    },
+    {
+      "initiativeId": "init_01M2GWJNGS4TF5ASSHWGN2004Z",
+      "title": "Enforce mandatory authentication on mcp-gateway's HTTP and streamable MCP transports",
+      "summary": "mcp-gateway's /mcp HTTP and streamable transports accept unauthenticated requests by default. Make authentication mandatory and fail closed, as SEBI CSCRF PR.AA.S17 requires.",
+      "status": "proposed",
+      "severity": "high",
+      "priority": "p2",
+      "changeType": "normal",
+      "owner": {
+        "type": "human",
+        "id": "ciso@example-co.invalid"
+      },
+      "createdAt": "2026-09-14T21:12:30Z",
+      "dueAt": "2026-09-21T21:12:30Z",
+      "rollbackPlan": "Code: revert the authentication merge commit(s) on mongodb-mcp-server main and rebuild; deploy: roll the qa or prod EKS (ap-south-1) Deployment back to the previous image digest (kubectl rollout undo run by the platform team through the normal release pipeline, not by Maxwell) and restore the previous MDB_MCP_* environment. Rollback is per environment in the policy order dev -> qa -> prod, so a failure in qa never reaches prod. Because a rollback reopens the unauthenticated /mcp surface, it must be paired with a compensating control before traffic is restored: set MDB_MCP_HTTP_HEADERS to a secret shared-header credential resolved from the secret manager (locator in applications/mcp-gateway/credentials.json, never a value) and restrict prod ingress/network policy to the allow-listed partner and agent client CIDRs; record the rollback and compensating control as timeline events and re-open the tasks.",
+      "riskAssessment": "Current exposure: with no operator configuration every POST/GET/DELETE /mcp request (mcpHttpServer.ts routes 360-411) reaches all MongoDB and Atlas tools including insert-many, delete-many, drop-collection, drop-database and connect; qa and prod run on EKS ap-south-1 with dataClassification [pii, financial] and prod exposure is partner, so the unauthenticated path touches client data and order stores (SEBI CSCRF PR.AA.S17, DPDP Rules 6(1)(b)). The earliest linked finding slaDueAt is 2026-09-21T13:14:50Z and has not passed at run time (2026-09-14T21:12:30Z); the initiative dueAt 2026-09-21T21:12:30Z is createdAt + 7 days and lands about 8 hours after that finding SLA, so prod enforcement (task 5) is scheduled for 2026-09-21T13:14:50Z. Blast radius of the change: every AI agent and partner client of mcp-gateway in dev, qa and prod will get 401/403 until it presents the new credential, which would stop agent workflows that query client-data and order stores; no data is modified and stdio transport users are unaffected. The monitoring/health server is out of scope and must keep working for probes. Mitigations: ship behind the fail-closed default with an explicit loopback-only opt-out for local development, distribute credentials to consuming agents via secret-manager references before enforcing in each environment, promote dev -> qa -> prod (sdlc/policy.json environmentsOrder, approvalsRequired 1, rollbackPlanRequired true), watch the 401/403 rate and agent error logs for 24 hours after each promotion, and keep the rollback plan's compensating control ready. No deploymentWindows are defined in sdlc/policy.json releaseProcess and changeFreeze is null on the qa and prod environments. Not an emergency change: group severity is high (not critical), no finding is past its slaDueAt and no linked risk exists; if the prod rollout slips past 2026-09-21T13:14:50Z, the company's emergency change process (CTO approval on the incident bridge, ticket within 4 hours, CAB retrospective within 5 working days) applies.",
+      "slaBasis": {
+        "source": "sla-table",
+        "instrument": "sebi-cscrf-2024",
+        "controlId": "PR.MA.S3",
+        "topic": "patch-sla",
+        "days": 7
+      },
+      "findingIds": [
+        "fnd_01M2G2AGVRZPBP3VH8FNAYH46V",
+        "fnd_01M2GPBK5MB962TKED1TFBTF3A"
+      ],
+      "riskIds": [],
+      "controlIds": [
+        "PR.AA.S17"
+      ],
+      "regulatoryRefs": [
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "PR.AA.S17"
+        },
+        {
+          "regulator": "MeitY",
+          "instrument": "dpdp-rules-2025",
+          "controlId": "6(1)(b)"
+        },
+        {
+          "regulator": "OWASP",
+          "instrument": "owasp-asvs-5.0",
+          "controlId": "V4"
+        },
+        {
+          "regulator": "NIST",
+          "instrument": "nist-csf-2.0",
+          "controlId": "PR.AA-05"
+        },
+        {
+          "regulator": "CIS",
+          "instrument": "cis-controls-8.1",
+          "controlId": "16.13"
+        },
+        {
+          "regulator": "OWASP",
+          "instrument": "owasp-agentic-top10-2026",
+          "controlId": "ASI03"
+        },
+        {
+          "regulator": "CSA",
+          "instrument": "csa-mcp-security-2025",
+          "controlId": "8.3"
+        },
+        {
+          "regulator": "OWASP",
+          "instrument": "owasp-llm-top10-2025",
+          "controlId": "LLM02"
+        }
+      ],
+      "targets": [
+        {
+          "type": "repo",
+          "appId": "mcp-gateway",
+          "repoId": "mongodb-mcp-server"
+        }
+      ],
+      "taskCounts": {
+        "total": 5,
+        "done": 0,
+        "blocked": 0
+      },
+      "suggestionIds": [],
+      "sourceWorkflow": "impl-change-management",
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-14T21:12:30Z",
+        "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+        "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+        "workflow": "impl-change-management",
+        "agent": "validator"
+      }
+    },
+    {
+      "initiativeId": "init_01M2GWJNM9B7WH4DA9BEK6AQHQ",
+      "title": "Bound the shared EJSON validator and namespace arguments of mongodb-mcp-server's MongoDB tools",
+      "summary": "zEJSON() in src/tools/args.ts is unbounded and reused by all MongoDB tools; database/collection names are unbounded too. Add size/depth/key-count/operator and namespace limits (SEBI CSCRF PR.IP.S2).",
+      "status": "proposed",
+      "severity": "medium",
+      "priority": "p3",
+      "changeType": "normal",
+      "owner": {
+        "type": "human",
+        "id": "cto@example-co.invalid"
+      },
+      "createdAt": "2026-09-14T21:12:30Z",
+      "dueAt": "2026-09-28T21:12:30Z",
+      "rollbackPlan": "Every code change goes in as a single squash-merged PR on OnFinance/mongodb-mcp-server main, based on pinned commit aaa72a040db4c32f3d6488d5e28e2892a68e9ee0. To roll back: (1) revert that PR commit on main; (2) rebuild the mcp-gateway image and redeploy the previous image digest to prod (EKS ap-south-1), then qa and dev, through the normal release pipeline; (3) the confirmationRequiredTools default returns to the old list with the revert. An operator who needs relief before a redeploy can override it with the existing confirmationRequiredTools config value. Nothing changes in the database: no schema, data or index migration, so rollback is code-only and takes under an hour. Roll back if qa or prod shows legitimate agent queries being rejected by the new limits, or if MCP clients cannot complete the new insert-many/update-many confirmation prompts.",
+      "riskAssessment": "Blast radius: every MongoDB tool in mcp-gateway (find, count, aggregate, delete-many, update-many, insert-many, export, and all tools that take database/collection) in dev, qa and prod. prod runs on EKS ap-south-1 with partner exposure and holds pii and financial client and order data, so the gap can be reached today by any agent or prompt-injected input that gets to the gateway. Change risk: limits set too tight could reject legitimate large aggregations or bulk inserts, and the new confirmation step for insert-many and update-many could stall headless MCP clients that do not support elicitation. Mitigations: the limits are exported constants sized from the largest queries seen in qa; unit tests cover both allowed and rejected payloads; rollout goes dev -> qa -> prod in the order set by sdlc/policy.json releaseProcess.environmentsOrder; the operator-set maxBytesPerQuery/maxDocumentsPerQuery caps and readOnly/disabledTools stay in force as runtime checks; the rollback is code-only. SLA timing: the finding's own slaDueAt is 2026-09-28T13:14:50Z (firstSeenAt + 14 days). This initiative's dueAt, 2026-09-28T21:12:30Z, is counted from the run timestamp, so it lands about 8 hours after the finding's deadline. Task dates are therefore set so the fix is deployed and re-probed before the finding's slaDueAt. The finding is medium severity, not yet overdue, and has no linked risk rated likely or almost-certain, so this is a normal change, not an emergency. No ECAB is needed. The CISO (ciso@example-co.invalid) is the intended approver.",
+      "slaBasis": {
+        "source": "sla-table",
+        "instrument": "sebi-cscrf-2024",
+        "controlId": "PR.MA.S3",
+        "topic": "patch-sla",
+        "days": 14
+      },
+      "findingIds": [
+        "fnd_01M2G2AGX1GZ9THG6HJ1VPP1EP"
+      ],
+      "riskIds": [],
+      "controlIds": [
+        "PR.IP.S2"
+      ],
+      "regulatoryRefs": [
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "PR.IP.S2"
+        },
+        {
+          "regulator": "MeitY",
+          "instrument": "dpdp-rules-2025",
+          "controlId": "6(1)(g)"
+        },
+        {
+          "regulator": "OWASP",
+          "instrument": "owasp-asvs-5.0",
+          "controlId": "2.2.1"
+        }
+      ],
+      "targets": [
+        {
+          "type": "repo",
+          "appId": "mcp-gateway",
+          "repoId": "mongodb-mcp-server"
+        }
+      ],
+      "taskCounts": {
+        "total": 4,
+        "done": 0,
+        "blocked": 0
+      },
+      "suggestionIds": [],
+      "sourceWorkflow": "impl-change-management",
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-14T21:12:30Z",
+        "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+        "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+        "workflow": "impl-change-management",
+        "agent": "validator"
+      }
+    },
+    {
+      "initiativeId": "init_01M2GWJMMMHGYZP7M7H6PQJ0FT",
+      "title": "Sign and attest the published mcp-gateway image with cosign keyless signing",
+      "summary": "The mongodb-mcp-server release pipeline pushes the mcp-gateway image without cosign signing or attestation. Add keyless sign, attest and verify steps (SEBI CSCRF PR.IP.S2, RBI 97(vii)).",
+      "status": "proposed",
+      "severity": "medium",
+      "priority": "p3",
+      "changeType": "normal",
+      "owner": {
+        "type": "human",
+        "id": "ciso@example-co.invalid"
+      },
+      "createdAt": "2026-09-14T21:12:30Z",
+      "dueAt": "2026-09-28T21:12:30Z",
+      "rollbackPlan": "Revert the pull request that adds the cosign steps and the id-token: write permissions to .github/workflows/docker-publish.yml, docker.yml and publish.yml. The release pipeline then goes back to its current buildx push with provenance mode=max and sbom true. Signatures and attestations already pushed as OCI referrers, and their Rekor entries, do not need to be removed: they are extra artefacts that do not change the image digest or its tags. If a release is blocked only by a failing cosign step, re-run the workflow after the revert. No runtime component (the prod EKS deployment in ap-south-1) is touched, so rolling back needs no deployment.",
+      "riskAssessment": "Blast radius: only the mongodb-mcp-server release pipeline (the docker-push jobs in docker.yml and publish.yml, and the reusable docker-publish.yml). A cosign failure (Fulcio or Rekor unavailable, missing id-token permission) fails the docker-push job, which delays the image publish and the dependent mcp-publish job but leaves already-running prod or partner-exposed workloads untouched. Granting id-token: write to the reusable workflow widens the job's OIDC scope. Mitigations: grant it only on the build-push job, keep actions pinned by full commit SHA as the existing steps are, use keyless signing so no long-lived signing key is stored in GitHub secrets, and test once on a prerelease channel run before a latest release. The repository is public, so Rekor transparency-log entries reveal nothing new. Timing: the linked finding's slaDueAt is 2026-09-28T13:48:42Z. This initiative's dueAt (2026-09-28T21:12:30Z, run timestamp + 14 days) is about 7 hours later, so every task is due by the finding's slaDueAt. The finding is medium and not overdue, so this is not an emergency change. sdlc/policy.json defines no deploymentWindows, and the mcp-gateway env files set no changeFreeze, so no window constraint applies; the change still needs the 1 approval that releaseProcess.approvalsRequired sets. Out of scope, as a follow-up once signatures exist: enforcing signature verification at admission (for example Kyverno verifyImages) on the mcp-gateway prod environment, which is not a target of this group.",
+      "slaBasis": {
+        "source": "sla-table",
+        "instrument": "sebi-cscrf-2024",
+        "controlId": "PR.MA.S3",
+        "topic": "patch-sla",
+        "days": 14
+      },
+      "findingIds": [
+        "fnd_01M2GH5B0C1BP3QP8HHA0MJNVY"
+      ],
+      "riskIds": [],
+      "controlIds": [
+        "PR.IP.S2",
+        "97(vii)"
+      ],
+      "regulatoryRefs": [
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "PR.IP.S2"
+        },
+        {
+          "regulator": "RBI",
+          "instrument": "rbi-outsourcing-risk-directions-2025",
+          "controlId": "97(vii)"
+        },
+        {
+          "regulator": "NIST",
+          "instrument": "nist-ssdf-800-218",
+          "controlId": "PS.2.1"
+        }
+      ],
+      "targets": [
+        {
+          "type": "repo",
+          "appId": "mcp-gateway",
+          "repoId": "mongodb-mcp-server"
+        }
+      ],
+      "taskCounts": {
+        "total": 4,
+        "done": 0,
+        "blocked": 0
+      },
+      "suggestionIds": [],
+      "sourceWorkflow": "impl-change-management",
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-14T21:12:30Z",
+        "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+        "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+        "workflow": "impl-change-management",
+        "agent": "validator"
+      }
+    },
+    {
+      "initiativeId": "init_01M2GWKJWQ5AJJZGZMWK8TKMRA",
+      "title": "Add a security review checklist to mongodb-mcp-server PRs and lock db-models dependencies",
+      "summary": "mongodb-mcp-server's PR template has no security or data-impact checklist and db-models commits no lockfile. Add both, as SEBI CSCRF PR.IP.S2 requires a working SDLC.",
+      "status": "proposed",
+      "severity": "medium",
+      "priority": "p3",
+      "changeType": "normal",
+      "owner": {
+        "type": "human",
+        "id": "ciso@example-co.invalid"
+      },
+      "createdAt": "2026-09-14T21:12:30Z",
+      "dueAt": "2026-09-28T21:12:30Z",
+      "rollbackPlan": "Every change lands as its own PR on a protected branch (sdlc/policy.json branching.protectedBranches main and master; codeReview.minApprovers 1; self-approval not allowed), so each can be undone on its own. (1) PR template: revert the commit that changed .github/pull_request_template.md on mongodb-mcp-server main. This is one Markdown file with no build or runtime effect, and the upstream CLA checkbox is kept unchanged. (2) Lockfile: revert the commit that added requirements.txt on onfinance-db-model-master master. setup.py install_requires is not modified, so what consumers install is identical before and after. (3) Lockfile CI check: first remove the job from the branch-protection required status checks, then revert the commit that added .github/workflows/lockfile-check.yml. Nothing is deployed and no environment, database or image changes, so rollback needs no deployment window.",
+      "riskAssessment": "Blast radius is low. The changes touch only repository process files: a Markdown PR template in mongodb-mcp-server (mcp-gateway; the prod and qa environments carry pii and financial data and the app serves the order-routing critical function, but no running component changes) and a lockfile plus one new CI workflow in the db-models library, which is dev-only and has no runtime. Nothing is deployed, no data is touched and there is no downtime, so releaseProcess windows and change freezes do not apply. Risks and mitigations: (a) mongodb-mcp-server is a fork of the MongoDB upstream (CLA checkbox, CODEOWNERS points to @mongodb-js/mcp-server-developers), so upstream syncs may conflict with the template. Mitigation: append a separate security section and keep the upstream lines unchanged. (b) A misconfigured lockfile check could block every PR to db-models master. Mitigation: make it a required status check only after it has passed on master. (c) Resolving the lockfile could pull an unexpected transitive version. Mitigation: resolve only from https://pypi.org/simple (dependencyPolicy.allowedRegistries) with --generate-hashes, and review the diff. SLA note: under most-strict-wins, the SEBI CSCRF patch-sla medium row (14 days) is stricter than the defaults (90 days). It governs fnd_01M2GSSNY7B64D39NPE9K8Z80F, whose ledger slaDueAt is 2026-09-28T19:35:56Z. dueAt is createdAt + 14 days (2026-09-28T21:12:30Z), 1h37m after that slaDueAt, because it cannot be earlier than the run timestamp. Both findings are medium, neither is past its SLA and no risk is linked, so this is not an emergency change.",
+      "slaBasis": {
+        "source": "sla-table",
+        "instrument": "sebi-cscrf-2024",
+        "controlId": "PR.MA.S3",
+        "topic": "patch-sla",
+        "days": 14
+      },
+      "findingIds": [
+        "fnd_01M2GSDSCS1E1NHBB2A9JSA11J",
+        "fnd_01M2GSSNY7B64D39NPE9K8Z80F"
+      ],
+      "riskIds": [],
+      "controlIds": [
+        "PR.IP.S2",
+        "6(1)(g)"
+      ],
+      "regulatoryRefs": [
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "PR.IP.S2"
+        },
+        {
+          "regulator": "MeitY",
+          "instrument": "dpdp-rules-2025",
+          "controlId": "6(1)(g)"
+        },
+        {
+          "regulator": "NIST",
+          "instrument": "nist-ssdf-800-218",
+          "controlId": "PW.7.1"
+        },
+        {
+          "regulator": "NIST",
+          "instrument": "nist-ssdf-800-218",
+          "controlId": "PW.4.1"
+        }
+      ],
+      "targets": [
+        {
+          "type": "repo",
+          "appId": "mcp-gateway",
+          "repoId": "mongodb-mcp-server"
+        },
+        {
+          "type": "repo",
+          "appId": "db-models",
+          "repoId": "onfinance-db-model-master"
+        }
+      ],
+      "taskCounts": {
+        "total": 4,
+        "done": 0,
+        "blocked": 0
+      },
+      "suggestionIds": [],
+      "sourceWorkflow": "impl-change-management",
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-14T21:12:30Z",
+        "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+        "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+        "workflow": "impl-change-management",
+        "agent": "validator"
+      }
+    },
+    {
+      "initiativeId": "init_01M2GWK1FRDCWGPJVC10RJS43X",
+      "title": "Pin the node:24-alpine base image to a content digest in both mongodb-mcp-server Dockerfiles",
+      "summary": "mongodb-mcp-server Dockerfile and deploy/aws/Dockerfile use floating node:24-alpine with no digest. Pin both to one vetted digest, extend Dependabot to deploy/aws, add a CI gate (SEBI CSCRF PR.IP.S1).",
+      "status": "proposed",
+      "severity": "high",
+      "priority": "p2",
+      "changeType": "normal",
+      "owner": {
+        "type": "human",
+        "id": "cto@example-co.invalid"
+      },
+      "createdAt": "2026-09-14T21:12:30Z",
+      "dueAt": "2026-09-21T21:12:30Z",
+      "rollbackPlan": "Revert the single PR on mongodb-mcp-server main that adds the digests, the Dependabot directory and the CI gate, using git revert of the merge commit. Both FROM lines return to node:24-alpine, and the pipeline returns to its previous definition. Images already published stay available by their previous tag and digest in Docker Hub (docker-publish.yml) and in the ECR repository used for AgentCore. If a rebuilt image misbehaves in qa or prod, redeploy the previous image digest recorded in the release notes, following releaseProcess.environmentsOrder dev -> qa -> prod. The CI gate (task 4) can be reverted on its own if it blocks an unrelated urgent release, and the digest pins stay in place.",
+      "riskAssessment": "Blast radius: two build definitions in one repo. The root Dockerfile is built multi-arch (linux/amd64, linux/arm64) and pushed to Docker Hub by .github/workflows/docker-publish.yml. deploy/aws/Dockerfile is built for linux/arm64 and pushed to ECR for Bedrock AgentCore (per deploy/aws/README.md). That image runs behind the order-routing critical function via mcp-gateway prod (tier prod, exposure partner). The refutation record says the link from deploy/aws to eks-prod-mumbai is inferred, not stated in the files. Pinning to the digest that node:24-alpine resolves to today changes no runtime content on the day, so functional risk is low. The main hazard is pinning a single-platform manifest digest instead of the OCI image index digest, which would break the arm64 or amd64 build. The mitigation is to resolve the index digest with docker buildx imagetools inspect and build both platforms in CI before merge. Residual risk: without Dependabot coverage a pinned digest goes stale and misses Alpine and Node security fixes, which tasks 3 and 4 address. The separate floating ARG VERSION=latest for mongodb-mcp-server is outside this finding and not changed here. Timing: the finding's slaDueAt is 2026-09-21T13:48:42Z (firstSeenAt 2026-09-14T13:48:42Z plus 7 days), about 7.5 hours before this initiative's dueAt of 2026-09-21T21:12:30Z (createdAt plus 7 days). All task dueAts fall before the finding SLA, so approval should not wait. The finding is not yet past its SLA and no risk is linked, so this is not an emergency change. sdlc/policy.json defines no deploymentWindows, and mcp-gateway prod has no changeFreeze. The standard process applies: 1 approval, rollback plan required.",
+      "slaBasis": {
+        "source": "sla-table",
+        "instrument": "sebi-cscrf-2024",
+        "controlId": "PR.MA.S3",
+        "topic": "patch-sla",
+        "days": 7
+      },
+      "findingIds": [
+        "fnd_01M2GH5AS0MM2F8MSFTDP36VV9"
+      ],
+      "riskIds": [],
+      "controlIds": [
+        "PR.IP.S1"
+      ],
+      "regulatoryRefs": [
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "PR.IP.S1"
+        },
+        {
+          "regulator": "NIST",
+          "instrument": "nist-csf-2.0",
+          "controlId": "PR.PS-01"
+        },
+        {
+          "regulator": "NIST",
+          "instrument": "nist-ssdf-800-218",
+          "controlId": "PW.4.4"
+        }
+      ],
+      "targets": [
+        {
+          "type": "repo",
+          "appId": "mcp-gateway",
+          "repoId": "mongodb-mcp-server"
+        }
+      ],
+      "taskCounts": {
+        "total": 4,
+        "done": 0,
+        "blocked": 0
+      },
+      "suggestionIds": [],
+      "sourceWorkflow": "impl-change-management",
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-14T21:12:30Z",
+        "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+        "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+        "workflow": "impl-change-management",
+        "agent": "validator"
+      }
+    },
+    {
+      "initiativeId": "init_01M2GWJAYY9ZQ8Y0GQJ7XNYQ28",
+      "title": "Verify CI supply-chain downloads and replace the git-secrets job with the policy's blocking gitleaks gate in mongodb-mcp-server",
+      "summary": "mcp-publish.yml installs mcp-publisher from latest via curl, no checksum, id-token: write; AWS Dockerfile ignores VERSION; secrets gate is git-secrets (AWS-only) not gitleaks (SEBI CSCRF PR.IP.S4).",
+      "status": "proposed",
+      "severity": "high",
+      "priority": "p2",
+      "changeType": "normal",
+      "owner": {
+        "type": "human",
+        "id": "cto@example-co.invalid"
+      },
+      "createdAt": "2026-09-14T21:12:30Z",
+      "dueAt": "2026-09-21T21:12:30Z",
+      "rollbackPlan": "Each change goes in its own PR on main of OnFinance/mongodb-mcp-server, so each can be undone with git revert. (1) Reverting the mcp-publish.yml PR brings back the curl | tar install step; before reverting, pause publish.yml's call to mcp-publish.yml, so the unverified path never runs again in the Production environment. (2) Reverting the deploy/aws/Dockerfile PR brings back @latest; images already pushed to the registry keep their digests and are not rebuilt. (3) If gitleaks blocks legitimate merges because of a bad rule, first add a narrowly scoped allowlist entry to .gitleaks.toml in a reviewed PR. Only if that fails, remove the gitleaks job from the required status checks in the main branch ruleset, and restore it within 2 working days. Never re-enable git-secrets as the only gate. No runtime service depends on any of these files, so rollback has no effect in production.",
+      "riskAssessment": "Blast radius: CI and release workflows of one repo (mcp-gateway / mongodb-mcp-server) only. No running service, database or client data path changes. The highest-impact file is mcp-publish.yml. It runs in the GitHub Production environment with id-token: write and publishes the server to the MCP registry, so a compromised or tampered mcp-publisher release could publish a malicious server entry under the company's OIDC identity today. The prod environment has partner exposure. Risks of the change itself: (a) a wrong pinned sha256 fails the publish job, which is a safe failure because nothing is published; (b) a blocking gitleaks gate at minSeverityToBlock low may fail PRs on historical or test-fixture secrets. Task 4 mitigates this by baselining and triaging full history before task 5 makes the job required. (c) Pinning the Dockerfile to VERSION may break AWS image builds that pass no build-arg; the default is set to a concrete release and CI passes VERSION explicitly. Timing: both findings were first seen 2026-09-14T13:48:42Z with a finding slaDueAt of 2026-09-21T13:48:42Z (SEBI CSCRF PR.MA.S3 patch-sla high, 7 days). The initiative dueAt is the run timestamp plus 7 days (2026-09-21T21:12:30Z), 7h24m after the findings' slaDueAt. Every task is due on or before 2026-09-21T13:48:42Z except the final required-check task, so the fixes can land inside the finding SLA. Neither finding is critical, neither is past its SLA, and no risk is linked, so this is a normal change (policy.json releaseProcess.changeTypeDefault normal, rollbackPlanRequired true) for CISO approval, not an emergency.",
+      "slaBasis": {
+        "source": "sla-table",
+        "instrument": "sebi-cscrf-2024",
+        "controlId": "PR.MA.S3",
+        "topic": "patch-sla",
+        "days": 7
+      },
+      "findingIds": [
+        "fnd_01M2GH5AT8SW3Z6ZTZ73YN7QY6",
+        "fnd_01M2GH5AZ5M0KCRXNTEY3DPH69"
+      ],
+      "riskIds": [],
+      "controlIds": [
+        "PR.IP.S4"
+      ],
+      "regulatoryRefs": [
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "PR.IP.S4"
+        },
+        {
+          "regulator": "NIST",
+          "instrument": "nist-ssdf-800-218",
+          "controlId": "PW.4.1"
+        },
+        {
+          "regulator": "ISO",
+          "instrument": "iso-27001-2022",
+          "controlId": "A.8.29"
+        },
+        {
+          "regulator": "NIST",
+          "instrument": "nist-ssdf-800-218",
+          "controlId": "PW.7.2"
+        },
+        {
+          "regulator": "NIST",
+          "instrument": "nist-csf-2.0",
+          "controlId": "PR.PS-06"
+        }
+      ],
+      "targets": [
+        {
+          "type": "repo",
+          "appId": "mcp-gateway",
+          "repoId": "mongodb-mcp-server"
+        }
+      ],
+      "taskCounts": {
+        "total": 5,
+        "done": 0,
+        "blocked": 0
+      },
+      "suggestionIds": [],
+      "sourceWorkflow": "impl-change-management",
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-14T21:12:30Z",
+        "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+        "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+        "workflow": "impl-change-management",
+        "agent": "validator"
+      }
+    },
+    {
+      "initiativeId": "init_01M2GWJK9ABSB5MBW1DHB4HNR3",
+      "title": "Add a blocking IaC scan gate for the Azure Bicep templates in mongodb-mcp-server CI",
+      "summary": "mongodb-mcp-server's Azure Bicep templates have no IaC scan in CI (CICD-GATE-05). Baseline against checkov 3.3.17, add a blocking check-iac job, require it on main (SEBI CSCRF PR.IP.S6).",
+      "status": "proposed",
+      "severity": "medium",
+      "priority": "p3",
+      "changeType": "normal",
+      "owner": {
+        "type": "human",
+        "id": "ciso@example-co.invalid"
+      },
+      "createdAt": "2026-09-14T21:12:30Z",
+      "dueAt": "2026-09-28T21:12:30Z",
+      "rollbackPlan": "Revert the pull request that adds the check-iac job to .github/workflows/check.yml, along with any checkov suppression file or inline skip comments it added. Then remove 'Checks / check-iac' from the required status checks of the main branch protection rule, so pull requests are no longer held on the gate. This is a CI-only change: no Azure resource, container image or running mcp-gateway environment (dev, qa, prod) is modified, so rollback needs no deployment and takes effect on the next workflow run.",
+      "riskAssessment": "Blast radius: CI for the mongodb-mcp-server repo only. The new job runs on every push to main and on every pull request, alongside the existing check-style, check-generate and check-dep jobs. It needs no cloud credentials: bicep build and checkov run offline against the checkout with permissions contents: read, plus security-events: write only for the SARIF upload. It changes no deployed Azure Container Apps resource. Main risk: a blocking gate that finds existing template issues would fail unrelated pull requests and stall merges. Mitigation: task 1 baselines the templates and fixes or suppresses (with a justification) every existing failure before the gate is made blocking in task 2 and required in task 3. Checkov is pinned to 3.3.17 per the scanner toolchain, so rule drift does not break builds without warning. Secondary risk: false negatives from checkov's Bicep coverage. Mitigation: the job also compiles main.bicep to ARM JSON and scans both the bicep and arm frameworks. SLA: the linked finding's slaDueAt is 2026-09-28T13:48:42Z (first seen 2026-09-14T13:48:42Z plus 14 days). The initiative dueAt of 2026-09-28T21:12:30Z is counted from the run timestamp, so it lands about 7.5 hours after the finding's SLA. Task due dates are set earlier so the fix can land before the finding's own deadline. The finding is medium, not critical, and has no linked risk, so this does not qualify as an emergency change. No deploymentWindows are defined in sdlc/policy.json and no changeFreeze is recorded for the mcp-gateway environments. The change goes through the normal pull request path with releaseProcess.approvalsRequired = 1.",
+      "slaBasis": {
+        "source": "sla-table",
+        "instrument": "sebi-cscrf-2024",
+        "controlId": "PR.MA.S3",
+        "topic": "patch-sla",
+        "days": 14
+      },
+      "findingIds": [
+        "fnd_01M2GH5AXYX8NH35F6135G6VB4"
+      ],
+      "riskIds": [],
+      "controlIds": [
+        "PR.IP.S6"
+      ],
+      "regulatoryRefs": [
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "PR.IP.S6"
+        },
+        {
+          "regulator": "ISO",
+          "instrument": "iso-27001-2022",
+          "controlId": "A.8.28"
+        },
+        {
+          "regulator": "NIST",
+          "instrument": "nist-ssdf-800-218",
+          "controlId": "PW.8.2"
+        },
+        {
+          "regulator": "NIST",
+          "instrument": "nist-csf-2.0",
+          "controlId": "PR.PS-06"
+        }
+      ],
+      "targets": [
+        {
+          "type": "repo",
+          "appId": "mcp-gateway",
+          "repoId": "mongodb-mcp-server"
+        }
+      ],
+      "taskCounts": {
+        "total": 3,
+        "done": 0,
+        "blocked": 0
+      },
+      "suggestionIds": [],
+      "sourceWorkflow": "impl-change-management",
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-14T21:12:30Z",
+        "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+        "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+        "workflow": "impl-change-management",
+        "agent": "validator"
+      }
+    },
+    {
+      "initiativeId": "init_01M2GWJR746MQDJ90VXARW6DD1",
+      "title": "Enforce the unit-test gate with coverage thresholds on mongodb-mcp-server and a blocking CI test pipeline on db-models",
+      "summary": "The blocking unit-tests gate is unenforced: mongodb-mcp-server has no coverage threshold, onfinance-db-model-master has no CI. Add thresholds, a pytest pipeline, fix ciGates (SEBI CSCRF PR.IP.S6).",
+      "status": "proposed",
+      "severity": "medium",
+      "priority": "p3",
+      "changeType": "normal",
+      "owner": {
+        "type": "human",
+        "id": "ciso@example-co.invalid"
+      },
+      "createdAt": "2026-09-14T21:12:30Z",
+      "dueAt": "2026-12-13T21:12:30Z",
+      "rollbackPlan": "Every change here is CI or policy configuration merged through a pull request (releaseProcess.approvalsRequired 1), so rollback means reverting the commit. (1) mongodb-mcp-server: revert the commit that adds coverage.thresholds to vitest.config.ts and the threshold step in .github/workflows/code-health.yml (job 'coverage'). If a merge is blocked urgently, a repo admin removes the coverage status check from main branch protection and records the change in this initiative's timeline. (2) onfinance-db-model-master: run `gh workflow disable tests.yml -R OnFinance/onfinance_db_model_master` or revert .github/workflows/tests.yml, then remove the required 'tests' check from master branch protection. The added tests/, pytest.ini, .coveragerc and requirements-dev.txt can stay, because they do not affect the setup.py package build. (3) company-profile/example-co/sdlc/policy.json: git revert the ciGates edit. None of these changes touch runtime deployments or production data, so rollback needs no service restart. The emergency route in releaseProcess.emergencyChangeProcess (CTO approval on the incident bridge) covers an urgent merge that the new gate blocks.",
+      "riskAssessment": "Blast radius: CI pipelines and branch protection of two repositories only. mongodb-mcp-server is the mcp-gateway application's MongoDB/Atlas MCP server, and onfinance-db-model-master is a shared Python data-model library that other internal services consume. There are no runtime, network or data changes. Main risks: (a) a threshold above today's real coverage, or flaky integration tests, blocks every merge, including hotfixes. Mitigation: set the thresholds at the floor of the coverage measured on the current default branch, then raise them in later changes. (b) The coverage run is split into sharded jobs (run-tests, run-atlas-tests, run-atlas-local-tests, run-browser-tests) whose lcov is merged in the 'coverage' job, so a per-shard threshold could fail wrongly. Mitigation: task 1 enforces the floor on the merged lcov, or on the run-tests project only, and proves it with a deliberate failing PR. (c) db-models has no tests today, so any coverage floor starts low. Mitigation: task 3 writes tests for the model modules first and sets fail_under at the measured value. SLA: PR.IP.S6 has no hard-requirement topic in instruments.json, and sla-table.json has no sebi-cscrf-2024, nist-ssdf-800-218 or iso-27001-2022 row for this kind of process gap. The initiative therefore uses the table defaults for medium (90 days, topic 'other'): dueAt 2026-12-13T21:12:30Z. The ledger's fnd_01M2GSSNXD1T94MJ6Q346HV4S6 carries a 14-day sebi-cscrf-2024 PR.MA.S3 patch-sla basis (slaDueAt 2026-09-28T19:35:56Z). That patch row does not fit a missing test gate, but it has not passed yet, so tasks 3 and 4 (db-models CI) are scheduled to finish by it anyway. No linked finding is past its slaDueAt and no risk is linked, so an emergency change is not justified. Intended approver: CISO (normal change).",
+      "slaBasis": {
+        "source": "defaults",
+        "instrument": "sebi-cscrf-2024",
+        "controlId": "PR.IP.S6",
+        "topic": "other",
+        "days": 90
+      },
+      "findingIds": [
+        "fnd_01M2GSDSE000HR9FYWXXSM4ZM3",
+        "fnd_01M2GSSNXD1T94MJ6Q346HV4S6"
+      ],
+      "riskIds": [],
+      "controlIds": [
+        "PR.IP.S6"
+      ],
+      "regulatoryRefs": [
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "PR.IP.S6"
+        },
+        {
+          "regulator": "NIST",
+          "instrument": "nist-ssdf-800-218",
+          "controlId": "PW.8.2"
+        },
+        {
+          "regulator": "ISO",
+          "instrument": "iso-27001-2022",
+          "controlId": "A.8.29"
+        }
+      ],
+      "targets": [
+        {
+          "type": "repo",
+          "appId": "mcp-gateway",
+          "repoId": "mongodb-mcp-server"
+        },
+        {
+          "type": "repo",
+          "appId": "db-models",
+          "repoId": "onfinance-db-model-master"
+        }
+      ],
+      "taskCounts": {
+        "total": 5,
+        "done": 0,
+        "blocked": 0
+      },
+      "suggestionIds": [],
+      "sourceWorkflow": "impl-change-management",
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-14T21:12:30Z",
+        "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+        "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+        "workflow": "impl-change-management",
+        "agent": "change-planner"
+      }
+    },
+    {
+      "initiativeId": "init_01M2GWPKP2RSJXDMRMC9F47V32",
+      "title": "Capture the CI-generated mcp-gateway image SBOM into the workspace image inventory",
+      "summary": "docker-publish.yml builds mcp-gateway with buildx sbom: true, but no exported SBOM or applications/mcp-gateway/images/ record exists. Export, capture and re-probe (SEBI CSCRF GV.SC.S5).",
+      "status": "proposed",
+      "severity": "high",
+      "priority": "p2",
+      "changeType": "normal",
+      "owner": {
+        "type": "human",
+        "id": "ciso@example-co.invalid"
+      },
+      "createdAt": "2026-09-14T21:12:30Z",
+      "dueAt": "2026-10-14T21:12:30Z",
+      "rollbackPlan": "Two independent reverts. (1) Pipeline: revert the PR that added the SBOM export and upload steps to .github/workflows/docker-publish.yml in mongodb-mcp-server. The build-push step, its existing sbom: true and provenance: mode=max settings and the published tags are not changed by this initiative, so reverting brings back the previous workflow exactly and does not affect images already pushed or running in dev, qa or prod. (2) Workspace: revert the commit that added applications/mcp-gateway/images/mongodb-mcp-server.json and mongodb-mcp-server.cdx.json. The finding then stays open. No runtime component, secret, IAM permission or data path changes, so no rollback is needed on EKS.",
+      "riskAssessment": "Blast radius: the reusable workflow docker-publish.yml, which publish.yml and docker.yml call to publish the mcp-gateway image. mcp-gateway backs the order-routing critical function (impact tolerance 30 minutes outage, 0 minutes data loss) and runs in prod (partner exposure) with pii and financial data. The change only adds steps that run after the image push succeeds. At worst a failing SBOM export or upload step marks a release run as failed after the image is already published, so image availability and the running service are not affected. It also adds workspace inventory files, which touch no runtime. Mitigations: pin the new actions by full commit SHA like the existing steps, keep job permissions at contents: read with no new secrets, promote through the policy's dev -> qa -> prod order with the 1 required approval, and bind the SBOM to the pushed digest so the inventory cannot describe a different image. sdlc/policy.json defines no deploymentWindows and the mcp-gateway env files define no changeFreeze, so no window constraint applies. SLA: the finding's slaDueAt is 2026-10-14T13:48:42Z and has not passed. The initiative dueAt of 2026-10-14T21:12:30Z is computed from this run's createdAt, so it falls 7.5 hours after the finding clock. All tasks are due by 2026-10-12T21:12:30Z so the fix lands before the finding SLA. Residual concern outside this group: sdlc/policy.json dependencyPolicy.sbomRequired is false, which is looser than GV.SC.S5 (already noted in obs_01M2GSDR0EEER0MBN2RHXDM7TT).",
+      "slaBasis": {
+        "source": "defaults",
+        "instrument": "sebi-cscrf-2024",
+        "controlId": "GV.SC.S5",
+        "topic": "sbom",
+        "days": 30
+      },
+      "findingIds": [
+        "fnd_01M2GH5B1JFJYTA2MGWES48JP5"
+      ],
+      "riskIds": [],
+      "controlIds": [
+        "GV.SC.S5"
+      ],
+      "regulatoryRefs": [
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "GV.SC.S5"
+        },
+        {
+          "regulator": "RBI",
+          "instrument": "rbi-outsourcing-risk-directions-2025",
+          "controlId": "97(vii)"
+        },
+        {
+          "regulator": "NIST",
+          "instrument": "nist-ssdf-800-218",
+          "controlId": "PS.3.2"
+        }
+      ],
+      "targets": [
+        {
+          "type": "repo",
+          "appId": "mcp-gateway",
+          "repoId": "mongodb-mcp-server"
+        }
+      ],
+      "taskCounts": {
+        "total": 3,
+        "done": 0,
+        "blocked": 0
+      },
+      "suggestionIds": [],
+      "sourceWorkflow": "impl-change-management",
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-14T21:12:30Z",
+        "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+        "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+        "workflow": "impl-change-management",
+        "agent": "validator"
+      }
+    },
+    {
+      "initiativeId": "init_01M2GWQ198WX455NVQVAQ62EST",
+      "title": "Pin the base image digest and mongodb-mcp-server version in the AgentCore Dockerfile",
+      "summary": "deploy/aws/Dockerfile builds node:24-alpine undigested and installs mongodb-mcp-server@latest with no lockfile. Pin the digest, build an exact VERSION from the lockfile (SEBI CSCRF PR.IP.S3).",
+      "status": "proposed",
+      "severity": "high",
+      "priority": "p2",
+      "changeType": "normal",
+      "owner": {
+        "type": "human",
+        "id": "cto@example-co.invalid"
+      },
+      "createdAt": "2026-09-14T21:12:30Z",
+      "dueAt": "2026-09-21T21:12:30Z",
+      "rollbackPlan": "Revert the pinning commit(s) on deploy/aws/Dockerfile, deploy/aws/README.md and the new CI guard workflow in mongodb-mcp-server with git revert, then rebuild. Do not delete any ECR image already pushed. If a pinned image fails in the AgentCore runtime, point the runtime's container image URI back to the previous ECR image digest, which is recorded before the change in task 3. The qa and prod EKS ap-south-1 deployments do not build from deploy/aws/Dockerfile, so they are not affected and need no rollback.",
+      "riskAssessment": "Blast radius: only images built from deploy/aws/Dockerfile. Operators push these to ECR us-east-1 for the Bedrock AgentCore MCP runtime. The workspace has no image records under applications/mcp-gateway/images linking this image to qa or prod, which run on EKS ap-south-1, so no customer-facing EKS workload changes. Change risks and mitigations: (1) a pinned digest can freeze an older base with unpatched CVEs, so pin the current linux/arm64-capable node:24-alpine index digest and let Dependabot docker updates propose digest bumps; (2) building from source with pnpm install --frozen-lockfile can differ from the npm-published package, so compare the binary --version and smoke-test the HTTP transport on port 8000 before pushing; (3) the new CI guard can block unrelated PRs, so scope it to Dockerfiles only. SLA: dueAt is the run timestamp plus 7 days (2026-09-21T21:12:30Z). That is 3h04m later than the finding's slaDueAt of 2026-09-21T18:08:50Z, because initiative dueAt counts from the planning run. All tasks are therefore due by 2026-09-19 so the finding's own clock is met. The finding is not past due and no risk is linked, so the change is not an emergency and no ECAB is needed. Overlap: open finding fnd_01M2GH5AS0MM2F8MSFTDP36VV9 (CICD-PIN-02, probe-cicd-env) also flags the undigested node:24-alpine in deploy/aws/Dockerfile and in the root Dockerfile. Task 1 fixes its deploy/aws half, but that finding is not in this group, so the root Dockerfile stays with its own initiative. sdlc/policy.json releaseProcess defines no deploymentWindows. The prod.json allowedWindows govern read-only probes only, not deployments.",
+      "slaBasis": {
+        "source": "sla-table",
+        "instrument": "sebi-cscrf-2024",
+        "controlId": "PR.MA.S3",
+        "topic": "patch-sla",
+        "days": 7
+      },
+      "findingIds": [
+        "fnd_01M2GJYP56VKDHARQPPFVATT0D"
+      ],
+      "riskIds": [],
+      "controlIds": [
+        "PR.IP.S3"
+      ],
+      "regulatoryRefs": [
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "PR.IP.S3"
+        },
+        {
+          "regulator": "ISO",
+          "instrument": "iso-27001-2022",
+          "controlId": "A.8.32"
+        },
+        {
+          "regulator": "NIST",
+          "instrument": "nist-csf-2.0",
+          "controlId": "PR.PS-01"
+        },
+        {
+          "regulator": "CIS",
+          "instrument": "cis-controls-8.1",
+          "controlId": "4.2"
+        }
+      ],
+      "targets": [
+        {
+          "type": "repo",
+          "appId": "mcp-gateway",
+          "repoId": "mongodb-mcp-server"
+        }
+      ],
+      "taskCounts": {
+        "total": 4,
+        "done": 0,
+        "blocked": 0
+      },
+      "suggestionIds": [],
+      "sourceWorkflow": "impl-change-management",
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-14T21:12:30Z",
+        "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+        "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+        "workflow": "impl-change-management",
+        "agent": "validator"
+      }
+    },
+    {
+      "initiativeId": "init_01M2GWR6B9C4Y7Z2XEVDXA1WEH",
+      "title": "Add consent, purpose and notice references to the db-models User document",
+      "summary": "The db-models User document (models.py lines 387-429) has no consent, purpose or notice reference. Add a purpose/notice register and optional consent fields to User (SEBI CSCRF GV.OC.S2, DPDP Rule 3).",
+      "status": "proposed",
+      "severity": "medium",
+      "priority": "p3",
+      "changeType": "normal",
+      "owner": {
+        "type": "human",
+        "id": "dpo@example-co.invalid"
+      },
+      "createdAt": "2026-09-14T21:12:30Z",
+      "dueAt": "2026-09-28T21:12:30Z",
+      "rollbackPlan": "1) Revert the merge commit on onfinance-db-model-master (branch master) and publish a release that points consumers back to 1.0.0. 2) Mongoengine Documents are strict by default, so version 1.0.0 raises FieldDoesNotExist when it loads a User document that holds the new fields. Before any consumer downgrades, count affected documents with db.user.countDocuments({$or:[{consent_id:{$exists:true}},{notice_version:{$exists:true}},{consent_purposes:{$exists:true}}]}). If the count is 0, downgrade directly. If it is above 0, roll forward instead: publish a 1.1.x patch that keeps the five field declarations but reverts any other behaviour, so no stored consent evidence is lost. 3) Environments roll back in reverse order of sdlc/policy.json environmentsOrder (prod, qa, dev), with the same single approval that the release needed. 4) The register from task 1 is a document, not a deployed artefact. It stays in place and needs no rollback.",
+      "riskAssessment": "Blast radius: db-models is a shared mongoengine library that internal services use to read and write the User collection. Its only recorded environment is dev (exposure isolated), and no deploymentWindows or changeFreeze apply. The change adds five optional fields and no required ones. Existing documents keep loading and no data migration runs, so the main risks are consumers still pinned to setup.py version 1.0.0 (they will not see the fields) and a rollback hitting strict-mode FieldDoesNotExist (covered in rollbackPlan). Mitigations: fields are optional with default=list for the purposes list; a test proves a legacy User document without the fields still loads; releases go dev, qa, prod with one approval (sdlc/policy.json approvalsRequired 1); the release note tells consuming services to populate the fields at onboarding. Timing: finding fnd_01M2GMN62KVM9J9R852X3E3ST7 was first seen 2026-09-14T18:36:43Z with slaDueAt 2026-09-28T18:36:43Z, which has not passed. The initiative dueAt (createdAt 2026-09-14T21:12:30Z + 14 days) falls 2h36m after the finding's slaDueAt, so tasks are scheduled to finish before it. DPDP Rules 2025 Rule 3 does not commence until 2027-05-13, so the DPDP part is a readiness gap. The SEBI CSCRF GV.OC.S2 obligation applies now. No linked risk is likely or almost-certain with major or severe impact, and the finding is medium and within SLA, so this is not an emergency change. The ciso (ciso@example-co.invalid) is the intended CAB approver.",
+      "slaBasis": {
+        "source": "sla-table",
+        "instrument": "sebi-cscrf-2024",
+        "controlId": "PR.MA.S3",
+        "topic": "patch-sla",
+        "days": 14
+      },
+      "findingIds": [
+        "fnd_01M2GMN62KVM9J9R852X3E3ST7"
+      ],
+      "riskIds": [],
+      "controlIds": [
+        "GV.OC.S2",
+        "3"
+      ],
+      "regulatoryRefs": [
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "GV.OC.S2"
+        },
+        {
+          "regulator": "MeitY",
+          "instrument": "dpdp-rules-2025",
+          "controlId": "3"
+        },
+        {
+          "regulator": "ISO",
+          "instrument": "iso-27001-2022",
+          "controlId": "A.5.34"
+        }
+      ],
+      "targets": [
+        {
+          "type": "repo",
+          "appId": "db-models",
+          "repoId": "onfinance-db-model-master"
+        }
+      ],
+      "taskCounts": {
+        "total": 3,
+        "done": 0,
+        "blocked": 0
+      },
+      "suggestionIds": [],
+      "sourceWorkflow": "impl-change-management",
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-14T21:12:30Z",
+        "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+        "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+        "workflow": "impl-change-management",
+        "agent": "validator"
+      }
+    },
+    {
+      "initiativeId": "init_01M2GWPZP4P4134Q0ZVY3SEMP0",
+      "title": "Add retention, expiry and purge controls to the User and Secrets models",
+      "summary": "User and Secrets models lack retention fields, TTL indexes and purge jobs, so PII and broker credentials persist forever. Add them per SEBI CSCRF PR.AA.S13 and DPDP Act 8(7).",
+      "status": "proposed",
+      "severity": "medium",
+      "priority": "p3",
+      "changeType": "normal",
+      "owner": {
+        "type": "human",
+        "id": "dpo@example-co.invalid"
+      },
+      "createdAt": "2026-09-14T21:12:30Z",
+      "dueAt": "2026-12-13T21:12:30Z",
+      "rollbackPlan": "1) Before each environment deploy (dev -> qa -> prod, releaseProcess.environmentsOrder), take an encrypted mongodump of the user and secrets collections of db-models-mongodb, kept under the restricted classification. 2) Code rollback: revert the models.py / purge module commit on onfinance-db-model-master master and redeploy the previous pinned package version (current pinnedCommit 70b3633e171a1b8d389b27bb901c84c34a0e9bf6) to the consuming services. 3) TTL rollback: run db.secrets.dropIndex(\"expires_at_1\") and db.user.dropIndex on the retention_until index. MongoDB stops TTL deletion as soon as the index is dropped, and documents without expires_at were never eligible. 4) Purge rollback: disable the purge job's schedule (report-only flag back to true). Erased documents can be restored only from the pre-deploy dump, so the first production run is report-only and needs DPO sign-off before erasure is enabled. 5) Restored records are reconciled against consent-withdrawal requests received after the dump, so a restore does not bring back data the law requires to be erased.",
+      "riskAssessment": "Blast radius: the db-models MongoDB user and secrets collections, shared by every service that imports onfinance_db_model_master. User holds client PII (email, phone, password hash, Binance credentials, chats). Secrets holds SPDI broker credentials (Zerodha username/password/2FA, apiSecrets, accessToken). Change risks: (a) a wrong expires_at or TTL value deletes live broker credentials and breaks connected trading integrations; (b) the purge job erases User records still under statutory retention (SEBI stock-broker record-keeping, PMLA/RBI KYC five years after the relationship ends, DPDP Rules 8(3) one-year minimum); (c) adding meta indexes renames nothing as long as the collection names 'user' and 'secrets' are pinned explicitly. Mitigations: an approved retention schedule first (task 1); TTL only on an explicit expires_at field with expireAfterSeconds 0, so existing documents without the field are untouched until backfilled; User uses soft-delete plus retention_until instead of a hard TTL; the first production purge is report-only with counts reviewed by the DPO; staged dev -> qa -> prod rollout with pre-deploy backups; honour any changeFreeze in applications/db-models/env/*.json. SLA: the finding's slaDueAt is 2026-12-13T18:36:43Z and has not passed. The initiative dueAt (createdAt 2026-09-14T21:12:30Z + 90 days = 2026-12-13T21:12:30Z) is about 2.5 hours later only because the clock starts at the run timestamp, so the team should aim to close by the finding's slaDueAt. DPDP Act section 8(7) commences 13 May 2027 (G.S.R. 843(E)), so under DPDP this is a readiness gap; SEBI CSCRF PR.AA.S13 binds now. No linked risk, and the finding is medium and within SLA, so this is not an emergency and no ECAB is needed. The ciso (ciso@example-co.invalid) is the intended CAB approver.",
+      "slaBasis": {
+        "source": "defaults",
+        "instrument": "sebi-cscrf-2024",
+        "controlId": "PR.AA.S13",
+        "topic": "data-retention",
+        "days": 90
+      },
+      "findingIds": [
+        "fnd_01M2GMN63DEDR29P66QTKND8E7"
+      ],
+      "riskIds": [],
+      "controlIds": [
+        "PR.AA.S13",
+        "Act-8(7)"
+      ],
+      "regulatoryRefs": [
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "PR.AA.S13"
+        },
+        {
+          "regulator": "MeitY",
+          "instrument": "dpdp-rules-2025",
+          "controlId": "Act-8(7)"
+        },
+        {
+          "regulator": "MeitY",
+          "instrument": "dpdp-act-2023",
+          "controlId": "8(7)"
+        },
+        {
+          "regulator": "OWASP",
+          "instrument": "owasp-asvs-5.0",
+          "controlId": "14.2.7"
+        }
+      ],
+      "targets": [
+        {
+          "type": "repo",
+          "appId": "db-models",
+          "repoId": "onfinance-db-model-master"
+        }
+      ],
+      "taskCounts": {
+        "total": 5,
+        "done": 0,
+        "blocked": 0
+      },
+      "suggestionIds": [],
+      "sourceWorkflow": "impl-change-management",
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-14T21:12:30Z",
+        "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+        "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+        "workflow": "impl-change-management",
+        "agent": "validator"
+      }
+    },
+    {
+      "initiativeId": "init_01M2GWQXXT1Y73CPR2NKENXEBH",
+      "title": "Fail closed on missing elicitation and default-deny write/delete tools in mongodb-mcp-server",
+      "summary": "Destructive MCP tools auto-approve when the client lacks elicitation and write/delete tools are on by default. Fail closed and add a default-deny allow-list, per SEBI CSCRF PR.AA.S3.",
+      "status": "proposed",
+      "severity": "high",
+      "priority": "p2",
+      "changeType": "normal",
+      "owner": {
+        "type": "human",
+        "id": "ciso@example-co.invalid"
+      },
+      "createdAt": "2026-09-14T21:12:30Z",
+      "dueAt": "2026-09-21T21:12:30Z",
+      "rollbackPlan": "1) Code (tasks 1-2): git revert the merge commits for the fail-closed elicitation change and the allow-list gate on main of mongodb-mcp-server, rebuild the image and redeploy. 2) Deployment (tasks 3-4): roll the mcp-gateway workload in the affected EKS environment (qa or prod, ap-south-1) back to the previous image digest, which task 4 records before each rollout. For dev, use docker compose with the previous tag. 3) A rollback must not reopen the gap. While a reverted build is live, set MDB_MCP_READ_ONLY=true on the qa and prod deployments. This stops create, update and delete tools from registering (verifyAllowed() in src/tools/tool.ts), so no destructive tool is reachable while the fix is reworked. 4) Record the rollback as a timeline event and re-run probe-agent-graph afterwards so the ledger shows the current state. No data migration is involved, so there is no data to restore.",
+      "riskAssessment": "Blast radius: only the mcp-gateway application (repo mongodb-mcp-server). Environments: dev (docker compose), qa (EKS, internal exposure) and prod (EKS ap-south-1, partner exposure). Both qa and prod hold client-data and order stores classified pii and financial. Functional risk: after the change, any agent that uses an MCP client without the elicitation capability can no longer run confirmationRequiredTools (drop-database, drop-collection, delete-many, drop-index, atlas-create-access-list, atlas-create-db-user, atlas-streams-manage, atlas-streams-teardown). Any create, update or delete tool not on the new allow-list stops registering. Agent workflows that write to these stores will get refusals. Per the app README the gateway exists to let agents query data, so the expected business impact is low, but it is not verified. Mitigations: task 3 inventories write-tool use and records an approved allow-list before rollout. Rollout follows sdlc/policy.json releaseProcess.environmentsOrder dev -> qa -> prod with approvalsRequired 1. No deploymentWindows are defined in policy.json and no changeFreeze is set on the qa or prod env files, so the CAB must agree the prod slot. Until prod is updated, operators can contain the risk by setting MDB_MCP_READ_ONLY=true on qa and prod. Timing: both findings were first seen 2026-09-14T19:14:04Z with slaDueAt 2026-09-21T19:14:04Z (SEBI CSCRF PR.MA.S3 patch-sla high, 7 days). The initiative dueAt is createdAt + 7 days = 2026-09-21T21:12:30Z, about 2 hours after the finding SLA, so the final rollout task is due 2026-09-21T12:00:00Z to close inside the finding SLA. Neither SLA has passed at the run timestamp, no finding is critical and no risk is linked, so this is not an emergency change. Segregation of duties: the CISO is both owner (fallback, because there is no head-it contact) and intended approver. The CTO (cto@example-co.invalid) should review the code PRs in tasks 1-3 so that the implementer and the approver are different people.",
+      "slaBasis": {
+        "source": "sla-table",
+        "instrument": "sebi-cscrf-2024",
+        "controlId": "PR.MA.S3",
+        "topic": "patch-sla",
+        "days": 7
+      },
+      "findingIds": [
+        "fnd_01M2GPBK5MBCAFFV7KNH83JV1F",
+        "fnd_01M2GPBK5MSHBXGGFSRYHPXQY2"
+      ],
+      "riskIds": [],
+      "controlIds": [
+        "PR.AA.S3"
+      ],
+      "regulatoryRefs": [
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "PR.AA.S3"
+        },
+        {
+          "regulator": "MeitY",
+          "instrument": "dpdp-rules-2025",
+          "controlId": "6(1)(b)"
+        },
+        {
+          "regulator": "OWASP",
+          "instrument": "owasp-agentic-top10-2026",
+          "controlId": "ASI09"
+        },
+        {
+          "regulator": "OWASP",
+          "instrument": "owasp-llm-top10-2025",
+          "controlId": "LLM06"
+        },
+        {
+          "regulator": "OWASP",
+          "instrument": "owasp-agentic-top10-2026",
+          "controlId": "ASI02"
+        }
+      ],
+      "targets": [
+        {
+          "type": "repo",
+          "appId": "mcp-gateway",
+          "repoId": "mongodb-mcp-server"
+        }
+      ],
+      "taskCounts": {
+        "total": 4,
+        "done": 0,
+        "blocked": 0
+      },
+      "suggestionIds": [],
+      "sourceWorkflow": "impl-change-management",
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-14T21:12:30Z",
+        "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+        "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+        "workflow": "impl-change-management",
+        "agent": "change-manager"
+      }
+    },
+    {
+      "initiativeId": "init_01M2GWQEVKZM0584YS6JR7F6JA",
+      "title": "Define named code owners for security-sensitive paths and enforce code-owner review",
+      "summary": "No owner/review role covers security-sensitive paths: CODEOWNERS is upstream-only in mongodb-mcp-server, absent in onfinance-db-model-master. Add owners; enforce review (SEBI GV.PO.S5, NIST PO.2.1).",
+      "status": "proposed",
+      "severity": "medium",
+      "priority": "p3",
+      "changeType": "normal",
+      "owner": {
+        "type": "human",
+        "id": "ciso@example-co.invalid"
+      },
+      "createdAt": "2026-09-14T21:12:30Z",
+      "dueAt": "2026-12-13T21:12:30Z",
+      "rollbackPlan": "Each step can be undone on its own and touches no running service. (1) Branch protection: turn off 'Require review from Code Owners' on OnFinance/mongodb-mcp-server main and OnFinance/onfinance_db_model_master master, going back to the current rule (1 approval, no self-approval). (2) CODEOWNERS: revert the merge commit that changed .github/CODEOWNERS in each repository. The old catch-all line comes back in mongodb-mcp-server, and the file is removed again in onfinance-db-model-master. (3) policy.json: set codeReview.codeownersEnforced back to false with a note recording the rollback. Reverting any of these restores the old merge behaviour right away and needs no deployment.",
+      "riskAssessment": "Blast radius: repository governance only, for the two repositories (mcp-gateway/mongodb-mcp-server and db-models/onfinance-db-model-master) and the company SDLC policy. No runtime system, container image or production environment changes. The main operational risk is merge stalls: a PR touching deploy/, .github/workflows/, src/ or the shared data-model package could be blocked if a code-owner team is too small or unavailable. Mitigations: every ExampleCo team named in CODEOWNERS has at least two members before enforcement is switched on (task 1 gates tasks 2-4), CODEOWNERS syntax is checked with the GitHub codeowners/errors API before branch protection changes, and a test PR confirms enforcement works before the change is closed. Until then, a change to CI workflows or deployment configuration can still merge without security sign-off. That exposure is medium (catalog defaultSeverity of GV.PO.S5), and no linked risk is rated likely or almost-certain. SLA: the linked finding's slaDueAt is 2026-12-13T19:35:56Z (firstSeenAt + 90 days). This initiative's dueAt is 2026-12-13T21:12:30Z (run timestamp + 90 days, sla-table defaults for medium, because sebi-cscrf-2024 has no SLA row for this control's topic). That is 1h37m after the finding's clock, so all tasks are scheduled to finish by 2026-11-30 and the finding's own SLA is still met. The finding is not past its SLA and is not critical, so an emergency change is not justified.",
+      "slaBasis": {
+        "source": "defaults",
+        "topic": "other",
+        "days": 90
+      },
+      "findingIds": [
+        "fnd_01M2GS6B7DFR9B286Y0506V1VJ"
+      ],
+      "riskIds": [],
+      "controlIds": [
+        "GV.PO.S5"
+      ],
+      "regulatoryRefs": [
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "GV.PO.S5"
+        },
+        {
+          "regulator": "ISO",
+          "instrument": "iso-27001-2022",
+          "controlId": "A.5.9"
+        },
+        {
+          "regulator": "NIST",
+          "instrument": "nist-ssdf-800-218",
+          "controlId": "PO.2.1"
+        }
+      ],
+      "targets": [
+        {
+          "type": "company"
+        }
+      ],
+      "taskCounts": {
+        "total": 5,
+        "done": 0,
+        "blocked": 0
+      },
+      "suggestionIds": [],
+      "sourceWorkflow": "impl-change-management",
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-14T21:12:30Z",
+        "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+        "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+        "workflow": "impl-change-management",
+        "agent": "validator"
+      }
+    },
+    {
+      "initiativeId": "init_01M2GWQJEHZ635MEEPXE7ATHXG",
+      "title": "Evidence the cyber audit cycle and track audit observations to closure within 3 months",
+      "summary": "No cyber audit or tracked observation closure is evidenced despite the declared cadence. Evidence the audit, calendar and 3-month closure loop per SEBI CSCRF Sec-4.4 and CERT-In CCSAPG-13.1.2.",
+      "status": "proposed",
+      "severity": "high",
+      "priority": "p2",
+      "changeType": "normal",
+      "owner": {
+        "type": "human",
+        "id": "ciso@example-co.invalid"
+      },
+      "createdAt": "2026-09-14T21:12:30Z",
+      "dueAt": "2026-12-13T21:12:30Z",
+      "rollbackPlan": "This is a governance and process change with no production deployment. If the new audit-calendar or observation-closure procedure is rejected by the IT Committee or proves unworkable, restore the previous version of the procedure document from the ISMS document repository's version history. Revert any reviewed commit to company-profile/example-co/details.json auditCadence with git revert. Ledger records are never deleted: append superseding records instead. Evidence already collected (audit reports, IT Committee minutes, engagement letters) is kept, not withdrawn. If the engaged CERT-In empanelled auditor withdraws, re-engage an alternative empanelled auditor under the same scope statement. No change is made to application, environment or data-plane configuration.",
+      "riskAssessment": "Blast radius: company-wide governance only. No system, repository or production environment is changed, so there is no downtime or data impact. The audit fieldwork this change commissions will touch mcp-gateway (the critical order-routing function in the qa and prod EKS environments). That work must follow each environment's changeFreeze windows and read-only probe access, and run outside NSE/BSE market hours. sdlc/policy.json defines no deploymentWindows. Compliance exposure if not done: example-co is a SEBI mid-size RE, so CSCRF Sec-4.4 requires an annual cyber audit (twice a year if it provides IBT or algorithmic trading, which Task 2 must confirm; details.json currently declares cyberAuditPerYear 1). The audit report must be submitted within one month of completion and observations closed within 3 months. Without a tracked loop, the other open SDLC findings have no forcing function to reach closure. SLA: the finding's slaDueAt is 2026-12-13T19:35:56Z (firstSeenAt + 90 days). It has not passed. The initiative dueAt is createdAt 2026-09-14T21:12:30Z + 90 days = 2026-12-13T21:12:30Z, which is about 1.5 hours later, so the final verification task is due by the finding's slaDueAt. Mitigations: tasks are sequenced so evidence is gathered first (Task 1) and any missing audit is visible within 14 days. IT Committee approval is the route for observations still open after 3 months. The CISO both owns and approves this change, so the IT Committee ratifies the procedure and the audit report to preserve segregation of duties. The CTO contributes remediation owners for technical observations.",
+      "slaBasis": {
+        "source": "sla-table",
+        "instrument": "sebi-cscrf-2024",
+        "controlId": "Sec-4.4",
+        "topic": "audit-cadence",
+        "days": 90
+      },
+      "findingIds": [
+        "fnd_01M2GS6B87TV7NHZQ8BMGDR4HZ"
+      ],
+      "riskIds": [],
+      "controlIds": [
+        "Sec-4.4",
+        "CCSAPG-13.1.2"
+      ],
+      "regulatoryRefs": [
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "Sec-4.4"
+        },
+        {
+          "regulator": "CERT-In",
+          "instrument": "cert-in-directions-2022",
+          "controlId": "CCSAPG-13.1.2"
+        },
+        {
+          "regulator": "ISO",
+          "instrument": "iso-27001-2022",
+          "controlId": "A.5.35"
+        },
+        {
+          "regulator": "NIST",
+          "instrument": "nist-ssdf-800-218",
+          "controlId": "RV.2.2"
+        }
+      ],
+      "targets": [
+        {
+          "type": "company"
+        }
+      ],
+      "taskCounts": {
+        "total": 6,
+        "done": 0,
+        "blocked": 0
+      },
+      "suggestionIds": [],
+      "sourceWorkflow": "impl-change-management",
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-14T21:12:30Z",
+        "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+        "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+        "workflow": "impl-change-management",
+        "agent": "validator"
+      }
+    }
+  ],
   "provenance": {
-    "harness": "human",
-    "generatedAt": "2026-09-14T00:00:00Z",
-    "workflow": "seed-company",
-    "agent": "maxwell-maintainers"
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
   }
 }

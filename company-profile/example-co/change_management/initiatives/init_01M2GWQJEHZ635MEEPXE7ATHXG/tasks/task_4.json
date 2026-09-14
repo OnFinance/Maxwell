@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_4",
+  "initiativeId": "init_01M2GWQJEHZ635MEEPXE7ATHXG",
+  "companyId": "example-co",
+  "seq": 4,
+  "title": "Classify changes as minor or major and require an audit around major changes",
+  "description": "CERT-In CCSAPG 13.1.2 requires formal change management that classifies changes as minor or major, with a cyber security audit before a major change is implemented and after it goes live. Examples of major changes: system overhauls, technology migrations, and configuration changes affecting sensitive data or critical infrastructure such as mcp-gateway prod or the MongoDB client-data store. Update the company change-management policy in the ISMS repository to define the classification criteria, the pre-implementation audit gate and the post-change audit trigger, and link the gate to the Task 2 calendar. sdlc/policy.json releaseProcess has no field for change classification (schema v1/company/sdlc-policy.schema.json). Do not add a key there. Ask soc-ledger-keeper to record the gap as a manual observation against cert-in-directions-2022:CCSAPG-13.1.2.",
+  "owner": {
+    "type": "human",
+    "id": "ciso@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "The approved change-management policy version defines minor and major changes with at least three concrete examples of major changes that name mcp-gateway or the client-data store.",
+    "The policy states that a major change cannot move to production without a completed pre-implementation cyber security audit reference, and that a post-change audit is scheduled in the audit calendar.",
+    "A manual observation in company-profile/example-co/soc/main.jsonl against cert-in-directions-2022:CCSAPG-13.1.2 records that sdlc/policy.json has no change-classification field and cites the policy document locator."
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "The reviewer opens the approved policy version and the ledger observation. Expected result: the classification criteria, the pre-implementation audit gate and the post-change audit trigger are present, and the observation exists with methods [manual] and a document locator."
+  },
+  "rootCause": {
+    "category": "process-gap",
+    "description": "The release process in sdlc/policy.json covers approvals and rollback but not minor/major classification, so nothing triggers the audit that CERT-In CCSAPG 13.1.2 requires around major changes."
+  },
+  "targets": [
+    {
+      "type": "company"
+    }
+  ],
+  "effortEstimateHours": 8,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-11-09T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_2"
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

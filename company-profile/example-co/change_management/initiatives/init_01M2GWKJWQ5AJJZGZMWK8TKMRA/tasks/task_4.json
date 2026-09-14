@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_4",
+  "initiativeId": "init_01M2GWKJWQ5AJJZGZMWK8TKMRA",
+  "companyId": "example-co",
+  "seq": 4,
+  "title": "Confirm reviewers complete the new security checklist on mongodb-mcp-server PRs",
+  "description": "After task 1 merges, brief the approvers of OnFinance/mongodb-mcp-server that a PR must not be approved while any '## Security and data impact' checkbox is unanswered, and that any PR touching pii or financial data paths, auth or MCP tools needs a threat-model note. Then review every PR merged to main between the task 1 merge and the review date. If none merged, open one dry-run PR with a trivial documentation change and review that instead. Record the PR URLs and checklist state as task evidence. Note for the CAB: CODEOWNERS still points to the upstream @mongodb-js/mcp-server-developers team and codeReview.codeownersEnforced is false. Record that as a follow-up observation. Changing it is outside this initiative. No deployment and no change freeze applies.",
+  "owner": {
+    "type": "human",
+    "id": "ciso@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "A briefing message or meeting note naming the mongodb-mcp-server approvers and the new checklist rule exists and is linked as task evidence",
+    "Every PR merged to mongodb-mcp-server main after the task 1 merge (or the dry-run PR if none merged) has all security-section checkboxes answered in its description and at least one non-author approval, with the PR URLs recorded in task evidence",
+    "Any sampled PR with an incomplete checklist has a follow-up comment or fix linked in task evidence"
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "The approver opens the PR URLs recorded in task evidence and checks that each description contains the '## Security and data impact' section with every checkbox ticked or answered 'n/a' with a reason, and that the approver differs from the author. Expected result: 100% of the sampled PRs comply, and the briefing note is attached."
+  },
+  "rootCause": {
+    "category": "process-gap",
+    "description": "A template alone does not change reviewer behaviour. No one was responsible for checking that code reviews on this repo consider security and data impact, so the checklist must be introduced to reviewers and its use sampled once."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 2,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-28T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_1" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_3",
+  "initiativeId": "init_01M2GWJR746MQDJ90VXARW6DD1",
+  "companyId": "example-co",
+  "seq": 3,
+  "title": "Add a pytest suite with a coverage floor to onfinance-db-model-master",
+  "description": "In applications/db-models/repos/onfinance-db-model-master (Python, setup.py, default branch master, pinned 70b3633e), create tests/ with pytest unit tests covering the model classes and validators in the onfinance_db_model_master package. Start with the models other internal services import. Add pytest.ini (testpaths = tests) and .coveragerc with `[run] source = onfinance_db_model_master` and `[report] fail_under = <floor of measured coverage>`. Add requirements-dev.txt pinning pytest and pytest-cov with hashes resolved from https://pypi.org/simple, as dependencyPolicy.lockfilesRequired and allowedRegistries require. Merge by pull request with 1 approval. The package's runtime install_requires in setup.py stays unchanged.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "`pip install --require-hashes -r requirements-dev.txt && pip install -e . && pytest --cov --cov-report=term-missing` exits 0 on master and reports coverage at or above the fail_under value in .coveragerc.",
+    "Lowering fail_under by editing the config is not needed for the negative check: temporarily removing one test module makes `pytest --cov` exit non-zero with 'FAIL Required test coverage of N% not reached' (command output attached).",
+    "tests/ contains at least one test module per top-level model module in onfinance_db_model_master (file listing attached)."
+  ],
+  "verificationMethod": {
+    "type": "code-review",
+    "description": "Reviewer checks the PR diff for tests/, pytest.ini, .coveragerc (fail_under set to the measured floor) and a hash-pinned requirements-dev.txt from pypi.org, then runs `pytest --cov` locally at the merge commit. Expected: exit 0 with coverage >= fail_under, and non-zero when a test module is removed."
+  },
+  "rootCause": {
+    "category": "process-gap",
+    "description": "The db-models library was onboarded under a policy gate that names vitest, a JavaScript runner, and nobody translated it to a Python test runner. As a result the repo has no tests and no coverage configuration, so no gate could run even if CI existed."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "db-models",
+      "repoId": "onfinance-db-model-master"
+    }
+  ],
+  "effortEstimateHours": 16,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-25T19:35:56Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

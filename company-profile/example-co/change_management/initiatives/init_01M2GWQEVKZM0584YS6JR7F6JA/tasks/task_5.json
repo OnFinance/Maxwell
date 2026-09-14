@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_5",
+  "initiativeId": "init_01M2GWQEVKZM0584YS6JR7F6JA",
+  "companyId": "example-co",
+  "seq": 5,
+  "title": "Test that a change to a security-sensitive path cannot merge without code-owner approval",
+  "description": "In OnFinance/mongodb-mcp-server, open a throwaway pull request that changes a comment in a file under .github/workflows/. Have it approved by a reviewer who is not in the owning team. Confirm GitHub blocks the merge, then get approval from a member of the owning team and confirm the merge becomes allowed. Close the PR without merging. Repeat in OnFinance/onfinance_db_model_master with a comment-only change under onfinance_db_model_master/. Attach screenshots or the `gh pr view --json reviewDecision,mergeStateStatus` output as evidence. No production system is touched, and no deployment window is needed.",
+  "owner": {
+    "type": "human",
+    "id": "ciso@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "For each repository, `gh pr view <n> --json reviewDecision,mergeStateStatus` shows reviewDecision REVIEW_REQUIRED and mergeStateStatus BLOCKED after approval by a non-owner.",
+    "For each repository, the same command shows reviewDecision APPROVED after approval by a code-owner team member, and the test PR is then closed unmerged.",
+    "The command outputs for both repositories are attached as task evidence."
+  ],
+  "verificationMethod": {
+    "type": "manual-test",
+    "description": "The CISO repeats the steps in the description on both repositories. Expected: merge is blocked (mergeStateStatus BLOCKED, reviewDecision REVIEW_REQUIRED) when only a non-owner has approved, and unblocked (reviewDecision APPROVED) once a member of the owning ExampleCo team approves. Both test PRs end closed unmerged."
+  },
+  "rootCause": {
+    "category": "process-gap",
+    "description": "Nobody ever tested that the chain of command for code approvals works, so the catch-all upstream ownership and the unenforced policy went unnoticed until the probe-sdlc review."
+  },
+  "targets": [
+    {
+      "type": "company"
+    }
+  ],
+  "effortEstimateHours": 2,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-11-30T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_4"
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

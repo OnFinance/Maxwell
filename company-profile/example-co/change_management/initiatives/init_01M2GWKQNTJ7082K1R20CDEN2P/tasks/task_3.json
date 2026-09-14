@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_3",
+  "initiativeId": "init_01M2GWKQNTJ7082K1R20CDEN2P",
+  "companyId": "example-co",
+  "seq": 3,
+  "title": "Replace plaintext credential fields in the db-models Secrets document with Secrets Manager locators",
+  "description": "In applications/db-models/repos/onfinance-db-model-master/onfinance_db_model_master/models.py, change class Secrets(Document) (lines 8-15) as follows. Remove zerodha_password and zerodha_2fa entirely (use Kite Connect request/access token flow instead of stored login credentials). Replace apiKey, apiSecrets and accessToken with StringFields that hold only an AWS Secrets Manager ARN or locator (e.g. api_secret_ref, access_token_ref). Replace User.user_binance_auth_creds (line 397, DynamicField) with a typed EmbeddedDocument that holds only a locator. If a token must stay in MongoDB, use MongoDB client-side field-level encryption with a KMS-held key, not a plain field. Any new dependency goes into setup.py pinned and sourced from https://pypi.org/simple (dependencyPolicy.allowedRegistries, lockfilesRequired). Bump the package major version because the change is breaking, and document the migration in the repo changelog. Constraints: normal change, 1 approval, rollback plan required. The repo has no CI (ciSystem none), so run tests locally and attach the output to the PR. Only the dev environment (isolated) is recorded.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "`grep -nE 'zerodha_password|zerodha_2fa' onfinance_db_model_master/models.py` returns no match",
+    "In models.py no field of Secrets holds apiKey, apiSecrets or accessToken values as a plain StringField (only *_ref locator fields or CSFLE-encrypted fields exist), and User.user_binance_auth_creds is no longer a DynamicField",
+    "setup.py carries a bumped major version and every added dependency is pinned with ==",
+    "Re-running probe-schemas produces no SCH-PII-02 fail result at onfinance_db_model_master/models.py"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-schemas",
+    "description": "Re-run probe-schemas on db-models/onfinance-db-model-master at the merged commit. Expect no SCH-PII-02 result for onfinance_db_model_master/models.py and fingerprint 5ecce787... absent, so the ledger can resolve fnd_01M2GMN61NFQDTRGPZ5RMSMTWN (first raised by probe-schemas, re-confirmed by execute-scr)."
+  },
+  "rootCause": {
+    "category": "insecure-code",
+    "description": "The shared mongoengine model declares broker and exchange credentials as plain StringField/DynamicField with no encryption hook or locator pattern, so every consumer persists them in cleartext BSON."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "db-models",
+      "repoId": "onfinance-db-model-master"
+    }
+  ],
+  "effortEstimateHours": 16,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-19T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

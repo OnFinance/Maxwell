@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_4",
+  "initiativeId": "init_01M2GWPZP4P4134Q0ZVY3SEMP0",
+  "companyId": "example-co",
+  "seq": 4,
+  "title": "Implement a scheduled purge job for expired user data and revoked credentials",
+  "description": "Add onfinance_db_model_master/purge.py exposing purge_expired(now, report_only=True). It (a) erases or anonymises the User PII fields named in the task 1 schedule (user_email, user_phone_number, user_password, user_binance_auth_creds, user_chats, profile_answers, user_fcm_id) where retention_until < now; (b) deletes Secrets documents linked to a user whose consent_withdrawn_at is set or whose broker connection was removed, without waiting for TTL; (c) logs per-run counts, and never field values. Schedule it daily in the consuming service's scheduler, outside market hours. Run in qa first. Consent-withdrawal erasure must also be triggered on demand, within the schedule's timeline.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "In qa, a seeded User with retention_until in the past has every scheduled PII field null or anonymised after purge_expired(now, report_only=False), and a seeded User with retention_until in the future is unchanged",
+    "In qa, withdrawing consent for a test user leaves db.secrets.countDocuments for that user at 0 after the job runs",
+    "Run logs contain counts of users anonymised and secrets deleted per run and contain no PII or credential values"
+  ],
+  "verificationMethod": {
+    "type": "manual-test",
+    "description": "In qa, seed three users (retention expired, retention in the future, consent withdrawn) with linked secrets, and run purge_expired first with report_only=True, then False. Expected: the report-only run lists exactly the expired and withdrawn users and changes nothing; the real run anonymises only those two users and deletes only their secrets; logs show counts only."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "No erasure path exists anywhere in the codebase, so even with retention fields, data past its purpose or with consent withdrawn would never be removed."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "db-models",
+      "repoId": "onfinance-db-model-master"
+    }
+  ],
+  "effortEstimateHours": 16,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-11-27T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_2", "task_3" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

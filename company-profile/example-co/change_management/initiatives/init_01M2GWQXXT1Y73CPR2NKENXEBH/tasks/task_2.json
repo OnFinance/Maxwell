@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_2",
+  "initiativeId": "init_01M2GWQXXT1Y73CPR2NKENXEBH",
+  "companyId": "example-co",
+  "seq": 2,
+  "title": "Add a default-deny allow-list for create, update and delete tools",
+  "description": "In applications/mcp-gateway/repos/mongodb-mcp-server/src/common/config/userConfig.ts, add a config option (for example allowedWriteTools, env MDB_MCP_ALLOWED_WRITE_TOOLS) that is a comma-separated array of tool names with default []. Register it with an override behaviour that can only narrow the list, never widen it: not \"merge\", but in the spirit of oneWayOverride in src/common/config/configUtils.ts. Enforce it in ToolBase.verifyAllowed() in src/tools/tool.ts (lines 757-783). After the readOnly check, a tool whose operationType is create, update or delete and whose name is not in allowedWriteTools must not register, with the same debug log (LogId.toolDisabled). readOnly=true and disabledTools keep precedence. Leave read, metadata and connect tools unaffected. Document the option in the README configuration options table. Add unit tests in tests/unit/toolBase.test.ts for: (a) the default blocks all write tools, (b) an allow-listed write tool registers and still needs confirmation if it is in confirmationRequiredTools, (c) readOnly=true overrides the allow-list, and (d) an override cannot add entries. PR to main with one non-author approval (CTO review). No deployment in this task.",
+  "owner": {
+    "type": "human",
+    "id": "ciso@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "With MDB_MCP_ALLOWED_WRITE_TOOLS unset, starting the server and calling tools/list from an MCP client returns no tool whose operationType is create, update or delete (for example drop-database, delete-many, insert-many, update-many and atlas-create-db-user are absent)",
+    "With MDB_MCP_ALLOWED_WRITE_TOOLS=insert-many, insert-many is the only write tool in tools/list",
+    "`pnpm run test:local` passes with the four new tests in tests/unit/toolBase.test.ts (default deny, allow-listed tool, readOnly precedence, override cannot widen)",
+    "The README configuration options table documents the new option and its default of []"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-agent-graph",
+    "description": "Re-run probe-agent-graph on mcp-gateway/mongodb-mcp-server at the merged commit. Expected: rule AGENT-ASI02-01 no longer yields a result for src/common/config/userConfig.ts (fingerprint 5e8d5ad607ba7b8c4f85364640afdeca826d84ab45d32b497c7dba48e91dfb3d) because write tools are denied unless allow-listed."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "verifyAllowed() only has deny-list gates (readOnly default false, disabledTools default []), so every write and delete tool is enabled unless an operator opts out. No least-privilege allow-list exists."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 12,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-17T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "change-manager"
+  }
+}

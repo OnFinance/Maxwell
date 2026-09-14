@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_2",
+  "initiativeId": "init_01M2GWJAYY9ZQ8Y0GQJ7XNYQ28",
+  "companyId": "example-co",
+  "seq": 2,
+  "title": "Make deploy/aws/Dockerfile install the version named by its VERSION build argument",
+  "description": "In applications/mcp-gateway/repos/mongodb-mcp-server/deploy/aws/Dockerfile, change line 9 from RUN npm install -g mongodb-mcp-server@latest to RUN npm install -g mongodb-mcp-server@${VERSION}. Change line 3 from ARG VERSION=latest to an explicit released semver, and add a build-time guard that fails when VERSION is latest or empty (for example RUN test \"$VERSION\" != latest). Update the workflow that builds the AWS image (docker-publish.yml or docker.yml, whichever targets deploy/aws) to pass --build-arg VERSION=<release tag>, so the image label version=${VERSION} matches the installed package. Install from the allowed registry https://registry.npmjs.org only (dependencyPolicy.allowedRegistries). Promote through dev, then qa, then prod (releaseProcess.environmentsOrder). Do not retag already-published images.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "grep -n '@latest' deploy/aws/Dockerfile returns no match, and the npm install line references ${VERSION}",
+    "docker build --build-arg VERSION=latest -f deploy/aws/Dockerfile . fails at the guard step",
+    "An image built by CI for a release tag reports the same version from npm ls -g mongodb-mcp-server inside the container as its version label"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-cicd-env",
+    "description": "Re-run probe-cicd-env for mcp-gateway/mongodb-mcp-server. Expected: the CICD-PIN-03 finding no longer cites deploy/aws/Dockerfile, and the probe observation records that the npm install is pinned to the VERSION build argument."
+  },
+  "rootCause": {
+    "category": "misconfiguration",
+    "description": "The AWS Dockerfile declares a VERSION build argument for labelling but hardcodes @latest in the install step, so every rebuild silently pulls the newest npm release no matter which version was requested."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 2,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-17T13:00:00Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

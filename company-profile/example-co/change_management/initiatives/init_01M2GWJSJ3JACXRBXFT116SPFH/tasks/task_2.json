@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_2",
+  "initiativeId": "init_01M2GWJSJ3JACXRBXFT116SPFH",
+  "companyId": "example-co",
+  "seq": 2,
+  "title": "Add a shared masking layer and apply it to FindTool and AggregateTool results",
+  "description": "In applications/mcp-gateway/repos/mongodb-mcp-server, create src/common/masking.ts. It loads maskingPolicy.json (task 1) through a new maskingPolicy option in src/common/config/userConfig.ts (default enforce; register with overrideBehavior not-allowed so callers cannot turn it off) and exposes maskDocuments(namespace, documents) that applies the redact / partial / tokenise rules recursively, including nested and array fields. Call it on cursorResults.documents before EJSON.stringify: in FindTool.execute (src/tools/mongodb/read/find.ts:108-118), in AggregateTool.execute (src/tools/mongodb/read/aggregate.ts:187-192) and, for consistency, in AggregateDBTool (aggregateDB.ts:102; it has no ledger finding). For aggregate pipelines the output namespace cannot be inferred, so mask by the source collection's policy, and apply the union of rules when the pipeline has $lookup or $unionWith. Do not rely on the optional caller-supplied projection. Deliver as one PR against main.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "find.ts and aggregate.ts pass returned documents through maskDocuments before EJSON.stringify (grep -n maskDocuments src/tools/mongodb/read/find.ts src/tools/mongodb/read/aggregate.ts returns a match in each)",
+    "Calling the find tool on a seeded classified collection in the dev docker compose environment returns redacted values for every field marked redact in maskingPolicy.json",
+    "A probe-schemas re-run on the PR head no longer reports SCH-API-03 at src/tools/mongodb/read/find.ts or src/tools/mongodb/read/aggregate.ts"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-schemas",
+    "description": "Re-run probe-schemas on mcp-gateway/mongodb-mcp-server at the merged commit. Expected result: no SCH-API-03 fail result for find.ts or aggregate.ts, and the fingerprints a051281e... and 92f6aea8... are absent from the SARIF export."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "FindTool and AggregateTool serialise raw cursor documents with EJSON.stringify, and nothing masks or filters by classification before the result reaches the MCP client."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 16,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-18T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_1" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

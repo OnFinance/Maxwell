@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_2",
+  "initiativeId": "init_01M2GWKJWQ5AJJZGZMWK8TKMRA",
+  "companyId": "example-co",
+  "seq": 2,
+  "title": "Generate and commit a hash-pinned lockfile for onfinance-db-model-master",
+  "description": "In applications/db-models/repos/onfinance-db-model-master (OnFinance/onfinance_db_model_master, default branch master), setup.py line 19 declares install_requires=[\"mongoengine==0.24.1\"] and no lockfile exists anywhere in the repo. From the repo root in a clean Python 3 virtualenv with pip-tools installed, run `python -m piptools compile --generate-hashes --index-url https://pypi.org/simple --output-file requirements.txt setup.py`. That registry is the only one allowed for Python by sdlc/policy.json dependencyPolicy.allowedRegistries. Commit the resulting requirements.txt, including the pip-tools header naming the command, with every direct and transitive dependency (mongoengine and pymongo and their dependencies) pinned to an exact version and sha256 hashes. Do not change setup.py install_requires. Add one line to the repo README stating that dependency changes must regenerate requirements.txt with the same command. Merge through a PR on protected master with at least one non-author approval. This is a dev-only library with no runtime, so no deployment window applies.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "`git -C applications/db-models/repos/onfinance-db-model-master show master:requirements.txt` exists and contains `mongoengine==0.24.1` and a `pymongo==<exact version>` line, and every pinned package line is followed by at least one `--hash=sha256:` entry",
+    "In a fresh virtualenv, `pip install --require-hashes --no-deps -r requirements.txt` exits 0",
+    "Re-running the same pip-tools compile command on master leaves `git status --porcelain requirements.txt` empty (no drift)",
+    "A re-run of probe-sdlc for db-models/onfinance-db-model-master no longer yields rule ssdf-pw-4-1-missing-lockfile (fingerprint 96f1cf43c2e58353fcaf38eca2a3f6d8dee5606394f80246184c72c634580c23)"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-sdlc",
+    "description": "Re-run probe-sdlc scoped to db-models repo onfinance-db-model-master at the new master commit. Expected: the lockfile check finds requirements.txt with hashes, the SARIF export has no ssdf-pw-4-1-missing-lockfile result on setup.py, and the finding can be resolved under the absence rule."
+  },
+  "rootCause": {
+    "category": "process-gap",
+    "description": "db-models was packaged with a bare setuptools setup.py and has no CI (ciSystem none), so dependencyPolicy.lockfilesRequired was never applied. Nothing in the repo's workflow ever generated a lockfile or checked that one exists."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "db-models",
+      "repoId": "onfinance-db-model-master"
+    }
+  ],
+  "effortEstimateHours": 3,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-21T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

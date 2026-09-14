@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_5",
+  "initiativeId": "init_01M2GWKQNTJ7082K1R20CDEN2P",
+  "companyId": "example-co",
+  "seq": 5,
+  "title": "Rotate credentials already exposed through MCP tool results and dry-run output",
+  "description": "Identify credentials that the pre-fix mongodb-mcp-server may already have exposed. (a) Atlas DB users created by atlas-create-db-user with an auto-generated password: list them from the Atlas project audit log or database users list, created before task 1's deployment, and reset their passwords through Secrets Manager. (b) Any run of MDB_MCP_DRY_RUN / --dryRun in dev, qa or prod: search container stdout and Wazuh logs (prod retention 365 days) for the dry-run config dump. For each hit, rotate the MCP connection string credentials, Atlas apiClientSecret and voyageApiKey, and purge or restrict the log entries under the log-retention owner's approval. Do not copy any found secret into tickets, task evidence or this workspace; record only locators and timestamps. Constraints: rotate prod credentials in a coordinated window with the mcp-gateway operators because a rotated connection string needs a redeploy (releaseProcess dev -> qa -> prod, 1 approval).",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "A Wazuh/container-log search for the dry-run dump signature (e.g. the apiClientSecret key name in a JSON config block) across dev, qa and prod is recorded with its query, time range and hit count",
+    "Every Atlas DB user created with an auto-generated password before task 1 was deployed has a password reset timestamp later than that deployment",
+    "For every environment with a dry-run hit, the connection string credentials, apiClientSecret and voyageApiKey show a rotation timestamp in Secrets Manager or Atlas, and the server passes a post-rotation health check"
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "CISO reviews the recorded log-search queries and hit counts, the Atlas database user password-reset list, and Secrets Manager rotation timestamps (locators only), all attached as task evidence. Expected result: every exposed credential is rotated after the fixes from tasks 1 and 2 were deployed, and no secret value appears in the evidence."
+  },
+  "rootCause": {
+    "category": "insecure-code",
+    "description": "Before the fix, generated passwords reached MCP client transcripts and unredacted config reached stdout/container logs, so credentials issued before the code change must be treated as disclosed."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 6,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-20T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_1",
+    "task_2"
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

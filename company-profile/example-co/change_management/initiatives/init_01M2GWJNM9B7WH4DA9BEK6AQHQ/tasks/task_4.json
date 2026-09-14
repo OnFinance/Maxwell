@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_4",
+  "initiativeId": "init_01M2GWJNM9B7WH4DA9BEK6AQHQ",
+  "companyId": "example-co",
+  "seq": 4,
+  "title": "Release the limited validators through dev, qa and prod and re-run probe-schemas",
+  "description": "After the squash PR from tasks 1-3 merges, build the mcp-gateway image from main and deploy it in the order set by sdlc/policy.json releaseProcess.environmentsOrder (dev docker compose, then qa, then prod on EKS ap-south-1). The release needs 1 approval (releaseProcess.approvalsRequired) and must have this initiative's rollback plan attached. sdlc/policy.json defines no deploymentWindows and the mcp-gateway env files define no changeFreeze, so pick a low-traffic prod slot and confirm it with the CISO before deploying. In qa, run the existing agent query set against the client-data and order stores to confirm nothing legitimate is rejected before promoting to prod. Update applications/mcp-gateway/repos/mongodb-mcp-server.json pinnedCommit to the merged commit, then re-run probe-schemas for mcp-gateway. Aim to finish before the finding's slaDueAt of 2026-09-28T13:14:50Z.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "The prod mcp-gateway deployment runs an image built from the merged commit, and applications/mcp-gateway/repos/mongodb-mcp-server.json pinnedCommit equals that commit",
+    "The qa agent query set completes with zero validation rejections of legitimate queries, and a deliberately oversized filter (over MAX_EJSON_BYTES) sent to the find tool in qa returns a validation error without reaching the driver",
+    "The re-run of probe-schemas for mcp-gateway/mongodb-mcp-server writes a SARIF export with no SCH-API-02 fail result at src/tools/args.ts, and its observation for sebi-cscrf-2024:PR.IP.S2 on this repo is not not-satisfied"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-schemas",
+    "description": "Run `/probe-schemas example-co --app mcp-gateway` against the updated pinnedCommit. Expected result: the SARIF export has no SCH-API-02 fail result for src/tools/args.ts or src/tools/mongodb/mongodbTool.ts, so fingerprint 972eb67e82a0bd45304b76ee039ea11300642088dc044b5848de7c8df60a2840 is not produced. refresh-soc can then resolve fnd_01M2G2AGX1GZ9THG6HJ1VPP1EP under the two-run absence rule."
+  },
+  "rootCause": {
+    "category": "insecure-code",
+    "description": "The unlimited validators shipped in the running gateway image. Closing the gap needs the fixed code in prod and a fresh probe-schemas result, not just a merged PR."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 5,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-28T13:14:50Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_3" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

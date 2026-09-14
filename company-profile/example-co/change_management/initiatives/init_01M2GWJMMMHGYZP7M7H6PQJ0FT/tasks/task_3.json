@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_3",
+  "initiativeId": "init_01M2GWJMMMHGYZP7M7H6PQJ0FT",
+  "companyId": "example-co",
+  "seq": 3,
+  "title": "Verify the image signature in the pipeline and document the verify command",
+  "description": "Add a final step to job build-push in .github/workflows/docker-publish.yml. It runs cosign verify and cosign verify-attestation against <repo>@<digest>, pinned to certificate identity https://github.com/OnFinance/mongodb-mcp-server/.github/workflows/docker-publish.yml@refs/heads/main (or the release tag ref pattern) and OIDC issuer https://token.actions.githubusercontent.com, and fails the job if either check fails. Record the exact verify command and expected identity in the repository's release documentation (the Docker section of README.md in mongodb-mcp-server), so anyone pulling the image and the future admission policy use the same identity constraint.",
+  "owner": {
+    "type": "human",
+    "id": "ciso@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "docker-publish.yml contains a cosign verify step with both --certificate-identity (or --certificate-identity-regexp) and --certificate-oidc-issuer set. A test run in which the sign step is skipped makes the job fail at that verify step.",
+    "The mongodb-mcp-server README.md Docker section contains the cosign verify command with the certificate identity and OIDC issuer used by the pipeline"
+  ],
+  "verificationMethod": {
+    "type": "code-review",
+    "description": "Review the merged pull request: confirm the verify step runs after the sign and attest steps, uses the digest output rather than a tag, and pins the signer identity and issuer. Confirm the README documents the same command. Expected: all four hold, and the GitHub Actions log of the latest run shows 'Verified OK' from cosign."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "Even after signing, nothing in the release process checks the signature or states which signer identity is trusted, so a mis-scoped or missing signature would go unnoticed."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 2,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-25T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_1", "task_2" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

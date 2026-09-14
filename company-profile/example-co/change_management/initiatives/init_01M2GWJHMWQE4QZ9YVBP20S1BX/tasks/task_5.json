@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_5",
+  "initiativeId": "init_01M2GWJHMWQE4QZ9YVBP20S1BX",
+  "companyId": "example-co",
+  "seq": 5,
+  "title": "Stand up a material-vendor contract register with renewal alerts and annual compliance review",
+  "description": "Set up a contract register for all material vendors (starting with aws, github and mongodb-atlas) to meet SEBI CSCRF GV.SC.S4: annual monitoring and review of third-party providers performing critical activities for a mid-size RE. For each contract, record reference, endDate, noticePeriodDays, rightToAudit, exitPlanDocumented and last review date. Configure an alert to the compliance officer and CISO at noticePeriodDays + 90 days before endDate, the same trigger vendor-analyst uses, and schedule a dated annual review of each provider's compliance. Keep the register in the company's GRC or document system, not the workspace. The workspace vendor files stay the Maxwell record and are updated after each review.",
+  "owner": {
+    "type": "human",
+    "id": "compliance@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "The contract register lists aws, github and mongodb-atlas with reference, endDate, noticePeriodDays, rightToAudit, exitPlanDocumented and next review date filled in.",
+    "A renewal alert is configured for each contract at noticePeriodDays + 90 days before endDate, and a test alert has been received by compliance@example-co.invalid and ciso@example-co.invalid.",
+    "Annual third-party compliance reviews for the three providers are scheduled, with a named reviewer and date."
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "The CISO inspects the register export and the test-alert record. Expected: all three vendors are listed with complete fields, alert dates equal endDate minus (noticePeriodDays + 90), and each has a scheduled annual review."
+  },
+  "rootCause": {
+    "category": "vendor-gap",
+    "description": "No one tracked vendor contract expiry or ran periodic reviews, so GH-ENT-2025-07 and ATLAS-2025-1189 lapsed unnoticed for 76 and 106 days while both vendors stayed active."
+  },
+  "targets": [
+    { "type": "vendor", "vendorId": "aws" },
+    { "type": "vendor", "vendorId": "github" },
+    { "type": "vendor", "vendorId": "mongodb-atlas" }
+  ],
+  "effortEstimateHours": 12,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-10-09T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_1" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

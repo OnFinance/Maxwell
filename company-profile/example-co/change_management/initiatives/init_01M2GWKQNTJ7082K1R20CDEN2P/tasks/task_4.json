@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_4",
+  "initiativeId": "init_01M2GWKQNTJ7082K1R20CDEN2P",
+  "companyId": "example-co",
+  "seq": 4,
+  "title": "Migrate stored credentials out of MongoDB and rotate them",
+  "description": "For every environment whose services use onfinance-db-model-master (recorded today: db-models dev, isolated; confirm with consuming service owners), write a one-off migration script in the db-models repo (scripts/ directory in the checkout, reviewed in the same PR series). For each document it copies the values of apiKey, apiSecrets, accessToken and user_binance_auth_creds into AWS Secrets Manager, sets the new *_ref locator fields and then $unsets the plaintext fields, including zerodha_password and zerodha_2fa. Run it first with a count-only dry run, then for real. Then rotate every migrated credential at its issuer (Zerodha Kite, Binance API keys) so values previously readable from the collection, backups and database logs are invalid. Do not print or export credential values in the migration output. Constraints: run in dev first, then any other environment in releaseProcess.environmentsOrder order after consumers have deployed task 3's version. Expire backups taken before migration per the backup policy or record their retention.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "Against each migrated database, `db.secrets.countDocuments({$or:[{zerodha_password:{$exists:true}},{zerodha_2fa:{$exists:true}},{apiKey:{$exists:true}},{apiSecrets:{$exists:true}},{accessToken:{$exists:true}}]})` returns 0",
+    "`db.user.countDocuments({user_binance_auth_creds:{$exists:true}})` returns 0 and the count of documents with the new locator fields equals the pre-migration count from the dry run",
+    "A rotation record lists every migrated credential by locator with its rotation date, and the previous credentials are confirmed revoked at the issuer"
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "CISO reviews the migration dry-run and final count outputs (the two countDocuments queries returning 0), the Secrets Manager inventory of created locators (names only, no values), and the rotation record showing revoked previous credentials. All are attached as task evidence. Expected result: zero plaintext credential fields remain and every migrated credential has a rotation date on or before dueAt."
+  },
+  "rootCause": {
+    "category": "insecure-code",
+    "description": "Credentials already written through the plaintext model fields persist in MongoDB collections, backups and logs; fixing the model code alone leaves existing values exposed and valid."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "db-models",
+      "repoId": "onfinance-db-model-master"
+    }
+  ],
+  "effortEstimateHours": 10,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-21T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_3"
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

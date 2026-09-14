@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_2",
+  "initiativeId": "init_01M2GWPZP4P4134Q0ZVY3SEMP0",
+  "companyId": "example-co",
+  "seq": 2,
+  "title": "Add an expires_at field and TTL index to the Secrets model",
+  "description": "In applications/db-models/repos/onfinance-db-model-master/onfinance_db_model_master/models.py, class Secrets(Document) (lines 8-15): add expires_at = DateTimeField(required=True) and meta = {\"collection\": \"secrets\", \"indexes\": [{\"fields\": [\"expires_at\"], \"expireAfterSeconds\": 0}]}. Pin the collection name explicitly so the existing collection is kept. Every writer must set expires_at from the task 1 schedule. Backfill existing secrets documents with an expires_at per the schedule in qa first, then prod, after a mongodump backup. Deploy dev -> qa -> prod per sdlc/policy.json releaseProcess (1 approval, rollback plan required) and honour any changeFreeze in applications/db-models/env/*.json.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "python -c \"from onfinance_db_model_master.models import Secrets; print(Secrets._meta['indexes'])\" prints an index on expires_at with expireAfterSeconds 0, and Secrets._meta['collection'] == 'secrets'",
+    "Saving a Secrets document without expires_at raises mongoengine ValidationError",
+    "In qa, db.secrets.getIndexes() lists expires_at_1 with expireAfterSeconds 0, and db.secrets.countDocuments({expires_at: {$exists: false}}) returns 0 after the backfill"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-schemas",
+    "description": "Re-run probe-schemas on db-models/onfinance-db-model-master. Expected: the SARIF export for models.py shows the Secrets class with a retention field and TTL index. SCH-RET-02 fully clears only once task 3 also lands, because the rule covers both classes at the same path."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "The Secrets model was written as a plain credential store with no expiry field or TTL index, so Zerodha passwords, 2FA seeds, API secrets and access tokens are never removed after their purpose ends."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "db-models",
+      "repoId": "onfinance-db-model-master"
+    }
+  ],
+  "effortEstimateHours": 8,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-11-13T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_1" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_3",
+  "initiativeId": "init_01M2GWK3BJ7Y4PPP919G8NZFRS",
+  "companyId": "example-co",
+  "seq": 3,
+  "title": "Revoke the legacy Docker Hub credential and delete its GitHub secrets",
+  "description": "After task 2 has produced at least one successful OIDC-based publish run, revoke the Docker Hub password or personal access token behind DOCKERHUB_PASSWORD in Docker Hub account security settings. If it was an account password, rotate it and confirm the account has MFA enabled. Then delete DOCKERHUB_USERNAME and DOCKERHUB_PASSWORD from every scope where they exist for OnFinance/mongodb-mcp-server: repository secrets, the Production environment secrets, and any organisation-level secret shared with this repository. Record the revocation date. This is the step that removes the rollback path in the rollbackPlan, so do it only after the verification run in task 2.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "gh secret list --repo OnFinance/mongodb-mcp-server and gh secret list --repo OnFinance/mongodb-mcp-server --env Production list neither DOCKERHUB_USERNAME nor DOCKERHUB_PASSWORD, and the organisation secret list shows neither name shared with this repository",
+    "The Docker Hub security page (screenshot attached) no longer lists the legacy token, or shows the password rotated with a date on or after the task-2 verification run",
+    "A docker.yml workflow_dispatch run after revocation still pushes successfully, confirming nothing depends on the revoked credential"
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "The CISO inspects the attached gh secret list outputs for the repository, the Production environment and the organisation, the Docker Hub security page screenshot, and the URL of the post-revocation successful docker.yml run. Expected: no DOCKERHUB_* secrets remain, the legacy token is revoked, and the post-revocation run is green."
+  },
+  "rootCause": {
+    "category": "misconfiguration",
+    "description": "The static Docker Hub credential was issued without an expiry or rotation owner. Removing it from the workflow alone would leave a valid long-lived credential in GitHub secret storage and in Docker Hub."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 1.5,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-21T12:00:00Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_2" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

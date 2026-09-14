@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_1",
+  "initiativeId": "init_01M2GWJNGS4TF5ASSHWGN2004Z",
+  "companyId": "example-co",
+  "seq": 1,
+  "title": "Make authentication mandatory in mcpHttpServer.ts setupMiddlewares",
+  "description": "In applications/mcp-gateway/repos/mongodb-mcp-server (repo OnFinance/mongodb-mcp-server, branch main, inspected at aaa72a040db4c32f3d6488d5e28e2892a68e9ee0), replace the opt-in header loop in src/transports/mcpHttpServer.ts setupMiddlewares() (lines 306-319) with a fail-closed authentication gate on every /mcp route (POST/GET/DELETE, lines 360-411). Right now the loop only runs over userConfig.httpHeaders, which defaults to {} (src/common/config/userConfig.ts 136-143). Requirements: (a) mount the auth middleware before express.json so unauthenticated bodies are never parsed; (b) accept a bearer token (Authorization: Bearer) or a configured secret header credential, checked with crypto.timingSafeEqual on equal-length buffers instead of the current `header !== value`; (c) when neither is configured, reject every request with 401 and a WWW-Authenticate header; (d) add a userConfig key for the token, loaded from an environment variable and marked isSecret in server.json, with no default value; (e) treat mcp-session-id only as a routing key, never as a credential. No secret values may appear in the repo, tests or this workspace; use secret-manager locators. The CTO's engineering team implements it (sdlc/policy.json owner: cto) under this task's owner.",
+  "owner": {
+    "type": "human",
+    "id": "ciso@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "With no auth configuration, `curl -s -o /dev/null -w '%{http_code}' -X POST http://127.0.0.1:3000/mcp -H 'content-type: application/json' -d '{}'` against a locally started server returns 401 (not 200 or a JSON-RPC response), and GET and DELETE /mcp also return 401.",
+    "With a token configured, a request with the wrong token or wrong length returns 401/403, and a request with the correct token completes MCP initialize successfully.",
+    "`grep -n 'timingSafeEqual' src/transports/mcpHttpServer.ts` finds the comparison, and `grep -n 'header !== value' src/transports/mcpHttpServer.ts` finds nothing.",
+    "Re-running probe-schemas on mongodb-mcp-server at the merged commit does not produce SCH-API-01 at src/transports/mcpHttpServer.ts (fingerprint 2b47a8fb3b6e3225e8b94541ffb4b7c068f7cb9440d9d22aa3c053fe690a20a6)."
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-schemas",
+    "description": "After updating applications/mcp-gateway/repos/mongodb-mcp-server.json pinnedCommit to the merge commit, run /probe-schemas example-co --app mcp-gateway. Expected: the SARIF export has no failing SCH-API-01 result for src/transports/mcpHttpServer.ts, and the ledger observation for sebi-cscrf-2024:PR.AA.S17 on this repo is satisfied."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "The HTTP transport never had an authentication control. The only gate is a header-equality loop over userConfig.httpHeaders, which defaults to an empty object, so the middleware calls next() for every request unless an operator opts in."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 12,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-17T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

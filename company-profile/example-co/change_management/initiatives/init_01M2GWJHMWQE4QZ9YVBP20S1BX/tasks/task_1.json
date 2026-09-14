@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_1",
+  "initiativeId": "init_01M2GWJHMWQE4QZ9YVBP20S1BX",
+  "companyId": "example-co",
+  "seq": 1,
+  "title": "Add mandatory audit-right, exit-plan and data-return clauses to the material-vendor contract template and IT outsourcing policy",
+  "description": "Revise the company's master contract template for material and critical outsourcing arrangements and the IT outsourcing policy (company document repository, owned by the compliance officer, reviewed by the CISO and CTO). The template must require: (a) right to audit and inspect for Example Capital Markets, its auditors, SEBI and RBI (SEBI CSCRF GV.SC.S3; RBI Outsourcing Directions 2025); (b) a documented exit strategy covering termination scenarios with the minimum period to execute each (paras 84 and 85); (c) named alternative arrangements, meaning another provider or in-house (para 86); (d) data return and deletion on exit; (e) renewal notice no later than noticePeriodDays before endDate. The policy must make these clauses non-waivable for vendors with materiality 'material' or services supporting critical functions (order-routing) unless the CISO approves an exception, and must name the owner of the contract register. This is document work with no deployment window; do not change any vendor JSON in this task.",
+  "owner": {
+    "type": "human",
+    "id": "compliance@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "The approved contract template exists in the document repository with separate clauses for right to audit (entity, SEBI, RBI), exit scenarios with minimum execution periods, alternative arrangements, and data return and deletion.",
+    "The IT outsourcing policy has a dated, approved version with an exit-strategy section citing RBI Outsourcing Directions 2025 paras 84, 85 and 86 and SEBI CSCRF GV.SC.S3, and makes those clauses mandatory for material vendors.",
+    "The policy names the contract-register owner and the CISO as the only approver of clause exceptions."
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "The CISO reviews the approved template and policy version. Expected: all four clause families are present, the policy cites paras 84-86 and GV.SC.S3, and the approval record carries a date on or before the task dueAt."
+  },
+  "rootCause": {
+    "category": "vendor-gap",
+    "description": "The standard template used for GitHub (GH-ENT-2025-07) and MongoDB Atlas (ATLAS-2025-1189) had no mandatory right-to-audit or exit-plan clause. All three material vendors were therefore onboarded with exitPlanDocumented false, and two without rightToAudit."
+  },
+  "targets": [
+    { "type": "vendor", "vendorId": "aws" },
+    { "type": "vendor", "vendorId": "github" },
+    { "type": "vendor", "vendorId": "mongodb-atlas" }
+  ],
+  "effortEstimateHours": 16,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-25T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

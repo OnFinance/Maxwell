@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_3",
+  "initiativeId": "init_01M2GWPKP2RSJXDMRMC9F47V32",
+  "companyId": "example-co",
+  "seq": 3,
+  "title": "Re-probe the mcp-gateway CI pipeline and attach closure evidence",
+  "description": "After tasks 1 and 2, run `/probe-cicd-env example-co` scoped to app mcp-gateway, repo mongodb-mcp-server, against the checkout at applications/mcp-gateway/repos/mongodb-mcp-server updated to the merged commit. Check that rule CICD-SBOM-02 no longer fails for .github/workflows/docker-publish.yml and that the new observation for sebi-cscrf-2024:GV.SC.S5 cites the image record and .cdx.json from task 2. Attach the SARIF export path and the image files as task evidence. The finding is resolved by refresh-soc only after two consecutive probe-cicd-env runs without the fingerprint, so schedule the second run before the initiative dueAt. The probe is read-only and needs no deployment window.",
+  "owner": {
+    "type": "human",
+    "id": "ciso@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "The probe-cicd-env SARIF export for mcp-gateway/mongodb-mcp-server contains no fail result for rule CICD-SBOM-02 on .github/workflows/docker-publish.yml",
+    "soc/main.jsonl holds a new probe-cicd-env observation for sebi-cscrf-2024:GV.SC.S5 with subject repo mcp-gateway/mongodb-mcp-server, result satisfied, and evidence referencing applications/mcp-gateway/images/mongodb-mcp-server.cdx.json",
+    "Two distinct probe-cicd-env run ids after the merge show the fingerprint 5d0f217b909420d9f1716c30dcdef0adbf9f825f9f82cc195221bd0288c65a53 absent, and fnd_01M2GH5B1JFJYTA2MGWES48JP5 is superseded with status resolved"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-cicd-env",
+    "description": "Re-run probe-cicd-env for mcp-gateway/mongodb-mcp-server twice after tasks 1 and 2. Expected: CICD-SBOM-02 passes in both SARIF exports, the GV.SC.S5 observations are satisfied, and refresh-soc supersedes fnd_01M2GH5B1JFJYTA2MGWES48JP5 as resolved."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "The gap was detected only by a point-in-time probe. Closure needs probe evidence that the SBOM export and workspace capture both exist, not just a merged pipeline change."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 2,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-10-12T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_1",
+    "task_2"
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

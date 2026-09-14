@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_1",
+  "initiativeId": "init_01M2GWJK9ABSB5MBW1DHB4HNR3",
+  "companyId": "example-co",
+  "seq": 1,
+  "title": "Baseline the Bicep templates against pinned checkov and resolve existing failures",
+  "description": "In applications/mcp-gateway/repos/mongodb-mcp-server, first compile deploy/azure/bicep/main.bicep to ARM JSON with 'az bicep build --file deploy/azure/bicep/main.bicep --stdout'. Then scan deploy/azure/bicep, meaning main.bicep, params_template.json and paramsWithAuthEnabled_template.json, with checkov 3.3.17 using frameworks bicep and arm. In the workspace, run the scan only through node .claude/scripts/toolchain/scan.mjs; never call a checkov binary directly. For each failed check, either fix the template (for example ingress, managed identity, secret handling or minimum TLS on the Container App) or add an inline '#checkov:skip=<CKV_ID>: <justification>' comment that a reviewer accepts. Record the resulting SARIF export as task evidence. This is a template-only change, not a deployment, so no deployment window or change freeze applies. Do not change containerImage or any parameter default that alters the running deployment without a separate change.",
+  "owner": {
+    "type": "human",
+    "id": "ciso@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "A checkov 3.3.17 SARIF export of deploy/azure/bicep (bicep and arm frameworks) exists as task evidence and reports zero failed checks that are not suppressed.",
+    "Every checkov:skip comment in deploy/azure/bicep names a CKV id and has a non-empty justification, and 'grep -rn \"checkov:skip\" deploy/azure/bicep' lists only reviewer-approved suppressions.",
+    "'az bicep build --file deploy/azure/bicep/main.bicep' exits 0 after any template fixes."
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "Review the attached checkov 3.3.17 SARIF export for deploy/azure/bicep and the pull request diff. Expected result: 0 unsuppressed failed results, each suppression carries a justification, and bicep build exits 0."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "The Bicep templates were added to the repo without ever being scanned, so no baseline of IaC misconfigurations exists. Without one, a new blocking gate would fail on existing issues."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 3,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-21T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

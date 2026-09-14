@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_3",
+  "initiativeId": "init_01M2GWJK9ABSB5MBW1DHB4HNR3",
+  "companyId": "example-co",
+  "seq": 3,
+  "title": "Require the check-iac status check on the main branch",
+  "description": "In the GitHub repository settings for OnFinance/mongodb-mcp-server, add 'check-iac' from the Checks workflow to the required status checks of the main branch protection rule or ruleset. Leave the other required checks and review requirements unchanged. Export the branch protection configuration as evidence (for example the GET /repos/OnFinance/mongodb-mcp-server/branches/main/protection response, with no tokens included). This is a repository setting, not a deployment, so no deployment window or change freeze applies.",
+  "owner": {
+    "type": "human",
+    "id": "ciso@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "The branch protection export for main lists check-iac under required_status_checks, and the export is attached to the task as evidence.",
+    "A pull request whose check-iac job fails shows the merge button blocked with 'Required status check \"check-iac\" failed'."
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "Review the attached main branch protection export and a screenshot or API record of a pull request blocked by a failing check-iac. Expected result: check-iac is a required status check and a failing run blocks the merge."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "Even once the scan job exists, main branch protection does not require it, so an administrator or a pull request could merge templates while the IaC scan is failing."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 1,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-26T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_2" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

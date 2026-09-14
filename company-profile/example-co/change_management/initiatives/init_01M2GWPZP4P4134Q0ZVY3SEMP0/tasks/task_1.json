@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_1",
+  "initiativeId": "init_01M2GWPZP4P4134Q0ZVY3SEMP0",
+  "companyId": "example-co",
+  "seq": 1,
+  "title": "Approve a retention and erasure schedule for the user and secrets collections",
+  "description": "Draft and approve a retention schedule covering every column of db-models-mongodb.default.user and db-models-mongodb.default.secrets as classified in company-profile/example-co/sdlc/metastore.json. For each data class state: the retention period and its governing law (SEBI stock-broker/DP record-keeping, PMLA section 12 and RBI KYC Master Direction five years after the relationship ends, DPDP Rules 8(3) one-year minimum); the erasure trigger (consent withdrawal, account closure, broker disconnection, access-token expiry); and erase versus anonymise. Broker credentials (zerodha_password, zerodha_2fa, apiSecrets, accessToken) must have a short expiry tied to the session or connection, not account life. The schedule is the input to tasks 2-4 and satisfies the documented-policy half of SEBI CSCRF PR.AA.S13.",
+  "owner": {
+    "type": "human",
+    "id": "dpo@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "A signed retention schedule exists, with a period, legal basis, erasure trigger and erase/anonymise decision for every column of the user and secrets collections listed in sdlc/metastore.json",
+    "The schedule sets an explicit maximum lifetime for Secrets.accessToken, zerodha_password, zerodha_2fa and apiSecrets, and a post-closure retention period for User PII",
+    "The CISO and DPO have both recorded approval of the schedule, with a date, before task 2 starts"
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "Compliance reviews the approved schedule against the column list for user and secrets in sdlc/metastore.json. Expected: no column is missing a retention period and erasure trigger, each period cites its governing law, and the approval is signed and dated."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "No data-retention and disposal schedule was ever defined for client PII and connected-broker credentials, so engineers had no retention period or erasure trigger to implement in the models."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "db-models",
+      "repoId": "onfinance-db-model-master"
+    }
+  ],
+  "effortEstimateHours": 12,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-10-14T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

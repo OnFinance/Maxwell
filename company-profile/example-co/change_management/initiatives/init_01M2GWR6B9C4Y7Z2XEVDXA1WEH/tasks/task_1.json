@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_1",
+  "initiativeId": "init_01M2GWR6B9C4Y7Z2XEVDXA1WEH",
+  "companyId": "example-co",
+  "seq": 1,
+  "title": "Publish the purpose and consent-notice register for User personal data",
+  "description": "Write a register that the DPO approves. It lists every personal-data field of the User document in onfinance_db_model_master/models.py (class User, lines 387-429): user_email, user_phone_number, user_full_name, user_country, user_arrival_origin, user_entities_watchlisted, user_insights_bookmarked, user_entities_explored, user_insights_read, user_portfolio_holdings, user_chats, profile_answers and smallcase_id. Map each field to one or more specified purposes, each with a stable purpose id (for example pur-onboarding, pur-portfolio-insights, pur-chat-assistant). Give each purpose the notice version that covers it (a stable notice_version id such as notice-2026-09-v1). For each notice version, record where the notice text is served, its withdrawal link and its link to the Data Protection Board complaint channel (DPDP Rules 2025 Rule 3). Task 2 uses these purpose and notice ids as the allowed values for the new model fields. This is a documentation change only, so no deployment window applies.",
+  "owner": {
+    "type": "human",
+    "id": "dpo@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "A register document exists and maps each of the 13 listed User fields to at least one purpose id. No personal-data field in class User is left unmapped.",
+    "Each purpose id names a notice_version id, and each notice version records its notice text location, withdrawal link and Board complaint link.",
+    "The register shows DPO approval (name, date) and is attached to this task's evidence."
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "The ciso compares the register with class User in onfinance_db_model_master/models.py at the pinned commit. Expected result: every personal-data field in the class appears in the register with a purpose id and a notice_version id, and each notice version lists withdrawal and complaint links."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "No documented set of purpose ids or notice versions existed, so the data model had nothing it could reference when a User record was created."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "db-models",
+      "repoId": "onfinance-db-model-master"
+    }
+  ],
+  "effortEstimateHours": 6,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-21T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

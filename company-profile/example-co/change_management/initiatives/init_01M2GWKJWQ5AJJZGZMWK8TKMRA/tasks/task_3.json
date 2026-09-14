@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_3",
+  "initiativeId": "init_01M2GWKJWQ5AJJZGZMWK8TKMRA",
+  "companyId": "example-co",
+  "seq": 3,
+  "title": "Add a CI check that fails db-models PRs when requirements.txt is missing or stale",
+  "description": "In applications/db-models/repos/onfinance-db-model-master, add .github/workflows/lockfile-check.yml, a GitHub Actions workflow triggered on pull_request and on push to master. It sets up Python 3, installs pip-tools at an exact pinned version, runs `python -m piptools compile --generate-hashes --index-url https://pypi.org/simple --output-file requirements.txt setup.py`, and then fails if `git diff --exit-code requirements.txt` shows drift or requirements.txt is absent. Also run `pip install --require-hashes --no-deps -r requirements.txt` so an unhashed or tampered lockfile is rejected. Pin third-party actions to a full commit SHA. Merge through a PR on protected master. Once the job has passed on master, add it as a required status check in the master branch protection. Adding it earlier would block every PR if the job is misconfigured. There is no deployment and no runtime impact.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "`.github/workflows/lockfile-check.yml` exists on master, and every `uses:` reference in it is pinned to a 40-character commit SHA",
+    "The latest workflow run on master for the merge commit concludes `success`",
+    "A test PR that changes setup.py install_requires without regenerating requirements.txt shows the lockfile-check job with conclusion `failure`, and GitHub blocks the merge because the check is required",
+    "The master branch protection lists lockfile-check as a required status check"
+  ],
+  "verificationMethod": {
+    "type": "manual-test",
+    "description": "Open a throwaway PR against master that changes install_requires (for example to mongoengine==0.27.0) without touching requirements.txt. Expected: lockfile-check fails with a non-empty git diff on requirements.txt and the merge button is blocked by the required check. Close the PR unmerged, then confirm the latest master run of lockfile-check is green."
+  },
+  "rootCause": {
+    "category": "process-gap",
+    "description": "The repo has no CI pipeline, so nothing enforces lockfile discipline after the first lockfile is committed. Without an automated gate, requirements.txt would drift from setup.py on the next dependency change and the finding would come back."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "db-models",
+      "repoId": "onfinance-db-model-master"
+    }
+  ],
+  "effortEstimateHours": 4,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-25T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_2" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

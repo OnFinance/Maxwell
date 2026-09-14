@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_1",
+  "initiativeId": "init_01M2GWPKP2RSJXDMRMC9F47V32",
+  "companyId": "example-co",
+  "seq": 1,
+  "title": "Export a digest-bound CycloneDX SBOM as a release artefact in docker-publish.yml",
+  "description": "In applications/mcp-gateway/repos/mongodb-mcp-server/.github/workflows/docker-publish.yml (job build-push):\n(a) Add `id: build` to the 'Build and push image to dockerhub registry' step so its `digest` output can be referenced. Keep `sbom: true` and `provenance: mode=max` unchanged.\n(b) After that step, add an SBOM step that runs syft 1.51.1 (the version pinned in .claude/skills/scanner-toolchain/references/toolchain.json). Use either anchore/sbom-action pinned by full commit SHA or a checksum-verified syft download. Point it at `${{ vars.DOCKERHUB_IMAGE_REPOSITORY }}@${{ steps.build.outputs.digest }}` with output format cyclonedx-json, write `sbom.cdx.json`, and write the digest to `image-digest.txt`.\n(c) Upload both files with actions/upload-artifact pinned by full commit SHA. Name the artefact `mcp-gateway-sbom-${{ steps.docker-tags.outputs.VERSION }}` and set a retention period long enough for capture (at least 90 days).\nConstraints: job permissions stay `contents: read`; add no new secrets; the new steps run only after the push succeeds. Merge by PR with the 1 approval that sdlc/policy.json releaseProcess requires, and exercise it through the dev -> qa -> prod environment order. No deploymentWindows or changeFreeze apply.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "`grep -n 'cyclonedx-json' .github/workflows/docker-publish.yml` in the mongodb-mcp-server checkout returns the new SBOM step, and `grep -n 'id: build' .github/workflows/docker-publish.yml` returns the build-push step id",
+    "Every `uses:` line added by the PR references a 40-character commit SHA, and the job `permissions` block is still only `contents: read`",
+    "The first publish.yml or docker.yml run after merge lists an artefact named mcp-gateway-sbom-<version> (`gh run view <run-id> --json artifacts`) containing sbom.cdx.json with `bomFormat` = CycloneDX and image-digest.txt equal to the digest pushed in that run's build log"
+  ],
+  "verificationMethod": {
+    "type": "code-review",
+    "description": "Review the merged PR diff of .github/workflows/docker-publish.yml. Expected: the build step has id build; the SBOM step targets the image by steps.build.outputs.digest with cyclonedx-json output; the upload step is SHA-pinned; permissions and secrets are unchanged. Then open the first release run and confirm the mcp-gateway-sbom-<version> artefact is present and that its sbom.cdx.json metadata.component version equals the pushed digest."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "The release workflow only attaches a buildx SBOM attestation to the registry image. No step exports that SBOM as a retrievable file bound to the image digest, so there is nothing to capture into the workspace inventory."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 4,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-24T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

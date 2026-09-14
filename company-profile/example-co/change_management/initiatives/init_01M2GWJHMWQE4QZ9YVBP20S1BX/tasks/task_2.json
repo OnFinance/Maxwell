@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_2",
+  "initiativeId": "init_01M2GWJHMWQE4QZ9YVBP20S1BX",
+  "companyId": "example-co",
+  "seq": 2,
+  "title": "Renew MongoDB Atlas contract ATLAS-2025-1189 with audit rights and an exit clause",
+  "description": "ATLAS-2025-1189 lapsed on 2026-05-31, but atlas-mumbai still supports order-routing with pii and financial data. Negotiate and sign a renewal or replacement order form using the task 1 clauses: rightToAudit for the entity, SEBI and RBI; an exit clause with minimum execution period and assisted data export; data return and deletion; noticePeriodDays kept or improved. If the vendor refuses the audit clause, escalate to the CISO within 5 working days and record the refusal; do not close the task. Once signed, update company-profile/example-co/vendors/mongodb-atlas.json: contract.reference, startDate, endDate (later than 2026-10-14), rightToAudit true, noticePeriodDays. Validate with node .claude/scripts/validate-data.mjs. No production configuration changes. Due on the linked finding's SLA deadline (2026-10-14T10:46:39Z), which is earlier than the initiative dueAt.",
+  "owner": {
+    "type": "human",
+    "id": "compliance@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "A countersigned Atlas renewal or replacement contract exists with an effective date on or before 2026-10-14 and an end date after 2026-10-14.",
+    "The signed contract contains a right-to-audit clause naming the entity, SEBI and RBI, and an exit clause with a minimum execution period.",
+    "company-profile/example-co/vendors/mongodb-atlas.json shows the new contract.reference, contract.endDate later than 2026-10-14 and contract.rightToAudit true, and node .claude/scripts/validate-data.mjs exits 0 on that file."
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "The CISO checks the countersigned contract against the updated mongodb-atlas.json. Expected: reference and dates match, the audit and exit clauses are present, and contract.endDate is later than the review date. Fingerprints c42793cb... and ebeb3183... must no longer be raised when refresh-vendor-ctx runs in task 6."
+  },
+  "rootCause": {
+    "category": "vendor-gap",
+    "description": "No renewal was started before the 30-day notice period ended, so the Atlas contract for a critical order-routing service lapsed. The original contract also lacked audit and exit clauses."
+  },
+  "targets": [
+    { "type": "vendor", "vendorId": "mongodb-atlas" }
+  ],
+  "effortEstimateHours": 20,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-10-14T10:46:39Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_1" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

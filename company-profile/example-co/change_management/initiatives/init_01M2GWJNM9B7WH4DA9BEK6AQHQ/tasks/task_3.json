@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_3",
+  "initiativeId": "init_01M2GWJNM9B7WH4DA9BEK6AQHQ",
+  "companyId": "example-co",
+  "seq": 3,
+  "title": "Apply the limited schemas to every MongoDB write and read tool and require confirmation for insert-many and update-many",
+  "description": "In applications/mcp-gateway/repos/mongodb-mcp-server, check that the limited zEJSON() from task 1 now applies at each call site: src/tools/mongodb/read/find.ts (filter), read/count.ts (query), delete/deleteMany.ts (filter), update/updateMany.ts (filter, update), mongodbSchemas.ts (AnyAggregateStage and filter), and read/export.ts (exportTarget.arguments). Add .max() limits on the arrays: the insertMany.ts documents array capped at maxDocumentsPerQuery or an exported MAX_INSERT_DOCUMENTS, and the aggregate pipeline array capped at an exported MAX_PIPELINE_STAGES (for example 50). In src/common/config/userConfig.ts (lines 79-94), add \"insert-many\" and \"update-many\" to the confirmationRequiredTools default. Size the limits from the largest agent queries seen in qa logs so legitimate use keeps working. Merge tasks 1-3 as one squash PR so it can be reverted in one step.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "`pnpm vitest run --project unit-and-integration` passes, with new tests showing insert-many rejects a documents array one over the limit and aggregate rejects a pipeline one stage over MAX_PIPELINE_STAGES",
+    "`git grep -n '\"insert-many\"' src/common/config/userConfig.ts` and `git grep -n '\"update-many\"' src/common/config/userConfig.ts` each return a line inside the confirmationRequiredTools default",
+    "`git grep -n 'z.object({}).loose()' src/tools` returns no match"
+  ],
+  "verificationMethod": {
+    "type": "code-review",
+    "description": "The reviewer goes through each call site listed in the description in the squash PR diff and confirms it uses the limited schemas and array limits, and that the confirmationRequiredTools default now includes insert-many and update-many. The reviewer runs `pnpm run test:local`; expected result: all projects pass."
+  },
+  "rootCause": {
+    "category": "insecure-code",
+    "description": "The write tools add no limits of their own on top of the shared validator: the documents and pipeline arrays have no maxItems, and insert-many and update-many were left out of the default confirmation list. Bulk writes therefore run with no schema limit and no human confirmation."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 6,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-25T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_1", "task_2" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

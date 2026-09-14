@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_2",
+  "initiativeId": "init_01M2GWJNM9B7WH4DA9BEK6AQHQ",
+  "companyId": "example-co",
+  "seq": 2,
+  "title": "Limit database and collection names in DBOperationArgs and CollOperationArgs",
+  "description": "In applications/mcp-gateway/repos/mongodb-mcp-server/src/tools/mongodb/mongodbTool.ts (lines 11-18), replace the plain z.string() for database and collection with limited strings that follow MongoDB naming rules. database: min 1, max 63 characters, and none of / \\ . \" $ space or the null character. collection: min 1, max 255 characters, must not start with \"system.\" unless the tool explicitly allows it, and must not contain $ or the null character. Put the regexes and error messages next to the existing ALLOWED_* constants in src/tools/args.ts and follow their style. Add tests in tests/unit covering valid names, overlong names and forbidden characters. Same feature branch as task 1; no deployment in this task.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "`pnpm vitest run --project unit-and-integration tests/unit/args.test.ts` passes, including tests that reject a 64-character database name, a database name containing '.', and a collection name containing '$' or the null character",
+    "`git grep -n 'database: z.string().describe' src/tools/mongodb/mongodbTool.ts` and `git grep -n 'collection: z.string().describe' src/tools/mongodb/mongodbTool.ts` return no match"
+  ],
+  "verificationMethod": {
+    "type": "code-review",
+    "description": "The reviewer checks the mongodbTool.ts and args.ts diff against MongoDB's documented namespace limits and confirms the new unit tests exist. The reviewer runs `pnpm vitest run --project unit-and-integration`; expected result: the whole suite passes, and integration tests that use real database/collection names still work."
+  },
+  "rootCause": {
+    "category": "insecure-code",
+    "description": "CollOperationArgs declares database and collection as unconstrained z.string(), so any length or character reaches the driver as a namespace, including names the server would reject or that point at system collections."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 3,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-22T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

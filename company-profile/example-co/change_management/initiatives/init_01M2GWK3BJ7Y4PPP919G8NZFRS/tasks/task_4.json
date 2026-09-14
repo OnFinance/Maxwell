@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_4",
+  "initiativeId": "init_01M2GWK3BJ7Y4PPP919G8NZFRS",
+  "companyId": "example-co",
+  "seq": 4,
+  "title": "Move db-models dev-tier credentials into AWS Secrets Manager and set dev.json secretsBackend to aws-secrets-manager",
+  "description": "For the db-models dev tier (developer laptops, account ref developer-laptops, exposure isolated), do the following. (a) Create a Secrets Manager path prefix for db-models dev (for example db-models/dev/) that holds any MongoDB connection string or API key developers need for local testing. (b) Grant developers read-only access to that prefix only, through their SSO-issued AWS profile. (c) Document in applications/db-models/README.md how a developer loads these values into the process environment at run time without writing them to a .env file or shell profile, and add .env to the onfinance-db-model-master .gitignore if it is missing. (d) Change applications/db-models/env/dev.json secretsBackend from \"other\" to \"aws-secrets-manager\", matching sdlc/policy.json secretsManagement.backend, and set that file's provenance to the human editor. Apply the same 90-day rotation as policy secretsManagement.rotationDays. No change freeze or deployment window applies to this tier. This task can run in parallel with tasks 1-3.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "applications/db-models/env/dev.json has secretsBackend equal to \"aws-secrets-manager\", the same string as company-profile/example-co/sdlc/policy.json secretsManagement.backend, and node .claude/scripts/validate-data.mjs applications/db-models/env/dev.json exits 0",
+    "applications/db-models/README.md has a section naming the Secrets Manager prefix for dev and the runtime loading command, with no credential values",
+    "An IAM policy export shows the developer role can call secretsmanager:GetSecretValue only on the db-models dev prefix, and a secret description output shows rotation of 90 days or less",
+    "A gitleaks scan of the onfinance-db-model-master checkout reports zero findings, and .gitignore contains .env"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-dev-env",
+    "description": "Re-run probe-dev-env for example-co. It compares environment secretsBackend with policy secretsManagement.backend by string equality (rule devenv-secrets-backend-mismatch). Expected: applications/db-models/env/dev.json reports aws-secrets-manager, matching policy, so the gap behind fnd_01M2GTZHA1AH7R8PAPGHNCWMJJ is not reproduced."
+  },
+  "rootCause": {
+    "category": "misconfiguration",
+    "description": "The laptop-hosted dev tier was onboarded without a secrets mechanism. Its environment record defaulted to secretsBackend \"other\", with no vault path or developer access set up, so any credential for local testing would go into env files or shell profiles."
+  },
+  "targets": [
+    {
+      "type": "environment",
+      "appId": "db-models",
+      "envId": "dev"
+    }
+  ],
+  "effortEstimateHours": 5,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-19T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

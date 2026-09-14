@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_3",
+  "initiativeId": "init_01M2GWPZP4P4134Q0ZVY3SEMP0",
+  "companyId": "example-co",
+  "seq": 3,
+  "title": "Add soft-delete and retention_until fields to the User model",
+  "description": "In applications/db-models/repos/onfinance-db-model-master/onfinance_db_model_master/models.py, class User(Document) (lines 387-429): add is_active = BooleanField(default=True), deleted_at = DateTimeField(), consent_withdrawn_at = DateTimeField() and retention_until = DateTimeField(). Add meta = {\"collection\": \"user\", \"indexes\": [\"retention_until\"]} with the collection name pinned. Do not use a hard TTL on User, because statutory retention applies. Set retention_until = deleted_at or consent_withdrawn_at + the task 1 period, in the account-closure and consent-withdrawal paths. Deploy dev -> qa -> prod with a pre-deploy backup, and honour any changeFreeze in applications/db-models/env/*.json.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "python -c \"from onfinance_db_model_master.models import User; print(sorted(k for k in User._fields if k in ('is_active','deleted_at','consent_withdrawn_at','retention_until')))\" prints all four field names",
+    "User._meta['collection'] == 'user', and User._meta['indexes'] includes retention_until",
+    "In qa, closing a test account sets deleted_at and a retention_until equal to deleted_at plus the scheduled period"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-schemas",
+    "description": "Re-run probe-schemas on db-models/onfinance-db-model-master after tasks 2 and 3 merge. Expected: no SCH-RET-02 result for onfinance_db_model_master/models.py, and the observation for sebi-cscrf-2024:PR.AA.S13 no longer reports a missing retention field for User or Secrets."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "The User model only has account_creation_date and integration timestamps; nobody designed a closure, consent-withdrawal or retention-end marker, so no record can ever be identified as due for erasure."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "db-models",
+      "repoId": "onfinance-db-model-master"
+    }
+  ],
+  "effortEstimateHours": 8,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-11-13T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_1" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

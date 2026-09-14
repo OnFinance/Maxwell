@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_2",
+  "initiativeId": "init_01M2GWK1FRDCWGPJVC10RJS43X",
+  "companyId": "example-co",
+  "seq": 2,
+  "title": "Pin the AWS AgentCore Dockerfile base image to the same node:24-alpine digest",
+  "description": "In applications/mcp-gateway/repos/mongodb-mcp-server/deploy/aws/Dockerfile line 2, replace `FROM node:24-alpine` with the same `FROM docker.io/library/node:24-alpine@sha256:<index-digest>` pinned in task 1, so both images share one vetted base. AgentCore accepts only linux/arm64 images (deploy/aws/README.md), so confirm that the pinned index includes linux/arm64 and build that platform. Rebuild the ECR image, record the new image digest in the release notes, and roll out through dev -> qa -> prod with 1 approval per sdlc/policy.json releaseProcess. Keep the previous ECR image digest for rollback. Complete before the finding SLA of 2026-09-21T13:48:42Z.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "`grep -nE '^FROM ' deploy/aws/Dockerfile` prints exactly one line whose image reference is byte-identical to the FROM reference in the root Dockerfile, including the @sha256 digest",
+    "`docker build --platform linux/arm64 -f deploy/aws/Dockerfile .` succeeds at the merged commit, and the rebuilt ECR image digest plus the previous digest kept for rollback appear in the release notes"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-cicd-env",
+    "description": "Re-run /probe-cicd-env example-co on mcp-gateway/mongodb-mcp-server at the merged commit. Expected: no CICD-PIN-02 result for location deploy/aws/Dockerfile, and the finding's evidence file shows a digest-pinned FROM."
+  },
+  "rootCause": {
+    "category": "misconfiguration",
+    "description": "The AgentCore Dockerfile under deploy/aws was copied with the same floating node:24-alpine tag and has no digest. Its ARM64 ECR image can therefore pick up a different base than the Docker Hub image built from the root Dockerfile."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 2,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-18T13:00:00Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_1" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

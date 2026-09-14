@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_2",
+  "initiativeId": "init_01M2GWK3BJ7Y4PPP919G8NZFRS",
+  "companyId": "example-co",
+  "seq": 2,
+  "title": "Switch docker-publish.yml to an OIDC-federated login and remove the static Docker Hub secrets from its callers",
+  "description": "In applications/mcp-gateway/repos/mongodb-mcp-server, change .github/workflows/docker-publish.yml as follows. Set the build-push job to run with environment: Production and permissions id-token: write plus contents: read. Before 'Login to Docker Hub', add a SHA-pinned aws-actions/configure-aws-credentials step that assumes the task-1 role through OIDC, then a SHA-pinned step that reads the Docker Hub token secret from Secrets Manager into masked step outputs or environment variables. Feed docker/login-action (lines 72-76) from those values instead of secrets.DOCKERHUB_USERNAME/DOCKERHUB_PASSWORD. Remove the DOCKERHUB_USERNAME and DOCKERHUB_PASSWORD entries from on.workflow_call.secrets. In .github/workflows/docker.yml (docker-push job, lines 52-60) and .github/workflows/publish.yml (docker-push job, lines 150-158), add id-token: write to permissions and delete the secrets: block. Pin every new action to a full commit SHA, as the repo already does for docker/* actions. Merge through normal code review (1 approval per releaseProcess.approvalsRequired). Prove the change with a workflow_dispatch run of docker.yml before the next scheduled release.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "Running grep -rn 'DOCKERHUB_USERNAME\\|DOCKERHUB_PASSWORD' .github/workflows in the mongodb-mcp-server checkout returns no matches",
+    "docker-publish.yml, and the docker-push jobs in docker.yml and publish.yml, declare id-token: write, and every newly added action is pinned to a 40-character commit SHA",
+    "A workflow_dispatch run of docker.yml on the merged commit completes the 'Login to Docker Hub' and 'Build and push image to dockerhub registry' steps successfully, and its log shows the role assumed via OIDC (run URL attached as evidence)",
+    "The pushed image tag appears on Docker Hub with the digest reported by the run"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-cicd-env",
+    "description": "Re-run probe-cicd-env for mcp-gateway/mongodb-mcp-server on the merged commit. Expected: the SARIF export has no CICD-SEC-01 fail result for .github/workflows/docker-publish.yml, so finding fnd_01M2GH5B2SNX0PD3EKVNVTPAG7 (fingerprint b06d8ecbc490be1e...) is not reproduced."
+  },
+  "rootCause": {
+    "category": "misconfiguration",
+    "description": "The reusable docker-publish.yml workflow was written to take registry credentials as workflow_call secrets. Both callers forward long-lived repository secrets, although the same repository's mcp-publish.yml shows the OIDC pattern is available."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 4,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-19T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_1" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

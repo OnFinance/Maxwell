@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_3",
+  "initiativeId": "init_01M2GWJF4XYSA816536HWERV4H",
+  "companyId": "example-co",
+  "seq": 3,
+  "title": "Record the renewed assurance in vendors/github.json and refresh the GitHub vendor context",
+  "description": "Run /refresh-vendor-ctx example-co for vendor github, or edit company-profile/example-co/vendors/github.json by hand in a reviewed commit with provenance workflow manual. Append a new assurance[] entry with type soc2-type2 (or the bridge-letter details in the scope text), issuer, periodStart, periodEnd, expiresAt (periodEnd + 12 months) and exceptionsCount from task 2. Leave the 2024-10-01 to 2025-09-30 entry in place. Set lastAssessment.date to the task 2 review date. The refresh run then records the GV.SC.S4 observation for subject vendor github, so the finding's status can move through soc-ledger-keeper. Finish before the finding's slaDueAt, 2026-10-14T10:46:39Z.",
+  "owner": {
+    "type": "human",
+    "id": "compliance@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "`node .claude/scripts/validate-data.mjs company-profile/example-co/vendors/github.json` exits 0",
+    "company-profile/example-co/vendors/github.json has an assurance[] entry for GitHub Enterprise Cloud whose expiresAt is later than 2026-09-30 and whose periodStart is on or before 2025-10-01",
+    "company-profile/example-co/soc/main.jsonl has a new observation, collected after 2026-09-14T21:12:30Z, for control sebi-cscrf-2024:GV.SC.S4 with subject vendor github and result satisfied"
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "Run `node .claude/scripts/validate-data.mjs company-profile/example-co/vendors/github.json` (expect exit 0). Then read the latest ledger records for sebi-cscrf-2024:GV.SC.S4 and fnd_01M2FS4806WHXANC3Q9QXEAXGF. Expected: a satisfied observation for vendor github from the refresh-vendor-ctx run, and no new vendor-assurance-expiring flag for github-cloud. No probe-* workflow covers vendor assurance (the catalog probeWorkflows for both controls are refresh-vendor-ctx and refresh-soc), so a re-probe is not used."
+  },
+  "rootCause": {
+    "category": "vendor-gap",
+    "description": "The vendor file holds only the provider's expiring report, so every assurance check against it will fail from 2026-10-01 until the renewed report is recorded."
+  },
+  "targets": [
+    {
+      "type": "vendor",
+      "vendorId": "github"
+    }
+  ],
+  "effortEstimateHours": 2,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-10-12T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_2"
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

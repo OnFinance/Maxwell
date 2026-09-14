@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_2",
+  "initiativeId": "init_01M2GWQEVKZM0584YS6JR7F6JA",
+  "companyId": "example-co",
+  "seq": 2,
+  "title": "Replace the catch-all CODEOWNERS in mongodb-mcp-server with path-specific ExampleCo owners",
+  "description": "In applications/mcp-gateway/repos/mongodb-mcp-server (OnFinance/mongodb-mcp-server, default branch main), change .github/CODEOWNERS. Remove line 1 ('*          @mongodb-js/mcp-server-developers'). Add a catch-all line for an ExampleCo team, then entries for /deploy/, /.github/workflows/, /.github/CODEOWNERS, /src/ and /Dockerfile. Each entry names the team from the task 1 matrix and must come after the catch-all line, because the last match wins in CODEOWNERS. Deliver this as a pull request reviewed by someone other than the author (releaseProcess.approvalsRequired 1, selfApprovalAllowed false). The change is repository metadata only: no deployment window is needed, and it does not touch the running mcp-gateway service.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "`git -C applications/mcp-gateway/repos/mongodb-mcp-server show origin/main:.github/CODEOWNERS` shows entries for /deploy/, /.github/workflows/, /.github/CODEOWNERS and /src/, each naming an @OnFinance/ team, and no line contains @mongodb-js/.",
+    "`gh api repos/OnFinance/mongodb-mcp-server/codeowners/errors --jq '.errors | length'` returns 0.",
+    "The merged pull request shows an approval from a reviewer other than the author."
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-sdlc",
+    "description": "Re-run probe-sdlc for example-co after the PR merges and a refresh-ctx re-fetch of mongodb-mcp-server. Expected: the SSDF PO.2.1 check finds path-specific ExampleCo owners for deploy/, .github/workflows/ and src/, and no longer reports the single catch-all upstream entry for this repository."
+  },
+  "rootCause": {
+    "category": "process-gap",
+    "description": "CODEOWNERS was inherited unchanged from the upstream mongodb-js project when the repository was forked. Nobody reviewed it at onboarding, so the only code owner is a team ExampleCo does not control, and no owner is set for CI or deployment paths."
+  },
+  "targets": [
+    {
+      "type": "company"
+    }
+  ],
+  "effortEstimateHours": 3,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-10-26T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_1"
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

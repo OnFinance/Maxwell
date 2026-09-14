@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_4",
+  "initiativeId": "init_01M2GWJHMWQE4QZ9YVBP20S1BX",
+  "companyId": "example-co",
+  "seq": 4,
+  "title": "Document and approve exit plans for aws-mumbai, atlas-mumbai and github-cloud",
+  "description": "Write one exit plan per service: aws-mumbai (AWS-EA-2025-0042), atlas-mumbai (ATLAS-2025-1189) and github-cloud (GH-ENT-2025-07). Each plan covers: termination scenarios (vendor insolvency, contract termination, regulatory direction, prolonged outage) with the minimum period to execute each (RBI para 85); alternative arrangements naming a substitute provider or in-house option (para 86); data export, return and deletion steps; and how order-routing stays within 30 minutes max outage and 0 minutes data loss during transition. The CTO provides the technical steps (EKS workload and Atlas cluster migration path, repo and CI mirror) and the compliance officer owns the document. Any feasibility test (such as an Atlas export or mirroring a repo) runs in dev or qa only, never prod, following the sdlc/policy.json environment order. Once approved, set contract.exitPlanDocumented true in company-profile/example-co/vendors/aws.json, github.json and mongodb-atlas.json and validate them.",
+  "owner": {
+    "type": "human",
+    "id": "compliance@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "Three approved exit-plan documents exist (aws-mumbai, atlas-mumbai, github-cloud), each listing at least three termination scenarios with a minimum execution period and at least one named alternative arrangement.",
+    "The atlas-mumbai and aws-mumbai plans state how order-routing meets the 30-minute outage and 0-minute data-loss tolerance during exit, and include a dev/qa feasibility-test record.",
+    "contract.exitPlanDocumented is true in company-profile/example-co/vendors/aws.json, github.json and mongodb-atlas.json, and node .claude/scripts/validate-data.mjs exits 0 on all three."
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "The CISO reviews the three exit plans and dev/qa test records against RBI Outsourcing Directions 2025 paras 84-86. Expected: scenarios, minimum periods, alternatives and the order-routing tolerance are covered for every service, and the three vendor files show exitPlanDocumented true."
+  },
+  "rootCause": {
+    "category": "vendor-gap",
+    "description": "Exit strategy was never part of vendor onboarding for material cloud, database and source-hosting providers. None of the three had a substitutability or exit assessment, which RBI paras 84-86 require."
+  },
+  "targets": [
+    { "type": "vendor", "vendorId": "aws" },
+    { "type": "vendor", "vendorId": "github" },
+    { "type": "vendor", "vendorId": "mongodb-atlas" }
+  ],
+  "effortEstimateHours": 40,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-10-09T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_1" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_4",
+  "initiativeId": "init_01M2GWJF4XYSA816536HWERV4H",
+  "companyId": "example-co",
+  "seq": 4,
+  "title": "Set up a 90-day renewal request for GitHub's assurance reports",
+  "description": "Add GitHub Enterprise Cloud to the compliance officer's vendor assurance calendar. The reminder fires 90 days before the expiresAt of the latest assurance[] entry in company-profile/example-co/vendors/github.json. Ask the GitHub account manager in writing to send each new SOC 2 Type II report or bridge letter when it is issued. Include GitHub in the annual GV.SC.S4 third-party review schedule (thirdPartyReviewsPerYear 1 for a mid-size RE). The change is procedural only, with no deployment window.",
+  "owner": {
+    "type": "human",
+    "id": "compliance@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "The vendor assurance calendar has an entry for GitHub Enterprise Cloud dated 90 days before the new assurance[] expiresAt recorded in task 3",
+    "A written request to the GitHub account manager for proactive delivery of future SOC 2 reports or bridge letters exists in the GRC store",
+    "The FY annual third-party review schedule for SEBI CSCRF GV.SC.S4 lists vendor github with a planned review date"
+  ],
+  "verificationMethod": {
+    "type": "attestation",
+    "description": "The compliance officer signs a one-page attestation listing three things: the calendar entry date, the locator of the written request to GitHub, and the review schedule entry. The CISO countersigns after checking that the calendar date equals the new expiresAt minus 90 days."
+  },
+  "rootCause": {
+    "category": "vendor-gap",
+    "description": "GitHub does not publish or push report renewal dates, so without a renewal request tied to expiresAt the same gap will return when the next report expires."
+  },
+  "targets": [
+    {
+      "type": "vendor",
+      "vendorId": "github"
+    }
+  ],
+  "effortEstimateHours": 3,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-10-13T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_3"
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

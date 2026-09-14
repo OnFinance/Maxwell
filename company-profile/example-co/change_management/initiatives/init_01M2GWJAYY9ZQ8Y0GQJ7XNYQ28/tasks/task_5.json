@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_5",
+  "initiativeId": "init_01M2GWJAYY9ZQ8Y0GQJ7XNYQ28",
+  "companyId": "example-co",
+  "seq": 5,
+  "title": "Require the gitleaks job as a status check on the main branch ruleset",
+  "description": "In GitHub settings for OnFinance/mongodb-mcp-server, add secrets-gitleaks (from code-health.yml, added in task 3) as a required status check in the ruleset or branch protection for main, and for release/* per policy.json branching.protectedBranches. Disallow bypass except for repository admins in a documented emergency. This makes the policy's blocking: true real: today repos/mongodb-mcp-server.json has no branchProtection block and the probe could not confirm a required check. Export the resulting ruleset (gh api repos/OnFinance/mongodb-mcp-server/rulesets or /branches/main/protection) as evidence. Apply outside an active release cut, so open release PRs are not blocked mid-merge.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "gh api repos/OnFinance/mongodb-mcp-server/rules/branches/main lists a required_status_checks rule that includes the secrets-gitleaks context",
+    "A test PR whose secrets-gitleaks job fails shows 'Merging is blocked' and cannot be merged by a non-admin",
+    "The same required check is present for release/* branches"
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "Review the exported ruleset JSON from gh api repos/OnFinance/mongodb-mcp-server/rules/branches/main and a screenshot or API record of the blocked test PR. Expected: secrets-gitleaks is a required status check on main and release/*, and the failing test PR was not mergeable."
+  },
+  "rootCause": {
+    "category": "misconfiguration",
+    "description": "The policy declares the secrets gate as blocking, but nothing enforces it on protected branches, so even a correctly configured scanner would be advisory."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 1,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-21T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [ "task_3", "task_4" ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

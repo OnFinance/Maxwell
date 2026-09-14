@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_3",
+  "initiativeId": "init_01M2GWJAYY9ZQ8Y0GQJ7XNYQ28",
+  "companyId": "example-co",
+  "seq": 3,
+  "title": "Replace the git-secrets job in code-health.yml with a pinned gitleaks 8.30.1 scan",
+  "description": "In applications/mcp-gateway/repos/mongodb-mcp-server/.github/workflows/code-health.yml, replace the run-git-secrets job (lines 193-206, which runs sudo apt-get install git-secrets and git-secrets --register-aws && git-secrets --scan) with a job named secrets-gitleaks. The new job: installs gitleaks 8.30.1, the version pinned in .claude/skills/scanner-toolchain/references/toolchain.json, from the GitHub release tarball and verifies its sha256 (linux x64: 551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb) before running it; or it uses gitleaks/gitleaks-action pinned to a full commit SHA. It checks out with fetch-depth: 0 and persist-credentials: false, runs gitleaks git --redact --exit-code 1 on push and on the PR commit range, and keeps the existing actions-permissions monitor with contents: read only. Add .gitleaks.toml at the repo root that extends the default ruleset and adds a rule for MongoDB connection strings with embedded credentials (mongodb(+srv)?://user:password@). The default ruleset already covers the GitHub, npm and Atlassian/JIRA tokens that this repo's workflows handle. Remove the dependabot/fork if-condition only if the fork workflow (code-health-fork.yml) does not already run a secrets scan; otherwise add the same job there. Policy constraint: sdlc/policy.json ciGates secrets = gitleaks, blocking true, minSeverityToBlock low, so any finding fails the job.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "grep -rn 'git-secrets' .github/workflows/ returns no match, and code-health.yml contains a job that runs gitleaks version 8.30.1 after a sha256 or commit-SHA-pinned install",
+    "A test PR that adds a fake mongodb+srv://user:pass@host connection string and a fake GitHub token to a scratch file fails the secrets-gitleaks job with exit code 1; the same PR without them passes",
+    ".gitleaks.toml exists at the repo root and gitleaks git --config .gitleaks.toml runs locally without a configuration error",
+    "probe-cicd-env no longer emits CICD-GATE-06 for .github/workflows/code-health.yml (fingerprint 752f7d6cef271fa5121bf0cbaf630e849eadbb911df0abaf79f5d7fb72d7001f)"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-cicd-env",
+    "description": "Re-run probe-cicd-env for mcp-gateway/mongodb-mcp-server. Expected: the secrets gate found in CI is gitleaks with a blocking exit code, matching policy.json ciGates, and no CICD-GATE-06 result is produced."
+  },
+  "rootCause": {
+    "category": "misconfiguration",
+    "description": "The CI secrets check was inherited from the upstream project as git-secrets registered only with AWS patterns, and was never aligned with the company policy's blocking gitleaks gate. As a result, GitHub, npm, JIRA and MongoDB credentials are not detected."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 5,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-18T13:00:00Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

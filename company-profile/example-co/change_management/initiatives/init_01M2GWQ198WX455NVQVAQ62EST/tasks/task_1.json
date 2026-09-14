@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_1",
+  "initiativeId": "init_01M2GWQ198WX455NVQVAQ62EST",
+  "companyId": "example-co",
+  "seq": 1,
+  "title": "Pin the node:24-alpine base image by digest in deploy/aws/Dockerfile",
+  "description": "In applications/mcp-gateway/repos/mongodb-mcp-server (pinned commit aaa72a040db4c32f3d6488d5e28e2892a68e9ee0), replace line 2 `FROM node:24-alpine` with the fully qualified, digest-pinned reference `FROM docker.io/library/node:24-alpine@sha256:<index digest>`. Use the multi-arch index digest, which must include linux/arm64 because AgentCore runs only arm64 images (deploy/aws/README.md). Read it with `docker buildx imagetools inspect docker.io/library/node:24-alpine` on the day of the change. Keep the tag in the reference for readability and add a comment with the date the digest was resolved. Add a `package-ecosystem: docker` entry for directory /deploy/aws to .github/dependabot.yml so digest bumps come back as reviewed PRs. Merge through a normal PR with 1 approval (releaseProcess.approvalsRequired). The policy defines no deploymentWindows; do not push images while this initiative is still proposed.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "`grep -nE '^FROM ' deploy/aws/Dockerfile` prints exactly one line of the form `FROM docker.io/library/node:24-alpine@sha256:<64 hex>`",
+    "`docker buildx imagetools inspect docker.io/library/node:24-alpine@sha256:<digest>` lists a linux/arm64 manifest",
+    "`.github/dependabot.yml` contains a docker ecosystem entry covering /deploy/aws",
+    "A probe-iac re-run no longer reports the unpinned base image at deploy/aws/Dockerfile"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-iac",
+    "description": "Re-run probe-iac for mcp-gateway/mongodb-mcp-server at the merge commit and confirm the IAC-DRIFT-01 result no longer cites line 2 of deploy/aws/Dockerfile. The finding fingerprint 99dd6cfe...be4d stays open until task 2 also lands."
+  },
+  "rootCause": {
+    "category": "misconfiguration",
+    "description": "The AgentCore Dockerfile references the mutable node:24-alpine tag with no content digest, so the base layer changes silently whenever upstream retags."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 2,
+  "createdAt": "2026-09-14T21:12:30Z",
+  "dueAt": "2026-09-16T21:12:30Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T21:12:30Z",
+    "sessionId": "01b78802-3bc9-4e5c-9948-b23539a1495a",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}
