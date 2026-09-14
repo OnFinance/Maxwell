@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.session.summary",
+  "sessionId": "d39b9417-293b-4271-b6af-ce77f681e83f",
+  "harness": "claude-code",
+  "harnessVersion": "2.1.270",
+  "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+  "workflow": "execute-scr",
+  "companyId": "example-co",
+  "startedAt": "2026-09-14T19:35:56.562Z",
+  "endedAt": "2026-09-14T21:01:02.514Z",
+  "durationMs": 5105952,
+  "turns": 899,
+  "inferenceCalls": 899,
+  "toolCalls": {
+    "total": 897,
+    "byTool": {
+      "Skill": 1,
+      "Workflow": 1,
+      "Bash": 321,
+      "Glob": 74,
+      "Grep": 273,
+      "StructuredOutput": 106,
+      "Read": 110,
+      "Write": 7,
+      "Edit": 4
+    }
+  },
+  "subagentSessions": 106,
+  "permissionDenials": [],
+  "models": [
+    {
+      "model": "claude-opus-5",
+      "provider": "anthropic",
+      "tokens": {
+        "input": 15040,
+        "output": 605323,
+        "cacheWrite5m": 7571228,
+        "cacheWrite1h": 90435,
+        "cacheRead": 40688484,
+        "thinking": 199581
+      },
+      "webSearchRequests": 0,
+      "webFetchRequests": 0,
+      "costUsd": 83.777042
+    },
+    {
+      "model": "claude-sonnet-5",
+      "provider": "anthropic",
+      "tokens": {
+        "input": 680,
+        "output": 506396,
+        "cacheWrite5m": 1450784,
+        "cacheWrite1h": 0,
+        "cacheRead": 29900181,
+        "thinking": 198230
+      },
+      "webSearchRequests": 0,
+      "webFetchRequests": 0,
+      "costUsd": 14.672316
+    }
+  ],
+  "costUsd": {
+    "computed": 98.449358,
+    "reported": 98.704658,
+    "deltaPct": -0.26
+  },
+  "pricingVersion": "2026-09-14",
+  "dedup": {
+    "strategy": "requestId-max-total-tokens",
+    "duplicatesDropped": 2139
+  },
+  "filesWritten": [
+    "company-profile/example-co/summary.md",
+    "kpis/data/raw/sessions/d39b9417-293b-4271-b6af-ce77f681e83f/execute-scr.db-models.onfinance-db-model-master.sarif.export.json",
+    "kpis/data/raw/sessions/d39b9417-293b-4271-b6af-ce77f681e83f/execute-scr.mcp-gateway.mongodb-mcp-server.sarif.export.json",
+    "kpis/data/raw/sessions/d39b9417-293b-4271-b6af-ce77f681e83f/probe-dev-env.db-models.onfinance-db-model-master.sarif.export.json",
+    "kpis/data/raw/sessions/d39b9417-293b-4271-b6af-ce77f681e83f/probe-dev-env.mcp-gateway.mongodb-mcp-server.sarif.export.json",
+    "kpis/data/raw/sessions/d39b9417-293b-4271-b6af-ce77f681e83f/probe-sdlc.db-models.onfinance-db-model-master.sarif.export.json",
+    "kpis/data/raw/sessions/d39b9417-293b-4271-b6af-ce77f681e83f/probe-sdlc.example-co.company.sarif.export.json",
+    "kpis/data/raw/sessions/d39b9417-293b-4271-b6af-ce77f681e83f/probe-sdlc.mcp-gateway.mongodb-mcp-server.sarif.export.json"
+  ],
+  "linesAdded": 0,
+  "linesRemoved": 0,
+  "outcome": "success",
+  "transcriptFormatVersion": "2.1.270",
+  "provenance": {
+    "harness": "script",
+    "generatedAt": "2026-09-14T21:01:03Z",
+    "sessionId": "d39b9417-293b-4271-b6af-ce77f681e83f",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "execute-scr",
+    "agent": ".claude/scripts/sessions/ingest.mjs"
+  }
+}

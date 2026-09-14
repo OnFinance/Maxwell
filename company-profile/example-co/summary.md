@@ -3,16 +3,16 @@ schemaVersion: "1"
 kind: maxwell.company.summary
 companyId: example-co
 title: Example Capital Markets cyber resilience summary
-version: "4.7.0"
+version: "4.8.0"
 sections: [overview, regulatory-posture, data-flows, vendors, control-summary, open-findings]
 provenance:
   harness: claude-code
-  generatedAt: "2026-09-14T19:14:04Z"
-  sessionId: "25584b4f-cb91-4da7-9198-1c6516a03390"
+  generatedAt: "2026-09-14T19:35:56Z"
+  sessionId: "d39b9417-293b-4271-b6af-ce77f681e83f"
   runId: "run_01M2FGNVVQ15ZKXZWGW74YWAAQ"
-  workflow: probe-agent-graph
+  workflow: execute-scr
   agent: report-writer
-  inputsHash: "a9176feb3bf92aecd34e625e83596381eafd078959be42a9a881e22506be6637"
+  inputsHash: "115cd2166224ef5ca37077a7b093a33df20373f702d57747b3f1332b92319812"
 ---
 # Example Capital Markets — cyber resilience summary
 
@@ -114,24 +114,38 @@ mongodb-mcp-server (3): evidence-request for target inventory/residency
 <!-- source: sdlc/metastore.json catalogs[].schemas[].tables[].columns[] counted by pii:true; soc/main.jsonl kind:observation with provenance.workflow:refresh-metastore and provenance.runId:run_01M2FGNVVQ15ZKXZWGW74YWAAQ -->
 
 ## Control summary
-Latest control record per id in `company-profile/example-co/soc/main.jsonl` after the `rbi-it-outsourcing-md-2023`
-migration at 2026-09-14T14:41:43Z: 540 records, 476 applicable. `refresh-soc` created 360 of them at
-2026-09-14T09:55:06Z; since then `probe-iac` and `probe-schemas` re-assessed 19 controls from their observations.
+Latest control record per id in `company-profile/example-co/soc/main.jsonl`: 542 records, 478 applicable (64
+`not-applicable`, superseded by the `rbi-it-outsourcing-md-2023` migration). `execute-scr`
+(`provenance.runId` run_01M2FGNVVQ15ZKXZWGW74YWAAQ, `provenance.sessionId` d39b9417-293b-4271-b6af-ce77f681e83f)
+appended 2 new applicable control records this run (`sebi-cscrf-2024:PR.DS.S5`, `sebi-cscrf-2024:PR.DS.S6`,
+both `implementationStatus: unknown` / `effectiveness: not-tested`) and re-assessed controls from its 67
+observations (11 `satisfied`, 14 `partial`, 24 `not-satisfied`, 9 `not-applicable`, 9 `inconclusive`) across
+secure-code-review, SDLC and developer-environment probing.
 
 | Instrument | Controls | Not applicable | Effective | Partially effective | Ineffective | Not tested | Coverage |
 |---|---|---|---|---|---|---|---|
-| `sebi-cscrf-2024` (SEBI CSCRF 2024) | 124 | 0 | 0 | 4 | 7 | 113 | 9 % (11 of 124) |
+| `sebi-cscrf-2024` (SEBI CSCRF 2024) | 126 | 0 | 2 | 6 | 11 | 107 | 15 % (19 of 126) |
 | `rbi-cyber-tech-directions-2026` (RBI Cyber Tech Directions 2026) | 99 | 0 | 0 | 1 | 1 | 97 | 2 % (2 of 99) |
-| `rbi-outsourcing-risk-directions-2025` (RBI Outsourcing Directions 2025) | 176 | 0 | 0 | 0 | 0 | 176 | 0 % (0 of 176) |
-| `dpdp-rules-2025` (DPDP Rules 2025) | 48 | 0 | 0 | 2 | 3 | 43 | 10 % (5 of 48) |
+| `rbi-outsourcing-risk-directions-2025` (RBI Outsourcing Directions 2025) | 176 | 0 | 0 | 0 | 1 | 175 | 1 % (1 of 176) |
+| `dpdp-rules-2025` (DPDP Rules 2025) | 48 | 0 | 0 | 3 | 4 | 41 | 15 % (7 of 48) |
 | `cert-in-directions-2022` (CERT-In Directions 2022) | 29 | 0 | 0 | 0 | 1 | 28 | 3 % (1 of 29) |
 | `rbi-it-outsourcing-md-2023` (repealed 2025-11-28) | 64 | 64 | 0 | 0 | 0 | 0 | n/a |
-| **Total** | **540** | **64** | **0** | **7** | **12** | **457** | **4 % (19 of 476)** |
+| **Total** | **542** | **64** | **2** | **10** | **18** | **448** | **6 % (30 of 478)** |
 
 <!-- source: latest-state map over soc/main.jsonl kind=control, grouped by id prefix before ':'; not-applicable counted separately, the rest by effectiveness -->
 
 Coverage divides the controls whose latest record carries a `lastAssessedAt` set from an observation `result` by
 the applicable (not `not-applicable`) controls; `kpis/measurement/cm_coverage.md` defines the KPI.
+
+Maxwell observed 30 of 478 applicable controls in this period (6 %); this run's `execute-scr` pass alone left
+9 controls inconclusive for lack of resolvable evidence: `sebi-cscrf-2024:PR.DS.S1` [obs_01M2GR10X602CA21DDAATHYWX7],
+`sebi-cscrf-2024:PR.MA.S3` [obs_01M2GR10ZN8XF7CRAWK2C2EK5Q], `sebi-cscrf-2024:PR.AA.S8` and
+`cert-in-directions-2022:Dir-iv` [obs_01M2GR110GMYDRZ29NP7A89CCT], `sebi-cscrf-2024:PR.IP.S3`
+[obs_01M2GS6B1B49AH50T7Z86EJP8K], [obs_01M2GSDQXXV6VM7WVPBQ9TEAD1], `sebi-cscrf-2024:PR.DS.S6`
+[obs_01M2GSDQYQ7FF9DX4FWG8Q5RZ3], [obs_01M2GSDQZJ5G1DPQQ4BV28KXN7], `sebi-cscrf-2024:PR.IP.S1`
+[obs_01M2GSDR5E3MP4KSF9VPRXXNPW] and `sebi-cscrf-2024:PR.IP.S2` [obs_01M2GSSNSZHC0K97GJXRPCDYA7]. No
+environments were skipped this run: `execute-scr` probes repos, policy and config in the workspace, not live
+environments.
 
 ## Open findings
 `probe-schemas` ran against `example-co` this run (`provenance.runId` run_01M2FGNVVQ15ZKXZWGW74YWAAQ,
@@ -204,8 +218,28 @@ categories are enabled by default with no allow-list ([fnd_01M2GPBK5MSHBXGGFSRYH
 PR.AA.S3), and the streamable HTTP transport has no authentication by default
 ([fnd_01M2GPBK5MB962TKED1TFBTF3A], SEBI sebi-cscrf-2024 PR.AA.S17).
 
+`execute-scr` ran against `example-co` this run (`provenance.runId` run_01M2FGNVVQ15ZKXZWGW74YWAAQ,
+`provenance.sessionId` d39b9417-293b-4271-b6af-ce77f681e83f): 1 new secure-code-review finding
+([fnd_01M2GMN61NFQDTRGPZ5RMSMTWN]; same fingerprint `5ecce787...` as the prior `probe-schemas` finding of that
+id, so the ledger superseded it rather than opening a duplicate — no id change, title and description refreshed
+with the secrets-management angle), 6 new SDLC-gap finding(s) ([fnd_01M2GS6B7DFR9B286Y0506V1VJ],
+[fnd_01M2GS6B87TV7NHZQ8BMGDR4HZ], [fnd_01M2GSDSCS1E1NHBB2A9JSA11J], [fnd_01M2GSDSE000HR9FYWXXSM4ZM3],
+[fnd_01M2GSSNXD1T94MJ6Q346HV4S6], [fnd_01M2GSSNY7B64D39NPE9K8Z80F]), 1 new developer-environment finding
+([fnd_01M2GTZHA1AH7R8PAPGHNCWMJJ]), 1 finding re-seen (0 reopened: [fnd_01M2GMN61NFQDTRGPZ5RMSMTWN] superseded
+with refreshed evidence, `status: open` unchanged), 67 observation(s) recorded (11 `satisfied`, 14 `partial`,
+24 `not-satisfied`, 9 `not-applicable`, 9 `inconclusive`). The SDLC findings cover company-wide gaps — no
+CODEOWNERS enforcement for security-sensitive paths ([fnd_01M2GS6B7DFR9B286Y0506V1VJ]) and no evidenced
+completed audit or closure loop against `sebi-cscrf-2024:Sec-4.4` ([fnd_01M2GS6B87TV7NHZQ8BMGDR4HZ]) — plus
+repo-level gaps: `mongodb-mcp-server`'s PR template has no security/data-impact checklist
+([fnd_01M2GSDSCS1E1NHBB2A9JSA11J]) and its vitest coverage job has no minimum threshold
+([fnd_01M2GSDSE000HR9FYWXXSM4ZM3]), and `onfinance-db-model-master` has no CI system to run its declared
+blocking unit-tests gate at all ([fnd_01M2GSSNXD1T94MJ6Q346HV4S6]) and no committed Python lockfile despite
+policy requiring one ([fnd_01M2GSSNY7B64D39NPE9K8Z80F]). The developer-environment finding is that
+`db-models`' `dev` environment declares `secretsBackend: other` instead of the policy-mandated
+`aws-secrets-manager` ([fnd_01M2GTZHA1AH7R8PAPGHNCWMJJ]).
+
 Latest record per finding id in `company-profile/example-co/soc/main.jsonl` with `status` in
-`open | triaged | remediating`, as of `provenance.generatedAt` 2026-09-14T19:14:04Z (32 open: 21 high, 11
+`open | triaged | remediating`, as of `provenance.generatedAt` 2026-09-14T19:35:56Z (39 open: 23 high, 16
 medium, 0 past SLA):
 
 ### High
@@ -227,12 +261,14 @@ medium, 0 past SLA):
 | [fnd_01M2GH5B1JFJYTA2MGWES48JP5] | SBOM generated by CI is never captured into the workspace image inventory for mcp-gateway | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 GV.SC.S5 | 2026-09-14 | 2026-10-14T13:48:42Z | due in 30 d | open | n/a |
 | [fnd_01M2GH5B2SNX0PD3EKVNVTPAG7] | Docker Hub publish uses a static shared credential instead of the OIDC federation already used elsewhere in the repo | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S1 | 2026-09-14 | 2026-09-21T13:48:42Z | due in 7 d | open | n/a |
 | [fnd_01M2GJYP56VKDHARQPPFVATT0D] | AWS Bedrock AgentCore Dockerfile has no pinned base image or package version | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.IP.S3 | 2026-09-14 | 2026-09-21T18:08:50Z | due in 7 d | open | n/a |
-| [fnd_01M2GMN61NFQDTRGPZ5RMSMTWN] | Zerodha and Binance trading-account credentials persisted in plain text with no encryption | repo `db-models/onfinance-db-model-master` | SEBI sebi-cscrf-2024 PR.DS.S1 | 2026-09-14 | 2026-10-14T18:36:43Z | due in 30 d | open | n/a |
+| [fnd_01M2GMN61NFQDTRGPZ5RMSMTWN] | db-models: Zerodha password, 2FA secret, API secrets and access tokens stored as plain MongoDB fields | repo `db-models/onfinance-db-model-master` | SEBI sebi-cscrf-2024 PR.DS.S1 | 2026-09-14 | 2026-10-14T18:36:43Z | due in 30 d | open | n/a |
 | [fnd_01M2GMWPZ5DKN7DNH3D65T47FZ] | switch-connection tool's connectionString argument carries no isSecret/classification annotation | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S1 | 2026-09-14 | 2026-09-21T18:36:43Z | due in 7 d | open | n/a |
 | [fnd_01M2GMWQ01QA647X5MYFGNS1MG] | MDB_MCP_DRY_RUN dumps the full resolved config, including isSecret-marked fields, with no redaction | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S1 | 2026-09-14 | 2026-09-21T18:36:43Z | due in 7 d | open | n/a |
 | [fnd_01M2GPBK5MBCAFFV7KNH83JV1F] | Elicitation-based approval for destructive MongoDB/Atlas tools auto-approves when the client omits elicitation support | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S3 (OWASP Agentic AI Top 10 2026 ASI09) | 2026-09-14 | 2026-09-21T19:14:04Z | due in 7 d | open | n/a |
 | [fnd_01M2GPBK5MSHBXGGFSRYHPXQY2] | Write/delete MongoDB and Atlas tool categories are enabled by default with no allow-list | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S3 | 2026-09-14 | 2026-09-21T19:14:04Z | due in 7 d | open | n/a |
 | [fnd_01M2GPBK5MB962TKED1TFBTF3A] | Streamable HTTP transport has no authentication by default | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S17 | 2026-09-14 | 2026-09-21T19:14:04Z | due in 7 d | open | n/a |
+| [fnd_01M2GS6B87TV7NHZQ8BMGDR4HZ] | Declared audit cadence has no evidence of a completed audit or tracked closure of findings | company | SEBI sebi-cscrf-2024 Sec-4.4 | 2026-09-14 | 2026-12-13T19:35:56Z | due in 90 d | open | n/a |
+| [fnd_01M2GTZHA1AH7R8PAPGHNCWMJJ] | db-models dev environment secretsBackend ("other") does not match the policy-mandated vault | environment `db-models/dev` | SEBI sebi-cscrf-2024 PR.AA.S1 | 2026-09-14 | 2026-09-21T19:35:56Z | due in 7 d | open | n/a |
 
 ### Medium
 
@@ -249,7 +285,12 @@ medium, 0 past SLA):
 | [fnd_01M2GMN60SYB8DHVX3XN4J84G5] | Metastore-catalogued PII/SPDI columns carry no classification annotation in models.py | repo `db-models/onfinance-db-model-master` | SEBI sebi-cscrf-2024 ID.AM.S5 | 2026-09-14 | 2026-09-28T18:36:43Z | due in 14 d | open | n/a |
 | [fnd_01M2GMN62KVM9J9R852X3E3ST7] | User document has no consent/purpose/notice reference | repo `db-models/onfinance-db-model-master` | SEBI sebi-cscrf-2024 GV.OC.S2 | 2026-09-14 | 2026-09-28T18:36:43Z | due in 14 d | open | n/a |
 | [fnd_01M2GMN63DEDR29P66QTKND8E7] | No retention, expiry or purge mechanism for personal data or trading credentials | repo `db-models/onfinance-db-model-master` | SEBI sebi-cscrf-2024 PR.AA.S13 | 2026-09-14 | 2026-12-13T18:36:43Z | due in 90 d | open | n/a |
+| [fnd_01M2GS6B7DFR9B286Y0506V1VJ] | No named owner or code-review role for security-sensitive paths; CODEOWNERS not enforced company-wide | company | SEBI sebi-cscrf-2024 GV.PO.S5 | 2026-09-14 | 2026-12-13T19:35:56Z | due in 90 d | open | n/a |
+| [fnd_01M2GSDSCS1E1NHBB2A9JSA11J] | PR template for mongodb-mcp-server has no security/data-impact checklist despite pii and financial data downstream | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.IP.S2 | 2026-09-14 | 2026-12-13T19:35:56Z | due in 90 d | open | n/a |
+| [fnd_01M2GSDSE000HR9FYWXXSM4ZM3] | vitest coverage runs in CI but no minimum coverage threshold is configured anywhere | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.IP.S6 | 2026-09-14 | 2026-12-13T19:35:56Z | due in 90 d | open | n/a |
+| [fnd_01M2GSSNXD1T94MJ6Q346HV4S6] | Claimed blocking unit-tests gate cannot run on db-models repo because it has no CI system | repo `db-models/onfinance-db-model-master` | SEBI sebi-cscrf-2024 PR.IP.S6 | 2026-09-14 | 2026-09-28T19:35:56Z | due in 14 d | open | n/a |
+| [fnd_01M2GSSNY7B64D39NPE9K8Z80F] | No lockfile committed for db-models' only Python package manifest despite policy requiring one | repo `db-models/onfinance-db-model-master` | SEBI sebi-cscrf-2024 PR.IP.S2 | 2026-09-14 | 2026-09-28T19:35:56Z | due in 14 d | open | n/a |
 
-<!-- source: latest-state map over soc/main.jsonl kind=finding, filtered to status in open|triaged|remediating; SLA status = ceil((slaDueAt - 2026-09-14T19:14:04Z)/86400000) days -->
+<!-- source: latest-state map over soc/main.jsonl kind=finding, filtered to status in open|triaged|remediating; SLA status = ceil((slaDueAt - 2026-09-14T19:35:56Z)/86400000) days -->
 
 No findings in `risk-accepted`, `false-positive` or `duplicate` this period.
