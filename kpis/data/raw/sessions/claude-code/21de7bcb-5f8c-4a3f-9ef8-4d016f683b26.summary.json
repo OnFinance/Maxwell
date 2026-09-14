@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.session.summary",
+  "sessionId": "21de7bcb-5f8c-4a3f-9ef8-4d016f683b26",
+  "harness": "claude-code",
+  "harnessVersion": "2.1.270",
+  "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+  "workflow": "probe-iac",
+  "companyId": "example-co",
+  "startedAt": "2026-09-14T09:40:24.647Z",
+  "endedAt": "2026-09-14T09:50:51.905Z",
+  "durationMs": 627258,
+  "turns": 44,
+  "inferenceCalls": 44,
+  "toolCalls": {
+    "total": 41,
+    "byTool": {
+      "Skill": 1,
+      "Workflow": 1,
+      "Glob": 2,
+      "Grep": 6,
+      "Bash": 25,
+      "StructuredOutput": 2,
+      "Read": 3,
+      "Write": 1
+    }
+  },
+  "subagentSessions": 4,
+  "permissionDenials": [],
+  "models": [
+    {
+      "model": "claude-opus-5",
+      "provider": "anthropic",
+      "tokens": {
+        "input": 394,
+        "output": 11908,
+        "cacheWrite5m": 203691,
+        "cacheWrite1h": 29460,
+        "cacheRead": 841953,
+        "thinking": 2683
+      },
+      "webSearchRequests": 0,
+      "webFetchRequests": 0,
+      "costUsd": 2.288315
+    },
+    {
+      "model": "claude-sonnet-5",
+      "provider": "anthropic",
+      "tokens": {
+        "input": 54,
+        "output": 47252,
+        "cacheWrite5m": 128206,
+        "cacheWrite1h": 0,
+        "cacheRead": 2689767,
+        "thinking": 21678
+      },
+      "webSearchRequests": 0,
+      "webFetchRequests": 0,
+      "costUsd": 1.331096
+    }
+  ],
+  "costUsd": {
+    "computed": 3.619411,
+    "reported": 3.480476,
+    "deltaPct": 3.99
+  },
+  "pricingVersion": "2026-09-13",
+  "dedup": {
+    "strategy": "requestId-max-total-tokens",
+    "duplicatesDropped": 74
+  },
+  "filesWritten": [
+    "kpis/data/raw/sessions/21de7bcb-5f8c-4a3f-9ef8-4d016f683b26/probe-iac.mcp-gateway.mongodb-mcp-server.sarif.export.json"
+  ],
+  "linesAdded": 0,
+  "linesRemoved": 0,
+  "outcome": "success",
+  "transcriptFormatVersion": "2.1.270",
+  "provenance": {
+    "harness": "script",
+    "generatedAt": "2026-09-14T09:50:52Z",
+    "sessionId": "21de7bcb-5f8c-4a3f-9ef8-4d016f683b26",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "probe-iac",
+    "agent": ".claude/scripts/sessions/ingest.mjs"
+  }
+}
