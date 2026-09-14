@@ -149,7 +149,7 @@
       "slaDueAt": "2026-09-20T08:05:00Z",
       "slaBasis": {
         "instrument": "sebi-cscrf-2024",
-        "controlId": "PR.PS.S6",
+        "controlId": "PR.MA.S3",
         "topic": "patch-sla",
         "severity": "high",
         "days": 7
@@ -1177,7 +1177,7 @@
           ]
         },
         "dedupKey": {
-          "description": "PagerDuty dedup_key (incident_key) of the incident, stored verbatim so it joins kpi/pagerduty-export incident_key by string equality (1-255 characters, the PagerDuty limit). Incidents Maxwell raises use the single format defined in kpi/pagerduty-export $defs/maxwellIncidentKey, 'maxwell:<controlId lower-cased>:<assetId>:<first 16 hex of the finding fingerprint>', which is enforced here for any key starting with 'maxwell:'; incidents ingested from PagerDuty, a SIEM or reported by a human keep whatever key the source set",
+          "description": "PagerDuty dedup_key (incident_key) of the incident, stored verbatim so it joins kpi/pagerduty-export incident_key by string equality (1-255 characters, the PagerDuty limit). Incidents Maxwell raises use the single format defined in kpi/pagerduty-export $defs/maxwellIncidentKey, 'maxwell:<controlId lower-cased>:<assetId>:<first 16 hex of the finding fingerprint>', which is enforced here for any key starting with 'maxwell:'; an incident a runtime probe itself caused uses 'probe-side-effect:<appId>/<envId>:<runId>' (rules-of-engagement section 7) so it never joins a PagerDuty key; incidents ingested from PagerDuty, a SIEM or reported by a human keep whatever key the source set",
           "type": "string",
           "if": {
             "pattern": "^maxwell:"

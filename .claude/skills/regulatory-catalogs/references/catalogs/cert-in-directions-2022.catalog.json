@@ -1,0 +1,1184 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.catalog.regulator",
+  "instrumentId": "cert-in-directions-2022",
+  "regulator": "CERT-In",
+  "version": "No. 20(3)/2022-CERT-In dated 28.04.2022 (effective 27.06.2022; MSMEs and para (v) a/f 25.09.2022); Audit-Policy group from CCSAPG v1.0 25.07.2025",
+  "sourceUrl": "https://www.cert-in.org.in/PDF/CERT-In_Directions_70B_28.04.2022.pdf",
+  "retrievedAt": "2026-09-14T07:09:51Z",
+  "groups": [
+    {
+      "id": "Directions",
+      "title": "Directions (i) to (vi) under sub-section (6) of section 70B of the IT Act, 2000",
+      "controls": [
+        {
+          "id": "Dir-i",
+          "title": "Synchronise all ICT system clocks to NIC or NPL NTP",
+          "prose": "All service providers, intermediaries, data centres, body corporate and Government organisations shall connect to the Network Time Protocol (NTP) server of the National Informatics Centre (NIC) or the National Physical Laboratory (NPL), or to NTP servers traceable to these, for synchronisation of all their ICT system clocks. Entities whose ICT infrastructure spans multiple geographies may also use another accurate and standard time source, provided that their time source does not deviate from NPL and NIC. The FAQ (Q 40-43, May 2022) clarifies that clocks need not be set to IST (UTC with recorded time-zone is acceptable), that enterprises should point their own NTP tier at NIC (samay1.nic.in, samay2.nic.in) or NPL (time.nplindia.org), and that entities relying on a cloud provider's native time service must ensure it conforms to NPL/NIC time.",
+          "guidance": "Evidence the NTP hierarchy per environment: chrony/ntpd/systemd-timesyncd configuration in IaC and container base images, the cloud provider time service in use (Amazon Time Sync, Google NTP, Azure Hyper-V time) and the stratum-1/2 servers it is traced to, and node-level drift measurements from a read-only runtime probe (chronyc tracking / timedatectl). Record the accepted upstream sources in the soc control record parameter ntpSources and raise a finding when any production, QA or dev-test host, Kubernetes node or network appliance syncs to an unapproved source or shows drift beyond the soc control record parameter maxClockDriftSeconds. Firewall egress rules must allow UDP/123 to the approved sources only. The ntpSources default is quoted from FAQ Q 43 (May 2022), which lists NIC samay1.nic.in and samay2.nic.in and NPL time.nplindia.org.",
+          "category": "Time synchronisation",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "NTP client configuration for every environment showing NIC or NPL (or a source traceable to them) as upstream",
+            "Runtime drift check output (chronyc tracking or timedatectl) per node with offset within tolerance",
+            "Firewall egress rule permitting UDP/123 only to approved time sources",
+            "Cloud provider time-service documentation and mapping to NPL/NIC for multi-geography estates"
+          ],
+          "params": [
+            {
+              "id": "ntpSources",
+              "label": "Approved upstream NTP servers (NIC or NPL, or traceable to them)",
+              "default": "samay1.nic.in, samay2.nic.in, time.nplindia.org"
+            },
+            {
+              "id": "maxClockDriftSeconds",
+              "label": "Maximum tolerated offset from NPL/NIC time before a finding is raised (organisation-set; the direction states no numeric tolerance)"
+            }
+          ],
+          "mappings": [
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.8.17"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "AU-8"
+            },
+            {
+              "regulator": "CIS",
+              "instrument": "cis-controls-8.1",
+              "controlId": "8.4"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "PR.PS-01"
+            }
+          ],
+          "probeWorkflows": [
+            "probe-iac",
+            "probe-app-chart",
+            "runtime-probe-appcontainers",
+            "runtime-probe-prod-env",
+            "runtime-probe-qa-env",
+            "runtime-probe-devtest-env",
+            "runtime-probe-network-perimeter"
+          ]
+        },
+        {
+          "id": "Dir-ii",
+          "title": "Report Annexure I cyber incidents to CERT-In within 6 hours",
+          "prose": "Any service provider, intermediary, data centre, body corporate and Government organisation shall mandatorily report the cyber incidents listed in Annexure I to CERT-In within 6 hours of noticing such incidents or being brought to notice about such incidents. Incidents may be reported by email (incident@cert-in.org.in), phone (1800-11-4949) or fax (1800-11-6969), using the methods and formats published on www.cert-in.org.in as updated from time to time. The FAQ (Q 24, Q 30) clarifies that the 6-hour clock starts when the incident is noticed, that information may be provided to the extent available at the time of reporting with additional details supplied within a reasonable time, and that Annexure I incidents of severe nature on public information infrastructure, data breaches or leaks, large-scale or frequent intrusions, and incidents impacting human safety must be reported within the stipulated 6 hours.",
+          "guidance": "Every soc incident record with a category in the Annexure I list must carry a regulatorReportRefs entry for CERT-In with deadlineHours 6 measured from detectedAt, and submittedAt plus the CERT-In acknowledgement reference once filed. refresh-soc flags any open incident whose CERT-In clock has expired without submittedAt. Evidence the organisation's incident response plan names the CERT-In incident reporting form (https://www.cert-in.org.in/PDF/certinirform.pdf), the 6-hour trigger and the on-call authority to file; store the plan reference in company-profile/<company_id>/summary.md. The 6 hours is the incident reporting clock, taken from the sla-table incident-reporting topic for cert-in-directions-2022 and carried in regulatorReportRefs.deadlineHours; it is not a remediation SLA. The directions state no remediation deadline, so a gap against this control (for example no CERT-In reporting procedure) takes its due date from the SLA table by severity. Items i to xx of Annexure I are listed with reference to Rule 12(1)(a) of the CERT-In Rules, 2013.",
+          "category": "Incident reporting",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Incident response procedure naming CERT-In, the 6-hour trigger and the Annexure I categories",
+            "soc incident records with regulatorReportRefs for CERT-In showing submittedAt within 6 hours of detectedAt",
+            "CERT-In acknowledgement reference or email receipt per reported incident",
+            "Incident timeline (detectedAt, acknowledgedAt, reportedToRegulatorAt) reconstructed from PagerDuty or SIEM"
+          ],
+          "params": [
+            {
+              "id": "incidentReportingHours",
+              "label": "Hours from noticing an Annexure I incident within which CERT-In must be informed",
+              "default": "6",
+              "unit": "hours"
+            }
+          ],
+          "mappings": [
+            {
+              "regulator": "SEBI",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "RS.CO.S1"
+            },
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-rules-2025",
+              "controlId": "7(2)(a)"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "RS.CO-02"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.6.8"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.5"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "IR-6"
+            },
+            {
+              "regulator": "CIS",
+              "instrument": "cis-controls-8.1",
+              "controlId": "17.4"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-soc",
+            "refresh-ctx",
+            "report-audit-findings"
+          ]
+        },
+        {
+          "id": "Dir-iii",
+          "title": "Furnish information and assistance to CERT-In on order",
+          "prose": "When required by an order or direction of CERT-In for the purposes of cyber incident response, protective and preventive actions related to cyber incidents, the service provider, intermediary, data centre or body corporate is mandated to take action, provide information or render any such assistance to CERT-In that may contribute to cyber security mitigation and enhanced situational awareness. The order may specify the format of the information (up to and including near real-time) and a timeframe, which shall be adhered to and compliance provided to CERT-In; otherwise it is treated as non-compliance with this direction. The FAQ (Q 38) notes that a requisition for logs may be issued by a CERT-In officer not below the rank of Deputy Secretary to the Government of India. Failure to furnish information or non-compliance may attract punitive action under sub-section (7) of section 70B of the IT Act, 2000.",
+          "guidance": "Evidence a documented procedure for receiving CERT-In orders at the registered Point of Contact, routing them to the CISO and legal, and producing the requested logs or data within the stated timeframe. Record each CERT-In request and its response as a soc observation with methods manual, the request date, the deadline given and the date complied. The 180-day log store (Dir-iv) must support export in the format CERT-In specifies; runtime-probe-datapipeline evidences that logs can be queried and exported for an arbitrary window without engineering effort.",
+          "category": "Cooperation with CERT-In",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Procedure for handling CERT-In information requests with owner, escalation path and turnaround",
+            "Register of CERT-In requests received and responses sent, with dates",
+            "Demonstrated log export for an arbitrary date range from the retained log store"
+          ],
+          "mappings": [
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.5"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.31"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.OC-03"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "RS.CO-03"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-ctx",
+            "refresh-soc",
+            "runtime-probe-datapipeline"
+          ]
+        },
+        {
+          "id": "Dir-iv",
+          "title": "Enable and retain ICT system logs for 180 days within India",
+          "prose": "All service providers, intermediaries, data centres, body corporate and Government organisations shall mandatorily enable logs of all their ICT systems and maintain them securely for a rolling period of 180 days, and the same shall be maintained within the Indian jurisdiction. The logs shall be provided to CERT-In along with the reporting of any incident or when ordered or directed by CERT-In. The FAQ (Q 35-37) clarifies that logs may additionally be stored outside India as long as the obligation to produce them to CERT-In within a reasonable time is met, that any service provider serving users in India must maintain logs and financial transaction records in Indian jurisdiction, and that the logs expected depend on sector and include firewall, IPS, SIEM, web/database/mail/FTP/proxy server, critical-system event, application, ATM switch, SSH and VPN logs, recording both successful and unsuccessful events.",
+          "guidance": "For each application environment evidence the logging pipeline end to end: sources enabled (application, Kubernetes audit, cloud audit trail, database, firewall, VPN, identity provider), the shipper, the store, its region (must be in India; illustrative regions are AWS ap-south-1 and ap-south-2, Google Cloud asia-south1 and asia-south2, Azure centralindia, southindia and westindia, Jio-hosted Azure jioindiawest and jioindiacentral, or an Indian data centre) and a retention policy of at least 180 days with immutability or write-once storage. probe-iac reads retention and region from Terraform/Helm, runtime-probe-datapipeline queries the store for the oldest available record per source and confirms it is at least 180 days old, runtime-probe-identity-access and runtime-probe-network-perimeter confirm authentication and perimeter logs are among the sources. Set the soc control record parameter logRetentionDays to the configured value and raise a finding when any source is below 180 days, stored only outside India, or not captured at all.",
+          "category": "Logging and monitoring",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Inventory of ICT log sources per environment with shipper and destination",
+            "Log store retention configuration showing 180 days or more and an Indian storage region",
+            "Query result showing the oldest retained record per source is at least 180 days old",
+            "Access controls and integrity protection (WORM, object lock or hash chaining) on the log store",
+            "Evidence that both successful and failed events are recorded for authentication and privileged actions"
+          ],
+          "params": [
+            {
+              "id": "logRetentionDays",
+              "label": "Rolling retention period for logs of all ICT systems",
+              "default": "180",
+              "unit": "days"
+            },
+            {
+              "id": "logStorageJurisdiction",
+              "label": "Jurisdiction in which the primary copy of ICT logs is maintained",
+              "default": "IN"
+            }
+          ],
+          "mappings": [
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.8.15"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "AU-11"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "AU-2"
+            },
+            {
+              "regulator": "CIS",
+              "instrument": "cis-controls-8.1",
+              "controlId": "8.2"
+            },
+            {
+              "regulator": "CIS",
+              "instrument": "cis-controls-8.1",
+              "controlId": "8.10"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "PR.PS-04"
+            }
+          ],
+          "probeWorkflows": [
+            "probe-iac",
+            "probe-app-chart",
+            "runtime-probe-datapipeline",
+            "runtime-probe-prod-env",
+            "runtime-probe-qa-env",
+            "runtime-probe-devtest-env",
+            "runtime-probe-identity-access",
+            "runtime-probe-network-perimeter",
+            "runtime-probe-appcontainers"
+          ]
+        },
+        {
+          "id": "Dir-v",
+          "title": "Data centre, VPS, cloud and VPN service providers: register and keep subscriber information for 5 years",
+          "prose": "Data centres, Virtual Private Server (VPS) providers, cloud service providers and Virtual Private Network service (VPN service) providers shall register the following accurate information and maintain it for a period of 5 years, or longer where mandated by law, after any cancellation or withdrawal of the registration: (a) validated names of subscribers or customers hiring the services; (b) period of hire including dates; (c) IPs allotted to or used by the members; (d) email address, IP address and timestamp used at registration or on-boarding; (e) purpose for hiring the services; (f) validated address and contact numbers; (g) ownership pattern of the subscribers or customers. The FAQ (Q 33-34) explains that ownership pattern means basic information about the customer company or other entity of whatever nature, with brief particulars of its key management, and that VPN service provider means an entity providing internet-proxy-like services to general internet subscribers, not enterprise or corporate VPNs. Per the notice of 27 June 2022 the validation aspects in (a) and (f) became effective on 25 September 2022.",
+          "guidance": "Applies to a regulated entity only when it itself offers data centre, VPS, cloud or consumer VPN services (typically a technology-service-provider). Evidence the customer onboarding schema captures every field (a) to (g) with validation status, that the retention policy on the customer master and on IP allocation records is at least 5 years after offboarding, and that deletion jobs exclude these records. probe-schemas and refresh-metastore confirm the fields and retention tags exist in the customer data model; refresh-ctx records which service lines make the entity a provider under this direction. For companies that only consume cloud or VPN services record not-applicable in the soc control record with the reasoning.",
+          "category": "Subscriber registration and KYC",
+          "applicability": {
+            "entityTypes": [
+              "technology-service-provider"
+            ]
+          },
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Customer onboarding data model showing validated name, address, contact numbers, purpose of hire, ownership pattern, registration email/IP/timestamp and hire period",
+            "IP allocation ledger linking allotted IPs to customer and period",
+            "Retention policy of at least 5 years after cancellation on customer and allocation records",
+            "Validation procedure for names, addresses and contact numbers (effective 25 September 2022)"
+          ],
+          "params": [
+            {
+              "id": "subscriberRecordRetentionYears",
+              "label": "Years subscriber registration information is kept after cancellation or withdrawal",
+              "default": "5",
+              "unit": "years"
+            }
+          ],
+          "mappings": [
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.31"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.OC-03"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-ctx",
+            "refresh-metastore",
+            "probe-schemas",
+            "runtime-probe-datapipeline"
+          ]
+        },
+        {
+          "id": "Dir-vi",
+          "title": "Virtual asset service providers: keep KYC and transaction records for 5 years",
+          "prose": "Virtual asset service providers, virtual asset exchange providers and custodian wallet providers (as defined by the Ministry of Finance from time to time) shall mandatorily maintain all information obtained as part of Know Your Customer (KYC) and records of financial transactions for a period of five years, so as to ensure cyber security in the area of payments and financial markets while protecting citizens' data, fundamental rights and economic freedom. KYC shall follow the RBI KYC Directions 2016, the SEBI circular of 24 April 2020 or the DoT notice of 21 September 2021 as amended, per Annexure III. Transaction records shall be maintained so that each individual transaction can be reconstructed, including identification of the relevant parties with IP addresses, timestamps and time zones, transaction ID, public keys or equivalent identifiers, addresses or accounts involved, the nature and date of the transaction and the amount transferred.",
+          "guidance": "Applies to entities operating a virtual digital asset exchange, broker, custodian or wallet (in Maxwell these are usually fintech-unregulated companies registered with FIU-IND). Evidence that the KYC store and the transaction ledger schema carry every reconstruction element named in the direction (party identifiers, client IP, timestamp with time zone, transaction id, public keys or addresses, nature, date, amount) and that retention on both is at least 5 years with deletion jobs excluded. probe-schemas and refresh-metastore verify the columns and retention tags; runtime-probe-datapipeline confirms the oldest transaction record is retrievable with all elements. Record the retention in the soc control record parameter kycRecordRetentionYears.",
+          "category": "Subscriber registration and KYC",
+          "applicability": {
+            "entityTypes": [
+              "fintech-unregulated"
+            ]
+          },
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "KYC record schema and retention policy of at least 5 years",
+            "Transaction ledger schema capturing party identifiers, IP with timestamp and time zone, transaction id, public keys or addresses, nature, date and amount",
+            "Sample reconstruction of a historical transaction from retained records",
+            "Mapping of KYC procedure to RBI KYC Directions 2016 or SEBI circular SEBI/HO/MIRSD/DOP/CIR/P/2020/73"
+          ],
+          "params": [
+            {
+              "id": "kycRecordRetentionYears",
+              "label": "Years KYC information and financial transaction records are retained",
+              "default": "5",
+              "unit": "years"
+            }
+          ],
+          "mappings": [
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.31"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.33"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.OC-03"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-ctx",
+            "refresh-metastore",
+            "probe-schemas",
+            "runtime-probe-datapipeline"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Annexure-I",
+      "title": "Annexure I: Types of cyber security incidents mandatorily to be reported to CERT-In [Rule 12(1)(a), CERT-In Rules, 2013]",
+      "controls": [
+        {
+          "id": "Annex-I.i",
+          "title": "Targeted scanning or probing of critical networks and systems",
+          "prose": "Targeted scanning or probing of critical networks or systems is a reportable cyber security incident under Annexure I (item i). The FAQ explains this as gathering information about critical computing systems and networks to identify hosts, services, security devices and known vulnerabilities in order to plan an attack.",
+          "guidance": "Detect through perimeter IDS/IPS, WAF and cloud flow logs; a soc incident with category targeted-scanning against an asset tagged critical starts the 6-hour CERT-In clock under Dir-ii. runtime-probe-network-perimeter evidences that scanning detection exists and alerts route to the on-call responder.",
+          "category": "Incident reporting",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Perimeter detection rule set covering port scans and enumeration against critical assets",
+            "Alert routing to the incident responder with CERT-In reporting step"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "DE.CM-01"
+            }
+          ],
+          "probeWorkflows": [
+            "runtime-probe-network-perimeter",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "Annex-I.ii",
+          "title": "Compromise of critical systems or information",
+          "prose": "Compromise of critical systems or information is a reportable cyber security incident under Annexure I (item ii). The FAQ describes it as gaining control of a computer resource without permission, typically through exploitation of a vulnerability, social engineering or sophisticated malware, potentially affecting confidentiality, integrity and availability.",
+          "guidance": "Map to soc incident category compromise-critical-system. The critical-system inventory in applications/<app_id>/env/<env_id>.json and company-profile summary must be current so responders can classify quickly. runtime-probe-prod-env evidences EDR or host integrity monitoring on critical systems.",
+          "category": "Incident reporting",
+          "mandatory": true,
+          "defaultSeverity": "critical",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Critical system inventory with owners",
+            "Host-level detection (EDR, integrity monitoring) coverage report for critical systems"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "DE.CM-09"
+            }
+          ],
+          "probeWorkflows": [
+            "runtime-probe-prod-env",
+            "runtime-probe-appcontainers",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "Annex-I.iii",
+          "title": "Unauthorised access of IT systems or data",
+          "prose": "Unauthorised access of IT systems or data is a reportable cyber security incident under Annexure I (item iii): accessing systems or data without authorisation, which may involve compromised systems, poor security controls, weak credentials or privilege escalation.",
+          "guidance": "Map to soc incident category unauthorised-access. runtime-probe-identity-access evidences that authentication logs, impossible-travel and privilege-escalation alerts exist for production identity providers and cloud IAM, and that failed and successful access events are retained per Dir-iv.",
+          "category": "Incident reporting",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Identity provider and cloud IAM alerting for anomalous or privileged access",
+            "Retained authentication logs covering successful and failed events"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "DE.CM-03"
+            }
+          ],
+          "probeWorkflows": [
+            "runtime-probe-identity-access",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "Annex-I.iv",
+          "title": "Website defacement or intrusion with unauthorised changes",
+          "prose": "Defacement of a website, or intrusion into a website with unauthorised changes such as inserting malicious code or links to external websites, is a reportable cyber security incident under Annexure I (item iv). The FAQ notes that insertion of malicious script or external links for spreading malware may cause no visible change and is harder to detect.",
+          "guidance": "Map to soc incident category website-defacement. Evidence integrity monitoring of public web content (hash or CSP reporting), read-only deployment of static assets and alerting on unexpected changes; execute-scr checks for injection paths and runtime-probe-prod-env checks content integrity controls on customer-facing portals.",
+          "category": "Incident reporting",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Web content integrity monitoring or CSP violation reporting for public sites",
+            "Immutable deployment of static assets with change alerts"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "DE.CM-09"
+            }
+          ],
+          "probeWorkflows": [
+            "runtime-probe-prod-env",
+            "execute-scr",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "Annex-I.v",
+          "title": "Malicious code attacks (virus, worm, Trojan, bots, spyware, ransomware, cryptominers)",
+          "prose": "Malicious code attacks such as the spreading of viruses, worms, Trojans, bots, spyware, ransomware or cryptominers are reportable cyber security incidents under Annexure I (item v). The FAQ (Q 30) lists spread of computer contaminant including ransomware among the severe incidents that must be reported within 6 hours.",
+          "guidance": "Map to soc incident category malware, or ransomware when encryption or extortion is involved. runtime-probe-appcontainers evidences image scanning and runtime detection on workloads; runtime-probe-prod-env evidences endpoint protection coverage; refresh-soc confirms backups exist for ransomware recovery.",
+          "category": "Incident reporting",
+          "mandatory": true,
+          "defaultSeverity": "critical",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Endpoint and workload anti-malware coverage report",
+            "Container image and runtime threat detection configuration",
+            "Tested backup restore for ransomware recovery"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "DE.CM-09"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.8.7"
+            }
+          ],
+          "probeWorkflows": [
+            "runtime-probe-appcontainers",
+            "runtime-probe-prod-env",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "Annex-I.vi",
+          "title": "Attacks on servers (database, mail, DNS) and network devices",
+          "prose": "Attacks on servers such as database, mail and DNS servers, and on network devices such as routers, are reportable cyber security incidents under Annexure I (item vi).",
+          "guidance": "Classify under soc incident category compromise-critical-system or unauthorised-access as the facts dictate. runtime-probe-prod-env evidences hardening and monitoring of database, mail and DNS services; runtime-probe-network-perimeter evidences router and firewall management-plane protection and logging.",
+          "category": "Incident reporting",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Database, mail and DNS server monitoring and hardening baseline",
+            "Network device management-plane access restrictions and audit logging"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "DE.CM-01"
+            }
+          ],
+          "probeWorkflows": [
+            "runtime-probe-prod-env",
+            "runtime-probe-network-perimeter",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "Annex-I.vii",
+          "title": "Identity theft, spoofing and phishing attacks",
+          "prose": "Identity theft, spoofing and phishing attacks are reportable cyber security incidents under Annexure I (item vii).",
+          "guidance": "Map to soc incident category identity-theft or phishing. runtime-probe-identity-access evidences DMARC/DKIM/SPF enforcement on corporate and customer-facing domains, phishing-resistant MFA for staff and a reporting channel for suspected phishing; refresh-ctx records brand-abuse monitoring arrangements.",
+          "category": "Incident reporting",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "DMARC policy at reject or quarantine on sending domains",
+            "Phishing reporting channel and takedown procedure"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "PR.AA-03"
+            }
+          ],
+          "probeWorkflows": [
+            "runtime-probe-identity-access",
+            "refresh-ctx",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "Annex-I.viii",
+          "title": "Denial of Service and Distributed Denial of Service attacks",
+          "prose": "Denial of Service (DoS) and Distributed Denial of Service (DDoS) attacks are reportable cyber security incidents under Annexure I (item viii); the FAQ (Q 30) lists them among the severe incidents on public information infrastructure that must be reported within 6 hours.",
+          "guidance": "Map to soc incident category ddos. runtime-probe-network-perimeter evidences DDoS protection (cloud scrubbing, rate limiting, WAF) on internet-facing entry points and availability alerting that feeds the incident process.",
+          "category": "Incident reporting",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "DDoS mitigation service enabled on public endpoints",
+            "Availability alert routing to the incident responder"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "DE.CM-01"
+            }
+          ],
+          "probeWorkflows": [
+            "runtime-probe-network-perimeter",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "Annex-I.ix",
+          "title": "Attacks on critical infrastructure, SCADA, operational technology and wireless networks",
+          "prose": "Attacks on critical infrastructure, SCADA and operational technology systems and on wireless networks are reportable cyber security incidents under Annexure I (item ix).",
+          "guidance": "For financial-services companies this covers data-centre building management, ATM or branch OT and corporate wireless. runtime-probe-network-perimeter evidences segmentation between OT or wireless segments and core systems and monitoring of those segments; record not-applicable in the soc control record when no OT exists. Use soc incident category compromise-critical-system when OT or SCADA controlling critical infrastructure is affected, unauthorised-access for wireless network intrusion, and ddos for jamming or flooding of wireless segments.",
+          "category": "Incident reporting",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Network segmentation between OT, wireless and core zones",
+            "Wireless network security configuration (WPA3-Enterprise or equivalent) and rogue AP detection"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "PR.IR-01"
+            }
+          ],
+          "probeWorkflows": [
+            "runtime-probe-network-perimeter",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "Annex-I.x",
+          "title": "Attacks on applications such as e-governance and e-commerce",
+          "prose": "Attacks on applications such as e-governance and e-commerce applications are reportable cyber security incidents under Annexure I (item x).",
+          "guidance": "Covers customer-facing trading, lending, payment and insurance portals and APIs. execute-scr evidences secure code review of these applications; probe-app-chart and runtime-probe-prod-env evidence WAF, API gateway protections and application-layer attack alerting. Use soc incident category unauthorised-access for application-layer intrusion, data-breach or data-leak when customer data is exposed, website-defacement when a portal's content is altered, and ddos for application-layer flooding.",
+          "category": "Incident reporting",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "WAF or API gateway protection on customer-facing applications with attack alerting",
+            "Secure code review results for internet-facing applications"
+          ],
+          "mappings": [
+            {
+              "regulator": "OWASP",
+              "instrument": "owasp-asvs-5.0",
+              "controlId": "V1"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "DE.CM-01"
+            }
+          ],
+          "probeWorkflows": [
+            "execute-scr",
+            "probe-app-chart",
+            "runtime-probe-prod-env",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "Annex-I.xi",
+          "title": "Data breach",
+          "prose": "A data breach is a reportable cyber security incident under Annexure I (item xi); the FAQ (Q 30) lists data breaches among incidents that must be reported within the stipulated 6 hours.",
+          "guidance": "Map to soc incident category data-breach. Where personal data is involved the DPDP Rules 2025 72-hour Data Protection Board clock runs in parallel and must be a second regulatorReportRefs entry. runtime-probe-datapipeline and probe-schemas evidence that data stores are classified so breach scope can be established quickly; runtime-probe-identity-access evidences access logging on those stores.",
+          "category": "Incident reporting",
+          "mandatory": true,
+          "defaultSeverity": "critical",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Data classification inventory covering personal and financial data stores",
+            "Access logging and anomaly detection on classified data stores",
+            "Breach notification runbook covering CERT-In and DPDP clocks"
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-rules-2025",
+              "controlId": "7(2)(a)"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "RS.CO-02"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.26"
+            }
+          ],
+          "probeWorkflows": [
+            "runtime-probe-datapipeline",
+            "probe-schemas",
+            "runtime-probe-identity-access",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "Annex-I.xii",
+          "title": "Data leak",
+          "prose": "A data leak is a reportable cyber security incident under Annexure I (item xii); the FAQ (Q 30) lists data leaks among incidents that must be reported within the stipulated 6 hours.",
+          "guidance": "Map to soc incident category data-leak (unintended exposure without an attacker, such as a public bucket, exposed dump or credential in a repository). runtime-probe-sandboxes and runtime-probe-datapipeline evidence controls on data egress from analytics and AI sandboxes; probe-cicd-env evidences secret scanning; runtime-probe-prod-env checks for publicly readable object storage.",
+          "category": "Incident reporting",
+          "mandatory": true,
+          "defaultSeverity": "critical",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Public-exposure scan of object storage and repositories",
+            "Secret scanning in CI and DLP on sandbox egress"
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-rules-2025",
+              "controlId": "7(2)(a)"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "PR.DS-01"
+            }
+          ],
+          "probeWorkflows": [
+            "runtime-probe-sandboxes",
+            "runtime-probe-datapipeline",
+            "probe-cicd-env",
+            "runtime-probe-prod-env",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "Annex-I.xiii",
+          "title": "Attacks on Internet of Things devices and associated systems",
+          "prose": "Attacks on Internet of Things (IoT) devices and their associated systems, networks, software and servers are reportable cyber security incidents under Annexure I (item xiii).",
+          "guidance": "Relevant where the company operates connected devices such as POS terminals, ATMs, kiosks, telematics for motor insurance or smart building systems. runtime-probe-network-perimeter evidences segmentation and inventory of such devices; record not-applicable with reasoning when none exist. Use soc incident category compromise-critical-system when devices such as ATMs or POS terminals are taken over, malware for device malware or botnet enrolment, and ddos when compromised devices are used in a denial-of-service attack.",
+          "category": "Incident reporting",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Inventory of IoT or embedded devices with network zone",
+            "Segmentation and monitoring of IoT zones"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "ID.AM-01"
+            }
+          ],
+          "probeWorkflows": [
+            "runtime-probe-network-perimeter",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "Annex-I.xiv",
+          "title": "Attacks or incidents affecting digital payment systems",
+          "prose": "Attacks or incidents affecting digital payment systems are reportable cyber security incidents under Annexure I (item xiv).",
+          "guidance": "Covers UPI, IMPS, NEFT/RTGS interfaces, card switches, payment gateways and wallets. Incidents here usually also trigger RBI and NPCI reporting; record every applicable clock in regulatorReportRefs. runtime-probe-prod-env and runtime-probe-datapipeline evidence transaction monitoring and reconciliation alerting on payment rails; runtime-probe-network-perimeter evidences connectivity controls to NPCI and bank partners. Use soc incident category compromise-critical-system for attacks on switches, gateways or UPI/IMPS interfaces, unauthorised-access for fraudulent transaction initiation through stolen credentials, identity-theft for account takeover, and other only when none of these fits.",
+          "category": "Incident reporting",
+          "mandatory": true,
+          "defaultSeverity": "critical",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Transaction anomaly and reconciliation alerting on payment rails",
+            "Incident runbook naming CERT-In, RBI and NPCI reporting steps"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "DE.CM-01"
+            }
+          ],
+          "probeWorkflows": [
+            "runtime-probe-prod-env",
+            "runtime-probe-datapipeline",
+            "runtime-probe-network-perimeter",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "Annex-I.xv",
+          "title": "Attacks through malicious mobile apps",
+          "prose": "Attacks through malicious mobile apps are reportable cyber security incidents under Annexure I (item xv).",
+          "guidance": "Covers malware delivered through mobile applications targeting the company's customers or staff, including SDK supply-chain compromise in the company's own apps. execute-scr evidences review of mobile app code and third-party SDKs; probe-cicd-env evidences signed, reproducible mobile builds; refresh-vendor-ctx records SDK vendors. Use soc incident category malware for malicious or cloned apps targeting customers or staff, supply-chain when a third-party SDK or the company's own build pipeline is compromised, and phishing for fake apps impersonating the company.",
+          "category": "Incident reporting",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Mobile app SDK inventory and review",
+            "Signed mobile build pipeline with provenance attestations"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-07"
+            }
+          ],
+          "probeWorkflows": [
+            "execute-scr",
+            "probe-cicd-env",
+            "refresh-vendor-ctx",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "Annex-I.xvi",
+          "title": "Fake mobile apps",
+          "prose": "Fake mobile apps are reportable cyber security incidents under Annexure I (item xvi).",
+          "guidance": "Covers apps impersonating the company's brand on app stores or side-loading sites to defraud customers. refresh-ctx records the brand-monitoring and app-store takedown arrangement and the customer advisory process; a confirmed fake app is a soc incident with category identity-theft or other with the CERT-In clock.",
+          "category": "Incident reporting",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Brand and app-store impersonation monitoring service or procedure",
+            "Takedown and customer advisory procedure with past examples"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "DE.CM-01"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-ctx",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "Annex-I.xvii",
+          "title": "Unauthorised access to social media accounts",
+          "prose": "Unauthorised access to social media accounts is a reportable cyber security incident under Annexure I (item xvii).",
+          "guidance": "Covers corporate social media handles used for customer communication. runtime-probe-identity-access evidences that these accounts are enrolled in SSO or a shared-credential vault with MFA and that access is reviewed; refresh-ctx records the account inventory and owners.",
+          "category": "Incident reporting",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Inventory of corporate social media accounts with owners",
+            "MFA and vaulted credentials on those accounts with periodic access review"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "PR.AA-03"
+            }
+          ],
+          "probeWorkflows": [
+            "runtime-probe-identity-access",
+            "refresh-ctx",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "Annex-I.xviii",
+          "title": "Attacks or suspicious activity affecting cloud computing systems",
+          "prose": "Attacks or malicious or suspicious activities affecting cloud computing systems, servers, software or applications are reportable cyber security incidents under Annexure I (item xviii).",
+          "guidance": "Covers the company's IaaS/PaaS/SaaS estate. probe-iac evidences cloud audit trail and threat detection services (GuardDuty, Security Command Center, Defender for Cloud) are enabled in every account or project; runtime-probe-prod-env evidences that alerts from those services reach the incident process. Use soc incident category unauthorised-access for cloud account or control-plane intrusion, data-leak for misconfigured public storage exposing data, malware or ransomware for workload compromise, and supply-chain when the cloud or SaaS provider itself is compromised.",
+          "category": "Incident reporting",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Cloud threat detection enabled across all accounts, projects or subscriptions",
+            "Cloud audit trail retained per Dir-iv and routed to the SIEM"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "DE.CM-01"
+            }
+          ],
+          "probeWorkflows": [
+            "probe-iac",
+            "runtime-probe-prod-env",
+            "runtime-probe-qa-env",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "Annex-I.xix",
+          "title": "Attacks affecting big data, blockchain, virtual asset, robotics, 3D/4D printing and drone systems",
+          "prose": "Attacks or malicious or suspicious activities affecting systems, servers, networks, software or applications related to big data, blockchain, virtual assets, virtual asset exchanges, custodian wallets, robotics, 3D and 4D printing, additive manufacturing and drones are reportable cyber security incidents under Annexure I (item xix).",
+          "guidance": "For financial-services companies this typically means data lakes and warehouses, blockchain-based settlement or tokenisation platforms and any virtual digital asset operations. runtime-probe-datapipeline evidences monitoring of data platform access and integrity; entities under Dir-vi must additionally show wallet and key-management monitoring. Use soc incident category unauthorised-access or data-breach for data lake and warehouse intrusions, compromise-critical-system for blockchain settlement or custodian wallet compromise, and other for robotics, 3D/4D printing and drone systems.",
+          "category": "Incident reporting",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Data platform access monitoring and integrity checks",
+            "Key management and wallet monitoring where virtual assets are handled"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "DE.CM-01"
+            }
+          ],
+          "probeWorkflows": [
+            "runtime-probe-datapipeline",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "Annex-I.xx",
+          "title": "Attacks affecting artificial intelligence and machine learning systems",
+          "prose": "Attacks or malicious or suspicious activities affecting systems, servers, software or applications related to artificial intelligence and machine learning are reportable cyber security incidents under Annexure I (item xx).",
+          "guidance": "Covers prompt injection, model or data poisoning, model theft and agent misuse against the company's AI systems, including agentic workflows and their harnesses. probe-agent-graph evidences the agent and tool graph and its trust boundaries; runtime-probe-harnesses and runtime-probe-sandboxes evidence monitoring of harness activity and sandbox egress. Classify with OWASP LLM Top 10 2025 or MITRE ATLAS technique ids in the soc incident record. Use soc incident category unauthorised-access for prompt injection or agent misuse that reaches tools or data, data-leak for model or training-data exfiltration, supply-chain for poisoned models, datasets or dependencies, and other when none fits.",
+          "category": "Incident reporting",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Inventory of AI/ML systems and agents with owners",
+            "Monitoring of model endpoints, harness sessions and sandbox egress with alerting"
+          ],
+          "mappings": [
+            {
+              "regulator": "OWASP",
+              "instrument": "owasp-llm-top10-2025",
+              "controlId": "LLM01"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-ai-600-1",
+              "controlId": "2.9"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-ai-600-1",
+              "controlId": "2.12"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "DE.CM-01"
+            }
+          ],
+          "probeWorkflows": [
+            "probe-agent-graph",
+            "runtime-probe-harnesses",
+            "runtime-probe-sandboxes",
+            "refresh-soc"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Annexure-II",
+      "title": "Annexure II: Point of Contact information to be provided to CERT-In",
+      "controls": [
+        {
+          "id": "Annex-II",
+          "title": "Designate and register a Point of Contact with CERT-In",
+          "prose": "Service providers, intermediaries, data centres, body corporate and Government organisations shall designate a Point of Contact to interface with CERT-In (direction (iii)). The information relating to the Point of Contact shall be sent to CERT-In by email to info@cert-in.org.in in the Annexure II format (name, designation, organisation name, office address, email ID, mobile number, office phone, office fax) and shall be updated from time to time. All communications from CERT-In seeking information and providing directions for compliance are sent to this Point of Contact. The FAQ (Q 29) confirms that entities offering services to users in India must designate a Point of Contact even without a physical presence in India.",
+          "guidance": "Record the Point of Contact in company-profile/<company_id>/details.json contacts with role designated-officer, and evidence the registration email to info@cert-in.org.in and any later update in a soc observation. refresh-ctx raises a finding when no contact carries the designated-officer role, when the person has left, or when the registered details differ from details.json. Treat any change of the designated person as event-driven re-registration; review at least annually.",
+          "category": "Cooperation with CERT-In",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Copy of the Annexure II submission email to info@cert-in.org.in with date",
+            "company-profile details.json contact with role designated-officer matching the submission",
+            "Procedure to re-register within a defined period after a change of the Point of Contact"
+          ],
+          "mappings": [
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.5"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.RR-02"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-ctx",
+            "refresh-soc"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Annexure-III",
+      "title": "Annexure III: KYC requirements",
+      "controls": [
+        {
+          "id": "Annex-III",
+          "title": "Use officially valid documents and RBI CDD for KYC under directions (v) and (vi)",
+          "prose": "For KYC purposes under these directions, any of the following Officially Valid Documents prescribed by the RBI KYC Directions 2016, the SEBI circular SEBI/HO/MIRSD/DOP/CIR/P/2020/73 of 24 April 2020 or the DoT notice of 21 September 2021 on Self-KYC shall be used and maintained: passport, driving licence, proof of possession of Aadhaar number, Voter's Identity Card, NREGA job card signed by a State Government officer, letter issued by the National Population Register, a validated phone number, and trading account or bank account details. For business entities (B2B), the documents in the Customer Due Diligence process of the RBI Master Direction on KYC 2016, as updated, shall be used and maintained.",
+          "guidance": "Applies only to entities bound by Dir-v or Dir-vi. Evidence that the onboarding flow collects an accepted OVD (or the RBI CDD set for entities), stores the validation outcome and retains it for the Dir-v/Dir-vi period. probe-schemas confirms the KYC schema carries document type, validation status and validated phone number; refresh-metastore confirms the retention tag; refresh-ctx confirms the KYC procedure document cites the RBI or SEBI instrument. Aadhaar data handling must follow UIDAI restrictions (store the masked number only).",
+          "category": "Subscriber registration and KYC",
+          "applicability": {
+            "entityTypes": [
+              "technology-service-provider",
+              "fintech-unregulated"
+            ]
+          },
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "KYC procedure citing RBI KYC Directions 2016 or the SEBI KYC circular of 24 April 2020",
+            "Onboarding schema capturing OVD type, validation status and validated phone number",
+            "Masked Aadhaar storage and access controls on KYC records"
+          ],
+          "mappings": [
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.31"
+            }
+          ],
+          "probeWorkflows": [
+            "probe-schemas",
+            "refresh-metastore",
+            "refresh-ctx"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Effective-Dates",
+      "title": "Effective date and extension notice of 27 June 2022",
+      "controls": [
+        {
+          "id": "Effective-Date",
+          "title": "Comply from the applicable effective date (27 June 2022; 25 September 2022 for MSMEs and validation aspects)",
+          "prose": "The directions become effective 60 days from the date of issue (28 April 2022), that is from 27 June 2022. By notice No. 20(3)/2022-CERT-In dated 27 June 2022, the directions become effective on 25 September 2022 for Micro, Small and Medium Enterprises as classified under MSME notification S.O. 1702(E) of 1 June 2020, and the requirement in paragraph (v) items (a) and (f) to register validated names, addresses and contact numbers of subscribers becomes effective on 25 September 2022 for data centres, VPS, cloud and VPN service providers. The FAQ (Q 25-28, Q 31) clarifies that body corporate has the meaning in section 43A of the IT Act (any company, firm, sole proprietorship or association engaged in commercial or professional activities), that the directions apply to any entity in the matter of cyber incidents including foreign firms serving Indian users, and that incidents affecting the entity's data held in a third party's systems are reportable.",
+          "guidance": "Every Indian financial-services company in Maxwell is a body corporate and is in scope regardless of its RBI, SEBI or IRDAI registration; CERT-In issues no registration number, so applicability is evidenced by company-profile details.json frameworksInScope containing cert-in-directions-2022; refresh-ctx records whether the company qualified as an MSME on 27 June 2022 (which only changes the historical start date) and the resulting effective date as a soc observation with methods manual, since details.json has no field for either. Gaps against any control in this catalog are measured from the applicable effective date, so remediation initiatives for CERT-In findings cannot rely on a glide path. Findings against third-party-hosted data (vendors in company-profile vendors/) still carry the 6-hour CERT-In clock.",
+          "category": "Applicability",
+          "mandatory": true,
+          "defaultSeverity": "low",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "company-profile details.json frameworksInScope containing cert-in-directions-2022",
+            "soc observation (methods manual) recording MSME status on 27 June 2022 and the applicable effective date",
+            "Management acknowledgement that the directions apply to the company as a body corporate under section 43A"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.OC-03"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.31"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-ctx",
+            "refresh-vendor-ctx"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Audit-Policy",
+      "title": "CERT-In empanelled auditing organisations and the Comprehensive Cyber Security Audit Policy Guidelines v1.0 (25 July 2025)",
+      "controls": [
+        {
+          "id": "CCSAPG-12",
+          "title": "Engage a CERT-In empanelled information security auditing organisation",
+          "prose": "CERT-In empanels information security auditing organisations after documentation review, offline and VAPT practical skill tests and a personal interaction, and publishes the list on its website. The Comprehensive Cyber Security Audit Policy Guidelines v1.0 of 25 July 2025, issued under section 70B, are binding on all CERT-In empanelled auditing organisations and on auditee entities covered under the relevant provisions; section 12 governs selection of the auditor. Sectoral regulators require their entities to have cyber security audits and VAPT performed by CERT-In empanelled auditors (SEBI CSCRF 2024 for VAPT and the annual cyber audit; RBI and IRDAI frameworks for system audits and VAPT), and the guidelines (section 9.6) require the auditee itself to define scope, select the auditing organisation, provide access and ensure closure of all observations, a responsibility that must not be delegated. Audit reports shall be signed only by manpower declared to CERT-In and by the head of the auditing organisation. The sectoral clauses that mandate empanelled auditors sit in the SEBI, RBI and IRDAI instruments (for SEBI, CSCRF DE.CM.S5), not in the Directions of 28 April 2022.",
+          "guidance": "Record the auditing organisation as a vendor in company-profile/<company_id>/vendors/<vendor_id>.json with the CERT-In empanelment reference and validity, and check it against the current list at https://www.cert-in.org.in/PDF/Empanel_org.pdf (Cyber Security Assurance > Empanelment by CERT-In, the list the CCSAPG PDF cites) during refresh-vendor-ctx. report-audit-findings cites the engagement letter, NDA and signed audit certificate; raise a finding when the most recent VAPT or cyber security audit was performed by a non-empanelled organisation or the empanelment lapsed during the engagement. Verified against the CCSAPG v1.0 PDF text (Version 1.0 | 25.07.2025) on 2026-09-14.",
+          "category": "Independent audit",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Engagement letter and NDA with a CERT-In empanelled auditing organisation",
+            "Empanelment reference checked against the CERT-In published list on the engagement date",
+            "Audit certificate signed by the lead auditor and the head of the auditing organisation",
+            "Vendor record for the auditor in company-profile vendors/"
+          ],
+          "mappings": [
+            {
+              "regulator": "SEBI",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "DE.CM.S5"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.35"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "ID.IM-02"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "CA-2"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "refresh-ctx",
+            "report-audit-findings"
+          ]
+        },
+        {
+          "id": "CCSAPG-13.1.2",
+          "title": "Cyber security audit at least once a year and after every major change",
+          "prose": "Under section 13.1.2 of the Comprehensive Cyber Security Audit Policy Guidelines v1.0, the cyber security audit should be conducted at least once in a year; sectoral regulators may increase the frequency based on size, criticality and complexity, and the annual frequency is a minimum. All changes must go through formal change management classified as minor or major; major changes (system overhauls, technology migrations, configuration adjustments affecting sensitive data or critical infrastructure) must undergo a cyber security audit before implementation, and audits should be performed after every major change and at periodic intervals even without change. Section 13.1.3 requires identified critical databases and applications to be included in scope. The guidelines are binding on auditee entities covered under the relevant provisions. Sectoral regulators may set a higher frequency: confirm the sectoral regulator's stated frequency for the company's entity type before sizing a gap.",
+          "guidance": "Evidence the audit calendar and the last two audit reports covering every critical application listed in applications/ and the scope statement naming critical databases. probe-sdlc reads company-profile sdlc/policy.json to confirm change classification (minor/major) exists and that major changes require a pre-implementation audit; impl-change-management links each major-change initiative to its audit task. Raise a finding when more than 12 months have elapsed since the last audit of a critical application or a major change went live without one. Set the soc control record parameter auditFrequencyPerYear to the value the sectoral regulator sets, never below 1. Verified against the CCSAPG v1.0 PDF text (Version 1.0 | 25.07.2025) on 2026-09-14.",
+          "category": "Independent audit",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Annual audit calendar covering all critical applications and databases",
+            "Change management policy classifying minor and major changes with pre-implementation audit for major changes",
+            "Audit reports for the last two cycles with scope statements"
+          ],
+          "params": [
+            {
+              "id": "auditFrequencyPerYear",
+              "label": "Minimum number of cyber security audits per year",
+              "default": "1",
+              "unit": "per-year"
+            }
+          ],
+          "mappings": [
+            {
+              "regulator": "SEBI",
+              "instrument": "sebi-cscrf-2024",
+              "controlId": "DE.CM.S5"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.35"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.8.32"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "ID.IM-02"
+            }
+          ],
+          "probeWorkflows": [
+            "probe-sdlc",
+            "impl-change-management",
+            "report-audit-findings",
+            "refresh-ctx"
+          ]
+        },
+        {
+          "id": "CCSAPG-9.3",
+          "title": "Remediate audit findings, obtain follow-up audit and closure report",
+          "prose": "Under sections 9.1 to 9.3 of the Comprehensive Cyber Security Audit Policy Guidelines v1.0, top management should review and approve the audit programme, scope and remedial measures and ensure vulnerabilities highlighted in audits are plugged in a time-bound manner; risk acceptance or exceptions for reported vulnerabilities must be authorised by the head of the auditee organisation; the auditee must act on findings and patch vulnerabilities at the earliest; and follow-up audits must be included in scope and conducted by the auditing organisation after closure of the vulnerabilities. Under section 16.3 the audit report shall state closure timelines according to severity, critical and high vulnerabilities are notified to the auditee as and when found, and the final audit report is issued only after closure and a follow-up audit on the production environment. The guidelines are binding on auditee entities covered under the relevant provisions. Numeric closure timelines are set per engagement or by the sectoral regulator, not by these guidelines.",
+          "guidance": "Import every audit finding into the soc ledger as a finding with fingerprint, severity and the auditor's closure timeline, and open a change-management initiative for remediation; report-audit-improvements tracks closure and the follow-up audit outcome. Evidence board or top-management minutes approving the audit programme and remediation plan, head-of-organisation sign-off for any accepted risk (recorded as a soc risk record), and the closure report from the auditing organisation. Due dates come from the SLA table by severity unless the auditor stated a shorter one. Verified against the CCSAPG v1.0 PDF text (Version 1.0 | 25.07.2025) on 2026-09-14.",
+          "category": "Independent audit",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Top-management approval of the audit programme and remediation plan",
+            "Head-of-organisation authorisation for each accepted risk or exception",
+            "Follow-up audit report and closure report from the auditing organisation",
+            "soc findings and initiatives tracing each audit observation to closure"
+          ],
+          "mappings": [
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.35"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "ID.IM-02"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "CA-5"
+            }
+          ],
+          "probeWorkflows": [
+            "report-audit-findings",
+            "report-audit-improvements",
+            "impl-change-management",
+            "refresh-soc"
+          ]
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T07:15:00Z",
+    "workflow": "manual",
+    "agent": "regulatory-cataloguer",
+    "sessionId": "b157e311-135c-4bae-a87c-99f2362a67a1",
+    "model": "claude-opus-5"
+  }
+}

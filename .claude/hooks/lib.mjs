@@ -73,15 +73,27 @@ export function ulid(now = Date.now()) {
   return time + rand;
 }
 
-// Parses "/<workflow> <companyId> [--flag ...]" from a user prompt.
+// Parses a workflow invocation from a user prompt. Two forms:
+//   "/<workflow> <companyId> [--dry-run] [--app=<id>] [--env=<id>]"            (interactive shorthand)
+//   "Run /<workflow> ... {"companyId": ..., "appIds": [...], ...}"            (run-headless.mjs: JSON args object)
 export function parseWorkflowInvocation(prompt, workflows) {
   if (typeof prompt !== 'string') return null;
-  const m = /^\s*\/([a-z0-9-]+)\s*(.*)$/s.exec(prompt);
-  if (!m || !workflows.includes(m[1])) return null;
-  const rest = m[2].trim().split(/\s+/).filter(Boolean);
+  const named = /(?:^|\s)\/([a-z0-9-]+)(?=\s|$)/.exec(prompt);
+  if (!named || !workflows.includes(named[1])) return null;
+  const jsonStart = prompt.indexOf('{', named.index);
+  const jsonEnd = prompt.lastIndexOf('}');
+  if (jsonStart >= 0 && jsonEnd > jsonStart) {
+    try {
+      const a = JSON.parse(prompt.slice(jsonStart, jsonEnd + 1));
+      if (a && typeof a === 'object' && typeof a.companyId === 'string') {
+        return { workflow: named[1], companyId: a.companyId, args: { appIds: Array.isArray(a.appIds) ? a.appIds : [], envIds: Array.isArray(a.envIds) ? a.envIds : [], dryRun: a.dryRun === true } };
+      }
+    } catch { /* fall through to the shorthand form */ }
+  }
+  const rest = prompt.slice(named.index + named[0].length).trim().split(/\s+/).filter(Boolean);
   const companyId = rest.find((t) => /^[a-z0-9][a-z0-9-]{1,62}$/.test(t) && !t.startsWith('-')) || null;
   const dryRun = rest.includes('--dry-run') || rest.includes('dryRun=true');
   const appIds = rest.filter((t) => t.startsWith('--app=')).map((t) => t.slice(6));
   const envIds = rest.filter((t) => t.startsWith('--env=')).map((t) => t.slice(6));
-  return { workflow: m[1], companyId, args: { appIds, envIds, dryRun } };
+  return { workflow: named[1], companyId, args: { appIds, envIds, dryRun } };
 }

@@ -1,0 +1,2250 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.catalog.instruments",
+  "instruments": [
+    {
+      "instrumentId": "sebi-cscrf-2024",
+      "regulator": "SEBI",
+      "title": "Cybersecurity and Cyber Resilience Framework (CSCRF) for SEBI Regulated Entities (REs)",
+      "shortName": "SEBI CSCRF",
+      "version": "SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113 v1.0, read with CIR/2024/184, CIR/2025/60, CIR/2025/96, CIR/2025/119 and FAQs of 11 Jun 2025",
+      "issuedOn": "2024-08-20",
+      "effectiveFrom": "2025-08-31",
+      "supersedes": [],
+      "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
+      "applicability": {
+        "entityTypes": [
+          "market-infrastructure-institution",
+          "stock-broker",
+          "depository-participant",
+          "asset-management-company",
+          "portfolio-manager",
+          "investment-adviser",
+          "research-analyst",
+          "registrar-transfer-agent",
+          "custodian",
+          "kra",
+          "alternative-investment-fund"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "categories": [
+          "mii",
+          "qualified-re",
+          "mid-size-re",
+          "small-size-re",
+          "self-certification-re"
+        ]
+      },
+      "structure": "Standards <Function>.<Category>.S<n> (GV, ID, PR, DE, RS, RC, EV; e.g. PR.MA.S3, GV.SC.S5); Part I sections as Sec-<n.n> (e.g. Sec-4.3 VAPT). Compliance: most REs 2025-08-31, MIIs 2025-01-01",
+      "hardRequirements": [
+        {
+          "topic": "incident-reporting",
+          "requirement": "Cyber-attacks, incidents and breaches under the CERT-In directions shall be notified to SEBI (mkt_incidents@sebi.gov.in) and CERT-In within 6 hours of noticing or detecting them; stock brokers and DPs also report to exchanges/depositories within 6 hours",
+          "value": 6,
+          "unit": "hours",
+          "controlId": "RS.CO.S2"
+        },
+        {
+          "topic": "incident-reporting",
+          "requirement": "Necessary details of the incident shall be reported on the SEBI Incident Reporting Portal within 24 hours; all other cybersecurity incidents are reported to SEBI, CERT-In and NCIIPC (as applicable) within 24 hours",
+          "value": 24,
+          "unit": "hours",
+          "controlId": "RS.CO.S2"
+        },
+        {
+          "topic": "patch-sla",
+          "requirement": "Patches of High criticality shall be implemented at both PDC and DR site within an upper/maximum timeline of 1 week (stated as 1 week; 7 days)",
+          "value": 7,
+          "unit": "days",
+          "controlId": "PR.MA.S3"
+        },
+        {
+          "topic": "patch-sla",
+          "requirement": "Patches of Moderate criticality shall be implemented at both PDC and DR site within an upper/maximum timeline of 2 weeks (14 days)",
+          "value": 14,
+          "unit": "days",
+          "controlId": "PR.MA.S3"
+        },
+        {
+          "topic": "patch-sla",
+          "requirement": "Patches of Low criticality shall be implemented at both PDC and DR site within an upper/maximum timeline of 1 month",
+          "value": 1,
+          "unit": "months",
+          "controlId": "PR.MA.S3"
+        },
+        {
+          "topic": "vapt-cadence",
+          "requirement": "Closure of findings identified during VAPT within 3 months of submission of the VAPT report, following a graded approach; open vulnerabilities after 3 months need IT Committee approval and closure before the next VAPT (FAQ 17: high-severity missing-patch findings are judged against the 1-week patch timeline instead)",
+          "value": 3,
+          "unit": "months",
+          "controlId": "Sec-4.3"
+        },
+        {
+          "topic": "vapt-cadence",
+          "requirement": "Revalidation of VAPT shall be completed within 5 months of completion of VAPT; the VAPT report is submitted within 1 month of completion after IT Committee approval",
+          "value": 5,
+          "unit": "months",
+          "controlId": "Sec-4.3"
+        },
+        {
+          "topic": "vapt-cadence",
+          "requirement": "REs identified as Protected Systems and/or CII by NCIIPC: VAPT at least twice a financial year, one completed (report, closure, revalidation) in each half",
+          "value": 2,
+          "unit": "per-year",
+          "controlId": "Sec-4.3"
+        },
+        {
+          "topic": "vapt-cadence",
+          "requirement": "Rest of the REs: VAPT at least once a financial year, commencing in the first quarter; also before commissioning new critical systems and after every major release",
+          "value": 1,
+          "unit": "per-year",
+          "controlId": "Sec-4.3"
+        },
+        {
+          "topic": "audit-cadence",
+          "requirement": "Cyber audit by a CERT-In empanelled IS auditing organisation at least twice a year for MIIs, Qualified REs and Mid/Small-size REs providing IBT or algo trading; at least once a year for the rest",
+          "value": 2,
+          "unit": "per-year",
+          "controlId": "Sec-4.4"
+        },
+        {
+          "topic": "audit-cadence",
+          "requirement": "Close all cyber audit observations within 3 months of cyber audit report submission; follow-on audit within 5 months of completion of the cyber audit",
+          "value": 3,
+          "unit": "months",
+          "controlId": "Sec-4.4"
+        },
+        {
+          "topic": "sbom",
+          "requirement": "REs shall obtain SBOM for existing critical systems within 6 months of the issuance of CSCRF, and for any new critical software product or SaaS at the time of procurement",
+          "value": 6,
+          "unit": "months",
+          "controlId": "GV.SC.S5"
+        },
+        {
+          "topic": "backup-rto-rpo",
+          "requirement": "Resumption of critical operations within two hours of a disruption (two-hour RTO, per IOSCO/CPMI and the CIR/2025/119 clarification)",
+          "value": 2,
+          "unit": "hours",
+          "controlId": "RC.RP.S2"
+        },
+        {
+          "topic": "backup-rto-rpo",
+          "requirement": "RPO for critical systems shall be 15 minutes (SEBI circular of 22 March 2021 as restated in CSCRF)",
+          "value": 15,
+          "unit": "minutes",
+          "controlId": "RC.RP.S2"
+        },
+        {
+          "topic": "access-review",
+          "requirement": "Review of user access rights, delegated access and unused tokens quarterly for MIIs and Qualified REs",
+          "value": 4,
+          "unit": "per-year",
+          "controlId": "PR.AA.S5"
+        },
+        {
+          "topic": "access-review",
+          "requirement": "Review of user access rights, delegated access and unused tokens half-yearly for Mid-size and Small-size REs",
+          "value": 2,
+          "unit": "per-year",
+          "controlId": "PR.AA.S5"
+        },
+        {
+          "topic": "access-review",
+          "requirement": "Review of privileged users' activities quarterly for MIIs and Qualified REs",
+          "value": 4,
+          "unit": "per-year",
+          "controlId": "PR.AA.S11"
+        },
+        {
+          "topic": "access-review",
+          "requirement": "Review of privileged users' activities half-yearly for Mid-size and Small-size REs",
+          "value": 2,
+          "unit": "per-year",
+          "controlId": "PR.AA.S11"
+        },
+        {
+          "topic": "awareness-training",
+          "requirement": "Cybersecurity training programme for all REs annually",
+          "value": 1,
+          "unit": "per-year",
+          "controlId": "PR.AT.S1"
+        },
+        {
+          "topic": "red-team-cadence",
+          "requirement": "Red teaming exercise half-yearly for MIIs and Qualified REs; threat hunting quarterly (DE.DP.S5)",
+          "value": 2,
+          "unit": "per-year",
+          "controlId": "DE.DP.S4"
+        },
+        {
+          "topic": "dr-drill",
+          "requirement": "Cybersecurity scenario-based drill testing the recovery plan half-yearly for MIIs and Qualified REs, annually for other REs",
+          "value": 2,
+          "unit": "per-year",
+          "controlId": "RC.RP.S3"
+        },
+        {
+          "topic": "compliance-reporting",
+          "requirement": "Cyber resilience assessment using the Cyber Capability Index: third-party assessment half-yearly for MIIs, self-assessment annually for Qualified REs; evidence submitted within 15 days of completion",
+          "value": 2,
+          "unit": "per-year",
+          "controlId": "GV.OV.S4"
+        },
+        {
+          "topic": "board-reporting",
+          "requirement": "IT Committee for REs (all REs except small-size and self-certification REs) shall meet quarterly; patch compliance is reported to it quarterly",
+          "value": 4,
+          "unit": "per-year",
+          "controlId": "Sec-3.3"
+        },
+        {
+          "topic": "mfa",
+          "requirement": "All critical systems shall have MFA for all users accessing from an untrusted network to a trusted network, and for internet-accessible critical systems",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "PR.AA.S7"
+        },
+        {
+          "topic": "log-retention",
+          "requirement": "A strong log retention policy shall be implemented as per government guidelines, the IT Act, the DPDP Act and CERT-In (whose 180-day rolling retention in India therefore applies)",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "PR.AA.S8"
+        }
+      ],
+      "catalogFile": ".claude/skills/regulatory-catalogs/references/catalogs/sebi-cscrf-2024.catalog.json",
+      "lastReviewedAt": "2026-09-14"
+    },
+    {
+      "instrumentId": "rbi-cyber-tech-directions-2026",
+      "regulator": "RBI",
+      "title": "Reserve Bank of India (<Entity class> – Cybersecurity, Technology: Risk, Resilience and Assurance Framework) Directions, 2026",
+      "shortName": "RBI Directions 2026",
+      "version": "RBI/DoS/2026-27/410 (Commercial Banks); 419 SFBs; 428 Payments Banks; 437 UCBs; 456 AIFIs; 461 NBFCs; 470 CICs",
+      "issuedOn": "2026-07-31",
+      "effectiveFrom": "2026-07-31",
+      "supersedes": [
+        "rbi-cyber-security-framework-2016",
+        "rbi-it-governance-md-2023"
+      ],
+      "url": "https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=13643",
+      "applicability": {
+        "entityTypes": [
+          "scheduled-commercial-bank",
+          "small-finance-bank",
+          "payments-bank",
+          "urban-cooperative-bank",
+          "all-india-financial-institution",
+          "nbfc",
+          "nbfc-p2p",
+          "housing-finance-company",
+          "credit-information-company"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "categories": [
+          "level-1",
+          "level-2",
+          "level-3",
+          "level-4",
+          "nbfc-base-layer",
+          "nbfc-middle-layer",
+          "nbfc-upper-layer",
+          "nbfc-top-layer",
+          "not-categorised"
+        ]
+      },
+      "structure": "Chapters I-VIII, paragraphs cited by number as in the Commercial Banks text (e.g. 182 incidents, 151 VA/PT); the UCB (by level) and NBFC (by layer) Directions number differently",
+      "hardRequirements": [
+        {
+          "topic": "incident-reporting",
+          "requirement": "The bank shall report cyber incidents within six hours of detection on the DAKSH platform and shall also pro-actively notify CERT-In",
+          "value": 6,
+          "unit": "hours",
+          "controlId": "182"
+        },
+        {
+          "topic": "vapt-cadence",
+          "requirement": "For critical information systems and/or those in the DMZ having customer interface, VA shall be conducted at least once in every six months",
+          "value": 2,
+          "unit": "per-year",
+          "controlId": "151"
+        },
+        {
+          "topic": "vapt-cadence",
+          "requirement": "For critical information systems and/or those in the DMZ having customer interface, PT shall be conducted at least once in 12 months",
+          "value": 1,
+          "unit": "per-year",
+          "controlId": "151"
+        },
+        {
+          "topic": "board-reporting",
+          "requirement": "The status of closure of VA/PT observations shall be put to the ITSC and ISC at least on a quarterly basis",
+          "value": 4,
+          "unit": "per-year",
+          "controlId": "161"
+        },
+        {
+          "topic": "dr-drill",
+          "requirement": "Periodicity of DR drills for critical information systems shall be at least half-yearly; the DR site is run as primary covering at least a full working day (para 167)",
+          "value": 2,
+          "unit": "per-year",
+          "controlId": "165"
+        },
+        {
+          "topic": "board-reporting",
+          "requirement": "The IT Strategy Committee of the Board shall meet at least on a quarterly basis",
+          "value": 4,
+          "unit": "per-year",
+          "controlId": "18"
+        },
+        {
+          "topic": "board-reporting",
+          "requirement": "The CISO shall place a review of cybersecurity risks and preparedness before the Board/RMCB/ITSC at least on a quarterly basis",
+          "value": 4,
+          "unit": "per-year",
+          "controlId": "28(7)"
+        },
+        {
+          "topic": "mfa",
+          "requirement": "Mandatory multi-factor authentication for privileged users of critical information systems and critical activities",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "110"
+        },
+        {
+          "topic": "awareness-training",
+          "requirement": "Annual IT and cybersecurity training for all Board members and Senior Management; awareness programmes mandatory for new recruits",
+          "value": 1,
+          "unit": "per-year",
+          "controlId": "204"
+        },
+        {
+          "topic": "backup-rto-rpo",
+          "requirement": "Minimal RTO approved by the ITSC and a near-zero RPO for critical information systems",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "171"
+        }
+      ],
+      "lastReviewedAt": "2026-09-14",
+      "catalogFile": ".claude/skills/regulatory-catalogs/references/catalogs/rbi-cyber-tech-directions-2026.catalog.json"
+    },
+    {
+      "instrumentId": "rbi-it-governance-md-2023",
+      "regulator": "RBI",
+      "title": "Reserve Bank of India (Information Technology Governance, Risk, Controls and Assurance Practices) Directions, 2023",
+      "shortName": "RBI IT Governance MD 2023",
+      "version": "RBI/2023-24/107 DoS.CO.CSITEG/SEC.7/31.01.015/2023-24",
+      "issuedOn": "2023-11-07",
+      "effectiveFrom": "2024-04-01",
+      "supersedes": [],
+      "url": "https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12562",
+      "applicability": {
+        "entityTypes": [
+          "scheduled-commercial-bank",
+          "small-finance-bank",
+          "payments-bank",
+          "all-india-financial-institution",
+          "nbfc",
+          "housing-finance-company",
+          "credit-information-company"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "categories": [
+          "nbfc-middle-layer",
+          "nbfc-upper-layer",
+          "nbfc-top-layer"
+        ]
+      },
+      "structure": "Chapters I-VII with numbered paragraphs; repealed for commercial banks and the other RBI entity classes by the 2026 Directions (31 Jul 2026) - re-map open findings to rbi-cyber-tech-directions-2026",
+      "hardRequirements": [
+        {
+          "topic": "board-reporting",
+          "requirement": "The IT Strategy Committee shall meet at least on a quarterly basis",
+          "value": 4,
+          "unit": "per-year"
+        },
+        {
+          "topic": "vapt-cadence",
+          "requirement": "For critical information systems and those in the DMZ having customer interface, VA at least once every six months and PT at least once in 12 months",
+          "value": 2,
+          "unit": "per-year"
+        },
+        {
+          "topic": "dr-drill",
+          "requirement": "Periodicity of DR drills for critical information systems shall be at least on a half-yearly basis",
+          "value": 2,
+          "unit": "per-year"
+        }
+      ],
+      "lastReviewedAt": "2026-09-14"
+    },
+    {
+      "instrumentId": "rbi-cyber-security-framework-2016",
+      "regulator": "RBI",
+      "title": "Cyber Security Framework in Banks",
+      "shortName": "RBI Cyber Security Framework 2016",
+      "version": "RBI/2015-16/418 DBS.CO/CSITE/BC.11/33.01.001/2015-16",
+      "issuedOn": "2016-06-02",
+      "effectiveFrom": "2016-06-02",
+      "supersedes": [],
+      "url": "https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=10435",
+      "applicability": {
+        "entityTypes": [
+          "scheduled-commercial-bank",
+          "small-finance-bank",
+          "payments-bank"
+        ],
+        "jurisdictions": [
+          "IN"
+        ]
+      },
+      "structure": "Circular paragraphs plus Annex 1 baseline controls (1-24), Annex 2 C-SOC, Annex 3 incident reporting template; repealed for commercial banks by the 2026 Directions - cite only for historical findings",
+      "hardRequirements": [
+        {
+          "topic": "incident-reporting",
+          "requirement": "Banks shall report all unusual cyber-security incidents (successful or attempted) to RBI within 2 to 6 hours",
+          "value": 6,
+          "unit": "hours",
+          "controlId": "Annex3"
+        }
+      ],
+      "lastReviewedAt": "2026-09-14"
+    },
+    {
+      "instrumentId": "rbi-it-outsourcing-md-2023",
+      "regulator": "RBI",
+      "title": "Reserve Bank of India (Outsourcing of Information Technology Services) Directions, 2023",
+      "shortName": "RBI IT Outsourcing MD 2023 (repealed)",
+      "version": "RBI/2023-24/102 DoS.CO.CSITEG/SEC.1/31.01.015/2023-24; REPEALED 28.11.2025 (DOR.RRC.REC.302/33-01-010/2025-26) by the entity-wise Managing Risks in Outsourcing Directions, 2025",
+      "issuedOn": "2023-04-10",
+      "effectiveFrom": "2023-10-01",
+      "supersedes": [],
+      "url": "https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12486",
+      "applicability": {
+        "entityTypes": [
+          "scheduled-commercial-bank",
+          "small-finance-bank",
+          "payments-bank",
+          "urban-cooperative-bank",
+          "all-india-financial-institution",
+          "nbfc",
+          "housing-finance-company",
+          "credit-information-company"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "categories": [
+          "tier-3",
+          "tier-4",
+          "nbfc-middle-layer",
+          "nbfc-upper-layer",
+          "nbfc-top-layer",
+          "not-categorised"
+        ]
+      },
+      "structure": "REPEALED 28.11.2025: cite only for historical findings or as a secondary ref (successor has no vocab id). Paras cited as 17(h), 13(a); Appendix I cloud, II SOC outsourcing as Appendix-I",
+      "hardRequirements": [
+        {
+          "topic": "incident-reporting",
+          "requirement": "(Repealed 28.11.2025; historical findings only - the RBI 6-hour clock now comes from rbi-cyber-tech-directions-2026 para 182) The RE shall ensure cyber incidents are reported to it by the service provider without undue delay, so that the incident is reported by the RE to the RBI within 6 hours of detection by the TPSP",
+          "value": 6,
+          "unit": "hours",
+          "controlId": "17(h)"
+        },
+        {
+          "topic": "vendor-due-diligence",
+          "requirement": "(Repealed 28.11.2025; historical findings only) REs shall conduct due diligence on service providers before engagement and periodic due diligence thereafter, covering capability, financial soundness and security controls",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "13(a)"
+        },
+        {
+          "topic": "audit-cadence",
+          "requirement": "(Repealed 28.11.2025; historical findings only) REs shall conduct regular audits of service providers (including sub-contractors); frequency based on the nature and extent of risk of the arrangement",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "19(b)"
+        }
+      ],
+      "catalogFile": ".claude/skills/regulatory-catalogs/references/catalogs/rbi-it-outsourcing-md-2023.catalog.json",
+      "lastReviewedAt": "2026-09-14"
+    },
+    {
+      "instrumentId": "rbi-digital-payment-security-2021",
+      "regulator": "RBI",
+      "title": "Reserve Bank of India (Digital Payment Security Controls) Directions, 2021",
+      "shortName": "RBI Digital Payment Security 2021",
+      "version": "RBI/2020-21/74 DoS.CO.CSITE.SEC.No.1852/31.01.015/2020-21; status after RBI's Nov 2025 and Jul 2026 consolidations not yet verified on rbi.org.in - confirm before citing",
+      "issuedOn": "2021-02-18",
+      "effectiveFrom": "2021-08-18",
+      "supersedes": [],
+      "url": "https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12032",
+      "applicability": {
+        "entityTypes": [
+          "scheduled-commercial-bank",
+          "small-finance-bank",
+          "payments-bank",
+          "nbfc"
+        ],
+        "jurisdictions": [
+          "IN"
+        ]
+      },
+      "structure": "Chapters on governance, generic controls, application security, authentication, fraud risk, internet banking, mobile banking and card payments; cite chapter and paragraph",
+      "hardRequirements": [
+        {
+          "topic": "mfa",
+          "requirement": "Multi-factor authentication for digital payment transactions and for privileged/administrative access to digital payment infrastructure, per extant RBI instructions",
+          "value": 1,
+          "unit": "boolean"
+        },
+        {
+          "topic": "session-timeout",
+          "requirement": "Internet and mobile banking sessions shall time out after a defined period of inactivity and require re-authentication",
+          "value": 1,
+          "unit": "boolean"
+        },
+        {
+          "topic": "compliance-reporting",
+          "requirement": "REs (SCBs excluding RRBs, SFBs, payments banks and credit-card-issuing NBFCs) shall comply within six months of issuance of the Directions",
+          "value": 6,
+          "unit": "months"
+        }
+      ],
+      "lastReviewedAt": "2026-09-14"
+    },
+    {
+      "instrumentId": "irdai-info-cyber-security-2023",
+      "regulator": "IRDAI",
+      "title": "IRDAI Information and Cyber Security Guidelines, 2023",
+      "shortName": "IRDAI ICS Guidelines 2023",
+      "version": "IRDAI/GA&HR/GDL/MISC/88/04/2023 (Ver 1.0, April 2023); incident circular IRDAI/GA&HR/CIR/MISC/128/06/2023",
+      "issuedOn": "2023-04-24",
+      "effectiveFrom": "2023-04-24",
+      "supersedes": [],
+      "url": "https://irdai.gov.in/document-detail?documentId=3314780",
+      "applicability": {
+        "entityTypes": [
+          "insurer",
+          "insurance-intermediary"
+        ],
+        "jurisdictions": [
+          "IN"
+        ]
+      },
+      "structure": "General guidelines 1.1-1.10 and domain policies 2.1-2.24 with numbered controls (e.g. policy 2.16 control 3.6.1 security assessments; 2.10 para 3.5 regulator notification); Annexures I-VI",
+      "hardRequirements": [
+        {
+          "topic": "incident-reporting",
+          "requirement": "Organization shall mandatorily report cyber-incidents to CERT-In within 6 hours of noticing or being brought to notice, with a copy to IRDAI (policy 2.10 para 3.5, reiterated by circular of 13 June 2023)",
+          "value": 6,
+          "unit": "hours",
+          "controlId": "2.10-3.5"
+        },
+        {
+          "topic": "patch-sla",
+          "requirement": "High risk gaps reported from the VAPT should be closed within a period of one month followed by validation testing (policy 2.16, 3.6.1 item 9)",
+          "value": 1,
+          "unit": "months",
+          "controlId": "2.16-3.6.1"
+        },
+        {
+          "topic": "audit-cadence",
+          "requirement": "The outer time limit for closure of all audit gaps is two months, prioritised by risk (policy 2.16, 3.6.1 item 10)",
+          "value": 2,
+          "unit": "months",
+          "controlId": "2.16-3.6.1"
+        },
+        {
+          "topic": "vapt-cadence",
+          "requirement": "VAPT of internet-facing applications or infrastructure components at least once in a year (policy 2.16, 3.6.1 item 2)",
+          "value": 1,
+          "unit": "per-year",
+          "controlId": "2.16-3.6.1"
+        },
+        {
+          "topic": "vapt-cadence",
+          "requirement": "External black-box penetration testing of all internet-facing information assets and systems once in 6 months (policy 2.16, 3.6.1 item 5)",
+          "value": 2,
+          "unit": "per-year",
+          "controlId": "2.16-3.6.1"
+        },
+        {
+          "topic": "log-retention",
+          "requirement": "ICT infrastructure logs shall be maintained for a rolling period of 180 days within the Indian jurisdiction per CERT-In directions (policy 2.16)",
+          "value": 180,
+          "unit": "days",
+          "controlId": "2.16-3.3.14"
+        },
+        {
+          "topic": "audit-cadence",
+          "requirement": "An independent Assurance Audit shall be carried out by the Auditor every year and presented to the Audit Committee/Board (section 1.10)",
+          "value": 1,
+          "unit": "per-year",
+          "controlId": "1.10-a"
+        },
+        {
+          "topic": "compliance-reporting",
+          "requirement": "Insurers submit the Annexure III audit report with Board comments to IRDAI within 90 days from the end of the financial year or within 30 days of completion of audit, whichever is earlier (section 1.10)",
+          "value": 90,
+          "unit": "days",
+          "controlId": "1.10-b"
+        },
+        {
+          "topic": "other",
+          "requirement": "Users shall change their passwords at first log-on and once in 45 days (policy 2.3)",
+          "value": 45,
+          "unit": "days",
+          "controlId": "2.3-3.3"
+        },
+        {
+          "topic": "audit-cadence",
+          "requirement": "Organization shall perform information security risk assessment at least annually and on significant change (section 1.8)",
+          "value": 1,
+          "unit": "per-year",
+          "controlId": "1.8-I"
+        }
+      ],
+      "lastReviewedAt": "2026-09-14",
+      "catalogFile": ".claude/skills/regulatory-catalogs/references/catalogs/irdai-info-cyber-security-2023.catalog.json"
+    },
+    {
+      "instrumentId": "cert-in-directions-2022",
+      "regulator": "CERT-In",
+      "title": "Directions under sub-section (6) of section 70B of the Information Technology Act, 2000 relating to information security practices, procedure, prevention, response and reporting of cyber incidents",
+      "shortName": "CERT-In Directions 2022",
+      "version": "No. 20(3)/2022-CERT-In dated 28.04.2022 (extension notice of 27.06.2022)",
+      "issuedOn": "2022-04-28",
+      "effectiveFrom": "2022-06-27",
+      "supersedes": [],
+      "url": "https://www.cert-in.org.in/PDF/CERT-In_Directions_70B_28.04.2022.pdf",
+      "applicability": {
+        "entityTypes": [
+          "scheduled-commercial-bank",
+          "small-finance-bank",
+          "payments-bank",
+          "urban-cooperative-bank",
+          "regional-rural-bank",
+          "all-india-financial-institution",
+          "nbfc",
+          "nbfc-p2p",
+          "housing-finance-company",
+          "credit-information-company",
+          "payment-aggregator",
+          "payment-system-operator",
+          "ppi-issuer",
+          "tpap",
+          "market-infrastructure-institution",
+          "stock-broker",
+          "depository-participant",
+          "asset-management-company",
+          "portfolio-manager",
+          "investment-adviser",
+          "research-analyst",
+          "registrar-transfer-agent",
+          "custodian",
+          "kra",
+          "alternative-investment-fund",
+          "insurer",
+          "insurance-intermediary",
+          "pension-fund-manager",
+          "ifsc-entity",
+          "fintech-unregulated",
+          "technology-service-provider"
+        ],
+        "jurisdictions": [
+          "IN"
+        ]
+      },
+      "structure": "Directions (i)-(vi) cited Dir-i..Dir-vi; Annexure I incident types Annex-I.i..Annex-I.xx; Annex-II point of contact; Annex-III KYC; CCSAPG-<n> for the CERT-In audit policy guidelines 2025",
+      "hardRequirements": [
+        {
+          "topic": "incident-reporting",
+          "requirement": "Report cyber incidents of the types in Annexure I to CERT-In within 6 hours of noticing such incidents or being brought to notice about such incidents",
+          "value": 6,
+          "unit": "hours",
+          "controlId": "Dir-ii"
+        },
+        {
+          "topic": "log-retention",
+          "requirement": "Enable logs of all ICT systems and maintain them securely for a rolling period of 180 days within the Indian jurisdiction",
+          "value": 180,
+          "unit": "days",
+          "controlId": "Dir-iv"
+        },
+        {
+          "topic": "data-retention",
+          "requirement": "Data centres, VPS, cloud service and VPN service providers shall register and maintain accurate subscriber information for a period of 5 years or longer after cancellation or withdrawal of registration",
+          "value": 5,
+          "unit": "years",
+          "controlId": "Dir-v"
+        },
+        {
+          "topic": "data-retention",
+          "requirement": "Virtual asset service providers, exchanges and custodian wallet providers shall maintain KYC and financial transaction records for a period of 5 years",
+          "value": 5,
+          "unit": "years",
+          "controlId": "Dir-vi"
+        },
+        {
+          "topic": "other",
+          "requirement": "Connect to the NTP servers of NIC or NPL, or servers traceable to them, for synchronisation of all ICT system clocks",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "Dir-i"
+        },
+        {
+          "topic": "compliance-reporting",
+          "requirement": "Designate a Point of Contact to interface with CERT-In and communicate the details in the Annexure II format",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "Annex-II"
+        },
+        {
+          "topic": "audit-cadence",
+          "requirement": "Cyber security audit by a CERT-In empanelled auditing organisation at least once a year and after every major change (Comprehensive Cyber Security Audit Policy Guidelines, 25 July 2025)",
+          "value": 1,
+          "unit": "per-year",
+          "controlId": "CCSAPG-13.1.2"
+        }
+      ],
+      "catalogFile": ".claude/skills/regulatory-catalogs/references/catalogs/cert-in-directions-2022.catalog.json",
+      "lastReviewedAt": "2026-09-14"
+    },
+    {
+      "instrumentId": "dpdp-act-2023",
+      "regulator": "MeitY",
+      "title": "The Digital Personal Data Protection Act, 2023",
+      "shortName": "DPDP Act 2023",
+      "version": "Act No. 22 of 2023; commenced in phases by notification of 13 November 2025",
+      "issuedOn": "2023-08-11",
+      "effectiveFrom": "2025-11-13",
+      "supersedes": [],
+      "url": "https://www.meity.gov.in/static/uploads/2024/06/2bf1f0e9f04e6fb4f8fef35e82c42aa5.pdf",
+      "applicability": {
+        "entityTypes": [
+          "scheduled-commercial-bank",
+          "small-finance-bank",
+          "payments-bank",
+          "urban-cooperative-bank",
+          "regional-rural-bank",
+          "all-india-financial-institution",
+          "nbfc",
+          "nbfc-p2p",
+          "housing-finance-company",
+          "credit-information-company",
+          "payment-aggregator",
+          "payment-system-operator",
+          "ppi-issuer",
+          "tpap",
+          "market-infrastructure-institution",
+          "stock-broker",
+          "depository-participant",
+          "asset-management-company",
+          "portfolio-manager",
+          "investment-adviser",
+          "research-analyst",
+          "registrar-transfer-agent",
+          "custodian",
+          "kra",
+          "alternative-investment-fund",
+          "insurer",
+          "insurance-intermediary",
+          "pension-fund-manager",
+          "ifsc-entity",
+          "fintech-unregulated",
+          "technology-service-provider"
+        ],
+        "jurisdictions": [
+          "IN"
+        ]
+      },
+      "structure": "Chapters I-IX, sections 1-44 with sub-sections cited as 8(5), 8(6), 10(2)(a); Schedule of penalties; operational detail in dpdp-rules-2025 (whose catalog carries Act-8(7) style ids)",
+      "hardRequirements": [
+        {
+          "topic": "breach-notification",
+          "requirement": "In the event of a personal data breach, the Data Fiduciary shall give the Board and each affected Data Principal intimation of the breach in the prescribed form and manner",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "8(6)"
+        },
+        {
+          "topic": "encryption",
+          "requirement": "A Data Fiduciary shall protect personal data in its possession or under its control by taking reasonable security safeguards to prevent personal data breach",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "8(5)"
+        },
+        {
+          "topic": "grievance-redressal",
+          "requirement": "A Data Fiduciary shall establish an effective mechanism to redress the grievances of Data Principals",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "8(10)"
+        },
+        {
+          "topic": "data-retention",
+          "requirement": "Erase personal data when the Data Principal withdraws consent or as soon as it is reasonable to assume the specified purpose is no longer served, unless retention is necessary for compliance with law",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "8(7)"
+        }
+      ],
+      "lastReviewedAt": "2026-09-14"
+    },
+    {
+      "instrumentId": "dpdp-rules-2025",
+      "regulator": "MeitY",
+      "title": "Digital Personal Data Protection Rules, 2025",
+      "shortName": "DPDP Rules 2025",
+      "version": "G.S.R. 846(E) dated 13 November 2025",
+      "issuedOn": "2025-11-13",
+      "effectiveFrom": "2027-05-13",
+      "supersedes": [],
+      "url": "https://egazette.gov.in/WriteReadData/2025/267650.pdf",
+      "applicability": {
+        "entityTypes": [
+          "scheduled-commercial-bank",
+          "small-finance-bank",
+          "payments-bank",
+          "urban-cooperative-bank",
+          "regional-rural-bank",
+          "all-india-financial-institution",
+          "nbfc",
+          "nbfc-p2p",
+          "housing-finance-company",
+          "credit-information-company",
+          "payment-aggregator",
+          "payment-system-operator",
+          "ppi-issuer",
+          "tpap",
+          "market-infrastructure-institution",
+          "stock-broker",
+          "depository-participant",
+          "asset-management-company",
+          "portfolio-manager",
+          "investment-adviser",
+          "research-analyst",
+          "registrar-transfer-agent",
+          "custodian",
+          "kra",
+          "alternative-investment-fund",
+          "insurer",
+          "insurance-intermediary",
+          "pension-fund-manager",
+          "ifsc-entity",
+          "fintech-unregulated",
+          "technology-service-provider"
+        ],
+        "jurisdictions": [
+          "IN"
+        ]
+      },
+      "structure": "Rules 1-23 and Schedules cited as 6(1)(e), 7(2)(b), Sch1.B.2; Act sections as Act-8(6). Rules 1, 2, 17-21 in force 2025-11-13; Rule 4 from 2026-11-13; Rules 3, 5-16, 22, 23 from 2027-05-13",
+      "hardRequirements": [
+        {
+          "topic": "breach-notification",
+          "requirement": "On becoming aware of a personal data breach, intimate the Board without delay, and within 72 hours (or a longer period the Board allows on written request) furnish updated and detailed information including facts, mitigation, findings on the person who caused it and intimations given",
+          "value": 72,
+          "unit": "hours",
+          "controlId": "7(2)(b)"
+        },
+        {
+          "topic": "customer-notification",
+          "requirement": "Intimate each affected Data Principal without delay, in a concise, clear and plain manner, of the nature, extent, timing and likely consequences of the breach, mitigation and safety measures and a business contact",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "7(1)"
+        },
+        {
+          "topic": "log-retention",
+          "requirement": "Retain logs and personal data relating to processing for a period of one year, for detection, investigation and remediation of unauthorised access",
+          "value": 1,
+          "unit": "years",
+          "controlId": "6(1)(e)"
+        },
+        {
+          "topic": "data-retention",
+          "requirement": "Retain personal data, associated traffic data and processing logs for a minimum period of one year from the date of such processing, then erase unless retention is required by law",
+          "value": 1,
+          "unit": "years",
+          "controlId": "8(3)"
+        },
+        {
+          "topic": "customer-notification",
+          "requirement": "Inform the Data Principal at least 48 hours before completion of the period for erasure of personal data under Rule 8(1)",
+          "value": 48,
+          "unit": "hours",
+          "controlId": "8(2)"
+        },
+        {
+          "topic": "grievance-redressal",
+          "requirement": "Respond to grievances of Data Principals within a reasonable published period not exceeding ninety days",
+          "value": 90,
+          "unit": "days",
+          "controlId": "14(3)"
+        },
+        {
+          "topic": "audit-cadence",
+          "requirement": "A Significant Data Fiduciary shall undertake a Data Protection Impact Assessment and an audit once in every period of twelve months",
+          "value": 1,
+          "unit": "per-year",
+          "controlId": "13(1)"
+        },
+        {
+          "topic": "encryption",
+          "requirement": "Reasonable security safeguards shall include securing personal data through encryption, obfuscation, masking or the use of virtual tokens",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "6(1)(a)"
+        }
+      ],
+      "catalogFile": ".claude/skills/regulatory-catalogs/references/catalogs/dpdp-rules-2025.catalog.json",
+      "lastReviewedAt": "2026-09-14"
+    },
+    {
+      "instrumentId": "npci-system-audit",
+      "regulator": "NPCI",
+      "title": "NPCI UPI system audit requirements for PSP banks, acquiring banks, TPAPs and technology service providers",
+      "shortName": "NPCI System Audit",
+      "version": "UPI operating circular of 26 April 2025 on API usage and system audit, with NPCI UPI procedural guidelines",
+      "issuedOn": "2025-04-26",
+      "effectiveFrom": "2025-07-31",
+      "supersedes": [],
+      "url": "https://www.npci.org.in/what-we-do/upi/circular",
+      "applicability": {
+        "entityTypes": [
+          "scheduled-commercial-bank",
+          "small-finance-bank",
+          "payments-bank",
+          "urban-cooperative-bank",
+          "payment-system-operator",
+          "payment-aggregator",
+          "ppi-issuer",
+          "tpap",
+          "technology-service-provider"
+        ],
+        "jurisdictions": [
+          "IN"
+        ]
+      },
+      "structure": "No consolidated control numbering: cite the NPCI operating circular reference and clause as issued, e.g. UPI-OC-2025-04-26.3",
+      "hardRequirements": [
+        {
+          "topic": "audit-cadence",
+          "requirement": "PSP banks and acquiring banks shall have their UPI systems and API usage audited by a CERT-In empanelled auditor on an immediate basis and annually thereafter",
+          "value": 1,
+          "unit": "per-year"
+        },
+        {
+          "topic": "compliance-reporting",
+          "requirement": "Implementation of the API usage controls by PSPs, acquiring banks and TPAPs by 31 July 2025 with undertakings to NPCI by 31 August 2025",
+          "value": 1,
+          "unit": "boolean"
+        }
+      ],
+      "lastReviewedAt": "2026-09-14"
+    },
+    {
+      "instrumentId": "eu-dora-2022-2554",
+      "regulator": "EU-ESAs",
+      "title": "Regulation (EU) 2022/2554 of the European Parliament and of the Council of 14 December 2022 on digital operational resilience for the financial sector",
+      "shortName": "EU DORA",
+      "version": "Regulation (EU) 2022/2554, OJ L 333, 27.12.2022, p. 1",
+      "issuedOn": "2022-12-14",
+      "effectiveFrom": "2025-01-17",
+      "supersedes": [],
+      "url": "https://eur-lex.europa.eu/eli/reg/2022/2554/oj",
+      "applicability": {
+        "entityTypes": [
+          "eu-credit-institution",
+          "eu-investment-firm",
+          "eu-insurer",
+          "eu-crypto-asset-provider",
+          "technology-service-provider"
+        ],
+        "jurisdictions": [
+          "EU"
+        ]
+      },
+      "structure": "Chapters I-IX, Articles 1-64 cited as Art.19(4) or Art.28(3); level-2 RTS/ITS cited under their own instrument (e.g. eu-dora-roi-its-2024-2956)",
+      "hardRequirements": [
+        {
+          "topic": "incident-reporting",
+          "requirement": "Initial notification of a major ICT-related incident within 4 hours of classification and no later than 24 hours after becoming aware (time limits set by Delegated Regulation (EU) 2025/301 under Art.20)",
+          "value": 24,
+          "unit": "hours",
+          "controlId": "Art.19(4)"
+        },
+        {
+          "topic": "incident-reporting",
+          "requirement": "Intermediate report within 72 hours from submission of the initial notification",
+          "value": 72,
+          "unit": "hours",
+          "controlId": "Art.19(4)"
+        },
+        {
+          "topic": "incident-reporting",
+          "requirement": "Final report no later than 1 month after the latest updated intermediate report",
+          "value": 1,
+          "unit": "months",
+          "controlId": "Art.19(4)"
+        },
+        {
+          "topic": "red-team-cadence",
+          "requirement": "Financial entities identified by competent authorities shall carry out advanced testing by means of threat-led penetration testing at least every 3 years",
+          "value": 3,
+          "unit": "years",
+          "controlId": "Art.26(1)"
+        },
+        {
+          "topic": "vapt-cadence",
+          "requirement": "Appropriate tests on all ICT systems and applications supporting critical or important functions at least yearly",
+          "value": 1,
+          "unit": "per-year",
+          "controlId": "Art.24(6)"
+        },
+        {
+          "topic": "vendor-due-diligence",
+          "requirement": "Maintain and update a register of information on all contractual arrangements on the use of ICT services provided by ICT third-party service providers, and report at least yearly on new arrangements",
+          "value": 1,
+          "unit": "per-year",
+          "controlId": "Art.28(3)"
+        }
+      ],
+      "lastReviewedAt": "2026-09-14"
+    },
+    {
+      "instrumentId": "eu-dora-roi-its-2024-2956",
+      "regulator": "EU-Commission",
+      "title": "Commission Implementing Regulation (EU) 2024/2956 laying down ITS for the application of Regulation (EU) 2022/2554 with regard to standard templates for the register of information",
+      "shortName": "DORA Register of Information ITS",
+      "version": "Commission Implementing Regulation (EU) 2024/2956 of 29 November 2024, OJ L, 2.12.2024",
+      "issuedOn": "2024-11-29",
+      "effectiveFrom": "2024-12-22",
+      "supersedes": [],
+      "url": "https://eur-lex.europa.eu/eli/reg_impl/2024/2956/oj",
+      "applicability": {
+        "entityTypes": [
+          "eu-credit-institution",
+          "eu-investment-firm",
+          "eu-insurer",
+          "eu-crypto-asset-provider"
+        ],
+        "jurisdictions": [
+          "EU"
+        ]
+      },
+      "structure": "Articles 1-7 plus Annex I templates RT.01.01 to RT.99.01, Annex II instructions and Annex III-V taxonomies; cite the template id (e.g. RT.05.01) or Art.<n>",
+      "hardRequirements": [
+        {
+          "topic": "vendor-due-diligence",
+          "requirement": "Maintain the register of information at entity, sub-consolidated and consolidated level using the Annex I templates and make it available to the competent authority on request (at least yearly submission under DORA Art.28(3))",
+          "value": 1,
+          "unit": "per-year",
+          "controlId": "Art.3"
+        },
+        {
+          "topic": "vendor-due-diligence",
+          "requirement": "Identify each ICT third-party service provider by its LEI (or EUID for providers without LEI) in template RT.05.01",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "RT.05.01"
+        }
+      ],
+      "lastReviewedAt": "2026-09-14"
+    },
+    {
+      "instrumentId": "nydfs-23-nycrr-500",
+      "regulator": "NYDFS",
+      "title": "23 NYCRR Part 500: Cybersecurity Requirements for Financial Services Companies",
+      "shortName": "NYDFS Part 500",
+      "version": "Second Amendment adopted 1 November 2023 (phased compliance through 1 November 2025)",
+      "issuedOn": "2023-11-01",
+      "effectiveFrom": "2023-11-01",
+      "supersedes": [],
+      "url": "https://www.dfs.ny.gov/industry_guidance/cybersecurity",
+      "applicability": {
+        "entityTypes": [
+          "us-bank",
+          "us-broker-dealer",
+          "us-insurer"
+        ],
+        "jurisdictions": [
+          "US"
+        ]
+      },
+      "structure": "Sections 500.1-500.24 with lettered and numbered subsections cited as 500.17(a)(1), 500.12(a); Class A companies carry extra duties in 500.7(c), 500.14(b), 500.2(c)",
+      "hardRequirements": [
+        {
+          "topic": "incident-reporting",
+          "requirement": "Notify the superintendent electronically as promptly as possible but in no event later than 72 hours after determining that a cybersecurity incident has occurred",
+          "value": 72,
+          "unit": "hours",
+          "controlId": "500.17(a)(1)"
+        },
+        {
+          "topic": "incident-reporting",
+          "requirement": "In the event of an extortion payment made in connection with a cybersecurity event, provide written notice within 24 hours of the payment",
+          "value": 24,
+          "unit": "hours",
+          "controlId": "500.17(c)(1)"
+        },
+        {
+          "topic": "incident-reporting",
+          "requirement": "Within 30 days of an extortion payment, provide a written description of the reasons payment was necessary, alternatives considered and diligence performed",
+          "value": 30,
+          "unit": "days",
+          "controlId": "500.17(c)(2)"
+        },
+        {
+          "topic": "mfa",
+          "requirement": "Multi-factor authentication shall be utilized for any individual accessing any information system of a covered entity (universal MFA, required from 1 November 2025)",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "500.12(a)"
+        },
+        {
+          "topic": "vapt-cadence",
+          "requirement": "Penetration testing by a qualified internal or external party at least annually",
+          "value": 1,
+          "unit": "per-year",
+          "controlId": "500.5(a)(1)"
+        },
+        {
+          "topic": "log-retention",
+          "requirement": "Retain records of audit trails designed to reconstruct material financial transactions for not fewer than five years",
+          "value": 5,
+          "unit": "years",
+          "controlId": "500.6(b)"
+        },
+        {
+          "topic": "log-retention",
+          "requirement": "Retain records of audit trails designed to detect and respond to cybersecurity events for not fewer than three years",
+          "value": 3,
+          "unit": "years",
+          "controlId": "500.6(b)"
+        },
+        {
+          "topic": "compliance-reporting",
+          "requirement": "Submit a certification of material compliance or a written acknowledgment of non-compliance by 15 April each year",
+          "value": 1,
+          "unit": "per-year",
+          "controlId": "500.17(b)"
+        },
+        {
+          "topic": "awareness-training",
+          "requirement": "Cybersecurity awareness training, including social engineering, for all personnel at least annually",
+          "value": 1,
+          "unit": "per-year",
+          "controlId": "500.14(a)(3)"
+        },
+        {
+          "topic": "access-review",
+          "requirement": "Periodically, but at a minimum annually, review all user access privileges and remove or disable unnecessary accounts",
+          "value": 1,
+          "unit": "per-year",
+          "controlId": "500.7(a)(4)"
+        }
+      ],
+      "lastReviewedAt": "2026-09-14"
+    },
+    {
+      "instrumentId": "pci-dss-4.0.1",
+      "regulator": "PCI-SSC",
+      "title": "Payment Card Industry Data Security Standard: Requirements and Testing Procedures, Version 4.0.1",
+      "shortName": "PCI DSS 4.0.1",
+      "version": "v4.0.1 (June 2024); v4.0 retired 31 December 2024; future-dated requirements mandatory from 31 March 2025",
+      "issuedOn": "2024-06-11",
+      "effectiveFrom": "2025-03-31",
+      "supersedes": [],
+      "url": "https://www.pcisecuritystandards.org/document_library/",
+      "applicability": {
+        "entityTypes": [
+          "scheduled-commercial-bank",
+          "small-finance-bank",
+          "payments-bank",
+          "urban-cooperative-bank",
+          "nbfc",
+          "payment-aggregator",
+          "payment-system-operator",
+          "ppi-issuer",
+          "tpap",
+          "eu-credit-institution",
+          "us-bank",
+          "technology-service-provider"
+        ],
+        "jurisdictions": []
+      },
+      "structure": "Twelve principal requirements 1-12 with sub-requirements cited as 6.3.3 or 8.4.2; Appendices A1-A3; applies wherever cardholder data is stored, processed or transmitted",
+      "hardRequirements": [
+        {
+          "topic": "patch-sla",
+          "requirement": "Patches/updates for critical vulnerabilities (identified per the risk ranking in 6.3.1) are installed within one month of release",
+          "value": 1,
+          "unit": "months",
+          "controlId": "6.3.3"
+        },
+        {
+          "topic": "vapt-cadence",
+          "requirement": "Internal vulnerability scans at least once every three months, with high-risk and critical vulnerabilities resolved and rescanned",
+          "value": 4,
+          "unit": "per-year",
+          "controlId": "11.3.1"
+        },
+        {
+          "topic": "vapt-cadence",
+          "requirement": "External vulnerability scans by a PCI SSC Approved Scanning Vendor at least once every three months",
+          "value": 4,
+          "unit": "per-year",
+          "controlId": "11.3.2"
+        },
+        {
+          "topic": "vapt-cadence",
+          "requirement": "External penetration testing at least once every 12 months and after significant change",
+          "value": 1,
+          "unit": "per-year",
+          "controlId": "11.4.3"
+        },
+        {
+          "topic": "log-retention",
+          "requirement": "Retain audit log history for at least 12 months, with at least the most recent three months immediately available for analysis",
+          "value": 12,
+          "unit": "months",
+          "controlId": "10.5.1"
+        },
+        {
+          "topic": "mfa",
+          "requirement": "MFA is implemented for all access into the CDE",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "8.4.2"
+        },
+        {
+          "topic": "session-timeout",
+          "requirement": "If a user session has been idle for more than 15 minutes, the user is required to re-authenticate",
+          "value": 15,
+          "unit": "minutes",
+          "controlId": "8.2.8"
+        },
+        {
+          "topic": "access-review",
+          "requirement": "All user accounts and related access privileges are reviewed at least once every six months",
+          "value": 2,
+          "unit": "per-year",
+          "controlId": "7.2.4"
+        },
+        {
+          "topic": "key-rotation",
+          "requirement": "Where passwords are the only authentication factor, they are changed at least once every 90 days (or access is determined dynamically)",
+          "value": 90,
+          "unit": "days",
+          "controlId": "8.3.9"
+        },
+        {
+          "topic": "awareness-training",
+          "requirement": "Security awareness training upon hire and at least once every 12 months",
+          "value": 1,
+          "unit": "per-year",
+          "controlId": "12.6.3"
+        },
+        {
+          "topic": "sbom",
+          "requirement": "An inventory of bespoke and custom software, and third-party software components incorporated into it, is maintained to facilitate vulnerability and patch management",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "6.3.2"
+        }
+      ],
+      "lastReviewedAt": "2026-09-14"
+    },
+    {
+      "instrumentId": "sec-cyber-disclosure-2023",
+      "regulator": "SEC",
+      "title": "Cybersecurity Risk Management, Strategy, Governance, and Incident Disclosure (Final Rule)",
+      "shortName": "SEC Cyber Disclosure Rule",
+      "version": "Release Nos. 33-11216; 34-97989 (Regulation S-K Item 106, Form 8-K Item 1.05, Form 20-F Item 16K)",
+      "issuedOn": "2023-07-26",
+      "effectiveFrom": "2023-09-05",
+      "supersedes": [],
+      "url": "https://www.sec.gov/rules-regulations/2023/07/s7-09-22",
+      "applicability": {
+        "entityTypes": [],
+        "jurisdictions": [
+          "US"
+        ]
+      },
+      "structure": "Regulation S-K Item 106(b)-(c) cited as 106(b), 106(c); Form 8-K Item 1.05 cited 8-K-1.05; binds SEC registrants (domestic and foreign private issuers), not a licence category",
+      "hardRequirements": [
+        {
+          "topic": "incident-reporting",
+          "requirement": "Disclose a material cybersecurity incident on Form 8-K Item 1.05 within four business days after determining the incident is material (compliance from 18 December 2023; smaller reporting companies from 15 June 2024)",
+          "value": 4,
+          "unit": "days",
+          "controlId": "8-K-1.05"
+        },
+        {
+          "topic": "board-reporting",
+          "requirement": "Describe annually in Form 10-K the board oversight of risks from cybersecurity threats and management's role in assessing and managing material risks",
+          "value": 1,
+          "unit": "per-year",
+          "controlId": "106(c)"
+        },
+        {
+          "topic": "compliance-reporting",
+          "requirement": "Describe annually the processes for assessing, identifying and managing material risks from cybersecurity threats, including use of third-party service providers",
+          "value": 1,
+          "unit": "per-year",
+          "controlId": "106(b)"
+        }
+      ],
+      "lastReviewedAt": "2026-09-14"
+    },
+    {
+      "instrumentId": "mas-trm-2021",
+      "regulator": "MAS",
+      "title": "Technology Risk Management Guidelines",
+      "shortName": "MAS TRM Guidelines",
+      "version": "January 2021 edition, read with the binding MAS Notices on Technology Risk Management (notice number varies by sector; confirm on mas.gov.sg before citing)",
+      "issuedOn": "2021-01-18",
+      "effectiveFrom": "2021-01-18",
+      "supersedes": [],
+      "url": "https://www.mas.gov.sg/regulation/guidelines/technology-risk-management-guidelines",
+      "applicability": {
+        "entityTypes": [],
+        "jurisdictions": [
+          "SG"
+        ]
+      },
+      "structure": "Chapters 1-15 with numbered paragraphs cited as 13.2.3 or 11.1.4, Annexes A-C; the binding TRM Notice is cited as TRMN-<para>",
+      "hardRequirements": [
+        {
+          "topic": "incident-reporting",
+          "requirement": "Notify MAS as soon as possible, but not later than 1 hour, upon discovery of a relevant incident (TRM Notice)",
+          "value": 1,
+          "unit": "hours"
+        },
+        {
+          "topic": "incident-reporting",
+          "requirement": "Submit a root cause and impact analysis report to MAS within 14 days from discovery of the relevant incident (TRM Notice)",
+          "value": 14,
+          "unit": "days"
+        },
+        {
+          "topic": "backup-rto-rpo",
+          "requirement": "Maximum unscheduled downtime for each critical system shall not exceed a total of 4 hours within any period of 12 months (TRM Notice)",
+          "value": 4,
+          "unit": "hours"
+        },
+        {
+          "topic": "mfa",
+          "requirement": "Multi-factor authentication for users with access to sensitive system functions and for customer login to online financial services",
+          "value": 1,
+          "unit": "boolean"
+        }
+      ],
+      "lastReviewedAt": "2026-09-14"
+    },
+    {
+      "instrumentId": "hkma-craf-2.0",
+      "regulator": "HKMA",
+      "title": "Cyber Resilience Assessment Framework (C-RAF) 2.0 under the Cybersecurity Fortification Initiative 2.0",
+      "shortName": "HKMA C-RAF 2.0",
+      "version": "C-RAF 2.0 announced with CFI 2.0 on 3 November 2020; operational from January 2021",
+      "issuedOn": "2020-11-03",
+      "effectiveFrom": "2021-01-01",
+      "supersedes": [],
+      "url": "https://www.hkma.gov.hk/eng/news-and-media/press-releases/2020/11/20201103-4/",
+      "applicability": {
+        "entityTypes": [],
+        "jurisdictions": [
+          "HK"
+        ]
+      },
+      "structure": "Inherent Risk Assessment; Maturity Assessment across seven domains (governance, identification, protection, detection, response/recovery, situational awareness, third-party); iCAST",
+      "hardRequirements": [
+        {
+          "topic": "audit-cadence",
+          "requirement": "Authorized institutions periodically complete the C-RAF inherent risk and maturity assessment; a three-year cycle is commonly cited but was not verified against the C-RAF 2.0 text",
+          "value": 3,
+          "unit": "years"
+        },
+        {
+          "topic": "red-team-cadence",
+          "requirement": "Intelligence-led Cyber Attack Simulation Testing (iCAST) is required for institutions whose assessment calls for it (medium or high inherent risk)",
+          "value": 1,
+          "unit": "boolean"
+        }
+      ],
+      "lastReviewedAt": "2026-09-14"
+    },
+    {
+      "instrumentId": "apra-cps-234",
+      "regulator": "APRA",
+      "title": "Prudential Standard CPS 234 Information Security",
+      "shortName": "APRA CPS 234",
+      "version": "CPS 234 (November 2018), commenced 1 July 2019; third-party arrangements from 1 July 2020 at the latest",
+      "issuedOn": "2018-11-07",
+      "effectiveFrom": "2019-07-01",
+      "supersedes": [],
+      "url": "https://handbook.apra.gov.au/standard/cps-234",
+      "applicability": {
+        "entityTypes": [],
+        "jurisdictions": [
+          "AU"
+        ]
+      },
+      "structure": "Numbered paragraphs cited by number, e.g. 35 (incident notification), 36 (control weakness notification), 27 (testing); CPG 234 is the non-binding guide",
+      "hardRequirements": [
+        {
+          "topic": "incident-reporting",
+          "requirement": "Notify APRA as soon as possible and no later than 72 hours after becoming aware of an information security incident that materially affected, or had the potential to materially affect, the entity or the interests of depositors, policyholders, beneficiaries or other customers",
+          "value": 72,
+          "unit": "hours",
+          "controlId": "35"
+        },
+        {
+          "topic": "compliance-reporting",
+          "requirement": "Notify APRA as soon as possible and no later than 10 business days after becoming aware of a material information security control weakness which the entity expects it will not be able to remediate in a timely manner",
+          "value": 10,
+          "unit": "days",
+          "controlId": "36"
+        },
+        {
+          "topic": "vapt-cadence",
+          "requirement": "Test the effectiveness of information security controls through a systematic testing programme, with frequency commensurate with the rate of change in vulnerabilities and threats",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "27"
+        }
+      ],
+      "lastReviewedAt": "2026-09-14"
+    },
+    {
+      "instrumentId": "apra-cps-230",
+      "regulator": "APRA",
+      "title": "Prudential Standard CPS 230 Operational Risk Management",
+      "shortName": "APRA CPS 230",
+      "version": "CPS 230 (July 2023), commenced 1 July 2025; pre-existing service provider contracts by the earlier of renewal or 1 July 2026",
+      "issuedOn": "2023-07-17",
+      "effectiveFrom": "2025-07-01",
+      "supersedes": [],
+      "url": "https://handbook.apra.gov.au/standard/cps-230",
+      "applicability": {
+        "entityTypes": [],
+        "jurisdictions": [
+          "AU"
+        ]
+      },
+      "structure": "Numbered paragraphs cited by number, e.g. 33 (operational risk incident notification), 42 (disruption notification), 43 (BCP testing), 51 and 59 (material service providers)",
+      "hardRequirements": [
+        {
+          "topic": "incident-reporting",
+          "requirement": "Notify APRA as soon as possible, and not later than 72 hours, after becoming aware of an operational risk incident likely to have a material financial impact or a material impact on the ability to maintain critical operations",
+          "value": 72,
+          "unit": "hours",
+          "controlId": "33"
+        },
+        {
+          "topic": "incident-reporting",
+          "requirement": "Notify APRA as soon as possible, and not later than 24 hours after, if the entity has suffered a disruption to a critical operation outside tolerance",
+          "value": 24,
+          "unit": "hours",
+          "controlId": "42"
+        },
+        {
+          "topic": "dr-drill",
+          "requirement": "Systematic BCP testing programme covering all critical operations that includes an annual business continuity exercise",
+          "value": 1,
+          "unit": "per-year",
+          "controlId": "43"
+        },
+        {
+          "topic": "vendor-due-diligence",
+          "requirement": "Submit the register of material service providers to APRA on an annual basis",
+          "value": 1,
+          "unit": "per-year",
+          "controlId": "51"
+        },
+        {
+          "topic": "vendor-due-diligence",
+          "requirement": "Notify APRA as soon as possible and not more than 20 business days after entering into or materially changing an agreement for a service relied on for a critical operation",
+          "value": 20,
+          "unit": "days",
+          "controlId": "59(a)"
+        }
+      ],
+      "lastReviewedAt": "2026-09-14"
+    },
+    {
+      "instrumentId": "uk-ss1-21",
+      "regulator": "PRA",
+      "title": "Supervisory Statement SS1/21 Operational resilience: Impact tolerances for important business services",
+      "shortName": "PRA SS1/21",
+      "version": "SS1/21 (Policy Statement PS6/21, March 2021); effective 31 March 2022, remain within tolerance by 31 March 2025",
+      "issuedOn": "2021-03-29",
+      "effectiveFrom": "2022-03-31",
+      "supersedes": [],
+      "url": "https://www.bankofengland.co.uk/prudential-regulation/publication/2021/march/operational-resilience-impact-tolerances-for-important-business-services-ss",
+      "applicability": {
+        "entityTypes": [],
+        "jurisdictions": [
+          "GB"
+        ]
+      },
+      "structure": "Numbered paragraphs cited as <chapter>.<paragraph>, e.g. 5.1 (impact tolerances); read with the PRA Rulebook Operational Resilience Part and SS2/21 for outsourcing",
+      "hardRequirements": [
+        {
+          "topic": "dr-drill",
+          "requirement": "Firms shall test their ability to remain within impact tolerance for each important business service in severe but plausible scenarios, regularly and after material change",
+          "value": 1,
+          "unit": "boolean"
+        },
+        {
+          "topic": "board-reporting",
+          "requirement": "Review the identification of important business services and their impact tolerances at least annually and on material change, with the self-assessment approved by the board",
+          "value": 1,
+          "unit": "per-year"
+        },
+        {
+          "topic": "backup-rto-rpo",
+          "requirement": "Firms shall set an impact tolerance (maximum tolerable disruption, expressed as a duration) for each important business service and remain within it from 31 March 2025",
+          "value": 1,
+          "unit": "boolean"
+        }
+      ],
+      "lastReviewedAt": "2026-09-14"
+    },
+    {
+      "instrumentId": "nist-csf-2.0",
+      "regulator": "NIST",
+      "title": "The NIST Cybersecurity Framework (CSF) 2.0",
+      "shortName": "NIST CSF 2.0",
+      "version": "NIST CSWP 29, 26 February 2024",
+      "issuedOn": "2024-02-26",
+      "effectiveFrom": "2024-02-26",
+      "supersedes": [],
+      "url": "https://doi.org/10.6028/NIST.CSWP.29",
+      "applicability": {
+        "entityTypes": [],
+        "jurisdictions": []
+      },
+      "structure": "Functions GV, ID, PR, DE, RS, RC; categories XX.YY; subcategories XX.YY-nn, e.g. PR.AA-01, GV.SC-05; outcome-based with no numeric obligations",
+      "hardRequirements": [
+        {
+          "topic": "vendor-due-diligence",
+          "requirement": "Suppliers are known and prioritised by criticality",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "GV.SC-04"
+        },
+        {
+          "topic": "access-review",
+          "requirement": "Identities and credentials for authorised users, services and hardware are managed by the organisation",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "PR.AA-01"
+        }
+      ],
+      "lastReviewedAt": "2026-09-14"
+    },
+    {
+      "instrumentId": "nist-800-53-r5",
+      "regulator": "NIST",
+      "title": "Security and Privacy Controls for Information Systems and Organizations (NIST SP 800-53 Revision 5)",
+      "shortName": "NIST SP 800-53 r5",
+      "version": "SP 800-53 Rev. 5 (September 2020) with control catalog release 5.2.0 (August 2025)",
+      "issuedOn": "2020-09-23",
+      "effectiveFrom": "2020-09-23",
+      "supersedes": [],
+      "url": "https://doi.org/10.6028/NIST.SP.800-53r5",
+      "applicability": {
+        "entityTypes": [],
+        "jurisdictions": []
+      },
+      "structure": "Twenty families (AC, AT, AU, CA, CM, CP, IA, IR, MA, MP, PE, PL, PM, PS, PT, RA, SA, SC, SI, SR); controls XX-n and enhancements XX-n(m), e.g. AC-2(3), SI-2, SR-4",
+      "hardRequirements": [
+        {
+          "topic": "patch-sla",
+          "requirement": "Install security-relevant software and firmware updates within an organisation-defined time period of the release of the updates",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "SI-2"
+        },
+        {
+          "topic": "access-review",
+          "requirement": "Review accounts for compliance with account management requirements at an organisation-defined frequency",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "AC-2"
+        },
+        {
+          "topic": "log-retention",
+          "requirement": "Retain audit records for an organisation-defined time period consistent with the records retention policy",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "AU-11"
+        },
+        {
+          "topic": "sbom",
+          "requirement": "Employ a supply chain risk management plan and provenance documentation for systems and components",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "SR-4"
+        }
+      ],
+      "lastReviewedAt": "2026-09-14"
+    },
+    {
+      "instrumentId": "nist-ssdf-800-218",
+      "regulator": "NIST",
+      "title": "Secure Software Development Framework (SSDF) Version 1.1: Recommendations for Mitigating the Risk of Software Vulnerabilities",
+      "shortName": "NIST SSDF 1.1",
+      "version": "SP 800-218 v1.1 (February 2022)",
+      "issuedOn": "2022-02-03",
+      "effectiveFrom": "2022-02-03",
+      "supersedes": [],
+      "url": "https://doi.org/10.6028/NIST.SP.800-218",
+      "applicability": {
+        "entityTypes": [],
+        "jurisdictions": []
+      },
+      "structure": "Practice groups PO, PS, PW, RV; practices PO.n and tasks PO.n.m, e.g. PS.3.2 (provenance/SBOM), PW.4.1, RV.1.3",
+      "hardRequirements": [
+        {
+          "topic": "sbom",
+          "requirement": "Collect, safeguard, maintain and share provenance data for all components of each software release (e.g. in a software bill of materials)",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "PS.3.2"
+        },
+        {
+          "topic": "data-retention",
+          "requirement": "Securely archive the necessary files and supporting data for each software release",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "PS.3.1"
+        },
+        {
+          "topic": "patch-sla",
+          "requirement": "Plan and implement risk responses for vulnerabilities, prioritising by risk, per the organisation's vulnerability response policy",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "RV.2.2"
+        }
+      ],
+      "lastReviewedAt": "2026-09-14"
+    },
+    {
+      "instrumentId": "nist-ssdf-800-218a",
+      "regulator": "NIST",
+      "title": "Secure Software Development Practices for Generative AI and Dual-Use Foundation Models: An SSDF Community Profile",
+      "shortName": "NIST SSDF AI Profile",
+      "version": "SP 800-218A (July 2024)",
+      "issuedOn": "2024-07-26",
+      "effectiveFrom": "2024-07-26",
+      "supersedes": [],
+      "url": "https://doi.org/10.6028/NIST.SP.800-218A",
+      "applicability": {
+        "entityTypes": [],
+        "jurisdictions": []
+      },
+      "structure": "SSDF 1.1 practice and task ids (PO, PS, PW, RV) augmented with AI-specific tasks and recommendations; cite the task id, e.g. PS.1.3, PW.3.1",
+      "hardRequirements": [
+        {
+          "topic": "sbom",
+          "requirement": "Collect and maintain provenance data for AI models, training data and software components of each release",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "PS.3.2"
+        },
+        {
+          "topic": "other",
+          "requirement": "Protect all model weights and configuration parameter data from unauthorised access and modification",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "PS.1.3"
+        }
+      ],
+      "lastReviewedAt": "2026-09-14"
+    },
+    {
+      "instrumentId": "nist-ai-600-1",
+      "regulator": "NIST",
+      "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+      "shortName": "NIST AI RMF GenAI Profile",
+      "version": "NIST AI 600-1 (July 2024)",
+      "issuedOn": "2024-07-26",
+      "effectiveFrom": "2024-07-26",
+      "supersedes": [],
+      "url": "https://doi.org/10.6028/NIST.AI.600-1",
+      "applicability": {
+        "entityTypes": [],
+        "jurisdictions": []
+      },
+      "structure": "Twelve GAI risks (2.1-2.12) and suggested actions keyed to AI RMF subcategories; cite the subcategory (GV-6.1, MG-4.3) or the action id (GV-1.1-001, MS-2.5-003)",
+      "hardRequirements": [
+        {
+          "topic": "incident-reporting",
+          "requirement": "Establish policies for GAI incident response and disclosure, including for third-party GAI components",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "MG-4.3"
+        },
+        {
+          "topic": "vendor-due-diligence",
+          "requirement": "Assess and document third-party GAI components (data provenance, licensing, known risks) before integration",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "GV-6.1"
+        }
+      ],
+      "lastReviewedAt": "2026-09-14"
+    },
+    {
+      "instrumentId": "iso-27001-2022",
+      "regulator": "ISO",
+      "title": "ISO/IEC 27001:2022 Information security, cybersecurity and privacy protection — Information security management systems — Requirements",
+      "shortName": "ISO/IEC 27001:2022",
+      "version": "Third edition 2022-10 incl. Amendment 1:2024; transition from the 2013 edition ended 31 October 2025",
+      "issuedOn": "2022-10-25",
+      "effectiveFrom": "2022-10-25",
+      "supersedes": [],
+      "url": "https://www.iso.org/standard/27001",
+      "applicability": {
+        "entityTypes": [],
+        "jurisdictions": []
+      },
+      "structure": "Clauses 4-10 cited as 6.1.2 or 9.2; Annex A controls A.5.1-A.8.34 (5 organisational, 6 people, 7 physical, 8 technological), e.g. A.8.8, A.5.19",
+      "hardRequirements": [
+        {
+          "topic": "audit-cadence",
+          "requirement": "Conduct internal audits at planned intervals (certification bodies perform annual surveillance and recertification every 3 years)",
+          "value": 1,
+          "unit": "per-year",
+          "controlId": "9.2"
+        },
+        {
+          "topic": "patch-sla",
+          "requirement": "Obtain information about technical vulnerabilities, evaluate exposure and take appropriate measures",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "A.8.8"
+        },
+        {
+          "topic": "log-retention",
+          "requirement": "Produce, store, protect and analyse logs that record activities, exceptions, faults and other relevant events",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "A.8.15"
+        },
+        {
+          "topic": "access-review",
+          "requirement": "Provision, review, modify and remove access rights in accordance with the access control policy",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "A.5.18"
+        },
+        {
+          "topic": "vendor-due-diligence",
+          "requirement": "Define and implement processes to manage information security risks of supplier products or services",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "A.5.19"
+        }
+      ],
+      "lastReviewedAt": "2026-09-14"
+    },
+    {
+      "instrumentId": "cis-controls-8.1",
+      "regulator": "CIS",
+      "title": "CIS Critical Security Controls Version 8.1",
+      "shortName": "CIS Controls v8.1",
+      "version": "v8.1 (June 2024)",
+      "issuedOn": "2024-06-25",
+      "effectiveFrom": "2024-06-25",
+      "supersedes": [],
+      "url": "https://www.cisecurity.org/controls/v8-1",
+      "applicability": {
+        "entityTypes": [],
+        "jurisdictions": []
+      },
+      "structure": "18 Controls with Safeguards cited as Control.Safeguard, e.g. 7.4, 16.4, 8.10; Implementation Groups IG1-IG3 select the applicable subset",
+      "hardRequirements": [
+        {
+          "topic": "patch-sla",
+          "requirement": "Perform application updates on enterprise assets through automated patch management on a monthly, or more frequent, basis",
+          "value": 12,
+          "unit": "per-year",
+          "controlId": "7.4"
+        },
+        {
+          "topic": "vapt-cadence",
+          "requirement": "Perform automated vulnerability scans of internal enterprise assets on a quarterly, or more frequent, basis",
+          "value": 4,
+          "unit": "per-year",
+          "controlId": "7.5"
+        },
+        {
+          "topic": "vapt-cadence",
+          "requirement": "Perform automated vulnerability scans of externally-exposed enterprise assets on a monthly, or more frequent, basis",
+          "value": 12,
+          "unit": "per-year",
+          "controlId": "7.6"
+        },
+        {
+          "topic": "log-retention",
+          "requirement": "Retain audit logs across enterprise assets for a minimum of 90 days",
+          "value": 90,
+          "unit": "days",
+          "controlId": "8.10"
+        },
+        {
+          "topic": "mfa",
+          "requirement": "Require MFA for all externally-exposed enterprise or third-party applications",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "6.3"
+        },
+        {
+          "topic": "access-review",
+          "requirement": "Delete or disable any dormant accounts after a period of 45 days of inactivity",
+          "value": 45,
+          "unit": "days",
+          "controlId": "5.3"
+        },
+        {
+          "topic": "sbom",
+          "requirement": "Establish and manage an updated inventory of third-party components used in development (a bill of materials), reviewed monthly",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "16.4"
+        },
+        {
+          "topic": "awareness-training",
+          "requirement": "Security awareness training at hire and, at a minimum, annually",
+          "value": 1,
+          "unit": "per-year",
+          "controlId": "14.1"
+        },
+        {
+          "topic": "vapt-cadence",
+          "requirement": "Perform periodic external penetration tests, no less than annually",
+          "value": 1,
+          "unit": "per-year",
+          "controlId": "18.2"
+        }
+      ],
+      "lastReviewedAt": "2026-09-14"
+    },
+    {
+      "instrumentId": "soc2-tsc-2017",
+      "regulator": "AICPA",
+      "title": "2017 Trust Services Criteria for Security, Availability, Processing Integrity, Confidentiality, and Privacy (With Revised Points of Focus – 2022)",
+      "shortName": "SOC 2 TSC 2017",
+      "version": "TSP section 100, 2017 criteria with revised points of focus (2022)",
+      "issuedOn": "2017-04-01",
+      "effectiveFrom": "2018-12-15",
+      "supersedes": [],
+      "url": "https://www.aicpa-cima.com/resources/download/2017-trust-services-criteria-with-revised-points-of-focus-2022",
+      "applicability": {
+        "entityTypes": [],
+        "jurisdictions": []
+      },
+      "structure": "Common criteria CC1.1-CC9.2 (COSO-aligned), Availability A1.1-A1.3, Confidentiality C1.1-C1.2, Processing Integrity PI1.1-PI1.5, Privacy P1.1-P8.1; cite the criterion id, e.g. CC6.1",
+      "hardRequirements": [
+        {
+          "topic": "access-review",
+          "requirement": "The entity authorises, modifies or removes access to data, software and other assets based on roles and the need to know",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "CC6.3"
+        },
+        {
+          "topic": "patch-sla",
+          "requirement": "The entity uses detection and monitoring procedures to identify configuration changes and newly discovered vulnerabilities",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "CC7.1"
+        },
+        {
+          "topic": "vendor-due-diligence",
+          "requirement": "The entity assesses and manages risks associated with vendors and business partners",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "CC9.2"
+        }
+      ],
+      "lastReviewedAt": "2026-09-14"
+    },
+    {
+      "instrumentId": "owasp-asvs-5.0",
+      "regulator": "OWASP",
+      "title": "OWASP Application Security Verification Standard 5.0.0",
+      "shortName": "OWASP ASVS 5.0",
+      "version": "5.0.0 (30 May 2025)",
+      "issuedOn": "2025-05-30",
+      "effectiveFrom": "2025-05-30",
+      "supersedes": [],
+      "url": "https://owasp.org/www-project-application-security-verification-standard/",
+      "applicability": {
+        "entityTypes": [],
+        "jurisdictions": []
+      },
+      "structure": "Chapters V1-V17; requirements cited as chapter.section.requirement, e.g. 6.3.3 (full form v5.0.0-6.3.3); levels L1-L3",
+      "hardRequirements": [
+        {
+          "topic": "mfa",
+          "requirement": "Either a multi-factor authentication mechanism or a combination of single-factor mechanisms must be used to access the application (L2; hardware-based factor at L3)",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "6.3.3"
+        },
+        {
+          "topic": "other",
+          "requirement": "User-set passwords are at least 8 characters in length (15 strongly recommended)",
+          "value": 8,
+          "unit": "count",
+          "controlId": "6.2.1"
+        },
+        {
+          "topic": "session-timeout",
+          "requirement": "An inactivity timeout enforces re-authentication according to risk analysis and documented security decisions (L2)",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "7.3.1"
+        },
+        {
+          "topic": "encryption",
+          "requirement": "Only the latest recommended TLS versions (TLS 1.2 and 1.3) are enabled, with the latest preferred",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "12.1.1"
+        },
+        {
+          "topic": "sbom",
+          "requirement": "An inventory catalog such as an SBOM is maintained of all third-party libraries in use, from trusted and maintained repositories (L2)",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "15.1.2"
+        },
+        {
+          "topic": "patch-sla",
+          "requirement": "Application documentation defines risk-based remediation time frames for vulnerable third-party components (L1)",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "15.1.1"
+        }
+      ],
+      "lastReviewedAt": "2026-09-14"
+    },
+    {
+      "instrumentId": "owasp-llm-top10-2025",
+      "regulator": "OWASP",
+      "title": "OWASP Top 10 for LLM Applications 2025",
+      "shortName": "OWASP LLM Top 10 2025",
+      "version": "2025 edition (published 18 November 2024, OWASP GenAI Security Project)",
+      "issuedOn": "2024-11-18",
+      "effectiveFrom": "2024-11-18",
+      "supersedes": [],
+      "url": "https://genai.owasp.org/llm-top-10/",
+      "applicability": {
+        "entityTypes": [],
+        "jurisdictions": []
+      },
+      "structure": "Ten risks LLM01:2025-LLM10:2025, cited as LLM01..LLM10 (prompt injection, disclosure, supply chain, poisoning, output handling, excessive agency, prompt leakage, vectors, misinformation, consumption)",
+      "hardRequirements": [
+        {
+          "topic": "other",
+          "requirement": "Constrain model behaviour, segregate untrusted content and enforce least privilege to mitigate prompt injection",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "LLM01"
+        },
+        {
+          "topic": "other",
+          "requirement": "Minimise extensions, functionality and permissions of LLM agents and require human approval for high-impact actions",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "LLM06"
+        },
+        {
+          "topic": "sbom",
+          "requirement": "Maintain an up-to-date inventory of models, datasets and components (AI BOM) with verified provenance",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "LLM03"
+        }
+      ],
+      "lastReviewedAt": "2026-09-14"
+    },
+    {
+      "instrumentId": "owasp-agentic-top10-2026",
+      "regulator": "OWASP",
+      "title": "OWASP Top 10 for Agentic Applications for 2026",
+      "shortName": "OWASP Agentic Top 10 2026",
+      "version": "2026 edition (announced 9 December 2025, OWASP GenAI Security Project)",
+      "issuedOn": "2025-12-09",
+      "effectiveFrom": "2025-12-09",
+      "supersedes": [],
+      "url": "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/",
+      "applicability": {
+        "entityTypes": [],
+        "jurisdictions": []
+      },
+      "structure": "Ten risks ASI01-ASI10: goal hijack, tool misuse, identity/privilege abuse, agentic supply chain, code execution, memory poisoning, agent comms, cascading failures, trust exploitation, rogue agents",
+      "hardRequirements": [
+        {
+          "topic": "other",
+          "requirement": "Scope agent tool permissions to least privilege, validate tool arguments and log every tool invocation",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "ASI02"
+        },
+        {
+          "topic": "other",
+          "requirement": "Give agents distinct, short-lived, scoped identities rather than inherited human or shared credentials",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "ASI03"
+        },
+        {
+          "topic": "sbom",
+          "requirement": "Inventory and verify provenance of agent frameworks, MCP servers, tools, plugins and models",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "ASI04"
+        },
+        {
+          "topic": "other",
+          "requirement": "Run agent-generated code only in isolated sandboxes without production credentials or unrestricted network access",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "ASI05"
+        }
+      ],
+      "lastReviewedAt": "2026-09-14"
+    },
+    {
+      "instrumentId": "eu-ai-act-2024-1689",
+      "regulator": "EU-Commission",
+      "title": "Regulation (EU) 2024/1689 of the European Parliament and of the Council of 13 June 2024 laying down harmonised rules on artificial intelligence (Artificial Intelligence Act)",
+      "shortName": "EU AI Act",
+      "version": "Regulation (EU) 2024/1689, OJ L 12.7.2024, as amended by the Digital Omnibus on AI, Regulation (EU) 2026/1744 (in force 27 July 2026)",
+      "issuedOn": "2024-06-13",
+      "effectiveFrom": "2024-08-01",
+      "supersedes": [],
+      "url": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
+      "applicability": {
+        "entityTypes": [],
+        "jurisdictions": [
+          "EU"
+        ]
+      },
+      "structure": "Articles 1-113 and Annexes I-XIII cited as Art.9(2) or Annex-III; prohibitions from 2025-02-02, GPAI from 2025-08-02, Annex III high-risk from 2027-12-02, Annex I from 2028-08-02 (post-Omnibus)",
+      "hardRequirements": [
+        {
+          "topic": "incident-reporting",
+          "requirement": "Providers of high-risk AI systems report a serious incident immediately after establishing a causal link, and not later than 15 days after becoming aware of it",
+          "value": 15,
+          "unit": "days",
+          "controlId": "Art.73(2)"
+        },
+        {
+          "topic": "incident-reporting",
+          "requirement": "A widespread infringement or a serious incident involving critical infrastructure is reported immediately and not later than 2 days after awareness",
+          "value": 2,
+          "unit": "days",
+          "controlId": "Art.73(3)"
+        },
+        {
+          "topic": "log-retention",
+          "requirement": "Providers keep automatically generated logs of high-risk AI systems under their control for a period appropriate to the intended purpose, of at least six months",
+          "value": 6,
+          "unit": "months",
+          "controlId": "Art.19(1)"
+        },
+        {
+          "topic": "data-retention",
+          "requirement": "Providers keep technical documentation, QMS documentation and the EU declaration of conformity at the disposal of authorities for 10 years after the system is placed on the market",
+          "value": 10,
+          "unit": "years",
+          "controlId": "Art.18(1)"
+        },
+        {
+          "topic": "other",
+          "requirement": "High-risk AI systems are designed so that natural persons can effectively oversee them while in use",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "Art.14(1)"
+        }
+      ],
+      "lastReviewedAt": "2026-09-14"
+    },
+    {
+      "instrumentId": "mitre-atlas",
+      "regulator": "MITRE",
+      "title": "MITRE ATLAS: Adversarial Threat Landscape for Artificial-Intelligence Systems",
+      "shortName": "MITRE ATLAS",
+      "version": "Living knowledge base; record the ATLAS data version shown at atlas.mitre.org at retrieval time",
+      "issuedOn": "2021-06-01",
+      "supersedes": [],
+      "url": "https://atlas.mitre.org/",
+      "applicability": {
+        "entityTypes": [],
+        "jurisdictions": []
+      },
+      "structure": "Tactics AML.TA00nn, techniques AML.T00nn with sub-techniques AML.T00nn.00n, mitigations AML.M00nn, case studies AML.CS00nn; e.g. AML.T0051 LLM Prompt Injection",
+      "hardRequirements": [
+        {
+          "topic": "other",
+          "requirement": "Detect and mitigate LLM prompt injection (AML.T0051) and LLM jailbreak (AML.T0054) through input and output guardrails and monitoring",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "AML.T0051"
+        },
+        {
+          "topic": "other",
+          "requirement": "Restrict the number of AI model queries (rate limiting) to hinder model extraction and inference attacks",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "AML.M0004"
+        }
+      ],
+      "lastReviewedAt": "2026-09-14"
+    },
+    {
+      "instrumentId": "csa-mcp-security-2025",
+      "regulator": "CSA",
+      "title": "A Primer on Model Context Protocol (MCP) Secure Implementation",
+      "shortName": "CSA MCP Security 2025",
+      "version": "CSA publication of 23 June 2025 (K. Huang, Y.-J. Chen); see also the CSA Agentic MCP Security Best Practices Guide (draft, 27 March 2026)",
+      "issuedOn": "2025-06-23",
+      "effectiveFrom": "2025-06-23",
+      "supersedes": [],
+      "url": "https://cloudsecurityalliance.org/blog/2025/06/23/a-primer-on-model-context-protocol-mcp-secure-implementation",
+      "applicability": {
+        "entityTypes": [],
+        "jurisdictions": []
+      },
+      "structure": "Numbered sections as published in the primer at retrieval (security guidance cited as 8.3, MCP security practices; numbering not re-verified); cite 8.3 with the practice named in the finding",
+      "hardRequirements": [
+        {
+          "topic": "other",
+          "requirement": "Authorise every tool call against the caller's permissions before a tool accesses or modifies sensitive data",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "8.3"
+        },
+        {
+          "topic": "other",
+          "requirement": "Validate all LLM-generated tool arguments, use parameterised queries and keep an explicit tool allowlist to resist tool poisoning and injection",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "8.3"
+        },
+        {
+          "topic": "other",
+          "requirement": "Require explicit human confirmation before high-risk operations such as data deletion or fund transfers",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "8.3"
+        },
+        {
+          "topic": "other",
+          "requirement": "Never expose environment variables or secrets to the model; hold secrets in a vault and log tool calls and parameters for audit",
+          "value": 1,
+          "unit": "boolean",
+          "controlId": "8.3"
+        }
+      ],
+      "lastReviewedAt": "2026-09-14"
+    },
+    {
+      "instrumentId": "cisa-bod-26-04",
+      "regulator": "CISA",
+      "title": "Binding Operational Directive 26-04: Prioritizing Security Updates Based on Risk",
+      "shortName": "CISA BOD 26-04",
+      "version": "BOD 26-04 of 10 June 2026 with Implementation Guidance; supersedes BOD 19-02 and BOD 22-01",
+      "issuedOn": "2026-06-10",
+      "effectiveFrom": "2026-06-10",
+      "supersedes": [],
+      "url": "https://www.cisa.gov/news-events/directives/bod-26-04-prioritizing-security-updates-based-risk",
+      "applicability": {
+        "entityTypes": [],
+        "jurisdictions": [
+          "US"
+        ]
+      },
+      "structure": "Required actions in Phase I (immediate), II (60 days), III (180 days); Table-1 timelines by public exposure, KEV, automatability and technical impact; binds US federal agencies, a benchmark elsewhere",
+      "hardRequirements": [
+        {
+          "topic": "patch-sla",
+          "requirement": "Publicly exposed asset, KEV-listed, exploitation automatable, total technical impact: remediate within 3 days and perform forensic triage (the fastest tier stated on the BOD page)",
+          "value": 3,
+          "unit": "days",
+          "controlId": "Table-1"
+        },
+        {
+          "topic": "patch-sla",
+          "requirement": "Publicly exposed asset with two of the three aggravating factors (KEV, automatable, total control): remediate within 6 days (Table 1 is published as an image; this tier was not verified against the page text or the Implementation Guidance PDF)",
+          "value": 6,
+          "unit": "days",
+          "controlId": "Table-1"
+        },
+        {
+          "topic": "patch-sla",
+          "requirement": "Publicly exposed asset with one aggravating factor (KEV, automatable or total control): remediate within 10 days (Table 1 is published as an image; this tier was not verified against the page text or the Implementation Guidance PDF)",
+          "value": 10,
+          "unit": "days",
+          "controlId": "Table-1"
+        },
+        {
+          "topic": "patch-sla",
+          "requirement": "Publicly exposed asset, not KEV, not automatable, partial technical impact: remediate within 14 days (Table 1 is published as an image; this tier was not verified against the page text or the Implementation Guidance PDF)",
+          "value": 14,
+          "unit": "days",
+          "controlId": "Table-1"
+        },
+        {
+          "topic": "patch-sla",
+          "requirement": "Non-public asset with a KEV-listed vulnerability: remediate within 30 days (Table 1 is published as an image; this tier was not verified against the page text or the Implementation Guidance PDF); non-public and not KEV: fix on system upgrade (stated on the BOD page)",
+          "value": 30,
+          "unit": "days",
+          "controlId": "Table-1"
+        },
+        {
+          "topic": "compliance-reporting",
+          "requirement": "Phase I: agencies automate KEV remediation status reporting through the CDM Dashboard; agencies without full automation manually report their status on a bi-weekly basis (recorded as every 14 days)",
+          "value": 14,
+          "unit": "days",
+          "controlId": "Phase-I"
+        },
+        {
+          "topic": "compliance-reporting",
+          "requirement": "Phase III: agencies not fully automated through CDM report publicly exposed asset data to CISA every seven days in a CISA-approved machine-readable format",
+          "value": 7,
+          "unit": "days",
+          "controlId": "Phase-III"
+        }
+      ],
+      "lastReviewedAt": "2026-09-14"
+    }
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T07:44:16Z",
+    "workflow": "manual",
+    "agent": "ctx-researcher",
+    "sessionId": "b157e311-135c-4bae-a87c-99f2362a67a1"
+  }
+}

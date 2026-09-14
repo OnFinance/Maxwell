@@ -48,7 +48,11 @@ for (const name of present) if (!expected.includes(name)) problems.push(`${WF_DI
 for (const f of files) {
   const file = `${WF_DIR}/${f}`;
   const src = readFileSync(file, 'utf8');
-  const check = spawnSync(process.execPath, ['--input-type=module', '--check'], { input: src, encoding: 'utf8' });
+  // Both runtimes (the Claude Code Workflow tool and run-workflow.mjs) execute the script as the body of an async
+  // function with the documented globals, so a top-level `return` is legal there; syntax-check the same shape.
+  const wrapped = '(async function workflowBody(agent, pipeline, parallel, phase, log, args, budget, workflow) {\n'
+    + src.replace(/^\s*export\s+const\s+meta\s*=/m, 'const meta =') + '\n});\n';
+  const check = spawnSync(process.execPath, ['--input-type=module', '--check'], { input: wrapped, encoding: 'utf8' });
   if (check.status !== 0) { problems.push(`${file}: syntax error\n${check.stderr.trim()}`); continue; }
   let meta;
   try { meta = extractMeta(src); } catch (e) { problems.push(`${file}: ${e.message}`); continue; }

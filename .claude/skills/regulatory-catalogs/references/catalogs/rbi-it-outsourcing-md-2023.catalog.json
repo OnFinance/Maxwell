@@ -1,0 +1,3518 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.catalog.regulator",
+  "instrumentId": "rbi-it-outsourcing-md-2023",
+  "regulator": "RBI",
+  "version": "RBI/2023-24/102 DoS.CO.CSITEG/SEC.1/31.01.015/2023-24 dated 10.04.2023; REPEALED 28.11.2025, replaced by entity-wise RBI Managing Risks in Outsourcing Directions, 2025",
+  "sourceUrl": "https://fidcindia.org.in/wp-content/uploads/2023/04/RBI-OUTSOURCING-OF-IT-SERVICES-10-04-23.pdf",
+  "retrievedAt": "2026-09-14T07:10:00Z",
+  "groups": [
+    {
+      "id": "Chapter-I",
+      "title": "Chapter I: Preliminary",
+      "controls": [
+        {
+          "id": "1(b)",
+          "title": "Bring existing and new IT outsourcing agreements into compliance by the stated dates",
+          "prose": "The Directions came into effect on 1 October 2023. For outsourcing arrangements already in force on the date of issuance (10 April 2023): agreements due for renewal before 1 October 2023 had to comply on the renewal date (preferably) and not later than 12 months from issuance; agreements due for renewal on or after 1 October 2023 must comply on the renewal date or 36 months from issuance, whichever is earlier. For new arrangements: agreements coming into force before 1 October 2023 had to comply on the agreement date (preferably) and not later than 12 months from issuance; agreements coming into force on or after 1 October 2023 must comply from the date of agreement itself.",
+          "guidance": "INSTRUMENT STATUS (read first): this Master Direction is no longer in force. On 28 November 2025 RBI issued entity-wise 'Reserve Bank of India (<Entity> – Managing Risks in Outsourcing) Directions, 2025' that consolidate financial-services and IT outsourcing and repeal the earlier instructions (repeal list: circular DOR.RRC.REC.302/33-01-010/2025-26 dated 28 November 2025). Successors named in workspace sources: Non-Banking Financial Companies (DOR.ORG.REC.No.282/21-04-158/2025-26, which also covers HFCs, Core Investment Companies, NBFC-P2P and NBFC-AA), Commercial Banks, Small Finance Banks, Payments Banks, All India Financial Institutions and Credit Information Companies (each cited by the corresponding CSITE Directions 2026, e.g. RBI/DoS/2026-27/410 for commercial banks). No UCB or Local Area Bank successor was found in workspace sources; the UCB CSITE Directions 2026 paras 71-75 carry UCB vendor and outsourcing obligations, so confirm against RBI's Master Directions list before citing. The successors carry the same IT outsourcing obligations under new numbers; the paragraph ids in this catalog are kept so existing ledger records and crosswalks still resolve, and remain the correct citation for conduct before 28 November 2025 (NBFC 2025 para 101 saving clause).\n\nParagraph map, NBFC Directions 2025 (other entity-wise Directions follow the same structure with different numbers; verify before citing): 1(b) -> para 2; 2(a) -> para 3; 3(a)/Appendix III -> paras 5 and 58; 4(a)-(b) -> paras 9 and 18; 4(c) -> para 59; 5 -> para 60; 8 -> para 82; 9 -> para 62; 10 -> para 13; 11 -> para 63; 12 -> para 64; 13-14 -> paras 71-72 (with 29-31); 15-16 -> paras 73-74 (with 34); 17(a) -> paras 65-66; 17(c)-(g), 17(i) -> paras 68-70 (17(i) = 69(iii)); 17(h) -> para 61; 17(j) -> para 67; 18 -> para 83 (with 40-43); 19 -> paras 75-81 and 89; 20 -> F.1 paras 90-92; 21 -> F.2 paras 93-94; 22 -> E.6 paras 84-88; Appendix II (SOC) -> F.3 para 95; Appendix I (cloud) -> F.4 paras 96-97.\n\nTransition: the MD glide paths (12-month outer limit 10 April 2024, 36-month outer limit 10 April 2026) have expired, and NBFC 2025 para 2 separately required existing IT outsourcing agreements of in-scope NBFCs to comply at renewal or by 10 April 2026, whichever is earlier, with new agreements compliant from signature. Every material IT outsourcing agreement is therefore past its deadline under the successor Directions. For each material vendor file (company-profile/<company_id>/vendors/<vendor_id>.json) compare contract.startDate and the last renewal against these dates and raise a finding for any agreement whose clause set (see control 16, successor NBFC 2025 paras 34 and 74) has not been re-papered. Record the remediation as a change_management initiative rather than a waiver.\n\nCitations: for new findings, cite the applicable successor instrument as the current obligation once it is added to the instruments vocabulary; until then cite this catalog's control id and name the successor paragraph in the finding description (for example 'MD 17(h), now NBFC MRO Directions 2025 para 61'). Do not describe this MD as the live instrument in reports.\n\nSource note: controls were extracted verbatim from the Finance Industry Development Council copy of RBI/2023-24/102 (31 pages including Appendices I to III) at the sourceUrl, because the official RBI copies (https://rbidocs.rbi.org.in/rdocs/notification/PDFs/102MDITSERVICES56B33FD530B1433187D75CB7C06C8F70.PDF and https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12486) serve a CAPTCHA to automated fetchers. Confirm wording against the RBI copy before quoting it to a regulator.",
+          "category": "Applicability and transition",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Contract register listing each material IT outsourcing agreement with signature, renewal and amendment dates",
+            "Addendum or amended agreement for each legacy contract showing MD-compliant clauses executed before the applicable deadline",
+            "Board or IT Strategy Committee note tracking re-papering progress against the 12 and 36 month deadlines"
+          ],
+          "params": [
+            {
+              "id": "legacyRenewalBeforeCommencementDeadline",
+              "label": "Outer limit for agreements renewing before 1 Oct 2023 (12 months from issuance)",
+              "default": "2024-04-10"
+            },
+            {
+              "id": "legacyRenewalAfterCommencementDeadline",
+              "label": "Outer limit for agreements renewing on or after 1 Oct 2023 (renewal date or 36 months from issuance, whichever is earlier)",
+              "default": "2026-04-10"
+            }
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-05"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.20"
+            },
+            {
+              "regulator": "CIS",
+              "instrument": "cis-controls-8.1",
+              "controlId": "15.4"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "2(a)",
+          "title": "Confirm the RE is within the Directions' scope",
+          "prose": "The Directions apply to commercial banks (banking companies including foreign banks licensed in India, Local Area Banks, Small Finance Banks and Payments Banks, corresponding new banks and State Bank of India; Regional Rural Banks are excluded by the cover letter), Primary (Urban) Co-operative Banks in Tier 3 and Tier 4 under the December 2022 UCB categorisation, NBFCs in the Top, Upper and Middle Layers under Scale Based Regulation, Credit Information Companies, and the All India Financial Institutions EXIM Bank, NABARD, NaBFID, NHB and SIDBI.",
+          "guidance": "Status: this scope statement describes the repealed MD (see 1(b)); for current applicability use paragraph 3 of the entity-wise successor Directions, 2025. Intersect company details.json entityTypes and regulatoryRegistrations[].category with this control's applicability. Commercial banks, CICs and AIFIs carry no RBI tier, so their registration category is 'not-categorised'.\n\nNBFCs: under Scale Based Regulation every HFC is Middle Layer or above, so HFCs are always in scope. Base Layer NBFCs (including NBFC-P2P and NBFC-AA platforms, which are Base Layer by definition) were outside this MD. Their financial-services outsourcing was governed by the RBI Directions on Managing Risks and Code of Conduct in Outsourcing of Financial Services by NBFCs (9 November 2017). From 28 November 2025 the NBFC Managing Risks in Outsourcing Directions, 2025 replace both instruments. Under para 3(2), Base Layer NBFCs are bound by everything except Chapter IV (IT services) and the IT-specific provisions of Chapter II, so they remain outside the IT outsourcing controls in this catalog but within the successor's financial-services outsourcing chapter. Middle, Upper and Top Layer NBFCs are bound in full. Under para 3(3), Mortgage Guarantee Companies in the Middle Layer or above are bound by Chapter IV. Under para 3(4), NOFHCs are excluded.\n\nBanks: the 2006 Guidelines on Managing Risks and Code of Conduct in Outsourcing of Financial Services by banks (DBOD.NO.BP.40/21.04.158/2006-07) applied to banks only, never to NBFCs. For commercial banks, SFBs and PBs they are now superseded by the respective 2025 Managing Risks in Outsourcing Directions. UCBs in Tier 1 and Tier 2 were outside this MD; check the UCB CSITE Directions 2026 (paras 71-75) and any UCB outsourcing Directions for their current obligations.\n\nRecord the applicability determination, including any out-of-scope conclusion, as a soc observation instead of silently dropping the instrument.",
+          "category": "Applicability and transition",
+          "applicability": {
+            "reCategories": [
+              "tier-3",
+              "tier-4",
+              "nbfc-middle-layer",
+              "nbfc-upper-layer",
+              "nbfc-top-layer",
+              "not-categorised"
+            ],
+            "entityTypes": [
+              "scheduled-commercial-bank",
+              "small-finance-bank",
+              "payments-bank",
+              "urban-cooperative-bank",
+              "nbfc",
+              "housing-finance-company",
+              "credit-information-company",
+              "all-india-financial-institution"
+            ]
+          },
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "details.json entityTypes and regulatoryRegistrations with RBI licence or certificate of registration number",
+            "Latest RBI scale-based-regulation layer or UCB tier communication for the entity",
+            "Compliance function note recording the applicability determination"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.OC-03"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.31"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-ctx",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "2(b)",
+          "title": "Foreign bank branches: read Board as Head Office and comply or explain",
+          "prose": "For foreign banks operating in India in branch mode, references to the Board mean the Head Office or controlling office overseeing the Indian branches. Such banks follow a comply-or-explain approach: they may deviate from a specific part of the Directions only if RBI examines and accepts a reasonably justifiable explanation.",
+          "guidance": "Only relevant when details.json shows a foreign bank branch. Evidence each deviation with the explanation submitted to RBI and RBI's acceptance; a deviation without recorded RBI acceptance is a finding against the underlying clause, not against this control.",
+          "category": "Applicability and transition",
+          "applicability": {
+            "entityTypes": [
+              "scheduled-commercial-bank"
+            ]
+          },
+          "mandatory": false,
+          "defaultSeverity": "low",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Head Office or controlling office approval standing in for Board approvals",
+            "Explanation submitted to RBI for each deviation and RBI acceptance"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.OC-03"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-ctx"
+          ]
+        },
+        {
+          "id": "2(c)",
+          "title": "Classify every IT outsourcing arrangement for materiality",
+          "prose": "The Directions apply to Material Outsourcing of IT Services arrangements. An arrangement is material if its disruption or compromise could significantly impact the RE's business operations, or if unauthorised access to, loss or theft of customer information could materially impact the RE's customers. Outsourcing of IT Services covers IT infrastructure management, maintenance and support; network and security solutions and maintenance; application development, maintenance and testing and Application Service Providers including ATM switch ASPs; data-centre services and operations; cloud computing services; managed security services; and management of IT infrastructure and technology services in the payment-system ecosystem. Service providers include related and group entities, and an RE can itself be a service provider to another RE.",
+          "guidance": "Every vendor file must carry materiality ('material' or 'non-material') with the rationale traceable to the criteria in 3(a)(ii): services[].supportsCriticalFunction or criticality 'critical' satisfies limb (a); services[].dataAccessed containing customer PII, SPDI, financial or cardholder data satisfies limb (b). refresh-vendor-ctx flags vendors whose cloud-iaas, cloud-paas, cloud-saas, security-operations, data-centre, core-banking or software-development services touch production customer data yet are marked non-material. Exclusions in Appendix III (licensed software, OEM maintenance, VAPT auditors, SMS gateways, BCs, PSOs, telecom links) are recorded explicitly so they are not mistaken for gaps.",
+          "category": "Materiality assessment",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Materiality assessment worksheet per arrangement applying both limbs of clause 3(a)(ii)",
+            "Vendor register export showing materiality and service type for every IT service provider",
+            "Record of arrangements excluded under Appendix III with the exclusion relied upon"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-04"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "ID.AM-04"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.19"
+            },
+            {
+              "regulator": "CIS",
+              "instrument": "cis-controls-8.1",
+              "controlId": "15.3"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "SA-9"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "refresh-metastore",
+            "probe-iac",
+            "probe-agent-graph"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Chapter-II",
+      "title": "Chapter II: Role of the Regulated Entity",
+      "controls": [
+        {
+          "id": "4(a)",
+          "title": "RE, its Board and Senior Management remain ultimately responsible for outsourced IT",
+          "prose": "Outsourcing does not diminish the obligations of the RE or of its Board and Senior Management, who remain ultimately responsible for the outsourced activity. The RE must take steps to ensure the service provider applies the same high standard of care the RE would have applied had the activity not been outsourced, and must not engage an IT service provider whose engagement would compromise or weaken the RE's reputation.",
+          "guidance": "Evidence accountability through named internal owners per material vendor (vendor file tags, or the accountable persons in details.json contacts), Board or committee minutes that accept residual risk for material arrangements, and adverse-media screening in the due-diligence pack. A material vendor with no named RE owner, or a contract that shifts regulatory accountability to the provider, is a finding.",
+          "category": "Accountability",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Named RE relationship owner and risk owner for each material arrangement",
+            "Board or Board-committee minutes accepting accountability and residual risk for material IT outsourcing",
+            "Reputational screening result for each material service provider"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.RR-01"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-02"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.4"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "probe-sdlc"
+          ]
+        },
+        {
+          "id": "4(b)",
+          "title": "Outsourcing must not impede RE oversight or RBI supervision",
+          "prose": "Whether the service provider is in India or abroad, the RE must ensure outsourcing neither impedes nor interferes with its ability to oversee and manage its activities effectively, and does not impede RBI in carrying out its supervisory functions and objectives.",
+          "guidance": "Check that material arrangements do not create blind spots: logs, alerts and configuration for outsourced systems must be reachable by the RE (see 16(b) and App-I.6(e)), and supervisory access clauses must exist (16(o), 19(h)). Runtime probes that find a production component operated by a provider with no RE read access record an inconclusive observation plus a task request, and a finding when access is contractually absent.",
+          "category": "Accountability",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Read-only RE access paths (console roles, log exports) to each outsourced production system",
+            "Contract clauses preserving RE oversight and RBI supervisory access"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-09"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "DE.CM-06"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.22"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "runtime-probe-identity-access",
+            "runtime-probe-prod-env",
+            "probe-iac"
+          ]
+        },
+        {
+          "id": "4(c)",
+          "title": "Service provider not owned or controlled by RE insiders without Board approval",
+          "prose": "Unless it is a group company, the service provider must not be owned or controlled by any director, key managerial personnel or approver of the outsourcing arrangement of the RE, or their relatives (terms as defined under the Companies Act, 2013). An exception is permitted only with approval of the Board or a Board-level committee, followed by appropriate disclosure, oversight and monitoring. The Board must ensure no conflict of interest arises from third-party engagements.",
+          "guidance": "Screen each material vendor's shareholding and directors (MCA21 master data, ultimateParent in the vendor file) against the RE's register of directors, KMP and outsourcing approvers and their declared relatives. Store the screening result and, for any exception, the Board or committee approval reference and disclosure. Maintainer note: relative and control definitions follow the Companies Act, 2013 and must be applied by the compliance function, not inferred by an agent.",
+          "category": "Conflict of interest",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Related-party and conflict-of-interest screening of each service provider against directors, KMP, approvers and relatives",
+            "Board or Board-level committee approval and disclosure for any permitted exception",
+            "Annual conflict-of-interest declarations by outsourcing approvers"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-06"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.19"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        },
+        {
+          "id": "5",
+          "title": "Assess need, benefits and risks before outsourcing an IT service",
+          "prose": "REs must decide whether to outsource an IT service on a comprehensive assessment of benefits, risks and the availability of processes to manage those risks, considering among other things the criticality of the activity, the expected outcomes, success factors and cost-benefit analysis, and the outsourcing model to be adopted.",
+          "guidance": "Expect a pre-engagement business case per material arrangement recording criticality, expected outcomes, success criteria, cost-benefit and the chosen model (e.g. SaaS versus managed IaaS). refresh-vendor-ctx treats a vendor in status 'onboarding' or 'active' without a linked assessment as 'material-without-evidence'.",
+          "category": "Pre-engagement assessment",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Business case or need assessment covering criticality, outcomes, success factors, cost-benefit and outsourcing model",
+            "Approval record of the need assessment by the delegated authority"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-06"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "ID.RA-10"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "SR-5"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        },
+        {
+          "id": "6",
+          "title": "Consider all applicable laws and licence conditions in due diligence",
+          "prose": "When performing due diligence on outsourcing of IT services, the RE must consider all relevant laws, regulations, rules, guidelines and conditions of approval, licensing or registration.",
+          "guidance": "The due-diligence pack should list the legal and regulatory requirements checked, typically the IT Act 2000 and CERT-In Directions 2022, the DPDP Act 2023 and Rules 2025, RBI payment data storage directions for payment-system data, and conditions in the RE's licence or certificate of registration. Cross-check with the frameworksInScope in details.json.",
+          "category": "Pre-engagement assessment",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Legal and regulatory requirements checklist in each due-diligence pack",
+            "Legal or compliance sign-off on the regulatory assessment"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.OC-03"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.31"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "SA-4"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "refresh-ctx"
+          ]
+        },
+        {
+          "id": "7",
+          "title": "Grievance redressal remains with the RE",
+          "prose": "REs must maintain a robust grievance redressal mechanism that is not compromised by outsourcing; responsibility for redressing customer grievances about outsourced services rests with the RE, and outsourcing must not affect customers' rights against the RE, including their ability to obtain redressal under applicable law.",
+          "guidance": "Evidence that complaints arising from outsourced platforms (e.g. a SaaS loan-origination portal, a card-management processor, a call-centre CRM) flow into the RE's own grievance system and are tracked to closure under the RE's TATs and the RBI Integrated Ombudsman Scheme. Contracts must not route customers to the provider for final resolution.",
+          "category": "Customer protection",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "quarterly",
+          "evidenceExpected": [
+            "Complaint-flow mapping showing outsourced-service grievances landing in the RE's grievance redressal system",
+            "Grievance MIS segmented by outsourced service with TAT compliance",
+            "Contract language confirming customer rights against the RE are unaffected"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.OC-02"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "refresh-metastore"
+          ]
+        },
+        {
+          "id": "8",
+          "title": "Maintain an inventory of outsourced services and map third-party dependencies",
+          "prose": "REs must create an inventory of services provided by service providers, including key entities in their supply chains, map their dependency on third parties, and periodically evaluate the information received from service providers.",
+          "guidance": "Maxwell's vendors/<vendor_id>.json set is the inventory: every service must carry services[].type, criticality, criticalFunctionRefs, dataAccessed, hostingCountries and subcontractors (fourth parties). refresh-metastore and the runtime probes discover undeclared providers (SaaS endpoints in egress logs, managed databases, AI model APIs, container registries, MCP servers) and refresh-vendor-ctx onboards them as 'onboarding' with a 'material-without-evidence' flag. Dependency mapping is evidenced by criticalFunctions[].appIds in details.json linked to vendor services.",
+          "category": "Inventory",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Complete inventory of IT services by provider including sub-contractors in the supply chain",
+            "Dependency map linking critical business functions and applications to providers",
+            "Record of periodic evaluation of provider-supplied information (assurance reports, sub-contractor lists)"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "ID.AM-04"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-04"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.21"
+            },
+            {
+              "regulator": "CIS",
+              "instrument": "cis-controls-8.1",
+              "controlId": "15.1"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "SR-3"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "refresh-metastore",
+            "probe-iac",
+            "probe-agent-graph",
+            "runtime-probe-network-perimeter",
+            "runtime-probe-datapipeline",
+            "runtime-probe-harnesses"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Chapter-III",
+      "title": "Chapter III: Governance Framework",
+      "controls": [
+        {
+          "id": "9",
+          "title": "Board-approved IT outsourcing policy with the prescribed content",
+          "prose": "An RE intending to outsource any IT activity must have a comprehensive Board-approved IT outsourcing policy covering at least: roles and responsibilities of the Board, Board committees, Senior Management, IT function, business function and oversight and assurance functions; criteria for selecting activities and service providers; parameters for defining material outsourcing; delegation of authority by risk and materiality; disaster recovery and business continuity plans; systems to monitor and review outsourced operations; and termination processes and exit strategies, including business continuity if a third-party provider exits.",
+          "guidance": "Obtain the current policy and its Board approval minute. Check each mandated element is present; the exit-strategy content required by 22(a) and the cloud data-lifecycle and adoption content required by App-I.2 and App-I.4 are normally assessed against the same document. The MD does not fix a review frequency; Maxwell treats an approval older than 12 months, or older than the policy's own stated review cycle, as a medium finding and a missing element as high.",
+          "category": "Governance",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Board-approved IT outsourcing policy with version and approval date",
+            "Board minute approving the policy",
+            "Policy-to-clause trace matrix for paragraph 9 elements"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.PO-01"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-01"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.1"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.19"
+            },
+            {
+              "regulator": "CIS",
+              "instrument": "cis-controls-8.1",
+              "controlId": "15.2"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "SR-2"
+            }
+          ],
+          "probeWorkflows": [
+            "probe-sdlc",
+            "refresh-vendor-ctx"
+          ]
+        },
+        {
+          "id": "10",
+          "title": "Board sets the approval framework and materiality policies",
+          "prose": "The Board is responsible for putting in place a framework to approve IT outsourcing activities by risk and materiality, approving policies to evaluate the risks and materiality of all existing and prospective arrangements, and setting up a suitable Senior Management administrative framework for these Directions.",
+          "guidance": "Evidence a documented delegation-of-authority matrix (who may approve material versus non-material outsourcing), Board approval of the materiality methodology, and a Senior Management committee charter (typically an IT Outsourcing or Vendor Risk Committee reporting to the IT Strategy Committee or Risk Management Committee of the Board).",
+          "category": "Governance",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Delegation-of-authority matrix for IT outsourcing approvals by risk and materiality",
+            "Board approval of the risk and materiality evaluation policy",
+            "Charter of the Senior Management committee overseeing IT outsourcing"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.RR-01"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.OV-01"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.2"
+            }
+          ],
+          "probeWorkflows": [
+            "probe-sdlc"
+          ]
+        },
+        {
+          "id": "11(a)",
+          "title": "Senior Management formulates procedures and evaluates risk and materiality",
+          "prose": "Senior Management must formulate IT outsourcing policies and procedures and evaluate the risks and materiality of all existing and prospective arrangements using a framework commensurate with their complexity, nature and scope, aligned with the Board-approved enterprise-wide risk management framework, and oversee its implementation.",
+          "guidance": "Look for operating procedures derived from the policy (onboarding, materiality scoring, periodic review) and a completed materiality and risk evaluation for every arrangement in the vendor inventory, with scores linked to the enterprise risk register.",
+          "category": "Governance",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "IT outsourcing standard operating procedures approved by Senior Management",
+            "Risk and materiality evaluation for all existing and prospective arrangements linked to the ERM register"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-03"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.RM-03"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.19"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "probe-sdlc"
+          ]
+        },
+        {
+          "id": "11(b)",
+          "title": "Prior evaluation and periodic evaluation of outsourcing arrangements",
+          "prose": "Senior Management must evaluate prospective IT outsourcing arrangements before entering them and periodically evaluate existing arrangements, covering performance review, criticality and associated risks, in line with the Board-approved policy.",
+          "guidance": "Each vendor file's lastAssessment.date and rating evidence the latest periodic evaluation. refresh-vendor-ctx flags material vendors whose last assessment is older than the policy's review interval (Maxwell default 12 months for material, 24 months for non-material when the policy is silent).",
+          "category": "Ongoing oversight",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Pre-contract evaluation report for each new material arrangement",
+            "Periodic performance, criticality and risk review for each existing arrangement"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-07"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.22"
+            },
+            {
+              "regulator": "CIS",
+              "instrument": "cis-controls-8.1",
+              "controlId": "15.5"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "SR-6"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        },
+        {
+          "id": "11(c)",
+          "title": "Identify, monitor and report IT outsourcing risks to the Board in time",
+          "prose": "Senior Management must identify IT outsourcing risks as they arise and monitor, mitigate, manage and report them to the Board or Board committee in a timely manner.",
+          "guidance": "Evidence risk records (soc kind 'risk') for outsourcing concentration, provider failure and data exposure, and their appearance in Board or committee packs. Findings from refresh-vendor-ctx with severity high or critical should be traceable to a Board-level report within the next reporting cycle.",
+          "category": "Ongoing oversight",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "quarterly",
+          "evidenceExpected": [
+            "Outsourcing risk register entries with owners and treatment",
+            "Board or Board-committee papers reporting IT outsourcing risks"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-07"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.OV-03"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.22"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "11(d)",
+          "title": "Business continuity plans covering provider exit, tested periodically",
+          "prose": "Senior Management must ensure that suitable business continuity plans based on realistic and probable disruption scenarios, including the exit of any third-party service provider, are in place and periodically tested.",
+          "guidance": "Expect BCP scenarios per critical function that include loss of the primary cloud, core-banking or payment-switch provider, and test reports (tabletop or technical) at the frequency set in the BCP policy. RBI BCP/DR instructions generally drive semi-annual DR drills for banks; record the RE's stated frequency as the benchmark.",
+          "category": "Business continuity",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "BCP scenarios that include third-party provider failure and exit",
+            "BCP test reports covering provider-exit scenarios with lessons learnt"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-08"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "RC.RP-01"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.30"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "CP-4"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "runtime-probe-prod-env",
+            "probe-iac"
+          ]
+        },
+        {
+          "id": "11(e)",
+          "title": "Oversee provider data confidentiality and timely grievance redressal",
+          "prose": "Senior Management must ensure effective oversight of third parties for data confidentiality and appropriate, timely redressal of customer grievances.",
+          "guidance": "Evidenced by confidentiality attestations and assurance reports (SOC 2 Type II, ISO 27001/27018) on file in vendor assurance[] and by grievance MIS for outsourced services (see control 7).",
+          "category": "Ongoing oversight",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "quarterly",
+          "evidenceExpected": [
+            "Current assurance reports addressing confidentiality for each material provider",
+            "Senior Management review of grievance MIS for outsourced services"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-07"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.22"
+            },
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "8(2)"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        },
+        {
+          "id": "11(f)",
+          "title": "Independent periodic review and audit of IT outsourcing compliance",
+          "prose": "Senior Management must ensure an independent review and audit is carried out periodically for compliance with legislation, regulations, the Board-approved policy and performance standards, and report the results to the Board or Board committee.",
+          "guidance": "Expect internal audit or an external IS auditor to cover the IT outsourcing framework at the frequency set in the RE's audit plan, with the report tabled at the Audit Committee of the Board. details.json auditCadence records the cyber-audit frequency Maxwell uses as a proxy when no outsourcing-specific plan exists.",
+          "category": "Assurance",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Independent audit report on IT outsourcing compliance",
+            "Audit Committee or Board minute noting the report and action taken"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.OV-02"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.35"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "CA-2"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "11(g)",
+          "title": "Build in-house capacity to oversee outsourced activities",
+          "prose": "Senior Management must create adequate capacity with the required skills inside the organisation to properly oversee outsourced activities.",
+          "guidance": "Evidence a staffed vendor-management or third-party risk function with defined roles, and cloud or security engineers capable of reviewing provider configurations. A material cloud estate with no RE staff holding administrative understanding of it is a finding.",
+          "category": "Governance",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Organisation chart of the IT outsourcing oversight function with named roles",
+            "Training or certification records for staff overseeing material providers"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.RR-03"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.6.3"
+            }
+          ],
+          "probeWorkflows": [
+            "probe-sdlc"
+          ]
+        },
+        {
+          "id": "12(b)",
+          "title": "Central database of all IT outsourcing arrangements accessible to supervisors",
+          "prose": "The IT function must ensure a central database of all IT outsourcing arrangements is maintained and is accessible for review by the Board, Senior Management, auditors and supervisors.",
+          "guidance": "The company-profile vendors directory, exported through the status command, serves as the central database in Maxwell. Verify it is complete against procurement and accounts-payable records and that access has been granted to internal audit and is producible to RBI inspection teams on request.",
+          "category": "Inventory",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Central outsourcing database or register covering all arrangements",
+            "Access list showing Board, Senior Management, auditor and supervisor review access"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "ID.AM-04"
+            },
+            {
+              "regulator": "CIS",
+              "instrument": "cis-controls-8.1",
+              "controlId": "15.1"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.19"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        },
+        {
+          "id": "12(c)",
+          "title": "IT function monitors provider performance and coordinates periodic due diligence",
+          "prose": "The IT function must assist Senior Management in identifying, measuring, monitoring, mitigating and managing IT outsourcing risk; effectively monitor and supervise outsourced activities so providers meet performance standards and deliver uninterrupted service; report to Senior Management; and coordinate periodic due diligence and highlight concerns.",
+          "guidance": "Evidence monthly or quarterly service reviews with SLA dashboards, provider incident summaries and escalations; runtime probes of provider-hosted systems contribute uptime and configuration observations.",
+          "category": "Ongoing oversight",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "quarterly",
+          "evidenceExpected": [
+            "Service review minutes and SLA performance reports per material provider",
+            "Escalation log of concerns raised to Senior Management",
+            "Periodic due-diligence schedule coordinated by the IT function"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "DE.CM-06"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.22"
+            },
+            {
+              "regulator": "CIS",
+              "instrument": "cis-controls-8.1",
+              "controlId": "15.6"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "runtime-probe-prod-env"
+          ]
+        },
+        {
+          "id": "12(d)",
+          "title": "Contract documentation, KRIs and vendor risk classification",
+          "prose": "The IT function must put in place the documentation needed for contractual agreements, including service level management, monitoring of vendor operations, key risk indicators, and classification of vendors by determined risk.",
+          "guidance": "Expect a documented SLA and KRI set per material provider (e.g. availability, RTO/RPO achieved, P1 incident count, patch latency, assurance-report exceptions) and a risk tier on every vendor file (services[].criticality plus substitutability).",
+          "category": "Ongoing oversight",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "quarterly",
+          "evidenceExpected": [
+            "Service level management documentation and KRI definitions per material provider",
+            "Vendor risk classification recorded for every provider"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-04"
+            },
+            {
+              "regulator": "CIS",
+              "instrument": "cis-controls-8.1",
+              "controlId": "15.3"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.20"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Chapter-IV",
+      "title": "Chapter IV: Evaluation and Engagement of Service Providers",
+      "controls": [
+        {
+          "id": "13(a)",
+          "title": "Risk-based due diligence before contracting and at renewal",
+          "prose": "Before entering or renewing an Outsourcing of IT Services arrangement, the RE must perform appropriate due diligence on the provider's ability to meet its contractual obligations on an ongoing basis. The due diligence must be risk-based, cover qualitative, quantitative, financial, operational, legal and reputational factors, and, where possible, be supplemented by independent reviews and market feedback on the provider.",
+          "guidance": "Each material vendor file must reference a due-diligence pack dated before contract.startDate and before each renewal. refresh-vendor-ctx compares lastAssessment.date against contract dates and flags renewals executed without fresh due diligence. Independent inputs typically include credit-rating reports, MCA filings, customer references and analyst reports.",
+          "category": "Due diligence",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Due-diligence report per provider dated before contract signature and before each renewal",
+            "Risk-tiering rationale showing depth of diligence proportionate to materiality",
+            "Independent reviews or market feedback obtained"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-06"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "ID.RA-10"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.19"
+            },
+            {
+              "regulator": "CIS",
+              "instrument": "cis-controls-8.1",
+              "controlId": "15.5"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "SR-6"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        },
+        {
+          "id": "13(d)",
+          "title": "Consider concentration with a single or few providers when selecting",
+          "prose": "While evaluating a provider's capability, the RE must also consider the risks from concentrating outsourcing arrangements with a single provider or a few providers.",
+          "guidance": "At selection time, record how many material services and critical functions already depend on the candidate provider (or its ultimate parent) and on the same hyperscaler region. See 17(j) for the ongoing concentration assessment.",
+          "category": "Due diligence",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Concentration analysis in the selection note for each new material arrangement"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-07"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.19"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        },
+        {
+          "id": "14",
+          "title": "Due diligence covers competence, financial strength, reputation, conflicts and jurisdiction",
+          "prose": "Due diligence must evaluate all available information about the provider, including past experience and competence to support the activity over the contract period; financial soundness and ability to meet commitments under adverse conditions; business reputation, culture, compliance, complaints and litigation; conflicts of interest; political, economic, social and legal conditions in the provider's jurisdiction and other events that may affect data security and service; the quality of the provider's due diligence on its employees and sub-contractors (sub-contractors meaning those providing material IT services to the provider for the RE's arrangement); ability to comply with the arrangement's regulatory and legal requirements; ability to serve all its customers while maintaining confidentiality where it serves multiple entities; and ability to enforce the agreement and the rights under it, including on data storage, protection and confidentiality.",
+          "guidance": "Check the due-diligence template covers each factor in paragraph 14 (a) to (m). The technology, security, data segregation, security risk assessment and data protection factors are tracked separately as 14(f), 14(g), 14(j) and 14(k) because Maxwell probes can evidence them directly.",
+          "category": "Due diligence",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Due-diligence questionnaire and evaluation covering every factor in paragraph 14",
+            "Financial statements or credit rating of the provider",
+            "Litigation, sanctions and adverse-media search results",
+            "Background-verification policy of the provider for staff and sub-contractors"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-06"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.19"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "SR-6"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "PS-7"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        },
+        {
+          "id": "14(f)",
+          "title": "Evaluate provider technology, security, internal control, backup and BCM/DR",
+          "prose": "Due diligence must cover the provider's technology, infrastructure stability, security and internal controls, audit coverage, reporting and monitoring procedures, data backup arrangements, business continuity management and disaster recovery plan.",
+          "guidance": "Accept current SOC 2 Type II, ISO 27001 and ISO 22301 certificates or CSA STAR attestations with scope covering the contracted service, plus a CERT-In empanelled auditor report where available. Record them in vendor assurance[] with periodEnd and expiresAt; refresh-vendor-ctx flags 'assurance-expiring' and scope gaps.",
+          "category": "Due diligence",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "SOC 2 Type II or equivalent assurance report covering the contracted service",
+            "Provider BCP/DR plan summary with last DR test result",
+            "Provider backup architecture and retention description"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-06"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.19"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.30"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "SR-6"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        },
+        {
+          "id": "14(g)",
+          "title": "Confirm the provider can identify and segregate the RE's data",
+          "prose": "Due diligence must evaluate the provider's capability to identify and segregate the RE's data.",
+          "guidance": "For multi-tenant SaaS and managed services, obtain the tenancy architecture (separate database, schema-per-tenant, or row-level isolation with tenant keys). Where Maxwell has read access, runtime-probe-datapipeline and probe-schemas check tenant identifiers and per-tenant encryption keys on stores holding RE data.",
+          "category": "Due diligence",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Provider tenancy and data-segregation architecture description",
+            "Evidence of per-tenant logical isolation or encryption keys"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "PR.DS-01"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.23"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "SC-4"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "probe-schemas",
+            "runtime-probe-datapipeline"
+          ]
+        },
+        {
+          "id": "14(j)",
+          "title": "Perform an information and cyber security risk assessment of the provider",
+          "prose": "Due diligence must include an information and cyber security risk assessment of the service provider.",
+          "guidance": "Expect a security questionnaire (SIG Lite/Core or RE template) with scored results, review of the provider's latest VAPT summary, and external attack-surface review of the provider's service endpoints. Store the assessment in lastAssessment with findingIds for open issues.",
+          "category": "Due diligence",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Completed security risk assessment questionnaire with scoring and residual risk",
+            "Provider VAPT summary or attestation and remediation status",
+            "Open security issues tracked to closure"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "ID.RA-10"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-06"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.19"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "RA-3"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "runtime-probe-network-perimeter"
+          ]
+        },
+        {
+          "id": "14(k)",
+          "title": "Controls and contractual terms for data protection and RE access to its data",
+          "prose": "Due diligence must ensure appropriate controls, assurance requirements and contractual arrangements exist to protect data and to preserve the RE's access to data processed, managed or stored by the provider.",
+          "guidance": "Check encryption at rest and in transit for provider-held RE data, RE-held or RE-controlled keys where feasible (see App-I.6(a)), data-export capability tested, and contract clauses for access and return. contract.dataReturnAndDeletion in the vendor file must be true for material providers.",
+          "category": "Due diligence",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Data protection controls description (encryption, key ownership, access logging) for provider-held RE data",
+            "Tested data export or retrieval from the provider",
+            "Contract clause granting RE access to its data"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "PR.DS-01"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-05"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.20"
+            },
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-rules-2025",
+              "controlId": "6(1)(f)"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "probe-iac",
+            "refresh-metastore"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Chapter-V",
+      "title": "Chapter V: Outsourcing Agreement",
+      "controls": [
+        {
+          "id": "15",
+          "title": "Legally binding written agreement vetted by legal counsel",
+          "prose": "REs must set out the rights and obligations of themselves and each provider in a legally binding written agreement that reflects the criticality of the outsourced task, the associated risks and mitigation strategies. The terms must be defined and vetted by the RE's legal counsel for legal effect and enforceability, be flexible enough for the RE to retain adequate control and the right to intervene to meet legal and regulatory obligations, and state the nature of the legal relationship between the parties.",
+          "guidance": "Every material vendor file must have contract.reference, type, startDate and governingLaw. Evidence legal vetting through a legal review sign-off and a clause stating the relationship (principal-to-principal, no agency or partnership). Click-through terms for a material SaaS without a negotiated order form or addendum are a finding.",
+          "category": "Contract",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Executed written agreement (master agreement, order form, addenda) for each material arrangement",
+            "Legal counsel vetting note on enforceability",
+            "Clause describing the legal relationship and the RE's right to intervene"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-05"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.20"
+            },
+            {
+              "regulator": "CIS",
+              "instrument": "cis-controls-8.1",
+              "controlId": "15.4"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "SA-4"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        },
+        {
+          "id": "16",
+          "title": "Agreement contains the minimum clause set of paragraph 16",
+          "prose": "As applicable to scope, the agreement must at a minimum address: (a) activity details and service and performance standards, including for sub-contractors; (b) RE access to data, books, records, logs, alerts and premises; (c) regular monitoring and assessment of the provider; (d) material adverse events and incidents to be reported to the RE; (e) compliance with the IT Act 2000 and other laws and standards protecting customer data; (f) deliverables and SLAs; (g) storage of data only in India where extant regulations require; (h) details of RE and customer data captured, processed and stored; (i) confidentiality controls and provider liability for security breaches and leakage; (j) types of data the provider may share with RE customers or others; (k) resolution process, events of default, indemnities, remedies and recourse; (l) contingency plans and testing; (m) RE audit rights over the provider and its sub-contractors and access to audit reports; (n) the RE's right to information about third parties in the provider's supply chain; (o) regulators' authority to inspect the provider and sub-contractors, including RBI access to the RE's infrastructure, applications, data and documents held by them; (p) provider liability for sub-contractors' performance and risk management; (q) provider obligation to comply with RBI directions on the outsourced activity; (r) RE prior approval for use of sub-contractors; (s) RE termination rights including orderly transfer to another provider; (t) provider cooperation with authorities in the RE's insolvency or resolution; (u) provider staff for core services designated essential personnel able to work on-site in exigencies; (v) back-to-back arrangements between the provider and OEMs; and (w) a non-disclosure agreement for information retained by the provider.",
+          "guidance": "Maintain a clause-coverage matrix per material agreement mapping (a) to (w) to the clause numbers in the executed contract. refresh-vendor-ctx derives the machine-checkable subset from the vendor file (contract.rightToAudit, subcontractingAllowed, dataReturnAndDeletion, exitPlanDocumented, noticePeriodDays, governingLaw, services[].hostingCountries) and requests the matrix as evidence for the rest. The highest-risk clauses are tracked individually as 16(b), 16(d), 16(g), 16(i), 16(m), 16(o), 16(r) and 16(s).",
+          "category": "Contract",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Clause-coverage matrix mapping paragraph 16 (a) to (w) to executed contract clauses per material provider",
+            "Executed agreement and data processing addendum",
+            "Legal review noting any clause deemed not applicable with rationale"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-05"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.20"
+            },
+            {
+              "regulator": "CIS",
+              "instrument": "cis-controls-8.1",
+              "controlId": "15.4"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "SA-4"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "SA-9"
+            },
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "8(2)"
+            },
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-rules-2025",
+              "controlId": "6(1)(f)"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        },
+        {
+          "id": "16(b)",
+          "title": "Contractual RE access to data, records, logs, alerts and premises",
+          "prose": "The agreement must give the RE effective access to all data, books, records, information, logs, alerts and business premises relevant to the outsourced activity that are held by the provider.",
+          "guidance": "Beyond the clause, verify the access works: log export or SIEM integration from the provider (CloudTrail, Azure Activity Log, SaaS audit-log API), and RE-owned read roles in the provider console. runtime-probe-identity-access confirms the RE break-glass and read-only roles exist.",
+          "category": "Contract",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Contract clause granting access to data, records, logs, alerts and premises",
+            "Working log or audit-trail export from the provider into RE systems"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-05"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.20"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "SA-9"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "runtime-probe-identity-access",
+            "probe-iac"
+          ]
+        },
+        {
+          "id": "16(d)",
+          "title": "Contract defines adverse events and incidents the provider must report",
+          "prose": "The agreement must specify the types of material adverse events (such as data breaches, denial of service and service unavailability) and incidents the provider must report to the RE, so the RE can mitigate risk promptly and meet statutory and regulatory obligations.",
+          "guidance": "The reporting window in the contract must be short enough for the RE to meet 17(h) (RBI within 6 hours of detection by the provider) and CERT-In's 6-hour requirement; a contractual notification window of 24 or 72 hours for security incidents is a finding. Check provider escalation contacts appear in the RE incident response plan.",
+          "category": "Contract",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Contract clause listing reportable adverse events and incident categories with notification timelines",
+            "Provider escalation matrix included in the RE incident response plan"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-08"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.20"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "SR-8"
+            },
+            {
+              "regulator": "CERT-In",
+              "instrument": "cert-in-directions-2022",
+              "controlId": "Dir-ii"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        },
+        {
+          "id": "16(g)",
+          "title": "Data stored only in India where extant regulations require",
+          "prose": "The agreement must require storage of data only in India, as applicable to the RE, in line with extant regulatory requirements.",
+          "guidance": "Applies wherever a localisation rule binds the data, most commonly RBI's April 2018 directive on Storage of Payment System Data for payment-system data, and any sectoral or licence conditions. Verify both the clause and the deployment: services[].hostingCountries must be ['IN'] for such data; probe-iac checks cloud regions (ap-south-1/ap-south-2, centralindia/southindia, asia-south1/asia-south2), backup and replica regions, and CDN or log sinks; runtime-probe-datapipeline checks cross-border egress of in-scope datasets. Maintainer note: the MD does not itself enumerate which data must be localised; confirm the applicable localisation instruments for the RE.",
+          "category": "Data localisation",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Contract clause restricting storage of in-scope data to India",
+            "IaC and cloud inventory showing primary, replica and backup regions in India for in-scope data",
+            "Data-flow map showing no cross-border storage of in-scope data"
+          ],
+          "params": [
+            {
+              "id": "allowedStorageCountries",
+              "label": "Countries where in-scope data may be stored",
+              "default": "IN"
+            }
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "SA-9(5)"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.20"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.OC-03"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "probe-iac",
+            "probe-app-chart",
+            "refresh-metastore",
+            "runtime-probe-datapipeline",
+            "runtime-probe-prod-env"
+          ]
+        },
+        {
+          "id": "16(i)",
+          "title": "Confidentiality controls, data disclosure limits and provider breach liability",
+          "prose": "The agreement must set controls for maintaining the confidentiality of RE and customer data and make the provider liable to the RE for security breaches and leakage; it must also require the provider to disclose details of RE and customer data captured, processed and stored (16(h)), define which data the provider may share with RE customers or other parties (16(j)), and include a non-disclosure agreement for information the provider retains (16(w)).",
+          "guidance": "Check the data processing addendum lists data categories processed, permitted disclosures, and a liability cap that is not illusory for breach of confidentiality. Cross-reference with DPDP Rules 2025 Rule 6(1)(f) for processor contracts. The data inventory in sdlc/metastore.json should match the data categories the provider declares.",
+          "category": "Contract",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Confidentiality and NDA clauses with provider liability for breach and leakage",
+            "Provider declaration of RE and customer data captured, processed and stored",
+            "Clause restricting data the provider may share with customers or third parties"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-05"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.6.6"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.20"
+            },
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "8(2)"
+            },
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-rules-2025",
+              "controlId": "6(1)(f)"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "refresh-metastore"
+          ]
+        },
+        {
+          "id": "16(m)",
+          "title": "Right to audit the provider and its sub-contractors and obtain audit reports",
+          "prose": "The agreement must give the RE the right to audit the provider, including its sub-contractors, through internal or external auditors or appointed agents, and to obtain copies of audit or review reports and findings about the provider relating to the services performed for the RE.",
+          "guidance": "vendor contract.rightToAudit must be true for every material provider, with sub-contractor coverage. Hyperscaler standard terms often limit audit to reports and compliance programmes; RBI-specific financial-services addenda from major CSPs typically restore the right, so record which addendum is relied upon.",
+          "category": "Contract",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Right-to-audit clause covering the provider and sub-contractors",
+            "Clause entitling the RE to copies of audit and review reports",
+            "Financial-services regulatory addendum where standard cloud terms are used"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-05"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.20"
+            },
+            {
+              "regulator": "CIS",
+              "instrument": "cis-controls-8.1",
+              "controlId": "15.4"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        },
+        {
+          "id": "16(o)",
+          "title": "Recognise regulators' right to inspect and RBI access to RE data at the provider",
+          "prose": "The agreement must recognise the authority of regulators to inspect the provider and its sub-contractors, and allow RBI or persons it authorises to access the RE's IT infrastructure, applications, data, documents and other information given to, stored or processed by the provider or its sub-contractors, as applicable to the arrangement's scope; the provider must also be obliged, through specific terms, to comply with RBI directions on the outsourced activity (16(q)).",
+          "guidance": "A missing RBI inspection clause for a material provider is a high finding regardless of assurance reports. Check the clause extends to sub-contractors hosting RE data (e.g. the colocation data centre under a managed-service provider).",
+          "category": "Contract",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Clause recognising RBI and other regulators' inspection rights over the provider and sub-contractors",
+            "Clause obliging the provider to comply with RBI directions on the outsourced activity"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-05"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.20"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.OC-03"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        },
+        {
+          "id": "16(r)",
+          "title": "Sub-contracting only with RE prior consent and provider liable for sub-contractors",
+          "prose": "The agreement must require the RE's prior approval or consent before the provider uses sub-contractors for all or part of the outsourced activity, make the provider contractually liable for sub-contractors' performance and risk management (16(p)), and give the RE the right to seek information on third parties in the provider's supply chain (16(n)).",
+          "guidance": "vendor services[].subcontractors must be populated for material services; where contract.subcontractingAllowed is true the contract must still make each sub-contractor subject to the RE's prior consent. Probes that find a fourth party (e.g. a SaaS vendor's own cloud region or analytics processor) not in the declared list raise a finding.",
+          "category": "Contract",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Clause requiring RE prior consent to sub-contracting",
+            "Clause making the provider liable for sub-contractors",
+            "Current list of sub-contractors provided under the supply-chain information clause"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-05"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.21"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "SR-3"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "runtime-probe-network-perimeter",
+            "probe-agent-graph"
+          ]
+        },
+        {
+          "id": "16(s)",
+          "title": "Termination rights with orderly transfer and cooperation on RE resolution",
+          "prose": "The agreement must give the RE termination rights, including the ability to transfer the arrangement in an orderly way to another provider if necessary or desirable, and must oblige the provider to cooperate with relevant authorities in the RE's insolvency or resolution (16(t)).",
+          "guidance": "Check termination-for-convenience and for-cause rights, a transition-assistance period, and continuity-of-service obligations during resolution. vendor contract.noticePeriodDays and exitPlanDocumented support this control together with 22(b).",
+          "category": "Contract",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Termination clause with orderly transfer and transition assistance",
+            "Clause obliging cooperation with authorities in RE insolvency or resolution"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-10"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.20"
+            },
+            {
+              "regulator": "CIS",
+              "instrument": "cis-controls-8.1",
+              "controlId": "15.7"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Chapter-VI",
+      "title": "Chapter VI: Risk Management",
+      "controls": [
+        {
+          "id": "17(a)",
+          "title": "Risk management framework for IT outsourcing with documented, assured assessments",
+          "prose": "REs must have a risk management framework for outsourcing of IT services that comprehensively covers processes and responsibilities for identifying, measuring, mitigating, managing and reporting outsourcing risks. Risk assessments must be documented with approvals consistent with Board, Senior Management and IT function roles, and be subject to periodic internal and external quality assurance at the frequency set in the Board-approved policy (17(b)).",
+          "guidance": "Evidence a third-party risk methodology (inherent risk, control assessment, residual risk, treatment), approved assessments for each material provider, and a quality-assurance review by internal audit or an external party. Ledger risk records for vendors should cite this control.",
+          "category": "Risk management",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Third-party IT risk management framework document",
+            "Approved risk assessments per material provider",
+            "Internal and external quality-assurance review reports on the risk assessments"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-03"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-07"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.19"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "SR-2"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "RA-3"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "17(c)",
+          "title": "RE remains responsible for confidentiality and integrity of customer data at providers",
+          "prose": "REs are responsible for the confidentiality and integrity of customer data and information available to the service provider, and must seek to preserve and protect the security and confidentiality of customer information in the provider's custody, with provider staff accessing customer information only on a need-to-know basis (17(e)).",
+          "guidance": "Probe provider-held stores where access permits: encryption at rest, access logging, and the provider staff with standing access. Assurance-report exceptions touching confidentiality must be tracked as findings on the vendor.",
+          "category": "Data protection",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Encryption and access-logging configuration for customer data held by providers",
+            "Provider access list for customer data showing need-to-know justification",
+            "Assurance-report exceptions related to confidentiality and their remediation"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "PR.DS-01"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "PR.AA-05"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.34"
+            },
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-rules-2025",
+              "controlId": "6(1)(a)"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "probe-iac",
+            "runtime-probe-datapipeline",
+            "runtime-probe-identity-access"
+          ]
+        },
+        {
+          "id": "17(d)",
+          "title": "Provider access to data at RE locations on need-to-know with preventive controls",
+          "prose": "Service providers' access to data at the RE's location or data centre must be on a need-to-know basis with appropriate controls to prevent security breaches and data misuse.",
+          "guidance": "Check vendor engineers' accounts on RE systems: named (not shared) identities, just-in-time or time-bound elevation through a PAM tool, session recording for privileged access, and prompt removal at engagement end. runtime-probe-identity-access enumerates third-party principals (external IdP guests, cross-account roles, vendor VPN users) and flags standing admin rights.",
+          "category": "Access control",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Inventory of provider identities with access to RE systems and data",
+            "PAM or JIT access records and session recordings for provider privileged access",
+            "Periodic access review sign-off for provider accounts"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "PR.AA-05"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.15"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.8.2"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "AC-6"
+            },
+            {
+              "regulator": "CIS",
+              "instrument": "cis-controls-8.1",
+              "controlId": "6.8"
+            }
+          ],
+          "probeWorkflows": [
+            "runtime-probe-identity-access",
+            "probe-iac",
+            "runtime-probe-prod-env"
+          ]
+        },
+        {
+          "id": "17(f)",
+          "title": "Understand and monitor the control environment of every collaborating provider",
+          "prose": "Where two or more service providers collaborate to deliver an end-to-end solution, the RE remains responsible for understanding and monitoring the control environment of every provider with access to its data, systems, records or resources.",
+          "guidance": "Model multi-provider chains explicitly (e.g. a lending SaaS on a hyperscaler with a KYC API sub-processor and an SMS aggregator) in the vendor subcontractors and dependency map, and hold assurance evidence for each link that touches RE data.",
+          "category": "Risk management",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "End-to-end solution map listing every provider with access to RE data or systems",
+            "Assurance evidence for each provider in the chain"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-07"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.21"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "SR-3"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "refresh-metastore",
+            "runtime-probe-datapipeline"
+          ]
+        },
+        {
+          "id": "17(g)",
+          "title": "Prevent co-mingling of information when a provider serves multiple REs",
+          "prose": "Where a provider acts as outsourcing agent for multiple REs, adequate safeguards must prevent combining of information, documents, records and assets. For data it suffices to have clear separation and isolation of RE and customer data so that only personnel authorised by the RE can access that RE's data in a multi-tenant environment.",
+          "guidance": "Evidence tenant isolation through provider architecture documentation and assurance-report controls on logical separation; where Maxwell probes an RE-controlled tenant, verify tenant-scoped IAM and no cross-tenant principals.",
+          "category": "Data protection",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Multi-tenant isolation description and assurance control testing",
+            "Access control evidence that only RE-authorised personnel reach RE data"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "PR.DS-01"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.23"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "SC-4"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "runtime-probe-identity-access",
+            "probe-schemas"
+          ]
+        },
+        {
+          "id": "17(h)",
+          "title": "Provider reports cyber incidents so the RE can report to RBI within 6 hours",
+          "prose": "The RE must ensure the service provider reports cyber incidents to the RE without undue delay, so that the RE can report the incident to RBI within 6 hours of detection by the third-party service provider.",
+          "guidance": "The 6-hour clock starts at detection by the provider, not at notification to the RE. Evidence: contractual notification timeline (16(d)), provider escalation contacts in the incident response plan, integration of provider alerts into the RE SOC, and for past incidents the timestamps of provider detection, RE notification and RBI report. Record incident.regulatorReportRefs against this control with sla topic 'incident-reporting'. CERT-In's separate 6-hour requirement runs in parallel.",
+          "category": "Incident reporting",
+          "mandatory": true,
+          "defaultSeverity": "critical",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Contract clause requiring prompt cyber-incident notification to the RE",
+            "Incident response plan with provider escalation paths and RBI reporting step",
+            "For each provider-originated incident: provider detection time, RE notification time and RBI report time within 6 hours"
+          ],
+          "params": [
+            {
+              "id": "rbiReportingWindowHours",
+              "label": "Time from detection by the third-party service provider to report to RBI",
+              "default": "6",
+              "unit": "hours"
+            }
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-08"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "RS.CO-02"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.24"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "IR-6"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "SR-8"
+            },
+            {
+              "regulator": "CERT-In",
+              "instrument": "cert-in-directions-2022",
+              "controlId": "Dir-ii"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "17(i)",
+          "title": "Monitor provider security practices and notify RBI immediately of breaches and leakage",
+          "prose": "REs must review and monitor the control processes and security practices of the provider to disclose security breaches, must immediately notify RBI of any breach of security or leakage of confidential customer information, and must follow RBI's extant instructions on incident response and recovery management.",
+          "guidance": "Evidence ongoing monitoring (assurance reviews, security scorecards, provider breach disclosures) and, for every provider-side breach recorded in the ledger as kind 'incident', an RBI notification reference with timestamp. Pair with DPDP Rules 2025 Rule 7(1) (intimation to affected Data Principals) and Rule 7(2) (intimation and 72-hour report to the Data Protection Board) where personal data is involved.",
+          "category": "Incident reporting",
+          "mandatory": true,
+          "defaultSeverity": "critical",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Periodic review of provider security practices and breach disclosures",
+            "RBI notification record for each security breach or customer-data leakage at a provider",
+            "Incident response and recovery records aligned to RBI instructions"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "RS.CO-02"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "DE.CM-06"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.22"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "IR-6"
+            },
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-rules-2025",
+              "controlId": "7(1)"
+            },
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-rules-2025",
+              "controlId": "7(2)(a)"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "17(j)",
+          "title": "Assess concentration risk across providers and critical functions",
+          "prose": "REs must effectively assess the impact of concentration risk from multiple outsourcings to the same provider and from outsourcing critical or material functions to a limited number of providers.",
+          "guidance": "Compute concentration from the vendor inventory: count of critical functions and material services per provider and per ultimate parent, share of production workloads per cloud region, and substitutability ('not-substitutable' or 'highly-complex' raises weight). refresh-vendor-ctx raises a 'concentration' flag and a ledger risk when a single provider or parent supports more than one critical function without a tested alternative. Maxwell's threshold is a policy parameter; the MD states none.",
+          "category": "Concentration risk",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Concentration analysis by provider, ultimate parent and hosting region",
+            "Board or committee review of concentration risk with treatment decisions",
+            "Substitutability assessment for each material provider"
+          ],
+          "params": [
+            {
+              "id": "maxCriticalFunctionsPerProvider",
+              "label": "Critical functions one provider may support before concentration is escalated (organisation-set; the MD states no number)"
+            }
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-07"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-04"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.19"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "probe-iac",
+            "refresh-metastore"
+          ]
+        },
+        {
+          "id": "18(a)",
+          "title": "Provider documents, maintains and tests BCP and DRP",
+          "prose": "REs must require their service providers to develop and establish a robust framework for documenting, maintaining and testing the Business Continuity Plan (BCP) and Disaster Recovery Plan (DRP), commensurate with the nature and scope of the outsourced activity and consistent with RBI's extant BCP/DR instructions.",
+          "guidance": "Evidence: provider BCP/DR documents and test reports within the last cycle, with test scope covering the RE's outsourced service. probe-iac and runtime-probe-prod-env check multi-AZ or multi-region deployment, backup copies outside the provider's control plane where feasible, and documented RTO/RPO (sla topic 'backup-rto-rpo'). Successor: NBFC Directions 2025 para 83 (with para 40).",
+          "category": "Business continuity",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Provider BCP/DRP and latest test results",
+            "Backup and recovery configuration for provider-hosted critical systems"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-08"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "RC.RP-01"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.30"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "CP-2"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "CP-4"
+            },
+            {
+              "regulator": "CIS",
+              "instrument": "cis-controls-8.1",
+              "controlId": "11.2"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "probe-iac",
+            "runtime-probe-prod-env"
+          ]
+        },
+        {
+          "id": "18(b)",
+          "title": "Contingency plan considers alternative providers or in-house fallback",
+          "prose": "In establishing a viable contingency plan, REs must consider the availability of alternative service providers or the possibility of bringing the outsourced activity back in-house in an emergency, and the costs, time and resources that would be involved.",
+          "guidance": "Evidence an RE contingency plan per material arrangement naming alternative providers or an in-house fallback with estimated switch-over time, cost and resources. This clause is about substitutability, not concentration: concentration risk across providers is 17(j) (and 13(d) at selection). Successor: NBFC Directions 2025 para 83 (with para 41).",
+          "category": "Business continuity",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "RE contingency plan identifying alternative providers or in-house fallback with cost and time estimates"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-08"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "CP-2"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        },
+        {
+          "id": "18(c)",
+          "title": "Retain control and right to intervene on termination or provider insolvency",
+          "prose": "To mitigate the risk of unexpected termination of the outsourcing agreement or insolvency or liquidation of the service provider, REs must retain an appropriate level of control over the IT outsourcing arrangement, along with a right to intervene, with appropriate measures to continue business operations.",
+          "guidance": "Evidence contractual step-in or intervention rights, escrow of source code or configuration where relevant, and an operational playbook for continuing the service if the provider fails. Successor: NBFC Directions 2025 para 83 (with para 43).",
+          "category": "Business continuity",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Contract clause preserving RE control and right to intervene",
+            "Playbook for continuing operations on provider termination or insolvency"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-08"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.30"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        },
+        {
+          "id": "18(d)",
+          "title": "Provider can isolate, return or destroy RE information and assets",
+          "prose": "REs must ensure providers can isolate the RE's information, documents, records and other assets so that, in adverse conditions or on termination, all documents, transaction records, information and assets of the RE can be removed from the provider's possession or deleted, destroyed or rendered unusable.",
+          "guidance": "Evidence a tested data-extraction procedure (full export of RE datasets in usable format), crypto-shredding capability through RE-controlled keys, and provider deletion certificates from past exits. vendor contract.dataReturnAndDeletion must be true.",
+          "category": "Business continuity",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Documented and tested procedure to extract all RE data and assets from the provider",
+            "Deletion or destruction certificates from provider exits",
+            "RE-controlled encryption keys enabling crypto-shredding where applicable"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-10"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.8.10"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "SR-12"
+            },
+            {
+              "regulator": "CIS",
+              "instrument": "cis-controls-8.1",
+              "controlId": "15.7"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "probe-iac"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Chapter-VII",
+      "title": "Chapter VII: Monitoring and Control of Outsourced Activities",
+      "controls": [
+        {
+          "id": "19(a)",
+          "title": "Management structure to monitor performance, uptime, SLAs and incident response",
+          "prose": "REs must have a management structure to monitor and control outsourced IT activities, covering as applicable the provider's performance, uptime of systems and resources, service availability, SLA adherence and incident response mechanism.",
+          "guidance": "Evidence SLA dashboards, synthetic uptime monitoring of provider-hosted endpoints, monthly service review minutes and a named governance forum. runtime-probe-prod-env and runtime-probe-network-perimeter contribute availability observations for provider-hosted production services.",
+          "category": "Ongoing oversight",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "monthly",
+          "evidenceExpected": [
+            "Governance structure for monitoring outsourced IT activities",
+            "SLA and uptime reports per material provider",
+            "Provider incident response performance metrics"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "DE.CM-06"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.22"
+            },
+            {
+              "regulator": "CIS",
+              "instrument": "cis-controls-8.1",
+              "controlId": "15.6"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "CA-7"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "runtime-probe-prod-env",
+            "runtime-probe-network-perimeter"
+          ]
+        },
+        {
+          "id": "19(b)",
+          "title": "Regular risk-based audits of providers and sub-contractors",
+          "prose": "REs must conduct regular audits of providers, including sub-contractors, as applicable to the outsourced activity, through internal auditors or external auditors acting for the RE; REs using a common provider may conduct pooled audits but each remains responsible for ensuring its own contractual audit requirements are met (19(c)). Audits must assess the provider's performance, the adequacy of its risk management practices and its compliance with laws and regulations, at a frequency based on the nature and extent of risk and impact. Senior Management must periodically review monitoring and control reports and put adverse developments to the Board (19(d)).",
+          "guidance": "Hold an audit plan for material providers with frequency tied to risk tier, audit reports (own or pooled, e.g. an IBA-coordinated pooled audit of a common card or ATM switch provider), and Senior Management review minutes with Board escalations. Maxwell does not replace these audits; it records their existence and open issues against the vendor.",
+          "category": "Assurance",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Risk-based audit plan covering material providers and sub-contractors",
+            "Audit reports (RE or pooled) assessing performance, risk management and compliance",
+            "Senior Management review of monitoring reports and Board escalation of adverse developments"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-07"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.22"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "SR-6"
+            },
+            {
+              "regulator": "CIS",
+              "instrument": "cis-controls-8.1",
+              "controlId": "15.5"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "19(e)",
+          "title": "Reliance on third-party certifications does not remove the RE's assurance duty",
+          "prose": "Depending on its risk assessment, an RE may rely on globally recognised third-party certifications provided by the provider instead of conducting independent audits, but remains responsible for obtaining assurance on the controls and procedures safeguarding data security, including system availability, at the provider.",
+          "guidance": "When relying on SOC 2 Type II, ISO 27001 or PCI DSS AoC, verify scope covers the contracted service and locations, the period is current, complementary user entity controls are implemented by the RE, and exceptions are assessed. Store each report in vendor assurance[] with exceptionsCount; refresh-vendor-ctx flags scope gaps and expiry.",
+          "category": "Assurance",
+          "mandatory": false,
+          "defaultSeverity": "medium",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Certification or attestation reports in scope for the contracted service and period",
+            "RE review of report scope, exceptions and complementary user entity controls"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-07"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.22"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        },
+        {
+          "id": "19(f)",
+          "title": "Periodic review of provider financial and operational condition",
+          "prose": "REs must periodically, at a risk-based frequency, review the provider's financial and operational condition to assess its ability to keep meeting its obligations; such reviews must highlight any deterioration or breach in performance standards, confidentiality, security and operational resilience preparedness.",
+          "guidance": "Evidence annual financial review (audited accounts, rating changes, going-concern flags), operational KPIs and security posture changes. A material provider with a rating downgrade or adverse audit opinion and no documented RE response is a finding.",
+          "category": "Ongoing oversight",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Periodic financial condition review per material provider",
+            "Operational and security performance review highlighting deterioration or breaches"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-07"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.22"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "SR-6"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        },
+        {
+          "id": "19(g)",
+          "title": "Publicise termination where the provider dealt with RE customers",
+          "prose": "If an outsourcing agreement is terminated for any reason and the provider dealt with the RE's customers, the RE must give due publicity so customers stop dealing with that provider.",
+          "guidance": "Evidence public notices (website, app banner, SMS or email to affected customers) issued at termination of customer-facing arrangements such as collection platforms or customer-support portals.",
+          "category": "Customer protection",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Customer communication or public notice issued on termination of a customer-facing provider"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-10"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        },
+        {
+          "id": "19(h)",
+          "title": "Unrestricted access for RE, auditors and regulators to data and premises",
+          "prose": "REs must ensure the provider grants unrestricted and effective access, subject to appropriate security protocols, to data related to the outsourced activities and to the provider's relevant business premises, for effective oversight by the RE, its auditors, regulators and other competent authorities authorised under law.",
+          "guidance": "Operational counterpart to 16(b) and 16(o): evidence that access requests were honoured (audit visit reports, data extracts provided to RBI inspection teams). Refusal or undue delay recorded in service reviews is a high finding.",
+          "category": "Ongoing oversight",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Records of access provided to RE auditors or regulators at the provider",
+            "Contractual and operational access procedures including security protocols"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-05"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.20"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Chapter-VIII",
+      "title": "Chapter VIII: Outsourcing within a Group / Conglomerate",
+      "controls": [
+        {
+          "id": "20(a)",
+          "title": "Intra-group IT outsourcing backed by Board policy and service level agreements",
+          "prose": "An RE may outsource IT activities or IT-enabled services within its business group or conglomerate only if the arrangement is backed by the Board-approved policy and appropriate service level arrangements or agreements with the group entities.",
+          "guidance": "Vendor files with intraGroup true must carry the same contract fields as third parties, including SLA documents. A shared-services arrangement with a parent (e.g. group technology company hosting core systems) run on an informal cost-allocation memo is a finding.",
+          "category": "Intra-group",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Board-approved policy provision covering intra-group IT outsourcing",
+            "Executed service level agreement with each group entity providing IT services"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-05"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.20"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        },
+        {
+          "id": "20(b)",
+          "title": "Objective selection of group entities and management of conflicts",
+          "prose": "Selection of a group entity must rest on objective reasons similar to selecting a third party, and any conflicts of interest in the arrangement must be dealt with appropriately.",
+          "guidance": "Expect a selection note comparing the group entity with market alternatives using the same due-diligence criteria as paragraphs 13 and 14, and a documented conflict-of-interest assessment approved by an independent approver.",
+          "category": "Intra-group",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Selection rationale applying third-party criteria to the group entity",
+            "Conflict-of-interest assessment for the intra-group arrangement"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-06"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.19"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        },
+        {
+          "id": "20(c)",
+          "title": "Arm's length dealings and identical risk management for group providers",
+          "prose": "REs must always maintain an arm's length relationship with group entities, and the risk management practices applied when outsourcing to a group entity must be identical to those for a non-related party.",
+          "guidance": "Check that intra-group vendors have lastAssessment, assurance, rightToAudit and exit plans at the same standard as external vendors; refresh-vendor-ctx applies identical flags regardless of intraGroup. Arm's length pricing evidence normally comes from transfer-pricing documentation.",
+          "category": "Intra-group",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Risk assessments and audits of group providers equivalent to those for third parties",
+            "Arm's length pricing and terms evidence"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-07"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.19"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Chapter-IX",
+      "title": "Chapter IX: Cross-Border Outsourcing",
+      "controls": [
+        {
+          "id": "21(a)",
+          "title": "Monitor country risk and keep records available if a foreign provider is liquidated",
+          "prose": "Engaging a provider in another jurisdiction exposes the RE to country risk; the RE must continuously monitor that jurisdiction's government policies and political, social, economic and legal conditions, establish procedures to mitigate country risk including contingency and exit strategies, and ensure the availability of records to the RE and RBI is unaffected even if the provider is liquidated.",
+          "guidance": "Applies when vendor country is not IN or any services[].hostingCountries lies outside India. Evidence a country-risk assessment refreshed at least annually, exit and contingency plans specific to the cross-border arrangement, and escrow or India-held copies of records.",
+          "category": "Cross-border",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Country-risk assessment for each jurisdiction hosting a material provider",
+            "Contingency and exit plan specific to cross-border arrangements",
+            "Arrangement ensuring RE and RBI access to records on provider liquidation"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-07"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "SA-9(5)"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.19"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "probe-iac",
+            "runtime-probe-datapipeline"
+          ]
+        },
+        {
+          "id": "21(b)",
+          "title": "Specify governing law and contract only in jurisdictions upholding confidentiality",
+          "prose": "The governing law of a cross-border arrangement must be clearly specified, and in principle arrangements may be entered into only with parties in jurisdictions that uphold confidentiality clauses and agreements.",
+          "guidance": "vendor contract.governingLaw (ISO country code) must be populated for every cross-border material arrangement; the legal opinion on enforceability of confidentiality in the provider's jurisdiction should be on file.",
+          "category": "Cross-border",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Governing-law clause in each cross-border agreement",
+            "Legal assessment that the provider's jurisdiction upholds confidentiality agreements"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-05"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.20"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        },
+        {
+          "id": "21(c)",
+          "title": "RE and RBI rights to audit and inspect foreign providers",
+          "prose": "The right of the RE and of RBI to direct and conduct audit or inspection of a service provider based in a foreign jurisdiction must be ensured.",
+          "guidance": "Same evidence as 16(m) and 16(o) but tested for enforceability abroad; check that the foreign provider's local law does not bar RBI inspection (e.g. blocking statutes) and that data needed for inspection can be produced in India.",
+          "category": "Cross-border",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Audit and RBI inspection clauses in cross-border agreements",
+            "Legal assessment of enforceability of inspection rights in the foreign jurisdiction"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-05"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.20"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        },
+        {
+          "id": "21(d)",
+          "title": "Cross-border arrangements comply with statutes and RBI regulations",
+          "prose": "Cross-border outsourcing arrangements must comply with all statutory requirements and with regulations RBI issues from time to time.",
+          "guidance": "Cross-check cross-border arrangements against data localisation (16(g)), FEMA considerations for payments to foreign providers, and DPDP Rules 2025 Rule 15 on transfer of personal data outside India.",
+          "category": "Cross-border",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Compliance assessment of each cross-border arrangement against statutory and RBI requirements"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.OC-03"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.31"
+            },
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-rules-2025",
+              "controlId": "15"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "refresh-ctx"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Chapter-X",
+      "title": "Chapter X: Exit Strategy",
+      "controls": [
+        {
+          "id": "22(a)",
+          "title": "Policy contains a scenario-based exit strategy with minimum execution periods",
+          "prose": "The Outsourcing of IT Services policy must contain a clear exit strategy for outsourced IT activities and IT-enabled services that preserves business continuity during and after exit, covering different exit or termination scenarios with a minimum period to execute the plans as necessary, and identifying alternative arrangements such as another provider or performing the activity in-house.",
+          "guidance": "vendor contract.exitPlanDocumented must be true for material providers, backed by an exit plan per provider stating scenarios (termination for cause, provider insolvency, regulatory direction, strategic exit), alternative provider or in-house option, minimum execution period and noticePeriodDays long enough to execute it. Flag material providers with substitutability 'not-substitutable' and no exit plan as high.",
+          "category": "Exit strategy",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Exit strategy section in the Board-approved IT outsourcing policy",
+            "Exit plan per material provider with scenarios, alternatives and minimum execution period",
+            "Evidence exit plans were reviewed or tested (tabletop or partial migration)"
+          ],
+          "params": [
+            {
+              "id": "minExitExecutionDays",
+              "label": "Minimum period stipulated to execute the exit plan (organisation-set per scenario; the MD states no number)",
+              "unit": "days"
+            }
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-10"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.20"
+            },
+            {
+              "regulator": "CIS",
+              "instrument": "cis-controls-8.1",
+              "controlId": "15.7"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "probe-sdlc"
+          ]
+        },
+        {
+          "id": "22(b)",
+          "title": "Contract clauses for data destruction, transition cooperation and no erasure during transition",
+          "prose": "REs must ensure the agreement includes clauses on safe removal or destruction of data, hardware and all digital and physical records as applicable; legally obliges the provider to cooperate fully with the RE and new providers for a smooth transition; and prohibits the provider from erasing, purging, revoking, altering or changing any data during the transition period unless specifically advised by the regulator or the RE.",
+          "guidance": "Check the three elements separately in each material agreement; a deletion-on-termination clause that triggers automatically at contract end without a transition hold is a finding under the no-erasure limb.",
+          "category": "Exit strategy",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Clause on safe removal and destruction of data, hardware and records",
+            "Clause obliging full cooperation with the RE and successor providers",
+            "Clause prohibiting data erasure or alteration during transition without RE or regulator instruction"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-10"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.20"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.8.10"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "SR-12"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Appendix-I",
+      "title": "Appendix I: Usage of Cloud Computing Services",
+      "controls": [
+        {
+          "id": "App-I.1",
+          "title": "Base cloud adoption on a business technology risk assessment",
+          "prose": "When considering cloud adoption, it is imperative for the RE to analyse its business strategy and goals against its current IT application footprint and costs; the scope of adoption, from non-critical workloads to critical business applications such as SaaS, should be based on a business technology risk assessment. These cloud requirements apply in addition to the other controls in the Directions.",
+          "guidance": "Expect a cloud risk assessment per workload class (IaaS, PaaS, SaaS) that records data classification, criticality and the reason the workload is suitable for the chosen model, approved before migration. Recorded as non-mandatory because the MD phrases this as 'imperative to analyse' and 'should be based on'; defaultSeverity is indicative only. The successor NBFC Directions 2025 para 97(i) makes the assessment a 'shall' obligation, so treat a missing assessment as a gap for entities under the successor Directions.",
+          "category": "Cloud governance",
+          "mandatory": false,
+          "defaultSeverity": "medium",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Business technology risk assessment for cloud adoption per workload or workload class",
+            "Cloud cost and footprint analysis supporting adoption decisions"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "ID.RA-10"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.23"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "probe-iac"
+          ]
+        },
+        {
+          "id": "App-I.2",
+          "title": "Outsourcing policy covers the full cloud data lifecycle",
+          "prose": "When engaging cloud services, the RE must ensure the Outsourcing of IT Services policy covers the entire data lifecycle, from generation and entry into the cloud until permanent erasure or deletion, with procedures consistent with business needs and legal and regulatory requirements.",
+          "guidance": "Check the policy for lifecycle stages (creation, ingestion, storage, replication, backup, archival, deletion) and trace to implementation: storage lifecycle rules, backup retention, object-lock settings and deletion jobs in IaC, and the retention entries in sdlc/metastore.json.",
+          "category": "Cloud governance",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Policy section covering cloud data lifecycle through permanent deletion",
+            "IaC lifecycle, retention and deletion configuration matching the policy"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "PR.DS-01"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.23"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.8.10"
+            }
+          ],
+          "probeWorkflows": [
+            "probe-sdlc",
+            "probe-iac",
+            "refresh-metastore"
+          ]
+        },
+        {
+          "id": "App-I.3",
+          "title": "Cloud risk framework addresses multi-tenancy, multi-location and shared responsibility",
+          "prose": "The RE's risk management framework for cloud must account for cloud-specific factors such as multi-tenancy and multi-location storage and processing of data. Cloud security is a shared responsibility between the RE and the CSP, and REs may refer to cloud security best practices (the Directions cite NIST SP 800-210 and MeitY's cloud security best practices) when implementing controls according to the shared responsibility model.",
+          "guidance": "Expect a shared-responsibility matrix per CSP service in use (e.g. EKS, RDS, S3; AKS, Azure SQL; GKE, Cloud SQL; SaaS tenants) mapping each control to RE or CSP, and evidence RE-side controls are implemented. probe-iac verifies RE-side configuration for the managed services declared.",
+          "category": "Cloud governance",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Shared-responsibility matrix per cloud service in use",
+            "Cloud risk assessment covering multi-tenancy and data location"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-02"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.23"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "SA-9"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "probe-iac"
+          ]
+        },
+        {
+          "id": "App-I.4",
+          "title": "Documented cloud adoption policy aligned to data classification",
+          "prose": "REs must adopt and demonstrate a well-established, documented cloud adoption policy that identifies which activities can move to the cloud, protects stakeholder interests, ensures compliance with regulatory requirements including privacy, security, data sovereignty, recoverability and data storage aligned with data classification, and provides for due diligence and continuous monitoring of CSP risks.",
+          "guidance": "Obtain the cloud adoption policy and its approval; verify that data classes marked restricted or localised are mapped to permitted cloud models and regions, and that production environments in applications/<app_id>/env/<env_id>.json respect those mappings.",
+          "category": "Cloud governance",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Approved cloud adoption policy",
+            "Mapping of data classification to permitted cloud models and regions",
+            "CSP risk monitoring procedure"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.PO-01"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.23"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.12"
+            }
+          ],
+          "probeWorkflows": [
+            "probe-sdlc",
+            "probe-iac"
+          ]
+        },
+        {
+          "id": "App-I.5",
+          "title": "Select CSPs on a comprehensive risk assessment in enforceable jurisdictions",
+          "prose": "Selection of a CSP must be based on a comprehensive risk assessment of the CSP, and REs must contract only with CSPs subject to jurisdictions that uphold enforceability of agreements and the RE's rights, including on data storage, data protection and confidentiality.",
+          "guidance": "Vendor files for cloud-iaas, cloud-paas and cloud-saas services need a CSP-specific risk assessment and the contracting entity and governing law (typically the Indian subsidiary under Indian law for hyperscalers).",
+          "category": "Cloud governance",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "CSP risk assessment",
+            "Contract showing contracting entity, governing law and enforceable data rights"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-06"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.23"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        },
+        {
+          "id": "App-I.6(a)",
+          "title": "Standards-based cloud architecture with RE-controlled keys and container governance",
+          "prose": "The service and technology architecture for cloud applications must follow globally recognised architecture principles and standards. REs should prefer secure container-based data management where encryption keys and Hardware Security Modules are under RE control, with a standard set of tools and processes to manage containers, images and releases. Multi-tenant environments must be protected against integrity and confidentiality risks and co-mingling of data, and the architecture must be resilient, recovering smoothly from failure of any component or combination of components with minimal impact on information security.",
+          "guidance": "probe-iac checks customer-managed keys (AWS KMS CMK or CloudHSM, Azure Key Vault Managed HSM, Google Cloud KMS/EKM) on data stores and the key policy principals; probe-app-chart and probe-cicd-env check image provenance, digest pinning and release tooling; runtime-probe-appcontainers checks running images; resilience is checked through multi-AZ settings and pod disruption budgets. Provider-managed default keys on customer-data stores are a finding against the 'prefer RE-controlled keys' expectation at medium severity.",
+          "category": "Cloud security",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Architecture document referencing adopted standards",
+            "Key management configuration showing RE-controlled keys or HSMs for customer data",
+            "Container image registry, signing and release process",
+            "Resilience design with multi-AZ or multi-region failover"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "PR.DS-01"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "PR.IR-03"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.8.24"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.8.27"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "SC-12"
+            }
+          ],
+          "probeWorkflows": [
+            "probe-iac",
+            "probe-app-chart",
+            "probe-cicd-env",
+            "runtime-probe-appcontainers",
+            "runtime-probe-prod-env"
+          ]
+        },
+        {
+          "id": "App-I.6(b)",
+          "title": "Cloud IAM with RBAC, segregation of duties, least privilege and MFA",
+          "prose": "IAM must be agreed with the CSP to provide role-based access to cloud-hosted applications for user and privileged access, with access controls as stringent as for on-premises applications. Segregation of duties and a role-conflict matrix should be implemented for all user and privileged roles regardless of service model, provisioning should follow need-to-know and least privilege, and multi-factor authentication should be implemented for access to cloud applications.",
+          "guidance": "runtime-probe-identity-access enumerates cloud IAM (root or owner accounts without MFA, IAM users with console access and no MFA, wildcard admin policies, long-lived access keys, SSO enforcement) and SaaS admin roles; probe-iac checks policies in code. Evidence the role-conflict matrix and periodic access recertification. Missing MFA on privileged cloud access is high.",
+          "category": "Cloud security",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Cloud role catalogue and segregation-of-duties conflict matrix",
+            "IAM configuration showing least-privilege roles and MFA enforcement for all cloud console and application access",
+            "Periodic user and privileged access review records"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "PR.AA-05"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "PR.AA-03"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.15"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.3"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.8.5"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "AC-5"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "AC-6"
+            },
+            {
+              "regulator": "CIS",
+              "instrument": "cis-controls-8.1",
+              "controlId": "6.5"
+            }
+          ],
+          "probeWorkflows": [
+            "runtime-probe-identity-access",
+            "probe-iac"
+          ]
+        },
+        {
+          "id": "App-I.6(c)",
+          "title": "Cloud security controls equal or better than on-premises",
+          "prose": "Security controls for cloud applications must achieve control objectives similar to or higher than on-premises applications, including secure connectivity through appropriately deployed and configured network security resources, secure configuration and monitoring of cloud assets, and procedures to authorise changes to cloud applications and resources.",
+          "guidance": "probe-iac and probe-app-chart check security groups and NSGs, private endpoints, public exposure of storage and databases, WAF placement and CIS benchmark configuration; runtime-probe-network-perimeter verifies exposure from outside; probe-cicd-env and probe-sdlc verify that infrastructure and application changes pass approval gates before apply or deploy.",
+          "category": "Cloud security",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Network security configuration (segmentation, private endpoints, WAF) for cloud workloads",
+            "Cloud configuration posture results against a benchmark",
+            "Change approval records for cloud infrastructure and applications"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "PR.PS-01"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "PR.IR-01"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.8.9"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.8.20"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.8.32"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "CM-3"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "CM-6"
+            }
+          ],
+          "probeWorkflows": [
+            "probe-iac",
+            "probe-app-chart",
+            "probe-cicd-env",
+            "probe-sdlc",
+            "runtime-probe-network-perimeter",
+            "runtime-probe-prod-env"
+          ]
+        },
+        {
+          "id": "App-I.6(d)",
+          "title": "Define minimum cloud monitoring and assess CSP information security capability",
+          "prose": "REs must define minimum monitoring requirements for the cloud environment and assess the CSP's information and cyber security capability, including that the CSP maintains an information security policy framework commensurate with its exposure, keeps its capability current as vulnerabilities, threats, assets and business environment change, tests its controls at a nature and frequency commensurate with the materiality of the service and the threat environment, and assesses its sub-contractors for confidentiality, integrity and availability of shared data.",
+          "guidance": "Evidence a cloud monitoring baseline (e.g. CloudTrail or Activity Log in all regions, GuardDuty or Defender for Cloud or Security Command Center enabled, config-change alerts) verified by probe-iac, plus the CSP assessment drawn from assurance reports and sub-processor lists in the vendor file.",
+          "category": "Cloud security",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Documented minimum cloud monitoring requirements and their implementation",
+            "CSP information security capability assessment including control-testing frequency and sub-contractor assessment"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "DE.CM-01"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "DE.CM-06"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-07"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.8.16"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "CA-7"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "probe-iac",
+            "runtime-probe-prod-env"
+          ]
+        },
+        {
+          "id": "App-I.6(e)",
+          "title": "Integrate CSP logs into the RE SOC or retain them in cloud for incident handling",
+          "prose": "The RE must ensure appropriate integration of logs and events from the CSP into its SOC wherever applicable, and/or retention of relevant logs in the cloud, for reporting and handling incidents affecting cloud-deployed services.",
+          "guidance": "probe-iac verifies log sinks (organisation trails, diagnostic settings, log router) and retention; runtime-probe-prod-env confirms events arrive in the SIEM. Retention length follows CERT-In Directions (180 days within Indian jurisdiction) and the RE's policy; the MD sets no number.",
+          "category": "Cloud security",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "CSP audit and security log forwarding into the RE SIEM/SOC",
+            "Cloud log retention configuration",
+            "SOC use cases covering cloud control-plane events"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "PR.PS-04"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "DE.CM-01"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.8.15"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "AU-6"
+            },
+            {
+              "regulator": "CERT-In",
+              "instrument": "cert-in-directions-2022",
+              "controlId": "Dir-iv"
+            }
+          ],
+          "probeWorkflows": [
+            "probe-iac",
+            "probe-app-chart",
+            "runtime-probe-prod-env"
+          ]
+        },
+        {
+          "id": "App-I.6(f)",
+          "title": "Continuous security patching of cloud-hosted applications and platforms",
+          "prose": "The RE's own application security must be complemented by the CSP's cyber resilience controls, and the CSP and RE must ensure continuous and regular updates of security software, including upgrades, fixes, patches and service packs, to protect applications from advanced threats and malware.",
+          "guidance": "Check managed-service versions (Kubernetes control plane, database engines, runtime images) for end-of-support, auto minor-version upgrade settings, node image age and base-image CVEs; patch timelines follow sdlc/policy.json dependencyPolicy.vulnerabilitySlaDays and the sla-table topic 'patch-sla'.",
+          "category": "Cloud security",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Patch and upgrade status of managed services and images",
+            "Vulnerability remediation within the RE's patch SLA"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "PR.PS-02"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.8.8"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "SI-2"
+            },
+            {
+              "regulator": "CIS",
+              "instrument": "cis-controls-8.1",
+              "controlId": "7.3"
+            }
+          ],
+          "probeWorkflows": [
+            "probe-iac",
+            "probe-app-chart",
+            "runtime-probe-appcontainers",
+            "runtime-probe-prod-env",
+            "probe-cicd-env"
+          ]
+        },
+        {
+          "id": "App-I.6(g)",
+          "title": "CSP runs structured, threat-intelligence-driven vulnerability management",
+          "prose": "REs must ensure CSPs have a well-governed and structured approach to managing threats and vulnerabilities, supported by industry-specific threat intelligence.",
+          "guidance": "Evidence from CSP assurance reports (vulnerability management controls tested), CSP security bulletins subscribed to by the RE, and integration of CSP threat findings into RE workflows. RE-side vulnerability scanning of its own cloud workloads is evidenced under App-I.6(f).",
+          "category": "Cloud security",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "CSP vulnerability and threat management description or tested assurance control",
+            "Subscription to CSP security advisories and threat intelligence feeds"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "ID.RA-01"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "ID.RA-02"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.7"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "RA-5"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        },
+        {
+          "id": "App-I.7(a)",
+          "title": "Business continuity for cloud disasters and CSP failure",
+          "prose": "The RE's business continuity framework must ensure it can continue critical operations with minimal disruption, and with integrity and security, if a disaster affects its cloud services or the CSP fails.",
+          "guidance": "probe-iac checks cross-region backups, replicas and infrastructure-as-code reproducibility; evidence failover runbooks and, for critical functions on a single CSP, a documented fallback (second region, second CSP or on-premises).",
+          "category": "Cloud resilience",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "BCP scenarios for cloud region outage and CSP failure",
+            "Cross-region or cross-provider recovery design and tested runbooks"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "RC.RP-01"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "PR.IR-03"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.30"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "CP-2"
+            }
+          ],
+          "probeWorkflows": [
+            "probe-iac",
+            "runtime-probe-prod-env",
+            "refresh-vendor-ctx"
+          ]
+        },
+        {
+          "id": "App-I.7(b)",
+          "title": "CSP demonstrates cyber resilience including DR drills at multiple levels",
+          "prose": "REs must ensure the CSP has demonstrable preparedness for cyber resilience for the cloud services in use, systematically ensured through robust incident response and recovery practices, including DR drills at various levels of cloud service with necessary stakeholders.",
+          "guidance": "Evidence DR drill reports that include the CSP (region failover, backup restore, SaaS tenant recovery), with RTO and RPO achieved against targets (sla topic 'dr-drill').",
+          "category": "Cloud resilience",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "DR drill reports for cloud services involving the CSP and stakeholders",
+            "CSP incident response and recovery capability evidence"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "ID.IM-02"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-08"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.30"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "CP-4"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "runtime-probe-prod-env"
+          ]
+        },
+        {
+          "id": "App-I.8",
+          "title": "Cloud exit strategy covers data return, portability, secure purge and transition",
+          "prose": "Appendix I paragraph 8 lists points that may be evaluated when developing a cloud exit strategy. The binding element is 8(a): the SLA and exit strategy shall factor in agreed processes and turnaround times for returning the RE's service collaterals and data, data completeness and portability, secure purge of RE information from the CSP environment, smooth transition of services, and unambiguous liabilities, damages, penalties and indemnities. The remaining points are recommendations: the exit plan should track the evolving application design and delivery stack; contractually agreed exit and termination plans should specify how services and data will move out with minimal business impact while preserving integrity and security; and all transaction records, customer and operational information and configuration data should be taken over systematically, purged at the CSP end, and independent assurance obtained before sign-off.",
+          "guidance": "mandatory rests on 8(a) ('shall factor in'): a finding at defaultSeverity requires a missing or deficient data-return, portability, purge, transition or liability element in the SLA or exit strategy. Gaps against 8(b)-(d) (exit plan tracking the stack, contractual exit plan detail, systematic take-over with independent purge assurance) are recommendations under the MD and should be recorded at a lower severity or as observations; the successor NBFC Directions 2025 para 97(xvi) makes all four points part of a 'shall' exit strategy. Evidence a cloud exit plan per CSP with data export formats (open formats, database dumps, object storage copies), turnaround times, portability of IaC and container images, purge certification and independent assurance at sign-off. Heavy reliance on proprietary managed services with no portability analysis is recorded as a risk.",
+          "category": "Cloud exit",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Cloud exit plan with data return turnaround, portability and purge procedures",
+            "SLA exit stipulations covering liabilities and penalties",
+            "Independent assurance of purge at the CSP before sign-off for completed exits"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-10"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.23"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.8.10"
+            },
+            {
+              "regulator": "CIS",
+              "instrument": "cis-controls-8.1",
+              "controlId": "15.7"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "probe-iac"
+          ]
+        },
+        {
+          "id": "App-I.9",
+          "title": "Cloud audit and assurance scope",
+          "prose": "Audits, periodic reviews and third-party certifications for cloud usage should cover, as applicable, the roles and responsibilities of the RE and CSP in cloud governance, access and network controls, configurations, monitoring, data encryption, log review, change management, incident response, and resilience preparedness and testing.",
+          "guidance": "Check the scope section of cloud audit reports and CSP certifications against this list; Maxwell probe observations for IAM, network, configuration, encryption, logging and change management can be attached as supporting evidence but do not replace the independent audit. Recorded as non-mandatory because the MD says the audit scope 'should cover' these areas; defaultSeverity is indicative only. The successor NBFC Directions 2025 para 97(xvii) ('shall ... ensure that the audit / periodic review / third-party certifications cover') makes it binding for entities under the successor Directions.",
+          "category": "Cloud assurance",
+          "mandatory": false,
+          "defaultSeverity": "medium",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Cloud audit or review report with scope covering the listed areas",
+            "Third-party certifications of the CSP with relevant scope"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.OV-02"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.35"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "CA-2"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-soc",
+            "refresh-vendor-ctx",
+            "probe-iac",
+            "runtime-probe-identity-access"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Appendix-II",
+      "title": "Appendix II: Outsourcing of Security Operations Centre",
+      "controls": [
+        {
+          "id": "App-II(a)",
+          "title": "Identify the owner of assets used in outsourced SOC services",
+          "prose": "Because outsourced SOC operations store and process data externally under a Managed Security Service Provider with less RE visibility, REs outsourcing SOC operations must, in addition to the other controls, unambiguously identify the owner of the assets used to provide the service, including systems, software, source code, processes and concepts.",
+          "guidance": "Applies when details.json socModel is 'managed-soc' or a vendor has a 'security-operations' service. Expect an asset-ownership schedule in the MSSP contract (SIEM licences, collectors, playbooks, detection content, dashboards).",
+          "category": "Outsourced SOC",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Asset ownership schedule for the outsourced SOC in the MSSP contract"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "ID.AM-04"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.9"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.20"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        },
+        {
+          "id": "App-II(b)",
+          "title": "RE owns and oversees SOC rules, customisation, logs and analytics",
+          "prose": "REs must have adequate oversight and ownership of rule definitions, customisation and the related data, logs, metadata and analytics specific to the RE.",
+          "guidance": "Evidence RE admin or read access to the SIEM content repository, exportable detection rules (e.g. Sigma or native format) and logs, and a change log of rule changes approved by the RE. runtime-probe-identity-access can confirm RE-held roles on the SIEM or XDR tenant.",
+          "category": "Outsourced SOC",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "RE access to and ownership of SIEM rules, customisations, logs and analytics",
+            "Export of RE-specific detection rules and change history approved by the RE"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "DE.CM-01"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-05"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.8.16"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "runtime-probe-identity-access"
+          ]
+        },
+        {
+          "id": "App-II(c)",
+          "title": "Periodically assess SOC functioning including physical facilities",
+          "prose": "REs must periodically assess the functioning of the outsourced SOC, including all physical facilities involved in service delivery such as the SOC itself and areas where client data is stored or processed.",
+          "guidance": "Evidence periodic site assessments or audits of the MSSP SOC and data-processing locations, and SOC performance metrics (mean time to detect and respond, alert backlog, coverage of log sources).",
+          "category": "Outsourced SOC",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Periodic assessment or audit report of MSSP SOC operations and facilities",
+            "SOC performance metrics reviewed by the RE"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-07"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.22"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        },
+        {
+          "id": "App-II(d)",
+          "title": "Integrate outsourced SOC reporting and escalation with RE incident response",
+          "prose": "REs must integrate the outsourced SOC's reporting and escalation process with the RE's incident response process.",
+          "guidance": "Check the incident response plan names the MSSP escalation path, severity mapping and hand-off, and that SOC-originated incidents in the ledger show RE-side triage times compatible with 17(h) and CERT-In 6-hour reporting.",
+          "category": "Outsourced SOC",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Incident response plan showing MSSP escalation integration",
+            "Records of SOC-escalated incidents handled through the RE process"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-08"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "RS.MA-01"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.24"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "App-II(e)",
+          "title": "Review the outsourced SOC's alert and event handling process",
+          "prose": "REs must review the process by which the outsourced SOC handles alerts and events.",
+          "guidance": "Evidence periodic sampling of closed alerts for correct triage, false-positive tuning reviews, and SLA compliance for alert acknowledgement and escalation.",
+          "category": "Outsourced SOC",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "quarterly",
+          "evidenceExpected": [
+            "Alert-handling review reports with sampled alerts and outcomes",
+            "SOC alert SLA compliance report"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "DE.AE-02"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.22"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Appendix-III",
+      "title": "Appendix III: Services not considered under Outsourcing of IT Services",
+      "controls": [
+        {
+          "id": "App-III.A",
+          "title": "Services and activities outside the scope of IT outsourcing",
+          "prose": "Indicative, non-exhaustive list of services not treated as Outsourcing of IT Services: corporate internet banking obtained from another RE; external audits such as VA/PT, IS audit and security review; bulk SMS gateways; procurement of IT hardware or appliances; acquisition of licensed or subscribed software (such as CBS, databases, security solutions) and vendor enhancements to it; OEM maintenance including security patches and bug fixes; applications provided by financial-sector regulators or institutions such as CCIL, NSE and BSE; platforms such as Reuters, Bloomberg and SWIFT; off-the-shelf products such as anti-virus or email licensed with no or minimal customisation; services obtained as a sub-member of a Centralised Payment System from another RE; and business correspondent services, payroll processing and statement printing.",
+          "guidance": "Use to scope, not to waive: record the exclusion relied on for each vendor outside the MD so materiality classification (2(c)) is auditable. SaaS email or security tools with material customisation or hosting of customer data are not automatically excluded; hosted SaaS is cloud computing under 3(a)(iv)(e). Exclusion from these Directions does not remove other obligations such as CERT-In, DPDP or financial-services outsourcing rules (the 2006 guidelines for banks, the 2017 Directions for NBFCs, both now superseded by the entity-wise Managing Risks in Outsourcing Directions, 2025). The successor exclusion list is NBFC 2025 para 5(2).",
+          "category": "Scope exclusions",
+          "mandatory": false,
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Vendor register entries marked excluded with the Appendix III item relied upon"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-04"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        },
+        {
+          "id": "App-III.B",
+          "title": "Vendors not treated as third-party service providers",
+          "prose": "Indicative, non-exhaustive list of vendors not treated as Third-Party Service Providers under the Directions: vendors providing business services using IT such as business correspondents; payment system operators authorised by RBI under the Payment and Settlement Systems Act, 2007; partnership-based fintechs providing co-branded applications, services or products (treated under outsourcing of financial services instead); fintech data retrieval, validation and verification services such as bank statement analysis, GST returns analysis, vehicle information fetch, digital document execution, and data entry and call-centre services; telecom providers of leased lines and similar transmission infrastructure; and security or audit consultants acting as independent certifiers, auditors or lead implementers.",
+          "guidance": "Record the exclusion basis per vendor. Co-lending and co-branded fintech partners fall under the financial-services outsourcing and digital lending instructions, so Maxwell should still map them under those instruments rather than dropping them from the inventory.",
+          "category": "Scope exclusions",
+          "mandatory": false,
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Vendor register entries marked not-TPSP with the Appendix III category relied upon"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-04"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T07:30:00Z",
+    "workflow": "manual",
+    "agent": "regulatory-cataloguer",
+    "sessionId": "b157e311-135c-4bae-a87c-99f2362a67a1",
+    "model": "claude-opus-5"
+  }
+}

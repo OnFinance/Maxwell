@@ -19,20 +19,20 @@
         "entries": [
           {
             "instrument": "sebi-cscrf-2024",
-            "controlId": "PR.PS.S6",
+            "controlId": "PR.MA.S3",
             "topic": "patch-sla",
             "severity": "critical",
             "days": 7,
-            "basis": "SEBI CSCRF 2024, PR.PS: critical vulnerabilities in internet-facing systems shall be patched within 7 days of publication",
+            "basis": "SEBI CSCRF 2024, PR.MA.S3: patches for high-severity vulnerabilities shall be applied within 1 week of release",
             "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
           },
           {
             "instrument": "sebi-cscrf-2024",
-            "controlId": "PR.PS.S6",
+            "controlId": "PR.MA.S3",
             "topic": "patch-sla",
             "severity": "high",
             "days": 7,
-            "basis": "SEBI CSCRF 2024, PR.PS: high-severity vulnerabilities in critical systems shall be remediated within 7 days"
+            "basis": "SEBI CSCRF 2024, PR.MA.S3: high-severity vulnerabilities in critical systems shall be remediated within 1 week"
           },
           {
             "instrument": "cert-in-directions-2022",
@@ -75,20 +75,20 @@
         "entries": [
           {
             "instrument": "sebi-cscrf-2024",
-            "controlId": "PR.PS.S6",
+            "controlId": "PR.MA.S3",
             "topic": "patch-sla",
             "severity": "critical",
             "days": 7,
-            "basis": "SEBI CSCRF 2024, PR.PS: critical vulnerabilities in internet-facing systems shall be patched within 7 days of publication",
+            "basis": "SEBI CSCRF 2024, PR.MA.S3: patches for high-severity vulnerabilities shall be applied within 1 week of release",
             "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
           },
           {
             "instrument": "sebi-cscrf-2024",
-            "controlId": "PR.PS.S6",
+            "controlId": "PR.MA.S3",
             "topic": "patch-sla",
             "severity": "high",
             "days": 7,
-            "basis": "SEBI CSCRF 2024, PR.PS: high-severity vulnerabilities in critical systems shall be remediated within 7 days"
+            "basis": "SEBI CSCRF 2024, PR.MA.S3: high-severity vulnerabilities in critical systems shall be remediated within 1 week"
           },
           {
             "instrument": "cert-in-directions-2022",
@@ -128,21 +128,21 @@
         "entries": [
           {
             "instrument": "sebi-cscrf-2024",
-            "controlId": "PR.PS.S6",
+            "controlId": "PR.MA.S3",
             "topic": "patch-sla",
             "severity": "critical",
             "days": 7,
-            "basis": "SEBI CSCRF 2024, PR.PS: critical vulnerabilities in internet-facing systems shall be patched within 7 days of publication",
+            "basis": "SEBI CSCRF 2024, PR.MA.S3: patches for high-severity vulnerabilities shall be applied within 1 week of release",
             "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html",
             "weeks": 1
           },
           {
             "instrument": "sebi-cscrf-2024",
-            "controlId": "PR.PS.S6",
+            "controlId": "PR.MA.S3",
             "topic": "patch-sla",
             "severity": "high",
             "days": 7,
-            "basis": "SEBI CSCRF 2024, PR.PS: high-severity vulnerabilities in critical systems shall be remediated within 7 days"
+            "basis": "SEBI CSCRF 2024, PR.MA.S3: high-severity vulnerabilities in critical systems shall be remediated within 1 week"
           },
           {
             "instrument": "cert-in-directions-2022",
@@ -190,16 +190,16 @@
             "topic": "patch-sla",
             "severity": "critical",
             "days": 7,
-            "basis": "SEBI CSCRF 2024, PR.PS: critical vulnerabilities in internet-facing systems shall be patched within 7 days of publication",
+            "basis": "SEBI CSCRF 2024, PR.MA.S3: patches for high-severity vulnerabilities shall be applied within 1 week of release",
             "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
           },
           {
             "instrument": "sebi-cscrf-2024",
-            "controlId": "PR.PS.S6",
+            "controlId": "PR.MA.S3",
             "topic": "patch-sla",
             "severity": "high",
             "days": 7,
-            "basis": "SEBI CSCRF 2024, PR.PS: high-severity vulnerabilities in critical systems shall be remediated within 7 days"
+            "basis": "SEBI CSCRF 2024, PR.MA.S3: high-severity vulnerabilities in critical systems shall be remediated within 1 week"
           },
           {
             "instrument": "cert-in-directions-2022",
@@ -243,20 +243,20 @@
         "entries": [
           {
             "instrument": "sebi-cscrf-2024",
-            "controlId": "PR.PS.S6",
+            "controlId": "PR.MA.S3",
             "topic": "patch-sla",
             "severity": "urgent",
             "days": 7,
-            "basis": "SEBI CSCRF 2024, PR.PS: critical vulnerabilities in internet-facing systems shall be patched within 7 days of publication",
+            "basis": "SEBI CSCRF 2024, PR.MA.S3: patches for high-severity vulnerabilities shall be applied within 1 week of release",
             "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
           },
           {
             "instrument": "sebi-cscrf-2024",
-            "controlId": "PR.PS.S6",
+            "controlId": "PR.MA.S3",
             "topic": "patch-sla",
             "severity": "high",
             "days": 7,
-            "basis": "SEBI CSCRF 2024, PR.PS: high-severity vulnerabilities in critical systems shall be remediated within 7 days"
+            "basis": "SEBI CSCRF 2024, PR.MA.S3: high-severity vulnerabilities in critical systems shall be remediated within 1 week"
           },
           {
             "instrument": "cert-in-directions-2022",
@@ -300,20 +300,20 @@
         "entries": [
           {
             "instrument": "sebi-cscrf-2024",
-            "controlId": "PR.PS.S6",
+            "controlId": "PR.MA.S3",
             "topic": "password-policy",
             "severity": "critical",
             "days": 7,
-            "basis": "SEBI CSCRF 2024, PR.PS: critical vulnerabilities in internet-facing systems shall be patched within 7 days of publication",
+            "basis": "SEBI CSCRF 2024, PR.MA.S3: patches for high-severity vulnerabilities shall be applied within 1 week of release",
             "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
           },
           {
             "instrument": "sebi-cscrf-2024",
-            "controlId": "PR.PS.S6",
+            "controlId": "PR.MA.S3",
             "topic": "patch-sla",
             "severity": "high",
             "days": 7,
-            "basis": "SEBI CSCRF 2024, PR.PS: high-severity vulnerabilities in critical systems shall be remediated within 7 days"
+            "basis": "SEBI CSCRF 2024, PR.MA.S3: high-severity vulnerabilities in critical systems shall be remediated within 1 week"
           },
           {
             "instrument": "cert-in-directions-2022",
@@ -357,20 +357,20 @@
         "entries": [
           {
             "instrument": "sebi-cscrf-2024",
-            "controlId": "PR.PS.S6",
+            "controlId": "PR.MA.S3",
             "topic": "patch-sla",
             "severity": "critical",
             "days": 7,
-            "basis": "SEBI CSCRF 2024, PR.PS: critical vulnerabilities in internet-facing systems shall be patched within 7 days of publication",
+            "basis": "SEBI CSCRF 2024, PR.MA.S3: patches for high-severity vulnerabilities shall be applied within 1 week of release",
             "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
           },
           {
             "instrument": "sebi-cscrf-2024",
-            "controlId": "PR.PS.S6",
+            "controlId": "PR.MA.S3",
             "topic": "patch-sla",
             "severity": "high",
             "days": 7,
-            "basis": "SEBI CSCRF 2024, PR.PS: high-severity vulnerabilities in critical systems shall be remediated within 7 days"
+            "basis": "SEBI CSCRF 2024, PR.MA.S3: high-severity vulnerabilities in critical systems shall be remediated within 1 week"
           },
           {
             "instrument": "cert-in-directions-2022",
@@ -414,7 +414,7 @@
         "entries": [
           {
             "instrument": "sebi-cscrf-2024",
-            "controlId": "PR.PS.S6",
+            "controlId": "PR.MA.S3",
             "topic": "patch-sla",
             "severity": "critical",
             "days": 7,
@@ -422,11 +422,11 @@
           },
           {
             "instrument": "sebi-cscrf-2024",
-            "controlId": "PR.PS.S6",
+            "controlId": "PR.MA.S3",
             "topic": "patch-sla",
             "severity": "high",
             "days": 7,
-            "basis": "SEBI CSCRF 2024, PR.PS: high-severity vulnerabilities in critical systems shall be remediated within 7 days"
+            "basis": "SEBI CSCRF 2024, PR.MA.S3: high-severity vulnerabilities in critical systems shall be remediated within 1 week"
           },
           {
             "instrument": "cert-in-directions-2022",
@@ -469,20 +469,20 @@
         "entries": [
           {
             "instrument": "sebi-cscrf-2024",
-            "controlId": "PR.PS.S6",
+            "controlId": "PR.MA.S3",
             "topic": "patch-sla",
             "severity": "critical",
             "days": 7,
-            "basis": "SEBI CSCRF 2024, PR.PS: critical vulnerabilities in internet-facing systems shall be patched within 7 days of publication",
+            "basis": "SEBI CSCRF 2024, PR.MA.S3: patches for high-severity vulnerabilities shall be applied within 1 week of release",
             "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
           },
           {
             "instrument": "sebi-cscrf-2024",
-            "controlId": "PR.PS.S6",
+            "controlId": "PR.MA.S3",
             "topic": "patch-sla",
             "severity": "high",
             "days": 7,
-            "basis": "SEBI CSCRF 2024, PR.PS: high-severity vulnerabilities in critical systems shall be remediated within 7 days"
+            "basis": "SEBI CSCRF 2024, PR.MA.S3: high-severity vulnerabilities in critical systems shall be remediated within 1 week"
           },
           {
             "instrument": "cert-in-directions-2022",
@@ -526,20 +526,20 @@
         "entries": [
           {
             "instrument": "sebi-cscrf-2024",
-            "controlId": "PR.PS.S6",
+            "controlId": "PR.MA.S3",
             "topic": "patch-sla",
             "severity": "critical",
             "days": 7.5,
-            "basis": "SEBI CSCRF 2024, PR.PS: critical vulnerabilities in internet-facing systems shall be patched within 7 days of publication",
+            "basis": "SEBI CSCRF 2024, PR.MA.S3: patches for high-severity vulnerabilities shall be applied within 1 week of release",
             "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
           },
           {
             "instrument": "sebi-cscrf-2024",
-            "controlId": "PR.PS.S6",
+            "controlId": "PR.MA.S3",
             "topic": "patch-sla",
             "severity": "high",
             "days": 7,
-            "basis": "SEBI CSCRF 2024, PR.PS: high-severity vulnerabilities in critical systems shall be remediated within 7 days"
+            "basis": "SEBI CSCRF 2024, PR.MA.S3: high-severity vulnerabilities in critical systems shall be remediated within 1 week"
           },
           {
             "instrument": "cert-in-directions-2022",
@@ -583,20 +583,20 @@
         "entries": [
           {
             "instrument": "sebi-cscrf-2024",
-            "controlId": "PR.PS.S6",
+            "controlId": "PR.MA.S3",
             "topic": "patch-sla",
             "severity": "critical",
             "days": 7,
-            "basis": "SEBI CSCRF 2024, PR.PS: critical vulnerabilities in internet-facing systems shall be patched within 7 days of publication",
+            "basis": "SEBI CSCRF 2024, PR.MA.S3: patches for high-severity vulnerabilities shall be applied within 1 week of release",
             "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
           },
           {
             "instrument": "sebi-cscrf-2024",
-            "controlId": "PR.PS.S6",
+            "controlId": "PR.MA.S3",
             "topic": "patch-sla",
             "severity": "high",
             "days": 7,
-            "basis": "SEBI CSCRF 2024, PR.PS: high-severity vulnerabilities in critical systems shall be remediated within 7 days"
+            "basis": "SEBI CSCRF 2024, PR.MA.S3: high-severity vulnerabilities in critical systems shall be remediated within 1 week"
           },
           {
             "instrument": "cert-in-directions-2022",
@@ -617,11 +617,11 @@
           },
           {
             "instrument": "sebi-cscrf-2024",
-            "controlId": "PR.PS.S6",
+            "controlId": "PR.MA.S3",
             "topic": "patch-sla",
             "severity": "critical",
             "days": 7,
-            "basis": "SEBI CSCRF 2024, PR.PS: critical vulnerabilities in internet-facing systems shall be patched within 7 days of publication",
+            "basis": "SEBI CSCRF 2024, PR.MA.S3: patches for high-severity vulnerabilities shall be applied within 1 week of release",
             "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
           }
         ],
@@ -649,20 +649,20 @@
         "entries": [
           {
             "instrument": "sebi-cscrf-2024",
-            "controlId": "PR.PS.S6",
+            "controlId": "PR.MA.S3",
             "topic": "patch-sla",
             "severity": "critical",
             "days": 7,
-            "basis": "SEBI CSCRF 2024, PR.PS: critical vulnerabilities in internet-facing systems shall be patched within 7 days of publication",
+            "basis": "SEBI CSCRF 2024, PR.MA.S3: patches for high-severity vulnerabilities shall be applied within 1 week of release",
             "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
           },
           {
             "instrument": "sebi-cscrf-2024",
-            "controlId": "PR.PS.S6",
+            "controlId": "PR.MA.S3",
             "topic": "patch-sla",
             "severity": "high",
             "days": 7,
-            "basis": "SEBI CSCRF 2024, PR.PS: high-severity vulnerabilities in critical systems shall be remediated within 7 days"
+            "basis": "SEBI CSCRF 2024, PR.MA.S3: high-severity vulnerabilities in critical systems shall be remediated within 1 week"
           },
           {
             "instrument": "cert-in-directions-2022",
@@ -702,20 +702,20 @@
         "entries": [
           {
             "instrument": "sebi-cscrf-2024",
-            "controlId": "PR.PS.S6",
+            "controlId": "PR.MA.S3",
             "topic": "patch-sla",
             "severity": "critical",
             "days": 7,
-            "basis": "SEBI CSCRF 2024, PR.PS: critical vulnerabilities in internet-facing systems shall be patched within 7 days of publication",
+            "basis": "SEBI CSCRF 2024, PR.MA.S3: patches for high-severity vulnerabilities shall be applied within 1 week of release",
             "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
           },
           {
             "instrument": "sebi-cscrf-2024",
-            "controlId": "PR.PS.S6",
+            "controlId": "PR.MA.S3",
             "topic": "patch-sla",
             "severity": "high",
             "days": 7,
-            "basis": "SEBI CSCRF 2024, PR.PS: high-severity vulnerabilities in critical systems shall be remediated within 7 days"
+            "basis": "SEBI CSCRF 2024, PR.MA.S3: high-severity vulnerabilities in critical systems shall be remediated within 1 week"
           },
           {
             "instrument": "cert-in-directions-2022",
@@ -766,20 +766,20 @@
         "entries": [
           {
             "instrument": "sebi-cscrf-2024",
-            "controlId": "PR.PS.S6",
+            "controlId": "PR.MA.S3",
             "topic": "patch-sla",
             "severity": "critical",
             "days": 7,
-            "basis": "SEBI CSCRF 2024, PR.PS: critical vulnerabilities in internet-facing systems shall be patched within 7 days of publication",
+            "basis": "SEBI CSCRF 2024, PR.MA.S3: patches for high-severity vulnerabilities shall be applied within 1 week of release",
             "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
           },
           {
             "instrument": "sebi-cscrf-2024",
-            "controlId": "PR.PS.S6",
+            "controlId": "PR.MA.S3",
             "topic": "patch-sla",
             "severity": "high",
             "days": 7,
-            "basis": "SEBI CSCRF 2024, PR.PS: high-severity vulnerabilities in critical systems shall be remediated within 7 days"
+            "basis": "SEBI CSCRF 2024, PR.MA.S3: high-severity vulnerabilities in critical systems shall be remediated within 1 week"
           },
           {
             "instrument": "cert-in-directions-2022",

@@ -11,6 +11,7 @@
 // Afterwards the session is ingested with --force and the harness-reported cost for the cross-check.
 import { spawnSync } from 'node:child_process';
 import { writeFileSync, mkdirSync, readFileSync, existsSync } from 'node:fs';
+import { randomUUID } from 'node:crypto';
 import { ulid } from '../hooks/lib.mjs';
 
 const argv = process.argv.slice(2);
@@ -31,11 +32,24 @@ mkdirSync(logDir, { recursive: true });
 const env = { ...process.env, MAXWELL_RUN_ID: runId, MAXWELL_HARNESS: harness, MAXWELL_INVOKED_BY: process.env.MAXWELL_INVOKED_BY || '', MAXWELL_KPI_SAMPLE: '1' };
 
 let sessionId = null; let reported = null; let outcome = 'success'; let result = null;
+// Workflows are deterministic scripts: they cannot read the clock, so the run timestamp is taken once here.
+const now = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
+const workflowArgs = { companyId: company, appIds: apps, envIds: envs, dryRun, now, runId };
+const utility = new Set(['validate', 'kpis', 'seed-company', 'status', 'manual']);
+// report-audit-improvements renders KPI series but no roster agent may run `npm run kpis`, so compute them first.
+if (workflow === 'report-audit-improvements') {
+  const k = spawnSync(process.execPath, ['.claude/scripts/kpis/compute.mjs', '--company', company], { encoding: 'utf8', env });
+  process.stderr.write(`[run-headless] kpis computed before report (exit ${k.status})\n${(k.stdout || '') + (k.stderr || '')}`);
+}
 if (harness === 'claude-code') {
   const model = opt('--model', process.env.MAXWELL_MODEL || 'opus');
   const fallback = opt('--fallback-model', process.env.MAXWELL_FALLBACK_MODEL || (/^(opus|claude-opus)/.test(model) ? '' : 'opus'));
   env.MAXWELL_MODEL = model;
-  const prompt = [`/${workflow}`, company, ...apps.map((a) => `--app=${a}`), ...envs.map((e) => `--env=${e}`), ...(dryRun ? ['--dry-run'] : [])].join(' ');
+  // Utility commands take the shorthand form; saved workflows get a structured args object (Claude passes it to
+  // the Workflow tool as data, see code.claude.com/docs/en/workflows "Pass input to a saved workflow").
+  const promptFor = (sid) => (utility.has(workflow)
+    ? [`/${workflow}`, company, ...apps.map((a) => `--app=${a}`), ...envs.map((e) => `--env=${e}`), ...(dryRun ? ['--dry-run'] : [])].join(' ')
+    : `Run /${workflow} with exactly this args object, passed as structured data (not a string), and report its result: ${JSON.stringify({ ...workflowArgs, sessionId: sid })}`);
   // A usage limit on the requested model comes back as a 429 api_error result, which --fallback-model does not
   // cover (it only handles overload). Retry the whole invocation on the fallback model in that case.
   const isLimit = (r) => !!r && r.is_error && (r.api_error_status === 429 || /reached your .* limit|usage limit|rate limit/i.test(String(r.result || '')));
@@ -43,7 +57,9 @@ if (harness === 'claude-code') {
   for (let i = 0; i < attempts.length; i += 1) {
     const m = attempts[i];
     env.MAXWELL_MODEL = m;
-    const args = ['-p', '--output-format', 'json', '--model', m, '--permission-mode', opt('--permission-mode', 'auto'), '--max-turns', opt('--max-turns', '400'), '--setting-sources', 'project'];
+    const sid = randomUUID();
+    const prompt = promptFor(sid);
+    const args = ['-p', '--output-format', 'json', '--session-id', sid, '--model', m, '--permission-mode', opt('--permission-mode', 'auto'), '--max-turns', opt('--max-turns', '400'), '--setting-sources', 'project'];
     if (i === 0 && fallback) args.push('--fallback-model', fallback);
     if (opt('--budget-usd')) args.push('--max-budget-usd', opt('--budget-usd'));
     args.push(prompt);
@@ -65,7 +81,7 @@ if (harness === 'claude-code') {
     break;
   }
 } else {
-  const args = ['.claude/scripts/run-workflow.mjs', workflow, '--args', JSON.stringify({ companyId: company, appIds: apps, envIds: envs, dryRun, runId })];
+  const args = ['.claude/scripts/run-workflow.mjs', workflow, '--args', JSON.stringify(workflowArgs)];
   args.push('--model', opt('--model', process.env.MAXWELL_OPENCODE_MODEL || 'anthropic/claude-opus-5'));
   if (dryRun) args.push('--dry-run');
   console.error(`[run-headless] node ${args.join(' ')}`);

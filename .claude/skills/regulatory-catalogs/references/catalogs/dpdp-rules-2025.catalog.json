@@ -1,0 +1,2188 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.catalog.regulator",
+  "instrumentId": "dpdp-rules-2025",
+  "regulator": "MeitY",
+  "version": "G.S.R. 846(E) dated 13 November 2025",
+  "sourceUrl": "https://egazette.gov.in/WriteReadData/2025/267650.pdf",
+  "retrievedAt": "2026-09-14T07:40:00Z",
+  "groups": [
+    {
+      "id": "Rule-1",
+      "title": "Rule 1: Short title and commencement (phased applicability)",
+      "controls": [
+        {
+          "id": "1",
+          "title": "Track phased commencement of the Rules",
+          "prose": "Rules 1, 2 and 17 to 21 came into force on publication in the Official Gazette (13 November 2025). Rule 4 (Consent Manager registration and obligations) comes into force one year after publication (13 November 2026). Rules 3, 5 to 16, 22 and 23 (notice, security safeguards, breach intimation, retention and erasure, contact information, children and persons with disability, Significant Data Fiduciary duties, rights of Data Principals, cross-border transfer, appeals and calling for information) come into force eighteen months after publication (13 May 2027). The parent Act itself commences in phases under notification G.S.R. 843(E) dated 13 November 2025: section 1(2), section 2, sections 18 to 26, 35, 38 to 43 and section 44(1) and (3) came into force on 13 November 2025; section 6(9) (registration of Consent Managers with the Board) and section 27(1)(d) come into force one year later (13 November 2026); and sections 3 to 5, section 6(1) to (8) and (10), sections 7 to 17, 27 to 34, 36 and 37 come into force eighteen months later (13 May 2027). Until those dates neither the Act obligation nor the manner prescribed by these Rules is binding.",
+          "guidance": "Maxwell treats every Data Fiduciary control in this catalog, including every control in the Act-Chapter-II group (Act sections 8 to 10 commence on 13 May 2027), as applicable from 13 May 2027, and Consent Manager registration and obligations (rule 4, First Schedule and Act section 6(9)) from 13 November 2026. Before those dates a gap is recorded as a readiness gap, not a live non-compliance: raise it at the catalog severity but state in the soc observation or finding text that the obligation has not yet commenced, and do not report Act-Chapter-II or rule 3 and 5 to 16 controls as current breaches. The Act commencement dates come from notification G.S.R. 843(E) dated 13 November 2025 and the Rules dates from rule 1(2) to 1(4) of G.S.R. 846(E) of the same date; a maintainer should revisit both if MeitY issues a later notification altering the phasing. The company's DPDP role (Data Fiduciary, Significant Data Fiduciary, Consent Manager, Data Processor) and any Significant Data Fiduciary notification reference and date have no field in details.json (regulatoryRegistrations[].category is a closed tier list without DPDP roles): refresh-ctx records them as a soc observation with kind observation, methods manual and a regulatoryRef to dpdp-rules-2025:1, and at most adds a details.json tag such as dpdp-data-fiduciary, dpdp-sdf or dpdp-consent-manager so the applicability of rule 4, rule 13 and section 10 can be filtered. Pending proposal: news reports of the MeitY stakeholder meeting of 22 January 2026 (Business Standard; Centre for Applied Data Protection, cadp.in; S.S. Rana and Co.) describe a proposal to shorten the eighteen-month window to twelve months (13 November 2026) for Significant Data Fiduciary obligations only (rule 13 and Act section 10, including the DPO, DPIA and data audit), and separately to bring the cross-border transfer (rule 15) and calling-for-information (rule 23) provisions into force immediately; comments were due 4 February 2026. As of retrieval no amending gazette notification had been published, so the dates above stand and every other Data Fiduciary control keeps 13 May 2027, but refresh-ctx must re-check on every run until the proposal is withdrawn or notified. Source text: the eGazette PDF at sourceUrl failed TLS on fetch, so the rule and schedule text in this catalog was taken from the cadp.in and dpdprules.org mirrors (retrievedAt describes that mirror fetch); the text needs maintainer verification against the gazette PDF.",
+          "category": "Applicability",
+          "mandatory": false,
+          "defaultSeverity": "info",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "soc observation recording the DPDP role (Data Fiduciary, Significant Data Fiduciary, Consent Manager, Data Processor) and any SDF notification",
+            "Compliance roadmap with milestones before 13 November 2026 and 13 May 2027"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.OC-03"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.31"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-ctx",
+            "refresh-soc"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Rule-3",
+      "title": "Rule 3: Notice given by Data Fiduciary to Data Principal",
+      "controls": [
+        {
+          "id": "3",
+          "title": "Standalone, itemised consent notice with withdrawal and complaint links",
+          "prose": "The notice given by the Data Fiduciary to the Data Principal shall be presented and be understandable independently of any other information the Data Fiduciary makes available; shall give, in clear and plain language, a fair account of the details needed for specific and informed consent, including at the minimum an itemised description of the personal data and the specified purpose or purposes of, and a specific description of the goods, services or uses enabled by, the processing; and shall give the particular communication link to the Data Fiduciary's website or app, and a description of any other means, using which the Data Principal may withdraw consent with ease comparable to that with which it was given, exercise her rights under the Act and make a complaint to the Board.",
+          "guidance": "Evidence with the customer-facing consent notice texts served by onboarding, KYC and app-permission flows (retrieved by refresh-ctx and stored as a soc observation), a schema-level inventory of personal data fields per purpose from refresh-metastore and probe-schemas, and a review of the consent-withdrawal endpoint under execute-scr confirming it needs no more steps than the consent grant. A finding is raised when a purpose processes fields not itemised in the notice or when withdrawal, rights-request or Board-complaint links are missing.",
+          "category": "Notice and consent",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Versioned consent notice per purpose with itemised personal data list",
+            "Personal data field inventory reconciled to the notice",
+            "Consent withdrawal flow with step count equal to or lower than the grant flow",
+            "Link to the Data Protection Board complaint channel in the notice"
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "5"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.34"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "PT-5"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-ctx",
+            "refresh-metastore",
+            "probe-schemas",
+            "execute-scr"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Rule-4",
+      "title": "Rule 4 and First Schedule: Registration and obligations of Consent Manager",
+      "controls": [
+        {
+          "id": "4(1)",
+          "title": "Registration with the Board before operating as a Consent Manager",
+          "prose": "A person who fulfils the conditions in Part A of the First Schedule (a company incorporated in India; sufficient technical, operational and financial capacity; sound financial condition and management; net worth of not less than two crore rupees; adequate business volume, capital structure and earning prospects; directors, key managerial personnel and senior management of fairness and integrity; memorandum and articles requiring adherence to items 9 and 10 of Part B amendable only with the Board's prior approval; operations in the interests of Data Principals; and independent certification of the interoperable consent platform and its technical and organisational measures against the Board's data protection standards and assurance framework) may apply to the Board for registration as a Consent Manager. The Board may direct measures, suspend or cancel registration, and call for information.",
+          "guidance": "Applies only where the company operates, or intends to operate, a consent-management platform (for example an NBFC Account Aggregator extending into DPDP consent management). refresh-ctx records the registration status, certificate reference and the independent certification report as a soc observation (kind observation, methods manual, regulatoryRef dpdp-rules-2025:4(1)); details.json has no field for a Consent Manager registration, so at most add the tag dpdp-consent-manager. A finding is raised if a consent platform is live without Board registration after 13 November 2026, the date on which both rule 4 and Act section 6(9) commence (G.S.R. 846(E) rule 1(3) and G.S.R. 843(E)). The net worth parameter is stated in crore rupees and carries no unit because the catalog unit list has no currency unit.",
+          "category": "Consent Manager",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Board registration certificate or application acknowledgement",
+            "Independent certification report of the consent platform against the Board's standards",
+            "Net worth certificate showing not less than two crore rupees",
+            "Memorandum and articles clause locking Part B items 9 and 10"
+          ],
+          "params": [
+            {
+              "id": "consentManagerMinimumNetWorth",
+              "label": "Minimum net worth of the applicant, in crore rupees",
+              "default": "2"
+            }
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "6(9)"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.OC-03"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-ctx",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "Sch1.B.1",
+          "title": "Enable consent directly to, or routed through, an onboarded Data Fiduciary",
+          "prose": "The Consent Manager shall enable a Data Principal using its platform to give consent to the processing of her personal data by a Data Fiduciary onboarded onto such platform, either directly to such Data Fiduciary or through another Data Fiduciary onboarded onto such platform who maintains such personal data with the consent of that Data Principal. The illustration uses two banks on a consent platform: the Data Principal either gives consent directly to the requesting bank and shares her statement herself, or routes consent through the bank holding her account, digitally instructing it to send the statement to the requesting bank.",
+          "guidance": "Applies to a company operating a consent platform (for example an Account Aggregator extending into DPDP consent management). execute-scr and probe-app-chart evidence both consent paths are implemented: a direct grant to the requesting Data Fiduciary and a routed grant carrying a digital instruction to the data-holding Data Fiduciary; probe-schemas confirms the onboarding registry of Data Fiduciaries and the per-request linkage between consent, instruction and delivery. Interoperability with the Board's published standards (First Schedule Part A item 9) is recorded by refresh-ctx.",
+          "category": "Consent Manager",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Consent request and grant flows for the direct and routed paths",
+            "Registry of onboarded Data Fiduciaries with their roles (requesting or data-holding)",
+            "Interoperability certification against the Board's data protection standards and assurance framework"
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "6(7)"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.34"
+            }
+          ],
+          "probeWorkflows": [
+            "execute-scr",
+            "probe-app-chart",
+            "probe-schemas",
+            "refresh-ctx"
+          ]
+        },
+        {
+          "id": "Sch1.B.2",
+          "title": "Consent Manager cannot read the personal data it routes",
+          "prose": "The Consent Manager shall ensure that the manner of making available the personal data or its sharing is such that the contents thereof are not readable by it.",
+          "guidance": "Evidence with the data-flow design showing end-to-end encryption between the Data Principal's data-holding fiduciary and the transferee fiduciary with keys the Consent Manager does not hold; probe-app-chart and probe-iac confirm no plaintext persistence of routed payloads, runtime-probe-datapipeline confirms message brokers and logs carry only ciphertext or references, and execute-scr reviews the routing code for decryption paths.",
+          "category": "Consent Manager",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Data-flow diagram showing the Consent Manager as a data-blind conduit",
+            "Key management design showing the Consent Manager holds no decryption keys for routed data",
+            "Code review result confirming no decryption or content logging in the routing path"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "PR.DS-02"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.8.24"
+            }
+          ],
+          "probeWorkflows": [
+            "probe-app-chart",
+            "probe-iac",
+            "runtime-probe-datapipeline",
+            "execute-scr"
+          ]
+        },
+        {
+          "id": "Sch1.B.3",
+          "title": "Record of consents, notices and data sharing maintained on the platform",
+          "prose": "The Consent Manager shall maintain on its platform a record of (a) consents given, denied or withdrawn by the Data Principal, (b) the notices preceding or accompanying requests for consent, and (c) the sharing of her personal data with a transferee Data Fiduciary.",
+          "guidance": "probe-schemas and refresh-metastore inventory the consent-ledger tables and confirm they capture the three record classes (consent events with given, denied or withdrawn state, the notice version shown, and each sharing event with the transferee Data Fiduciary identity) with tamper-evident timestamps; probe-iac checks the backing store is append-only or immutable; execute-scr confirms every consent, notice and sharing path writes to the ledger. Access, machine-readable export and the seven-year retention of this record are evidenced under Sch1.B.4.",
+          "category": "Consent Manager",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Consent ledger schema capturing consents, notices and sharing events with transferee identity",
+            "Append-only or immutable configuration on the consent ledger store",
+            "Code review result confirming every consent, notice and sharing path writes to the ledger"
+          ],
+          "mappings": [
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.33"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "AU-2"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "PR.DS-01"
+            }
+          ],
+          "probeWorkflows": [
+            "probe-schemas",
+            "refresh-metastore",
+            "probe-iac",
+            "execute-scr"
+          ]
+        },
+        {
+          "id": "Sch1.B.4",
+          "title": "Data Principal access to the record, machine-readable copy and seven-year retention",
+          "prose": "The Consent Manager (a) shall give the Data Principal using its platform access to the record of consents, notices and sharing; (b) shall, on the request of the Data Principal and in accordance with its terms of service, make available to her the information contained in such record in machine-readable form; and (c) shall maintain such record for at least seven years, or for such longer period as the Data Principal and Consent Manager may agree upon or as may be required by law.",
+          "guidance": "probe-iac checks retention and lifecycle policies on the consent ledger store are not shorter than seven years and that no purge job runs earlier; execute-scr reviews the Data Principal record view and the machine-readable export endpoint (JSON or CSV) and confirms it is authenticated to the Data Principal; refresh-ctx records the terms-of-service clause governing export requests. A finding is raised when a lifecycle rule would delete consent records before seven years or when no export path exists.",
+          "category": "Consent Manager",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Storage retention policy of seven years or longer on the consent ledger",
+            "Data Principal record view in the consent platform",
+            "Machine-readable export sample for a Data Principal",
+            "Terms-of-service clause on record access and export"
+          ],
+          "params": [
+            {
+              "id": "consentRecordRetentionYears",
+              "label": "Minimum period the Consent Manager maintains the record of consents, notices and sharing",
+              "default": "7",
+              "unit": "years"
+            }
+          ],
+          "mappings": [
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.33"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "AU-11"
+            },
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "11"
+            }
+          ],
+          "probeWorkflows": [
+            "probe-iac",
+            "execute-scr",
+            "refresh-ctx",
+            "probe-schemas"
+          ]
+        },
+        {
+          "id": "Sch1.B.5",
+          "title": "Website or app as the primary means of access to Consent Manager services",
+          "prose": "The Consent Manager shall develop and maintain a website or app, or both, as the primary means through which a Data Principal may access the services provided by the Consent Manager.",
+          "guidance": "refresh-ctx records the public URL or app-store listing of the consent platform and confirms consent management, record access and grievance functions are reachable from it rather than only through partner Data Fiduciaries' channels; runtime-probe-network-perimeter evidences the platform is served over TLS with a valid certificate. Low severity: a gap is a usability and transparency defect rather than a data-protection failure.",
+          "category": "Consent Manager",
+          "mandatory": true,
+          "defaultSeverity": "low",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Public website URL or app-store listing of the consent platform",
+            "Feature map showing consent, record access and grievance functions available on the primary channel"
+          ],
+          "mappings": [
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.34"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-ctx",
+            "runtime-probe-network-perimeter"
+          ]
+        },
+        {
+          "id": "Sch1.B.6",
+          "title": "No sub-contracting or assignment of Consent Manager obligations",
+          "prose": "The Consent Manager shall not sub-contract or assign the performance of any of its obligations under the Act and these rules.",
+          "guidance": "refresh-vendor-ctx lists every third party in the consent platform's delivery chain (cloud hosting, SMS and email gateways, KYC token verifiers, managed SOC) and classifies which perform a Consent Manager obligation as opposed to supplying infrastructure; a finding is raised where a vendor performs consent capture, record keeping, notice delivery or audit on the Consent Manager's behalf.",
+          "category": "Consent Manager",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Vendor register with a column stating whether each vendor performs a Consent Manager obligation",
+            "Contract clauses prohibiting assignment of consent-management functions"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-05"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.20"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        },
+        {
+          "id": "Sch1.B.7",
+          "title": "Reasonable security safeguards on the consent platform",
+          "prose": "The Consent Manager shall take reasonable security safeguards to prevent personal data breach.",
+          "guidance": "Evidence the consent platform against the same clauses as rule 6(1)(a) to (g): encryption of stored consent artefacts, access control, logging and monitoring, backups, one-year log retention and processor contracts. The runtime probes for the production environment, identity and network perimeter, together with probe-iac and probe-app-chart, supply the observations; a gap on any rule 6 sub-clause for the consent platform is also a gap here.",
+          "category": "Consent Manager",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Rule 6 evidence pack scoped to the consent platform",
+            "Independent certification report covering technical and organisational measures (First Schedule Part A item 9)"
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "8(5)"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "PR.DS-01"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.34"
+            }
+          ],
+          "probeWorkflows": [
+            "probe-iac",
+            "probe-app-chart",
+            "runtime-probe-prod-env",
+            "runtime-probe-identity-access",
+            "runtime-probe-network-perimeter"
+          ]
+        },
+        {
+          "id": "Sch1.B.8",
+          "title": "Act in a fiduciary capacity in relation to the Data Principal",
+          "prose": "The Consent Manager shall act in a fiduciary capacity in relation to the Data Principal. Section 6(8) of the Act makes the Consent Manager accountable to the Data Principal and requires it to act on her behalf in the prescribed manner.",
+          "guidance": "Governance control evidenced by refresh-ctx from the terms of service, the board-approved conduct policy for handling Data Principal consents and the fee model (a Consent Manager must not be remunerated in a way that biases it toward Data Fiduciaries; see Sch1.B.9 and Sch1.B.10). execute-scr checks that platform defaults favour the Data Principal, for example no pre-ticked consents, withdrawal as easy as grant, and no dark patterns in the consent flow. Maxwell records the policy references and flow review as soc observations.",
+          "category": "Consent Manager",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Terms of service and conduct policy stating the fiduciary duty to the Data Principal",
+            "Consent flow review confirming no pre-selected consents or dark patterns",
+            "Fee model showing no incentive tied to consents granted"
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "6(8)"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.RR-02"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-ctx",
+            "execute-scr"
+          ]
+        },
+        {
+          "id": "Sch1.B.9",
+          "title": "Conflict of interest with Data Fiduciaries avoided",
+          "prose": "The Consent Manager shall avoid conflict of interest with Data Fiduciaries, including in respect of their promoters and key managerial personnel.",
+          "guidance": "Governance control evidenced by refresh-ctx from the conflict-of-interest policy, annual declarations of directors and KMP, and the memorandum and articles clause required by First Schedule Part A item 7, which locks Part B items 9 and 10 so they can be amended only with the Board's prior approval. Sch1.B.9 and Sch1.B.10 share this evidence. Maxwell records the policy reference and declaration date as a soc observation; it does not verify the declarations' contents. Sch1.B.9 covers the Consent Manager's own relationships with Data Fiduciaries and their promoters and KMP (for example ownership by, or revenue dependence on, a single onboarded bank).",
+          "category": "Consent Manager",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Conflict-of-interest policy approved by the board",
+            "Annual interest declarations of directors, KMP and senior management",
+            "Memorandum and articles clause locking items 9 and 10"
+          ],
+          "mappings": [
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.2"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.RR-02"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-ctx"
+          ]
+        },
+        {
+          "id": "Sch1.B.10",
+          "title": "Measures preventing conflicts through directors, KMP and senior management",
+          "prose": "The Consent Manager shall have in place measures to ensure that no conflict of interest arises on account of its directors, key managerial personnel and senior management holding a directorship, financial interest, employment or beneficial ownership in Data Fiduciaries, or having a material pecuniary relationship with them.",
+          "guidance": "Governance control evidenced by refresh-ctx from the conflict-of-interest policy, annual declarations of directors and KMP, and the memorandum and articles clause required by First Schedule Part A item 7, which locks Part B items 9 and 10 so they can be amended only with the Board's prior approval. Sch1.B.9 and Sch1.B.10 share this evidence. Maxwell records the policy reference and declaration date as a soc observation; it does not verify the declarations' contents. Sch1.B.10 covers the individual interests of directors, KMP and senior management; a finding is raised when no declaration exists for a person in those roles or a declared interest in an onboarded Data Fiduciary has no recorded mitigation.",
+          "category": "Consent Manager",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Conflict-of-interest policy approved by the board",
+            "Annual interest declarations of directors, KMP and senior management",
+            "Memorandum and articles clause locking items 9 and 10"
+          ],
+          "mappings": [
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.2"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.RR-02"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-ctx"
+          ]
+        },
+        {
+          "id": "Sch1.B.11",
+          "title": "Publish ownership and management information",
+          "prose": "The Consent Manager shall publish in an easily accessible manner on its website or app information regarding its promoters, directors, key managerial personnel and senior management; every person holding more than two per cent of its shareholding; every body corporate in which any promoter, director, KMP or senior manager holds more than two per cent as on the first day of the preceding calendar month; and such other information as the Board may direct.",
+          "guidance": "refresh-ctx fetches the public disclosure page, records its URL and last-updated date as a soc observation, and raises a finding if the two-per-cent shareholding tables are absent or older than the preceding calendar month.",
+          "category": "Consent Manager",
+          "mandatory": true,
+          "defaultSeverity": "low",
+          "cadence": "monthly",
+          "evidenceExpected": [
+            "Public disclosure page URL with promoters, directors, KMP and senior management",
+            "Shareholding above two per cent table dated the first day of the preceding calendar month"
+          ],
+          "params": [
+            {
+              "id": "shareholdingDisclosureThresholdPercent",
+              "label": "Shareholding above which holders and cross-holdings must be published",
+              "default": "2",
+              "unit": "percent"
+            }
+          ],
+          "mappings": [
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.31"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-ctx"
+          ]
+        },
+        {
+          "id": "Sch1.B.12",
+          "title": "Audit mechanism reporting to the Board",
+          "prose": "The Consent Manager shall have in place effective audit mechanisms to review, monitor, evaluate and report the outcome of such audit to the Board, periodically and on such other occasions as the Board may direct, in respect of its technical and organisational controls, systems, procedures and safeguards; continued fulfilment of the conditions of registration; and adherence to its obligations under the Act and the rules.",
+          "guidance": "Maxwell's report-audit-findings and report-audit-improvements workflows produce the technical-control section of the audit pack from the soc ledger; refresh-ctx records the audit charter, auditor appointment and the last report submitted to the Board. The instrument says periodically and as the Board directs; the annual cadence here is Maxwell's default until the Board publishes a frequency and needs maintainer verification.",
+          "category": "Consent Manager",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Audit charter covering technical controls, registration conditions and rule adherence",
+            "Latest audit report and Board submission acknowledgement",
+            "Maxwell audit findings report for the consent platform"
+          ],
+          "mappings": [
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.35"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "ID.IM-01"
+            }
+          ],
+          "probeWorkflows": [
+            "report-audit-findings",
+            "report-audit-improvements",
+            "refresh-soc",
+            "refresh-ctx"
+          ]
+        },
+        {
+          "id": "Sch1.B.13",
+          "title": "Board approval before transfer of control",
+          "prose": "The control of the company registered as the Consent Manager shall not be transferred by way of sale, merger or otherwise except with the previous approval of the Board and subject to such conditions as the Board may specify.",
+          "guidance": "Governance control; refresh-ctx records any pending or completed change of control from company filings and confirms a Board approval reference exists. Maxwell raises a finding only when a change of control is recorded without the approval reference.",
+          "category": "Consent Manager",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Board approval order for any change of control",
+            "Company filings showing shareholding changes"
+          ],
+          "mappings": [
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.OC-03"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-ctx"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Rule-6",
+      "title": "Rule 6: Reasonable security safeguards",
+      "controls": [
+        {
+          "id": "6(1)",
+          "title": "Reasonable security safeguards to prevent personal data breach",
+          "prose": "A Data Fiduciary shall protect personal data in its possession or under its control, including in respect of any processing undertaken by it or on its behalf by a Data Processor, by taking reasonable security safeguards to prevent personal data breach, which shall include at the minimum the measures in clauses (a) to (g) of sub-rule (1). Breach of this obligation (section 8(5) of the Act) attracts the highest penalty in the Schedule to the Act, up to two hundred and fifty crore rupees.",
+          "guidance": "Umbrella control: Maxwell derives its status from the seven sub-clause controls 6(1)(a) to 6(1)(g) and marks it not-implemented when any mandatory sub-clause is open. Findings that do not fit a single sub-clause (for example a personal-data store exposed to the internet found by runtime-probe-network-perimeter) cite this control. Scope covers every application in applications/<app_id>/ whose schemas hold personal data of Data Principals in India and every Data Processor listed in company-profile/<company_id>/vendors/.",
+          "category": "Security safeguards",
+          "mandatory": true,
+          "defaultSeverity": "critical",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Information security policy naming personal data as a protected asset class",
+            "Personal data inventory mapping applications, schemas and processors",
+            "Status of controls 6(1)(a) to 6(1)(g) in the soc ledger"
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "8(5)"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "PR.DS-01"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.34"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "PT-1"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "SC-28"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "AC-3"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-soc",
+            "probe-iac",
+            "probe-app-chart",
+            "probe-schemas",
+            "runtime-probe-prod-env",
+            "runtime-probe-network-perimeter",
+            "runtime-probe-identity-access",
+            "runtime-probe-datapipeline"
+          ]
+        },
+        {
+          "id": "6(1)(a)",
+          "title": "Encryption, obfuscation, masking or virtual tokens for personal data",
+          "prose": "Reasonable security safeguards shall include appropriate data security measures, such as securing of personal data through encryption, obfuscation, masking or the use of virtual tokens mapped to that personal data.",
+          "guidance": "probe-schemas classifies personal-data columns (PAN, Aadhaar last four, mobile, email, bank account, KYC images) and checks column-level encryption or tokenisation; probe-iac checks storage encryption at rest on databases, object stores, disks and snapshots and TLS on every listener; probe-app-chart checks secrets and PII are not passed as plaintext environment values; runtime-probe-datapipeline checks masking in analytics, warehouse and non-production copies; runtime-probe-devtest-env and runtime-probe-qa-env raise a finding when production personal data is present unmasked. execute-scr reviews crypto usage in code. Encrypted or tokenised data reduces breach impact and the intimation burden under rule 7.",
+          "category": "Security safeguards",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Personal data column classification with encryption or tokenisation status",
+            "Encryption-at-rest configuration for every datastore holding personal data",
+            "TLS 1.2 or later on every service endpoint carrying personal data",
+            "Masking rules for analytics, warehouse and non-production environments"
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "8(5)"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "PR.DS-01"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "PR.DS-02"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.8.24"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.8.11"
+            },
+            {
+              "regulator": "CIS",
+              "instrument": "cis-controls-8.1",
+              "controlId": "3.11"
+            },
+            {
+              "regulator": "PCI-SSC",
+              "instrument": "pci-dss-4.0.1",
+              "controlId": "3.5.1"
+            }
+          ],
+          "probeWorkflows": [
+            "probe-schemas",
+            "probe-iac",
+            "probe-app-chart",
+            "execute-scr",
+            "runtime-probe-datapipeline",
+            "runtime-probe-devtest-env",
+            "runtime-probe-qa-env",
+            "runtime-probe-prod-env"
+          ]
+        },
+        {
+          "id": "6(1)(b)",
+          "title": "Access control on computer resources used by the Data Fiduciary or Data Processor",
+          "prose": "Reasonable security safeguards shall include appropriate measures to control access to the computer resources used by such Data Fiduciary or such a Data Processor, wherever applicable. Computer resource has the meaning assigned in the Information Technology Act, 2000.",
+          "guidance": "runtime-probe-identity-access evidences MFA on consoles and VPN, role-based access to personal-data stores, absence of shared or dormant accounts and periodic access reviews; probe-iac checks IAM policies, security groups and database grants for least privilege; probe-cicd-env checks pipeline identities cannot read production personal data; runtime-probe-harnesses and runtime-probe-sandboxes confirm agent runtimes and sandboxes hold scoped credentials only. Access to Data Processor systems is evidenced through refresh-vendor-ctx attestations.",
+          "category": "Security safeguards",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "RBAC matrix for every datastore holding personal data",
+            "MFA enforcement on administrative and remote access",
+            "Quarterly access review record with removed entitlements",
+            "IAM policy diff showing least-privilege for service accounts"
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "8(5)"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "PR.AA-01"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "PR.AA-05"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.15"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.8.3"
+            },
+            {
+              "regulator": "CIS",
+              "instrument": "cis-controls-8.1",
+              "controlId": "6.8"
+            }
+          ],
+          "probeWorkflows": [
+            "runtime-probe-identity-access",
+            "probe-iac",
+            "probe-cicd-env",
+            "runtime-probe-harnesses",
+            "runtime-probe-sandboxes",
+            "runtime-probe-prod-env",
+            "refresh-vendor-ctx"
+          ]
+        },
+        {
+          "id": "6(1)(c)",
+          "title": "Logs, monitoring and review of access to personal data",
+          "prose": "Reasonable security safeguards shall include visibility on the accessing of such personal data, through appropriate logs, monitoring and review, for enabling detection of unauthorised access, its investigation and remediation to prevent recurrence.",
+          "guidance": "runtime-probe-prod-env and runtime-probe-datapipeline confirm database audit logging, application access logs and object-store access logs are enabled for every personal-data store and shipped to a central SIEM; probe-iac checks logging resources exist in code; runtime-probe-network-perimeter checks flow logs and WAF logs; refresh-soc records the alert rules for anomalous personal-data reads and the review cadence. A finding is raised when a personal-data store has no access log or logs are reviewable only locally.",
+          "category": "Security safeguards",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Audit logging enabled on every personal-data datastore",
+            "Central log pipeline with alert rules for bulk or anomalous personal-data access",
+            "Log review record and investigation tickets"
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "8(5)"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "DE.CM-01"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "DE.CM-09"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.8.15"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.8.16"
+            },
+            {
+              "regulator": "CIS",
+              "instrument": "cis-controls-8.1",
+              "controlId": "8.2"
+            }
+          ],
+          "probeWorkflows": [
+            "runtime-probe-prod-env",
+            "runtime-probe-datapipeline",
+            "runtime-probe-network-perimeter",
+            "probe-iac",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "6(1)(d)",
+          "title": "Continuity of processing and backups after a compromise",
+          "prose": "Reasonable security safeguards shall include reasonable measures for continued processing in the event of confidentiality, integrity or availability of such personal data being compromised as a result of destruction or loss of access to personal data or otherwise, such as by way of data-backups.",
+          "guidance": "probe-iac checks automated backups, retention and cross-region or immutable copies for every personal-data datastore; runtime-probe-prod-env confirms the last successful backup and restore test; refresh-soc records the business continuity plan, RTO and RPO targets and the last DR drill. Ransomware-resilient (offline or immutable) backups are the expected standard for a financial-services fiduciary.",
+          "category": "Security safeguards",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Backup configuration per personal-data datastore with retention and immutability",
+            "Last restore test result with date",
+            "Business continuity plan with RTO and RPO for personal-data systems"
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "8(5)"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "PR.DS-11"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "RC.RP-01"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.8.13"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.30"
+            },
+            {
+              "regulator": "CIS",
+              "instrument": "cis-controls-8.1",
+              "controlId": "11.2"
+            }
+          ],
+          "probeWorkflows": [
+            "probe-iac",
+            "runtime-probe-prod-env",
+            "runtime-probe-datapipeline",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "6(1)(e)",
+          "title": "Retain logs and personal data for one year for detection and investigation",
+          "prose": "For enabling the detection of unauthorised access, its investigation, remediation to prevent recurrence and continued processing in the event of such a compromise, the Data Fiduciary shall retain such logs and personal data for a period of one year, unless compliance with any law for the time being in force requires otherwise.",
+          "guidance": "probe-iac and runtime-probe-prod-env read the retention settings of the SIEM, log buckets, database audit logs and cloud audit trails and raise a finding when any is below 365 days; runtime-probe-datapipeline checks log lifecycle rules in the data platform. The one-year floor sits alongside the CERT-In Directions 2022 180-day log mandate and sectoral retention rules (RBI, SEBI) which may require longer; Maxwell applies the longest applicable period. Rule 8(3) separately requires personal data, traffic data and processing logs to be kept one year and then erased.",
+          "category": "Security safeguards",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Retention configuration of 365 days or longer on SIEM and every log store",
+            "Retention configuration on database audit logs and cloud audit trails",
+            "Log retention policy reconciling DPDP, CERT-In and sectoral periods"
+          ],
+          "params": [
+            {
+              "id": "logRetentionPeriod",
+              "label": "Period for which logs and personal data are retained for detection, investigation and remediation",
+              "default": "1",
+              "unit": "years"
+            }
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "8(5)"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "PR.PS-04"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.8.15"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "AU-11"
+            },
+            {
+              "regulator": "CIS",
+              "instrument": "cis-controls-8.1",
+              "controlId": "8.10"
+            }
+          ],
+          "probeWorkflows": [
+            "probe-iac",
+            "runtime-probe-prod-env",
+            "runtime-probe-datapipeline",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "6(1)(f)",
+          "title": "Security safeguards clause in Data Processor contracts",
+          "prose": "Reasonable security safeguards shall include appropriate provision in the contract entered into between such Data Fiduciary and such a Data Processor, wherever applicable, for taking reasonable security safeguards.",
+          "guidance": "refresh-vendor-ctx identifies every vendor that processes personal data on the company's behalf (cloud, KYC and e-sign providers, collections and communication platforms, managed SOC, analytics SaaS) and records in company-profile/<company_id>/vendors/<vendor_id>.json whether the contract carries a security-safeguards clause, breach-notification duty to the fiduciary, sub-processor terms and the one-year retention required by rule 8(3) illustration case 2. A finding is raised for any personal-data processor lacking the clause. Section 8(2) of the Act requires processors be engaged only under a valid contract.",
+          "category": "Security safeguards",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Vendor register flagging personal-data processors",
+            "Contract or data processing addendum per processor with security-safeguards and breach-notice clauses",
+            "Processor attestation or audit report (SOC 2 or ISO 27001 certificate)"
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "8(2)"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-05"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.20"
+            },
+            {
+              "regulator": "RBI",
+              "instrument": "rbi-it-outsourcing-md-2023",
+              "controlId": "16(i)"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "6(1)(g)",
+          "title": "Technical and organisational measures for effective observance of safeguards",
+          "prose": "Reasonable security safeguards shall include appropriate technical and organisational measures to ensure effective observance of security safeguards. Section 8(4) of the Act likewise requires technical and organisational measures to ensure effective observance of the Act and the rules.",
+          "guidance": "Evidence the management system around the technical controls: probe-sdlc records the secure development policy in company-profile/<company_id>/sdlc/policy.json, security training and change control; probe-dev-env and probe-cicd-env show the safeguards are enforced in engineering workflows rather than by exception; refresh-soc records the security organisation, risk register and management review. A finding here typically accompanies a pattern of repeated sub-clause gaps rather than a single technical defect.",
+          "category": "Security safeguards",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Information security and privacy policies approved by management",
+            "Secure SDLC policy and change-control records",
+            "Risk register with personal-data risks and owners",
+            "Security awareness training completion records"
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "8(4)"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.PO-01"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.1"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.36"
+            }
+          ],
+          "probeWorkflows": [
+            "probe-sdlc",
+            "probe-dev-env",
+            "probe-cicd-env",
+            "refresh-soc"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Rule-7",
+      "title": "Rule 7: Intimation of personal data breach",
+      "controls": [
+        {
+          "id": "7(1)",
+          "title": "Intimate each affected Data Principal without delay",
+          "prose": "On becoming aware of any personal data breach, the Data Fiduciary shall, to the best of its knowledge, intimate each affected Data Principal in a concise, clear and plain manner and without delay, through her user account or any mode of communication registered by her with the Data Fiduciary, giving a description of the breach including its nature, extent and timing; the consequences relevant to her that are likely to arise; the measures implemented and being implemented to mitigate risk; the safety measures she may take to protect her interests; and business contact information of a person able to respond to her queries.",
+          "guidance": "Evidence the readiness rather than wait for a breach: probe-sdlc and refresh-soc record the incident response plan with a Data Principal notification template covering items (a) to (e), an owner, and the technical ability to message affected users through the app, SMS or email at scale; execute-scr checks the notification path is not dependent on the compromised system. When an incident record with kind incident is appended to the soc ledger, Maxwell tracks the intimation timestamp against the awareness timestamp. The rule states without delay and sets no hour count for Data Principals; the 72-hour figure applies to the Board report under 7(2)(b). Breach of section 8(6) carries a penalty of up to two hundred crore rupees.",
+          "category": "Breach intimation",
+          "mandatory": true,
+          "defaultSeverity": "critical",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Incident response plan with Data Principal notification template covering rule 7(1)(a) to (e)",
+            "Mass-notification capability tested in the last twelve months",
+            "Incident records with awareness and Data Principal intimation timestamps"
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "8(6)"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "RS.CO-03"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.26"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "IR-8"
+            }
+          ],
+          "probeWorkflows": [
+            "probe-sdlc",
+            "refresh-soc",
+            "execute-scr",
+            "report-audit-findings"
+          ]
+        },
+        {
+          "id": "7(2)(a)",
+          "title": "Initial intimation to the Data Protection Board without delay",
+          "prose": "On becoming aware of any personal data breach, the Data Fiduciary shall intimate to the Board, without delay, a description of the breach including its nature, extent, timing and location of occurrence and the likely impact.",
+          "guidance": "refresh-soc records the Board intimation channel, the designated filer and the initial-notice template; incident records in the soc ledger carry regulatorReportRefs with instrument dpdp-rules-2025 and the submission timestamp. Because every personal data breach must be reported regardless of materiality, the incident runbook must not gate the Board notice on an impact threshold. The same event usually also triggers the 6-hour CERT-In report and, for SEBI or RBI regulated entities, their sectoral incident reports; Maxwell tracks each deadline separately from the SLA table.",
+          "category": "Breach intimation",
+          "mandatory": true,
+          "defaultSeverity": "critical",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Board intimation template and designated filer in the incident response plan",
+            "Incident record with awareness timestamp and initial Board intimation timestamp",
+            "Runbook showing no materiality gate before the Board notice"
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "8(6)"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.24"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.26"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "RS.CO-02"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "IR-6"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-soc",
+            "probe-sdlc",
+            "report-audit-findings"
+          ]
+        },
+        {
+          "id": "7(2)(b)",
+          "title": "Detailed breach report to the Board within seventy-two hours",
+          "prose": "Within seventy-two hours of becoming aware of the breach, or within such longer period as the Board may allow on a request made in writing, the Data Fiduciary shall intimate to the Board updated and detailed information in respect of the description of the breach; the broad facts related to the events, circumstances and reasons leading to the breach; measures implemented or proposed to mitigate risk; any findings regarding the person who caused the breach; remedial measures taken to prevent recurrence; and a report regarding the intimations given to affected Data Principals.",
+          "guidance": "slaDays 3 reflects the seventy-two hours stated in rule 7(2)(b); the SLA table entry for dpdp-rules-2025 breach-notification carries the same 72 hours. refresh-soc records the detailed-report template covering items (i) to (vi) and the forensic-evidence sources (logs retained under 6(1)(e)) needed to fill it; incident records carry the detailed-report submission timestamp or the written extension request. report-audit-findings summarises incident timeliness for the audit pack.",
+          "category": "Breach intimation",
+          "mandatory": true,
+          "defaultSeverity": "critical",
+          "cadence": "event-driven",
+          "slaDays": 3,
+          "evidenceExpected": [
+            "Detailed Board report template covering rule 7(2)(b)(i) to (vi)",
+            "Incident record with detailed-report submission timestamp within 72 hours of awareness or written extension request",
+            "Forensic log sources retained per rule 6(1)(e)"
+          ],
+          "params": [
+            {
+              "id": "breachBoardReportHours",
+              "label": "Hours from becoming aware of the breach within which the detailed report reaches the Board",
+              "default": "72",
+              "unit": "hours"
+            }
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "8(6)"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "RS.CO-02"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "RS.AN-03"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.27"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.28"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "IR-6"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-soc",
+            "report-audit-findings",
+            "runtime-probe-prod-env"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Rule-8",
+      "title": "Rule 8 and Third Schedule: Time period for specified purpose to be deemed no longer served",
+      "controls": [
+        {
+          "id": "8(1)",
+          "title": "Erase personal data after the Third Schedule inactivity period",
+          "prose": "A Data Fiduciary of a class specified in the Third Schedule (an e-commerce entity with not less than two crore registered users in India, an online gaming intermediary with not less than fifty lakh registered users in India, or a social media intermediary with not less than two crore registered users in India), processing personal data for the corresponding purposes (all purposes except enabling the Data Principal to access her user account or a virtual token usable to get money, goods or services), shall erase such personal data, unless retention is necessary for compliance with law, three years from the date the Data Principal last approached the Data Fiduciary for the specified purpose or exercised her rights, or from the commencement of the Rules, whichever is latest.",
+          "guidance": "Binds only the three Third Schedule classes; most financial-services fiduciaries fall outside them unless they also run a marketplace or social platform above the thresholds. refresh-ctx records whether the company meets a Third Schedule class and threshold; where it does, probe-schemas and refresh-metastore look for a last-activity timestamp per Data Principal and runtime-probe-datapipeline evidences the erasure job and its exceptions register. Section 8(7) of the Act still requires every fiduciary to erase personal data when consent is withdrawn or the purpose is served (see control Act-8(7)).",
+          "category": "Retention and erasure",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Registered user count in India against the Third Schedule thresholds",
+            "Last-approach timestamp per Data Principal in the data model",
+            "Scheduled erasure job with run logs and legal-hold exceptions register"
+          ],
+          "params": [
+            {
+              "id": "thirdScheduleRetentionYears",
+              "label": "Years of inactivity after which personal data is erased for Third Schedule classes",
+              "default": "3",
+              "unit": "years"
+            },
+            {
+              "id": "thirdScheduleEcommerceSocialMediaUserThreshold",
+              "label": "Registered users in India at or above which an e-commerce entity or social media intermediary is bound (two crore)",
+              "default": "20000000",
+              "unit": "count"
+            },
+            {
+              "id": "thirdScheduleOnlineGamingUserThreshold",
+              "label": "Registered users in India at or above which an online gaming intermediary is bound (fifty lakh)",
+              "default": "5000000",
+              "unit": "count"
+            }
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "8(8)"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.8.10"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "SI-12"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-ctx",
+            "probe-schemas",
+            "refresh-metastore",
+            "runtime-probe-datapipeline"
+          ]
+        },
+        {
+          "id": "8(2)",
+          "title": "Notify the Data Principal at least forty-eight hours before erasure",
+          "prose": "At least forty-eight hours before completion of the time period for erasure of personal data under rule 8, the Data Fiduciary shall inform the Data Principal that such personal data shall be erased upon completion of such period unless she logs into her user account or otherwise initiates contact with the Data Fiduciary for the performance of the specified purpose or exercises her rights in relation to the processing.",
+          "guidance": "Applies with 8(1) to Third Schedule classes. runtime-probe-datapipeline evidences the pre-erasure notification job runs no later than 48 hours before the erasure job and that a login or contact within the window cancels the erasure; execute-scr reviews the scheduling logic. Retain the notification send log as proof.",
+          "category": "Retention and erasure",
+          "mandatory": true,
+          "defaultSeverity": "low",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Pre-erasure notification job scheduled at least 48 hours before erasure",
+            "Notification send log per Data Principal",
+            "Logic cancelling erasure on login or contact within the window"
+          ],
+          "params": [
+            {
+              "id": "preErasureNoticeHours",
+              "label": "Minimum hours before erasure at which the Data Principal is informed",
+              "default": "48",
+              "unit": "hours"
+            }
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "8(8)"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.34"
+            }
+          ],
+          "probeWorkflows": [
+            "runtime-probe-datapipeline",
+            "execute-scr"
+          ]
+        },
+        {
+          "id": "8(3)",
+          "title": "Retain personal data, traffic data and processing logs for one year, then erase",
+          "prose": "Without prejudice to sub-rules (1) and (2), a Data Fiduciary shall retain, in respect of any processing of personal data undertaken by it or on its behalf by a Data Processor, such personal data, associated traffic data and other logs of the processing for a minimum period of one year from the date of such processing, for the purposes specified in the Seventh Schedule (State use for sovereignty, security or legal functions, and assessment for Significant Data Fiduciary notification), after which the Data Fiduciary shall cause such personal data and logs to be erased unless further retention is required by any other law or notified by the Government. The illustration confirms the duty extends to cloud providers engaged as Data Processors.",
+          "guidance": "probe-schemas and refresh-metastore confirm processing records (orders, payments, KYC events, consent events) carry a processing timestamp that drives retention; probe-iac checks lifecycle rules on logs and datastores are not shorter than 365 days and that an erasure step exists after the retention period; refresh-vendor-ctx confirms processor contracts carry the same one-year retention. Sectoral laws usually extend the period for financial records (PMLA section 12 and the RBI KYC Master Direction: at least five years after the business relationship ends or the transaction date; SEBI record-keeping rules; the Banking Companies (Period of Preservation of Records) Rules, 1985 for specified bank registers); Maxwell records the governing law per data class so that erasure after one year is applied only where no longer period applies.",
+          "category": "Retention and erasure",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Retention schedule per data class citing DPDP one-year floor and any longer sectoral law",
+            "Lifecycle rules on datastores and log stores of 365 days or longer",
+            "Erasure job or lifecycle expiry after the retention period with exceptions register",
+            "Processor contracts carrying the one-year retention and erasure duty"
+          ],
+          "params": [
+            {
+              "id": "processingRecordRetentionYears",
+              "label": "Minimum period personal data, traffic data and processing logs are retained from the date of processing",
+              "default": "1",
+              "unit": "years"
+            }
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "8(7)"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "PR.PS-04"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.33"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.8.10"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "SI-12"
+            }
+          ],
+          "probeWorkflows": [
+            "probe-schemas",
+            "refresh-metastore",
+            "probe-iac",
+            "runtime-probe-datapipeline",
+            "refresh-vendor-ctx"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Rule-9",
+      "title": "Rule 9: Contact information of person to answer questions about processing",
+      "controls": [
+        {
+          "id": "9",
+          "title": "Publish business contact of the DPO or responsible person",
+          "prose": "Every Data Fiduciary shall prominently publish on its website or app, and mention in every response to a communication for the exercise of the rights of a Data Principal, the business contact information of the Data Protection Officer, if applicable, or of a person who is able to answer on behalf of the Data Fiduciary the questions of the Data Principal about the processing of her personal data.",
+          "guidance": "refresh-ctx fetches the privacy page of every customer-facing application listed in applications/ and records the published contact; execute-scr checks rights-request response templates include the contact. For a Significant Data Fiduciary the contact must be the India-based DPO required by section 10(2)(a) of the Act (control Act-10(2)(a)).",
+          "category": "Transparency and rights",
+          "mandatory": true,
+          "defaultSeverity": "low",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Privacy page URL showing the DPO or responsible person's business contact",
+            "Rights-request response template carrying the contact"
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "8(9)"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.34"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.RR-02"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-ctx",
+            "execute-scr"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Rules-10-12",
+      "title": "Rules 10 to 12 and Fourth Schedule: Verifiable consent for children and persons with disability",
+      "controls": [
+        {
+          "id": "10(1)",
+          "title": "Verifiable parental consent with adult identity check before processing a child's data",
+          "prose": "A Data Fiduciary shall adopt appropriate technical and organisational measures to ensure that verifiable consent of the parent is obtained before processing any personal data of a child (an individual below eighteen years), and shall observe due diligence to check that the individual identifying herself as the parent is an adult who is identifiable if required for compliance with law, by reference to reliable details of identity and age already available with the Data Fiduciary, or to identity and age details voluntarily provided by the individual or through a virtual token mapped to such details issued by an authorised entity, including details or tokens made available and verified by a Digital Locker service provider.",
+          "guidance": "Relevant to minor accounts (minor savings or demat accounts, child insurance policies, education-loan co-applicants, child-linked UPI). probe-schemas and refresh-metastore confirm the data model records date of birth, a guardian link and a consent-verification event with its method (existing KYC record, DigiLocker token, voluntary details); execute-scr reviews the age-gating and guardian-verification flow; refresh-ctx records the consent policy. A finding is raised when accounts for minors are opened without a verified adult guardian consent event. Breach of section 9 carries a penalty of up to two hundred crore rupees.",
+          "category": "Children and guardianship",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Age-gating logic and guardian-consent flow in onboarding",
+            "Consent-verification event per minor account with verification method",
+            "Integration with DigiLocker or an authorised entity for identity and age tokens"
+          ],
+          "params": [
+            {
+              "id": "childAgeThresholdYears",
+              "label": "Age below which an individual is a child requiring verifiable parental consent",
+              "default": "18",
+              "unit": "years"
+            }
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "9(1)"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.34"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "PT-4"
+            }
+          ],
+          "probeWorkflows": [
+            "probe-schemas",
+            "refresh-metastore",
+            "execute-scr",
+            "refresh-ctx"
+          ]
+        },
+        {
+          "id": "11(1)",
+          "title": "Verify the lawful guardian of a person with disability before taking consent",
+          "prose": "A Data Fiduciary, while obtaining verifiable consent from an individual identifying herself as the lawful guardian of a person with disability, shall observe due diligence to verify that such guardian is appointed by a court of law, by a designated authority under section 15 of the Rights of Persons with Disabilities Act, 2016, or by a local level committee under section 13 of the National Trust Act, 1999, under the law applicable to guardianship.",
+          "guidance": "refresh-ctx records the guardian-verification procedure and accepted documents (court order, designated-authority certificate, local level committee guardianship certificate); probe-schemas confirms the data model can hold the guardianship reference and its verification event. Maxwell evidences that the procedure and fields exist; it does not verify individual guardianship documents.",
+          "category": "Children and guardianship",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Guardian-verification procedure listing accepted appointment documents",
+            "Guardianship reference and verification event fields in the customer data model"
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "9(1)"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.34"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-ctx",
+            "probe-schemas"
+          ]
+        },
+        {
+          "id": "12",
+          "title": "Fourth Schedule exemptions applied only within their conditions",
+          "prose": "Sub-sections (1) and (3) of section 9 of the Act (verifiable parental consent; prohibition on tracking, behavioural monitoring and targeted advertising directed at children) do not apply to the classes of Data Fiduciaries in Part A of the Fourth Schedule (clinical and mental health establishments and healthcare professionals, allied healthcare professionals, educational institutions, crèche and day-care carers, and child transport providers engaged by them) or for the purposes in Part B, in each case only subject to the conditions specified there, such as processing restricted to health services, educational activities, safety of children or tracking a child's real-time location for safety.",
+          "guidance": "Non-mandatory: it narrows rather than imposes an obligation. Financial-services fiduciaries will rarely qualify for a Part A class; refresh-ctx records any Part B purpose relied on (for example processing a child's data to the extent needed to confirm the parent's identity or to enable a user account) with the condition met, so that a child-data finding under 10(1) or Act-9(3) is not raised where the exemption applies. Reliance on an exemption needs maintainer verification against the Part B conditions in the gazette.",
+          "category": "Children and guardianship",
+          "mandatory": false,
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Record of any Fourth Schedule class or purpose relied on with the condition satisfied"
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "9(4)"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-ctx"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Rule-13",
+      "title": "Rule 13: Additional obligations of Significant Data Fiduciary",
+      "controls": [
+        {
+          "id": "13(1)",
+          "title": "Annual Data Protection Impact Assessment and audit",
+          "prose": "A Significant Data Fiduciary shall, once in every period of twelve months from the date on which it is notified as such or is included in a notified class, undertake a Data Protection Impact Assessment and an audit to ensure effective observance of the provisions of the Act and the rules. Under section 10(2)(c)(i) of the Act the DPIA comprises a description of the rights of Data Principals and the purpose of processing, and assessment and management of the risk to those rights.",
+          "guidance": "Applies only once the company or its class is notified as a Significant Data Fiduciary under section 10(1) of the Act; details.json has no field for it, so refresh-ctx records the notification reference and date as a soc observation (kind observation, methods manual, regulatoryRef dpdp-rules-2025:13(1)) and at most adds the details.json tag dpdp-sdf. Rule 13 and Act section 10 commence on 13 May 2027 unless the January 2026 proposal to bring Significant Data Fiduciary obligations forward to 13 November 2026 is notified (see control 1). Maxwell's soc ledger and report-audit-findings supply the technical-control evidence for the audit; refresh-soc records the DPIA scope, risk register and assessor engagement with the twelve-month due date. Breach of section 10 carries a penalty of up to one hundred and fifty crore rupees.",
+          "category": "Significant Data Fiduciary",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "soc observation recording the SDF notification reference and date",
+            "DPIA report dated within twelve months covering rights, purposes and risk treatment",
+            "Audit report dated within twelve months",
+            "Maxwell audit findings report supporting the audit"
+          ],
+          "params": [
+            {
+              "id": "sdfAssessmentIntervalMonths",
+              "label": "Interval within which the DPIA and audit are repeated",
+              "default": "12",
+              "unit": "months"
+            }
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "10(2)(c)"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "ID.RA-04"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "ID.RA-05"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.35"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "RA-8"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-ctx",
+            "refresh-soc",
+            "report-audit-findings",
+            "report-audit-improvements"
+          ]
+        },
+        {
+          "id": "13(2)",
+          "title": "Assessor's report of significant observations furnished to the Board",
+          "prose": "A Significant Data Fiduciary shall cause the person carrying out the Data Protection Impact Assessment and audit to furnish to the Board a report containing significant observations in the Data Protection Impact Assessment and audit.",
+          "guidance": "refresh-soc records the assessor's Board submission reference and date alongside the DPIA and audit records of 13(1); report-audit-improvements tracks remediation of the significant observations as change-management initiatives. A finding is raised when the twelve-month window closes without a Board submission.",
+          "category": "Significant Data Fiduciary",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Assessor's report of significant observations and Board submission acknowledgement",
+            "Remediation initiatives for each significant observation in change_management"
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "10(2)(b)"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.35"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-soc",
+            "report-audit-improvements",
+            "impl-change-management"
+          ]
+        },
+        {
+          "id": "13(3)",
+          "title": "Due diligence on algorithmic software and technical measures",
+          "prose": "A Significant Data Fiduciary shall observe due diligence to verify that technical measures, including algorithmic software, adopted by it for hosting, display, uploading, modification, publishing, transmission, storage, updating or sharing of personal data processed by it are not likely to pose a risk to the rights of Data Principals.",
+          "guidance": "Covers credit-scoring, fraud, collections-prioritisation and recommendation models and any LLM agents that read or act on personal data. probe-agent-graph inventories agent and model pipelines that touch personal data and the guardrails on them; runtime-probe-harnesses and runtime-probe-sandboxes evidence that agent runtimes cannot exfiltrate or over-share personal data; execute-scr reviews model-serving and prompt-handling code for personal-data leakage; refresh-soc records the model risk register, bias and fairness testing and the sign-off for each algorithm. A finding is raised for an algorithmic system processing personal data with no documented due-diligence review.",
+          "category": "Significant Data Fiduciary",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Inventory of algorithmic systems and AI agents processing personal data",
+            "Due-diligence review per system covering rights impact, bias testing and guardrails",
+            "Agent-graph probe observations with data-access scopes"
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "10(2)(c)"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-ai-600-1",
+              "controlId": "2.4"
+            },
+            {
+              "regulator": "OWASP",
+              "instrument": "owasp-llm-top10-2025",
+              "controlId": "LLM02"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "ID.RA-01"
+            }
+          ],
+          "probeWorkflows": [
+            "probe-agent-graph",
+            "runtime-probe-harnesses",
+            "runtime-probe-sandboxes",
+            "execute-scr",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "13(4)",
+          "title": "Specified personal data and its traffic data kept within India",
+          "prose": "A Significant Data Fiduciary shall undertake measures to ensure that personal data specified by the Central Government, on the recommendations of a committee it constitutes (including officials of the Ministry of Electronics and Information Technology and possibly other ministries), is processed subject to the restriction that the personal data and the traffic data pertaining to its flow is not transferred outside the territory of India.",
+          "guidance": "Until the Central Government specifies the data categories this control is dormant; a maintainer must add the notification reference when issued. In readiness, probe-iac records the region of every datastore, backup, replica and log sink holding personal data; runtime-probe-network-perimeter and runtime-probe-datapipeline check egress paths, CDN and observability vendors for traffic data leaving India; refresh-vendor-ctx records each processor's hosting region. The RBI circular on storage of payment system data (April 2018) already requires payment system operators, and the service providers and intermediaries in their payment chain, to store payment data only in India; other financial-services fiduciaries are bound only to the extent they fall in that chain or a sectoral localisation rule.",
+          "category": "Significant Data Fiduciary",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Region inventory of datastores, backups, replicas and log sinks holding personal data",
+            "Egress and vendor-region review showing no specified data or traffic data leaves India",
+            "Central Government notification specifying the data categories, when issued"
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "10(2)(c)"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.OC-03"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.14"
+            }
+          ],
+          "probeWorkflows": [
+            "probe-iac",
+            "runtime-probe-network-perimeter",
+            "runtime-probe-datapipeline",
+            "refresh-vendor-ctx",
+            "runtime-probe-prod-env"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Rule-14",
+      "title": "Rule 14: Rights of Data Principals",
+      "controls": [
+        {
+          "id": "14(1)",
+          "title": "Publish the means and identifiers for rights requests",
+          "prose": "For enabling Data Principals to exercise their rights under the Act (access, correction, erasure, grievance redressal and nomination), the Data Fiduciary and, where applicable, the Consent Manager, shall prominently publish on its website or app the details of the means using which a Data Principal may make a request for the exercise of such rights and the particulars, such as username or other identifier (customer identification file number, application reference number, email, mobile number or licence number), required to identify her under its terms of service.",
+          "guidance": "refresh-ctx fetches the rights-request page of every customer-facing application and records the channel and identifiers; execute-scr reviews the rights-request endpoint for authentication commensurate with the identifiers accepted, so that a request cannot be used to access another customer's data. probe-schemas confirms the data model supports access export, correction and erasure per Data Principal.",
+          "category": "Transparency and rights",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Published rights-request channel and accepted identifiers per application",
+            "Rights-request handling procedure covering access, correction, erasure and nomination",
+            "Authentication design for rights requests"
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "11"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.34"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "PM-20"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-ctx",
+            "execute-scr",
+            "probe-schemas"
+          ]
+        },
+        {
+          "id": "14(2)",
+          "title": "Rights requests accepted through the published means and particulars",
+          "prose": "To exercise the rights of the Data Principal under the Act, she may make a request to the Data Fiduciary to whom she has previously given consent for processing of her personal data, using the means and furnishing the particulars required by such Data Fiduciary for the exercise of such rights.",
+          "guidance": "Companion to 14(1): 14(1) evidences that the means and identifiers are published, 14(2) evidences that requests arriving through those means are actually accepted and handled. execute-scr reviews the rights-request endpoints and back-office queue and raises a finding when a request made through a published channel with the published particulars is rejected, silently dropped, or made to require identifiers not listed in the terms of service; probe-schemas confirms requests are linked to the Data Principal and the consent record they relate to; refresh-soc records request volumes and outcomes per channel as an observation. Commences 13 May 2027.",
+          "category": "Transparency and rights",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Rights-request intake per published channel with request log and outcome",
+            "Code review result confirming requests with the published particulars are accepted and routed",
+            "Linkage of each request to the Data Principal and the consent record concerned"
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "11"
+            },
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "12"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.34"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "PM-20"
+            }
+          ],
+          "probeWorkflows": [
+            "execute-scr",
+            "probe-schemas",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "14(3)",
+          "title": "Grievance redressal within a published period not exceeding ninety days",
+          "prose": "Every Data Fiduciary and Consent Manager shall prominently publish on its website or app the period, not exceeding ninety days, within which it responds to the grievances of Data Principals under its grievance redressal system, and shall implement appropriate technical and organisational measures to ensure the effectiveness of the system in responding within such period. Section 8(10) of the Act requires an effective grievance redressal mechanism.",
+          "guidance": "slaDays 90 reflects the ninety-day outer limit in rule 14(3); the company may publish a shorter period and sectoral rules (RBI Integrated Ombudsman thirty days, SEBI SCORES twenty-one days) usually require one, in which case Maxwell applies the shorter published period. refresh-ctx records the published period and the grievance channel; refresh-soc records grievance ticket ageing from the CRM export as an observation and raises a finding when tickets exceed the published period.",
+          "category": "Transparency and rights",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "continuous",
+          "slaDays": 90,
+          "evidenceExpected": [
+            "Published grievance response period of ninety days or less",
+            "Grievance ticket ageing report showing responses within the published period",
+            "Grievance handling procedure with escalation to the DPO or responsible person"
+          ],
+          "params": [
+            {
+              "id": "grievanceResponseDays",
+              "label": "Maximum published period for responding to Data Principal grievances",
+              "default": "90",
+              "unit": "days"
+            }
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "8(10)"
+            },
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "13"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.34"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-ctx",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "14(4)",
+          "title": "Enable nomination of individuals to exercise rights",
+          "prose": "To exercise the rights of the Data Principal under the Act, she may, in accordance with the terms of service of the Data Fiduciary and applicable law, nominate one or more individuals, using the means and furnishing the particulars required by the Data Fiduciary for the exercise of such right.",
+          "guidance": "probe-schemas confirms the customer data model can hold one or more DPDP nominees distinct from financial-product nominees (bank, demat, insurance nominees serve a different purpose but may be reused where the terms of service say so); refresh-ctx records the nomination procedure in the terms of service.",
+          "category": "Transparency and rights",
+          "mandatory": true,
+          "defaultSeverity": "low",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Nomination facility in the terms of service and rights-request channel",
+            "Nominee fields in the customer data model"
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "14"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.34"
+            }
+          ],
+          "probeWorkflows": [
+            "probe-schemas",
+            "refresh-ctx"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Rule-15",
+      "title": "Rule 15: Transfer of personal data outside the territory of India",
+      "controls": [
+        {
+          "id": "15",
+          "title": "Cross-border transfers subject to Central Government requirements",
+          "prose": "Any personal data processed by a Data Fiduciary under the Act may be transferred outside the territory of India subject to the restriction that the Data Fiduciary shall meet such requirements as the Central Government may, by general or special order, specify in respect of making such personal data available to any foreign State, or to any person or entity under the control of or any agency of such a State. Section 16 of the Act lets the Central Government restrict transfers to notified countries and preserves stricter sectoral localisation laws.",
+          "guidance": "refresh-vendor-ctx records the hosting and support regions of every processor and the transfer mechanism in contract; probe-iac records datastore, backup and log-sink regions; runtime-probe-network-perimeter and runtime-probe-datapipeline evidence egress to foreign regions or SaaS. Maxwell raises a finding when personal data flows to a country restricted by a Central Government notification or when a transfer to a foreign State-controlled entity lacks the specified requirements; a maintainer must add the notification references as they are issued. Sectoral rules that already apply (RBI payment-data storage in India, SEBI CSCRF data-localisation for MIIs, IRDAI core-data storage) take precedence where stricter.",
+          "category": "Cross-border transfer",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Cross-border transfer register listing recipient country, entity, purpose and mechanism",
+            "Processor hosting regions in the vendor register",
+            "Region inventory of datastores, backups and log sinks",
+            "Central Government orders or notifications under rule 15 or section 16, when issued"
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "16"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.OC-03"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.14"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.31"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx",
+            "probe-iac",
+            "runtime-probe-network-perimeter",
+            "runtime-probe-datapipeline"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Rule-16",
+      "title": "Rule 16 and Second Schedule: Exemption from Act for research, archiving or statistical purposes",
+      "controls": [
+        {
+          "id": "16",
+          "title": "Research, archiving or statistical exemption claimed only within Second Schedule standards",
+          "prose": "The provisions of the Act do not apply to the processing of personal data necessary for research, archiving or statistical purposes if it is carried on in accordance with the standards specified in the Second Schedule. Those standards require, in summary, that the processing is lawful, is carried out to the extent necessary for the purpose, is not used to take any decision specific to a Data Principal, is accompanied by reasonable security safeguards and accuracy measures, retains personal data no longer than necessary and is done with accountability.",
+          "guidance": "Non-mandatory: it narrows rather than imposes an obligation, and the Second Schedule standards are summarised here from the gazette rather than quoted, so a claim of exemption needs maintainer verification against the Second Schedule text. Financial-services fiduciaries most often invoke it for model training, portfolio analytics and regulatory statistics; refresh-ctx records each dataset or pipeline for which the exemption is relied on, probe-agent-graph and runtime-probe-datapipeline check that outputs of an exempted pipeline are not fed back into decisions specific to a Data Principal (credit, pricing, collections), and the rule 6 controls are still evidenced for the exempted store because the Second Schedule itself requires reasonable security safeguards.",
+          "category": "Exemptions",
+          "mandatory": false,
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Register of datasets and pipelines relying on the research, archiving or statistical exemption with the Second Schedule standard met",
+            "Pipeline lineage showing exempted outputs are not used for decisions specific to a Data Principal"
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "17(2)(b)"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "PT-3"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-ctx",
+            "probe-agent-graph",
+            "runtime-probe-datapipeline"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Rule-23",
+      "title": "Rule 23 and Seventh Schedule: Calling for information from Data Fiduciary or intermediary",
+      "controls": [
+        {
+          "id": "23(1)",
+          "title": "Furnish information called for by the authorised person within the specified period",
+          "prose": "The Central Government may, for the purposes of the Act specified in the Seventh Schedule (State use of personal data in the interest of sovereignty, integrity or security of the State; performance of functions or disclosure of information under law; and assessment for notifying a Significant Data Fiduciary), acting through the corresponding authorised person, require any Data Fiduciary or intermediary to furnish such information as may be called for within the period specified in the order.",
+          "guidance": "refresh-soc records the lawful-request handling procedure, the designated recipient and the retrieval capability from the one-year processing records kept under rule 8(3); the procedure should verify the authorised person against the Seventh Schedule before disclosure. Maxwell logs each request and response date as an observation.",
+          "category": "Lawful requests",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Lawful-request handling procedure with authorised-person verification against the Seventh Schedule",
+            "Register of information requests with order reference, deadline and response date"
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "36"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.31"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.OC-03"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-soc",
+            "refresh-ctx"
+          ]
+        },
+        {
+          "id": "23(2)",
+          "title": "Non-disclosure of a furnishing when directed on security grounds",
+          "prose": "Where the disclosure of furnishing of information under rule 23(1) is likely to prejudicially affect the sovereignty and integrity of India or security of the State, the Central Government may require the Data Fiduciary or intermediary not to disclose such furnishing to the affected Data Principal or any other person except with the previous written permission of the authorised person.",
+          "guidance": "The lawful-request procedure recorded under 23(1) must include a confidentiality flag that suppresses customer notification and restricts the request record to named personnel when the order carries a non-disclosure direction; runtime-probe-identity-access evidences that the request register is access-restricted.",
+          "category": "Lawful requests",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "event-driven",
+          "evidenceExpected": [
+            "Confidentiality handling step in the lawful-request procedure",
+            "Access restriction on the information-request register"
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "36"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.15"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-soc",
+            "runtime-probe-identity-access"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Act-Chapter-II",
+      "title": "DPDP Act 2023 obligations carried until a dpdp-act-2023 catalog exists (sections 8 to 10)",
+      "controls": [
+        {
+          "id": "Act-8(2)",
+          "title": "Data Processors engaged only under a valid contract",
+          "prose": "A Data Fiduciary may engage, appoint, use or otherwise involve a Data Processor to process personal data on its behalf for any activity related to offering goods or services to Data Principals only under a valid contract, and remains responsible under section 8(1) for compliance in respect of processing undertaken on its behalf irrespective of any agreement to the contrary.",
+          "guidance": "Act-level obligation carried into this catalog because the Rules attach the security-safeguards (6(1)(f)) and retention (8(3)) duties to that contract. refresh-vendor-ctx raises a finding for any vendor in company-profile/<company_id>/vendors/ that receives personal data without a signed contract or data processing addendum, and records sub-processor flow-down. Carried in this Rules catalog only until a dpdp-act-2023 catalog exists (planned move): findings cite dpdp-act-2023:8(2) as the primary regulatoryRef and this dpdp-rules-2025 control id second. Act section commences 13 May 2027 under G.S.R. 843(E); before then record gaps as readiness gaps only (see control 1).",
+          "category": "Data Fiduciary obligations (Act)",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Signed contract or data processing addendum for every personal-data processor",
+            "Sub-processor flow-down clause"
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "8(2)"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.SC-05"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.20"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-vendor-ctx"
+          ]
+        },
+        {
+          "id": "Act-8(3)",
+          "title": "Completeness, accuracy and consistency of decision-affecting or shared personal data",
+          "prose": "Where personal data processed by a Data Fiduciary is likely to be used to make a decision that affects the Data Principal or to be disclosed to another Data Fiduciary, the Data Fiduciary shall ensure its completeness, accuracy and consistency.",
+          "guidance": "probe-schemas and refresh-metastore evidence validation constraints, reconciliation jobs and correction workflows on customer master data used for credit decisions, KYC sharing with CKYCR or credit bureaus, and account-aggregator disclosures; runtime-probe-datapipeline checks data-quality monitors on those feeds. A finding is raised where decision-affecting personal data has no validation or correction path. Carried in this Rules catalog only until a dpdp-act-2023 catalog exists (planned move): findings cite dpdp-act-2023:8(3) as the primary regulatoryRef and this dpdp-rules-2025 control id second. Act section commences 13 May 2027 under G.S.R. 843(E); before then record gaps as readiness gaps only (see control 1).",
+          "category": "Data Fiduciary obligations (Act)",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Data-quality rules and monitors on customer master data and outbound bureau or CKYCR feeds",
+            "Correction workflow linked to the rights-request channel"
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "8(3)"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "SI-18"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "PM-22"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.34"
+            }
+          ],
+          "probeWorkflows": [
+            "probe-schemas",
+            "refresh-metastore",
+            "runtime-probe-datapipeline"
+          ]
+        },
+        {
+          "id": "Act-8(7)",
+          "title": "Erase personal data on consent withdrawal or when the purpose is served",
+          "prose": "A Data Fiduciary shall, unless retention is necessary for compliance with any law for the time being in force, erase personal data upon the Data Principal withdrawing her consent or as soon as it is reasonable to assume that the specified purpose is no longer being served, whichever is earlier, and shall cause its Data Processor to erase any personal data made available to it for processing. An illustration to section 8(7) shows a Data Fiduciary retaining records for the period its governing law requires; the ten-year figure used there is a hypothetical in the illustration, not the period set by RBI or PMLA.",
+          "guidance": "probe-schemas and refresh-metastore evidence a retention schedule per data class citing the governing law (PMLA section 12 and RBI KYC Master Direction: at least five years after the business relationship ends; SEBI record rules; Companies Act; specified bank registers under the Banking Companies (Period of Preservation of Records) Rules, 1985) and the erasure or anonymisation job that runs when consent is withdrawn or the purpose lapses; runtime-probe-datapipeline evidences erasure propagation to warehouses, backups within policy and processors; refresh-vendor-ctx records processor erasure certificates. The one-year floor in rule 8(3) applies before erasure. Carried in this Rules catalog only until a dpdp-act-2023 catalog exists (planned move): findings cite dpdp-act-2023:8(7) as the primary regulatoryRef and this dpdp-rules-2025 control id second. Act section commences 13 May 2027 under G.S.R. 843(E); before then record gaps as readiness gaps only (see control 1).",
+          "category": "Data Fiduciary obligations (Act)",
+          "mandatory": true,
+          "defaultSeverity": "medium",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Retention schedule per data class with governing law and erasure trigger",
+            "Consent-withdrawal to erasure workflow with run logs",
+            "Processor erasure certificates or attestations"
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "8(7)"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.8.10"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "SI-12"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "PR.DS-01"
+            }
+          ],
+          "probeWorkflows": [
+            "probe-schemas",
+            "refresh-metastore",
+            "runtime-probe-datapipeline",
+            "refresh-vendor-ctx"
+          ]
+        },
+        {
+          "id": "Act-9(3)",
+          "title": "No tracking, behavioural monitoring or targeted advertising directed at children",
+          "prose": "A Data Fiduciary shall not undertake tracking or behavioural monitoring of children or targeted advertising directed at children, and shall not undertake processing likely to cause any detrimental effect on the well-being of a child, except for the classes and purposes exempted under the Fourth Schedule subject to their conditions.",
+          "guidance": "execute-scr and probe-app-chart check that analytics, advertising and attribution SDKs, behavioural-scoring pipelines and marketing automation exclude accounts flagged as minors; runtime-probe-datapipeline confirms minor accounts are excluded from marketing segments and behavioural feature stores. A finding is raised when a minor cohort appears in an advertising audience or behavioural model input. Carried in this Rules catalog only until a dpdp-act-2023 catalog exists (planned move): findings cite dpdp-act-2023:9(3) as the primary regulatoryRef and this dpdp-rules-2025 control id second. Act section commences 13 May 2027 under G.S.R. 843(E); before then record gaps as readiness gaps only (see control 1).",
+          "category": "Data Fiduciary obligations (Act)",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "continuous",
+          "evidenceExpected": [
+            "Minor-account exclusion rule in analytics, advertising and marketing pipelines",
+            "SDK inventory per mobile app with data-collection purpose",
+            "Behavioural model input review excluding minors"
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "9(3)"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.34"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "PT-2"
+            }
+          ],
+          "probeWorkflows": [
+            "execute-scr",
+            "probe-app-chart",
+            "runtime-probe-datapipeline",
+            "probe-agent-graph"
+          ]
+        },
+        {
+          "id": "Act-10(2)(a)",
+          "title": "India-based Data Protection Officer responsible to the board",
+          "prose": "A Significant Data Fiduciary shall appoint a Data Protection Officer who represents it under the Act, is based in India, is an individual responsible to the Board of Directors or similar governing body, and is the point of contact for the grievance redressal mechanism.",
+          "guidance": "Applies once notified as a Significant Data Fiduciary. refresh-ctx adds the DPO to details.json contacts with role dpo (name, email, phone only) and records the appointment resolution, India location, reporting line to the board and publication of the contact under rule 9 as a soc observation (kind observation, methods manual, regulatoryRef dpdp-act-2023:10(2)(a)), since details.json has no fields for them; a finding is raised when an SDF has no DPO or the DPO reports below the governing body. Carried in this Rules catalog only until a dpdp-act-2023 catalog exists (planned move): findings cite dpdp-act-2023:10(2)(a) as the primary regulatoryRef and this dpdp-rules-2025 control id second. Act section commences 13 May 2027 under G.S.R. 843(E); before then record gaps as readiness gaps only (see control 1).",
+          "category": "Significant Data Fiduciary (Act)",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Board resolution appointing the DPO with India location and reporting line",
+            "DPO contact published on the website or app and in rights-request responses"
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "10(2)(a)"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-csf-2.0",
+              "controlId": "GV.RR-02"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.2"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-ctx",
+            "refresh-soc"
+          ]
+        },
+        {
+          "id": "Act-10(2)(b)",
+          "title": "Independent data auditor appointed",
+          "prose": "A Significant Data Fiduciary shall appoint an independent data auditor to carry out data audit, who shall evaluate the compliance of the Significant Data Fiduciary in accordance with the provisions of the Act.",
+          "guidance": "Applies once notified as a Significant Data Fiduciary. refresh-ctx records the auditor's engagement letter and independence declaration; the audit itself is evidenced under rule 13(1) and its Board report under 13(2). Maxwell's report-audit-findings output is the technical evidence pack handed to the auditor, not a substitute for the appointment. Carried in this Rules catalog only until a dpdp-act-2023 catalog exists (planned move): findings cite dpdp-act-2023:10(2)(b) as the primary regulatoryRef and this dpdp-rules-2025 control id second. Act section commences 13 May 2027 under G.S.R. 843(E); before then record gaps as readiness gaps only (see control 1).",
+          "category": "Significant Data Fiduciary (Act)",
+          "mandatory": true,
+          "defaultSeverity": "high",
+          "cadence": "annual",
+          "evidenceExpected": [
+            "Engagement letter of the independent data auditor with independence declaration",
+            "Audit plan aligned to the twelve-month cycle of rule 13(1)"
+          ],
+          "mappings": [
+            {
+              "regulator": "MeitY",
+              "instrument": "dpdp-act-2023",
+              "controlId": "10(2)(b)"
+            },
+            {
+              "regulator": "ISO",
+              "instrument": "iso-27001-2022",
+              "controlId": "A.5.35"
+            },
+            {
+              "regulator": "NIST",
+              "instrument": "nist-800-53-r5",
+              "controlId": "CA-2"
+            }
+          ],
+          "probeWorkflows": [
+            "refresh-ctx",
+            "report-audit-findings"
+          ]
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T07:45:00Z",
+    "workflow": "manual",
+    "agent": "regulatory-cataloguer",
+    "model": "claude-opus-5",
+    "sessionId": "b157e311-135c-4bae-a87c-99f2362a67a1"
+  }
+}

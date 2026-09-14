@@ -105,7 +105,7 @@
             "slaDueAt": "2026-09-19T04:15:22Z",
             "slaBasis": {
               "instrument": "sebi-cscrf-2024",
-              "controlId": "PR.PS.S6",
+              "controlId": "PR.MA.S3",
               "topic": "patch-sla",
               "days": 7
             },
@@ -115,7 +115,7 @@
         "slaDueAt": "2026-09-19T04:15:22Z",
         "slaBasis": {
           "instrument": "sebi-cscrf-2024",
-          "controlId": "PR.PS.S6",
+          "controlId": "PR.MA.S3",
           "topic": "patch-sla",
           "days": 7
         },

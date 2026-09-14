@@ -1,0 +1,332 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.vocab.sla-table",
+  "lastReviewedAt": "2026-09-14",
+  "precedence": "most-strict-wins",
+  "defaults": {
+    "critical": 7,
+    "high": 30,
+    "medium": 90,
+    "low": 180,
+    "info": 365
+  },
+  "entries": [
+    {
+      "instrument": "sebi-cscrf-2024",
+      "controlId": "PR.MA.S3",
+      "topic": "patch-sla",
+      "severity": "critical",
+      "days": 7,
+      "basis": "SEBI CSCRF 2024, PR.MA.S3 guideline 11: \"Based on the criticality of the patches, REs shall ensure that patches are implemented at both PDC and DR site within the upper/ maximum time limit\" - High: 1 week. CSCRF's top patch criticality is High, so critical findings take the same 1 week; FAQ 17(a) (11 Jun 2025) validates high-severity missing-patch VAPT findings against this 1-week timeline",
+      "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
+    },
+    {
+      "instrument": "sebi-cscrf-2024",
+      "controlId": "PR.MA.S3",
+      "topic": "patch-sla",
+      "severity": "high",
+      "days": 7,
+      "basis": "SEBI CSCRF 2024, PR.MA.S3 guideline 11: \"Based on the criticality of the patches, REs shall ensure that patches are implemented at both PDC and DR site within the upper/ maximum time limit\" - High: 1 week (7 days)",
+      "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
+    },
+    {
+      "instrument": "sebi-cscrf-2024",
+      "controlId": "PR.MA.S3",
+      "topic": "patch-sla",
+      "severity": "medium",
+      "days": 14,
+      "basis": "SEBI CSCRF 2024, PR.MA.S3 guideline 11: \"Based on the criticality of the patches, REs shall ensure that patches are implemented at both PDC and DR site within the upper/ maximum time limit\" - Moderate: 2 weeks (14 days)",
+      "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
+    },
+    {
+      "instrument": "sebi-cscrf-2024",
+      "controlId": "PR.MA.S3",
+      "topic": "patch-sla",
+      "severity": "low",
+      "days": 30,
+      "basis": "SEBI CSCRF 2024, PR.MA.S3 guideline 11: \"Based on the criticality of the patches, REs shall ensure that patches are implemented at both PDC and DR site within the upper/ maximum time limit\" - Low: 1 month (applied as 30 days)",
+      "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
+    },
+    {
+      "instrument": "sebi-cscrf-2024",
+      "controlId": "Sec-4.3",
+      "topic": "vapt-cadence",
+      "severity": "any",
+      "days": 90,
+      "basis": "SEBI CSCRF 2024, Section 4.3.3 Table 19: \"Closure of findings identified during VAPT activity - Within 3 months of submission of VAPT report\", graded by criticality; 4.3.4: open vulnerabilities after 3 months need IT Committee approval (applied as 90 days; FAQ 17(b))",
+      "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
+    },
+    {
+      "instrument": "sebi-cscrf-2024",
+      "controlId": "Sec-4.4",
+      "topic": "audit-cadence",
+      "severity": "any",
+      "days": 90,
+      "basis": "SEBI CSCRF 2024, Section 4.4.2 Table 22: \"Closure of findings identified during cyber audit - Within 3 months of cyber audit report submission\", graded by criticality (applied as 90 days)",
+      "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
+    },
+    {
+      "instrument": "sebi-cscrf-2024",
+      "controlId": "RS.CO.S2",
+      "topic": "incident-reporting",
+      "severity": "any",
+      "days": 1,
+      "hours": 6,
+      "basis": "SEBI CSCRF 2024, RS.CO.S2 (RS.CO guideline 1): incidents under the CERT-In directions \"shall be notified to SEBI and CERT-In within 6 hours of noticing/ detecting such incidents\"; stock brokers/DPs also to exchanges/depositories within 6 hours; details on the SEBI Incident Reporting Portal within 24 hours",
+      "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
+    },
+    {
+      "instrument": "rbi-cyber-tech-directions-2026",
+      "controlId": "182",
+      "topic": "incident-reporting",
+      "severity": "any",
+      "days": 1,
+      "hours": 6,
+      "basis": "RBI (Commercial Banks - Cybersecurity, Technology: Risk, Resilience and Assurance Framework) Directions 2026, para 182: \"The bank shall report cyber incidents within six hours of detection on DAKSH platform\"; same obligation in the SFB, PB, UCB, AIFI, NBFC and CIC Directions",
+      "url": "https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=13643"
+    },
+    {
+      "instrument": "rbi-it-outsourcing-md-2023",
+      "controlId": "17(h)",
+      "topic": "incident-reporting",
+      "severity": "any",
+      "days": 1,
+      "hours": 6,
+      "basis": "RBI Master Direction on Outsourcing of IT Services 2023, para 17(h): cyber incidents are reported to the RE by the service provider without undue delay \"so that the incident is reported by the RE to the RBI within 6 hours of detection by the TPSP\" (repealed 28 Nov 2025 by the entity-wise Managing Risks in Outsourcing Directions, 2025; for historical incidents only - the RBI 6h clock now comes from rbi-cyber-tech-directions-2026 para 182)",
+      "url": "https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12486"
+    },
+    {
+      "instrument": "rbi-cyber-security-framework-2016",
+      "controlId": "Annex3",
+      "topic": "incident-reporting",
+      "severity": "any",
+      "days": 1,
+      "hours": 6,
+      "basis": "RBI Cyber Security Framework in Banks (2 June 2016), para on incident reporting: all unusual cyber-security incidents are reported to RBI within 2 to 6 hours (repealed for banks by the 2026 Directions; kept for historical findings)",
+      "url": "https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=10435"
+    },
+    {
+      "instrument": "irdai-info-cyber-security-2023",
+      "controlId": "2.16-3.6.1",
+      "topic": "patch-sla",
+      "severity": "critical",
+      "days": 30,
+      "basis": "IRDAI Information and Cyber Security Guidelines 2023, policy 2.16 control 3.6.1 item 9: \"High risk gaps, reported from the VAPT, should be closed within a period of one month followed by validation testing\" (applied as 30 days to critical and high)",
+      "url": "https://irdai.gov.in/document-detail?documentId=3314780"
+    },
+    {
+      "instrument": "irdai-info-cyber-security-2023",
+      "controlId": "2.16-3.6.1",
+      "topic": "patch-sla",
+      "severity": "high",
+      "days": 30,
+      "basis": "IRDAI Information and Cyber Security Guidelines 2023, policy 2.16 control 3.6.1 item 9: high risk VAPT gaps closed within one month followed by validation testing (applied as 30 days)",
+      "url": "https://irdai.gov.in/document-detail?documentId=3314780"
+    },
+    {
+      "instrument": "irdai-info-cyber-security-2023",
+      "controlId": "2.16-3.6.1",
+      "topic": "patch-sla",
+      "severity": "medium",
+      "days": 60,
+      "basis": "IRDAI Information and Cyber Security Guidelines 2023, policy 2.16 control 3.6.1 item 10: \"the outer time limit for closure of all the audit gaps is two months\" (applied as 60 days)",
+      "url": "https://irdai.gov.in/document-detail?documentId=3314780"
+    },
+    {
+      "instrument": "irdai-info-cyber-security-2023",
+      "controlId": "2.16-3.6.1",
+      "topic": "patch-sla",
+      "severity": "low",
+      "days": 60,
+      "basis": "IRDAI Information and Cyber Security Guidelines 2023, policy 2.16 control 3.6.1 item 10: outer time limit of two months for closure of all audit gaps (applied as 60 days)",
+      "url": "https://irdai.gov.in/document-detail?documentId=3314780"
+    },
+    {
+      "instrument": "irdai-info-cyber-security-2023",
+      "controlId": "2.16-3.6.1",
+      "topic": "audit-cadence",
+      "severity": "any",
+      "days": 60,
+      "basis": "IRDAI Information and Cyber Security Guidelines 2023, policy 2.16 control 3.6.1 item 10: priority for closure of audit gaps by risk, \"however, the outer time limit for closure of all the audit gaps is two months\" (applied as 60 days)",
+      "url": "https://irdai.gov.in/document-detail?documentId=3314780"
+    },
+    {
+      "instrument": "irdai-info-cyber-security-2023",
+      "controlId": "2.10-3.5",
+      "topic": "incident-reporting",
+      "severity": "any",
+      "days": 1,
+      "hours": 6,
+      "basis": "IRDAI Information and Cyber Security Guidelines 2023, policy 2.10 para 3.5 and circular IRDAI/GA&HR/CIR/MISC/128/06/2023: \"report cyber-incidents to Cert-In within 6 hours of noticing or being brought to notice about such incidents with a copy to IRDAI\"",
+      "url": "https://irdai.gov.in/document-detail?documentId=3314780"
+    },
+    {
+      "instrument": "cert-in-directions-2022",
+      "controlId": "Dir-ii",
+      "topic": "incident-reporting",
+      "severity": "any",
+      "days": 1,
+      "hours": 6,
+      "basis": "CERT-In Directions No. 20(3)/2022-CERT-In of 28 April 2022, direction (ii): \"mandatorily report cyber incidents as mentioned in Annexure I to CERT-In within 6 hours of noticing such incidents or being brought to notice about such incidents\"",
+      "url": "https://www.cert-in.org.in/PDF/CERT-In_Directions_70B_28.04.2022.pdf"
+    },
+    {
+      "instrument": "dpdp-rules-2025",
+      "controlId": "7(2)(b)",
+      "topic": "breach-notification",
+      "severity": "any",
+      "days": 3,
+      "hours": 72,
+      "basis": "DPDP Rules 2025, Rule 7(2): intimate the Board without delay on becoming aware of a personal data breach and, \"within seventy-two hours of becoming aware of the breach, or within such longer period as the Board may allow on a request made in writing\", intimate updated and detailed information",
+      "url": "https://egazette.gov.in/WriteReadData/2025/267650.pdf"
+    },
+    {
+      "instrument": "dpdp-rules-2025",
+      "controlId": "14(3)",
+      "topic": "grievance-redressal",
+      "severity": "any",
+      "days": 90,
+      "basis": "DPDP Rules 2025, Rule 14(3): Data Fiduciaries and Consent Managers publish the period for responding to grievances, \"a reasonable period not exceeding ninety days\"",
+      "url": "https://egazette.gov.in/WriteReadData/2025/267650.pdf"
+    },
+    {
+      "instrument": "nydfs-23-nycrr-500",
+      "controlId": "500.17(a)(1)",
+      "topic": "incident-reporting",
+      "severity": "any",
+      "days": 3,
+      "hours": 72,
+      "basis": "NYDFS 23 NYCRR 500.17(a)(1): notify the superintendent \"as promptly as possible but in no event later than 72 hours after determining that a cybersecurity incident has occurred\"",
+      "url": "https://www.dfs.ny.gov/industry_guidance/cybersecurity"
+    },
+    {
+      "instrument": "nydfs-23-nycrr-500",
+      "controlId": "500.17(c)(1)",
+      "topic": "incident-reporting",
+      "severity": "critical",
+      "days": 1,
+      "hours": 24,
+      "basis": "NYDFS 23 NYCRR 500.17(c)(1): TRIGGER - an extortion payment made in connection with a cybersecurity event; notice to the superintendent \"within 24 hours of the extortion payment\", written justification within 30 days under 500.17(c)(2). Keyed critical so it stays unique; apply only when a payment was made, otherwise use the 72h 500.17(a)(1) row",
+      "url": "https://www.dfs.ny.gov/industry_guidance/cybersecurity"
+    },
+    {
+      "instrument": "pci-dss-4.0.1",
+      "controlId": "6.3.3",
+      "topic": "patch-sla",
+      "severity": "critical",
+      "days": 30,
+      "basis": "PCI DSS v4.0.1, Requirement 6.3.3: \"Patches/updates for critical vulnerabilities (identified according to the risk ranking process at Requirement 6.3.1) are installed within one month of release\" (applied as 30 days)",
+      "url": "https://www.pcisecuritystandards.org/document_library/"
+    },
+    {
+      "instrument": "cisa-bod-26-04",
+      "controlId": "Table-1",
+      "topic": "patch-sla",
+      "severity": "critical",
+      "days": 3,
+      "basis": "CISA BOD 26-04 (10 June 2026), Table 1: publicly exposed asset + KEV + automatable + total technical impact: remediate in 3 days with forensic triage. Maxwell applies this row only to KEV-listed findings on an internet- or partner-exposed asset (cve-enrichment's KEV floor makes those critical); skip it for non-KEV findings",
+      "url": "https://www.cisa.gov/news-events/directives/bod-26-04-prioritizing-security-updates-based-risk"
+    },
+    {
+      "instrument": "cisa-bod-26-04",
+      "controlId": "Table-1",
+      "topic": "patch-sla",
+      "severity": "high",
+      "days": 30,
+      "basis": "CISA BOD 26-04, Table 1: non-public asset with a KEV-listed vulnerability: 30 days (tier wording from the Table 1 image, not verified against page text). Maxwell applies this row only to KEV-listed findings not on an exposed asset (KEV floor = high); skip it for non-KEV findings, which BOD sends to fix on system upgrade",
+      "url": "https://www.cisa.gov/news-events/directives/bod-26-04-prioritizing-security-updates-based-risk"
+    },
+    {
+      "instrument": "apra-cps-234",
+      "controlId": "35",
+      "topic": "incident-reporting",
+      "severity": "any",
+      "days": 3,
+      "hours": 72,
+      "basis": "APRA CPS 234 para 35: notify APRA \"as soon as possible and, in any case, no later than 72 hours, after becoming aware of an information security incident\" that materially affected or could materially affect the entity or its customers",
+      "url": "https://handbook.apra.gov.au/standard/cps-234"
+    },
+    {
+      "instrument": "apra-cps-234",
+      "controlId": "36",
+      "topic": "compliance-reporting",
+      "severity": "any",
+      "days": 10,
+      "basis": "APRA CPS 234 para 36: notify APRA \"as soon as possible and, in any case, no later than 10 business days, after it becomes aware of a material information security control weakness\" it cannot remediate in a timely manner (business days applied strictly as 10 calendar days)",
+      "url": "https://handbook.apra.gov.au/standard/cps-234"
+    },
+    {
+      "instrument": "apra-cps-230",
+      "controlId": "33",
+      "topic": "incident-reporting",
+      "severity": "any",
+      "days": 3,
+      "hours": 72,
+      "basis": "APRA CPS 230 para 33: notify APRA \"as soon as possible, and not later than 72 hours, after becoming aware of an operational risk incident\" likely to have a material financial impact or a material impact on the ability to maintain critical operations (the 24h para 42 disruption clock is its own row)",
+      "url": "https://handbook.apra.gov.au/standard/cps-230"
+    },
+    {
+      "instrument": "apra-cps-230",
+      "controlId": "42",
+      "topic": "incident-reporting",
+      "severity": "critical",
+      "days": 1,
+      "hours": 24,
+      "basis": "APRA CPS 230 para 42: TRIGGER - disruption to a critical operation outside tolerance; notify APRA \"as soon as possible, and not later than 24 hours after\". Keyed critical so it stays unique; apply only when a critical operation is outside tolerance, otherwise use the 72h para 33 row",
+      "url": "https://handbook.apra.gov.au/standard/cps-230"
+    },
+    {
+      "instrument": "eu-dora-2022-2554",
+      "controlId": "Art.19(4)",
+      "topic": "incident-reporting",
+      "severity": "any",
+      "days": 1,
+      "hours": 24,
+      "basis": "EU DORA Art.19(4) with Delegated Regulation (EU) 2025/301: initial notification of a major ICT-related incident within 4 hours of classification and no later than 24 hours from becoming aware; intermediate report within 72 hours; final report within 1 month",
+      "url": "https://eur-lex.europa.eu/eli/reg/2022/2554/oj"
+    },
+    {
+      "instrument": "sec-cyber-disclosure-2023",
+      "controlId": "8-K-1.05",
+      "topic": "incident-reporting",
+      "severity": "any",
+      "days": 4,
+      "basis": "SEC Final Rule 33-11216, Form 8-K Item 1.05: disclose a material cybersecurity incident \"within four business days\" after the registrant determines it is material (business days applied strictly as 4 calendar days)",
+      "url": "https://www.sec.gov/rules-regulations/2023/07/s7-09-22"
+    },
+    {
+      "instrument": "mas-trm-2021",
+      "topic": "incident-reporting",
+      "severity": "any",
+      "days": 1,
+      "hours": 1,
+      "basis": "MAS Notice on Technology Risk Management: notify MAS \"as soon as possible, but not later than 1 hour, upon the discovery of a relevant incident\"; root cause and impact analysis report within 14 days",
+      "url": "https://www.mas.gov.sg/regulation/guidelines/technology-risk-management-guidelines"
+    },
+    {
+      "instrument": "eu-ai-act-2024-1689",
+      "controlId": "Art.73(2)",
+      "topic": "incident-reporting",
+      "severity": "any",
+      "days": 15,
+      "basis": "EU AI Act Art.73(2): providers of high-risk AI systems report a serious incident immediately after establishing a causal link \"and, in any event, not later than 15 days after\" becoming aware of it",
+      "url": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj"
+    },
+    {
+      "instrument": "eu-ai-act-2024-1689",
+      "controlId": "Art.73(3)",
+      "topic": "incident-reporting",
+      "severity": "critical",
+      "days": 2,
+      "basis": "EU AI Act Art.73(3): a widespread infringement or a serious incident involving serious and irreversible disruption of critical infrastructure is reported immediately \"and not later than two days after\" awareness",
+      "url": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj"
+    }
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-14T07:44:16Z",
+    "workflow": "manual",
+    "agent": "ctx-researcher",
+    "sessionId": "b157e311-135c-4bae-a87c-99f2362a67a1"
+  }
+}
