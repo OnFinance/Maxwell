@@ -13,7 +13,7 @@ import { spawnSync } from 'node:child_process';
 import { writeFileSync, mkdirSync, readFileSync, existsSync } from 'node:fs';
 import { randomUUID } from 'node:crypto';
 import { ulid } from '../hooks/lib.mjs';
-import { workflowStatus } from './lib/workflow-status.mjs';
+import { ACCOUNT_LIMIT, parseLimitReset, workflowStatus } from './lib/workflow-status.mjs';
 
 const argv = process.argv.slice(2);
 const opt = (f, d) => { const i = argv.indexOf(f); return i >= 0 ? argv[i + 1] : d; };
@@ -59,6 +59,15 @@ if (harness === 'claude-code') {
   // cover (it only handles overload). Retry the whole invocation on the fallback model in that case.
   const isLimit = (r) => !!r && r.is_error && (r.api_error_status === 429 || /reached your .* limit|usage limit|rate limit/i.test(String(r.result || '')));
   const attempts = [model, ...(fallback && fallback !== model ? [fallback] : [])];
+  // An account-wide session limit stops every model, so wait for its reset and run the workflow again (probes are
+  // idempotent through finding fingerprints). The limit message carries the reset time.
+  const maxLimitWaits = Number(opt('--limit-waits', process.env.MAXWELL_LIMIT_WAITS || '3'));
+  let limitWaits = 0;
+  const sleepUntil = (at) => {
+    const ms = Math.max(0, at.getTime() - Date.now());
+    console.error(`[run-headless] account limit: waiting ${Math.round(ms / 60000)} min until ${at.toISOString()}`);
+    Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+  };
   for (let i = 0; i < attempts.length; i += 1) {
     const m = attempts[i];
     env.MAXWELL_MODEL = m;
@@ -78,16 +87,31 @@ if (harness === 'claude-code') {
     reported = typeof result.total_cost_usd === 'number' ? result.total_cost_usd : null;
     outcome = result.is_error ? (result.subtype === 'error_max_turns' ? 'max-turns' : result.subtype === 'error_max_budget_usd' ? 'max-budget' : 'error') : 'success';
     console.error(`[run-headless] model=${m} session ${sessionId} turns=${result.num_turns} cost=${reported} denials=${(result.permission_denials || []).length} outcome=${outcome}`);
-    if (!utility.has(workflow) && outcome === 'success') {
+    const limitMessages = ACCOUNT_LIMIT.test(String(result.result || '')) ? [String(result.result)] : [];
+    let finished = outcome === 'success';
+    if (!utility.has(workflow)) {
       const wf = workflowStatus(sessionId);
-      if (!wf.launched || wf.status !== 'completed') {
-        outcome = 'error';
-        console.error(`[run-headless] ${workflow} did not complete: launched=${wf.launched} status=${wf.status || 'none'} (transcript ${wf.transcript || 'not found'})`);
+      for (const e of wf.errors) if (ACCOUNT_LIMIT.test(e.error)) limitMessages.push(e.error);
+      finished = wf.launched && wf.status === 'completed' && wf.failedAgents === 0;
+      if (finished) {
+        // Every agent finished; a limit that only cut off the session's closing report does not fail the run.
+        if (outcome === 'error' && ACCOUNT_LIMIT.test(String(result.result || ''))) outcome = 'success';
+        console.error(`[run-headless] ${workflow} completed (task-notification status ${wf.status}, no failed agents)`);
       } else {
-        console.error(`[run-headless] ${workflow} completed (task-notification status ${wf.status})`);
+        if (outcome === 'success') outcome = 'error';
+        console.error(`[run-headless] ${workflow} did not complete: launched=${wf.launched} status=${wf.status || 'none'} failedAgents=${wf.failedAgents} (transcript ${wf.transcript || 'not found'})`);
       }
     }
-    if (isLimit(result) && i + 1 < attempts.length) {
+    if (!finished && limitMessages.length && limitWaits < maxLimitWaits) {
+      spawnSync(process.execPath, ['.claude/scripts/sessions/ingest.mjs', '--harness', 'claude-code', '--session', sessionId, '--force', '--outcome', 'error'], { encoding: 'utf8', env });
+      const at = parseLimitReset(limitMessages[0]) || new Date(Date.now() + 30 * 60000);
+      sleepUntil(new Date(at.getTime() + 2 * 60000));
+      limitWaits += 1;
+      console.error(`[run-headless] retrying ${workflow} on ${m} after the account limit reset (${limitWaits}/${maxLimitWaits})`);
+      i -= 1;
+      continue;
+    }
+    if (isLimit(result) && !ACCOUNT_LIMIT.test(String(result.result || '')) && i + 1 < attempts.length) {
       console.error(`[run-headless] ${m} hit a usage limit; retrying on ${attempts[i + 1]}`);
       spawnSync(process.execPath, ['.claude/scripts/sessions/ingest.mjs', '--harness', 'claude-code', '--session', sessionId, '--force', '--outcome', 'error'], { encoding: 'utf8', env });
       continue;
