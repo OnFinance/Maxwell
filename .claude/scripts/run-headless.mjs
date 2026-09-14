@@ -13,7 +13,7 @@ import { spawnSync } from 'node:child_process';
 import { writeFileSync, mkdirSync, readFileSync, existsSync } from 'node:fs';
 import { randomUUID } from 'node:crypto';
 import { ulid } from '../hooks/lib.mjs';
-import { ACCOUNT_LIMIT, parseLimitReset, workflowStatus } from './lib/workflow-status.mjs';
+import { ACCOUNT_LIMIT, opencodeSessionLog, parseLimitReset, workflowStatus } from './lib/workflow-status.mjs';
 
 const argv = process.argv.slice(2);
 const opt = (f, d) => { const i = argv.indexOf(f); return i >= 0 ? argv[i + 1] : d; };
@@ -127,11 +127,12 @@ if (harness === 'claude-code') {
   writeFileSync(`${logDir}/${runId}.${workflow}.export.json`, res.stdout || '');
   try { result = JSON.parse(res.stdout); } catch { result = null; }
   outcome = res.status === 0 ? 'success' : 'error';
-  // OpenCode sessions are ingested by the plugin (session.idle); list them from the runtime log for this run.
-  const log = `${logDir}/run-workflow.log`;
+  // OpenCode sessions are ingested by the plugin (session.idle); list this run's from the session log run-workflow.mjs
+  // keeps outside the workspace. Ingest output goes to stderr so stdout stays the one JSON result.
+  const log = opencodeSessionLog();
   if (existsSync(log)) {
-    const ids = new Set(readFileSync(log, 'utf8').split('\n').filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter((e) => e && e.workflow === workflow && e.sessionId).map((e) => e.sessionId));
-    for (const sid of ids) spawnSync(process.execPath, ['.claude/scripts/sessions/ingest.mjs', '--harness', 'opencode', '--session', sid, '--force'], { stdio: 'inherit', env });
+    const ids = new Set(readFileSync(log, 'utf8').split('\n').filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter((e) => e && e.workflow === workflow && e.sessionId && (!e.runId || e.runId === runId)).map((e) => e.sessionId));
+    for (const sid of ids) spawnSync(process.execPath, ['.claude/scripts/sessions/ingest.mjs', '--harness', 'opencode', '--session', sid, '--force'], { stdio: ['ignore', 2, 2], env });
   }
 }
 

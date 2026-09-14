@@ -10,6 +10,10 @@ import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { homedir } from 'node:os';
 
+// Where run-workflow.mjs records the OpenCode sessions each agent call started, so run-headless.mjs can ingest them.
+// Outside the workspace: it is runtime state, not a sanctioned artefact.
+export const opencodeSessionLog = (env = process.env) => env.MAXWELL_OPENCODE_SESSION_LOG || join(env.HOME || homedir(), '.cache', 'maxwell', 'opencode', 'sessions.log');
+
 // Account-wide limits: every model is affected, so the only remedy is to wait for the reset.
 export const ACCOUNT_LIMIT = /hit your (?:session|weekly|usage|daily)[\w -]* limit/i;
 
