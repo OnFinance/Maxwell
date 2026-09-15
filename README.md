@@ -23,7 +23,6 @@ frameworks where they help. Maxwell is designed to run headlessly on [Claude Cod
 - [Regulatory coverage](#regulatory-coverage)
 - [KPIs](#kpis)
 - [Quick start](#quick-start)
-- [Running headless](#running-headless)
 - [Validation and guardrails](#validation-and-guardrails)
 - [Contributing](#contributing)
 - [License](#license)
@@ -241,7 +240,7 @@ flowchart LR
 ```
 
 Invoke a workflow as `/<name> <company_id> [--app=<app_id>] [--env=<env_id>] [--dry-run]` in an interactive
-session, or through the [headless runner](#running-headless). Every workflow has a `refuter` agent challenge each
+session, or through the [headless runner](#quick-start). Every workflow has a `refuter` agent challenge each
 candidate before anything is written. Utility commands: `/validate`, `/kpis`, `/seed-company <company_id>`,
 `/status <company_id>`, `/connect-sandbox <company_id>`.
 
@@ -396,8 +395,7 @@ never as values.
 > Where should scans run for acme-securities?
 
 Maxwell asks a few questions and connects Kubernetes, Docker or Podman, E2B, Daytona, Modal, Vercel Sandbox, AWS
-Lambda MicroVMs, or this
-machine, then checks the connection. API keys stay outside the repository.
+Lambda MicroVMs, or this machine, then checks the connection. API keys stay outside the repository.
 
 **4. Connect ComplianceOS**
 
@@ -410,31 +408,14 @@ account, email team@onfinance.in.
 
 See [Use cases to try](#use-cases-to-try) for more.
 
-## Running headless
+**6. Run headless (optional)**
 
 ```bash
-node .claude/scripts/run-headless.mjs --workflow probe-iac --company acme-securities
-node .claude/scripts/run-headless.mjs --workflow runtime-probe-qa-env --company acme-securities --env qa --dry-run
-node .claude/scripts/run-headless.mjs --workflow refresh-apps --company acme-securities --harness opencode
+node .claude/scripts/run-headless.mjs --workflow probe-iac --company acme-securities [--app <id>] [--env <id>] [--dry-run]
 ```
 
-- **Model.** The default is Opus. If another model is requested and hits a usage limit, the runner retries on
-  `--fallback-model` (default `opus`).
-- **Completion.** `claude -p` waits for background workflows only 10 idle minutes by default. The runner raises this
-  to 4 hours and reports a run as successful only when the transcript shows the workflow completed.
-- **KPIs.** Every session is ingested, and the harness-reported cost is recorded for the cross-check.
-- **OpenCode.** OpenCode authenticates from `ANTHROPIC_API_KEY` in the environment, and its default model is
-  `anthropic/claude-opus-5`. `.claude/scripts/run-workflow.mjs` runs the same workflow scripts on OpenCode.
-
-| Script | Purpose |
-|---|---|
-| `npm run validate` | Every validation stage |
-| `npm run validate:<stage>` | One stage: `schemas`, `layout`, `data`, `frontmatter`, `workflows` or `mirror` |
-| `npm test` | Schema unit tests and script tests |
-| `npm run sync:agents` | Regenerate `.agents/` and `opencode.json` from `.claude/` |
-| `npm run kpis` | Compute KPI datapoints from ingested sessions and workspace state |
-| `npm run ingest:session` | Ingest one harness session manually |
-| `npm run fix:fmt`, `npm run fix:lint` | Format and lint the schemas |
+Add `--harness opencode --model <provider/model>` to run on OpenCode. The run commits nothing itself: check the result
+with `npm run validate`.
 
 ## Validation and guardrails
 
