@@ -18,7 +18,7 @@ an SLA table, and audit cost is measured from the session transcripts. It runs h
 - [Workspace layout](#workspace-layout)
 - [Workflows](#workflows)
 - [Use cases to try](#use-cases-to-try)
-- [Regulatory coverage](#regulatory-coverage)
+- [Controls registry](#controls-registry)
 - [KPIs](#kpis)
 - [Quick start](#quick-start)
 - [Validation](#validation)
@@ -298,7 +298,9 @@ flowchart LR
 4. Do a security code review of mcp-gateway.
 5. Suggest code fixes for the open findings.
 
-## Regulatory coverage
+## Controls registry
+
+### How control generation works
 
 ```mermaid
 ---
@@ -312,6 +314,27 @@ flowchart TD
   B --> |Yes| D["Search"] --> RL[("Regulation Library")] --> CI["Unified Clause interpretation"]
   CI --> E --> CTRL[("Extract controls delta into controls registry")] --> CTX["Personalize to regulated business context"] --> CTRLF[("Finalized control registry")]
 ```
+
+- **Regulation library:** the instrument registry and catalogs under `.claude/skills/regulatory-catalogs/`, searched
+  through ComplianceOS before any public source.
+- **Controls registry:** each catalog's controls with their clause, applicability and default severity; a new or
+  amended communication adds only the delta.
+- **Finalized control registry:** the controls that apply to one company, recorded in its append-only ledger at
+  `company-profile/<company_id>/soc/main.jsonl`.
+
+### How organization context is built
+
+- **Company profile:** `details.json` records legal identity, jurisdictions, entity types, regulatory registrations,
+  frameworks in scope, data residency, critical functions and contacts.
+- **Regulatory posture:** `/refresh-ctx` rechecks every registration, entity type and listing against the regulators'
+  own registers, MCA and exchange filings, and a refuter verifies each change before the profile is updated.
+- **Estate:** `/refresh-apps` catalogs applications, repositories and environments, `/refresh-metastore` maps where
+  personal and financial data lives, and `/refresh-vendor-ctx` builds the vendor register with criticality, contracts
+  and assurance reports.
+- **Personalization:** `/refresh-soc` turns the entity types and frameworks in scope into the company's applicable
+  controls, scoped to its applications, environments and vendors.
+
+### Regulatory coverage
 
 Seven India catalogs ship with control-level detail. A registry in
 `.claude/skills/regulatory-catalogs/references/instruments.json` records the issuer, version, dates, applicability
