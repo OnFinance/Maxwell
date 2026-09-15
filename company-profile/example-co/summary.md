@@ -3,17 +3,17 @@ schemaVersion: "1"
 kind: maxwell.company.summary
 companyId: example-co
 title: Example Capital Markets cyber resilience summary
-version: "5.3.0"
+version: "5.4.0"
 sections: [overview, regulatory-posture, applications, vendors, data-flows, control-summary, open-findings]
 provenance:
   harness: opencode
-  generatedAt: "2026-09-15T15:14:31Z"
-  sessionId: ses_f5a4f0e07ffeV5eqNxf7yDi0wc
+  generatedAt: "2026-09-15T19:42:44Z"
+  sessionId: ses_f5966a873ffeW6ABw4BrDNZjnn
   runId: run_01M2GDZ3Q3S5WYCB3MV02QJXZ1
-  workflow: probe-agent-graph
+  workflow: execute-scr
   agent: report-writer
   model: "cloudflare-workers-ai/@cf/zai-org/glm-5.3"
-  inputsHash: 81a185da81995e31326df0567ba00018a651c722d25592c8b23c7e1ac3d63a4a
+  inputsHash: 3fc15d9176a3fd01f446a81cfabfd72665c67381b31aa91dbee5da177c71b90d
 ---
 # Example Capital Markets — cyber resilience summary
 
@@ -245,89 +245,95 @@ Catalogue-level summaries: [obs_01M2H1BMCKM3TKBQR8T1MD9H9N] (db-models, result `
 
 ## Control summary
 Latest control record per id (last line per record id, supersession chain respected) in `company-profile/example-co/soc/main.jsonl`
-as of `provenance.generatedAt` 2026-09-14T18:35:14Z, grouped by instrument: 544 control records, 478 applicable, 66
-not-applicable. `refresh-soc` created 360 of them at 2026-09-14T09:55:06Z; `probe-iac` and `probe-schemas` have since
-re-assessed 19 controls from their observations; the instrument migration at 2026-09-14T14:41:43Z added the 176
-`rbi-outsourcing-risk-directions-2025` controls and superseded the 64 `rbi-it-outsourcing-md-2023` controls as
-not-applicable; this run added 4 new controls and re-assessed 10.
+as of `provenance.generatedAt` 2026-09-15T19:42:44Z, grouped by instrument: 551 control ids, 485 applicable, 66
+not-applicable. The baseline for this section's previous write was the `refresh-soc` snapshot at 2026-09-14T18:35:14Z
+(544 control ids, 478 applicable); four batches since appended 65 control records, creating 7 new control ids —
+`sebi-cscrf-2024:PR.DS.S6` (`probe-iac`, 2026-09-15T00:05:59Z), `cert-in-directions-2022:Dir-v` and
+`cert-in-directions-2022:Dir-vi` (`probe-schemas`, 2026-09-15T02:47:35Z), `rbi-cyber-tech-directions-2026:83` and
+`rbi-cyber-tech-directions-2026:88` (`probe-agent-graph`, 2026-09-15T15:14:31Z) and `sebi-cscrf-2024:PR.DS.S5`
+(`execute-scr`, this run) — and re-assessing 58 existing controls (16 by `probe-iac`, 23 by `probe-schemas`, 19 by
+`probe-agent-graph`).
 
-- `sebi-cscrf-2024` (SEBI CSCRF 2024): 124 controls; 0 effective, 4 partially effective, 8 ineffective, 112 not tested; coverage 12 % (15 observed of 124).
-- `rbi-cyber-tech-directions-2026` (RBI Cyber Tech Directions 2026): 99 controls, 2 not applicable; 0 effective, 0 partially effective, 1 ineffective, 96 not tested of 97 applicable; coverage 2 % (2 observed of 97).
-- `rbi-outsourcing-risk-directions-2025` (RBI Outsourcing Directions 2025): 176 controls; 0 effective, 0 partially effective, 0 ineffective, 176 not tested; coverage 0 % (0 observed of 176).
-- `dpdp-rules-2025` (DPDP Rules 2025): 52 controls; 0 effective, 2 partially effective, 4 ineffective, 46 not tested; coverage 13 % (7 observed of 52).
-- `cert-in-directions-2022` (CERT-In Directions 2022): 29 controls; 0 effective, 0 partially effective, 1 ineffective, 28 not tested; coverage 3 % (1 observed of 29).
+- `sebi-cscrf-2024` (SEBI CSCRF 2024): 126 controls; 0 effective, 18 partially effective, 8 ineffective, 100 not tested; coverage 30 % (38 observed of 126).
+- `rbi-cyber-tech-directions-2026` (RBI Cyber Tech Directions 2026): 102 controls, 2 not applicable (`77` and `134`, both set not-applicable by `refresh-soc` at 2026-09-14T18:35:14Z and kept there by the 2026-09-15 batches, `134` retaining its partially-effective probe history); of 100 applicable: 0 effective, 7 partially effective, 2 ineffective, 91 not tested; coverage 11 % (11 observed of 100).
+- `rbi-outsourcing-risk-directions-2025` (RBI Outsourcing Directions 2025): 176 controls; 0 effective, 0 partially effective, 1 ineffective, 175 not tested; coverage 1 % (1 observed of 176).
+- `dpdp-rules-2025` (DPDP Rules 2025): 52 controls; 0 effective, 7 partially effective, 4 ineffective, 41 not tested; coverage 42 % (22 observed of 52).
+- `cert-in-directions-2022` (CERT-In Directions 2022): 31 controls; 0 effective, 1 partially effective, 0 ineffective, 30 not tested; coverage 16 % (5 observed of 31).
 - `rbi-it-outsourcing-md-2023` (repealed 2025-11-28): 64 controls, all 64 not applicable; excluded from the effectiveness counts and from coverage.
-- Total: 544 controls (478 applicable); 0 effective, 6 partially effective, 14 ineffective, 458 not tested; coverage 5 % (25 observed of 478).
+- Total: 551 controls (485 applicable); 0 effective, 33 partially effective, 15 ineffective, 437 not tested; coverage 16 % (77 observed of 485).
 
-This run (`refresh-soc`, runId `run_01M2GDZ3Q3S5WYCB3MV02QJXZ1`, `recordedAt` 2026-09-14T18:35:14Z) appended 14 control
-records. 4 new: `dpdp-rules-2025:Sch1.B.10`, `dpdp-rules-2025:Sch1.B.11`, `dpdp-rules-2025:Sch1.B.12` and
-`dpdp-rules-2025:Sch1.B.13` (category Consent Manager), all `not-tested`, `nextDueAt` set from this run. 10 re-assessed:
-`sebi-cscrf-2024:GV.SC.S3` now `ineffective`, `lastAssessedAt` 2026-09-14T10:46:39Z from the `refresh-vendor-ctx`
-observation [obs_01M2FS9EB1DXGYJVY2AQEZD8KB], with the `nextDueAt` its record was missing restored (cadence event-driven
-per catalog); `rbi-cyber-tech-directions-2026:12` now `ineffective`, `lastAssessedAt` 2026-09-14T17:03:20Z from
-[obs_01M2GH97M1CSN3D82H8M6WM8GN]; `dpdp-rules-2025:1` now `ineffective`, `lastAssessedAt` 2026-09-14T17:03:20Z from
-[obs_01M2GH97KXN2WXTZ181R216N5C]; `rbi-cyber-tech-directions-2026:77` and `rbi-cyber-tech-directions-2026:134` moved to
-`not-applicable` (catalog applicability no longer intersects the company's entity types and RE categories), keeping their
-probe-era effectiveness (`ineffective`, `partially-effective`) as history; `sebi-cscrf-2024:GV.SC.S7`,
-`rbi-cyber-tech-directions-2026:126`, `rbi-cyber-tech-directions-2026:174`, `rbi-cyber-tech-directions-2026:182` and
-`dpdp-rules-2025:6(1)(f)` re-assessed still `not-tested`, with missing `nextDueAt` values restored. Reconciliation this run:
-0 findings resolved by the absent-twice rule, 0 findings and 0 risks reopened after expired acceptances, 0 SLA dates
-recomputed.
+Effectiveness moves since that snapshot: to partially effective — `sebi-cscrf-2024` PR.AA.S2, PR.IP.S1, PR.IP.S2,
+PR.DS.S2, ID.AM.S2, ID.AM.S3, GV.PO.S1, PR.AA.S8, EV.ST.S1 and PR.IP.S15 (all from not-tested), ID.AM.S1, PR.DS.S1,
+PR.AA.S13 and PR.DS.S4 (all from ineffective), `dpdp-rules-2025` 6(1), 6(1)(a), 8(3), 13(3) and 15,
+`rbi-cyber-tech-directions-2026` 30, 31, 36, 49, 140 and the new 83 and 88, and `cert-in-directions-2022` Dir-iv (from
+ineffective). To ineffective — `sebi-cscrf-2024` PR.AA.S3, PR.AA.S9, RC.RP.S1 and the new PR.DS.S6,
+`dpdp-rules-2025` 6(1)(e), `rbi-cyber-tech-directions-2026` 171 and `rbi-outsourcing-risk-directions-2025` 97(xi) (all
+from not-tested). `probe-iac` had assessed `sebi-cscrf-2024` PR.AA.S1 and PR.AA.S3 `effective` at 2026-09-14T11:33:17Z;
+`probe-schemas` and `probe-agent-graph` re-assessed them `partially-effective` and `ineffective` respectively, so no
+control is effective as of this write.
 
-Maxwell observed 25 of the 478 applicable controls in this period (5 %); 5 controls were inconclusive for lack of access
-([obs_01M2FTV6K4Q25G1JT58HAZDV36], [obs_01M2FTV6MCKCJTVHDHHP02KJ2V], [obs_01M2FTV6NJKW6WV58KFH78E5AV]); 0 environments
-were skipped (no runtime probe ran and the ledger records no freeze, window or credential skip). Coverage basis: applicable
-control ids named in the `controlIds` of at least one of the 45 ledger observations (39 substantive, 6 report-generation,
-all collected on 2026-09-14), over the 478 applicable controls; this mirrors `cm_coverage`
-(kpis/measurement/cm_coverage.md), except that the KPI's `excludedWorkflows` (kpis/metrics.json) drops `refresh-*`
-observations, which would give 18 of 478 (4 %).
+This run (`execute-scr`, runId `run_01M2GDZ3Q3S5WYCB3MV02QJXZ1`, `recordedAt` 2026-09-15T19:42:44Z) appended 90 ledger
+lines: 73 observations, 16 findings and 1 control record — the new `sebi-cscrf-2024:PR.DS.S5` (unknown, `not-tested`,
+first assessed by [obs_01M2KMNHPJB1NRPWQTYPREHRZ8]). The batch re-assessed no existing control, so the distribution above
+changes only by that +1 not-tested id. The 73 observations break down 23 `not-satisfied`, 24 `partial`, 10 `satisfied`,
+12 `not-applicable` and 4 `inconclusive` — the db-models dependency-CVE status (no scanner executor configured,
+`sdlc/executor.json` absent) [obs_01M2KC7W3PDEXXXW7QC7BHMZE4], the absent root-cause-analysis process
+[obs_01M2KFQ6B4A4R3KCJB4QYH58FR], the unbuildable repo's missing build provenance [obs_01M2KGVJJ21P79839X4NKNPAC1] and the
+uncaptured `branchProtection` of master [obs_01M2KGVJJ2NB6FNRWWPSJF326D]; the first three's controls carry later
+conclusive observations in this same batch, the last leaves its control inconclusive (below).
 
-<!-- source: latest-state map over soc/main.jsonl kind=control (710 lines, last line per record id), grouped by instrument id prefix before ':'; effectiveness counts exclude implementationStatus not-applicable; coverage = applicable control ids in controlIds of the 45 kind=observation records -->
+Maxwell observed 77 of the 485 applicable controls in this period (16 %); 2 controls are inconclusive for lack of access:
+`sebi-cscrf-2024:PR.IP.S3` change-management enforcement settings, unverifiable offline until `refresh-ctx` captures
+`branchProtection` [obs_01M2KGVJJ2NB6FNRWWPSJF326D], and `rbi-cyber-tech-directions-2026:95` audit-trail retention, whose
+eks-prod-mumbai / eks-nonprod-mumbai log-shipping configuration has been requested since 2026-09-14T11:10:49Z
+[obs_01M2FTV6MCKCJTVHDHHP02KJ2V]; 0 environments were skipped (no runtime probe ran and the ledger records no freeze,
+window or credential skip). Coverage basis: applicable control ids named in the `controlIds` of at least one of the 217
+ledger observations (this run's 73 and 144 earlier, of which 11 are report-generation), over the 485 applicable controls;
+this mirrors `cm_coverage` (kpis/measurement/cm_coverage.md), except that the KPI's `excludedWorkflows`
+(kpis/metrics.json) drops `refresh-*` observations, which would give 70 of 485 (14 %).
+
+<!-- source: latest-state map over soc/main.jsonl kind=control (993 lines, last record per id, both JSON field orderings checked because some records put "id" after "companyId"), grouped by instrument id prefix before ':'; new ids since the 2026-09-14T18:35:14Z refresh-soc snapshot = sebi PR.DS.S6 (line 743, probe-iac), cert-in Dir-v (786) + Dir-vi (787) + rbi-cyber 48 (788, probe-schemas), rbi-cyber 83 (854) + 88 (855, probe-agent-graph), sebi PR.DS.S5 (984, execute-scr); post-baseline control records = lines 743, 770-785 (probe-iac 2026-09-15T00:05:59Z), 786-788, 831-853 (probe-schemas 2026-09-15T02:47:35Z), 854-855, 885-903 (probe-agent-graph 2026-09-15T15:14:31Z), 984 (execute-scr); baseline values per id from the last 2026-09-14 record (refresh-soc 09:55 lines 11-365, probe-iac-1 11:33 lines 388-441, refresh-soc 18:35 lines 697-710, migration 14:41 line 609); effectiveness counts exclude implementationStatus not-applicable; coverage = applicable control ids in controlIds of the 217 kind=observation records (585 of 993 lines verified record by record: this run 904-991, probe-iac-2 744-761, probe-schemas-2 789-824, probe-agent-graph 856-874, metastore-2 723-733, refresh-apps 735-741, vendor 368-386, iac-1 390-399, schemas-1 410-422, reports 4/367/377/387/688/695-696/711-712/722/734/742/2) -->
 
 ## Open findings
-`probe-agent-graph` ran against `example-co` this run (`provenance.runId` run_01M2GDZ3Q3S5WYCB3MV02QJXZ1; this run's 50 ledger
-lines were appended by the `soc-ledger-keeper` at 2026-09-15T15:14:31Z, session 453ecc6e-1346-418f-a2c0-1bfcead851c3): 10 new
-agent-graph finding(s) ([fnd_01M2K7B0MJ68AR00YTNE2N00V2], [fnd_01M2K7B0MJW0K9WFVMPWT86BRE], [fnd_01M2K7B0MJ9BHSS0T664GGCW4N],
-[fnd_01M2K7B0MJTNGRN4D0GZYBD5FS], [fnd_01M2K7B0MJN2XBQRW2XYYD6EBJ], [fnd_01M2K7B0MJQMT1S973WHW7K9GA],
-[fnd_01M2K7B0MJJVWFWXF6KZ783GFZ], [fnd_01M2K7B0MJMG3TT4DFMEJWQDA8], [fnd_01M2K7B0MJ3239WAE0AKHRMK5E],
-[fnd_01M2K7B0MJEKMTTH4EAKR1RHZY]), 0 re-seen (0 reopened) and 19 observation(s) — 4 `not-satisfied`
-([obs_01M2K7B0MD6QPQYB5WX88W6X26], [obs_01M2K7B0MG6AJ4RNM48WZ65700], [obs_01M2K7B0MG9FJF21H81SMCBX3N],
-[obs_01M2K7B0MGN30JPJFJ01YFGFH8]) and 15 `partial` ([obs_01M2K7B0MGRPDQ90XDE5PWYD7X], [obs_01M2K7B0MGJTYJ48C79N082WKV],
-[obs_01M2K7B0MGNJTVJWN1NR4KP3F2], [obs_01M2K7B0MG83DXF609SVQX7AG9], [obs_01M2K7B0MGN03WM0T8X8C9WZTT],
-[obs_01M2K7B0MGE3N7DVSDRHCDP3A1], [obs_01M2K7B0MGDC152RR083QKRDFK], [obs_01M2K7B0MGK245K0KKPZGG86CG],
-[obs_01M2K7B0MGSDQDM6V06G1WM1AE], [obs_01M2K7B0MGNPK1C8RM7R8XWRX4], [obs_01M2K7B0MGKZBRBVQGA80GRADE],
-[obs_01M2K7B0MGBQDKD63TYG9QF1HF], [obs_01M2K7B0MGW8N6BB0Q9XHZSWAQ], [obs_01M2K7B0MGB78NWYAXV8KAJ6X3],
-[obs_01M2K7B0MJ8BDDZVARMWZSX5MQ]) — against the probed repo `mcp-gateway/mongodb-mcp-server` at pinned commit
-aaa72a040db4c32f3d6488d5e28e2892a68e9ee0 (evidence:
-`kpis/data/raw/sessions/opencode/run_01M2GDZ3Q3S5WYCB3MV02QJXZ1.probe-agent-graph.mcp-gateway.mongodb-mcp-server.sarif.export.json`,
-sha256 c3c7b9dc…). The batch also created 2 new control records (`rbi-cyber-tech-directions-2026:83` and
-`rbi-cyber-tech-directions-2026:88`, both `not-tested`) and re-assessed 19 controls — `sebi-cscrf-2024:PR.AA.S3`,
-`sebi-cscrf-2024:PR.AA.S17`, `sebi-cscrf-2024:PR.DS.S6` and `dpdp-rules-2025:6(1)(b)` now `ineffective`, the other 15
-`partially-effective`.
+`execute-scr` ran against `example-co` this run (`provenance.runId` run_01M2GDZ3Q3S5WYCB3MV02QJXZ1; this run's 90 ledger
+lines were appended by the `soc-ledger-keeper` at 2026-09-15T19:42:44Z): 16 new finding(s) — 3 secure-code-review
+([fnd_01M2KBJW4AHE221KPTRV1G60YC], [fnd_01M2KBJW4A8E9GMQHZT9F9WTAG], [fnd_01M2KC7W3QM0V86PVA3SVA01FN]), 6 SDLC policy
+gaps ([fnd_01M2KFQ6B40J52A6C0Q1XFPM10], [fnd_01M2KFQ6B4EF1Z113T0NKDY04Q], [fnd_01M2KFQ6B4KPYSFR0AR8SV4G4K],
+[fnd_01M2KFQ6B43WV47NMR95AXZBT0], [fnd_01M2KGVJJ2AXNAXRE08PZ2Z7YP], [fnd_01M2KGVJJ2Y4M9DRQY90C7TAMS]) and 7
+developer-environment gaps ([fnd_01M2KM42DZQK8J4EZEB68ZQ103], [fnd_01M2KM42DZDZSFHCN7YYBM94V2],
+[fnd_01M2KM42DZ98VAGYD0E8TRV3FQ], [fnd_01M2KM42DZE09A2PZ557A7SX2F], [fnd_01M2KM42DZ66HX2ZKMY2QQ5JJC],
+[fnd_01M2KMNHPJ7Z0Y0YJT6YZR4NZM], [fnd_01M2KMNHPKKK5K3C1EYGED2KGG]) — 0 re-seen (0 superseded) and 73 observation(s) —
+23 `not-satisfied`, 24 `partial`, 10 `satisfied`, 12 `not-applicable`, 4 `inconclusive` — against repo
+`mcp-gateway/mongodb-mcp-server` at pinned commit aaa72a040db4c32f3d6488d5e28e2892a68e9ee0, repo
+`db-models/onfinance-db-model-master` at pinned commit 70b3633e171a1b8d389b27bb901c84c34a0e9bf6, the company SDLC policy
+and the mcp-gateway dev environment (evidence:
+`kpis/data/raw/sessions/opencode/ses_f5966a873ffeW6ABw4BrDNZjnn.execute-scr.mcp-gateway.mongodb-mcp-server.sarif.export.json`,
+sha256 1c38ee55…, and
+`kpis/data/raw/sessions/opencode/453ecc6e-1346-418f-a2c0-1bfcead851c3.execute-scr.db-models.onfinance-db-model-master.sarif.export.json`).
+The batch created 1 new control record (`sebi-cscrf-2024:PR.DS.S5`, `not-tested`) and re-assessed no existing control.
 
-All ten new findings are agent-graph gaps in that repo — the deployed MCP gateway behind the `order-routing` critical
-function — and every record carries an OWASP owasp-agentic-top10-2026 (OWASP Agentic Top 10 2026) mapping alongside its
-primary SEBI CSCRF ref. Two break human oversight of destructive agent actions: the elicitation confirmation gate fails
-open for clients without elicitation capability, so the eight default confirmation-required tools execute with no human
-approval against headless harnesses while `aiCodingPolicy.humanReviewRequired` is true
-[fnd_01M2K7B0MJ68AR00YTNE2N00V2] (OWASP owasp-agentic-top10-2026 ASI09), and 11 of 19 write-capable tools are enabled by
-default with no approval step or allow-list [fnd_01M2K7B0MJQMT1S973WHW7K9GA] (OWASP owasp-agentic-top10-2026 ASI02).
-Three are API-surface gaps: the HTTP MCP transport is deployed unauthenticated on 0.0.0.0 in the AWS deploy path the qa
-and prod records register [fnd_01M2K7B0MJW0K9WFVMPWT86BRE] (OWASP owasp-agentic-top10-2026 ASI03), connect and
-switch-connection accept model-controlled connection strings with no host allow-list
-[fnd_01M2K7B0MJJVWFWXF6KZ783GFZ] (OWASP owasp-agentic-top10-2026 ASI03), and the HTTP endpoint has no rate limiting or
-concurrency caps [fnd_01M2K7B0MJEKMTTH4EAKR1RHZY] (OWASP owasp-agentic-top10-2026 ASI08). Four are supply-chain gaps: the
-AWS deploy image installs the server unpinned at registry latest on an unpinned base [fnd_01M2K7B0MJ9BHSS0T664GGCW4N],
-the setup wizard writes npx -y mongodb-mcp-server@latest into six harness MCP configs
-[fnd_01M2K7B0MJTNGRN4D0GZYBD5FS], the setup flow installs third-party agent skills globally with no integrity check
-[fnd_01M2K7B0MJN2XBQRW2XYYD6EBJ], and the repo ships developer-harness configuration for GitHub Copilot outside
-`aiCodingPolicy.harnessesAllowed` [fnd_01M2K7B0MJ3239WAE0AKHRMK5E] (all four OWASP owasp-agentic-top10-2026 ASI04). One
-is an egress gap against IN residency: search-knowledge posts the unredacted model-composed query to
-knowledge.mongodb.com by default [fnd_01M2K7B0MJMG3TT4DFMEJWQDA8] (OWASP owasp-agentic-top10-2026 ASI03). No finding
-from this run targets db-models.
+The three secure-code-review findings land on the gateway and the data-model library behind the `order-routing` critical
+function. Two break human oversight and data protection on the deployed gateway: the elicitation confirmation gate fails
+open for clients without elicitation support, so destructive tools execute against the pii/financial stores with no human
+approval while `aiCodingPolicy.humanReviewRequired` is true [fnd_01M2KBJW4AHE221KPTRV1G60YC] (SEBI sebi-cscrf-2024
+PR.AA.S3), and default-on telemetry ships the machine identifier and usage metadata to the MongoDB cloud with no consent
+notice [fnd_01M2KBJW4A8E9GMQHZT9F9WTAG] (MeitY dpdp-rules-2025 3). One is an at-rest failure in the data-model library:
+Zerodha broker credentials, the TOTP 2FA seed, API secrets and access tokens are modelled as plain StringField in the
+secrets collection the metastore classifies restricted and spdi [fnd_01M2KC7W3QM0V86PVA3SVA01FN] (SEBI sebi-cscrf-2024
+PR.DS.S1), the same root cause covering `user.user_password` and `user.user_binance_auth_creds`. The SDLC gaps are
+company-level policy failures (no security requirements, no SBOM despite `sbomRequired: false` against GV.SC.S5, no
+audit remediation loop, no security owner) plus two db-models repo gaps (the blocking vitest gate never runs because the
+repo has no CI, and no PR security checklist). The seven developer-environment gaps all live on the developer-laptop
+fleet that builds the order-routing gateway, including an unauthenticated integration-test mongod published on all
+interfaces, the repo's own dev logs kept 30 days against the CERT-In 180-day baseline, and gh-aw agent configuration
+with bash auto-approved. The SCR review also confirmed the unauthenticated `/mcp` route on the shipped AWS image, but
+that condition is already carried by [fnd_01M2G2AGVRZPBP3VH8FNAYH46V] and [fnd_01M2HCWMBDDT80V2CWJ5Z7BH17], so no
+duplicate was appended; likewise the dev-env finding [fnd_01M2KM42DZ66HX2ZKMY2QQ5JJC] normalises the AGENT-POL-01 gap
+([fnd_01M2K7B0MJ3239WAE0AKHRMK5E], probe-agent-graph) under the fixed devenv rule id, and both ids stay open because
+this run superseded nothing (the keeper wrote no supersession for either).
 
 Latest record per finding id in `company-profile/example-co/soc/main.jsonl` with `status` in
-`open | triaged | remediating`, as of `provenance.generatedAt` 2026-09-15T15:14:31Z (34 open, 0 past SLA):
+`open | triaged | remediating`, as of `provenance.generatedAt` 2026-09-15T19:42:44Z (50 open, 0 past SLA):
 
 ### High
 
@@ -335,11 +341,11 @@ Latest record per finding id in `company-profile/example-co/soc/main.jsonl` with
 |---|---|---|---|---|---|---|---|---|
 | [fnd_01M2FS4806WHXANC3Q9QXEAXGF] | assurance-expiring: github-cloud SOC 2 Type II report expires 2026-09-30, inside 90-day window | vendor `github` | SEBI sebi-cscrf-2024 GV.SC.S4 (SEBI CSCRF 2024) | 2026-09-14 | 2026-10-14T10:46:39Z | due in 29 d | open | n/a |
 | [fnd_01M2FS9ECP3E0MTCRQFEJ97930] | contract-expiring: ATLAS-2025-1189 ended 2026-05-31, 106 days before NOW, no renewal evidence | vendor `mongodb-atlas` | SEBI sebi-cscrf-2024 GV.SC.S4 | 2026-09-14 | 2026-10-14T10:46:39Z | due in 29 d | open | n/a |
-| [fnd_01M2G2AGPX8KWSY1KXGYADK4TK] | find tool returns full unmasked documents from pii/financial collections | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.DS.S4 | 2026-09-14 | 2026-09-21T13:14:50Z | due in 5 d | open | n/a |
-| [fnd_01M2G2AGR581507FMK0EADFKY6] | aggregate tool returns full unmasked pipeline results | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.DS.S4 | 2026-09-14 | 2026-09-21T13:14:50Z | due in 5 d | open | n/a |
-| [fnd_01M2G2AGSC977KASP37WQXYSQA] | export tool writes full unmasked documents to an unencrypted local file | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.DS.S4 | 2026-09-14 | 2026-09-21T13:14:50Z | due in 5 d | open | n/a |
-| [fnd_01M2G2AGVRZPBP3VH8FNAYH46V] | MCP HTTP transport endpoint ships with no authentication, rate limiting or idempotency controls by default | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S17 | 2026-09-14 | 2026-09-21T13:14:50Z | due in 5 d | open | n/a |
-| [fnd_01M2G2AGTH64FMR4XR77ZAJH7B] | atlas-create-db-user takes a plaintext password argument and echoes the generated password back in the tool response | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S6 | 2026-09-14 | 2026-09-21T13:14:50Z | due in 5 d | open | n/a |
+| [fnd_01M2G2AGPX8KWSY1KXGYADK4TK] | find tool returns full unmasked documents from pii/financial collections | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.DS.S4 | 2026-09-14 | 2026-09-21T13:14:50Z | due in 6 d | open | n/a |
+| [fnd_01M2G2AGR581507FMK0EADFKY6] | aggregate tool returns full unmasked pipeline results | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.DS.S4 | 2026-09-14 | 2026-09-21T13:14:50Z | due in 6 d | open | n/a |
+| [fnd_01M2G2AGSC977KASP37WQXYSQA] | export tool writes full unmasked documents to an unencrypted local file | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.DS.S4 | 2026-09-14 | 2026-09-21T13:14:50Z | due in 6 d | open | n/a |
+| [fnd_01M2G2AGVRZPBP3VH8FNAYH46V] | MCP HTTP transport endpoint ships with no authentication, rate limiting or idempotency controls by default | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S17 | 2026-09-14 | 2026-09-21T13:14:50Z | due in 6 d | open | n/a |
+| [fnd_01M2G2AGTH64FMR4XR77ZAJH7B] | atlas-create-db-user takes a plaintext password argument and echoes the generated password back in the tool response | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S6 | 2026-09-14 | 2026-09-21T13:14:50Z | due in 6 d | open | n/a |
 | [fnd_01M2HCWMBDDT80V2CWJ5Z7BH17] | MCP gateway deploys unauthenticated on a public endpoint by default (qa/prod IaC root) | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S17 | 2026-09-15 | 2026-09-22T00:05:59Z | due in 7 d | open | n/a |
 | [fnd_01M2HCWMBDGA1D4Z54RET9CNC9] | Baseline deployment parameters ship the gateway with no auth and write mode enabled | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S17 | 2026-09-15 | 2026-09-22T00:05:59Z | due in 7 d | open | n/a |
 | [fnd_01M2HCWMBDCEGN51BKVVXGTV67] | qa/prod deployment template defines no logging, diagnostics or SIEM forwarding | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S8 | 2026-09-15 | 2026-09-22T00:05:59Z | due in 7 d | open | n/a |
@@ -359,6 +365,16 @@ Latest record per finding id in `company-profile/example-co/soc/main.jsonl` with
 | [fnd_01M2K7B0MJJVWFWXF6KZ783GFZ] | connect and switch-connection accept model-controlled connection strings with no host allow-list | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S2 | 2026-09-15 | 2026-09-22T15:14:31Z | due in 7 d | open | n/a |
 | [fnd_01M2K7B0MJ3239WAE0AKHRMK5E] | Repo ships developer-harness configuration for GitHub Copilot outside harnessesAllowed | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 GV.PO.S1 | 2026-09-15 | 2026-09-22T15:14:31Z | due in 7 d | open | n/a |
 | [fnd_01M2K7B0MJEKMTTH4EAKR1RHZY] | No rate limiting or concurrency caps on the HTTP MCP endpoint | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S17 | 2026-09-15 | 2026-09-22T15:14:31Z | due in 7 d | open | n/a |
+| [fnd_01M2KBJW4AHE221KPTRV1G60YC] | mcp-gateway/mongodb-mcp-server: Human-confirmation gate for destructive MCP tools fails open for clients without elicitation support | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S3 | 2026-09-15 | 2026-09-22T19:42:44Z | due in 7 d | open | n/a |
+| [fnd_01M2KC7W3QM0V86PVA3SVA01FN] | db-models/onfinance-db-model-master: Cleartext broker credentials modelled in the secrets MongoDB collection | repo `db-models/onfinance-db-model-master` | SEBI sebi-cscrf-2024 PR.DS.S1 | 2026-09-15 | 2026-09-22T19:42:44Z | due in 7 d | open | n/a |
+| [fnd_01M2KFQ6B4EF1Z113T0NKDY04Q] | SBOM disclaimed by policy and absent on file while SEBI CSCRF requires one for critical software | company | SEBI sebi-cscrf-2024 GV.SC.S5 | 2026-09-15 | 2026-10-15T19:42:44Z | due in 30 d | open | n/a |
+| [fnd_01M2KFQ6B4KPYSFR0AR8SV4G4K] | SDLC policy has no audit remediation loop: no post-major-change audit and no tracked closure of audit findings | company | SEBI sebi-cscrf-2024 Sec-4.4 | 2026-09-15 | 2026-12-14T19:42:44Z | due in 90 d | open | n/a |
+| [fnd_01M2KM42DZQK8J4EZEB68ZQ103] | Integration-test mongod published unauthenticated on all interfaces of developer laptops | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.IP.S1 | 2026-09-15 | 2026-09-22T19:42:44Z | due in 7 d | open | n/a |
+| [fnd_01M2KM42DZDZSFHCN7YYBM94V2] | Dev environment retains logs only 30 days against the CERT-In 180-day baseline | environment `mcp-gateway/dev` | CERT-In cert-in-directions-2022 Dir-iv (CERT-In Directions 2022) | 2026-09-15 | 2026-10-15T19:42:44Z | due in 30 d | open | n/a |
+| [fnd_01M2KM42DZ98VAGYD0E8TRV3FQ] | Agentic-workflows agent file tells developers AI agents run full bash and edit by default and should not be restricted | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S3 | 2026-09-15 | 2026-09-22T19:42:44Z | due in 7 d | open | n/a |
+| [fnd_01M2KM42DZE09A2PZ557A7SX2F] | .gitignore ignores only the exact name .env, leaving .env* variants and key files trackable in a public repo | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.DS.S4 | 2026-09-15 | 2026-09-22T19:42:44Z | due in 7 d | open | n/a |
+| [fnd_01M2KM42DZ66HX2ZKMY2QQ5JJC] | Repo ships GitHub Copilot and gh-aw harness configuration outside aiCodingPolicy.harnessesAllowed | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 GV.PO.S1 | 2026-09-15 | 2026-09-22T19:42:44Z | due in 7 d | open | n/a |
+| [fnd_01M2KMNHPKKK5K3C1EYGED2KGG] | db-models/onfinance-db-model-master: no lockfile for the setup.py manifest although the SDLC policy requires lockfiles | repo `db-models/onfinance-db-model-master` | SEBI sebi-cscrf-2024 PR.DS.S6 | 2026-09-15 | 2026-09-22T19:42:44Z | due in 7 d | open | n/a |
 
 ### Medium
 
@@ -368,11 +384,17 @@ Latest record per finding id in `company-profile/example-co/soc/main.jsonl` with
 | [fnd_01M2FS481DGTPTR9NJGKAAMF49] | contract-expiring: GH-ENT-2025-07 ended 2026-06-30, 76 days before now, no renewal evidence | vendor `github` | SEBI sebi-cscrf-2024 GV.SC.S3 | 2026-09-14 | 2026-12-13T10:46:39Z | due in 89 d | open | n/a |
 | [fnd_01M2FS482NWXE7E5MCZY2QMAZ0] | material-without-evidence: github lacks audit rights and a documented exit plan | vendor `github` | SEBI sebi-cscrf-2024 GV.SC.S3 | 2026-09-14 | 2026-12-13T10:46:39Z | due in 89 d | open | n/a |
 | [fnd_01M2FS9EBVSP2DPWN5K2D91QKW] | material-without-evidence: atlas-mumbai has no audit right and no documented exit plan | vendor `mongodb-atlas` | SEBI sebi-cscrf-2024 GV.SC.S3 | 2026-09-14 | 2026-12-13T10:46:39Z | due in 89 d | open | n/a |
-| [fnd_01M2G2AGNMHKF9PCB4C85A3JQ3] | MongoDB MCP tool schemas carry no personal-data classification markers | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 ID.AM.S5 | 2026-09-14 | 2026-09-28T13:14:50Z | due in 12 d | open | n/a |
-| [fnd_01M2G2AGX1GZ9THG6HJ1VPP1EP] | zod tool-argument schemas leave database-bound input unbounded and unvalidated | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.IP.S2 | 2026-09-14 | 2026-09-28T13:14:50Z | due in 12 d | open | n/a |
+| [fnd_01M2G2AGNMHKF9PCB4C85A3JQ3] | MongoDB MCP tool schemas carry no personal-data classification markers | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 ID.AM.S5 | 2026-09-14 | 2026-09-28T13:14:50Z | due in 13 d | open | n/a |
+| [fnd_01M2G2AGX1GZ9THG6HJ1VPP1EP] | zod tool-argument schemas leave database-bound input unbounded and unvalidated | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.IP.S2 | 2026-09-14 | 2026-09-28T13:14:50Z | due in 13 d | open | n/a |
 | [fnd_01M2K7B0MJTNGRN4D0GZYBD5FS] | Setup wizard writes npx -y mongodb-mcp-server@latest into six harness MCP configs | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 GV.SC.S2 | 2026-09-15 | 2026-09-29T15:14:31Z | due in 14 d | open | n/a |
 | [fnd_01M2K7B0MJMG3TT4DFMEJWQDA8] | search-knowledge sends the unredacted model query to knowledge.mongodb.com by default | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.DS.S2 | 2026-09-15 | 2026-09-29T15:14:31Z | due in 14 d | open | n/a |
+| [fnd_01M2KBJW4A8E9GMQHZT9F9WTAG] | mcp-gateway/mongodb-mcp-server: Telemetry enabled by default sends machine and usage identifiers to the MongoDB cloud with no consent gate | repo `mcp-gateway/mongodb-mcp-server` | MeitY dpdp-rules-2025 3 (DPDP Rules 2025) | 2026-09-15 | 2026-09-29T19:42:44Z | due in 14 d | open | n/a |
+| [fnd_01M2KFQ6B40J52A6C0Q1XFPM10] | SDLC policy defines no security requirements: no secure coding standard, threat modelling or SECURITY.md anywhere | company | SEBI sebi-cscrf-2024 PR.IP.S2 (SEBI CSCRF 2024) | 2026-09-15 | 2026-12-14T19:42:44Z | due in 90 d | open | n/a |
+| [fnd_01M2KFQ6B43WV47NMR95AXZBT0] | No security owner, approver role or owning team named for security-sensitive code paths | company | SEBI sebi-cscrf-2024 GV.RR.S2 | 2026-09-15 | 2026-12-14T19:42:44Z | due in 90 d | open | n/a |
+| [fnd_01M2KGVJJ2AXNAXRE08PZ2Z7YP] | db-models/onfinance-db-model-master: blocking unit-tests gate never runs - no CI, no tests, and the policy names JS runner vitest for a Python repo | repo `db-models/onfinance-db-model-master` | SEBI sebi-cscrf-2024 PR.IP.S6 | 2026-09-15 | 2026-12-14T19:42:44Z | due in 90 d | open | n/a |
+| [fnd_01M2KGVJJ2Y4M9DRQY90C7TAMS] | db-models/onfinance-db-model-master: no PR security or data-impact checklist for the repo defining the pii, spdi and financial storage schema | repo `db-models/onfinance-db-model-master` | SEBI sebi-cscrf-2024 PR.IP.S2 | 2026-09-15 | 2026-12-14T19:42:44Z | due in 90 d | open | n/a |
+| [fnd_01M2KMNHPJ7Z0Y0YJT6YZR4NZM] | db-models/onfinance-db-model-master: no local secrets-scanning hook and no CI, so the policy CI secret scan never reaches this repo | repo `db-models/onfinance-db-model-master` | SEBI sebi-cscrf-2024 PR.IP.S2 | 2026-09-15 | 2026-09-29T19:42:44Z | due in 14 d | open | n/a |
 
-<!-- source: latest-state map over soc/main.jsonl kind=finding (903 lines, 49 finding records across 34 ids), last line per id, filtered to status in open|triaged|remediating; probe-agent-graph batch = lines 854-903 recordedAt 2026-09-15T15:14:31Z, keeper session 453ecc6e-1346-418f-a2c0-1bfcead851c3 (2 new controls 854-855, 19 observations 856-874, 10 findings 875-884, 19 re-assessed controls 885-903); severity counts 26 high + 8 medium = 34 open, 0 past SLA. The 10 new rows were verified field-by-field against ledger lines 875-884: status open, firstSeenAt 2026-09-15T15:14:31Z, target repo mcp-gateway/mongodb-mcp-server, severity via "severity":"high|medium","confidence":"confirmed" (8 high; medium = fnd_01M2K7B0MJTNGRN4D0GZYBD5FS and fnd_01M2K7B0MJMG3TT4DFMEJWQDA8), slaDueAt 2026-09-22T15:14:31Z for the 8 high (slaBasis sebi-cscrf-2024 PR.MA.S3 patch-sla high 7 d) and 2026-09-29T15:14:31Z for the 2 medium (patch-sla medium 14 d), regulatoryRefs[0] as tabulated, and an owasp-agentic-top10-2026 ASI mapping per record (ASI09 line 875, ASI02 line 880, ASI08 line 884, ASI04 lines 877-879 and 883, ASI03 lines 876, 881-882). Note: the description prose of fnd_01M2K7B0MJ9BHSS0T664GGCW4N and fnd_01M2K7B0MJTNGRN4D0GZYBD5FS names sebi-cscrf-2024 PR.DS.S6, but each record's structured regulatoryRefs[0] is the control tabulated here (GV.SC.S5 / GV.SC.S2); the structured fields govern. The 24 pre-existing rows are unchanged: no line in 854-903 carries a pre-existing finding id (the run re-seen 0 findings), so their latest records and the previous section's verified values stand (vendor rows lines 714-721, probe-iac rows 762-769, probe-schemas rows 825-830, first-run schema rows 423-429); their SLA status was recomputed against the new generatedAt. Observation result counts 4 not-satisfied + 15 partial = 19 from lines 856-874. SLA status = ceil((slaDueAt - 2026-09-15T15:14:31Z)/86400000) d; 0 rows past SLA -->
+<!-- source: latest-state map over soc/main.jsonl kind=finding (993 lines, 65 finding records across 50 ids), last line per id, filtered to status in open|triaged|remediating; execute-scr batch = lines 904-993 recordedAt 2026-09-15T19:42:44Z (73 observations 904-917/920-926/928-946/951-969/972-978/985-991, 16 findings 918-919/927/947-950/970-971/979-983/992-993, 1 control 984); severity counts 36 high + 14 medium = 50 open, 0 past SLA. The 16 new rows were verified field-by-field against the ledger: status open (grep "status":"open" over the 16 ids: 20 matches incl. commit_15.diff), firstSeenAt 2026-09-15T19:42:44Z (20 matches), severity via grep "severity":"high" over the 16 ids (8 of 10 non-SDLC rows matched: fnd_01M2KBJW4AHE221KPTRV1G60YC, fnd_01M2KC7W3QM0V86PVA3SVA01FN, fnd_01M2KM42DZQK8J4EZEB68ZQ103, fnd_01M2KM42DZDZSFHCN7YYBM94V2, fnd_01M2KM42DZ98VAGYD0E8TRV3FQ, fnd_01M2KM42DZE09A2PZ557A7SX2F, fnd_01M2KM42DZ66HX2ZKMY2QQ5JJC, fnd_01M2KMNHPKKK5K3C1EYGED2KGG; plus the 2 high SDLC rows read in full) and the SARIF result properties (sha256 1c38ee55…; medium = fnd_01M2KBJW4A8E9GMQHZT9F9WTAG dpdp-rules-2025:3 and fnd_01M2KMNHPJ7Z0Y0YJT6YZR4NZM sebi-cscrf-2024:PR.IP.S2, plus the 4 medium SDLC rows read in full: fnd_01M2KFQ6B40J52A6C0Q1XFPM10, fnd_01M2KFQ6B43WV47NMR95AXZBT0, fnd_01M2KGVJJ2AXNAXRE08PZ2Z7YP, fnd_01M2KGVJJ2Y4M9DRQY90C7TAMS); slaDueAt verified by grep over the 16 ids: 2026-09-22T19:42:44Z (7 d, sebi-cscrf-2024 PR.MA.S3 patch-sla high) for fnd_01M2KBJW4AHE221KPTRV1G60YC, fnd_01M2KC7W3QM0V86PVA3SVA01FN, fnd_01M2KM42DZQK8J4EZEB68ZQ103, fnd_01M2KM42DZ98VAGYD0E8TRV3FQ, fnd_01M2KM42DZE09A2PZ557A7SX2F, fnd_01M2KM42DZ66HX2ZKMY2QQ5JJC, fnd_01M2KMNHPKKK5K3C1EYGED2KGG; 2026-09-29T19:42:44Z (14 d, patch-sla medium) for fnd_01M2KBJW4A8E9GMQHZT9F9WTAG and fnd_01M2KMNHPJ7Z0Y0YJT6YZR4NZM; 2026-10-15T19:42:44Z (30 d) for fnd_01M2KM42DZDZSFHCN7YYBM94V2 and fnd_01M2KFQ6B4EF1Z113T0NKDY04Q; 2026-12-14T19:42:44Z (90 d) for fnd_01M2KFQ6B4KPYSFR0AR8SV4G4K, fnd_01M2KFQ6B40J52A6C0Q1XFPM10, fnd_01M2KFQ6B43WV47NMR95AXZBT0, fnd_01M2KGVJJ2AXNAXRE08PZ2Z7YP, fnd_01M2KGVJJ2Y4M9DRQY90C7TAMS (the last five read in full at lines 947-950, 970-971); targets verified by grep over the 16 ids (repo mcp-gateway/mongodb-mcp-server x6, repo db-models/onfinance-db-model-master x3) plus company x4 and environment mcp-gateway/dev x1 read in full; regulatoryRefs[0] as tabulated, from the records read in full (SDLC rows) or the SARIF result properties and each record's severity derivation (SCR and dev-env rows). The 34 pre-existing rows are unchanged: no line in 904-993 carries a pre-existing finding id (grep "supersedes":"fnd_ found no match in lines 904-993; this run re-seen 0 findings), so their latest records and the previous section's verified values stand (vendor rows lines 714-721, probe-iac rows 762-769, probe-schemas rows 825-830, first-run schema rows 423-429); their SLA status was recomputed against the new generatedAt: the 5 rows due 2026-09-21T13:14:50Z move 5 d -> 6 d and the 2 rows due 2026-09-28T13:14:50Z move 12 d -> 13 d, all other rows unchanged. Observation result counts 23 not-satisfied + 24 partial + 10 satisfied + 12 not-applicable + 4 inconclusive = 73 (inconclusive: obs_01M2KC7W3PDEXXXW7QC7BHMZE4, obs_01M2KFQ6B4A4R3KCJB4QYH58FR, obs_01M2KGVJJ21P79839X4NKNPAC1, obs_01M2KGVJJ2NB6FNRWWPSJF326D; the results of the 5 dev-env observations not fully visible in place were verified by grep: obs_01M2KM42DTR4YX8F7F0GDPB7QP, obs_01M2KM42DYFQ90GTVVXE6WSMFR, obs_01M2KM42DYNG2Z6PQVZ5CDJVP6 and obs_01M2KMNHPEX22EG5NSKATCAKN6 not-satisfied, obs_01M2KMNHPJB1NRPWQTYPREHRZ8 satisfied). SLA status = ceil((slaDueAt - 2026-09-15T19:42:44Z)/86400000) d; 0 rows past SLA -->
 
 No findings in `risk-accepted`, `false-positive` or `duplicate` this period.
