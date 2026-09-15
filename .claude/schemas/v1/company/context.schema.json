@@ -584,6 +584,10 @@
         "question": {
           "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
         },
+        "answerableFrom": {
+          "description": "public when a register, filing, annual report, scheme list, website or exchange page can answer it; internal when only the company's own staff can, so the question goes straight to a human",
+          "enum": [ "public", "internal" ]
+        },
         "answer": {
           "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
         },

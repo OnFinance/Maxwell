@@ -314,7 +314,7 @@ const OBLIGATIONS_SCHEMA = {
       source: { type: 'object', required: ['type', 'ref'], properties: { type: { type: 'string', enum: ['instrument', 'statute', 'circular', 'register'] }, ref: STR, url: STR } },
       scope: { type: 'string', enum: ['company', 'license'] },
       licenseIds: STR_LIST,
-      questions: { type: 'array', items: { type: 'object', required: ['questionId', 'question'], properties: { questionId: STR, question: STR, rationale: STR } } },
+      questions: { type: 'array', items: { type: 'object', required: ['questionId', 'question', 'answerableFrom'], properties: { questionId: STR, question: STR, rationale: STR, answerableFrom: { type: 'string', enum: ['public', 'internal'], description: 'public: a register, filing, annual report, scheme list, website or exchange page can answer it; internal: only the company\'s own staff can' } } } },
     } } },
     sourcesFetched: STR_LIST,
     notes: STR,
@@ -325,7 +325,7 @@ ${GROUNDING}
 OBLIGATIONS stage for regulator '${r.regulator}' (${r.reason}) and ${snapshot.legalName} (${companyId}). Read ${REFERENCE} section 5, ${INSTRUMENTS} and the catalogs under ${CATALOG_DIR}/ for this regulator's in-scope instruments, and ${CONTEXT} if it exists (reuse its obligationId and questionId slugs for the same obligations and questions so ids stay stable).
 Skeleton: ${JSON.stringify({ legalName: snapshot.legalName, entityTypes: snapshot.entityTypes, frameworksInScope: snapshot.frameworksInScope, licenses: licenses.filter((l) => r.licenseIds.includes(l.licenseId) || l.regulator === r.regulator).map((l) => ({ licenseId: l.licenseId, name: l.name, registrationNo: l.registrationNo, entityType: l.entityType })) })}
 ${r.regulator === 'MCA' ? 'MCA: the Companies Act 2013 and its rules as they apply to this company form (private, public, listed): secretarial compliance (board and general meetings, annual return, financial statements, statutory registers, company secretary and auditors), related-party and disclosure duties, plus SEBI LODR only when a unit is listed. source.type statute or circular with the MCA URL.' : `${r.regulator}: for each licence above, the regulations, master circulars and in-scope instruments that bind it (source.type instrument with the vocab id when the obligation is an instrument in ${INSTRUMENTS}; circular or statute otherwise, with the URL). Use \`node .claude/scripts/cos/search.mjs search --query "<text>" --regulator ${r.regulator}\` for clause and circular text before any public search.`}
-For every obligation set, write the questionnaire whose answers describe how this company operates under it: which processes it runs (secretarial compliance, client services, market transactions, KYC and onboarding, grievance redressal, surveillance, regulatory reporting, risk management ...), which offerings it sells under the licence (schemes, strategies, products, with counts when the regulator lists them), which customer segments it serves, which platforms carry them. Every question is answerable in one sentence from a public source or by the company's compliance officer, and each should reveal a process, offering, segment or platform rather than a filing date or a form number: prefer few broad questions ('Which client segments does the broker onboard and through which channels?') over many narrow ones. Cap: ${MAX_OBLIGATIONS_PER_REGULATOR} obligation sets per regulator (merge related duties into one set), ${MAX_QUESTIONS} questions each. Ids are slugs (^[a-z0-9][a-z0-9-]{1,62}$); prefix question ids with the obligation id.`;
+For every obligation set, write the questionnaire whose answers describe how this company operates under it: which processes it runs (secretarial compliance, client services, market transactions, KYC and onboarding, grievance redressal, surveillance, regulatory reporting, risk management ...), which offerings it sells under the licence (schemes, strategies, products, with counts when the regulator lists them), which customer segments it serves, which platforms carry them. Every question is answerable in one sentence from a public source or by the company's compliance officer, and each should reveal a process, offering, segment or platform rather than a filing date or a form number: prefer few broad questions ('Which client segments does the broker onboard and through which channels?') over many narrow ones. Mark each question answerableFrom 'public' when MCA master data, a filing, an annual report, a scheme list, the company website, an exchange or a regulator page can answer it, and 'internal' when only the company's own staff can (which system, who tracks, how often the board reviews). Cap: ${MAX_OBLIGATIONS_PER_REGULATOR} obligation sets per regulator (merge related duties into one set), ${MAX_QUESTIONS} questions each, at most 2 internal questions per set. Ids are slugs (^[a-z0-9][a-z0-9-]{1,62}$); prefix question ids with the obligation id.`;
 const obligationResults = await parallel(regulatorPlan.map((r) => () => agent(obligationsPrompt(r), { label: `obligations ${r.regulator}`, phase: 'Obligations', agentType: 'ctx-researcher', schema: OBLIGATIONS_SCHEMA, model: MODEL, effort: 'high' })));
 const obligations = [];
 const questionnaires = [];
@@ -349,7 +349,7 @@ regulatorPlan.forEach((r, i) => {
       const questionId = okSlug(q.questionId);
       if (qseen.has(questionId)) continue;
       qseen.add(questionId);
-      questions.push({ questionId, question: q.question, rationale: q.rationale || '' });
+      questions.push({ questionId, question: q.question, rationale: q.rationale || '', answerableFrom: q.answerableFrom === 'internal' ? 'internal' : 'public' });
     }
     questionnaires.push({ questionnaireId, obligationId, regulator: r.regulator, questions });
   }
@@ -366,7 +366,7 @@ const ANSWER_SCHEMA = {
     sessionId: STR,
     questionnaireId: STR,
     answers: { type: 'array', items: { type: 'object', required: ['questionId', 'status', 'yields'], properties: {
-      questionId: STR, status: { type: 'string', enum: ['answered', 'open', 'not-applicable'] }, answer: STR, confidence: { type: 'string', enum: ['high', 'medium', 'low'] },
+      questionId: STR, status: { type: 'string', enum: ['answered', 'open', 'not-applicable'] }, answer: STR, confidence: { type: 'string', enum: ['high', 'medium', 'low'] }, queriesTried: STR_LIST,
       evidence: { type: 'array', items: { type: 'object', required: ['type', 'ref'], properties: { type: { type: 'string', enum: ['url', 'workspace-file'] }, ref: STR, description: STR } } },
       reason: STR, yields: { type: 'array', items: YIELD },
     } } },
@@ -382,9 +382,9 @@ const answerPrompt = (q) => {
 ${GROUNDING}
 ANSWER stage for questionnaire '${q.questionnaireId}' of obligation '${ob.title}' (${q.regulator}, source ${ob.source.type} ${ob.source.ref}${ob.source.url ? ` ${ob.source.url}` : ''}) about ${snapshot.legalName} (${companyId}).
 Skeleton: ${JSON.stringify({ ...skeleton, licenses: licenses.map((l) => ({ licenseId: l.licenseId, name: l.name, registrationNo: l.registrationNo })), platforms: platforms.map((p) => ({ platformId: p.platformId, name: p.name, appIds: p.appIds })) })}
-Questions: ${JSON.stringify(q.questions)}
+Questions: ${JSON.stringify(q.questions.map((x) => ({ questionId: x.questionId, question: x.question, rationale: x.rationale, answerableFrom: x.answerableFrom })))}
 ${humans.length ? `HUMAN ANSWERS (authoritative, keep verbatim as the answer with status 'answered' and evidence [], but still derive yields): ${JSON.stringify(humans)}` : ''}
-Answer each question from pages you fetch this session: the company's own website${skeleton.identifiers && skeleton.identifiers.cin ? ', MCA master data' : ''}, annual report and filings, AMFI or SEBI scheme lists, exchange member pages, regulator registers, and the workspace files applications/*/README.md and env/*.json (evidence type workspace-file). A question no source answers is status 'open' with a reason; a question the obligation does not reach for this company is 'not-applicable' with a reason. Never guess.
+RESEARCH BUDGET: before you mark a 'public' question open, run at least 3 targeted WebSearch queries for it (the legal name or brand plus the topic; site:mca.gov.in master data and filings; the annual report or board's report PDF; AMFI or SEBI scheme and intermediary pages; NSE and BSE member directories and announcements; SEBI SCORES and the company's grievance page; the company's fair practices code, KFS, policies and 'about' pages) and fetch the best hits; list every query in queriesTried. 'internal' questions get one quick check of the company's website and the workspace, then status open with reason 'internal: ask the compliance officer'. Answer each question from pages you fetch this session: the company's own website${skeleton.identifiers && skeleton.identifiers.cin ? ', MCA master data' : ''}, annual report and filings, AMFI or SEBI scheme lists, exchange member pages, regulator registers, and the workspace files applications/*/README.md and env/*.json (evidence type workspace-file). A question no source answers is status 'open' with a reason; a question the obligation does not reach for this company is 'not-applicable' with a reason. Never guess.
 For every answered question list what it yields as context items: type process (kind from ${JSON.stringify(PROCESS_KINDS)}), offering (kind = category from ${JSON.stringify(OFFERING_CATEGORIES)}, licenseId from the skeleton, count when the source lists a number), segment (kind from ${JSON.stringify(SEGMENT_KINDS)}) or platform (kind from ${JSON.stringify(PLATFORM_KINDS)}, appIds from the skeleton; reuse an existing platformId when it is the same platform). Ids are slugs; reuse the same id for the same thing across questions. Record every page you relied on in sourcesFetched.`;
 };
 const answerResults = await parallel(questionnaires.map((q) => () => agent(answerPrompt(q), { label: `answer ${q.questionnaireId}`, phase: 'Answer', agentType: 'ctx-researcher', schema: ANSWER_SCHEMA, model: MODEL, effort: 'high' })));
@@ -398,14 +398,29 @@ questionnaires.forEach((q, i) => {
     const human = humanByQuestion.get(x.questionId);
     if (human) { x.status = 'answered'; x.answer = human.answer; x.answeredBy = 'human'; x.confidence = 'high'; x.evidence = []; x.yields = (a && a.yields) || []; continue; }
     if (!a || a.status === 'open' || (a.status === 'answered' && (!a.answer || !(a.evidence || []).length))) {
-      x.status = 'open'; x.reason = SHORT((a && a.reason) || (a && a.status === 'answered' ? 'answer returned without evidence' : 'no source answered this question')); x.yields = []; continue;
+      x.status = 'open'; x.reason = SHORT((a && a.reason) || (a && a.status === 'answered' ? 'answer returned without evidence' : 'no source answered this question')); x.queriesTried = uniq((a && a.queriesTried) || []); x.yields = []; continue;
     }
     if (a.status === 'not-applicable') { x.status = 'not-applicable'; x.reason = SHORT(a.reason || 'not applicable'); x.yields = []; continue; }
     x.status = 'answered'; x.answer = a.answer; x.answeredBy = 'research'; x.confidence = a.confidence || 'medium'; x.evidence = (a.evidence || []).map((e) => ({ type: e.type, ref: e.ref, ...(e.description ? { description: e.description } : {}) })); x.yields = a.yields || [];
   }
 });
+// Second pass: one deep-search agent per questionnaire that still has open public questions, told what was already tried.
+const secondPass = questionnaires.map((q) => ({ q, open: q.questions.filter((x) => x.status === 'open' && x.answerableFrom === 'public' && !humanByQuestion.has(x.questionId)) })).filter((e) => e.open.length);
+const secondResults = await parallel(secondPass.map((e) => () => agent(`${answerPrompt({ ...e.q, questions: e.open })}
+SECOND PASS: a first researcher left these ${e.open.length} public question(s) open after these queries: ${JSON.stringify(e.open.map((x) => ({ questionId: x.questionId, reason: x.reason, queriesTried: x.queriesTried || [] })))}. Try different sources and phrasings (regulator registers by registration number, the exchange member pages, annual report PDFs, news of the company's own announcements) with at least 4 new queries per question before leaving it open.`, { label: `answer again ${e.q.questionnaireId}`, phase: 'Answer', agentType: 'ctx-researcher', schema: ANSWER_SCHEMA, model: MODEL, effort: 'high' })));
+secondPass.forEach((e, i) => {
+  const res = secondResults[i];
+  if (!res) return;
+  noteSession(res);
+  const byId = new Map((res.answers || []).map((a) => [a.questionId, a]));
+  for (const x of e.open) {
+    const a = byId.get(x.questionId);
+    if (!a || a.status !== 'answered' || !a.answer || !(a.evidence || []).length) { if (a && a.queriesTried) x.queriesTried = uniq([...(x.queriesTried || []), ...a.queriesTried]); continue; }
+    x.status = 'answered'; x.answer = a.answer; x.answeredBy = 'research'; x.confidence = a.confidence || 'medium'; x.evidence = (a.evidence || []).map((ev) => ({ type: ev.type, ref: ev.ref, ...(ev.description ? { description: ev.description } : {}) })); x.yields = a.yields || []; delete x.reason;
+  }
+});
 const allQuestions = questionnaires.flatMap((q) => q.questions);
-log(`Answer: ${allQuestions.filter((x) => x.status === 'answered').length} answered (${allQuestions.filter((x) => x.answeredBy === 'human').length} by a human), ${allQuestions.filter((x) => x.status === 'open').length} open, ${allQuestions.filter((x) => x.status === 'not-applicable').length} not applicable`);
+log(`Answer: ${allQuestions.filter((x) => x.status === 'answered').length} answered (${allQuestions.filter((x) => x.answerableFrom === 'internal').length} internal questions go to the compliance officer) (${allQuestions.filter((x) => x.answeredBy === 'human').length} by a human), ${allQuestions.filter((x) => x.status === 'open').length} open, ${allQuestions.filter((x) => x.status === 'not-applicable').length} not applicable`);
 
 // ---------------------------------------------------------------- Verify
 phase('Verify');
@@ -529,7 +544,7 @@ const contextDoc = {
   businessUnits: units.map((u) => ({ unitId: u.unitId, name: u.name, ...(u.description ? { description: u.description } : {}), publiclyListed: Boolean(u.publiclyListed), ...(u.publiclyListed && (u.exchanges || []).length ? { listing: { exchanges: uniq(u.exchanges), ...(u.symbol ? { symbol: u.symbol } : {}), ...(u.isin && /^[A-Z]{2}[A-Z0-9]{9}[0-9]$/.test(u.isin) ? { isin: u.isin } : {}) } } : {}), licenseIds: u.licenseIds, obligationIds: u.obligationIds || [], processIds: u.processIds || [] })),
   licenses: licenses.map((l) => ({ licenseId: l.licenseId, name: l.name, regulator: l.regulator, registrationNo: l.registrationNo, entityType: l.entityType, status: l.status, unitId: l.unitId, obligationIds: l.obligationIds || [], processIds: l.processIds || [], offeringIds: l.offeringIds || [], platformIds: l.platformIds || [] })),
   obligations: obligations.map((o) => ({ obligationId: o.obligationId, title: o.title, regulator: o.regulator, source: o.source, ...(o.summary ? { summary: o.summary } : {}), questionnaireId: o.questionnaireId })),
-  questionnaires: questionnaires.map((q) => ({ questionnaireId: q.questionnaireId, obligationId: q.obligationId, questions: q.questions.map((x) => ({ questionId: x.questionId, question: x.question, status: x.status, ...(x.status === 'answered' ? { answer: x.answer, answeredBy: x.answeredBy, confidence: x.confidence, evidence: (x.evidence || []).map((e) => ({ ...e, ...(e.description ? { description: SHORT(e.description) } : {}) })), answeredAt: now } : { reason: SHORT(x.reason || 'open') }), yields: x.yields })) })),
+  questionnaires: questionnaires.map((q) => ({ questionnaireId: q.questionnaireId, obligationId: q.obligationId, questions: q.questions.map((x) => ({ questionId: x.questionId, question: x.question, answerableFrom: x.answerableFrom, status: x.status, ...(x.status === 'answered' ? { answer: x.answer, answeredBy: x.answeredBy, confidence: x.confidence, evidence: (x.evidence || []).map((e) => ({ ...e, ...(e.description ? { description: SHORT(e.description) } : {}) })), answeredAt: now } : { reason: SHORT(x.reason || 'open') }), yields: x.yields })) })),
   processes: [...processes.values()],
   offerings: [...offerings.values()],
   customerSegments: [...segments.values()],
