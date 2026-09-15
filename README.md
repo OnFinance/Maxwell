@@ -21,7 +21,8 @@ an SLA table, and audit cost is measured from the session transcripts. It runs h
 - [Regulatory coverage](#regulatory-coverage)
 - [KPIs](#kpis)
 - [Quick start](#quick-start)
-- [Validation and guardrails](#validation-and-guardrails)
+- [Validation](#validation)
+- [Guardrails](#guardrails)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -330,20 +331,59 @@ SBOMs, OpenLineage for pipelines, and OpenTelemetry GenAI conventions for sessio
 
 ## KPIs
 
-KPIs come from harness session transcripts and workspace state. `kpis/measurement/<kpi_id>.md` documents each
-method, and every datapoint is schema-validated.
+The six KPIs follow the life of an audit: what it costs, how much it examined, whether its plan can be acted on, how
+fast fixes land against the regulator's deadline, whether its code fixes are kept, and whether the changes it drives
+cause incidents. `npm run kpis` computes them from harness session transcripts and workspace state, each method is
+documented in `kpis/measurement/<kpi_id>.md`, and every datapoint is schema-validated. Sessions of the `refresh-*`
+workflows are recorded but excluded, because keeping context current is not audit work.
 
-| KPI | How it is measured |
-|---|---|
-| `cost_of_audit` | Tokens priced across five buckets (input, output, 5-minute and 1-hour cache writes, cache reads), deduplicated per request, cross-checked against the harness-reported cost. |
-| `cm_actionability` | Share of initiatives with an owner, due date, regulatory reference, and tasks carrying acceptance criteria, a verification method and a root cause. |
-| `cm_coverage` | Applicable controls with an observation in the period, plus asset coverage. |
-| `cm_time_to_implementation` | Median and p90 days from initiative creation to closure, and SLA compliance. |
-| `suggestion_acceptance_rate` | Accepted over decided suggestions, with merge, revert and 30-day retention rates. |
-| `incident_rate` | Incidents per 1,000 changes and per application, optionally reconciled with PagerDuty by dedup key. |
+### Cost of audit (`cost_of_audit`)
 
-Sessions of the `refresh-*` workflows are recorded but excluded from every KPI, because keeping context current is
-not audit work.
+- **Why:** model spend is the running cost of an agent-run audit, so every run is priced from its own transcripts.
+- **Measured:** each session's tokens at list price across input, output, 5-minute and 1-hour cache writes and cache
+  reads, deduplicated per API request and scaled from sampled sessions to the whole run, plus a human review allowance
+  (2.5 hours at $45). Cross-checked against the harness-reported cost, and normalised per application and per control
+  observed.
+- **Thresholds:** warn above $400 and alert above $800 per run.
+
+### Coverage (`cm_coverage`)
+
+- **Why:** findings mean little without knowing how much of the control surface was actually examined.
+- **Measured:** applicable controls with an observation in the period over all applicable controls; application and
+  environment pairs observed over all defined; and open high or critical findings linked to an initiative over all of
+  them.
+- **Thresholds:** warn below 85% and alert below 70%.
+
+### Actionability (`cm_actionability`)
+
+- **Why:** a remediation plan only helps if the owner can start on it without coming back with questions.
+- **Measured:** share of initiatives created in the period that have an owner, a due date, a regulatory reference and
+  a linked finding or control, and whose every task has an owner, acceptance criteria, a verification method and a
+  root cause.
+- **Thresholds:** warn below 0.6 and alert below 0.4.
+
+### Time to implementation (`cm_time_to_implementation`)
+
+- **Why:** regulators set remediation deadlines, so what counts is how fast fixes close against that SLA.
+- **Measured:** median and p90 days from initiative creation to closure, the share closed by the due date taken from
+  the clause's SLA, and the number of open initiatives past due.
+- **Thresholds:** warn above 30 days and alert above 60 days.
+
+### Suggestion acceptance rate (`suggestion_acceptance_rate`)
+
+- **Why:** automated code fixes are only worth generating if reviewers keep them.
+- **Measured:** accepted or merged suggestions over those decided or left undecided for 30 days, following the GitHub
+  Copilot convention, with merge rate, revert rate and 30-day retention alongside.
+- **Thresholds:** warn below 50% and alert below 30%.
+
+### Incident rate (`incident_rate`)
+
+- **Why:** the outcome that matters is fewer security incidents, and the changes Maxwell drives must not cause new
+  ones.
+- **Measured:** security incidents per application per month from the ledger (severity info excluded), incidents per
+  1,000 changes, mean time to acknowledge and to resolve, and regulator-reporting timeliness, optionally reconciled
+  with PagerDuty by dedup key.
+- **Thresholds:** warn above 5 and alert above 10 per 1,000 changes.
 
 ## Quick start
 
@@ -396,16 +436,14 @@ node .claude/scripts/run-headless.mjs --workflow probe-iac --company acme-securi
 Add `--harness opencode --model <provider/model>` to run on OpenCode. The run commits nothing itself: check the result
 with `npm run validate`.
 
-## Validation and guardrails
-
-### Validation
+## Validation
 
 - **Schemas:** 46 JSON Schemas with unit tests, plus closed vocabularies for regulators, instruments and statuses.
 - **On every write:** each JSON, JSONL or frontmatter file is validated as the agent writes it.
 - **Ledger:** append-only, written through helpers that validate each record and diff every version.
 - **Git and CI:** validation on commit, the full suite and tests on push and in CI.
 
-### Guardrails
+## Guardrails
 
 - **Write guard:** blocks paths outside the layout, edits to repository checkouts and secret-shaped content.
 - **Runtime probes:** read-only, with production windows and rate limits enforced before any command runs.
