@@ -419,13 +419,13 @@ with `npm run validate`.
 
 ## Validation and guardrails
 
+### Validation
+
 - **Schemas.** 46 JSON Schemas under `.claude/schemas/`, checked for metaschema validity, lint and formatting with
   [`@sourcemeta/jsonschema`](https://github.com/sourcemeta/jsonschema). Each has unit tests with valid and invalid
   cases.
 - **Closed vocabularies.** Regulators, instruments, workflows, entity types and status lifecycles live in
   `.claude/schemas/vocab/`, so an agent cannot invent an instrument or a status.
-- **Write guard.** A pre-write hook blocks paths outside the layout, edits inside repository checkouts, schema edits
-  without `MAXWELL_SCHEMA_EDIT=1`, hand edits to the generated `.agents/` mirror, and secret-shaped content.
 - **Post-write validation.** Every JSON, JSONL or frontmatter file an agent writes is validated immediately, and
   errors go back to the agent.
 - **Ledger helpers.** `soc/append.mjs` validates and appends one record or a JSONL batch (all-or-nothing), refusing
@@ -433,6 +433,12 @@ with `npm run validate`.
   history. `soc/migrate-instrument.mjs` moves a company off a repealed instrument onto its successor.
 - **Git hooks and CI.** Staged files are validated on commit, the full suite and tests run on push, and
   `.github/workflows/validate.yml` repeats both in CI.
+
+### Guardrails
+
+- **Write guard.** A pre-write hook (Claude Code hooks, and the same scripts through the OpenCode plugin) blocks paths
+  outside the layout, edits inside repository checkouts, schema edits without `MAXWELL_SCHEMA_EDIT=1`, hand edits to
+  the generated `.agents/` mirror, and secret-shaped content. On OpenCode, a guard that cannot run blocks the write.
 - **Read-only runtime probes.** Runtime probes use read-only credentials and read-only command families. Production
   needs explicit environment ids, allowed windows and rate limits, all enforced before a command runs.
 - **Sandboxed, pinned execution.** Scanners and runtime commands run only through `toolchain/scan.mjs` and
