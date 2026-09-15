@@ -3,16 +3,16 @@ schemaVersion: "1"
 kind: maxwell.company.summary
 companyId: example-co
 title: Example Capital Markets cyber resilience summary
-version: "4.7.0"
-sections: [overview, regulatory-posture, vendors, data-flows, control-summary, open-findings]
+version: "5.0.0"
+sections: [overview, regulatory-posture, applications, vendors, data-flows, control-summary, open-findings]
 provenance:
   harness: opencode
-  generatedAt: "2026-09-14T21:59:48Z"
-  sessionId: "ses_f5ddfd1f2ffeC0bYhZN5tu6rj3"
+  generatedAt: "2026-09-14T23:04:57Z"
+  sessionId: "ses_f5da6d1b4ffeCc25bD4hh8dP6E"
   runId: run_01M2GDZ3Q3S5WYCB3MV02QJXZ1
-  workflow: refresh-metastore
+  workflow: refresh-apps
   agent: report-writer
-  inputsHash: fff2796598bbc6a6435e45ac3f9b033987cb681582d37cc17474fee0fad0af24
+  inputsHash: 5e6301ac655ebc0cad9ea3cd957896c0b3618a97b77bce567471570cba893644
 ---
 # Example Capital Markets — cyber resilience summary
 
@@ -54,6 +54,93 @@ CDSL's and NSDL's own DP lists and the SEBI register.
 Refresh date: 2026-09-14 (`provenance.generatedAt` 2026-09-14T17:03:20Z).
 
 <!-- source: details.json regulatoryRegistrations and frameworksInScope; soc/main.jsonl kind:observation title "instrument_became_applicable: /frameworksInScope" with provenance.runId run_01M2GDZ3Q3S5WYCB3MV02QJXZ1 (2 records, lines 692-693); escalated claim = kind:risk rsk_01M2GH97M1ZYX3TQJ4BJ0CEE6M (line 694) -->
+
+## Applications
+
+`refresh-apps` (runId `run_01M2GDZ3Q3S5WYCB3MV02QJXZ1`) refreshed this section as of 2026-09-14T23:04:57Z: 2/2
+repos synced, 0 commits advanced, 2 record(s) written, 7 confirmed gap(s). 2 applications are in scope, the union
+of the `applications/*/` directories and `details.json` `criticalFunctions[].appIds` (`mcp-gateway` is the only
+application backing the `order-routing` critical function). Both repo records were rewritten this run
+(`lastFetchedAt` 2026-09-14T23:04:57Z) with unchanged pins ([obs_01M2H53C4QM42QXRZJXXT52ADM],
+[obs_01M2H2N7D8M45YFXJNZ7C3VQMT]). Environment log retention below is compared with CERT-In
+cert-in-directions-2022 Dir-iv (CERT-In Directions 2022), which requires 180 days of logs.
+
+### mcp-gateway
+
+Internal MongoDB MCP gateway used by ExampleCo's AI agents to query the client-data and order stores (data
+classes pii, financial; `applications/mcp-gateway/README.md`); the only application backing `order-routing`
+(`details.json` `criticalFunctions[0].appIds`).
+
+Environments (`applications/mcp-gateway/env/*.json`):
+
+| Env | Tier | Exposure | Residency | Log retention (days) | Logs in India | vs Dir-iv (180 d) |
+|---|---|---|---|---|---|---|
+| prod | prod | partner | IN | 365 | yes | meets (>= 180 d) |
+| qa | qa | internal | IN | 180 | yes | meets (exactly 180 d) |
+| dev | dev | internal | IN | 30 | yes | below 180 d |
+
+Dev's 30-day log retention is below the 180 days required by CERT-In cert-in-directions-2022 Dir-iv.
+
+Repo: `mongodb-mcp-server` — `https://github.com/OnFinance/mongodb-mcp-server.git` (public, host github, default
+branch `main`, build system pnpm, CI github-actions): head commit (pinned)
+`aaa72a040db4c32f3d6488d5e28e2892a68e9ee0`, last fetched 2026-09-14T23:04:57Z; 0 commits advanced this run
+[obs_01M2H53C4QM42QXRZJXXT52ADM] (result `partial`).
+
+Images: 0 image records (missing) — `applications/mcp-gateway/images/` does not exist, so no registry digest or
+SBOM is on file. The repo's CI builds and pushes `docker.io/mongodb/mongodb-mcp-server` and the deployment IaC
+registered to qa and prod deploys `docker.io/mongodb/mongodb-mcp-server:1.11.0`, but no record tracks the image
+that actually runs in these environments [obs_01M2H53C4VE2YHVQ9GFZM9AYYX] (result `not-satisfied`,
+`sebi-cscrf-2024:ID.AM.S1`).
+
+Open findings: 7 (6 high, 1 medium), all targeting repo `mcp-gateway/mongodb-mcp-server`. Last probe
+`collectedAt`: 2026-09-14T13:14:50Z (`probe-schemas`; `probe-iac` ran earlier at 2026-09-14T11:33:17Z).
+
+Confirmed drift and credential gaps from this run (all 7 involve `mcp-gateway`):
+
+- untracked-repo (1): the vulnerability-scanner agentic workflow checks out the upstream repository
+  `mongodb-js/mongodb-mcp-server`, which no record under `applications/` covers, so code fetched from it during
+  CI is outside Maxwell's per-repo pinning and inventory [obs_01M2H53C4V6GBVSZKD5DAV56XK] (partial,
+  `sebi-cscrf-2024:ID.AM.S1`, `sebi-cscrf-2024:ID.AM.S3`).
+- env-iac-drift (2): the qa and prod environment records declare EKS clusters and AWS Secrets Manager, but the
+  deployment IaC registered to both environments deploys an Azure Container Apps managed environment with
+  azure-container-apps-secrets [obs_01M2H53C4VPQP4WRQERB4K5QGH] (not-satisfied, `sebi-cscrf-2024:PR.IP.S3`).
+- env-url-drift (2): the qa and prod environment records carry no `urls` array while their deployment IaC
+  declares an external public ingress and outputs the public MCP endpoint URL; qa records exposure `internal`
+  while its IaC declares an external ingress [obs_01M2H53C4V0G8DQMQRW2R0YNAA] (partial,
+  `sebi-cscrf-2024:ID.AM.S1`).
+- image-untracked (1): `docker.io/mongodb/mongodb-mcp-server`, built in CI and deployed to qa and prod (see
+  Images above) [obs_01M2H53C4VE2YHVQ9GFZM9AYYX] (not-satisfied, `sebi-cscrf-2024:ID.AM.S1`).
+- credentials-unverifiable (1): `applications/mcp-gateway/credentials.json` is present and sops-encrypted, but
+  no age decryption key is available on the executor, so the dev (`dev-docker-socket`), qa (`qa-kubeconfig-ro`)
+  and prod (`prod-kubeconfig-ro`) probe credential entries and their rotation dates cannot be verified
+  [obs_01M2H53C4VDK68193RX7H52D3Y] (inconclusive, `sebi-cscrf-2024:PR.AA.S1`).
+
+### db-models
+
+Shared Python data-model library consumed by internal services (dev only, no runtime;
+`applications/db-models/README.md`).
+
+Environments (`applications/db-models/env/dev.json`): 1 environment.
+
+| Env | Tier | Exposure | Residency | Log retention (days) | Logs in India | vs Dir-iv (180 d) |
+|---|---|---|---|---|---|---|
+| dev | dev | isolated | IN | 0 | yes | below 180 d |
+
+`probeAccess.method` is `none` (no credential key). The 0-day log retention is below the 180 days that
+CERT-In cert-in-directions-2022 Dir-iv requires.
+
+Repo: `onfinance-db-model-master` — `https://github.com/OnFinance/onfinance_db_model_master.git` (public, host
+github, default branch `master`, build system pip, CI none): head commit (pinned)
+`70b3633e171a1b8d389b27bb901c84c34a0e9bf6`, last fetched 2026-09-14T23:04:57Z; 0 commits advanced this run
+[obs_01M2H2N7D8M45YFXJNZ7C3VQMT] (result `satisfied`: the refresh confirmed no gaps involving this repo).
+
+Images: 0 image records (missing) — no `applications/db-models/images/` directory exists; no image-related gap
+was confirmed for this application this run.
+
+Open findings: 0. Last probe `collectedAt`: 2026-09-14T13:14:50Z (`probe-schemas`, e.g.
+[obs_01M2G24FKAKAVS5JTG628HDYT2]).
+
+<!-- source: applications/*/README.md, env/*.json (tier, exposure, residency, observability.logsRetentionDays, logsInIndia) and repos/*.json (url, defaultBranch, pinnedCommit, lastFetchedAt); run summary (2/2 synced, 0 advanced, 2 repo records written, 7 gaps) from soc/main.jsonl kind:observation methods ["refresh-apps"] (7 records, lines 735-741; gaps = untracked-repo 1 + env-iac-drift 2 + env-url-drift 2 + image-untracked 1 + credentials-unverifiable 1); open findings = latest kind:finding per id, status open, target repo (mcp-gateway: 7, lines 423-429; db-models: none); no applications/*/images/ directory exists (Glob returned no files) -->
 
 ## Vendors
 `refresh-vendor-ctx` refreshed this section as of 2026-09-14T20:15:18Z: 0 vendors onboarded, 1 updated

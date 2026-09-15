@@ -8,7 +8,7 @@
   "visibility": "public",
   "defaultBranch": "master",
   "pinnedCommit": "70b3633e171a1b8d389b27bb901c84c34a0e9bf6",
-  "lastFetchedAt": "2026-09-14T00:00:00Z",
+  "lastFetchedAt": "2026-09-14T23:04:57Z",
   "languages": [
     "python"
   ],
@@ -23,9 +23,11 @@
   "codeownersPresent": false,
   "localCheckout": "applications/db-models/repos/onfinance-db-model-master",
   "provenance": {
-    "harness": "human",
-    "generatedAt": "2026-09-14T00:00:00Z",
-    "workflow": "refresh-ctx",
-    "agent": "ctx-researcher"
+    "harness": "opencode",
+    "generatedAt": "2026-09-14T23:04:57Z",
+    "sessionId": "ses_f5dd55b61fferfHvhnIkY6nHkK",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "refresh-apps",
+    "agent": "validator"
   }
 }

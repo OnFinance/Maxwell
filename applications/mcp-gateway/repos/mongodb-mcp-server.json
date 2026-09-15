@@ -8,7 +8,7 @@
   "visibility": "public",
   "defaultBranch": "main",
   "pinnedCommit": "aaa72a040db4c32f3d6488d5e28e2892a68e9ee0",
-  "lastFetchedAt": "2026-09-14T00:00:00Z",
+  "lastFetchedAt": "2026-09-14T23:04:57Z",
   "languages": [
     "typescript",
     "javascript",
@@ -26,9 +26,11 @@
   "codeownersPresent": false,
   "localCheckout": "applications/mcp-gateway/repos/mongodb-mcp-server",
   "provenance": {
-    "harness": "human",
-    "generatedAt": "2026-09-14T00:00:00Z",
-    "workflow": "refresh-ctx",
-    "agent": "ctx-researcher"
+    "harness": "opencode",
+    "generatedAt": "2026-09-14T23:04:57Z",
+    "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "refresh-apps",
+    "agent": "validator"
   }
 }
