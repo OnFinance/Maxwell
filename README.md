@@ -219,11 +219,6 @@ flowchart LR
   class STATE,KPIS box
 ```
 
-Invoke a workflow as `/<name> <company_id> [--app=<app_id>] [--env=<env_id>] [--dry-run]` in an interactive
-session, or through the [headless runner](#quick-start). Every workflow has a `refuter` agent challenge each
-candidate before anything is written. Utility commands: `/validate`, `/kpis`, `/seed-company <company_id>`,
-`/status <company_id>`, `/connect-sandbox <company_id>`.
-
 <details>
 <summary>What each workflow does</summary>
 
