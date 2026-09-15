@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.session.summary",
+  "sessionId": "ses_f59be858cffeMO33jsaNsYBK0Q",
+  "harness": "opencode",
+  "harnessVersion": "1.18.30",
+  "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+  "workflow": "probe-agent-graph",
+  "companyId": "example-co",
+  "startedAt": "2026-09-15T18:08:24Z",
+  "endedAt": "2026-09-15T18:27:16Z",
+  "durationMs": 1132000,
+  "turns": 34,
+  "inferenceCalls": 34,
+  "toolCalls": {
+    "total": 87,
+    "byTool": {
+      "read": 31,
+      "glob": 5,
+      "grep": 50,
+      "webfetch": 1
+    }
+  },
+  "subagentSessions": 0,
+  "permissionDenials": [],
+  "models": [
+    {
+      "model": "glm-5.3",
+      "provider": "other",
+      "tokens": {
+        "input": 131337,
+        "output": 69084,
+        "cacheWrite5m": 0,
+        "cacheWrite1h": 0,
+        "cacheRead": 2106112,
+        "thinking": null
+      },
+      "webSearchRequests": 0,
+      "webFetchRequests": 0,
+      "costUsd": 1.035431
+    }
+  ],
+  "costUsd": {
+    "computed": 1.035431,
+    "reported": 1.035431,
+    "deltaPct": 0
+  },
+  "pricingVersion": "2026-09-14",
+  "dedup": {
+    "strategy": "requestId-max-total-tokens",
+    "duplicatesDropped": 0
+  },
+  "filesWritten": [],
+  "linesAdded": 0,
+  "linesRemoved": 0,
+  "outcome": "success",
+  "transcriptFormatVersion": "1.18.30",
+  "provenance": {
+    "harness": "script",
+    "generatedAt": "2026-09-15T19:42:06Z",
+    "sessionId": "ses_f59be858cffeMO33jsaNsYBK0Q",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "probe-agent-graph",
+    "agent": ".claude/scripts/sessions/ingest.mjs"
+  }
+}

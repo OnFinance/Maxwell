@@ -3,16 +3,17 @@ schemaVersion: "1"
 kind: maxwell.company.summary
 companyId: example-co
 title: Example Capital Markets cyber resilience summary
-version: "5.2.0"
+version: "5.3.0"
 sections: [overview, regulatory-posture, applications, vendors, data-flows, control-summary, open-findings]
 provenance:
   harness: opencode
-  generatedAt: "2026-09-15T02:47:35Z"
+  generatedAt: "2026-09-15T15:14:31Z"
+  sessionId: ses_f5a4f0e07ffeV5eqNxf7yDi0wc
   runId: run_01M2GDZ3Q3S5WYCB3MV02QJXZ1
-  workflow: probe-schemas
+  workflow: probe-agent-graph
   agent: report-writer
   model: "cloudflare-workers-ai/@cf/zai-org/glm-5.3"
-  inputsHash: 9da53a1e24cd87200a20d134dcb850985447b114e670935a3670968a8d7160a1
+  inputsHash: 81a185da81995e31326df0567ba00018a651c722d25592c8b23c7e1ac3d63a4a
 ---
 # Example Capital Markets — cyber resilience summary
 
@@ -274,7 +275,7 @@ probe-era effectiveness (`ineffective`, `partially-effective`) as history; `sebi
 recomputed.
 
 Maxwell observed 25 of the 478 applicable controls in this period (5 %); 5 controls were inconclusive for lack of access
-([obs_01M2FTV6K4Q25G1JT58HAZDV36], [obs_01M2FTV6MCKCJTVHDHHP02KJ2V], [obs_01M2FTV6NJKW6VW58KFH78E5AV]); 0 environments
+([obs_01M2FTV6K4Q25G1JT58HAZDV36], [obs_01M2FTV6MCKCJTVHDHHP02KJ2V], [obs_01M2FTV6NJKW6WV58KFH78E5AV]); 0 environments
 were skipped (no runtime probe ran and the ledger records no freeze, window or credential skip). Coverage basis: applicable
 control ids named in the `controlIds` of at least one of the 45 ledger observations (39 substantive, 6 report-generation,
 all collected on 2026-09-14), over the 478 applicable controls; this mirrors `cm_coverage`
@@ -284,60 +285,61 @@ observations, which would give 18 of 478 (4 %).
 <!-- source: latest-state map over soc/main.jsonl kind=control (710 lines, last line per record id), grouped by instrument id prefix before ':'; effectiveness counts exclude implementationStatus not-applicable; coverage = applicable control ids in controlIds of the 45 kind=observation records -->
 
 ## Open findings
-`probe-schemas` re-ran against `example-co` this run (`provenance.runId` run_01M2GDZ3Q3S5WYCB3MV02QJXZ1; this run's 68 ledger
-lines were appended by the `soc-ledger-keeper` at 2026-09-15T02:47:35Z, session 453ecc6e-1346-418f-a2c0-1bfcead851c3): 3 new
-data and API schema finding(s) ([fnd_01M2HRGEX25CQZERDVHPVF1B96], [fnd_01M2HRGF3S0NWNNWDBY1CHD934],
-[fnd_01M2HRGFABHFN9JE2TDMJX32RE]), 3 re-seen (0 reopened) ([fnd_01M2G2AGVRZPBP3VH8FNAYH46V],
-[fnd_01M2G2AGX1GZ9THG6HJ1VPP1EP], [fnd_01M2G2AGTH64FMR4XR77ZAJH7B]) and 36 observation(s) — 4 `not-satisfied`
-([obs_01M2HRG6MFKWJ6366XQZDYKHDW], [obs_01M2HRG7P90QDQAMGEAD6D17HT], [obs_01M2HRGBAAWBY9THNGDV134ZPX],
-[obs_01M2HRGBHB7RWP7R90WQBSX09J]), 19 `partial` ([obs_01M2HRG6V8H271KV6469G55EZY], [obs_01M2HRG71Z57HBWAGD7C9Z5NYJ],
-[obs_01M2HRG78T7S5RJGJW13D456X9], [obs_01M2HRG7FGS160S5DJ2NH7AKS1], [obs_01M2HRG7X230RH9W91WJH10C0N],
-[obs_01M2HRG83KA4GN2T49DDT7AZ1M], [obs_01M2HRG8A7ZV8C7JZ6WAT7SYEQ], [obs_01M2HRG8GXXJ2KQGH74GR38AAC],
-[obs_01M2HRG8QPBJWNF2754VHH9WNH], [obs_01M2HRG8Y8R7S8KRYFAHG8ZZN1], [obs_01M2HRG952YRM0Z45V01KN5M3F],
-[obs_01M2HRG9S83WPXV2X9JCS27KB7], [obs_01M2HRGA75AZ4GQHHZXPR5JGPM], [obs_01M2HRGAE3V369YGXQKK4BFXV1],
-[obs_01M2HRGAWC8PRQKWC9ZZZDMTGD], [obs_01M2HRGB38ZFP51VR4YJBGYXF4], [obs_01M2HRGBYQJYJEJKY1G7VM66NN],
-[obs_01M2HRGD7AC1NVZDWE22JGAD48], [obs_01M2HRGDEMCDZJNZ1TQX3Z02GT]) and 13 `not-applicable`
-([obs_01M2HRG9BPY07CNWD3JSA9AWR2], [obs_01M2HRG9JF5M765EHM8EWWGCST], [obs_01M2HRGA0DXJ8WBYXBPH2G9XSD],
-[obs_01M2HRGAMSX41H25BW9S94YGQM], [obs_01M2HRGBQY6NGF6FMMGEX1D7VQ], [obs_01M2HRGC5F98YV6Q7F7N1R3N10],
-[obs_01M2HRGCC8FNPA4HHHSP7QJQTD], [obs_01M2HRGCJYRFHJNC5GSXV9QDJK], [obs_01M2HRGCSK1KBV8ZKEACVYET8N],
-[obs_01M2HRGD0EM139GPWD28VKYMFH], [obs_01M2HRGDN9QKZ32ZCHNJA2ZV7M], [obs_01M2HRGDVS0XB1Q9KYQJPPZT44],
-[obs_01M2HRGE2DFW8J364P62XQ4RM5]) — against the probed repo `mcp-gateway/mongodb-mcp-server` at pinned commit
+`probe-agent-graph` ran against `example-co` this run (`provenance.runId` run_01M2GDZ3Q3S5WYCB3MV02QJXZ1; this run's 50 ledger
+lines were appended by the `soc-ledger-keeper` at 2026-09-15T15:14:31Z, session 453ecc6e-1346-418f-a2c0-1bfcead851c3): 10 new
+agent-graph finding(s) ([fnd_01M2K7B0MJ68AR00YTNE2N00V2], [fnd_01M2K7B0MJW0K9WFVMPWT86BRE], [fnd_01M2K7B0MJ9BHSS0T664GGCW4N],
+[fnd_01M2K7B0MJTNGRN4D0GZYBD5FS], [fnd_01M2K7B0MJN2XBQRW2XYYD6EBJ], [fnd_01M2K7B0MJQMT1S973WHW7K9GA],
+[fnd_01M2K7B0MJJVWFWXF6KZ783GFZ], [fnd_01M2K7B0MJMG3TT4DFMEJWQDA8], [fnd_01M2K7B0MJ3239WAE0AKHRMK5E],
+[fnd_01M2K7B0MJEKMTTH4EAKR1RHZY]), 0 re-seen (0 reopened) and 19 observation(s) — 4 `not-satisfied`
+([obs_01M2K7B0MD6QPQYB5WX88W6X26], [obs_01M2K7B0MG6AJ4RNM48WZ65700], [obs_01M2K7B0MG9FJF21H81SMCBX3N],
+[obs_01M2K7B0MGN30JPJFJ01YFGFH8]) and 15 `partial` ([obs_01M2K7B0MGRPDQ90XDE5PWYD7X], [obs_01M2K7B0MGJTYJ48C79N082WKV],
+[obs_01M2K7B0MGNJTVJWN1NR4KP3F2], [obs_01M2K7B0MG83DXF609SVQX7AG9], [obs_01M2K7B0MGN03WM0T8X8C9WZTT],
+[obs_01M2K7B0MGE3N7DVSDRHCDP3A1], [obs_01M2K7B0MGDC152RR083QKRDFK], [obs_01M2K7B0MGK245K0KKPZGG86CG],
+[obs_01M2K7B0MGSDQDM6V06G1WM1AE], [obs_01M2K7B0MGNPK1C8RM7R8XWRX4], [obs_01M2K7B0MGKZBRBVQGA80GRADE],
+[obs_01M2K7B0MGBQDKD63TYG9QF1HF], [obs_01M2K7B0MGW8N6BB0Q9XHZSWAQ], [obs_01M2K7B0MGB78NWYAXV8KAJ6X3],
+[obs_01M2K7B0MJ8BDDZVARMWZSX5MQ]) — against the probed repo `mcp-gateway/mongodb-mcp-server` at pinned commit
 aaa72a040db4c32f3d6488d5e28e2892a68e9ee0 (evidence:
-`kpis/data/raw/sessions/opencode/run_01M2GDZ3Q3S5WYCB3MV02QJXZ1.probe-schemas.mcp-gateway.mongodb-mcp-server.sarif.export.json`,
-sha256 8eb156ac…). The batch also created 3 control records (`cert-in-directions-2022:Dir-v`,
-`cert-in-directions-2022:Dir-vi`, `rbi-cyber-tech-directions-2026:48`, all `not-tested`) and re-assessed 23 controls.
+`kpis/data/raw/sessions/opencode/run_01M2GDZ3Q3S5WYCB3MV02QJXZ1.probe-agent-graph.mcp-gateway.mongodb-mcp-server.sarif.export.json`,
+sha256 c3c7b9dc…). The batch also created 2 new control records (`rbi-cyber-tech-directions-2026:83` and
+`rbi-cyber-tech-directions-2026:88`, both `not-tested`) and re-assessed 19 controls — `sebi-cscrf-2024:PR.AA.S3`,
+`sebi-cscrf-2024:PR.AA.S17`, `sebi-cscrf-2024:PR.DS.S6` and `dpdp-rules-2025:6(1)(b)` now `ineffective`, the other 15
+`partially-effective`.
 
-All six findings from this run are schema gaps in that repo. New (3): the connect and switch-connection tools accept MongoDB
-connection strings with embedded credentials as plain `z.string()` tool arguments that are never registered in the session
-keychain (only config-supplied strings are), so live credentials transit the LLM tool-call channel and persist in client
-transcripts ([fnd_01M2HRGEX25CQZERDVHPVF1B96], [fnd_01M2HRGF3S0NWNNWDBY1CHD934]); and the export tool writes find/aggregate
-results that env/prod.json classifies as pii and financial to plaintext EJSON files with no encryption, file-mode restriction
-or KMS reference — the 5-minute expiry is a partial compensating control ([fnd_01M2HRGFABHFN9JE2TDMJX32RE]). Re-seen (3, 0
-reopened), superseded by fingerprint with refreshed severity and primary regulatory refs while keeping their original
-firstSeenAt and status per the soc-ledger re-run rules: the unauthenticated MCP HTTP transport, now framed against SEBI
-sebi-cscrf-2024 PR.AA.S17 (SEBI CSCRF 2024) including rate limiting and idempotency [fnd_01M2G2AGVRZPBP3VH8FNAYH46V]; the zod
-tool-argument gap, re-graded from high to medium under its refreshed primary control SEBI sebi-cscrf-2024 PR.IP.S2
-[fnd_01M2G2AGX1GZ9THG6HJ1VPP1EP]; and the atlas-create-db-user credential echo, now led by SEBI sebi-cscrf-2024 PR.AA.S6
-[fnd_01M2G2AGTH64FMR4XR77ZAJH7B]. This run's two remaining SARIF fail conditions were recorded as observations, not findings:
-the 30-day gateway log retention [obs_01M2HRG7P90QDQAMGEAD6D17HT] and the destructive-tool approval gate that fails open
-[obs_01M2HRGBAAWBY9THNGDV134ZPX]. No finding from this run targets db-models; its schema conditions surface through the
-re-assessed control records (e.g. `sebi-cscrf-2024:PR.DS.S1` and `sebi-cscrf-2024:PR.AA.S13`, which cite the models.py
-plaintext-credentials and retention review).
+All ten new findings are agent-graph gaps in that repo — the deployed MCP gateway behind the `order-routing` critical
+function — and every record carries an OWASP owasp-agentic-top10-2026 (OWASP Agentic Top 10 2026) mapping alongside its
+primary SEBI CSCRF ref. Two break human oversight of destructive agent actions: the elicitation confirmation gate fails
+open for clients without elicitation capability, so the eight default confirmation-required tools execute with no human
+approval against headless harnesses while `aiCodingPolicy.humanReviewRequired` is true
+[fnd_01M2K7B0MJ68AR00YTNE2N00V2] (OWASP owasp-agentic-top10-2026 ASI09), and 11 of 19 write-capable tools are enabled by
+default with no approval step or allow-list [fnd_01M2K7B0MJQMT1S973WHW7K9GA] (OWASP owasp-agentic-top10-2026 ASI02).
+Three are API-surface gaps: the HTTP MCP transport is deployed unauthenticated on 0.0.0.0 in the AWS deploy path the qa
+and prod records register [fnd_01M2K7B0MJW0K9WFVMPWT86BRE] (OWASP owasp-agentic-top10-2026 ASI03), connect and
+switch-connection accept model-controlled connection strings with no host allow-list
+[fnd_01M2K7B0MJJVWFWXF6KZ783GFZ] (OWASP owasp-agentic-top10-2026 ASI03), and the HTTP endpoint has no rate limiting or
+concurrency caps [fnd_01M2K7B0MJEKMTTH4EAKR1RHZY] (OWASP owasp-agentic-top10-2026 ASI08). Four are supply-chain gaps: the
+AWS deploy image installs the server unpinned at registry latest on an unpinned base [fnd_01M2K7B0MJ9BHSS0T664GGCW4N],
+the setup wizard writes npx -y mongodb-mcp-server@latest into six harness MCP configs
+[fnd_01M2K7B0MJTNGRN4D0GZYBD5FS], the setup flow installs third-party agent skills globally with no integrity check
+[fnd_01M2K7B0MJN2XBQRW2XYYD6EBJ], and the repo ships developer-harness configuration for GitHub Copilot outside
+`aiCodingPolicy.harnessesAllowed` [fnd_01M2K7B0MJ3239WAE0AKHRMK5E] (all four OWASP owasp-agentic-top10-2026 ASI04). One
+is an egress gap against IN residency: search-knowledge posts the unredacted model-composed query to
+knowledge.mongodb.com by default [fnd_01M2K7B0MJMG3TT4DFMEJWQDA8] (OWASP owasp-agentic-top10-2026 ASI03). No finding
+from this run targets db-models.
 
 Latest record per finding id in `company-profile/example-co/soc/main.jsonl` with `status` in
-`open | triaged | remediating`, as of `provenance.generatedAt` 2026-09-15T02:47:35Z (24 open, 0 past SLA):
+`open | triaged | remediating`, as of `provenance.generatedAt` 2026-09-15T15:14:31Z (34 open, 0 past SLA):
 
 ### High
 
 | Id | Title | Target | Regulatory ref | First seen | SLA due | SLA status | Status | Initiative |
 |---|---|---|---|---|---|---|---|---|
-| [fnd_01M2FS4806WHXANC3Q9QXEAXGF] | assurance-expiring: github-cloud SOC 2 Type II report expires 2026-09-30, inside 90-day window | vendor `github` | SEBI sebi-cscrf-2024 GV.SC.S4 (SEBI CSCRF 2024) | 2026-09-14 | 2026-10-14T10:46:39Z | due in 30 d | open | n/a |
-| [fnd_01M2FS9ECP3E0MTCRQFEJ97930] | contract-expiring: ATLAS-2025-1189 ended 2026-05-31, 106 days before NOW, no renewal evidence | vendor `mongodb-atlas` | SEBI sebi-cscrf-2024 GV.SC.S4 | 2026-09-14 | 2026-10-14T10:46:39Z | due in 30 d | open | n/a |
-| [fnd_01M2G2AGPX8KWSY1KXGYADK4TK] | find tool returns full unmasked documents from pii/financial collections | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.DS.S4 | 2026-09-14 | 2026-09-21T13:14:50Z | due in 7 d | open | n/a |
-| [fnd_01M2G2AGR581507FMK0EADFKY6] | aggregate tool returns full unmasked pipeline results | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.DS.S4 | 2026-09-14 | 2026-09-21T13:14:50Z | due in 7 d | open | n/a |
-| [fnd_01M2G2AGSC977KASP37WQXYSQA] | export tool writes full unmasked documents to an unencrypted local file | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.DS.S4 | 2026-09-14 | 2026-09-21T13:14:50Z | due in 7 d | open | n/a |
-| [fnd_01M2G2AGVRZPBP3VH8FNAYH46V] | MCP HTTP transport endpoint ships with no authentication, rate limiting or idempotency controls by default | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S17 | 2026-09-14 | 2026-09-21T13:14:50Z | due in 7 d | open | n/a |
-| [fnd_01M2G2AGTH64FMR4XR77ZAJH7B] | atlas-create-db-user takes a plaintext password argument and echoes the generated password back in the tool response | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S6 | 2026-09-14 | 2026-09-21T13:14:50Z | due in 7 d | open | n/a |
+| [fnd_01M2FS4806WHXANC3Q9QXEAXGF] | assurance-expiring: github-cloud SOC 2 Type II report expires 2026-09-30, inside 90-day window | vendor `github` | SEBI sebi-cscrf-2024 GV.SC.S4 (SEBI CSCRF 2024) | 2026-09-14 | 2026-10-14T10:46:39Z | due in 29 d | open | n/a |
+| [fnd_01M2FS9ECP3E0MTCRQFEJ97930] | contract-expiring: ATLAS-2025-1189 ended 2026-05-31, 106 days before NOW, no renewal evidence | vendor `mongodb-atlas` | SEBI sebi-cscrf-2024 GV.SC.S4 | 2026-09-14 | 2026-10-14T10:46:39Z | due in 29 d | open | n/a |
+| [fnd_01M2G2AGPX8KWSY1KXGYADK4TK] | find tool returns full unmasked documents from pii/financial collections | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.DS.S4 | 2026-09-14 | 2026-09-21T13:14:50Z | due in 5 d | open | n/a |
+| [fnd_01M2G2AGR581507FMK0EADFKY6] | aggregate tool returns full unmasked pipeline results | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.DS.S4 | 2026-09-14 | 2026-09-21T13:14:50Z | due in 5 d | open | n/a |
+| [fnd_01M2G2AGSC977KASP37WQXYSQA] | export tool writes full unmasked documents to an unencrypted local file | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.DS.S4 | 2026-09-14 | 2026-09-21T13:14:50Z | due in 5 d | open | n/a |
+| [fnd_01M2G2AGVRZPBP3VH8FNAYH46V] | MCP HTTP transport endpoint ships with no authentication, rate limiting or idempotency controls by default | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S17 | 2026-09-14 | 2026-09-21T13:14:50Z | due in 5 d | open | n/a |
+| [fnd_01M2G2AGTH64FMR4XR77ZAJH7B] | atlas-create-db-user takes a plaintext password argument and echoes the generated password back in the tool response | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S6 | 2026-09-14 | 2026-09-21T13:14:50Z | due in 5 d | open | n/a |
 | [fnd_01M2HCWMBDDT80V2CWJ5Z7BH17] | MCP gateway deploys unauthenticated on a public endpoint by default (qa/prod IaC root) | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S17 | 2026-09-15 | 2026-09-22T00:05:59Z | due in 7 d | open | n/a |
 | [fnd_01M2HCWMBDGA1D4Z54RET9CNC9] | Baseline deployment parameters ship the gateway with no auth and write mode enabled | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S17 | 2026-09-15 | 2026-09-22T00:05:59Z | due in 7 d | open | n/a |
 | [fnd_01M2HCWMBDCEGN51BKVVXGTV67] | qa/prod deployment template defines no logging, diagnostics or SIEM forwarding | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S8 | 2026-09-15 | 2026-09-22T00:05:59Z | due in 7 d | open | n/a |
@@ -349,18 +351,28 @@ Latest record per finding id in `company-profile/example-co/soc/main.jsonl` with
 | [fnd_01M2HRGEX25CQZERDVHPVF1B96] | connect tool accepts a MongoDB connection string with embedded credentials as a plain tool argument | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S6 | 2026-09-15 | 2026-09-22T02:47:35Z | due in 7 d | open | n/a |
 | [fnd_01M2HRGF3S0NWNNWDBY1CHD934] | switch-connection tool accepts a connection string with embedded credentials as a plain tool argument | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S6 | 2026-09-15 | 2026-09-22T02:47:35Z | due in 7 d | open | n/a |
 | [fnd_01M2HRGFABHFN9JE2TDMJX32RE] | export tool writes query results (pii, financial) to plaintext EJSON files with no encryption or access controls | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.DS.S1 | 2026-09-15 | 2026-10-15T02:47:35Z | due in 30 d | open | n/a |
+| [fnd_01M2K7B0MJ68AR00YTNE2N00V2] | MongoDB MCP confirmation gate fails open: destructive tools execute without human approval | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S3 | 2026-09-15 | 2026-09-22T15:14:31Z | due in 7 d | open | n/a |
+| [fnd_01M2K7B0MJW0K9WFVMPWT86BRE] | HTTP MCP transport deployed unauthenticated on 0.0.0.0 in the AWS deploy path | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S17 | 2026-09-15 | 2026-09-22T15:14:31Z | due in 7 d | open | n/a |
+| [fnd_01M2K7B0MJ9BHSS0T664GGCW4N] | AWS deploy image installs the MCP server unpinned at registry latest | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 GV.SC.S5 | 2026-09-15 | 2026-09-22T15:14:31Z | due in 7 d | open | n/a |
+| [fnd_01M2K7B0MJN2XBQRW2XYYD6EBJ] | Setup installs third-party agent skills globally with no integrity check | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.IP.S1 | 2026-09-15 | 2026-09-22T15:14:31Z | due in 7 d | open | n/a |
+| [fnd_01M2K7B0MJQMT1S973WHW7K9GA] | Write tools enabled by default: 11 of 19 write-capable tools have no approval and no allow-list | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S3 | 2026-09-15 | 2026-09-22T15:14:31Z | due in 7 d | open | n/a |
+| [fnd_01M2K7B0MJJVWFWXF6KZ783GFZ] | connect and switch-connection accept model-controlled connection strings with no host allow-list | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S2 | 2026-09-15 | 2026-09-22T15:14:31Z | due in 7 d | open | n/a |
+| [fnd_01M2K7B0MJ3239WAE0AKHRMK5E] | Repo ships developer-harness configuration for GitHub Copilot outside harnessesAllowed | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 GV.PO.S1 | 2026-09-15 | 2026-09-22T15:14:31Z | due in 7 d | open | n/a |
+| [fnd_01M2K7B0MJEKMTTH4EAKR1RHZY] | No rate limiting or concurrency caps on the HTTP MCP endpoint | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S17 | 2026-09-15 | 2026-09-22T15:14:31Z | due in 7 d | open | n/a |
 
 ### Medium
 
 | Id | Title | Target | Regulatory ref | First seen | SLA due | SLA status | Status | Initiative |
 |---|---|---|---|---|---|---|---|---|
-| [fnd_01M2FRY4TTS6M3JJD1F1P7J0TQ] | material-without-evidence: aws-mumbai (order-routing, pii/financial) has no documented exit plan | vendor `aws` | SEBI sebi-cscrf-2024 GV.SC.S3 | 2026-09-14 | 2026-12-13T10:46:39Z | due in 90 d | open | n/a |
-| [fnd_01M2FS481DGTPTR9NJGKAAMF49] | contract-expiring: GH-ENT-2025-07 ended 2026-06-30, 76 days before now, no renewal evidence | vendor `github` | SEBI sebi-cscrf-2024 GV.SC.S3 | 2026-09-14 | 2026-12-13T10:46:39Z | due in 90 d | open | n/a |
-| [fnd_01M2FS482NWXE7E5MCZY2QMAZ0] | material-without-evidence: github lacks audit rights and a documented exit plan | vendor `github` | SEBI sebi-cscrf-2024 GV.SC.S3 | 2026-09-14 | 2026-12-13T10:46:39Z | due in 90 d | open | n/a |
-| [fnd_01M2FS9EBVSP2DPWN5K2D91QKW] | material-without-evidence: atlas-mumbai has no audit right and no documented exit plan | vendor `mongodb-atlas` | SEBI sebi-cscrf-2024 GV.SC.S3 | 2026-09-14 | 2026-12-13T10:46:39Z | due in 90 d | open | n/a |
-| [fnd_01M2G2AGNMHKF9PCB4C85A3JQ3] | MongoDB MCP tool schemas carry no personal-data classification markers | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 ID.AM.S5 | 2026-09-14 | 2026-09-28T13:14:50Z | due in 14 d | open | n/a |
-| [fnd_01M2G2AGX1GZ9THG6HJ1VPP1EP] | zod tool-argument schemas leave database-bound input unbounded and unvalidated | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.IP.S2 | 2026-09-14 | 2026-09-28T13:14:50Z | due in 14 d | open | n/a |
+| [fnd_01M2FRY4TTS6M3JJD1F1P7J0TQ] | material-without-evidence: aws-mumbai (order-routing, pii/financial) has no documented exit plan | vendor `aws` | SEBI sebi-cscrf-2024 GV.SC.S3 | 2026-09-14 | 2026-12-13T10:46:39Z | due in 89 d | open | n/a |
+| [fnd_01M2FS481DGTPTR9NJGKAAMF49] | contract-expiring: GH-ENT-2025-07 ended 2026-06-30, 76 days before now, no renewal evidence | vendor `github` | SEBI sebi-cscrf-2024 GV.SC.S3 | 2026-09-14 | 2026-12-13T10:46:39Z | due in 89 d | open | n/a |
+| [fnd_01M2FS482NWXE7E5MCZY2QMAZ0] | material-without-evidence: github lacks audit rights and a documented exit plan | vendor `github` | SEBI sebi-cscrf-2024 GV.SC.S3 | 2026-09-14 | 2026-12-13T10:46:39Z | due in 89 d | open | n/a |
+| [fnd_01M2FS9EBVSP2DPWN5K2D91QKW] | material-without-evidence: atlas-mumbai has no audit right and no documented exit plan | vendor `mongodb-atlas` | SEBI sebi-cscrf-2024 GV.SC.S3 | 2026-09-14 | 2026-12-13T10:46:39Z | due in 89 d | open | n/a |
+| [fnd_01M2G2AGNMHKF9PCB4C85A3JQ3] | MongoDB MCP tool schemas carry no personal-data classification markers | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 ID.AM.S5 | 2026-09-14 | 2026-09-28T13:14:50Z | due in 12 d | open | n/a |
+| [fnd_01M2G2AGX1GZ9THG6HJ1VPP1EP] | zod tool-argument schemas leave database-bound input unbounded and unvalidated | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.IP.S2 | 2026-09-14 | 2026-09-28T13:14:50Z | due in 12 d | open | n/a |
+| [fnd_01M2K7B0MJTNGRN4D0GZYBD5FS] | Setup wizard writes npx -y mongodb-mcp-server@latest into six harness MCP configs | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 GV.SC.S2 | 2026-09-15 | 2026-09-29T15:14:31Z | due in 14 d | open | n/a |
+| [fnd_01M2K7B0MJMG3TT4DFMEJWQDA8] | search-knowledge sends the unredacted model query to knowledge.mongodb.com by default | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.DS.S2 | 2026-09-15 | 2026-09-29T15:14:31Z | due in 14 d | open | n/a |
 
-<!-- source: latest-state map over soc/main.jsonl kind=finding (853 lines, 39 finding records across 24 ids), last line per id, filtered to status in open|triaged|remediating; probe-schemas batch = lines 786-853 recordedAt 2026-09-15T02:47:35Z, keeper session 453ecc6e-1346-418f-a2c0-1bfcead851c3 (3 new controls 786-788, 36 observations 789-824, 6 findings 825-830, 23 re-assessed controls 831-853); severity counts 18 high + 6 medium. fnd_01M2HRGF3S0NWNNWDBY1CHD934 and fnd_01M2HRGFABHFN9JE2TDMJX32RE were read in full from the ledger: status open, firstSeenAt 2026-09-15T02:47:35Z, slaDueAt 2026-09-22T02:47:35Z (slaBasis sebi-cscrf-2024 PR.MA.S3 patch-sla high 7 d) and 2026-10-15T02:47:35Z (slaBasis sebi-cscrf-2024 days 30 = sla-table defaults[high], no encryption-topic row), targets repo mcp-gateway/mongodb-mcp-server, regulatoryRefs[0] SEBI PR.AA.S6 / SEBI PR.DS.S1. fnd_01M2HRGEX25CQZERDVHPVF1B96 (new, same rule SCH-API-06, topic patch-sla, severity high and batch as fnd_01M2HRGF3S0NWNNWDBY1CHD934) takes the same basis: slaDueAt = firstSeenAt 2026-09-15T02:47:35Z + 7 d. The three re-seen rows keep firstSeenAt 2026-09-14T13:14:50Z and status open per the soc-ledger re-run rule (severity refreshed, firstSeenAt and status kept) and their slaDueAt = firstSeenAt + slaBasis.days per the sebi-cscrf-2024 patch-sla rows of sla-table.json: high 7 d -> 2026-09-21T13:14:50Z for fnd_01M2G2AGVRZPBP3VH8FNAYH46V and fnd_01M2G2AGTH64FMR4XR77ZAJH7B, medium 14 d -> 2026-09-28T13:14:50Z for the re-graded fnd_01M2G2AGX1GZ9THG6HJ1VPP1EP (high -> medium, primary ref PR.AA.S17 -> PR.IP.S2 per its refreshed record). Vendor rows = refresh-vendor-ctx re-seen records, lines 714-721 (recordedAt 2026-09-14T20:15:18Z, status open, firstSeenAt preserved 2026-09-14T10:46:39Z, slaDueAt = firstSeenAt + 30 d high / + 90 d medium per the vendor-basis defaults); probe-iac rows = lines 762-769 (firstSeenAt 2026-09-15T00:05:59Z, slaDueAt + 7 d); first-run schema rows = lines 423-426 (firstSeenAt 2026-09-14T13:14:50Z, high 7 d / medium 14 d). Observation result counts 4 not-satisfied + 19 partial + 13 not-applicable = 36 from lines 789-824. SLA status = ceil((slaDueAt - 2026-09-15T02:47:35Z)/86400000) d; 0 rows past SLA -->
+<!-- source: latest-state map over soc/main.jsonl kind=finding (903 lines, 49 finding records across 34 ids), last line per id, filtered to status in open|triaged|remediating; probe-agent-graph batch = lines 854-903 recordedAt 2026-09-15T15:14:31Z, keeper session 453ecc6e-1346-418f-a2c0-1bfcead851c3 (2 new controls 854-855, 19 observations 856-874, 10 findings 875-884, 19 re-assessed controls 885-903); severity counts 26 high + 8 medium = 34 open, 0 past SLA. The 10 new rows were verified field-by-field against ledger lines 875-884: status open, firstSeenAt 2026-09-15T15:14:31Z, target repo mcp-gateway/mongodb-mcp-server, severity via "severity":"high|medium","confidence":"confirmed" (8 high; medium = fnd_01M2K7B0MJTNGRN4D0GZYBD5FS and fnd_01M2K7B0MJMG3TT4DFMEJWQDA8), slaDueAt 2026-09-22T15:14:31Z for the 8 high (slaBasis sebi-cscrf-2024 PR.MA.S3 patch-sla high 7 d) and 2026-09-29T15:14:31Z for the 2 medium (patch-sla medium 14 d), regulatoryRefs[0] as tabulated, and an owasp-agentic-top10-2026 ASI mapping per record (ASI09 line 875, ASI02 line 880, ASI08 line 884, ASI04 lines 877-879 and 883, ASI03 lines 876, 881-882). Note: the description prose of fnd_01M2K7B0MJ9BHSS0T664GGCW4N and fnd_01M2K7B0MJTNGRN4D0GZYBD5FS names sebi-cscrf-2024 PR.DS.S6, but each record's structured regulatoryRefs[0] is the control tabulated here (GV.SC.S5 / GV.SC.S2); the structured fields govern. The 24 pre-existing rows are unchanged: no line in 854-903 carries a pre-existing finding id (the run re-seen 0 findings), so their latest records and the previous section's verified values stand (vendor rows lines 714-721, probe-iac rows 762-769, probe-schemas rows 825-830, first-run schema rows 423-429); their SLA status was recomputed against the new generatedAt. Observation result counts 4 not-satisfied + 15 partial = 19 from lines 856-874. SLA status = ceil((slaDueAt - 2026-09-15T15:14:31Z)/86400000) d; 0 rows past SLA -->
 
 No findings in `risk-accepted`, `false-positive` or `duplicate` this period.
