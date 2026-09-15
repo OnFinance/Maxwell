@@ -186,9 +186,9 @@ paragraph and the context `status`. Then:
 ```
 One row per business unit. Below it, one bullet per licence: its obligations (regulator, source), offerings
 (with `count` when set), customer segments and platforms with their cybersecurity instruments. Then a
-`Questionnaires` sub-list: per questionnaire the counts answered / open / not-applicable, and every **open**
-question verbatim with its `questionId` and reason, so a human can answer it with
-`node .claude/scripts/ctx/answer.mjs <company_id> <question_id>`. Processes are grouped by `kind` with their
+`Questionnaires` sub-list: per questionnaire the counts answered / open / not-applicable, and the first 20 **open**
+questions verbatim with their `questionId` and reason (then one line `and <n> more open questions in context.json`),
+so a human can answer them with `node .claude/scripts/ctx/answer.mjs <company_id> <question_id>`. Processes are grouped by `kind` with their
 obligation ids. Cite no control ids here; this section describes the business, not its posture.
 
 ### `## Applications`

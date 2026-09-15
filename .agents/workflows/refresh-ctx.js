@@ -69,8 +69,9 @@ const OFFERING_CATEGORIES = ['broking', 'depository', 'mutual-fund-scheme', 'pms
 const SEGMENT_KINDS = ['retail-investor', 'nri-investor', 'hni', 'family-office', 'institutional', 'corporate', 'msme', 'pension-scheme', 'insurance-scheme', 'fpi', 'borrower', 'policyholder', 'other'];
 const PLATFORM_KINDS = ['customer-platform', 'supporting-function', 'infrastructure', 'data-platform', 'vendor-platform'];
 const SLUG_RE = /^[a-z0-9][a-z0-9-]{1,62}$/;
-const MAX_OBLIGATIONS_PER_REGULATOR = 8;
-const MAX_QUESTIONS = 12;
+const MAX_OBLIGATIONS_PER_REGULATOR = 5;
+const MAX_QUESTIONS = 6;
+const SHORT = (s, n = 200) => { const t = String(s || '').trim(); return t.length <= n ? t : `${t.slice(0, n - 3).replace(/\s+\S*$/, '')}...`; };
 
 const skipped = [];
 const sessionIds = new Set();
@@ -324,7 +325,7 @@ ${GROUNDING}
 OBLIGATIONS stage for regulator '${r.regulator}' (${r.reason}) and ${snapshot.legalName} (${companyId}). Read ${REFERENCE} section 5, ${INSTRUMENTS} and the catalogs under ${CATALOG_DIR}/ for this regulator's in-scope instruments, and ${CONTEXT} if it exists (reuse its obligationId and questionId slugs for the same obligations and questions so ids stay stable).
 Skeleton: ${JSON.stringify({ legalName: snapshot.legalName, entityTypes: snapshot.entityTypes, frameworksInScope: snapshot.frameworksInScope, licenses: licenses.filter((l) => r.licenseIds.includes(l.licenseId) || l.regulator === r.regulator).map((l) => ({ licenseId: l.licenseId, name: l.name, registrationNo: l.registrationNo, entityType: l.entityType })) })}
 ${r.regulator === 'MCA' ? 'MCA: the Companies Act 2013 and its rules as they apply to this company form (private, public, listed): secretarial compliance (board and general meetings, annual return, financial statements, statutory registers, company secretary and auditors), related-party and disclosure duties, plus SEBI LODR only when a unit is listed. source.type statute or circular with the MCA URL.' : `${r.regulator}: for each licence above, the regulations, master circulars and in-scope instruments that bind it (source.type instrument with the vocab id when the obligation is an instrument in ${INSTRUMENTS}; circular or statute otherwise, with the URL). Use \`node .claude/scripts/cos/search.mjs search --query "<text>" --regulator ${r.regulator}\` for clause and circular text before any public search.`}
-For every obligation set, write the questionnaire whose answers describe how this company operates under it: which processes it runs (secretarial compliance, client services, market transactions, KYC and onboarding, grievance redressal, surveillance, regulatory reporting, risk management ...), which offerings it sells under the licence (schemes, strategies, products, with counts when the regulator lists them), which customer segments it serves, which platforms carry them. Every question is answerable in one sentence from a public source or by the company's compliance officer. Cap: ${MAX_OBLIGATIONS_PER_REGULATOR} obligation sets, ${MAX_QUESTIONS} questions each. Ids are slugs (^[a-z0-9][a-z0-9-]{1,62}$); prefix question ids with the obligation id.`;
+For every obligation set, write the questionnaire whose answers describe how this company operates under it: which processes it runs (secretarial compliance, client services, market transactions, KYC and onboarding, grievance redressal, surveillance, regulatory reporting, risk management ...), which offerings it sells under the licence (schemes, strategies, products, with counts when the regulator lists them), which customer segments it serves, which platforms carry them. Every question is answerable in one sentence from a public source or by the company's compliance officer, and each should reveal a process, offering, segment or platform rather than a filing date or a form number: prefer few broad questions ('Which client segments does the broker onboard and through which channels?') over many narrow ones. Cap: ${MAX_OBLIGATIONS_PER_REGULATOR} obligation sets per regulator (merge related duties into one set), ${MAX_QUESTIONS} questions each. Ids are slugs (^[a-z0-9][a-z0-9-]{1,62}$); prefix question ids with the obligation id.`;
 const obligationResults = await parallel(regulatorPlan.map((r) => () => agent(obligationsPrompt(r), { label: `obligations ${r.regulator}`, phase: 'Obligations', agentType: 'ctx-researcher', schema: OBLIGATIONS_SCHEMA, model: MODEL, effort: 'high' })));
 const obligations = [];
 const questionnaires = [];
@@ -397,9 +398,9 @@ questionnaires.forEach((q, i) => {
     const human = humanByQuestion.get(x.questionId);
     if (human) { x.status = 'answered'; x.answer = human.answer; x.answeredBy = 'human'; x.confidence = 'high'; x.evidence = []; x.yields = (a && a.yields) || []; continue; }
     if (!a || a.status === 'open' || (a.status === 'answered' && (!a.answer || !(a.evidence || []).length))) {
-      x.status = 'open'; x.reason = (a && a.reason) || (a && a.status === 'answered' ? 'answer returned without evidence' : 'no source answered this question'); x.yields = []; continue;
+      x.status = 'open'; x.reason = SHORT((a && a.reason) || (a && a.status === 'answered' ? 'answer returned without evidence' : 'no source answered this question')); x.yields = []; continue;
     }
-    if (a.status === 'not-applicable') { x.status = 'not-applicable'; x.reason = a.reason || 'not applicable'; x.yields = []; continue; }
+    if (a.status === 'not-applicable') { x.status = 'not-applicable'; x.reason = SHORT(a.reason || 'not applicable'); x.yields = []; continue; }
     x.status = 'answered'; x.answer = a.answer; x.answeredBy = 'research'; x.confidence = a.confidence || 'medium'; x.evidence = (a.evidence || []).map((e) => ({ type: e.type, ref: e.ref, ...(e.description ? { description: e.description } : {}) })); x.yields = a.yields || [];
   }
 });
@@ -469,7 +470,7 @@ for (const av of (answerVerdicts || []).filter(Boolean)) {
     if (!against.length) continue;
     refutedAnswers += 1;
     skipped.push(`answer ${x.questionId} refuted: ${against.join(' | ')}`);
-    x.status = 'open'; x.reason = `refuted: ${against[0]}`.slice(0, 200); delete x.answer; delete x.answeredBy; delete x.confidence; delete x.evidence; x.yields = [];
+    x.status = 'open'; x.reason = SHORT(`refuted: ${against[0]}`); delete x.answer; delete x.answeredBy; delete x.confidence; delete x.evidence; x.yields = [];
   }
 }
 log(`Verify answers: ${refutedAnswers} researched answer(s) refuted and reopened`);
@@ -528,7 +529,7 @@ const contextDoc = {
   businessUnits: units.map((u) => ({ unitId: u.unitId, name: u.name, ...(u.description ? { description: u.description } : {}), publiclyListed: Boolean(u.publiclyListed), ...(u.publiclyListed && (u.exchanges || []).length ? { listing: { exchanges: uniq(u.exchanges), ...(u.symbol ? { symbol: u.symbol } : {}), ...(u.isin && /^[A-Z]{2}[A-Z0-9]{9}[0-9]$/.test(u.isin) ? { isin: u.isin } : {}) } } : {}), licenseIds: u.licenseIds, obligationIds: u.obligationIds || [], processIds: u.processIds || [] })),
   licenses: licenses.map((l) => ({ licenseId: l.licenseId, name: l.name, regulator: l.regulator, registrationNo: l.registrationNo, entityType: l.entityType, status: l.status, unitId: l.unitId, obligationIds: l.obligationIds || [], processIds: l.processIds || [], offeringIds: l.offeringIds || [], platformIds: l.platformIds || [] })),
   obligations: obligations.map((o) => ({ obligationId: o.obligationId, title: o.title, regulator: o.regulator, source: o.source, ...(o.summary ? { summary: o.summary } : {}), questionnaireId: o.questionnaireId })),
-  questionnaires: questionnaires.map((q) => ({ questionnaireId: q.questionnaireId, obligationId: q.obligationId, questions: q.questions.map((x) => ({ questionId: x.questionId, question: x.question, status: x.status, ...(x.status === 'answered' ? { answer: x.answer, answeredBy: x.answeredBy, confidence: x.confidence, evidence: x.evidence, answeredAt: now } : { reason: x.reason || 'open' }), yields: x.yields })) })),
+  questionnaires: questionnaires.map((q) => ({ questionnaireId: q.questionnaireId, obligationId: q.obligationId, questions: q.questions.map((x) => ({ questionId: x.questionId, question: x.question, status: x.status, ...(x.status === 'answered' ? { answer: x.answer, answeredBy: x.answeredBy, confidence: x.confidence, evidence: (x.evidence || []).map((e) => ({ ...e, ...(e.description ? { description: SHORT(e.description) } : {}) })), answeredAt: now } : { reason: SHORT(x.reason || 'open') }), yields: x.yields })) })),
   processes: [...processes.values()],
   offerings: [...offerings.values()],
   customerSegments: [...segments.values()],
