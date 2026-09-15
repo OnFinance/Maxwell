@@ -5,7 +5,7 @@
   "harness": "claude-code",
   "harnessVersion": "2.1.270",
   "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
-  "workflow": "connect-sandbox",
+  "workflow": "probe-schemas",
   "companyId": "run",
   "startedAt": "2026-09-14T18:36:43.842Z",
   "endedAt": "2026-09-14T19:13:53.242Z",
@@ -83,7 +83,7 @@
     "generatedAt": "2026-09-14T19:13:53Z",
     "sessionId": "2853edbc-3a09-4ec1-87ad-1afe187bb68c",
     "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
-    "workflow": "connect-sandbox",
+    "workflow": "probe-schemas",
     "agent": ".claude/scripts/sessions/ingest.mjs"
   }
 }

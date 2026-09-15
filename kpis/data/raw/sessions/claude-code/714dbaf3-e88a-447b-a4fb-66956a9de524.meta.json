@@ -5,7 +5,7 @@
   "harness": "claude-code",
   "harnessVersion": "2.1.271",
   "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
-  "workflow": "kpis",
+  "workflow": "report-audit-improvements",
   "args": {
     "appIds": [],
     "envIds": [],

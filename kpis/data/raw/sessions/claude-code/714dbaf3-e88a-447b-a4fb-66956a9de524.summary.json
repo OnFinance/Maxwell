@@ -5,7 +5,7 @@
   "harness": "claude-code",
   "harnessVersion": "2.1.271",
   "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
-  "workflow": "kpis",
+  "workflow": "report-audit-improvements",
   "companyId": "must",
   "startedAt": "2026-09-15T00:45:32.095Z",
   "endedAt": "2026-09-15T01:07:09.619Z",
@@ -78,7 +78,7 @@
     "generatedAt": "2026-09-15T01:07:10Z",
     "sessionId": "714dbaf3-e88a-447b-a4fb-66956a9de524",
     "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
-    "workflow": "kpis",
+    "workflow": "report-audit-improvements",
     "agent": ".claude/scripts/sessions/ingest.mjs"
   }
 }
