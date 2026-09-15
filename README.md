@@ -295,37 +295,34 @@ candidate before anything is written. Utility commands: `/validate`, `/kpis`, `/
 
 ## Use cases to try
 
-Start `claude` (or `opencode`) in the repository after the [quick start](#quick-start) and ask in plain words. Maxwell
-picks the workflow, tells you which one and on what scope, then runs it against the fictional `example-co` company.
+### Compliance officer
 
-1. **"Which controls apply to example-co, and when is each one due?"** Runs `/refresh-soc`; see "Control summary" in
-   `summary.md`.
-2. **"Has SEBI or RBI changed anything that affects example-co's registrations?"** Runs `/refresh-ctx`; see
-   "Regulatory posture" in `summary.md`.
-3. **"RBI repealed a direction we follow. Move example-co onto its replacement."** Runs
-   `soc/migrate-instrument.mjs`, showing the plan as a dry run first.
-4. **"Which of our vendors are critical, and whose SOC 2 report or contract is about to expire?"** Runs
-   `/refresh-vendor-ctx`; see "Vendors" in `summary.md`.
-5. **"Where does example-co keep personal and financial data?"** Runs `/refresh-metastore`; see
-   `sdlc/metastore.json`.
-6. **"Pull the latest code for our applications and tell me what drifted."** Runs `/refresh-apps`.
-7. **"Check mcp-gateway's infrastructure code for cloud misconfigurations."** Runs `/probe-iac --app=mcp-gateway`.
-8. **"Are passwords or personal data stored unprotected in db-models?"** Runs `/probe-schemas --app=db-models`.
-9. **"Is our CI/CD pipeline pinned, gated and producing a real SBOM?"** Runs `/probe-cicd-env`.
-10. **"Is our MCP server safe to point at production data?"** Runs `/probe-agent-graph --app=mcp-gateway`.
-11. **"Do a security code review of mcp-gateway."** Runs `/execute-scr --app=mcp-gateway`.
-12. **"What would you check in production, without touching it?"** Runs `/runtime-probe-prod-env --env=prod --dry-run`;
-    nothing runs against production.
-13. **"Turn the open findings into a remediation plan with owners and deadlines."** Runs `/impl-change-management`;
-    see `change_management/`.
-14. **"Suggest code fixes for the open findings."** Runs `/impl-auto-improvement`; diffs land under
-    `suggestions/suggestions/` and your repositories are never changed.
-15. **"Write the audit report and tell me what this audit cost."** Runs `/kpis`, `/report-audit-findings` and
-    `/report-audit-improvements`; see `summary.md`.
+1. Which controls apply to example-co, and when is each one due?
+2. Has SEBI or RBI changed anything that affects example-co's registrations?
+3. RBI repealed a direction we follow. Move example-co onto its replacement.
+4. Which of our vendors are critical, and whose SOC 2 report or contract is about to expire?
+5. Write the audit report and tell me what this audit cost.
 
-Paths are relative to `company-profile/example-co/`. At any time, ask "What's the status of example-co?" for open
-findings, overdue initiatives and pending suggestions, or "Where should scans run?" to choose a sandbox. Every workflow
-also runs headless: `node .claude/scripts/run-headless.mjs --workflow probe-iac --company example-co --app mcp-gateway`.
+### Data protection officer
+
+1. Where does example-co keep personal and financial data?
+2. Are passwords or personal data stored unprotected in db-models?
+
+### CISO or security lead
+
+1. What's the status of example-co?
+2. Check mcp-gateway's infrastructure code for cloud misconfigurations.
+3. Is our MCP server safe to point at production data?
+4. What would you check in production, without touching it?
+5. Turn the open findings into a remediation plan with owners and deadlines.
+
+### Engineering and DevSecOps
+
+1. Where should scans run for example-co?
+2. Pull the latest code for our applications and tell me what drifted.
+3. Is our CI/CD pipeline pinned, gated and producing a real SBOM?
+4. Do a security code review of mcp-gateway.
+5. Suggest code fixes for the open findings.
 
 ## Regulatory coverage
 
