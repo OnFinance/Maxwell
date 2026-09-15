@@ -1,0 +1,77 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/v1/company/context.schema.json",
+  "tests": [
+    {
+      "description": "a complete context with one unit, two licences and a human answer",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.context",
+        "companyId": "example-co",
+        "status": "complete",
+        "summary": "A privately held discount broker and depository participant with an NBFC margin-funding arm.",
+        "businessUnits": [ { "unitId": "broking", "name": "Broking", "publiclyListed": false, "licenseIds": [ "sebi-broker" ], "obligationIds": [ "mca" ], "processIds": [ "secretarial" ] } ],
+        "licenses": [ { "licenseId": "sebi-broker", "name": "SEBI stock broker", "regulator": "SEBI", "registrationNo": "INZ000999999", "entityType": "stock-broker", "status": "active", "unitId": "broking", "obligationIds": [ "sebi-broker" ], "offeringIds": [ "equity" ], "platformIds": [ "gateway" ] } ],
+        "obligations": [
+          { "obligationId": "mca", "title": "Companies Act filings", "regulator": "MCA", "source": { "type": "statute", "ref": "Companies Act, 2013" }, "questionnaireId": "q-mca" },
+          { "obligationId": "sebi-broker", "title": "SEBI CSCRF", "regulator": "SEBI", "source": { "type": "instrument", "ref": "sebi-cscrf-2024" }, "questionnaireId": "q-sebi" }
+        ],
+        "questionnaires": [
+          { "questionnaireId": "q-mca", "obligationId": "mca", "questions": [ { "questionId": "q-mca-1", "question": "Which secretarial processes run?", "answer": "Annual return and board meetings.", "status": "answered", "answeredBy": "human", "confidence": "high", "evidence": [], "yields": [ { "type": "process", "id": "secretarial" } ] } ] },
+          { "questionnaireId": "q-sebi", "obligationId": "sebi-broker", "questions": [ { "questionId": "q-sebi-1", "question": "Which segments are served?", "answer": "Retail investors.", "status": "answered", "answeredBy": "research", "confidence": "high", "evidence": [ { "type": "url", "ref": "https://example-co.invalid/pricing" } ], "yields": [ { "type": "segment", "id": "retail" }, { "type": "offering", "id": "equity" } ] } ] }
+        ],
+        "processes": [ { "processId": "secretarial", "name": "Secretarial compliance", "kind": "secretarial-compliance", "ownerRole": "compliance-officer", "unitIds": [ "broking" ], "obligationIds": [ "mca" ] } ],
+        "offerings": [ { "offeringId": "equity", "name": "Equity broking", "category": "broking", "licenseId": "sebi-broker", "segmentIds": [ "retail" ] } ],
+        "customerSegments": [ { "segmentId": "retail", "name": "Retail investor", "kind": "retail-investor" } ],
+        "platforms": [ { "platformId": "gateway", "name": "MCP gateway", "kind": "customer-platform", "appIds": [ "mcp-gateway" ], "licenseIds": [ "sebi-broker" ], "cybersecurityInstruments": [ "sebi-cscrf-2024" ] } ],
+        "provenance": { "harness": "claude-code", "generatedAt": "2026-09-15T09:00:00Z", "workflow": "refresh-ctx", "agent": "validator" }
+      }
+    },
+    {
+      "description": "an open question needs no answer but keeps its reason",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1", "kind": "maxwell.company.context", "companyId": "example-co", "status": "in_progress",
+        "summary": "Fixture.",
+        "businessUnits": [ { "unitId": "unit-1", "name": "Unit", "publiclyListed": true, "listing": { "exchanges": [ "NSE" ], "symbol": "EXCO" } } ],
+        "licenses": [], "obligations": [ { "obligationId": "obl-1", "title": "Obligation", "regulator": "SEBI", "source": { "type": "circular", "ref": "Master circular", "url": "https://www.sebi.gov.in/x" }, "questionnaireId": "qn-1" } ],
+        "questionnaires": [ { "questionnaireId": "qn-1", "obligationId": "obl-1", "questions": [ { "questionId": "q-1", "question": "Open?", "status": "open", "reason": "no source", "yields": [] } ] } ],
+        "processes": [], "offerings": [], "customerSegments": [], "platforms": [],
+        "provenance": { "harness": "human", "generatedAt": "2026-09-15T09:00:00Z" }
+      }
+    },
+    {
+      "description": "an answered question must carry answer, answeredBy, confidence and evidence",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1", "kind": "maxwell.company.context", "companyId": "example-co", "status": "complete", "summary": "Fixture.",
+        "businessUnits": [ { "unitId": "unit-1", "name": "Unit", "publiclyListed": false } ],
+        "licenses": [], "obligations": [ { "obligationId": "obl-1", "title": "Obligation", "regulator": "SEBI", "source": { "type": "instrument", "ref": "sebi-cscrf-2024" }, "questionnaireId": "qn-1" } ],
+        "questionnaires": [ { "questionnaireId": "qn-1", "obligationId": "obl-1", "questions": [ { "questionId": "q-1", "question": "Answered?", "status": "answered", "yields": [] } ] } ],
+        "processes": [], "offerings": [], "customerSegments": [], "platforms": [],
+        "provenance": { "harness": "human", "generatedAt": "2026-09-15T09:00:00Z" }
+      }
+    },
+    {
+      "description": "a process kind outside the closed list is rejected",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1", "kind": "maxwell.company.context", "companyId": "example-co", "status": "complete", "summary": "Fixture.",
+        "businessUnits": [ { "unitId": "unit-1", "name": "Unit", "publiclyListed": false } ],
+        "licenses": [], "obligations": [], "questionnaires": [],
+        "processes": [ { "processId": "proc-1", "name": "Process", "kind": "magic" } ], "offerings": [], "customerSegments": [], "platforms": [],
+        "provenance": { "harness": "human", "generatedAt": "2026-09-15T09:00:00Z" }
+      }
+    },
+    {
+      "description": "unknown keys cannot be invented",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1", "kind": "maxwell.company.context", "companyId": "example-co", "status": "complete", "summary": "Fixture.",
+        "businessUnits": [ { "unitId": "unit-1", "name": "Unit", "publiclyListed": false, "revenue": 10 } ],
+        "licenses": [], "obligations": [], "questionnaires": [], "processes": [], "offerings": [], "customerSegments": [], "platforms": [],
+        "provenance": { "harness": "human", "generatedAt": "2026-09-15T09:00:00Z" }
+      }
+    }
+  ]
+}

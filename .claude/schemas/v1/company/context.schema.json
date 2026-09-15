@@ -1,0 +1,822 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/company/context.schema.json",
+  "title": "Organization context",
+  "description": "Schema for company-profile/<company_id>/context.json, the organization context tree refresh-ctx builds for one regulated entity: business units and their listing, the licenses each unit holds, the obligations each regulator places on them, the questionnaires those obligations raise, and the processes, offerings, customer segments and platforms the answers reveal. Every question is answered from a fetched source or by a human, or stays open. Ids are slugs local to this file; cross-references are checked by validate-data",
+  "examples": [
+    {
+      "schemaVersion": "1",
+      "kind": "maxwell.company.context",
+      "companyId": "zenith-securities",
+      "status": "in_progress",
+      "summary": "Zenith Securities is a privately held discount broker and depository participant based in Mumbai serving retail investors across India through mobile and web platforms.",
+      "businessUnits": [
+        {
+          "unitId": "broking",
+          "name": "Broking and depository services",
+          "publiclyListed": false,
+          "licenseIds": [ "sebi-stock-broker", "cdsl-dp" ],
+          "obligationIds": [ "mca-companies-act" ],
+          "processIds": [ "secretarial-compliance" ]
+        }
+      ],
+      "licenses": [
+        {
+          "licenseId": "sebi-stock-broker",
+          "name": "SEBI stock broker",
+          "regulator": "SEBI",
+          "registrationNo": "INZ000123456",
+          "entityType": "stock-broker",
+          "status": "active",
+          "unitId": "broking",
+          "obligationIds": [ "sebi-broker-obligations" ],
+          "processIds": [ "client-onboarding-kyc", "order-execution" ],
+          "offeringIds": [ "equity-broking" ],
+          "platformIds": [ "trading-app" ]
+        },
+        {
+          "licenseId": "cdsl-dp",
+          "name": "CDSL depository participant",
+          "regulator": "SEBI",
+          "registrationNo": "IN-DP-123-2016",
+          "entityType": "depository-participant",
+          "status": "active",
+          "unitId": "broking",
+          "obligationIds": [ "sebi-dp-obligations" ],
+          "processIds": [ "demat-servicing" ],
+          "offeringIds": [ "demat-accounts" ],
+          "platformIds": [ "trading-app" ]
+        }
+      ],
+      "obligations": [
+        {
+          "obligationId": "mca-companies-act",
+          "title": "Companies Act 2013 secretarial and filing obligations",
+          "regulator": "MCA",
+          "source": {
+            "type": "statute",
+            "ref": "Companies Act, 2013 sections 92, 137 and 173",
+            "url": "https://www.mca.gov.in/content/mca/global/en/acts-rules/companies-act/companies-act-2013.html"
+          },
+          "questionnaireId": "q-mca"
+        },
+        {
+          "obligationId": "sebi-broker-obligations",
+          "title": "SEBI stock broker regulations and CSCRF obligations",
+          "regulator": "SEBI",
+          "source": {
+            "type": "instrument",
+            "ref": "sebi-cscrf-2024"
+          },
+          "questionnaireId": "q-sebi-broker"
+        },
+        {
+          "obligationId": "sebi-dp-obligations",
+          "title": "SEBI depository participant obligations",
+          "regulator": "SEBI",
+          "source": {
+            "type": "circular",
+            "ref": "SEBI Master Circular for Depositories 2024",
+            "url": "https://www.sebi.gov.in/legal/master-circulars/"
+          },
+          "questionnaireId": "q-sebi-dp"
+        }
+      ],
+      "questionnaires": [
+        {
+          "questionnaireId": "q-mca",
+          "obligationId": "mca-companies-act",
+          "questions": [
+            {
+              "questionId": "q-mca-1",
+              "question": "Which secretarial filings and board processes does the company run under the Companies Act?",
+              "answer": "Annual return, financial statement filing and quarterly board meetings, run by the company secretary.",
+              "status": "answered",
+              "answeredBy": "research",
+              "confidence": "medium",
+              "evidence": [
+                {
+                  "type": "url",
+                  "ref": "https://www.mca.gov.in/mcafoportal/viewCompanyMasterData.do"
+                }
+              ],
+              "yields": [
+                {
+                  "type": "process",
+                  "id": "secretarial-compliance"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "questionnaireId": "q-sebi-broker",
+          "obligationId": "sebi-broker-obligations",
+          "questions": [
+            {
+              "questionId": "q-sebi-broker-1",
+              "question": "Which client segments does the broker onboard, and which market transactions does it execute?",
+              "answer": "Retail resident investors and NRIs; cash equity and F&O on NSE and BSE.",
+              "status": "answered",
+              "answeredBy": "research",
+              "confidence": "high",
+              "evidence": [
+                {
+                  "type": "url",
+                  "ref": "https://www.zenithsecurities.in/pricing"
+                }
+              ],
+              "yields": [
+                {
+                  "type": "segment",
+                  "id": "retail-investor"
+                },
+                {
+                  "type": "segment",
+                  "id": "nri-investor"
+                },
+                {
+                  "type": "process",
+                  "id": "order-execution"
+                },
+                {
+                  "type": "offering",
+                  "id": "equity-broking"
+                }
+              ]
+            },
+            {
+              "questionId": "q-sebi-broker-2",
+              "question": "Is the broker designated a Qualified Stock Broker?",
+              "status": "open",
+              "reason": "No SEBI list of qualified stock brokers naming the entity could be fetched",
+              "yields": []
+            }
+          ]
+        },
+        {
+          "questionnaireId": "q-sebi-dp",
+          "obligationId": "sebi-dp-obligations",
+          "questions": [
+            {
+              "questionId": "q-sebi-dp-1",
+              "question": "Which depository services are offered and to whom?",
+              "answer": "CDSL demat accounts for the same retail and NRI clients, serviced through the trading app.",
+              "status": "answered",
+              "answeredBy": "human",
+              "confidence": "high",
+              "evidence": [],
+              "yields": [
+                {
+                  "type": "offering",
+                  "id": "demat-accounts"
+                },
+                {
+                  "type": "process",
+                  "id": "demat-servicing"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "processes": [
+        {
+          "processId": "secretarial-compliance",
+          "name": "Secretarial compliance",
+          "kind": "secretarial-compliance",
+          "ownerRole": "compliance-officer",
+          "unitIds": [ "broking" ],
+          "obligationIds": [ "mca-companies-act" ]
+        },
+        {
+          "processId": "client-onboarding-kyc",
+          "name": "Client onboarding and KYC",
+          "kind": "kyc",
+          "ownerRole": "compliance-officer",
+          "licenseIds": [ "sebi-stock-broker" ],
+          "segmentIds": [ "retail-investor", "nri-investor" ],
+          "obligationIds": [ "sebi-broker-obligations" ]
+        },
+        {
+          "processId": "order-execution",
+          "name": "Order execution on NSE and BSE",
+          "kind": "market-transactions",
+          "licenseIds": [ "sebi-stock-broker" ],
+          "offeringIds": [ "equity-broking" ],
+          "obligationIds": [ "sebi-broker-obligations" ]
+        },
+        {
+          "processId": "demat-servicing",
+          "name": "Demat account servicing",
+          "kind": "client-services",
+          "licenseIds": [ "cdsl-dp" ],
+          "offeringIds": [ "demat-accounts" ],
+          "obligationIds": [ "sebi-dp-obligations" ]
+        }
+      ],
+      "offerings": [
+        {
+          "offeringId": "equity-broking",
+          "name": "Cash equity and F&O broking",
+          "category": "broking",
+          "licenseId": "sebi-stock-broker",
+          "segmentIds": [ "retail-investor", "nri-investor" ]
+        },
+        {
+          "offeringId": "demat-accounts",
+          "name": "CDSL demat accounts",
+          "category": "depository",
+          "licenseId": "cdsl-dp",
+          "segmentIds": [ "retail-investor", "nri-investor" ]
+        }
+      ],
+      "customerSegments": [
+        {
+          "segmentId": "retail-investor",
+          "name": "Retail investor",
+          "kind": "retail-investor"
+        },
+        {
+          "segmentId": "nri-investor",
+          "name": "NRI retail investor",
+          "kind": "nri-investor"
+        }
+      ],
+      "platforms": [
+        {
+          "platformId": "trading-app",
+          "name": "Mobile and web trading platform",
+          "kind": "customer-platform",
+          "appIds": [ "trading-core" ],
+          "licenseIds": [ "sebi-stock-broker", "cdsl-dp" ],
+          "cybersecurityInstruments": [
+            "sebi-cscrf-2024",
+            "cert-in-directions-2022",
+            "dpdp-rules-2025"
+          ]
+        }
+      ],
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-09-15T09:00:00Z",
+        "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "runId": "run_01J9Z6X3F8N2Q4R5S6T7V8W9XA",
+        "workflow": "refresh-ctx",
+        "agent": "validator"
+      }
+    }
+  ],
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "kind",
+    "companyId",
+    "status",
+    "summary",
+    "businessUnits",
+    "licenses",
+    "obligations",
+    "questionnaires",
+    "processes",
+    "offerings",
+    "customerSegments",
+    "platforms",
+    "provenance"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/schemaVersion"
+    },
+    "kind": {
+      "const": "maxwell.company.context"
+    },
+    "companyId": {
+      "description": "Slug identifying the company; must equal the company-profile/<company_id> folder name",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+    },
+    "status": {
+      "description": "complete when every question is answered or not-applicable; in_progress while questions are open; pending before the first refresh-ctx run finished",
+      "enum": [ "pending", "in_progress", "complete" ]
+    },
+    "summary": {
+      "description": "One-paragraph note of what the company is, where it is based and what it offers, in plain words",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+    },
+    "businessUnits": {
+      "description": "Lines of business, each holding licenses, carrying company-level obligations and owning processes",
+      "type": "array",
+      "maxItems": 32,
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/businessUnit"
+      }
+    },
+    "licenses": {
+      "description": "Every licence or registration in details.json regulatoryRegistrations, placed under a business unit",
+      "type": "array",
+      "maxItems": 64,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/license"
+      }
+    },
+    "obligations": {
+      "description": "Obligation sets a regulator or statute places on a unit or a licence; each raises exactly one questionnaire",
+      "type": "array",
+      "maxItems": 64,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/obligation"
+      }
+    },
+    "questionnaires": {
+      "description": "The questions an obligation raises about how the company operates, with answers grounded in fetched sources or given by a human",
+      "type": "array",
+      "maxItems": 64,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/questionnaire"
+      }
+    },
+    "processes": {
+      "description": "Operational processes the answers reveal, each tied to the obligations that require it",
+      "type": "array",
+      "maxItems": 256,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/process"
+      }
+    },
+    "offerings": {
+      "description": "Products and services offered under a licence",
+      "type": "array",
+      "maxItems": 256,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/offering"
+      }
+    },
+    "customerSegments": {
+      "description": "Customer segments the offerings serve",
+      "type": "array",
+      "maxItems": 64,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/customerSegment"
+      }
+    },
+    "platforms": {
+      "description": "Platforms and supporting functions that deliver the offerings, linked to applications/<app_id> and to the cybersecurity instruments that bind them",
+      "type": "array",
+      "maxItems": 128,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/platform"
+      }
+    },
+    "provenance": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/provenance"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "localId": {
+      "description": "Identifier local to this file",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+    },
+    "idList": {
+      "type": "array",
+      "maxItems": 128,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/localId"
+      }
+    },
+    "businessUnit": {
+      "type": "object",
+      "required": [ "unitId", "name", "publiclyListed" ],
+      "properties": {
+        "unitId": {
+          "$ref": "#/$defs/localId"
+        },
+        "name": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "description": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+        },
+        "publiclyListed": {
+          "description": "True when the unit's shares are listed on a stock exchange",
+          "type": "boolean"
+        },
+        "listing": {
+          "description": "Exchange listing details when publiclyListed is true",
+          "type": "object",
+          "required": [ "exchanges" ],
+          "properties": {
+            "exchanges": {
+              "type": "array",
+              "maxItems": 8,
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+              }
+            },
+            "symbol": {
+              "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+            },
+            "isin": {
+              "type": "string",
+              "pattern": "^[A-Z]{2}[A-Z0-9]{9}[0-9]$"
+            }
+          },
+          "additionalProperties": false
+        },
+        "licenseIds": {
+          "$ref": "#/$defs/idList"
+        },
+        "obligationIds": {
+          "$ref": "#/$defs/idList"
+        },
+        "processIds": {
+          "$ref": "#/$defs/idList"
+        }
+      },
+      "additionalProperties": false
+    },
+    "license": {
+      "type": "object",
+      "required": [
+        "licenseId",
+        "name",
+        "regulator",
+        "registrationNo",
+        "entityType",
+        "status",
+        "unitId"
+      ],
+      "properties": {
+        "licenseId": {
+          "$ref": "#/$defs/localId"
+        },
+        "name": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "regulator": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/regulators.schema.json"
+        },
+        "registrationNo": {
+          "description": "Must equal a details.json regulatoryRegistrations[].registrationNo",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "entityType": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/entity-types.schema.json"
+        },
+        "status": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/statuses.schema.json#/$defs/registrationStatus"
+        },
+        "unitId": {
+          "$ref": "#/$defs/localId"
+        },
+        "obligationIds": {
+          "$ref": "#/$defs/idList"
+        },
+        "processIds": {
+          "$ref": "#/$defs/idList"
+        },
+        "offeringIds": {
+          "$ref": "#/$defs/idList"
+        },
+        "platformIds": {
+          "$ref": "#/$defs/idList"
+        }
+      },
+      "additionalProperties": false
+    },
+    "obligation": {
+      "type": "object",
+      "required": [
+        "obligationId",
+        "title",
+        "regulator",
+        "source",
+        "questionnaireId"
+      ],
+      "properties": {
+        "obligationId": {
+          "$ref": "#/$defs/localId"
+        },
+        "title": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "regulator": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/regulators.schema.json"
+        },
+        "source": {
+          "description": "Where the obligation comes from: an instrument in the vocabulary, a statute, a circular or a register entry",
+          "type": "object",
+          "required": [ "type", "ref" ],
+          "properties": {
+            "type": {
+              "enum": [ "instrument", "statute", "circular", "register" ]
+            },
+            "ref": {
+              "description": "The vocab instrument id when type is instrument, otherwise the title of the statute, circular or register",
+              "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+            },
+            "url": {
+              "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/url"
+            }
+          },
+          "additionalProperties": false
+        },
+        "summary": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+        },
+        "questionnaireId": {
+          "$ref": "#/$defs/localId"
+        }
+      },
+      "additionalProperties": false
+    },
+    "questionnaire": {
+      "type": "object",
+      "required": [ "questionnaireId", "obligationId", "questions" ],
+      "properties": {
+        "questionnaireId": {
+          "$ref": "#/$defs/localId"
+        },
+        "obligationId": {
+          "$ref": "#/$defs/localId"
+        },
+        "questions": {
+          "type": "array",
+          "maxItems": 24,
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/question"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "question": {
+      "type": "object",
+      "if": {
+        "properties": {
+          "status": {
+            "const": "answered"
+          }
+        }
+      },
+      "then": {
+        "required": [ "answer", "answeredBy", "confidence", "evidence" ]
+      },
+      "required": [ "questionId", "question", "status", "yields" ],
+      "properties": {
+        "questionId": {
+          "$ref": "#/$defs/localId"
+        },
+        "question": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "answer": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+        },
+        "status": {
+          "description": "answered from a source or by a human; open when nothing could ground an answer (a human is asked in chat); not-applicable when the obligation does not reach this company",
+          "enum": [ "answered", "open", "not-applicable" ]
+        },
+        "answeredBy": {
+          "enum": [ "research", "human" ]
+        },
+        "confidence": {
+          "enum": [ "high", "medium", "low" ]
+        },
+        "evidence": {
+          "description": "Fetched sources the answer rests on; may be empty only for a human answer",
+          "type": "array",
+          "maxItems": 16,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/evidenceRef"
+          }
+        },
+        "answeredAt": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+        },
+        "reason": {
+          "description": "Why the question is open or not applicable",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "yields": {
+          "description": "Context items this answer revealed",
+          "type": "array",
+          "maxItems": 32,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "required": [ "type", "id" ],
+            "properties": {
+              "type": {
+                "enum": [ "process", "offering", "segment", "platform" ]
+              },
+              "id": {
+                "$ref": "#/$defs/localId"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "process": {
+      "type": "object",
+      "required": [ "processId", "name", "kind" ],
+      "properties": {
+        "processId": {
+          "$ref": "#/$defs/localId"
+        },
+        "name": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "kind": {
+          "enum": [
+            "secretarial-compliance",
+            "client-services",
+            "market-transactions",
+            "kyc",
+            "onboarding",
+            "grievance-redressal",
+            "surveillance",
+            "regulatory-reporting",
+            "risk-management",
+            "incident-response",
+            "vendor-management",
+            "fund-management",
+            "lending",
+            "claims",
+            "other"
+          ]
+        },
+        "description": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+        },
+        "ownerRole": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/contactRole"
+        },
+        "unitIds": {
+          "$ref": "#/$defs/idList"
+        },
+        "licenseIds": {
+          "$ref": "#/$defs/idList"
+        },
+        "offeringIds": {
+          "$ref": "#/$defs/idList"
+        },
+        "segmentIds": {
+          "$ref": "#/$defs/idList"
+        },
+        "obligationIds": {
+          "$ref": "#/$defs/idList"
+        }
+      },
+      "additionalProperties": false
+    },
+    "offering": {
+      "type": "object",
+      "required": [ "offeringId", "name", "category", "licenseId" ],
+      "properties": {
+        "offeringId": {
+          "$ref": "#/$defs/localId"
+        },
+        "name": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "category": {
+          "enum": [
+            "broking",
+            "depository",
+            "mutual-fund-scheme",
+            "pms-strategy",
+            "aif-scheme",
+            "advisory",
+            "research",
+            "margin-funding",
+            "lending",
+            "deposits",
+            "payments",
+            "insurance-product",
+            "pension-product",
+            "custody",
+            "other"
+          ]
+        },
+        "licenseId": {
+          "$ref": "#/$defs/localId"
+        },
+        "count": {
+          "description": "Number of instances when the offering is a family, such as mutual fund schemes",
+          "type": "integer",
+          "minimum": 1
+        },
+        "description": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+        },
+        "segmentIds": {
+          "$ref": "#/$defs/idList"
+        },
+        "processIds": {
+          "$ref": "#/$defs/idList"
+        }
+      },
+      "additionalProperties": false
+    },
+    "customerSegment": {
+      "type": "object",
+      "required": [ "segmentId", "name", "kind" ],
+      "properties": {
+        "segmentId": {
+          "$ref": "#/$defs/localId"
+        },
+        "name": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "kind": {
+          "enum": [
+            "retail-investor",
+            "nri-investor",
+            "hni",
+            "family-office",
+            "institutional",
+            "corporate",
+            "msme",
+            "pension-scheme",
+            "insurance-scheme",
+            "fpi",
+            "borrower",
+            "policyholder",
+            "other"
+          ]
+        },
+        "description": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+        },
+        "processIds": {
+          "$ref": "#/$defs/idList"
+        }
+      },
+      "additionalProperties": false
+    },
+    "platform": {
+      "type": "object",
+      "required": [ "platformId", "name", "kind" ],
+      "properties": {
+        "platformId": {
+          "$ref": "#/$defs/localId"
+        },
+        "name": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "kind": {
+          "enum": [
+            "customer-platform",
+            "supporting-function",
+            "infrastructure",
+            "data-platform",
+            "vendor-platform"
+          ]
+        },
+        "description": {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/longText"
+        },
+        "appIds": {
+          "description": "applications/<app_id> directories that implement this platform",
+          "type": "array",
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+          }
+        },
+        "licenseIds": {
+          "$ref": "#/$defs/idList"
+        },
+        "cybersecurityInstruments": {
+          "description": "Instruments in the vocabulary whose cybersecurity requirements bind this platform",
+          "type": "array",
+          "maxItems": 32,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/vocab/instruments.schema.json"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

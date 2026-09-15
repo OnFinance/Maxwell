@@ -34,6 +34,7 @@ only its own level-2 sections**, leaving every other section byte-for-byte uncha
 |---|---|---|
 | `overview` | `## Overview` | report-audit-findings |
 | `regulatory-posture` | `## Regulatory posture` | report-audit-findings |
+| `organization-context` | `## Organization context` | report-audit-findings (from `context.json`; omit when absent) |
 | `applications` | `## Applications` | report-audit-findings |
 | `data-flows` | `## Data flows` | report-audit-findings (from `sdlc/metastore.json`; omit when absent) |
 | `vendors` | `## Vendors` | report-audit-findings (omit when `vendors/` is empty) |
@@ -62,9 +63,9 @@ section-ownership table in `.claude/agents/report-writer.md`, which is authorita
 
 | calling workflow | default sections |
 |---|---|
-| report-audit-findings | overview, regulatory-posture, applications, data-flows, vendors, control-summary, open-findings, risks, incidents |
+| report-audit-findings | overview, regulatory-posture, organization-context, applications, data-flows, vendors, control-summary, open-findings, risks, incidents |
 | report-audit-improvements | initiatives, suggestions, kpis |
-| refresh-ctx | regulatory-posture |
+| refresh-ctx | regulatory-posture, organization-context |
 | refresh-vendor-ctx | vendors |
 | refresh-metastore | data-flows |
 | refresh-apps | applications |
@@ -75,7 +76,7 @@ section-ownership table in `.claude/agents/report-writer.md`, which is authorita
 | impl-auto-improvement | suggestions |
 
 So every `probe-*` workflow, `execute-scr` and every `runtime-probe-*` workflow refreshes `control-summary` and
-`open-findings` (that is what they request), and `refresh-ctx` refreshes `regulatory-posture` only. Early
+`open-findings` (that is what they request), and `refresh-ctx` refreshes `regulatory-posture` and `organization-context`. Early
 refreshes render with the same templates below, so the next `report-audit-*` run overwrites them without
 drift. A requested id outside a workflow's row, or a workflow with no row, goes to `sectionsSkipped` with the
 reason.
@@ -174,6 +175,21 @@ Counts come from `implementationStatus` of the latest control record per id (sup
 counts as Implemented and `not-applicable` is excluded from Controls, both stated under the table), findings from `status in
 open|triaged|remediating`. Below the table, one bullet per instrument naming the weakest control family
 (`GV.SC`, `PR.AA`) with a citation.
+
+### `## Organization context`
+Source `company-profile/<c>/context.json`; omit the section when the file is absent. Open with the `summary`
+paragraph and the context `status`. Then:
+```
+| Business unit | Listed | Licences | Obligations | Processes |
+|---|---|---|---|---|
+| Broking and depository services | No | SEBI stock broker INZ000123456 (active), CDSL DP IN-DP-123-2016 (active) | MCA Companies Act 2013 | secretarial-compliance |
+```
+One row per business unit. Below it, one bullet per licence: its obligations (regulator, source), offerings
+(with `count` when set), customer segments and platforms with their cybersecurity instruments. Then a
+`Questionnaires` sub-list: per questionnaire the counts answered / open / not-applicable, and every **open**
+question verbatim with its `questionId` and reason, so a human can answer it with
+`node .claude/scripts/ctx/answer.mjs <company_id> <question_id>`. Processes are grouped by `kind` with their
+obligation ids. Cite no control ids here; this section describes the business, not its posture.
 
 ### `## Applications`
 One subsection `### <app_id>` per application: environments (tier, exposure, residency, log retention days

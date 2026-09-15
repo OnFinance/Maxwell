@@ -198,6 +198,7 @@ node -e "console.log(JSON.stringify(require('./.claude/schemas/v1/company/detail
 | Document | Path | Schema (`.claude/schemas/v1/`) | Notes from the example |
 | --- | --- | --- | --- |
 | company details | `company-profile/<c>/details.json` | `company/details.schema.json` | `entityTypes`, `regulatoryRegistrations[].category` and `frameworksInScope` decide which instruments apply; contacts need `designated-officer` for CERT-In and `grievance-officer` for DPDP |
+| organization context | `company-profile/<c>/context.json` | `company/context.schema.json` | written only by refresh-ctx (validator) and `ctx/answer.mjs`; ids are local slugs and every cross-reference must resolve (validate-data checks); `licenses[].registrationNo` must match a `details.json` registration; a human answers open questions with `node .claude/scripts/ctx/answer.mjs <c> <question_id>` (answer on stdin) |
 | environment | `applications/<a>/env/<e>.json` | `application/environment.schema.json` | `probeAccess.readOnly` must be `true`, `credentialKey` is a locator; `changeFreeze` windows are honoured by probes |
 | repo | `applications/<a>/repos/<r>.json` | `application/repo.schema.json` | `url` is a `gitUrl` (no embedded credentials); `pinnedCommit` is what you inspected; `localCheckout` is gitignored |
 | image | `applications/<a>/images/<i>.json` | `application/image.schema.json` | `ref` is a fully-qualified OCI reference with digest; `sbomPath` points at the sibling `<i>.cdx.json` (validated by `application/sbom-ref.schema.json`, needs the `maxwell:*` metadata properties) |

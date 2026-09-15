@@ -69,6 +69,7 @@ Maxwell/
 │       │   └── master.json
 │       ├── vendors/
 │       │   └── <vendor_id>.json
+│       ├── context.json              # organization context tree built by refresh-ctx
 │       ├── details.json
 │       └── summary.md
 ├── cves/
@@ -147,6 +148,10 @@ specific Indian instrument that applies to the company's `entityTypes` (SEBI CSC
   instead of executing.
 - Reports are written to `summary.md` sections and `soc` observations, never to new files.
 - Utility commands: `/validate`, `/kpis`, `/seed-company`, `/status`, `/connect-sandbox`.
+- `/refresh-ctx` builds `company-profile/<c>/context.json` (business units, licences, obligations, questionnaires,
+  processes, offerings, segments, platforms). Questions no source could answer stay `open`; when a human is chatting,
+  ask them and record each answer with `node .claude/scripts/ctx/answer.mjs <c> <question_id>` (answer on stdin).
+  Never answer an open question yourself.
 - Plain-language requests ("check mcp-gateway's infrastructure code", "who are our critical vendors?") map to the
   workflow whose purpose matches; the README "Use cases to try" list gives common phrasings. Before starting, tell
   the user which workflow you will run and its scope (company, applications, environments, dry run); ask only when the

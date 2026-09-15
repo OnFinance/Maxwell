@@ -112,9 +112,9 @@ not in this table, is written to `sectionsSkipped` with the reason and not rende
 
 | calling workflow                                   | default sections                                          |
 |----------------------------------------------------|-----------------------------------------------------------|
-| report-audit-findings                              | overview, regulatory-posture, applications, data-flows, vendors, control-summary, open-findings, risks, incidents |
+| report-audit-findings                              | overview, regulatory-posture, organization-context, applications, data-flows, vendors, control-summary, open-findings, risks, incidents |
 | report-audit-improvements                          | initiatives, suggestions, kpis                            |
-| refresh-ctx                                        | regulatory-posture                                        |
+| refresh-ctx                                        | regulatory-posture, organization-context                  |
 | refresh-vendor-ctx                                 | vendors                                                   |
 | refresh-metastore                                  | data-flows                                                |
 | refresh-apps                                       | applications                                              |
@@ -141,6 +141,7 @@ Read only these files; do not use memory of earlier runs, transcripts or anythin
 |--------------------|------------------------------------------------------------------------------------------------|
 | overview           | `details.json` (legalName, entityTypes, regulatoryRegistrations, criticalFunctions, riskAppetite) |
 | regulatory-posture | `details.json` frameworksInScope + registrations; instruments.json applicability from regulatory-catalogs |
+| organization-context | `context.json`: business units and listing, licences, obligations, questionnaires (answered, open, not-applicable), processes, offerings, customer segments, platforms; omit when the file is absent |
 | applications       | `applications/<app_id>/README.md`, `env/*.json`, `images/*.json` for every app in the union of the `applications/*/` directories and `details.json` `criticalFunctions[].appIds` (an id named in details.json with no directory is listed as "no application record") |
 | data-flows         | `sdlc/metastore.json`: `catalogs[]` (`catalogId`, `type`, `appId`), their tables (`retentionDays`, and counts of columns by `dataClassification` and `pii: true`), `pipelines[]` (`orchestrator`, `sourceRepo`, `schedule`) and `lineage[]` edges (`job`, `inputs`/`outputs` as OpenLineage `{namespace, name}` datasets); residency comes from `applications/<appId>/env/*.json` `residency` for each catalog's `appId`. Classification lives only on table columns; the metastore has no dataset classification or cross-border block, so never look for one |
 | vendors            | `vendors/*.json`                                                                               |

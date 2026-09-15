@@ -68,13 +68,14 @@
     "sections": {
       "description": "Sections present in the body, in document order; each maps to a level-2 heading the report-writer produces. risks and incidents carry the regulator reporting clocks from the ledger; data-flows summarises sdlc/metastore.json",
       "type": "array",
-      "maxItems": 12,
+      "maxItems": 13,
       "minItems": 1,
       "uniqueItems": true,
       "items": {
         "enum": [
           "overview",
           "regulatory-posture",
+          "organization-context",
           "applications",
           "data-flows",
           "vendors",

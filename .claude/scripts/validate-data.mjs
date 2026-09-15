@@ -1,11 +1,15 @@
 #!/usr/bin/env node
 // Validates every workspace file against the schema its layout rule names.
 // Exit 0 = all good, 2 = validation errors, 1 = tool error. Usage: validate-data.mjs [paths...]
-import { readFileSync, readlinkSync, statSync, existsSync } from 'node:fs';
+import { readFileSync, readlinkSync, statSync, existsSync, readdirSync } from 'node:fs';
+import { dirname, join } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import matter from 'gray-matter';
 import { buildAjv, getValidator, formatErrors } from './lib/schemas.mjs';
 import { loadLayout, matchRule, walkWorkspace } from './lib/layout.mjs';
+import { contextProblems } from './lib/context-refs.mjs';
+
+const CONTEXT_SCHEMA = 'https://maxwell.onfinance.ai/schemas/v1/company/context.schema.json';
 
 const layout = loadLayout();
 const { ajv } = buildAjv();
@@ -14,7 +18,14 @@ const report = (file, msg) => problems.push(`${file}: ${msg}`);
 
 function validateJson(file, rule, data) {
   const validate = getValidator(ajv, rule.schema);
-  if (!validate(data)) report(file, `does not match ${rule.schema}\n${formatErrors(validate.errors)}`);
+  if (!validate(data)) { report(file, `does not match ${rule.schema}\n${formatErrors(validate.errors)}`); return; }
+  if (rule.schema === CONTEXT_SCHEMA) {
+    const details = join(dirname(file), 'details.json');
+    const registrationNos = existsSync(details) ? new Set((JSON.parse(readFileSync(details, 'utf8')).regulatoryRegistrations || []).map((r) => r.registrationNo)) : null;
+    const appIds = existsSync('applications') ? new Set(readdirSync('applications', { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name)) : new Set();
+    const problems = contextProblems(data, { registrationNos, appIds });
+    if (problems.length) report(file, `context cross-references:\n- ${problems.join('\n- ')}`);
+  }
 }
 
 function validateJsonl(file, rule) {

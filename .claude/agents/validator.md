@@ -40,6 +40,7 @@ x-maxwell:
   role: validator
   writes:
     - company-profile/*/details.json
+    - company-profile/*/context.json
     - company-profile/*/summary.md
     - company-profile/*/sdlc/*.json
     - company-profile/*/vendors/*.json

@@ -115,7 +115,7 @@ Notes on RBI entities:
   The instrument prefix disambiguates clause numbers shared across instruments (PCI `1.2.1` vs RBI `1.2.1`).
 - A `regulatoryRef` is `{regulator, instrument, controlId}` plus optional `version` (copy the registry
   `version`) and `url` (the registry `url` or a deeper link). `regulator` must equal the registry entry:
-  `SEBI`, `RBI`, `IRDAI`, `CERT-In`, `MeitY` (both DPDP ids), `NPCI`, `EU-ESAs` (DORA), `EU-Commission` (DORA RoI
+  `SEBI`, `RBI`, `IRDAI`, `CERT-In`, `MeitY` (both DPDP ids), `MCA` (Companies Act obligations in context.json; no instrument), `NPCI`, `EU-ESAs` (DORA), `EU-Commission` (DORA RoI
   ITS, AI Act), `NYDFS`, `PCI-SSC`, `SEC`, `MAS`, `HKMA`, `APRA`, `PRA` (SS1/21), `NIST`, `ISO`, `CIS`, `AICPA`,
   `OWASP`, `MITRE`, `CSA`, `CISA`.
 - Order: most specific Indian instrument for the company's entity type first, CERT-In/DPDP second, global

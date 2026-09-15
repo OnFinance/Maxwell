@@ -219,6 +219,11 @@
       "schema": "https://maxwell.onfinance.ai/schemas/v1/company/details.schema.json"
     },
     {
+      "glob": "company-profile/*/context.json",
+      "format": "json",
+      "schema": "https://maxwell.onfinance.ai/schemas/v1/company/context.schema.json"
+    },
+    {
       "glob": "company-profile/*/summary.md",
       "format": "frontmatter",
       "schema": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/company-summary.schema.json"

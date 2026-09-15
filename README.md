@@ -110,6 +110,7 @@ Maxwell/
 │       │   └── master.json
 │       ├── vendors/
 │       │   └── <vendor_id>.json
+│       ├── context.json              # organization context tree built by refresh-ctx
 │       ├── details.json
 │       └── summary.md
 ├── cves/
@@ -322,16 +323,69 @@ flowchart LR
 ### How organization context is built
 
 ```mermaid
-flowchart LR
-  S(["Snapshot<br/>details.json"]) --> R["Recheck registrations,<br/>entity types, listing,<br/>frameworks, environments"]
-  S --> D["Discover via registers,<br/>corporate filings and<br/>regulatory change"]
-  R --> V{"Verify: source,<br/>identity and<br/>timing refuters"}
-  D --> V
-  V -- Confirmed --> A["Apply: ledger,<br/>new controls,<br/>profile patch"]
-  V -- "Disputed and<br/>destructive" --> K["Risk record<br/>for a human"]
-  V -- Refuted --> X["Dropped<br/>and logged"]
-  A --> VER[("Version<br/>ledger diff")]
-  K --> VER
+flowchart TD
+  NOTE["Example Capital Markets is a privately held Mumbai discount broker<br/>and depository participant with an NBFC margin-funding arm"]
+  NOTE --> PLC
+  NOTE --> LIC
+  BU["Business unit: broking and margin funding"]
+  PLC(["Unlisted private company"])
+  LIC["Licences"]
+  PROC1["Processes"]
+  SEC(["Secretarial compliance"])
+  MCA(["MCA obligations"])
+  Q1(["Questionnaire"])
+  BU --> PLC
+  BU --> LIC
+  BU --> PROC1
+  MCA --> Q1
+  Q1 --> PROC1
+  PROC1 --> SEC
+  SB(["SEBI stock broker INZ000999999"])
+  DP(["CDSL depository participant IN-DP-999-2016"])
+  NB(["RBI NBFC middle layer N-13.09999"])
+  LIC --> SB
+  LIC --> DP
+  LIC --> NB
+  PROC2["Processes"]
+  PSO["Product and service offerings"]
+  PSF["Platforms and supporting functions"]
+  LIC --> PROC2
+  LIC --> PSO
+  LIC --> PSF
+  SEBI(["SEBI obligations"])
+  RBI(["RBI obligations"])
+  Q2(["Questionnaire"])
+  CS(["Client services"])
+  SEBI --> Q2
+  RBI --> Q2
+  Q2 --> PROC2
+  CS --> PROC2
+  Q3(["Questionnaire"])
+  OFF(["Equity and F&O broking, demat accounts, margin funding"])
+  Q3 --> OFF
+  OFF --> PSO
+  CYB(["Cybersecurity requirements: SEBI CSCRF, RBI directions, CERT-In, DPDP"])
+  CYB --> PSF
+  APPS(["mcp-gateway, db-models"])
+  APPS --> PSF
+  CSEG["Customer segments"]
+  PROC3["Processes"]
+  PSO --> CSEG
+  PSO --> PROC3
+  Q4(["Questionnaire"])
+  SEG(["Retail investor<br/>NRI retail investor<br/>Margin-funding borrower"])
+  SEBI --> Q4
+  Q4 --> SEG
+  SEG --> CSEG
+  Q5(["Questionnaire"])
+  MT(["Market transactions"])
+  Q5 --> MT
+  MT --> PROC3
+  PROC4["Processes"]
+  KYC(["KYC"])
+  CSEG --> PROC4
+  Q4 --> PROC4
+  PROC4 --> KYC
 ```
 
 ### Regulatory coverage
