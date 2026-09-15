@@ -634,6 +634,10 @@
             },
             "additionalProperties": false
           }
+        },
+        "unverified": {
+          "description": "Set when a verifier could not open the cited source (size limit, blocked page); the answer stands at low confidence until a human or a later run confirms it",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
         }
       },
       "additionalProperties": false
