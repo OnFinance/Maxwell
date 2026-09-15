@@ -1,0 +1,2585 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.company.context",
+  "companyId": "example-co",
+  "status": "in_progress",
+  "summary": "Example Capital Markets Private Limited (brand ExampleCo) is a fictional fixture company used to test Maxwell workflows from start to finish. It is an unlisted private limited company (CIN U67120MH2016PTC999999) based in Mumbai, Maharashtra, India. It is a mid-size SEBI-registered discount stock broker (INZ000999999) and depository participant (IN-DP-999-2016), and both are categorised as mid-size REs under SEBI CSCRF. It also runs a margin-funding business registered with RBI as a middle-layer NBFC (N-13.09999). It offers retail clients broking, depository services and margin funding, and routes client orders to NSE and BSE.",
+  "businessUnits": [
+    {
+      "unitId": "broking-and-depository",
+      "name": "Stock broking and depository services",
+      "description": "Discount stock broking for retail clients (orders routed to NSE and BSE) and depository participant services, both run by Example Capital Markets Private Limited under its SEBI registrations. The company is not listed: its CIN starts with U and has the PTC (private company) marker.",
+      "publiclyListed": false,
+      "licenseIds": [
+        "sebi-stock-broker",
+        "sebi-depository-participant"
+      ],
+      "obligationIds": [
+        "mca-board-and-kmp",
+        "mca-general-meetings",
+        "mca-annual-return-and-registers",
+        "mca-financial-statements-and-audit",
+        "mca-related-party-loans-deposits",
+        "mca-secretarial-audit-csr",
+        "mca-capital-charges-corporate-events"
+      ],
+      "processIds": []
+    },
+    {
+      "unitId": "nbfc-margin-funding",
+      "name": "NBFC margin funding",
+      "description": "Margin-funding business run by the same legal entity under its RBI NBFC registration (middle layer). It is unlisted like the rest of the company (CIN U67120MH2016PTC999999).",
+      "publiclyListed": false,
+      "licenseIds": [
+        "rbi-nbfc-middle-layer"
+      ],
+      "obligationIds": [
+        "mca-board-and-kmp",
+        "mca-general-meetings",
+        "mca-annual-return-and-registers",
+        "mca-financial-statements-and-audit",
+        "mca-related-party-loans-deposits",
+        "mca-secretarial-audit-csr",
+        "mca-capital-charges-corporate-events"
+      ],
+      "processIds": []
+    }
+  ],
+  "licenses": [
+    {
+      "licenseId": "sebi-stock-broker",
+      "name": "SEBI stock broker",
+      "regulator": "SEBI",
+      "registrationNo": "INZ000999999",
+      "entityType": "stock-broker",
+      "status": "active",
+      "unitId": "broking-and-depository",
+      "obligationIds": [
+        "sebi-broker-regs-2026",
+        "sebi-broker-master-circular-2024",
+        "sebi-broker-electronic-trading",
+        "sebi-kyc-master-circular-2023",
+        "sebi-aml-cft-master-circular-2024",
+        "sebi-investor-grievance-scores-odr",
+        "sebi-cscrf-2024"
+      ],
+      "processIds": [
+        "order-routing",
+        "security-monitoring",
+        "vendor-risk-assessment"
+      ],
+      "offeringIds": [
+        "stock-broking",
+        "broking"
+      ],
+      "platformIds": [
+        "mcp-gateway",
+        "security-operations-centre",
+        "aws-mumbai",
+        "mongodb-atlas-mumbai",
+        "github-cloud"
+      ]
+    },
+    {
+      "licenseId": "sebi-depository-participant",
+      "name": "SEBI depository participant",
+      "regulator": "SEBI",
+      "registrationNo": "IN-DP-999-2016",
+      "entityType": "depository-participant",
+      "status": "active",
+      "unitId": "broking-and-depository",
+      "obligationIds": [
+        "sebi-dp-regs-2018",
+        "sebi-kyc-master-circular-2023",
+        "sebi-aml-cft-master-circular-2024",
+        "sebi-investor-grievance-scores-odr",
+        "sebi-cscrf-2024"
+      ],
+      "processIds": [
+        "order-routing",
+        "security-monitoring",
+        "vendor-risk-assessment"
+      ],
+      "offeringIds": [
+        "depository-services"
+      ],
+      "platformIds": [
+        "mcp-gateway",
+        "security-operations-centre",
+        "aws-mumbai",
+        "mongodb-atlas-mumbai",
+        "github-cloud"
+      ]
+    },
+    {
+      "licenseId": "rbi-nbfc-middle-layer",
+      "name": "RBI NBFC (middle layer)",
+      "regulator": "RBI",
+      "registrationNo": "N-13.09999",
+      "entityType": "nbfc",
+      "status": "active",
+      "unitId": "nbfc-margin-funding",
+      "obligationIds": [
+        "rbi-nbfc-sbr",
+        "rbi-cyber-tech-2026",
+        "rbi-outsourcing-2025",
+        "rbi-nbfc-kyc",
+        "rbi-nbfc-rbc",
+        "rbi-nbfc-credit",
+        "rbi-nbfc-fraud",
+        "rbi-nbfc-misc"
+      ],
+      "processIds": [
+        "security-monitoring",
+        "vendor-management",
+        "lending"
+      ],
+      "offeringIds": [
+        "margin-funding"
+      ],
+      "platformIds": [
+        "mcp-gateway",
+        "security-operations-centre",
+        "aws-mumbai",
+        "github-cloud",
+        "mongodb-atlas",
+        "github"
+      ]
+    }
+  ],
+  "obligations": [
+    {
+      "obligationId": "mca-board-and-kmp",
+      "title": "Board of directors, board meetings and key managerial personnel",
+      "regulator": "MCA",
+      "source": {
+        "type": "statute",
+        "ref": "Companies Act, 2013 (No. 18 of 2013) ss. 149, 152, 164-165, 173, 179, 184, 203; Secretarial Standard SS-1 (s. 118(10))",
+        "url": "https://www.mca.gov.in/Ministry/pdf/CompaniesAct2013.pdf"
+      },
+      "summary": "Private company board obligations: minimum directors, a resident director, director eligibility and DIN and KYC upkeep, at least four board meetings a year held under SS-1, directors' interest disclosures, and a whole-time company secretary when the paid-up capital threshold in the KMP rules is met. MCA's 5 June 2015 notice lists private-company exemptions; the text was not fetched, so apply them only after checking it.",
+      "questionnaireId": "q-mca-board-and-kmp"
+    },
+    {
+      "obligationId": "mca-general-meetings",
+      "title": "General meetings, resolutions and their filing",
+      "regulator": "MCA",
+      "source": {
+        "type": "statute",
+        "ref": "Companies Act, 2013 (No. 18 of 2013) ss. 96, 100-102, 108-110, 114, 117; Secretarial Standard SS-2 (s. 118(10))",
+        "url": "https://www.mca.gov.in/Ministry/pdf/CompaniesAct2013.pdf"
+      },
+      "summary": "Hold the annual general meeting within the statutory window, run extraordinary general meetings and postal ballots, keep minutes under SS-2, and file resolutions that need registration (MGT-14) with the Registrar of Companies. Some of these sections are relaxed for private companies by MCA's 2015 exemption notice.",
+      "questionnaireId": "q-mca-general-meetings"
+    },
+    {
+      "obligationId": "mca-annual-return-and-registers",
+      "title": "Annual return, statutory registers, registered office and beneficial ownership",
+      "regulator": "MCA",
+      "source": {
+        "type": "statute",
+        "ref": "Companies Act, 2013 (No. 18 of 2013) ss. 12, 88, 89-90, 92, 94",
+        "url": "https://www.mca.gov.in/Ministry/pdf/CompaniesAct2013.pdf"
+      },
+      "summary": "Keep the registered office and its filings current, maintain statutory registers (members, directors and KMP, charges, contracts with interested parties), record and file significant beneficial ownership (BEN-2), and file the annual return (MGT-7 or MGT-7A) within 60 days of the AGM.",
+      "questionnaireId": "q-mca-annual-return-and-registers"
+    },
+    {
+      "obligationId": "mca-financial-statements-and-audit",
+      "title": "Financial statements, board's report and statutory audit",
+      "regulator": "MCA",
+      "source": {
+        "type": "statute",
+        "ref": "Companies Act, 2013 (No. 18 of 2013) ss. 128-129, 133-134, 137, 139-143, 147; Companies (Indian Accounting Standards) Rules, 2015; CARO 2020",
+        "url": "https://www.mca.gov.in/Ministry/pdf/CompaniesAct2013.pdf"
+      },
+      "summary": "Keep books of account with electronic backups in India, prepare financial statements under the applicable accounting standards (Ind AS for NBFCs above the threshold), approve the board's report, file AOC-4 within 30 days of the AGM, and appoint and rotate statutory auditors who report under CARO 2020.",
+      "questionnaireId": "q-mca-financial-statements-and-audit"
+    },
+    {
+      "obligationId": "mca-related-party-loans-deposits",
+      "title": "Related-party transactions, loans and investments, and deposits",
+      "regulator": "MCA",
+      "source": {
+        "type": "statute",
+        "ref": "Companies Act, 2013 (No. 18 of 2013) ss. 73-76, 179(3), 180, 185-186, 188; Companies (Acceptance of Deposits) Rules, 2014",
+        "url": "https://www.mca.gov.in/Ministry/pdf/CompaniesAct2013.pdf"
+      },
+      "summary": "Approve and disclose related-party contracts (AOC-2 in the board's report), follow the limits on loans to directors and on inter-corporate loans and investments (the s.186 lending relief for NBFCs lending in ordinary course is to be confirmed), stay within borrowing powers, and restrict and report deposits (DPT-3).",
+      "questionnaireId": "q-mca-related-party-loans-deposits"
+    },
+    {
+      "obligationId": "mca-secretarial-audit-csr",
+      "title": "Secretarial audit, CSR and threshold-triggered obligations",
+      "regulator": "MCA",
+      "source": {
+        "type": "statute",
+        "ref": "Companies Act, 2013 (No. 18 of 2013) ss. 135, 138, 204; Companies (CSR Policy) Rules, 2014; Companies (Appointment and Remuneration of Managerial Personnel) Rules, 2014 r. 9",
+        "url": "https://www.mca.gov.in/Ministry/pdf/CompaniesAct2013.pdf"
+      },
+      "summary": "Obligations that apply only above thresholds: a CSR committee and CSR spending once net worth, turnover or net profit thresholds are crossed; a secretarial audit (MR-3) for the company classes in rule 9, which can reach a private company with large bank borrowings; and internal audit under s.138 for private companies above the turnover or borrowing thresholds.",
+      "questionnaireId": "q-mca-secretarial-audit-csr"
+    },
+    {
+      "obligationId": "mca-capital-charges-corporate-events",
+      "title": "Share capital, charges, listing status and corporate changes",
+      "regulator": "MCA",
+      "source": {
+        "type": "statute",
+        "ref": "Companies Act, 2013 (No. 18 of 2013) ss. 4, 13-14, 42, 62, 71, 77-79, 230-232; SEBI (LODR) Regulations, 2015 only if securities are listed",
+        "url": "https://www.mca.gov.in/Ministry/pdf/CompaniesAct2013.pdf"
+      },
+      "summary": "File changes of name, objects, articles and registered office; follow issue rules for allotments (PAS-3) and debentures; register charges created for borrowings (CHG-1); get tribunal approval for mergers and demergers. SEBI LODR applies only if equity or debt securities are listed, which a private limited company can do with non-convertible debentures.",
+      "questionnaireId": "q-mca-capital-charges-corporate-events"
+    },
+    {
+      "obligationId": "sebi-broker-regs-2026",
+      "title": "SEBI (Stock Brokers) Regulations, 2026",
+      "regulator": "SEBI",
+      "source": {
+        "type": "statute",
+        "ref": "Securities and Exchange Board of India (Stock Brokers) Regulations, 2026",
+        "url": "https://www.sebi.gov.in/legal/regulations/jan-2026/securities-and-exchange-board-of-india-stock-brokers-regulations-2026_98974.html"
+      },
+      "summary": "Licence regulations for the stock-broker registration INZ000999999. The SEBI page shows the regulations dated 8 Jan 2026. The 1992 Regulations were last amended on 10 Feb 2025. Whether the 2026 Regulations repeal the 1992 Regulations, and from what date, was not confirmed this session because the regulation text did not render. They set the conditions of registration, code of conduct, compliance officer, books and records, audit, net worth and client-asset duties the company runs its broking business under.",
+      "questionnaireId": "q-sebi-broker-regs-2026"
+    },
+    {
+      "obligationId": "sebi-broker-master-circular-2024",
+      "title": "Master Circular for Stock Brokers (9 Aug 2024)",
+      "regulator": "SEBI",
+      "source": {
+        "type": "circular",
+        "ref": "Master Circular for Stock Brokers, SEBI/HO/MIRSD/MIRSDPoD1/P/CIR/2024/110 dated 9 Aug 2024",
+        "url": "https://www.sebi.gov.in/legal/master-circulars/aug-2024/master-circular-for-stock-brokers_85605.html"
+      },
+      "summary": "Consolidated operational circulars for stock brokers: client account opening, running account settlement, client funds and collateral, margin collection and margin trading, internet-based trading, contract notes and statements, and dormant accounts. The circular number comes from the ComplianceOS index. The SEBI page confirms the title and the 9 Aug 2024 date.",
+      "questionnaireId": "q-sebi-broker-master-circular-2024"
+    },
+    {
+      "obligationId": "sebi-broker-electronic-trading",
+      "title": "Stock broker electronic trading systems: technical glitches and retail algo trading",
+      "regulator": "SEBI",
+      "source": {
+        "type": "circular",
+        "ref": "Review of Framework to address the 'technical glitches' in Stock Brokers' Electronic Trading Systems, HO/38/44/12(1)2026-MIRSD-TPD1 dated 9 Jan 2026",
+        "url": "https://www.sebi.gov.in/legal/circulars/jan-2026/review-of-framework-to-address-the-technical-glitches-in-stock-brokers-electronic-trading-systems_99006.html"
+      },
+      "summary": "Governs the reliability of the broker's electronic trading systems. It reviews the Nov 2022 technical-glitches framework (https://www.sebi.gov.in/legal/circulars/nov-2022/framework-to-address-the-technical-glitches-in-stock-brokers-electronic-trading-systems_65466.html). It is read with the 4 Feb 2025 retail algorithmic trading circular, SEBI/HO/MIRSD/MIRSD-PoD/P/CIR/2025/0000013 (https://www.sebi.gov.in/legal/circulars/feb-2025/safer-participation-of-retail-investors-in-algorithmic-trading_91614.html), whose implementation timeline a Sep 2025 circular extended. Together they cover glitch reporting, business continuity and DR, capacity monitoring, API access and algo registration. Clause text was not quoted this session. The profile's critical function order-routing (app mcp-gateway) falls in this perimeter.",
+      "questionnaireId": "q-sebi-broker-electronic-trading"
+    },
+    {
+      "obligationId": "sebi-dp-regs-2018",
+      "title": "SEBI (Depositories and Participants) Regulations, 2018",
+      "regulator": "SEBI",
+      "source": {
+        "type": "statute",
+        "ref": "Securities and Exchange Board of India (Depositories and Participants) Regulations, 2018 [last amended on 30 Apr 2025]",
+        "url": "https://www.sebi.gov.in/legal/regulations/apr-2025/securities-and-exchange-board-of-india-depositories-and-participants-regulations-2018-last-amended-on-april-30-2025-_94048.html"
+      },
+      "summary": "Licence regulations for the depository-participant registration IN-DP-999-2016. They are read with the Master Circular for Depositories dated 3 Dec 2024 (https://www.sebi.gov.in/legal/master-circulars/dec-2024/master-circular-for-depositories_89245.html) and the bye-laws of the depository the company participates in. They cover participant registration, rights and obligations, account opening and operation, internal and concurrent audit, records, and investor services. ComplianceOS did not hold these documents, and their clause text was not quoted this session.",
+      "questionnaireId": "q-sebi-dp-regs-2018"
+    },
+    {
+      "obligationId": "sebi-kyc-master-circular-2023",
+      "title": "Master Circular on KYC norms for the securities market",
+      "regulator": "SEBI",
+      "source": {
+        "type": "circular",
+        "ref": "Master Circular on Know Your Client (KYC) norms for the securities market, SEBI/HO/MIRSD/SECFATF/P/CIR/2023/169 dated 12 Oct 2023",
+        "url": "https://www.sebi.gov.in/legal/master-circulars/oct-2023/master-circular-on-know-your-client-kyc-norms-for-the-securities-market_77945.html"
+      },
+      "summary": "Uniform KYC for every client of the broker and the DP: KRA upload and validation, in-person or video verification, digital KYC and record-keeping. No later KYC master circular turned up on sebi.gov.in this session. The 11 Aug 2023 KRA simplification circular (SEBI/HO/MIRSD/FATF/P/CIR/2023/0144) is related.",
+      "questionnaireId": "q-sebi-kyc-master-circular-2023"
+    },
+    {
+      "obligationId": "sebi-aml-cft-master-circular-2024",
+      "title": "AML/CFT obligations of securities market intermediaries under PMLA",
+      "regulator": "SEBI",
+      "source": {
+        "type": "circular",
+        "ref": "Guidelines on AML Standards and CFT / Obligations of Securities Market Intermediaries under the PMLA, 2002 and Rules (SEBI master circular dated 6 Jun 2024)",
+        "url": "https://www.sebi.gov.in/legal/master-circulars/jun-2024/guidelines-on-anti-money-laundering-aml-standards-and-combating-the-financing-of-terrorism-cft-obligations-of-securities-market-intermediaries-under-the-prevention-of-money-laundering-act-2002-a-_83942.html"
+      },
+      "summary": "PMLA obligations for the broker and the DP: Principal Officer and Designated Director, client due diligence and risk categorisation, beneficial ownership, transaction monitoring, suspicious transaction reporting to FIU-IND, sanctions screening, record retention and staff training. The SEBI page confirms the title and the 6 Jun 2024 date. The circular number did not render and was not confirmed.",
+      "questionnaireId": "q-sebi-aml-cft-master-circular-2024"
+    },
+    {
+      "obligationId": "sebi-investor-grievance-scores-odr",
+      "title": "Investor grievance redressal through SCORES and online dispute resolution",
+      "regulator": "SEBI",
+      "source": {
+        "type": "circular",
+        "ref": "Master Circular on the redressal of investor grievances through SCORES, SEBI/HO/OIAE/IGRD/P/CIR/2022/0150 dated 7 Nov 2022",
+        "url": "https://www.sebi.gov.in/legal/master-circulars/nov-2022/master-circular-on-the-redressal-of-investor-grievances-through-the-sebi-complaints-redress-system-scores-platform_64742.html"
+      },
+      "summary": "Grievance handling for both registrations. It is read with the 20 Sep 2023 circular on SCORES and its link to online dispute resolution (https://www.sebi.gov.in/legal/circulars/sep-2023/redressal-of-investor-grievances-through-the-sebi-complaint-redressal-scores-platform-and-linking-it-to-online-dispute-resolution-platform_77159.html) and with the Master Circular for Online Resolution of Disputes in the Indian Securities Market dated 28 Dec 2023 (https://www.sebi.gov.in/legal/master-circulars/dec-2023/master-circular-for-online-resolution-of-disputes-in-the-indian-securities-market_80236.html). Covers SCORES registration, resolution timelines, escalation to exchange and depository grievance mechanisms, and ODR enrolment and client-agreement clauses.",
+      "questionnaireId": "q-sebi-investor-grievance-scores-odr"
+    },
+    {
+      "obligationId": "sebi-cscrf-2024",
+      "title": "SEBI Cybersecurity and Cyber Resilience Framework (mid-size RE)",
+      "regulator": "SEBI",
+      "source": {
+        "type": "instrument",
+        "ref": "sebi-cscrf-2024",
+        "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
+      },
+      "summary": "CSCRF, SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113 dated 20 Aug 2024, read with the amendments listed in instruments.json. It binds both registrations, which the profile records as mid-size-re. It covers governance (IT Committee, CISO, policies), asset and critical-system identification, access control, data security, the SOC and monitoring, VAPT and cyber audit (Sec-4.x), incident response and reporting, and recovery objectives (RC.RP.S2: RTO 2 hours, RPO 15 minutes). Catalog: .claude/skills/regulatory-catalogs/references/catalogs/sebi-cscrf-2024.catalog.json (136 controls).",
+      "questionnaireId": "q-sebi-cscrf-2024"
+    },
+    {
+      "obligationId": "rbi-nbfc-sbr",
+      "title": "NBFC registration and Scale Based Regulation (middle layer)",
+      "regulator": "RBI",
+      "source": {
+        "type": "circular",
+        "ref": "RBI (NBFC - Registration, Exemptions and Framework for Scale Based Regulation) Directions, 2025 (RBI/DOR/2025-26/339)",
+        "url": "https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12965"
+      },
+      "summary": "The certificate of registration, NBFC category and layer classification (middle layer at total assets of Rs 1,000 crore or above, or by category), net owned fund and the companion master directions a middle-layer NBFC must follow. Issued 28 Nov 2025, updated to 1 Jul 2026.",
+      "questionnaireId": "q-rbi-nbfc-sbr"
+    },
+    {
+      "obligationId": "rbi-cyber-tech-2026",
+      "title": "RBI Cybersecurity, Technology: Risk, Resilience and Assurance Framework Directions 2026 (NBFC, Chapter V)",
+      "regulator": "RBI",
+      "source": {
+        "type": "instrument",
+        "ref": "rbi-cyber-tech-directions-2026",
+        "url": "https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=13592"
+      },
+      "summary": "NBFC text RBI/DoS/2026-27/461, 31 Jul 2026, in force immediately. Chapter II (role of the Board) and Chapter V apply to middle-layer NBFCs. Requirements include reporting cyber incidents on DAKSH within six hours of detection (para 141), IS audit at least yearly (para 56), VA every six months and PT every 12 months for critical systems (para 121), and half-yearly DR drills (para 129). Para 155 repeals the earlier NBFC IT Framework and IT Governance directions.",
+      "questionnaireId": "q-rbi-cyber-tech-2026"
+    },
+    {
+      "obligationId": "rbi-outsourcing-2025",
+      "title": "RBI (NBFC - Managing Risks in Outsourcing) Directions, 2025",
+      "regulator": "RBI",
+      "source": {
+        "type": "instrument",
+        "ref": "rbi-outsourcing-risk-directions-2025",
+        "url": "https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12941"
+      },
+      "summary": "RBI/DOR/2025-26/363, 28 Nov 2025. For NBFCs in the middle layer and above, the directions apply in full, including Chapter IV (outsourcing of IT services) and the IT-specific provisions of Chapter II. They cover Board-approved outsourcing policy, service provider due diligence, agreements, monitoring, group and offshore outsourcing, cloud usage, SOC outsourcing, exit strategy and grievance redressal for outsourced services.",
+      "questionnaireId": "q-rbi-outsourcing-2025"
+    },
+    {
+      "obligationId": "rbi-nbfc-kyc",
+      "title": "RBI (NBFC - Know Your Customer) Directions, 2025 and PMLA reporting",
+      "regulator": "RBI",
+      "source": {
+        "type": "circular",
+        "ref": "RBI (NBFC - Know Your Customer) Directions, 2025 (RBI/DOR/2025-26/361)",
+        "url": "https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12943"
+      },
+      "summary": "DOR.AML.REC.No.280/14.01.003/2025-26, 28 Nov 2025, updated 29 Dec 2025. Applies to all NBFCs in every layer except those with no customer interface. It covers the customer acceptance policy, customer identification and due diligence, V-CIP, periodic KYC updation (every 2, 8 or 10 years by risk), CKYCR, record keeping, reporting to FIU-IND, and the Designated Director and Principal Officer.",
+      "questionnaireId": "q-rbi-nbfc-kyc"
+    },
+    {
+      "obligationId": "rbi-nbfc-rbc",
+      "title": "RBI (NBFC - Responsible Business Conduct) Directions, 2025: fair practices, KFS, grievance redressal, recovery",
+      "regulator": "RBI",
+      "source": {
+        "type": "circular",
+        "ref": "RBI (NBFC - Responsible Business Conduct) Directions, 2025 (RBI/DOR/2025-26/362)",
+        "url": "https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12942"
+      },
+      "summary": "DOR.MCS.REC.No.281/01-01-039/2025-26, 28 Nov 2025, updated 1 Jul 2026. Applies to NBFC-D, NBFC-ICC, NBFC-Factor, NBFC-MFI, NBFC-IFC, IDF-NBFC and HFCs, excluding NBFCs with no customer interface. Covers a Board-approved Fair Practices Code, the Key Facts Statement with APR for retail and MSME loans, a grievance redressal mechanism with escalation to the next higher level, and recovery agent conduct. The RBI (NBFC - Internal Ombudsman) Directions, 2026 (RBI/CEPD/2025-26/384) add an Internal Ombudsman for NBFC-ND with assets of Rs 5,000 crore or more and a public customer interface.",
+      "questionnaireId": "q-rbi-nbfc-rbc"
+    },
+    {
+      "obligationId": "rbi-nbfc-credit",
+      "title": "RBI (NBFC - Credit Facilities) and (NBFC - Credit Risk Management) Directions, 2025: loans against shares",
+      "regulator": "RBI",
+      "source": {
+        "type": "circular",
+        "ref": "RBI (NBFC - Credit Facilities) Directions, 2025 (RBI/DOR/2025-26/347)",
+        "url": "https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12957"
+      },
+      "summary": "Credit Facilities Directions, 28 Nov 2025, updated 15 Jul 2026. Paragraph 106 applies to NBFCs with assets of Rs 100 crore or more lending against shares: a 50 per cent LTV maintained at all times, shortfalls cured within seven working days, only Group 1 securities as collateral for loans above Rs 5 lakh, and quarterly online reporting of pledged shares to stock exchanges. The companion Credit Risk Management Directions, 2025 (RBI/DOR/2025-26/350, https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12954) forbid lending against the NBFC's own shares or debentures (paragraphs 14-15). Both apply to NBFC-D, ICC, Factor, MFI, IFC, IDF-NBFC and HFCs.",
+      "questionnaireId": "q-rbi-nbfc-credit"
+    },
+    {
+      "obligationId": "rbi-nbfc-fraud",
+      "title": "RBI (Fraud Risk Management in NBFCs) Directions, 2024",
+      "regulator": "RBI",
+      "source": {
+        "type": "circular",
+        "ref": "RBI (Fraud Risk Management in NBFCs) Directions, 2024 (RBI/DOS/2024-25/120)",
+        "url": "https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12704"
+      },
+      "summary": "DOS.CO.FMG.SEC.No.7/23.04.001/2024-25, 15 Jul 2024. Applies to NBFCs in the upper and middle layers and to base-layer NBFCs with assets of Rs 500 crore or more. It requires a Board-approved fraud risk policy with natural justice (a 21-day show cause response window), an SCBMF or Committee of Executives, an early warning signal framework (upper and middle layers), reporting to law enforcement, fraud monitoring returns to RBI within 14 days of classification, and internal audit coverage.",
+      "questionnaireId": "q-rbi-nbfc-fraud"
+    },
+    {
+      "obligationId": "rbi-nbfc-misc",
+      "title": "RBI (NBFC - Miscellaneous) Directions, 2025: intimations to RBI, auditors, ratings",
+      "regulator": "RBI",
+      "source": {
+        "type": "circular",
+        "ref": "RBI (NBFC - Miscellaneous) Directions, 2025 (RBI/DOR/2025-26/373)",
+        "url": "https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12931"
+      },
+      "summary": "Updated 26 Feb 2026. Chapters II and III apply to the middle layer and above. The NBFC must notify the RBI regional office within one month of changes in address, directors, principal officer, auditors and specimen signatures (paragraphs 6-7); follow the guidelines for appointing statutory auditors (paragraph 8); and, with assets of Rs 100 crore or more, report rating upgrades or downgrades within 15 days (paragraph 20).",
+      "questionnaireId": "q-rbi-nbfc-misc"
+    }
+  ],
+  "questionnaires": [
+    {
+      "questionnaireId": "q-mca-board-and-kmp",
+      "obligationId": "mca-board-and-kmp",
+      "questions": [
+        {
+          "questionId": "mca-board-and-kmp-board-composition",
+          "question": "How many directors sit on the board, and how many are independent, nominee or whole-time directors?",
+          "status": "open",
+          "reason": "No source I could reach gives the board size or how many directors are independent, nominee or whole-time. details.json has only contacts (CISO, CTO, compliance officer, DPO) and no directors. The...",
+          "yields": []
+        },
+        {
+          "questionId": "mca-board-and-kmp-resident-director",
+          "question": "Which director meets the s.149(3) requirement to have stayed in India at least 182 days in the previous calendar year?",
+          "status": "open",
+          "reason": "No fetched page or workspace file names the directors or where they lived. The s.149(3) test (at least 182 days in India in the previous calendar year) is something only the company can confirm....",
+          "yields": []
+        },
+        {
+          "questionId": "mca-board-and-kmp-meeting-cadence",
+          "question": "How many board meetings were held last financial year, and are notices, agendas and minutes kept under SS-1?",
+          "status": "open",
+          "reason": "No annual report, MGT-7 or board report could be fetched, so the number of FY2025-26 board meetings is unknown. Whether notices, agendas and minutes are kept under SS-1 needs the company secretary...",
+          "yields": []
+        },
+        {
+          "questionId": "mca-board-and-kmp-board-committees",
+          "question": "Which board committees exist (audit, risk, IT strategy, nomination, CSR) and which of them are there because of SEBI or RBI rules?",
+          "status": "open",
+          "reason": "No source lists the company's board committees. The licences in details.json (SEBI broker INZ000999999, SEBI DP IN-DP-999-2016, RBI NBFC-ML N-13.09999) point to which committees might be required....",
+          "yields": []
+        },
+        {
+          "questionId": "mca-board-and-kmp-company-secretary",
+          "question": "Does the company employ a whole-time company secretary, and who are its KMP (MD or CEO, CFO, CS)?",
+          "status": "open",
+          "reason": "s.203 requires a whole-time company secretary in a private company with paid-up share capital of Rs 10 crore or more. No fetched source gives this company's paid-up capital, so I could not tell...",
+          "yields": []
+        },
+        {
+          "questionId": "mca-board-and-kmp-interest-disclosures",
+          "question": "How are directors' MBP-1 interest disclosures and DIR-8 eligibility declarations collected and recorded each year?",
+          "status": "open",
+          "reason": "This is an internal secretarial process (collecting MBP-1 under s.184 and DIR-8 under s.164). No public source or workspace file describes it. The company secretary or compliance officer needs to...",
+          "yields": []
+        },
+        {
+          "questionId": "mca-board-and-kmp-din-kyc",
+          "question": "Are all directors' DINs active with DIR-3 KYC filed, and who tracks those filings?",
+          "status": "open",
+          "reason": "DIN status and DIR-3 KYC can only be checked on the MCA portal, which needs a login or CAPTCHA and falls outside the public, unauthenticated fetch rule. The directors' DINs are not known from any...",
+          "yields": []
+        },
+        {
+          "questionId": "mca-board-and-kmp-secretarial-tooling",
+          "question": "Which system or service provider does the company use to keep board papers, minutes and the secretarial compliance calendar?",
+          "status": "open",
+          "reason": "No workspace file names a board portal, minutes system or secretarial compliance service. A search of applications/*/README.md and applications/*/env/*.json for board, secretarial, minutes,...",
+          "yields": []
+        }
+      ]
+    },
+    {
+      "questionnaireId": "q-mca-general-meetings",
+      "obligationId": "mca-general-meetings",
+      "questions": [
+        {
+          "questionId": "mca-general-meetings-agm-date",
+          "question": "On what date was the last annual general meeting held, and for which financial year?",
+          "status": "open",
+          "reason": "No public source gave an AGM date. details.json calls the entity a 'Fictional fixture' and its website is https://example-co.invalid, which cannot be fetched. A web search for CIN...",
+          "yields": []
+        },
+        {
+          "questionId": "mca-general-meetings-shareholding",
+          "question": "Who holds the equity shares (promoters, a holding company, investors), and does any holder have control or significant beneficial ownership?",
+          "status": "open",
+          "reason": "No annual return (MGT-7), shareholding pattern, BEN-2 filing or company website could be fetched. The website is .invalid, the CIN search returned no record, and no workspace file names...",
+          "yields": []
+        },
+        {
+          "questionId": "mca-general-meetings-mode",
+          "question": "Are general meetings held in person, by video conference or by postal ballot, and do shareholders vote electronically?",
+          "status": "open",
+          "reason": "No notice of meeting, annual report or website page could be fetched to show whether general meetings are held in person, by VC/OAVM or by postal ballot, or whether members vote electronically....",
+          "yields": []
+        },
+        {
+          "questionId": "mca-general-meetings-mgt14",
+          "question": "Which special resolutions or board resolutions did the company file on MGT-14 in the last 24 months?",
+          "status": "open",
+          "reason": "MGT-14 filings are listed only in the MCA V3 portal, which needs a login or captcha, and the web search for this CIN found no public copy of any filing. As a private company, the entity may be...",
+          "yields": []
+        }
+      ]
+    },
+    {
+      "questionnaireId": "q-mca-annual-return-and-registers",
+      "obligationId": "mca-annual-return-and-registers",
+      "questions": [
+        {
+          "questionId": "mca-annual-return-and-registers-registered-office",
+          "question": "What is the registered office address on MCA master data, and is the company's active status shown there?",
+          "status": "open",
+          "reason": "No fetched source gives the registered office address or company status. The MCA master data page returned HTTP 403, and MCA lookups need a CAPTCHA, which this workflow does not solve. A public...",
+          "yields": []
+        },
+        {
+          "questionId": "mca-annual-return-and-registers-annual-return-filed",
+          "question": "For which financial year was the latest annual return (MGT-7/MGT-7A) filed, and was it filed on time?",
+          "status": "open",
+          "reason": "No MCA filing history or annual report was available. MCA master data returned 403 and V3 filing lookups need a login or CAPTCHA. The company website in details.json (https://example-co.invalid)...",
+          "yields": []
+        },
+        {
+          "questionId": "mca-annual-return-and-registers-statutory-registers",
+          "question": "Are the statutory registers kept physically or electronically, and who is their custodian?",
+          "status": "open",
+          "reason": "No public source or workspace file says how statutory registers (s.88 register of members and others) are kept or who holds them. The application READMEs describe only mcp-gateway (MongoDB MCP...",
+          "yields": []
+        },
+        {
+          "questionId": "mca-annual-return-and-registers-sbo",
+          "question": "Has the company identified its significant beneficial owners and filed BEN-2, or recorded that it has none?",
+          "status": "open",
+          "reason": "No fetched source shows the significant beneficial owners, a BEN-2 filing, or a record that there are none. BEN-2 filings and shareholding data are on MCA V3, which could not be reached (403 or...",
+          "yields": []
+        },
+        {
+          "questionId": "mca-annual-return-and-registers-website-return",
+          "question": "Does the company publish its annual return on its website, and if so at what URL?",
+          "status": "open",
+          "reason": "details.json lists a website, https://example-co.invalid, so the s.92(3) duty to publish the annual return would apply if the site is real. But the .invalid top-level domain is reserved and never...",
+          "yields": []
+        }
+      ]
+    },
+    {
+      "questionnaireId": "q-mca-financial-statements-and-audit",
+      "obligationId": "mca-financial-statements-and-audit",
+      "questions": [
+        {
+          "questionId": "mca-financial-statements-and-audit-accounting-framework",
+          "question": "Are the financial statements prepared under Ind AS or the older Indian GAAP, and are consolidated statements prepared for any subsidiaries?",
+          "status": "open",
+          "reason": "No source was found. The company's own website (https://example-co.invalid, from details.json) does not resolve. A public search for the legal name and CIN U67120MH2016PTC999999 found no annual...",
+          "yields": []
+        },
+        {
+          "questionId": "mca-financial-statements-and-audit-aoc4",
+          "question": "For which financial year was the latest AOC-4 filed with the Registrar of Companies?",
+          "status": "open",
+          "reason": "No AOC-4 filing history was available. MCA master data and filing views need the MCA portal, which may require a login or CAPTCHA, and no authenticated fetch is allowed. A public search for the...",
+          "yields": []
+        },
+        {
+          "questionId": "mca-financial-statements-and-audit-statutory-auditor",
+          "question": "Which firm is the statutory auditor, when was it appointed and when does its s.139 term end?",
+          "status": "open",
+          "reason": "No annual report, ADT-1 filing or website page names the statutory auditor, the appointment date or when the section 139 term ends. The workspace has no record of an auditor. A compliance officer...",
+          "yields": []
+        },
+        {
+          "questionId": "mca-financial-statements-and-audit-books-backup",
+          "question": "Which accounting system holds the books of account, and where are its daily electronic backups kept in India under Rule 3 of the Accounts Rules?",
+          "status": "open",
+          "reason": "No finance or accounting system is described in any workspace file. The only applications are mcp-gateway and db-models, and their READMEs do not mention books of account or accounting backups. No...",
+          "yields": []
+        },
+        {
+          "questionId": "mca-financial-statements-and-audit-audit-trail",
+          "question": "Does the accounting software keep an edit log (audit trail) that cannot be disabled, as the amended Accounts Rules require?",
+          "status": "open",
+          "reason": "The accounting software is unknown (see books-backup), and no source says whether its edit log (audit trail) exists or can be disabled under the amended Rule 3(1) of the Accounts Rules. A...",
+          "yields": []
+        },
+        {
+          "questionId": "mca-financial-statements-and-audit-revenue-lines",
+          "question": "Which revenue lines appear in the financial statements (brokerage, DP charges, margin-funding interest, other income)?",
+          "status": "open",
+          "reason": "No financial statements could be fetched, and the company website does not resolve. The licences in details.json (stock broker, depository participant, NBFC) suggest brokerage, DP-charge and...",
+          "yields": []
+        },
+        {
+          "questionId": "mca-financial-statements-and-audit-audit-qualifications",
+          "question": "Did the latest auditor's report or CARO report carry any qualification, emphasis of matter or internal-financial-control weakness?",
+          "status": "open",
+          "reason": "No auditor's report, CARO 2020 report or internal-financial-controls report was available from any public source or workspace file. A compliance officer needs to say whether the latest reports...",
+          "yields": []
+        }
+      ]
+    },
+    {
+      "questionnaireId": "q-mca-related-party-loans-deposits",
+      "obligationId": "mca-related-party-loans-deposits",
+      "questions": [
+        {
+          "questionId": "mca-related-party-loans-deposits-group-structure",
+          "question": "Does the company have a holding company, subsidiaries or associates, and which group entities hold their own SEBI or RBI licences?",
+          "status": "open",
+          "reason": "No public source names a holding company, subsidiary or associate. The company is a fictional fixture: its website (example-co.invalid) cannot be reached, a web search for the legal name and CIN...",
+          "yields": []
+        },
+        {
+          "questionId": "mca-related-party-loans-deposits-rpt-types",
+          "question": "What related-party transactions does the company enter into (shared services, technology, premises, intra-group funding), and are they at arm's length?",
+          "status": "open",
+          "reason": "No annual report, AOC-2 or financial statement notes could be found, so the related-party transactions are unknown. The only related evidence is in the workspace: the three vendor files (AWS,...",
+          "yields": []
+        },
+        {
+          "questionId": "mca-related-party-loans-deposits-rpt-approval",
+          "question": "How are related-party transactions identified, approved (board or shareholders) and disclosed in AOC-2?",
+          "status": "open",
+          "reason": "No public board report, AOC-2 filing or related-party policy exists for this fictional entity, and no workspace file describes how related-party transactions are identified, approved or disclosed....",
+          "yields": []
+        },
+        {
+          "questionId": "mca-related-party-loans-deposits-margin-funding-lending",
+          "question": "Is margin-trading or client lending done by this entity in the ordinary course of NBFC business, and does it rely on the s.186 NBFC carve-out?",
+          "status": "open",
+          "reason": "details.json records an active RBI NBFC registration N-13.09999 (nbfc-middle-layer) for this legal entity and calls the business 'a middle-layer NBFC margin-funding arm'. It does not say whether...",
+          "yields": []
+        },
+        {
+          "questionId": "mca-related-party-loans-deposits-dpt3",
+          "question": "Does the company file DPT-3 returns, and does it hold any money that counts as a deposit or as exempt money?",
+          "status": "open",
+          "reason": "No MCA filing index is publicly available for this fictional CIN (MCA lookups need a CAPTCHA, which is off-limits), and no workspace file mentions DPT-3 filings, deposits or exempt money such as...",
+          "yields": []
+        }
+      ]
+    },
+    {
+      "questionnaireId": "q-mca-secretarial-audit-csr",
+      "obligationId": "mca-secretarial-audit-csr",
+      "questions": [
+        {
+          "questionId": "mca-secretarial-audit-csr-csr-applicability",
+          "question": "Does the company meet a s.135 CSR threshold, and if so how much did it spend on CSR last year and through which projects?",
+          "status": "open",
+          "reason": "No source this session shows the company's net worth, turnover or net profit (the s.135(1) tests: net worth Rs 500 crore, turnover Rs 1000 crore or net profit Rs 5 crore), a board's report, CSR...",
+          "yields": []
+        },
+        {
+          "questionId": "mca-secretarial-audit-csr-secretarial-audit",
+          "question": "Does the company obtain a secretarial audit report (MR-3), and who is the practising company secretary?",
+          "status": "open",
+          "reason": "The CIN (U67120MH2016PTC999999) shows a private company. Under s.204 and rule 9(1)(c), a private company needs a secretarial audit only if its outstanding loans or borrowings from banks or public...",
+          "yields": []
+        },
+        {
+          "questionId": "mca-secretarial-audit-csr-internal-audit",
+          "question": "Does the company have an internal auditor under s.138, and is internal audit in-house or outsourced?",
+          "status": "open",
+          "reason": "No source names an internal auditor or says whether internal audit is done in-house or outsourced. For a private company, s.138 and rule 13 of the Companies (Accounts) Rules apply when turnover is...",
+          "yields": []
+        },
+        {
+          "questionId": "mca-secretarial-audit-csr-borrowings",
+          "question": "Do outstanding loans or borrowings from banks or public financial institutions exceed Rs 100 crore?",
+          "status": "open",
+          "reason": "No balance sheet, annual return (MGT-7), charge register or annual report was available this session. details.json has a middle-layer NBFC margin-funding arm, which suggests the company borrows,...",
+          "yields": []
+        }
+      ]
+    },
+    {
+      "questionnaireId": "q-mca-capital-charges-corporate-events",
+      "obligationId": "mca-capital-charges-corporate-events",
+      "questions": [
+        {
+          "questionId": "mca-capital-charges-corporate-events-listing-status",
+          "question": "Are any of the company's securities, including non-convertible debentures or commercial paper, listed on NSE or BSE?",
+          "status": "open",
+          "reason": "No source fetched this session shows whether any securities are listed. The company is a fictional fixture: its website https://example-co.invalid does not resolve, and a web search for the CIN...",
+          "yields": []
+        },
+        {
+          "questionId": "mca-capital-charges-corporate-events-objects-clause",
+          "question": "What main objects does the memorandum of association state, and do they cover stock broking, depository and NBFC activities?",
+          "status": "open",
+          "reason": "The memorandum of association is not public in any source this session could reach. MCA master data returned HTTP 403, the company website does not resolve and no annual report was found. The...",
+          "yields": []
+        },
+        {
+          "questionId": "mca-capital-charges-corporate-events-charges",
+          "question": "Which charges are registered on the MCA charge index, and to which lenders (for example, for margin-funding borrowings)?",
+          "status": "open",
+          "reason": "The MCA charge index needs the MCA portal. The master-data page returned HTTP 403 to an unauthenticated fetch, and portal logins are refused. No annual report or lender disclosure was found, and...",
+          "yields": []
+        },
+        {
+          "questionId": "mca-capital-charges-corporate-events-name-change",
+          "question": "Has the company changed its name, registered office state or constitution since incorporation in 2016?",
+          "status": "open",
+          "reason": "No MCA master data or name-history record could be fetched: HTTP 403 on mca.gov.in, and a web search found no record for this CIN. Nothing contradicts the profile's legal name 'Example Capital...",
+          "yields": []
+        },
+        {
+          "questionId": "mca-capital-charges-corporate-events-restructuring",
+          "question": "Has there been a merger, demerger, change of control or share allotment to new investors in the last 24 months?",
+          "status": "open",
+          "reason": "No exchange filing, NCLT order, MCA filing or news source for this entity was found in the last 24 months. The website does not resolve and MCA was unreachable (HTTP 403). A compliance officer...",
+          "yields": []
+        },
+        {
+          "questionId": "mca-capital-charges-corporate-events-roc-orders",
+          "question": "Has the Registrar of Companies or the tribunal issued any adjudication, compounding or penalty order against the company or its officers?",
+          "status": "open",
+          "reason": "No ROC or NCLT adjudication, compounding or penalty order for this entity was found. A web search for the CIN and legal name found none, and the MCA adjudication pages were not reachable without...",
+          "yields": []
+        }
+      ]
+    },
+    {
+      "questionnaireId": "q-sebi-broker-regs-2026",
+      "obligationId": "sebi-broker-regs-2026",
+      "questions": [
+        {
+          "questionId": "sebi-broker-regs-2026-exchange-segments",
+          "question": "On which stock exchanges and segments (equity cash, equity derivatives, currency, commodity, debt) is the company a trading or clearing member under INZ000999999?",
+          "status": "open",
+          "reason": "refuted: entity-identity: details.json does name Example Capital Markets Private Limited (CIN U67120MH2016PTC999999), but it only says the company routes client orders to NSE and BSE and uses the SOC ",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-broker-regs-2026-clearing-model",
+          "question": "Does the company clear its own trades as a self-clearing member, or through a professional clearing member (and which one)?",
+          "status": "open",
+          "reason": "No fetched page or workspace file says whether the company is a self-clearing member or uses a professional clearing member. The company is fictional, so it has no NSE Clearing or ICCL...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-broker-regs-2026-proprietary-trading",
+          "question": "Does the company trade on its own (proprietary) account in addition to executing client orders?",
+          "status": "open",
+          "reason": "No source says whether the company trades on its own account. details.json only describes routing client orders, and the exchange directories that show proprietary trading are not available for a...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-broker-regs-2026-compliance-officer",
+          "question": "Who is the designated compliance officer for the broking business, and has that officer been notified to the exchanges?",
+          "status": "open",
+          "reason": "refuted: source-authenticity: The answer text matches details.json contacts (compliance-officer Farah Sheikh, compliance@example-co.invalid; dpo Farah Sheikh), but the yield process:secretarial-compli",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-broker-regs-2026-authorised-persons",
+          "question": "Does the company operate through authorised persons, and how many are registered with the exchanges?",
+          "status": "open",
+          "reason": "No source says whether the company uses authorised persons or how many are registered. The counts are on NSE/BSE AP lists, which do not cover this fictional entity, and no workspace file mentions...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-broker-regs-2026-qualified-broker",
+          "question": "Has any exchange designated the company a Qualified Stock Broker, and for which financial year?",
+          "status": "open",
+          "reason": "No FY2026-27 Qualified Stock Broker list was found. A web search turned up only NSE QSB circulars up to 2024 (for example NSE/INSP/61213 of 19 Mar 2024), and a fictional entity would not be on any...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-broker-regs-2026-client-segments",
+          "question": "Which client segments does the broking business serve: resident retail, NRI, HNI, corporates or institutions?",
+          "status": "open",
+          "reason": "refuted: source-authenticity: details.json supports only 'discount broker' and the tag retail-broking (so segment:retail-investors is fine); nothing in the file says the clients are 'resident', so the",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-broker-regs-2026-other-activities",
+          "question": "What other activities does the company carry on besides broking (depository services, margin trading, mutual fund distribution, research), and how are they segregated?",
+          "status": "answered",
+          "answer": "Besides broking (INZ000999999), the same legal entity holds a SEBI depository participant registration (IN-DP-999-2016, active) and an RBI NBFC registration in the middle layer (N-13.09999, active), which the profile calls its margin-funding arm. No source mentions mutual fund distribution or research. No source describes how these activities are separated (separate books, staff or systems); a compliance officer needs to answer that.",
+          "answeredBy": "research",
+          "confidence": "medium",
+          "evidence": [
+            {
+              "type": "workspace-file",
+              "ref": "workspace:company-profile/example-co/details.json",
+              "description": "regulatoryRegistrations: SEBI IN-DP-999-2016 status active; RBI N-13.09999 category nbfc-middle-layer status active; entityTypes [\"stock-broker\", \"depository-participant\", \"nbfc\"]; description..."
+            }
+          ],
+          "answeredAt": "2026-09-15T08:46:53Z",
+          "yields": [
+            {
+              "type": "offering",
+              "id": "stock-broking"
+            },
+            {
+              "type": "offering",
+              "id": "depository-services"
+            },
+            {
+              "type": "offering",
+              "id": "margin-funding"
+            }
+          ]
+        },
+        {
+          "questionId": "sebi-broker-regs-2026-net-worth-monitoring",
+          "question": "Which function monitors net worth and deposit requirements, and how often are they reported to the exchanges?",
+          "status": "open",
+          "reason": "No source names the function that monitors net worth and deposits or how often they are reported to the exchanges. Neither details.json nor the application READMEs cover it, and the company's...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-broker-regs-2026-internal-audit",
+          "question": "Who conducts the periodic internal audit of the broking operations, and how often is it done?",
+          "status": "open",
+          "reason": "No source says who does the internal audit of broking operations or how often. details.json auditCadence covers only cyber audit (1 per year) and VAPT (2 per year), which are not the broking...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-broker-regs-2026-books-records",
+          "question": "On which back-office system are the books of account, order logs and client records kept, and for how long?",
+          "status": "open",
+          "reason": "No source names a back-office system for the books of account, order logs and client records, or says how long they are kept. The mcp-gateway README only says AI agents query the client-data and...",
+          "yields": []
+        }
+      ]
+    },
+    {
+      "questionnaireId": "q-sebi-broker-master-circular-2024",
+      "obligationId": "sebi-broker-master-circular-2024",
+      "questions": [
+        {
+          "questionId": "sebi-broker-master-circular-2024-onboarding-channels",
+          "question": "Through which channels are broking clients onboarded: fully online, assisted by authorised persons, or on paper at branches?",
+          "status": "open",
+          "reason": "No public source for this company: the website example-co.invalid does not resolve, and a web search found no pages about the company. The workspace READMEs and env files describe only internal...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-broker-master-circular-2024-products",
+          "question": "Which products can clients trade under the broking licence (delivery equity, intraday, F&O, currency, commodity, IPO bids, exchange mutual fund orders)?",
+          "status": "open",
+          "reason": "The company website, where products would normally be listed, cannot be fetched (example-co.invalid does not resolve). No exchange or other public page lists this company's products. The profile...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-broker-master-circular-2024-running-account",
+          "question": "How often does the company settle clients' running accounts (monthly or quarterly, as each client chooses)?",
+          "status": "open",
+          "reason": "No fetched source or workspace file says how often client running accounts are settled. A compliance officer must answer.",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-broker-master-circular-2024-client-funds",
+          "question": "How are client funds upstreamed to the clearing corporation, and how are client fund balances reported to the exchanges?",
+          "status": "open",
+          "reason": "No fetched source or workspace file describes how client funds are upstreamed to the clearing corporation or reported to the exchanges.",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-broker-master-circular-2024-margin-collection",
+          "question": "How does the company collect margin from clients: cash, a margin pledge through the depository, or both?",
+          "status": "open",
+          "reason": "No fetched source or workspace file describes how margin is collected (cash or depository margin pledge). The company holds a DP registration (IN-DP-999-2016), but that alone does not show pledges...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-broker-master-circular-2024-mtf",
+          "question": "Does the company offer a margin trading facility, and is it funded from the broker's own books or by the NBFC arm?",
+          "status": "open",
+          "reason": "The profile description mentions a 'middle-layer NBFC margin-funding arm', but that is the profile's own claim, not a fetched source. It also does not say whether the SEBI margin trading facility...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-broker-master-circular-2024-ibt-platforms",
+          "question": "Which internet and mobile trading platforms (in-house or vendor-built) does the company offer, and have the exchanges approved them?",
+          "status": "open",
+          "reason": "No fetched source names a client-facing internet or mobile trading platform, or exchange approval for one. The workspace applications (mcp-gateway, db-models) are internal tools. details.json maps...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-broker-master-circular-2024-contract-notes",
+          "question": "How does the company issue electronic contract notes, daily margin statements and quarterly statements of account?",
+          "status": "open",
+          "reason": "No fetched source or workspace file describes how electronic contract notes, daily margin statements or quarterly statements of account are issued.",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-broker-master-circular-2024-dormant-accounts",
+          "question": "What procedure does the company follow to flag inactive or dormant trading accounts and reactivate them?",
+          "status": "open",
+          "reason": "No fetched source or workspace file describes a procedure for flagging or reactivating dormant accounts.",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-broker-master-circular-2024-unauthorised-trade-controls",
+          "question": "How does the company prevent unauthorised trades, for example with order confirmations, SMS/email trade alerts and exchange-verified client contact details?",
+          "status": "open",
+          "reason": "No fetched source or workspace file describes controls against unauthorised trades, such as order confirmations, SMS/email alerts or verified client contact details.",
+          "yields": []
+        }
+      ]
+    },
+    {
+      "questionnaireId": "q-sebi-broker-electronic-trading",
+      "obligationId": "sebi-broker-electronic-trading",
+      "questions": [
+        {
+          "questionId": "sebi-broker-electronic-trading-systems",
+          "question": "Which electronic trading systems (web, mobile app, trading API, dealer terminals) does the company run, and which applications implement each?",
+          "status": "open",
+          "reason": "No source names the company's electronic trading systems (web, mobile app, trading API, dealer terminals). Example Capital Markets is a made-up test company with no public website, annual report...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-broker-electronic-trading-order-routing",
+          "question": "Which system accepts, checks and routes client orders to NSE and BSE, and is it built in-house or bought from a vendor?",
+          "status": "open",
+          "reason": "No source identifies the system that accepts, checks and routes client orders to NSE and BSE, or whether it was built or bought. details.json criticalFunctions[0] 'order-routing' lists appIds...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-broker-electronic-trading-glitch-reporting",
+          "question": "What is the company's procedure for reporting a technical glitch to the exchanges, and who owns it?",
+          "status": "open",
+          "reason": "No public source or workspace file describes how the company reports technical glitches to the exchanges or who owns that duty. The company has no public website or filings. The READMEs and env...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-broker-electronic-trading-bcp-dr",
+          "question": "Does the company keep a DR site for its trading systems, and when was the last DR drill or live switchover?",
+          "status": "open",
+          "reason": "No source confirms or rules out a DR site for trading systems, and none records a DR drill or live switchover date. mcp-gateway has dev, qa and prod env files: prod is AWS ap-south-1...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-broker-electronic-trading-capacity",
+          "question": "How does the company monitor and plan capacity of its trading systems against peak order load?",
+          "status": "open",
+          "reason": "No source describes capacity monitoring or planning for trading systems against peak order load. The workspace README and env files give no capacity figures. mcp-gateway prod observability lists...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-broker-electronic-trading-api-access",
+          "question": "Does the company give retail clients API access for algorithmic trading, and how are API users authenticated (static IP, OAuth)?",
+          "status": "open",
+          "reason": "No source says whether retail clients get API access for algo trading, or how API users are authenticated. The workspace shows only that db-models stores clients' Zerodha and Binance...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-broker-electronic-trading-algo-providers",
+          "question": "Does the company empanel third-party algo providers, and how many algos has it registered with the exchanges?",
+          "status": "open",
+          "reason": "No source lists empanelled third-party algo providers or algos registered with NSE or BSE. The company is a made-up test company with no exchange member page or public disclosure. The workspace...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-broker-electronic-trading-algo-types",
+          "question": "Does the company offer white-box (logic disclosed) algos, black-box algos, or neither to retail clients?",
+          "status": "open",
+          "reason": "No source says whether the company offers white-box or black-box algos to retail clients, or neither. No public website, product page or exchange filing exists, and no workspace file mentions algo...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-broker-electronic-trading-change-management",
+          "question": "How are changes to trading software tested and approved before going live, including exchange mock sessions?",
+          "status": "open",
+          "reason": "No source describes how changes to trading software are tested and approved, including exchange mock sessions. The workspace records CI on GitHub Actions for the application repos...",
+          "yields": []
+        }
+      ]
+    },
+    {
+      "questionnaireId": "q-sebi-dp-regs-2018",
+      "obligationId": "sebi-dp-regs-2018",
+      "questions": [
+        {
+          "questionId": "sebi-dp-regs-2018-depositories",
+          "question": "Is the company a participant of CDSL, NSDL or both, and under which DP IDs?",
+          "status": "open",
+          "reason": "No source fetched this session shows which depository (CDSL, NSDL or both) the company is a participant of, or its DP IDs. The CDSL DP list (cdslindia.com/DP/dplist.aspx, the URL in the offline...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-dp-regs-2018-account-types",
+          "question": "Which demat account types does the DP open: individual, BSDA, HUF, corporate, NRI repatriable or non-repatriable, clearing member pool?",
+          "status": "open",
+          "reason": "No company website, account-opening form or depository page could be fetched (example-co.invalid does not resolve). The workspace READMEs (mcp-gateway, db-models) and env files do not describe...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-dp-regs-2018-account-count",
+          "question": "How many demat accounts does the DP service, as published by the depository or disclosed by the company?",
+          "status": "open",
+          "reason": "No depository statistics page or company disclosure for this entity was found. The public search returned nothing for the legal name, and the CDSL DP list returned HTTP 403. No count can be given...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-dp-regs-2018-services",
+          "question": "Which depository services does the DP provide: pledge and margin pledge, off-market transfers, dematerialisation, transmission, eDIS?",
+          "status": "open",
+          "reason": "No source fetched this session lists the DP's services (pledge and margin pledge, off-market transfer, demat, transmission, eDIS). The company website does not resolve, and the workspace files do...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-dp-regs-2018-ddpi-poa",
+          "question": "Does the DP accept a DDPI or power of attorney for delivery and pledge instructions, and for what purposes?",
+          "status": "open",
+          "reason": "No company website, account-opening kit or tariff sheet could be fetched, and the workspace files do not mention DDPI or power of attorney. Needs a compliance officer's answer.",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-dp-regs-2018-back-office",
+          "question": "Is the DP back office run in-house or on vendor software, and which vendor?",
+          "status": "open",
+          "reason": "The workspace names only the applications mcp-gateway (a MongoDB MCP gateway over the client-data and order stores) and db-models (a shared data-model library), plus the vendors aws, github and...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-dp-regs-2018-concurrent-audit",
+          "question": "Who conducts the DP's internal or concurrent audit, and how often is it filed with the depository?",
+          "status": "open",
+          "reason": "No public source names the DP's internal or concurrent auditor or how often the audit is filed. details.json auditCadence covers VAPT (2 per year) and cyber audit (1 per year) only, not the DP...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-dp-regs-2018-closure-transfer",
+          "question": "What turnaround does the DP commit to for account closure and transfer requests, and how are they tracked?",
+          "status": "open",
+          "reason": "No source fetched this session gives the DP's turnaround for account closure or transfer requests, or how they are tracked. The company website does not resolve.",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-dp-regs-2018-investor-charter",
+          "question": "Does the DP publish the depository investor charter and its complaints data on its website?",
+          "status": "open",
+          "reason": "This is answerable only from the company website, but example-co.invalid does not resolve (ENOTFOUND). Whether the depository investor charter and complaints data are published cannot be confirmed.",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-dp-regs-2018-compliance-officer",
+          "question": "Who is the DP's compliance officer, and does the same person also act for the broking registration?",
+          "status": "open",
+          "reason": "details.json names one company-wide contact with role compliance-officer, Farah Sheikh (compliance@example-co.invalid), who is also listed as DPO. It does not assign a compliance officer to each...",
+          "yields": []
+        }
+      ]
+    },
+    {
+      "questionnaireId": "q-sebi-kyc-master-circular-2023",
+      "obligationId": "sebi-kyc-master-circular-2023",
+      "questions": [
+        {
+          "questionId": "sebi-kyc-master-circular-2023-kra",
+          "question": "With which KYC Registration Agency (or agencies) does the company upload and validate client KYC records?",
+          "status": "open",
+          "reason": "No source available this session names a KYC Registration Agency. Example Capital Markets Private Limited is a fictional fixture: its website (https://example-co.invalid) is on a reserved TLD that...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-kyc-master-circular-2023-ckycr",
+          "question": "Does the company upload records to and download them from the Central KYC Records Registry (CKYCR)?",
+          "status": "open",
+          "reason": "No public source or workspace file says whether the entity uploads to or downloads from CKYCR. CKYCR records are not publicly searchable, and the fixture company has no website or filings to...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-kyc-master-circular-2023-digital-kyc",
+          "question": "Does onboarding use Aadhaar e-KYC, DigiLocker or video in-person verification, and which vendor or platform runs it?",
+          "status": "open",
+          "reason": "No source names an Aadhaar e-KYC, DigiLocker or video-KYC flow, or a vendor or platform for one. The in-scope applications are mcp-gateway (an internal MongoDB MCP gateway for AI agents) and...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-kyc-master-circular-2023-ipv",
+          "question": "Who carries out in-person verification: employees, authorised persons, or a video-KYC provider?",
+          "status": "open",
+          "reason": "No source says who carries out in-person verification (employees, authorised persons or a video-KYC provider). No IPV or VIPV vendor is recorded in vendors/, and there is no public website or...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-kyc-master-circular-2023-non-individuals",
+          "question": "Does the company onboard NRIs, HUFs, corporates or trusts, and through which channel?",
+          "status": "open",
+          "reason": "No source says whether the company onboards NRIs, HUFs, corporates or trusts, or through which channel. details.json tags it 'retail-broking', which suggests retail clients but does not rule other...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-kyc-master-circular-2023-periodic-update",
+          "question": "How often is client KYC updated, and does the frequency vary by client risk category?",
+          "status": "open",
+          "reason": "No source states how often client KYC is updated or whether the cadence varies by client risk category. No KYC policy is published or recorded in the workspace. Ask the compliance officer.",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-kyc-master-circular-2023-third-party-reliance",
+          "question": "Does the company rely on KYC completed by another SEBI intermediary, or share its KYC records with group entities?",
+          "status": "open",
+          "reason": "No source describes reliance on KYC done by another SEBI intermediary, or sharing KYC records with group entities. The profile names the NBFC margin-funding arm as part of this same legal entity...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-kyc-master-circular-2023-records",
+          "question": "Where are KYC documents and verification records stored, and for how long?",
+          "status": "open",
+          "reason": "No source says where KYC documents and verification records are stored or how long they are kept. The metastore records no retention period for any table (retentionDays is null throughout) and has...",
+          "yields": []
+        }
+      ]
+    },
+    {
+      "questionnaireId": "q-sebi-aml-cft-master-circular-2024",
+      "obligationId": "sebi-aml-cft-master-circular-2024",
+      "questions": [
+        {
+          "questionId": "sebi-aml-cft-master-circular-2024-principal-officer",
+          "question": "Who are the Principal Officer and Designated Director registered with FIU-IND for the company?",
+          "status": "open",
+          "reason": "No source names an FIU-IND Principal Officer or Designated Director. FIU-IND does not publish these registrations, and the company website (https://example-co.invalid) uses a reserved .invalid...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-aml-cft-master-circular-2024-risk-categorisation",
+          "question": "How are clients categorised for money-laundering risk (low, medium, high, special category), and when is the rating reviewed?",
+          "status": "open",
+          "reason": "No fetchable company page, policy or workspace file describes client money-laundering risk categories or how often ratings are reviewed. The website domain is .invalid, and neither the READMEs nor...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-aml-cft-master-circular-2024-transaction-monitoring",
+          "question": "Which system raises AML and surveillance alerts on client trades and demat transactions, including alerts passed on by exchanges and depositories?",
+          "status": "open",
+          "reason": "No source names the system that raises AML or surveillance alerts on client trades, demat transactions or alerts passed on by exchanges and depositories. The prod env file names a Wazuh SIEM...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-aml-cft-master-circular-2024-str-filing",
+          "question": "How are suspicious transaction reports and other FIU-IND reports prepared and filed through FINnet?",
+          "status": "open",
+          "reason": "No source describes how the company prepares STRs, CTRs or other FIU-IND reports or files them through FINnet. FIU-IND filings are not public, and the website cannot be fetched (.invalid domain).",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-aml-cft-master-circular-2024-sanctions-screening",
+          "question": "Are clients screened against UN Security Council and UAPA lists at onboarding and on an ongoing basis, and with which tool?",
+          "status": "open",
+          "reason": "No source says whether clients are screened against UNSC or UAPA lists, or with which tool. None of the vendor records (aws, github, mongodb-atlas) is a screening provider, and no workspace file...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-aml-cft-master-circular-2024-beneficial-ownership",
+          "question": "How does the company identify and verify the beneficial owners of non-individual clients?",
+          "status": "open",
+          "reason": "No fetchable source describes how the beneficial owners of non-individual clients are identified or verified. There is no company website or KYC policy page, and the workspace files are silent.",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-aml-cft-master-circular-2024-high-risk-clients",
+          "question": "Does the company accept politically exposed persons or clients from high-risk jurisdictions, and under what approval?",
+          "status": "open",
+          "reason": "No source says whether the company accepts politically exposed persons or clients from high-risk jurisdictions, or what approval that needs. Customer segments beyond the 'retail-broking' tag in...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-aml-cft-master-circular-2024-record-retention",
+          "question": "How long are transaction and client identification records kept after the relationship ends?",
+          "status": "open",
+          "reason": "No source states how long transaction and client identification records are kept after the relationship ends. The env files give only operational log retention (prod 365 days, qa 180 days, dev 30...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-aml-cft-master-circular-2024-training",
+          "question": "How often do employees and authorised persons receive AML/CFT training, and are they screened at hiring?",
+          "status": "open",
+          "reason": "No source describes how often employees and authorised persons get AML/CFT training, or whether they are screened at hiring. details.json gives only headcount (310 employees), and there is no...",
+          "yields": []
+        }
+      ]
+    },
+    {
+      "questionnaireId": "q-sebi-investor-grievance-scores-odr",
+      "obligationId": "sebi-investor-grievance-scores-odr",
+      "questions": [
+        {
+          "questionId": "sebi-investor-grievance-scores-odr-scores-registration",
+          "question": "Are both SEBI registrations enrolled on SCORES, and who handles SCORES complaints?",
+          "status": "open",
+          "reason": "No source says whether INZ000999999 or IN-DP-999-2016 is enrolled on SCORES or who handles SCORES complaints. SCORES enrolment is not on any public register. The company website in details.json...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-investor-grievance-scores-odr-channels",
+          "question": "Through which channels can clients complain (email, phone, app, branch), and what is the designated grievance email address?",
+          "status": "open",
+          "reason": "No grievance channels or designated grievance email address could be found. The company website (https://example-co.invalid) does not resolve. details.json lists only CISO, CTO, compliance and DPO...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-investor-grievance-scores-odr-timeline",
+          "question": "What resolution timeline does the company's grievance procedure commit to, and how is it tracked?",
+          "status": "open",
+          "reason": "No published grievance procedure or resolution timeline was found for this entity. The company website does not resolve, and no workspace file describes one. The timeline set by the SEBI master...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-investor-grievance-scores-odr-escalation",
+          "question": "What escalation matrix, with names and designations, does the company publish for unresolved complaints?",
+          "status": "open",
+          "reason": "No published escalation matrix was found. Brokers and DPs usually publish one on their website, but this company's website (https://example-co.invalid) does not resolve. details.json has no...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-investor-grievance-scores-odr-complaints-data",
+          "question": "How many complaints did the company receive, resolve and leave pending in the last financial year, as shown in its published data?",
+          "status": "open",
+          "reason": "No complaint figures (received, resolved or pending) could be found. They are normally in the investor charter disclosure on the company website, which does not resolve. No annual report or filing...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-investor-grievance-scores-odr-odr-enrolment",
+          "question": "Is the company enrolled on the Smart ODR portal, and do its client agreements include the online dispute resolution clause?",
+          "status": "open",
+          "reason": "No source shows whether the company is enrolled on the Smart ODR portal or whether its client agreements have the online dispute resolution clause. The company website does not resolve, and no...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-investor-grievance-scores-odr-exchange-depository",
+          "question": "How are complaints forwarded by the exchanges and depositories received and closed?",
+          "status": "open",
+          "reason": "No source describes how complaints forwarded by NSE, BSE or the depositories are received and closed. details.json records only order routing to NSE and BSE as a critical function. There is no...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-investor-grievance-scores-odr-ticketing-platform",
+          "question": "Which ticketing or CRM system records client complaints and their resolution?",
+          "status": "open",
+          "reason": "No ticketing or CRM system is named. The vendor register lists only AWS (hosting), GitHub (source and CI) and MongoDB Atlas (managed database). The two application READMEs describe an internal MCP...",
+          "yields": []
+        }
+      ]
+    },
+    {
+      "questionnaireId": "q-sebi-cscrf-2024",
+      "obligationId": "sebi-cscrf-2024",
+      "questions": [
+        {
+          "questionId": "sebi-cscrf-2024-category",
+          "question": "Which CSCRF category did the company determine for FY 2026-27 for the broking and DP registrations, and on what basis?",
+          "status": "open",
+          "reason": "No fetched source says what category was set for FY 2026-27 or on what basis. details.json records category mid-size-re with categorisedAt 2025-04-01 (FY 2025-26) for INZ000999999 and...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-cscrf-2024-it-committee",
+          "question": "Has an IT Committee for REs been set up, and who chairs it?",
+          "status": "open",
+          "reason": "No workspace file (details.json, application READMEs, env files, vendor files, summary.md) mentions an IT Committee for REs or its chair, and no public source exists for this fictional fixture entity.",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-cscrf-2024-ciso",
+          "question": "Who is the designated CISO, and to whom do they report?",
+          "status": "open",
+          "reason": "Only half of this question has a source. details.json contacts name Meera Krishnan (ciso@example-co.invalid) as CISO, but no file states who the CISO reports to. The question is left open so a...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-cscrf-2024-critical-systems",
+          "question": "Which applications and systems has the company identified as critical systems under CSCRF?",
+          "status": "answered",
+          "answer": "The profile records one critical function: order routing to exchanges, meaning acceptance, validation and routing of client orders to NSE and BSE during market hours (impact tolerance: 30 minutes maximum outage, 0 minutes data loss). It is mapped to the mcp-gateway application, which runs in qa and prod on EKS in ap-south-1 and handles pii and financial data. db-models is a dev-only shared library with no runtime and is not mapped to any critical function. No source says whether this mapping is the company's formal CSCRF critical-systems list.",
+          "answeredBy": "research",
+          "confidence": "medium",
+          "evidence": [
+            {
+              "type": "workspace-file",
+              "ref": "company-profile/example-co/details.json",
+              "description": "criticalFunctions: {\"functionId\": \"order-routing\", \"name\": \"Order routing to exchanges\", \"description\": \"Acceptance, validation and routing of client orders to NSE and BSE during market hours\",..."
+            },
+            {
+              "type": "workspace-file",
+              "ref": "applications/mcp-gateway/README.md",
+              "description": "\"Internal MongoDB MCP (Model Context Protocol) gateway that lets ExampleCo's AI agents query the client-data and order stores... Environments: dev (docker compose), qa and prod (EKS ap-south-1)...."
+            },
+            {
+              "type": "workspace-file",
+              "ref": "applications/db-models/README.md",
+              "description": "\"Environment: dev only (library, no runtime).\""
+            }
+          ],
+          "answeredAt": "2026-09-15T08:46:53Z",
+          "yields": [
+            {
+              "type": "platform",
+              "id": "mcp-gateway"
+            },
+            {
+              "type": "process",
+              "id": "order-routing"
+            },
+            {
+              "type": "offering",
+              "id": "broking"
+            }
+          ]
+        },
+        {
+          "questionId": "sebi-cscrf-2024-soc",
+          "question": "Is security monitoring done by an in-house SOC, a market SOC offered through an MII, or a third-party SOC provider?",
+          "status": "answered",
+          "answer": "Security monitoring uses the market SOC offered through the exchanges: the profile's socModel is m-soc-nse-bse. The production mcp-gateway environment also sends logs to a self-hosted Wazuh SIEM in AWS ap-south-1 and keeps them for 365 days in India. No third-party SOC provider is recorded.",
+          "answeredBy": "research",
+          "confidence": "medium",
+          "evidence": [
+            {
+              "type": "workspace-file",
+              "ref": "company-profile/example-co/details.json",
+              "description": "\"socModel\": \"m-soc-nse-bse\""
+            },
+            {
+              "type": "workspace-file",
+              "ref": "applications/mcp-gateway/env/prod.json",
+              "description": "observability: {\"logsRetentionDays\": 365, \"logsInIndia\": true, \"siem\": \"Wazuh (self-hosted, ap-south-1)\"}"
+            }
+          ],
+          "answeredAt": "2026-09-15T08:46:53Z",
+          "yields": [
+            {
+              "type": "process",
+              "id": "security-monitoring"
+            },
+            {
+              "type": "platform",
+              "id": "security-operations-centre"
+            }
+          ]
+        },
+        {
+          "questionId": "sebi-cscrf-2024-vapt",
+          "question": "How often is VAPT performed, by which CERT-In empanelled auditor, and when was the last report submitted?",
+          "status": "open",
+          "reason": "Only the frequency has a source: details.json auditCadence.vaptPerYear is 2 (twice a year). No file names the CERT-In empanelled auditor or the date the last VAPT report was submitted. A human...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-cscrf-2024-cyber-audit",
+          "question": "When was the last CSCRF cyber audit filed with the exchanges and depositories, and who performed it?",
+          "status": "open",
+          "reason": "details.json gives only the planned frequency (auditCadence.cyberAuditPerYear 1). No file records when the last CSCRF cyber audit was filed with the exchanges or depositories, or who performed it....",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-cscrf-2024-cloud",
+          "question": "Which cloud service providers host regulated data or critical systems, and in which regions?",
+          "status": "answered",
+          "answer": "Regulated data (pii, financial) and the order-routing critical system are hosted by two providers. AWS runs EKS, RDS and S3 in ap-south-1 (Mumbai, India), operated by Amazon Data Services India Private Limited. It hosts the mcp-gateway prod cluster eks-prod-mumbai (account example-co-prod) and the qa cluster eks-nonprod-mumbai (account example-co-nonprod), with secrets in AWS Secrets Manager. MongoDB Atlas provides managed MongoDB clusters on AWS ap-south-1 behind the MCP gateway. Both record hosting country IN, and the application residency is IN. GitHub Enterprise Cloud (hosting country US) holds source code and CI data classed confidential only and supports no critical function. The mcp-gateway and db-models dev environments run on developer laptops.",
+          "answeredBy": "research",
+          "confidence": "high",
+          "evidence": [
+            {
+              "type": "workspace-file",
+              "ref": "company-profile/example-co/vendors/aws.json",
+              "description": "services[0]: \"description\": \"EKS, RDS and S3 hosting in ap-south-1\", \"dataAccessed\": [\"pii\", \"financial\"], \"hostingCountries\": [\"IN\"]; subcontractor \"Amazon Data Services India Private Limited\""
+            },
+            {
+              "type": "workspace-file",
+              "ref": "applications/mcp-gateway/env/prod.json",
+              "description": "hosting: {\"provider\": \"aws\", \"region\": \"ap-south-1\", \"accountRef\": \"example-co-prod\", \"cluster\": \"eks-prod-mumbai\"}; \"residency\": [\"IN\"]"
+            },
+            {
+              "type": "workspace-file",
+              "ref": "applications/mcp-gateway/env/qa.json",
+              "description": "hosting: {\"provider\": \"aws\", \"region\": \"ap-south-1\", \"accountRef\": \"example-co-nonprod\", \"cluster\": \"eks-nonprod-mumbai\"}"
+            },
+            {
+              "type": "workspace-file",
+              "ref": "company-profile/example-co/vendors/mongodb-atlas.json",
+              "description": "services[0]: \"description\": \"Managed MongoDB clusters in AWS ap-south-1 backing the MCP gateway\", \"hostingCountries\": [\"IN\"]"
+            },
+            {
+              "type": "workspace-file",
+              "ref": "company-profile/example-co/vendors/github.json",
+              "description": "services[0]: \"Source hosting, GitHub Actions CI and package registry\", \"supportsCriticalFunction\": false, \"dataAccessed\": [\"confidential\"], \"hostingCountries\": [\"US\"]"
+            }
+          ],
+          "answeredAt": "2026-09-15T08:46:53Z",
+          "yields": [
+            {
+              "type": "platform",
+              "id": "aws-mumbai"
+            },
+            {
+              "type": "platform",
+              "id": "mongodb-atlas-mumbai"
+            }
+          ]
+        },
+        {
+          "questionId": "sebi-cscrf-2024-third-parties",
+          "question": "Which third-party technology providers (back office, trading platform, KYC, RTA, SaaS) support critical functions, and how are they assessed?",
+          "status": "answered",
+          "answer": "The company's vendor register lists three third-party technology providers. Two support the order-routing critical function and are rated critical and material: AWS (EKS, RDS, S3 in ap-south-1) and MongoDB, Inc. (Atlas managed MongoDB in ap-south-1). GitHub (source hosting, Actions CI, package registry) is rated important and material but supports no critical function. Assessment method: the company's vendor-risk function assessed all three on 2026-06-15 (ratings: AWS medium, MongoDB Atlas medium, GitHub low). SOC 2 Type II reports by Ernst & Young LLP are on file for AWS (period to 2026-03-31) and GitHub (period to 2025-09-30, expires 2026-09-30). None is on file for MongoDB Atlas, whose recorded contract ended 2026-05-31 and gives no right to audit. No back-office, trading-platform, KYC or RTA provider is recorded, so any such vendors are unknown from the sources.",
+          "answeredBy": "research",
+          "confidence": "medium",
+          "evidence": [
+            {
+              "type": "workspace-file",
+              "ref": "company-profile/example-co/vendors/aws.json",
+              "description": "\"criticality\": \"critical\", \"supportsCriticalFunction\": true, \"criticalFunctionRefs\": [\"order-routing\"]; assurance soc2-type2 Ernst & Young LLP periodEnd 2026-03-31; lastAssessment {\"date\":..."
+            },
+            {
+              "type": "workspace-file",
+              "ref": "company-profile/example-co/vendors/mongodb-atlas.json",
+              "description": "\"criticality\": \"critical\", \"criticalFunctionRefs\": [\"order-routing\"]; contract endDate 2026-05-31, \"rightToAudit\": false; no assurance; lastAssessment {\"date\": \"2026-06-15\", \"rating\": \"medium\"}"
+            },
+            {
+              "type": "workspace-file",
+              "ref": "company-profile/example-co/vendors/github.json",
+              "description": "\"criticality\": \"important\", \"supportsCriticalFunction\": false; assurance soc2-type2 expiresAt 2026-09-30; lastAssessment {\"date\": \"2026-06-15\", \"rating\": \"low\"}"
+            }
+          ],
+          "answeredAt": "2026-09-15T08:46:53Z",
+          "yields": [
+            {
+              "type": "process",
+              "id": "vendor-risk-assessment"
+            },
+            {
+              "type": "platform",
+              "id": "aws-mumbai"
+            },
+            {
+              "type": "platform",
+              "id": "mongodb-atlas-mumbai"
+            },
+            {
+              "type": "platform",
+              "id": "github-cloud"
+            }
+          ]
+        },
+        {
+          "questionId": "sebi-cscrf-2024-incident-reporting",
+          "question": "What is the procedure for reporting cyber incidents to SEBI, the exchanges, the depositories and CERT-In within the prescribed hours?",
+          "status": "open",
+          "reason": "No workspace file describes the procedure for reporting cyber incidents to SEBI, the exchanges, the depositories or CERT-In, and no public source exists for this fictional fixture entity.",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-cscrf-2024-recovery",
+          "question": "What RTO and RPO did the last DR drill achieve for critical systems?",
+          "status": "open",
+          "reason": "No file records a DR drill or the RTO and RPO it achieved. details.json records only the target impact tolerance for order-routing (maxOutageMinutes 30, maxDataLossMinutes 0), which is a target,...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-cscrf-2024-access-reviews",
+          "question": "How often are privileged and user access reviews performed on critical systems?",
+          "status": "open",
+          "reason": "No workspace file states how often privileged or user access reviews are run on critical systems, and no public source exists for this fictional fixture entity.",
+          "yields": []
+        }
+      ]
+    },
+    {
+      "questionnaireId": "q-rbi-nbfc-sbr",
+      "obligationId": "rbi-nbfc-sbr",
+      "questions": [
+        {
+          "questionId": "x-rbi-nbfc-sbr-cor-category",
+          "question": "Which NBFC category (for example NBFC-ICC) does RBI certificate of registration N-13.09999 record for the company?",
+          "status": "open",
+          "reason": "No source I fetched names the NBFC category (for example NBFC-ICC) on certificate N-13.09999. details.json and summary.md record only the layer (nbfc-middle-layer). A web search for the legal name...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-sbr-layer-basis",
+          "question": "Is the company in the middle layer because its total assets are Rs 1,000 crore or more, or because of its category (for example deposit-taking)?",
+          "status": "open",
+          "reason": "No fetched source says whether the middle-layer placement comes from total assets of Rs 1,000 crore or more or from the NBFC's category. The profile records only categorisedAt 2025-10-01. There is...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-sbr-deposit-taking",
+          "question": "Is the NBFC deposit-taking (NBFC-D) or non-deposit-taking (NBFC-ND)?",
+          "status": "open",
+          "reason": "No fetched source says whether the NBFC is deposit-taking (NBFC-D) or non-deposit-taking (NBFC-ND). The profile description says 'margin-funding arm', which does not settle it. The RBI register...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-sbr-asset-size",
+          "question": "What were the NBFC's total assets at the last audited balance sheet date?",
+          "status": "open",
+          "reason": "No audited balance sheet, annual report or MCA filing is available for this fictional company. The workspace does not record total assets.",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-sbr-nof",
+          "question": "Does the NBFC meet the net owned fund required for its category (Rs 10 crore for NBFC-ICC by the paragraph 42 glide path)?",
+          "status": "open",
+          "reason": "No financial statements or regulator source give the net owned fund. Also, the NBFC category that sets the NOF threshold is itself unconfirmed (see x-rbi-nbfc-sbr-cor-category).",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-sbr-customer-interface",
+          "question": "Does the NBFC have a public customer interface, or does it lend only to group or broking clients?",
+          "status": "open",
+          "reason": "No company website or public source describes who the NBFC lends to. The profile description ('margin-funding arm' of a discount broker) suggests broking clients, but it does not say whether there...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-sbr-group-structure",
+          "question": "Is the NBFC a separate legal entity, or is the lending business carried out inside Example Capital Markets Private Limited, the SEBI broker entity?",
+          "status": "open",
+          "reason": "details.json puts the RBI registration N-13.09999 on the legal entity Example Capital Markets Private Limited (CIN U67120MH2016PTC999999). However, the description calls the NBFC an 'arm', and no...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-sbr-ml-governance",
+          "question": "Has the NBFC appointed a Chief Compliance Officer and the board committees required of the middle layer, and who holds those roles?",
+          "status": "open",
+          "reason": "details.json lists a compliance-officer contact (Farah Sheikh), but no source says she is the NBFC's RBI Chief Compliance Officer. No source names the board committees required of a middle-layer...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-sbr-change-in-control",
+          "question": "Has there been any change in shareholding, control or management since registration that needed prior RBI approval, and was it obtained?",
+          "status": "open",
+          "reason": "No MCA filings, shareholding disclosures or RBI approvals are available for this fictional company, and the workspace records no change in control since registration on 2019-03-15. Having no...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-sbr-returns",
+          "question": "Which periodic returns does the NBFC file with the RBI Department of Supervision, and through which portal?",
+          "status": "open",
+          "reason": "No fetched source lists the Department of Supervision returns the NBFC files or the portal it uses (for example CIMS). None of the workspace application READMEs or environment files mention RBI...",
+          "yields": []
+        }
+      ]
+    },
+    {
+      "questionnaireId": "q-rbi-cyber-tech-2026",
+      "obligationId": "rbi-cyber-tech-2026",
+      "questions": [
+        {
+          "questionId": "rbi-cyber-tech-2026-board-policies",
+          "question": "Has the Board approved the IT, information security and cybersecurity policies required by the 2026 Directions, and when were they last reviewed?",
+          "status": "open",
+          "reason": "No source says whether the Board approved IT, information security or cybersecurity policies, or when it last reviewed them. The company's declared website (https://example-co.invalid) does not...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-cyber-tech-2026-ciso-committees",
+          "question": "Who is the NBFC's CISO, and has it set up an IT Strategy Committee and an IT Steering Committee (or shares the broker's)?",
+          "status": "answered",
+          "answer": "The profile names Meera Krishnan (ciso@example-co.invalid) as CISO of Example Capital Markets Private Limited. That legal entity holds the RBI NBFC registration N-13.09999 as well as the SEBI broker and DP registrations, so the NBFC arm has the same CISO as the entity, not a separate group function. No workspace or public source says whether the entity has an IT Strategy Committee or an IT Steering Committee, or whether the broker and NBFC businesses share them. That part is still open and needs a compliance officer to confirm.",
+          "answeredBy": "research",
+          "confidence": "medium",
+          "evidence": [
+            {
+              "type": "workspace-file",
+              "ref": "company-profile/example-co/details.json",
+              "description": "contacts: role ciso, Meera Krishnan; regulatoryRegistrations include RBI N-13.09999 nbfc-middle-layer on the same legal entity"
+            }
+          ],
+          "answeredAt": "2026-09-15T08:46:53Z",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-cyber-tech-2026-critical-systems",
+          "question": "Which information systems does the NBFC classify as critical: the loan management, margin funding, collateral or pledge, and customer portal systems?",
+          "status": "open",
+          "reason": "No source classifies any NBFC information system as critical. details.json criticalFunctions has only 'order-routing' (routing client orders to NSE and BSE), a broking function carried by...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-cyber-tech-2026-platform-apps",
+          "question": "Do the mcp-gateway application and the client-data and order stores it queries also carry NBFC borrower or loan data?",
+          "status": "open",
+          "reason": "No source confirms or rules this out. The mcp-gateway README says it lets AI agents query 'the client-data and order stores' with data classes pii and financial, and it does not mention borrower...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-cyber-tech-2026-incident-reporting",
+          "question": "What process and owner report cyber incidents on DAKSH within six hours of detection (para 141), alongside CERT-In and exchange reporting?",
+          "status": "open",
+          "reason": "No source describes a cyber incident reporting process or owner for DAKSH (RBI), CERT-In or the exchanges. details.json lists ciso, cto, compliance-officer and dpo contacts but no...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-cyber-tech-2026-is-audit",
+          "question": "When was the last annual IS audit (para 56) completed, and by whom?",
+          "status": "open",
+          "reason": "No source records a completed IS audit or its auditor. details.json only declares a target cadence (auditCadence.cyberAuditPerYear: 1). Ledger finding fnd_01M2GS6B87TV7NHZQ8BMGDR4HZ (status...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-cyber-tech-2026-vapt",
+          "question": "When were the last vulnerability assessment (six-monthly) and penetration test (12-monthly) of critical systems under para 121 done?",
+          "status": "open",
+          "reason": "No source gives the date of the last vulnerability assessment or penetration test. details.json declares auditCadence.vaptPerYear: 2 as a target, but ledger finding fnd_01M2GS6B87TV7NHZQ8BMGDR4HZ...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-cyber-tech-2026-bcp-dr",
+          "question": "When was the last DR drill for critical systems (half-yearly under para 129), and what RTO and RPO are set for lending systems?",
+          "status": "open",
+          "reason": "No source records a DR drill date, and no RTO or RPO is set for lending systems. The only impact tolerance in details.json is for the broking function 'order-routing' (maxOutageMinutes 30,...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-cyber-tech-2026-soc",
+          "question": "Does the NBFC run its own Security Operations Centre, share the group's, or use an outsourced SOC provider?",
+          "status": "answered",
+          "answer": "The profile gives the SOC model of Example Capital Markets Private Limited, the legal entity that holds the NBFC registration, as 'm-soc-nse-bse'. That is the exchanges' Market SOC service, provided to the entity from outside rather than run in-house. The mcp-gateway production environment also sends logs to a self-hosted Wazuh SIEM in AWS ap-south-1, kept for 365 days in India. No source says whether the M-SOC arrangement covers the NBFC's lending systems, or whether a separate SOC provider serves them. That coverage, and whether the outsourcing provisions apply, still needs a compliance officer to confirm.",
+          "answeredBy": "research",
+          "confidence": "medium",
+          "evidence": [
+            {
+              "type": "workspace-file",
+              "ref": "company-profile/example-co/details.json",
+              "description": "socModel: m-soc-nse-bse"
+            },
+            {
+              "type": "workspace-file",
+              "ref": "applications/mcp-gateway/env/prod.json",
+              "description": "observability.siem: Wazuh (self-hosted, ap-south-1); logsRetentionDays 365; logsInIndia true"
+            }
+          ],
+          "answeredAt": "2026-09-15T08:46:53Z",
+          "yields": [
+            {
+              "type": "platform",
+              "id": "security-operations-centre"
+            },
+            {
+              "type": "process",
+              "id": "security-monitoring"
+            }
+          ]
+        },
+        {
+          "questionId": "rbi-cyber-tech-2026-customer-auth",
+          "question": "Which digital channels do NBFC customers use to apply for, draw down or repay loans, and what authentication protects them?",
+          "status": "open",
+          "reason": "No source names the digital channels NBFC customers use to apply for, draw down or repay loans, or how those channels authenticate them. There is no customer-facing lending application under...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-cyber-tech-2026-third-party",
+          "question": "Which third-party technology providers support the NBFC's critical systems (cloud, loan management software, KYC utilities)?",
+          "status": "answered",
+          "answer": "The vendor files list three third-party technology providers for the entity. Amazon Web Services, Inc. is material: EKS, RDS and S3 hosting in ap-south-1, rated critical, supporting order-routing, with pii and financial data hosted in India. MongoDB, Inc. (MongoDB Atlas) is material: managed MongoDB clusters in AWS ap-south-1 behind the MCP gateway, rated critical, supporting order-routing, with pii and financial data hosted in India. GitHub, Inc. is material: source hosting, GitHub Actions CI and package registry, rated important, not supporting a critical function, hosted in the US. None of the files names a loan management software vendor or a KYC utility. The AWS and Atlas services are linked to the broking function order-routing, and no source says whether they also host NBFC lending systems. A compliance officer must confirm the lending-system providers.",
+          "answeredBy": "research",
+          "confidence": "medium",
+          "evidence": [
+            {
+              "type": "workspace-file",
+              "ref": "company-profile/example-co/vendors/aws.json",
+              "description": "aws-mumbai: EKS, RDS and S3 hosting in ap-south-1; critical; order-routing"
+            },
+            {
+              "type": "workspace-file",
+              "ref": "company-profile/example-co/vendors/mongodb-atlas.json",
+              "description": "atlas-mumbai: Managed MongoDB clusters in AWS ap-south-1 backing the MCP gateway; critical"
+            },
+            {
+              "type": "workspace-file",
+              "ref": "company-profile/example-co/vendors/github.json",
+              "description": "github-cloud: Source hosting, GitHub Actions CI and package registry; important"
+            }
+          ],
+          "answeredAt": "2026-09-15T08:46:53Z",
+          "yields": [
+            {
+              "type": "process",
+              "id": "vendor-management"
+            },
+            {
+              "type": "platform",
+              "id": "aws-mumbai"
+            },
+            {
+              "type": "platform",
+              "id": "mongodb-atlas"
+            },
+            {
+              "type": "platform",
+              "id": "github-cloud"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "questionnaireId": "q-rbi-outsourcing-2025",
+      "obligationId": "rbi-outsourcing-2025",
+      "questions": [
+        {
+          "questionId": "rbi-outsourcing-2025-policy",
+          "question": "Has the Board approved an outsourcing policy that covers both financial services and IT services outsourcing?",
+          "status": "open",
+          "reason": "No source found. The company website (https://example-co.invalid) does not resolve (getaddrinfo ENOTFOUND), and no annual report, filing or workspace file mentions a Board-approved outsourcing...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-outsourcing-2025-financial-services",
+          "question": "Which financial services activities (sourcing, collection, recovery, KYC verification, customer support) does the NBFC outsource, and to whom?",
+          "status": "open",
+          "reason": "No public or workspace source says which financial-services activities of the NBFC margin-funding arm (sourcing, collection, recovery, KYC verification, customer support) are outsourced. The...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-outsourcing-2025-material-it",
+          "question": "Which IT services outsourcing arrangements does the NBFC treat as material?",
+          "status": "answered",
+          "answer": "The vendor register for Example Capital Markets Private Limited, the legal entity that also holds RBI registration N-13.09999, rates three IT outsourcing arrangements as material. (1) AWS service aws-mumbai: cloud IaaS running EKS, RDS and S3 in ap-south-1, criticality critical, supports order-routing, handles pii and financial data. (2) MongoDB Atlas service atlas-mumbai: managed MongoDB clusters in AWS ap-south-1 behind the MCP gateway, criticality critical, pii and financial data. (3) GitHub service github-cloud: source hosting, GitHub Actions CI and package registry, criticality important, confidential data. The register covers the whole entity. It does not separate NBFC-only arrangements or show that materiality was assessed against the Directions' criteria.",
+          "answeredBy": "research",
+          "confidence": "medium",
+          "evidence": [
+            {
+              "type": "workspace-file",
+              "ref": "company-profile/example-co/vendors/aws.json",
+              "description": "\"serviceId\": \"aws-mumbai\", \"type\": \"cloud-iaas\", \"description\": \"EKS, RDS and S3 hosting in ap-south-1\", \"criticality\": \"critical\" ... \"materiality\": \"material\""
+            },
+            {
+              "type": "workspace-file",
+              "ref": "company-profile/example-co/vendors/mongodb-atlas.json",
+              "description": "\"serviceId\": \"atlas-mumbai\", \"type\": \"cloud-saas\", \"description\": \"Managed MongoDB clusters in AWS ap-south-1 backing the MCP gateway\" ... \"materiality\": \"material\""
+            },
+            {
+              "type": "workspace-file",
+              "ref": "company-profile/example-co/vendors/github.json",
+              "description": "\"serviceId\": \"github-cloud\", \"type\": \"software-development\", \"description\": \"Source hosting, GitHub Actions CI and package registry\", \"criticality\": \"important\" ... \"materiality\": \"material\""
+            },
+            {
+              "type": "workspace-file",
+              "ref": "company-profile/example-co/details.json",
+              "description": "One legal entity holds SEBI INZ000999999, IN-DP-999-2016 and RBI N-13.09999 (nbfc-middle-layer)"
+            }
+          ],
+          "answeredAt": "2026-09-15T08:46:53Z",
+          "yields": [
+            {
+              "type": "process",
+              "id": "vendor-management"
+            },
+            {
+              "type": "platform",
+              "id": "aws-mumbai"
+            },
+            {
+              "type": "platform",
+              "id": "mongodb-atlas"
+            },
+            {
+              "type": "platform",
+              "id": "github"
+            }
+          ]
+        },
+        {
+          "questionId": "rbi-outsourcing-2025-group",
+          "question": "Does the NBFC receive services from group entities such as the broking business (shared technology, operations, staff), and are those covered by arm's-length agreements?",
+          "status": "open",
+          "reason": "Not answerable from the sources. details.json shows the broking, DP and NBFC registrations all held by one legal entity (CIN U67120MH2016PTC999999), so the broking business is not a separate group...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-outsourcing-2025-cloud",
+          "question": "Which cloud service providers and regions host NBFC systems or data?",
+          "status": "answered",
+          "answer": "AWS Asia Pacific (Mumbai), ap-south-1, is the cloud provider: mcp-gateway prod runs on EKS cluster eks-prod-mumbai (account example-co-prod) and qa on eks-nonprod-mumbai (example-co-nonprod), with data classes pii and financial and residency IN. MongoDB Atlas runs managed MongoDB clusters on AWS ap-south-1 for the same gateway, with hosting country IN. The dev environments run on developer laptops, not a cloud. The workspace does not label any system as NBFC-only, so this is the cloud estate of the legal entity that holds the NBFC registration.",
+          "answeredBy": "research",
+          "confidence": "medium",
+          "evidence": [
+            {
+              "type": "workspace-file",
+              "ref": "applications/mcp-gateway/env/prod.json",
+              "description": "\"hosting\": {\"provider\": \"aws\", \"region\": \"ap-south-1\", \"accountRef\": \"example-co-prod\", \"cluster\": \"eks-prod-mumbai\"} ... \"residency\": [\"IN\"]"
+            },
+            {
+              "type": "workspace-file",
+              "ref": "applications/mcp-gateway/env/qa.json",
+              "description": "\"provider\": \"aws\", \"region\": \"ap-south-1\", \"accountRef\": \"example-co-nonprod\", \"cluster\": \"eks-nonprod-mumbai\""
+            },
+            {
+              "type": "workspace-file",
+              "ref": "applications/mcp-gateway/README.md",
+              "description": "Environments: dev (docker compose), qa and prod (EKS ap-south-1). Data classes: pii, financial."
+            },
+            {
+              "type": "workspace-file",
+              "ref": "company-profile/example-co/vendors/mongodb-atlas.json",
+              "description": "\"Managed MongoDB clusters in AWS ap-south-1 backing the MCP gateway\" ... \"hostingCountries\": [\"IN\"]"
+            },
+            {
+              "type": "workspace-file",
+              "ref": "applications/db-models/env/dev.json",
+              "description": "\"provider\": \"other\", \"region\": \"local\", \"accountRef\": \"developer-laptops\""
+            }
+          ],
+          "answeredAt": "2026-09-15T08:46:53Z",
+          "yields": [
+            {
+              "type": "platform",
+              "id": "aws-mumbai"
+            },
+            {
+              "type": "platform",
+              "id": "mongodb-atlas"
+            },
+            {
+              "type": "platform",
+              "id": "mcp-gateway"
+            }
+          ]
+        },
+        {
+          "questionId": "rbi-outsourcing-2025-offshore",
+          "question": "Is any NBFC data or service processed or supported from outside India?",
+          "status": "answered",
+          "answer": "Yes, partly. The pii and financial data stores are hosted in India: the mcp-gateway prod and qa environments have residency IN, and AWS aws-mumbai and MongoDB Atlas atlas-mumbai both list hosting country IN. Some supporting services sit outside India. (1) GitHub github-cloud hosts source code, CI and packages (confidential data) with hosting country US. (2) MongoDB Atlas lists affiliate technical-support subcontractors in Ireland, Canada, Australia, Israel, France, Italy, Spain, Brazil, Singapore, Poland, Germany and the UK, plus US support tooling (Okta, Twilio, Salesforce, Intercom, Talkdesk). The records do not say whether offshore support staff can reach NBFC customer data.",
+          "answeredBy": "research",
+          "confidence": "medium",
+          "evidence": [
+            {
+              "type": "workspace-file",
+              "ref": "company-profile/example-co/vendors/github.json",
+              "description": "\"description\": \"Source hosting, GitHub Actions CI and package registry\" ... \"dataAccessed\": [\"confidential\"], \"hostingCountries\": [\"US\"]"
+            },
+            {
+              "type": "workspace-file",
+              "ref": "company-profile/example-co/vendors/mongodb-atlas.json",
+              "description": "\"hostingCountries\": [\"IN\"] ... {\"name\": \"MongoDB Ltd.\", \"country\": \"IE\", \"role\": \"Affiliate technical support\"} ... {\"name\": \"MongoDB Singapore Pte. Ltd.\", \"country\": \"SG\"}"
+            },
+            {
+              "type": "workspace-file",
+              "ref": "company-profile/example-co/vendors/aws.json",
+              "description": "\"hostingCountries\": [\"IN\"], subcontractor \"Amazon Data Services India Private Limited\", \"country\": \"IN\""
+            },
+            {
+              "type": "workspace-file",
+              "ref": "applications/mcp-gateway/env/prod.json",
+              "description": "\"dataClassification\": [\"pii\", \"financial\"], \"residency\": [\"IN\"], \"logsInIndia\": true"
+            }
+          ],
+          "answeredAt": "2026-09-15T08:46:53Z",
+          "yields": [
+            {
+              "type": "process",
+              "id": "vendor-management"
+            },
+            {
+              "type": "platform",
+              "id": "github"
+            },
+            {
+              "type": "platform",
+              "id": "mongodb-atlas"
+            }
+          ]
+        },
+        {
+          "questionId": "rbi-outsourcing-2025-inventory",
+          "question": "Does the NBFC keep an inventory of outsourced IT services (paragraph 82), and who owns it?",
+          "status": "open",
+          "reason": "Not answerable from the sources. The workspace vendor register (company-profile/example-co/vendors/) lists three services, and each has a lastAssessment dated 2026-06-15 by the...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-outsourcing-2025-contract-remediation",
+          "question": "Were existing IT outsourcing agreements brought into line with the directions by 10 Apr 2026 or at renewal, whichever was earlier?",
+          "status": "answered",
+          "answer": "Not evidenced, and the vendor records point the other way for two of the three material IT agreements. MongoDB Atlas (ATLAS-2025-1189, ended 2026-05-31) and GitHub (GH-ENT-2025-07, ended 2026-06-30) both show rightToAudit false and US governing law. Neither has renewal evidence in the workspace, although both vendors are still active. AWS (AWS-EA-2025-0042, 2025-04-01 to 2028-03-31) shows rightToAudit true but no documented exit plan. On 2026-09-14 the ledger raised initiative init_01M2GWJHMWQE4QZ9YVBP20S1BX to renew these contracts and add audit rights and exit plans; it is still proposed. No source shows any agreement amended to the Directions by 10 Apr 2026.",
+          "answeredBy": "research",
+          "confidence": "low",
+          "evidence": [
+            {
+              "type": "workspace-file",
+              "ref": "company-profile/example-co/vendors/mongodb-atlas.json",
+              "description": "\"reference\": \"ATLAS-2025-1189\", \"startDate\": \"2025-06-01\", \"endDate\": \"2026-05-31\" ... \"governingLaw\": \"US\", \"rightToAudit\": false"
+            },
+            {
+              "type": "workspace-file",
+              "ref": "company-profile/example-co/vendors/github.json",
+              "description": "\"reference\": \"GH-ENT-2025-07\", \"startDate\": \"2025-07-01\", \"endDate\": \"2026-06-30\" ... \"governingLaw\": \"US\", \"rightToAudit\": false"
+            },
+            {
+              "type": "workspace-file",
+              "ref": "company-profile/example-co/vendors/aws.json",
+              "description": "\"reference\": \"AWS-EA-2025-0042\", \"startDate\": \"2025-04-01\", \"endDate\": \"2028-03-31\" ... \"exitPlanDocumented\": false, \"governingLaw\": \"IN\", \"rightToAudit\": true"
+            },
+            {
+              "type": "workspace-file",
+              "ref": "company-profile/example-co/soc/main.jsonl",
+              "description": "obs_01M2GZZJ87BGMJRK3RBMY64GKW: initiative init_01M2GWJHMWQE4QZ9YVBP20S1BX (vendor-contract-remediation) raised to renew lapsed material-vendor contracts and document exit plans and audit rights..."
+            }
+          ],
+          "answeredAt": "2026-09-15T08:46:53Z",
+          "yields": [
+            {
+              "type": "process",
+              "id": "vendor-management"
+            }
+          ]
+        },
+        {
+          "questionId": "rbi-outsourcing-2025-incident-notice",
+          "question": "Do agreements require service providers to report incidents to the NBFC within the directions' timeline (paragraph 61)?",
+          "status": "open",
+          "reason": "No source describes incident-reporting clauses in the service-provider agreements. The vendor records have no field for provider incident-notice timelines, and the agreements themselves are not in...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-outsourcing-2025-exit",
+          "question": "Do the NBFC's material IT outsourcing arrangements have documented and tested exit strategies?",
+          "status": "answered",
+          "answer": "No. All three material IT outsourcing arrangements (AWS aws-mumbai, MongoDB Atlas atlas-mumbai and GitHub github-cloud) have exitPlanDocumented false, so no exit plan is documented and none can have been tested. The ledger control records for paras 84, 85 and 86 are at implementationStatus planned. Remediation initiative init_01M2GWJHMWQE4QZ9YVBP20S1BX, raised on 2026-09-14, is still proposed.",
+          "answeredBy": "research",
+          "confidence": "medium",
+          "evidence": [
+            {
+              "type": "workspace-file",
+              "ref": "company-profile/example-co/vendors/aws.json",
+              "description": "\"materiality\": \"material\" ... \"exitPlanDocumented\": false"
+            },
+            {
+              "type": "workspace-file",
+              "ref": "company-profile/example-co/vendors/mongodb-atlas.json",
+              "description": "\"materiality\": \"material\" ... \"exitPlanDocumented\": false"
+            },
+            {
+              "type": "workspace-file",
+              "ref": "company-profile/example-co/vendors/github.json",
+              "description": "\"materiality\": \"material\" ... \"exitPlanDocumented\": false"
+            },
+            {
+              "type": "workspace-file",
+              "ref": "company-profile/example-co/soc/main.jsonl",
+              "description": "Control rbi-outsourcing-risk-directions-2025:84 \"IT outsourcing policy contains a clear exit strategy\" implementationStatus planned; also 85 and 86 planned"
+            }
+          ],
+          "answeredAt": "2026-09-15T08:46:53Z",
+          "yields": [
+            {
+              "type": "process",
+              "id": "vendor-management"
+            },
+            {
+              "type": "platform",
+              "id": "aws-mumbai"
+            },
+            {
+              "type": "platform",
+              "id": "mongodb-atlas"
+            },
+            {
+              "type": "platform",
+              "id": "github"
+            }
+          ]
+        },
+        {
+          "questionId": "rbi-outsourcing-2025-grievance",
+          "question": "How are customer grievances about outsourced services (for example recovery agents or call centres) received and resolved?",
+          "status": "open",
+          "reason": "No source found. The company website (https://example-co.invalid) does not resolve, no grievance-officer contact is recorded in details.json, and no source says whether the NBFC uses recovery...",
+          "yields": []
+        }
+      ]
+    },
+    {
+      "questionnaireId": "q-rbi-nbfc-kyc",
+      "obligationId": "rbi-nbfc-kyc",
+      "questions": [
+        {
+          "questionId": "rbi-nbfc-kyc-applicability",
+          "question": "Does the NBFC have a customer interface that brings it within the KYC Directions?",
+          "status": "open",
+          "reason": "Paragraph 3 of the RBI (NBFC - KYC) Directions, 2025 (fetched) excludes 'NBFCs not having any customer interface'. The only workspace statement is the details.json description, 'a middle-layer...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-kyc-shared-onboarding",
+          "question": "Are NBFC borrowers onboarded through the broker's SEBI KYC process, through a separate RBI-compliant NBFC KYC, or both?",
+          "status": "open",
+          "reason": "No fetched source describes how NBFC borrowers are onboarded, whether through the broker's SEBI KYC, a separate RBI KYC, or both. The website cannot be resolved, and the READMEs (mcp-gateway,...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-kyc-channels",
+          "question": "Which onboarding channels does the NBFC use: V-CIP, digital KYC, Aadhaar e-KYC, CKYCR retrieval, or in person?",
+          "status": "open",
+          "reason": "No fetched source names the onboarding channels (V-CIP, digital KYC, Aadhaar e-KYC, CKYCR retrieval, in person). No workspace application is described as an onboarding or KYC platform.",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-kyc-segments",
+          "question": "Which customer types does the NBFC lend to: resident individuals, NRIs, HNIs, corporates, or trading clients of the group broker?",
+          "status": "open",
+          "reason": "The details.json description and tags ('retail-broking') refer to the broker, not to NBFC borrowers. No fetched source says which customer types the NBFC lends to. Treating the broker's retail...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-kyc-risk-categorisation",
+          "question": "How does the NBFC risk-categorise customers, and how does it schedule periodic KYC updation under paragraph 42?",
+          "status": "open",
+          "reason": "This is an internal KYC policy matter (risk categories and the periodic updation schedule). No public or workspace source describes it. A compliance officer must answer.",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-kyc-designated-director",
+          "question": "Who are the NBFC's Designated Director and Principal Officer, and have their details been communicated to FIU-IND and RBI?",
+          "status": "open",
+          "reason": "details.json lists a compliance officer and DPO (Farah Sheikh) but no Designated Director or Principal Officer under the PMLA. No fetched source shows whether details were sent to FIU-IND or RBI....",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-kyc-fiu-reporting",
+          "question": "Which FIU-IND reports (CTR, STR, CCR, NTR) does the NBFC file, and is the reporting entity registration separate from the broker's?",
+          "status": "open",
+          "reason": "No fetched source shows which FIU-IND reports (CTR, STR, CCR, NTR) the NBFC files, or whether its FIU-IND reporting-entity registration is separate from the broker's. FIU-IND registrations are not...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-kyc-transaction-monitoring",
+          "question": "What system monitors NBFC customer transactions for suspicious activity?",
+          "status": "open",
+          "reason": "No README or env file describes an AML or transaction-monitoring system. The existing security-operations-centre platform is for cybersecurity (M-SOC and SIEM), not AML surveillance, so it is not...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-kyc-ckycr-upload",
+          "question": "Does the NBFC upload new customers' KYC records to CKYCR, and within what time?",
+          "status": "open",
+          "reason": "No fetched source says whether or how quickly the NBFC uploads KYC records to CKYCR.",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-kyc-sanctions-screening",
+          "question": "How does the NBFC screen customers against UN sanctions lists and other lists required by international agreements?",
+          "status": "open",
+          "reason": "No fetched source describes screening against UN sanctions lists or the lists required under Chapter IX. No workspace application is described as doing screening.",
+          "yields": []
+        }
+      ]
+    },
+    {
+      "questionnaireId": "q-rbi-nbfc-rbc",
+      "obligationId": "rbi-nbfc-rbc",
+      "questions": [
+        {
+          "questionId": "rbi-nbfc-rbc-applicability",
+          "question": "Is the NBFC one of the categories the Responsible Business Conduct Directions cover, and does it have a customer interface?",
+          "status": "open",
+          "reason": "The RBC Directions (RBI/DOR/2025-26/362, fetched) apply to 'all layers, unless specified otherwise' across NBFC-D, NBFC-ICC, NBFC-Factor, NBFC-MFI, NBFC-IFC, IDF-NBFC and HFC, and exclude 'NBFCs...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-rbc-products",
+          "question": "Which loan products does the NBFC offer (margin trading funding, loans against shares, IPO financing, personal or business loans), and how many?",
+          "status": "answered",
+          "answer": "The only product the profile names is margin funding: details.json describes the company as having 'a middle-layer NBFC margin-funding arm'. No source lists other loan products (loans against shares, IPO financing, personal or business loans) or a product count, and the company website does not resolve.",
+          "answeredBy": "research",
+          "confidence": "medium",
+          "evidence": [
+            {
+              "type": "workspace-file",
+              "ref": "company-profile/example-co/details.json",
+              "description": "description: 'Fictional fixture: a mid-size SEBI-registered discount broker and depository participant with a middle-layer NBFC margin-funding arm'"
+            }
+          ],
+          "answeredAt": "2026-09-15T08:46:53Z",
+          "yields": [
+            {
+              "type": "offering",
+              "id": "margin-funding"
+            },
+            {
+              "type": "process",
+              "id": "lending"
+            }
+          ]
+        },
+        {
+          "questionId": "rbi-nbfc-rbc-fpc",
+          "question": "Has the Board approved a Fair Practices Code, and is it published on the company website in the vernacular language?",
+          "status": "open",
+          "reason": "The Directions require a Board-approved Fair Practices Code, 'preferably be in the vernacular language', 'put up on its website'. The company website https://example-co.invalid did not resolve...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-rbc-kfs",
+          "question": "Does the NBFC give a Key Facts Statement with APR to retail and MSME borrowers before loan execution?",
+          "status": "open",
+          "reason": "The KFS applies to 'all retail and MSME term loan products extended by all NBFCs' (Directions, fetched). No fetched source shows whether the NBFC's margin funding is a retail or MSME term loan, or...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-rbc-segments",
+          "question": "Are the NBFC's borrowers retail individuals, MSMEs, corporates, or only clients of the group broker?",
+          "status": "open",
+          "reason": "No fetched source identifies the NBFC's borrowers (retail individuals, MSMEs, corporates, or only clients of the group broker). details.json tags the company 'retail-broking', but that describes...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-rbc-grievance-officer",
+          "question": "Who is the NBFC's grievance redressal officer, and where are the escalation matrix and RBI Integrated Ombudsman details published?",
+          "status": "open",
+          "reason": "details.json contacts list ciso, cto, compliance-officer and dpo, but no grievance-officer. No fetched page publishes an escalation matrix or the RBI Integrated Ombudsman details, because the...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-rbc-internal-ombudsman",
+          "question": "Has the NBFC appointed an Internal Ombudsman, or does it fall below the Rs 5,000 crore NBFC-ND threshold in the 2026 Internal Ombudsman Directions?",
+          "status": "open",
+          "reason": "No fetched source records the NBFC's asset size or an Internal Ombudsman appointment, so the Rs 5,000 crore NBFC-ND threshold cannot be applied. ComplianceOS returned no result for the RBI...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-rbc-recovery",
+          "question": "Does the NBFC use recovery agents, or does it recover margin funding shortfalls by liquidating pledged collateral, and under which policy?",
+          "status": "open",
+          "reason": "No fetched source says whether the NBFC uses recovery agents or liquidates pledged collateral to recover margin shortfalls, or under which policy. The company website does not resolve, and no...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-rbc-board-review",
+          "question": "How often does the Board review grievances and compliance with the Fair Practices Code?",
+          "status": "open",
+          "reason": "The Directions require the Board to 'provide for periodical review of the compliance of the Fair Practices Code and the functioning of the grievance redressal mechanism'. No fetched source (annual...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-rbc-interest-policy",
+          "question": "Has the Board adopted an interest rate model, and are rate ranges and charges disclosed on the website?",
+          "status": "open",
+          "reason": "No fetched source shows a Board-adopted interest rate model, or rate ranges and charges disclosed on the website, because example-co.invalid does not resolve. A compliance officer must confirm the...",
+          "yields": []
+        }
+      ]
+    },
+    {
+      "questionnaireId": "q-rbi-nbfc-credit",
+      "obligationId": "rbi-nbfc-credit",
+      "questions": [
+        {
+          "questionId": "rbi-nbfc-credit-las-offered",
+          "question": "Does the NBFC lend against listed shares or other securities, and if so, under which products?",
+          "status": "open",
+          "reason": "refuted: entity-identity: The only source naming Example Capital Markets Private Limited is its own details.json (the 'margin-funding arm' excerpt and N-13.09999 are present, but citing the profile ba",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-credit-ltv-monitoring",
+          "question": "How does the NBFC keep the 50 per cent LTV at all times and cure shortfalls within seven working days?",
+          "status": "open",
+          "reason": "No fetched source or workspace file describes how LTV is monitored or how shortfalls are cured. Neither application README (mcp-gateway, db-models) mentions a loan or collateral monitoring system....",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-credit-eligible-collateral",
+          "question": "Does the NBFC accept only Group 1 securities as collateral for loans above Rs 5 lakh?",
+          "status": "open",
+          "reason": "No public source or workspace file lists the securities the NBFC accepts as collateral. The company website does not resolve.",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-credit-exchange-reporting",
+          "question": "Does the NBFC file quarterly online reports of shares pledged to it with the stock exchanges, and who files them?",
+          "status": "open",
+          "reason": "No exchange filing or workspace file shows quarterly reports of pledged shares, or who files them. Needs the compliance officer.",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-credit-pledge-mechanism",
+          "question": "How are pledges created and invoked: depository margin pledge through the group DP, or another mechanism?",
+          "status": "open",
+          "reason": "The profile shows the DP registration IN-DP-999-2016 held by the same legal entity as the NBFC registration, not by a group DP. No source says whether pledges use the depository margin pledge or...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-credit-own-shares",
+          "question": "Does the NBFC have controls preventing loans against its own shares or debentures, or those of the group?",
+          "status": "open",
+          "reason": "No source describes controls against lending on the NBFC's own shares or debentures, or the group's. As a private limited company (CIN U67120MH2016PTC999999) its own shares are unlisted, but the...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-credit-policy",
+          "question": "Has the Board approved a credit or loan policy that sets exposure limits, margin requirements and collateral haircuts?",
+          "status": "open",
+          "reason": "No annual report or public policy document was available, and no workspace file mentions a Board-approved credit or loan policy.",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-credit-cic-reporting",
+          "question": "Does the NBFC report borrower credit data to the credit information companies, and to which ones?",
+          "status": "open",
+          "reason": "No source says which credit information companies the NBFC reports to. Answerable by the compliance officer.",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-credit-loan-book-size",
+          "question": "What are the size and number of borrowers of the NBFC's loan book against securities?",
+          "status": "open",
+          "reason": "No annual report, financial filing or public disclosure of the loan book size or borrower count was available. The nbfc-middle-layer category in the profile does not by itself give the loan book...",
+          "yields": []
+        }
+      ]
+    },
+    {
+      "questionnaireId": "q-rbi-nbfc-fraud",
+      "obligationId": "rbi-nbfc-fraud",
+      "questions": [
+        {
+          "questionId": "rbi-nbfc-fraud-policy",
+          "question": "Has the Board approved a fraud risk management policy, and when was it last reviewed (at least every three years)?",
+          "status": "open",
+          "reason": "No fetchable source says whether a Board-approved fraud risk management policy exists or when it was last reviewed. The company is a fictional fixture and its website (https://example-co.invalid)...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-fraud-committee",
+          "question": "Has the NBFC set up a Committee of Executives or an SCBMF to monitor frauds, and who are its members?",
+          "status": "open",
+          "reason": "No fetchable source names a Committee of Executives or a Special Committee of the Board for Monitoring and Follow-up of cases of Frauds (SCBMF), or its members. details.json contacts list only the...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-fraud-ews",
+          "question": "Does the NBFC run an early warning signal and red-flagged account framework, and on which system?",
+          "status": "open",
+          "reason": "No source describes an early warning signal (EWS) or red-flagged account (RFA) framework, or the system that runs it. The only application READMEs describe mcp-gateway (a MongoDB MCP gateway for...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-fraud-fmr",
+          "question": "Who files fraud monitoring returns with RBI within 14 days of classification, and how many frauds were reported in the last year?",
+          "status": "open",
+          "reason": "No public or workspace source names who files fraud monitoring returns (FMR) with RBI, or how many frauds were reported last year. FMR filings are not public, and the fixture has no annual report...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-fraud-lea",
+          "question": "Has the NBFC designated a nodal officer to report frauds to law enforcement agencies?",
+          "status": "open",
+          "reason": "No source names a nodal officer for reporting frauds to law enforcement agencies. details.json contacts have no such role, and no company website or filing can be fetched.",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-fraud-natural-justice",
+          "question": "Does the fraud classification process give the persons concerned a show cause notice with at least 21 days to respond?",
+          "status": "open",
+          "reason": "No source describes how the fraud classification process works, including whether a show cause notice gives at least 21 days to respond. This is an internal procedure that no fetchable public or...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-fraud-internal-audit",
+          "question": "Does internal audit cover fraud prevention, detection, classification, reporting and closure?",
+          "status": "open",
+          "reason": "No source describes what internal audit covers. details.json auditCadence records only VAPT (2 a year) and cyber audit (1 a year), and says nothing about internal audit of fraud prevention,...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-fraud-cyber-link",
+          "question": "How are cyber-enabled frauds (account takeover, phishing, unauthorised pledge invocation) handed between the fraud and cyber incident response teams?",
+          "status": "open",
+          "reason": "No source describes a handoff between the fraud team and the cyber incident response team. The profile records socModel m-soc-nse-bse, and the ledger holds the catalog control...",
+          "yields": []
+        }
+      ]
+    },
+    {
+      "questionnaireId": "q-rbi-nbfc-misc",
+      "obligationId": "rbi-nbfc-misc",
+      "questions": [
+        {
+          "questionId": "rbi-nbfc-misc-regional-office",
+          "question": "Which RBI regional office supervises the NBFC?",
+          "status": "open",
+          "reason": "No fetched source names the RBI regional office that supervises N-13.09999. The entity is a fictional fixture with no RBI NBFC register entry, and details.json does not have this field. Working it...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-misc-intimations",
+          "question": "What process tracks changes in directors, principal officer, auditors and registered address, and notifies RBI within one month?",
+          "status": "open",
+          "reason": "No workspace file or public page describes a process for tracking changes in directors, principal officer, auditors or registered address, or for telling RBI within one month. Only the...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-misc-auditor-appointment",
+          "question": "Who is the NBFC's statutory auditor, and was the appointment made under RBI's 27 Apr 2021 guidelines on appointing statutory auditors?",
+          "status": "open",
+          "reason": "No annual report, MCA filing or workspace file names the statutory auditor or says whether the appointment followed RBI's 27 Apr 2021 guidelines. The fictional entity has no public filings.",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-misc-credit-rating",
+          "question": "Does the NBFC hold a credit rating, from which agency, and has every rating change been reported to RBI within 15 days?",
+          "status": "open",
+          "reason": "No rating agency release, annual report or workspace file shows a credit rating for the NBFC, so rating changes reported to RBI cannot be confirmed. The 'rating' fields in vendors/*.json are...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-misc-financial-disclosures",
+          "question": "Does the NBFC publish annual financial statements with the disclosures required by the NBFC Financial Statements: Presentation and Disclosures Directions, 2025?",
+          "status": "open",
+          "reason": "No published annual report or financial statements exist for this fictional entity, and the workspace does not record whether the NBFC Financial Statements: Presentation and Disclosures...",
+          "yields": []
+        },
+        {
+          "questionId": "rbi-nbfc-misc-compliance-calendar",
+          "question": "Does the compliance function keep a calendar of RBI NBFC filings and intimations separate from the broker's SEBI calendar?",
+          "status": "open",
+          "reason": "No workspace file or public page describes a compliance calendar for RBI NBFC filings, or says whether it is kept separate from the SEBI broker calendar. A compliance officer needs to answer this.",
+          "yields": []
+        }
+      ]
+    }
+  ],
+  "processes": [
+    {
+      "processId": "order-routing",
+      "name": "Order routing to exchanges",
+      "kind": "market-transactions",
+      "description": "Acceptance, validation and routing of client orders to NSE and BSE during market hours",
+      "obligationIds": [
+        "sebi-cscrf-2024"
+      ],
+      "licenseIds": [
+        "sebi-stock-broker",
+        "sebi-depository-participant"
+      ],
+      "offeringIds": [
+        "broking"
+      ]
+    },
+    {
+      "processId": "security-monitoring",
+      "name": "Security monitoring via NSE/BSE M-SOC and SIEM",
+      "kind": "other",
+      "description": "Continuous security monitoring (CSCRF DE.CM) through the MII market SOC plus a self-hosted Wazuh SIEM for production",
+      "obligationIds": [
+        "sebi-cscrf-2024",
+        "rbi-cyber-tech-2026"
+      ],
+      "licenseIds": [
+        "sebi-stock-broker",
+        "sebi-depository-participant",
+        "rbi-nbfc-middle-layer"
+      ]
+    },
+    {
+      "processId": "vendor-risk-assessment",
+      "name": "Third-party technology vendor risk assessment",
+      "kind": "vendor-management",
+      "description": "Periodic vendor assessments with ratings and SOC 2 Type II assurance collection (last cycle 2026-06-15)",
+      "obligationIds": [
+        "sebi-cscrf-2024"
+      ],
+      "licenseIds": [
+        "sebi-stock-broker",
+        "sebi-depository-participant"
+      ]
+    },
+    {
+      "processId": "vendor-management",
+      "name": "Third-party technology vendor management",
+      "kind": "vendor-management",
+      "description": "Material vendor register covering cloud, managed database and source/CI providers",
+      "obligationIds": [
+        "rbi-cyber-tech-2026",
+        "rbi-outsourcing-2025"
+      ],
+      "licenseIds": [
+        "rbi-nbfc-middle-layer"
+      ]
+    },
+    {
+      "processId": "lending",
+      "name": "Lending (margin funding)",
+      "kind": "lending",
+      "description": "Extending margin funding under the RBI NBFC registration N-13.09999",
+      "obligationIds": [
+        "rbi-nbfc-rbc"
+      ],
+      "licenseIds": [
+        "rbi-nbfc-middle-layer"
+      ],
+      "offeringIds": [
+        "margin-funding"
+      ]
+    }
+  ],
+  "offerings": [
+    {
+      "offeringId": "stock-broking",
+      "name": "Stock broking on NSE and BSE",
+      "category": "broking",
+      "licenseId": "sebi-stock-broker"
+    },
+    {
+      "offeringId": "depository-services",
+      "name": "Depository participant services",
+      "category": "depository",
+      "licenseId": "sebi-depository-participant"
+    },
+    {
+      "offeringId": "margin-funding",
+      "name": "Margin funding through the NBFC registration",
+      "category": "margin-funding",
+      "licenseId": "rbi-nbfc-middle-layer",
+      "processIds": [
+        "lending"
+      ]
+    },
+    {
+      "offeringId": "broking",
+      "name": "Stock broking (NSE/BSE order routing)",
+      "category": "broking",
+      "licenseId": "sebi-stock-broker",
+      "processIds": [
+        "order-routing"
+      ]
+    }
+  ],
+  "customerSegments": [],
+  "platforms": [
+    {
+      "platformId": "mcp-gateway",
+      "name": "MongoDB MCP gateway",
+      "kind": "data-platform",
+      "description": "Internal MongoDB MCP (Model Context Protocol) gateway that lets ExampleCo's AI agents query the client-data and order stores. Environments: dev (docker compose), qa and prod (EKS ap-south-1, partner exposure). Data classes: pii and financial. It supports the critical function 'Order routing to exchanges' (NSE/BSE), which is why it is linked to the stock-broker licence. It does not face clients directly.",
+      "appIds": [
+        "mcp-gateway"
+      ],
+      "licenseIds": [
+        "sebi-stock-broker",
+        "sebi-depository-participant",
+        "rbi-nbfc-middle-layer"
+      ],
+      "cybersecurityInstruments": [
+        "sebi-cscrf-2024",
+        "cert-in-directions-2022",
+        "dpdp-rules-2025",
+        "iso-27001-2022"
+      ]
+    },
+    {
+      "platformId": "db-models",
+      "name": "Shared data-model library",
+      "kind": "data-platform",
+      "description": "Shared Python data-model library (SQLAlchemy models) used by internal services. It is dev only and has no runtime (a library, with an isolated dev environment on developer laptops). No workspace file says which licensed offering it carries, so licenseIds is left empty.",
+      "appIds": [
+        "db-models"
+      ],
+      "licenseIds": [],
+      "cybersecurityInstruments": [
+        "sebi-cscrf-2024",
+        "iso-27001-2022"
+      ]
+    },
+    {
+      "platformId": "security-operations-centre",
+      "name": "Security operations centre (M-SOC NSE/BSE and SIEM)",
+      "kind": "supporting-function",
+      "description": "Shared security monitoring. details.json records socModel 'm-soc-nse-bse' (the exchange-provided market SOC for stock brokers), and mcp-gateway prod.json records SIEM 'Wazuh (self-hosted, ap-south-1)' with logs kept in India for 365 days. This is grounded in details.json and the prod environment file; neither application README names it.",
+      "appIds": [
+        "mcp-gateway"
+      ],
+      "licenseIds": [
+        "sebi-stock-broker",
+        "sebi-depository-participant",
+        "rbi-nbfc-middle-layer"
+      ],
+      "cybersecurityInstruments": [
+        "sebi-cscrf-2024",
+        "cert-in-directions-2022",
+        "iso-27001-2022"
+      ]
+    },
+    {
+      "platformId": "aws-mumbai",
+      "name": "AWS ap-south-1 (EKS, RDS, S3)",
+      "kind": "infrastructure",
+      "description": "Hosts mcp-gateway prod and qa EKS clusters; hosting country IN",
+      "appIds": [
+        "mcp-gateway"
+      ],
+      "licenseIds": [
+        "sebi-stock-broker",
+        "sebi-depository-participant",
+        "rbi-nbfc-middle-layer"
+      ],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "mongodb-atlas-mumbai",
+      "name": "MongoDB Atlas on AWS ap-south-1",
+      "kind": "vendor-platform",
+      "description": "Managed MongoDB clusters backing the MCP gateway; hosting country IN",
+      "appIds": [
+        "mcp-gateway"
+      ],
+      "licenseIds": [
+        "sebi-stock-broker",
+        "sebi-depository-participant"
+      ],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "github-cloud",
+      "name": "GitHub Enterprise Cloud (source, Actions CI, packages)",
+      "kind": "vendor-platform",
+      "appIds": [
+        "mcp-gateway",
+        "db-models"
+      ],
+      "licenseIds": [
+        "sebi-stock-broker",
+        "sebi-depository-participant",
+        "rbi-nbfc-middle-layer"
+      ],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "mongodb-atlas",
+      "name": "MongoDB Atlas managed clusters (AWS ap-south-1)",
+      "kind": "vendor-platform",
+      "appIds": [
+        "mcp-gateway"
+      ],
+      "licenseIds": [
+        "rbi-nbfc-middle-layer"
+      ],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "github",
+      "name": "GitHub source hosting and CI",
+      "kind": "vendor-platform",
+      "appIds": [
+        "mcp-gateway",
+        "db-models"
+      ],
+      "licenseIds": [
+        "rbi-nbfc-middle-layer"
+      ],
+      "cybersecurityInstruments": []
+    }
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-15T08:46:53Z",
+    "sessionId": "e260102e-3e0a-4477-9cbd-15745845a58f",
+    "runId": "run_01M2J3YSE6N0AKT3R761XEMVCZ",
+    "workflow": "refresh-ctx",
+    "agent": "validator"
+  }
+}

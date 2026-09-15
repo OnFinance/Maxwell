@@ -1,0 +1,13 @@
+# maxwell-soc-version: 12
+# maxwell-soc-company: example-co
+# maxwell-soc-generated-at: 2026-09-15T09:14:19Z
+# maxwell-soc-session: e260102e-3e0a-4477-9cbd-15745845a58f
+# maxwell-soc-workflow: refresh-ctx
+# maxwell-soc-from: b54358463db29be58a7651b9a1b697c3bc5593cccbff853a4a3ffc0d3e23cb50
+# maxwell-soc-to: ba9b28823c4190f9df9001ea1af5d4515d631458bfb878eb297e54f685355dc7
+# maxwell-soc-lines: 946
+# maxwell-soc-added: 1
+--- a/soc/main.jsonl
++++ b/soc/main.jsonl
+@@ -945,0 +946,1 @@
++{"schemaVersion":"1","kind":"observation","id":"obs_01M2J5GNFG9SXB6JQFQAR83X8K","companyId":"example-co","recordedAt":"2026-09-15T08:46:53Z","title":"refresh-ctx regenerated summary.md sections regulatory-posture, organization-context","methods":["refresh-ctx"],"collectedAt":"2026-09-15T08:46:53Z","subjects":[{"type":"company"}],"controlIds":["sebi-cscrf-2024:PR.AA.S2","rbi-cyber-tech-directions-2026:28","rbi-outsourcing-risk-directions-2025:74(i)","cert-in-directions-2022:Dir-i","dpdp-rules-2025:Sch1.B.1"],"result":"not-applicable","evidence":[{"type":"workspace-file","ref":"company-profile/example-co/summary.md","sha256":"14caedd9079794ac68998652057956f99aa2c0006bde83986e1e69e77b5239b5"}],"provenance":{"harness":"claude-code","generatedAt":"2026-09-15T08:46:53Z","sessionId":"e260102e-3e0a-4477-9cbd-15745845a58f","runId":"run_01M2J3YSE6N0AKT3R761XEMVCZ","workflow":"refresh-ctx","agent":"report-writer"}}
