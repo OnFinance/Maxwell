@@ -3,16 +3,17 @@ schemaVersion: "1"
 kind: maxwell.company.summary
 companyId: example-co
 title: Example Capital Markets cyber resilience summary
-version: "5.0.0"
+version: "5.1.0"
 sections: [overview, regulatory-posture, applications, vendors, data-flows, control-summary, open-findings]
 provenance:
   harness: opencode
-  generatedAt: "2026-09-14T23:04:57Z"
-  sessionId: "ses_f5da6d1b4ffeCc25bD4hh8dP6E"
+  generatedAt: "2026-09-15T00:05:59Z"
+  sessionId: "ses_f5d262d34ffesVQDB4MuJzwReG"
   runId: run_01M2GDZ3Q3S5WYCB3MV02QJXZ1
-  workflow: refresh-apps
+  workflow: probe-iac
   agent: report-writer
-  inputsHash: 5e6301ac655ebc0cad9ea3cd957896c0b3618a97b77bce567471570cba893644
+  model: "cloudflare-workers-ai/@cf/zai-org/glm-5.3"
+  inputsHash: 16c056a71211c8e0ad476ed428302b960c4a1c9a825addd2ce7f29821037ce1f
 ---
 # Example Capital Markets — cyber resilience summary
 
@@ -284,36 +285,52 @@ observations, which would give 18 of 478 (4 %).
 <!-- source: latest-state map over soc/main.jsonl kind=control (710 lines, last line per record id), grouped by instrument id prefix before ':'; effectiveness counts exclude implementationStatus not-applicable; coverage = applicable control ids in controlIds of the 45 kind=observation records -->
 
 ## Open findings
-`probe-schemas` ran against `example-co` this run (`provenance.runId` run_01M2FGNVVQ15ZKXZWGW74YWAAQ,
-`provenance.sessionId` 314aa113-98aa-471e-941d-e1aa88798b5a): 7 new data and API schema finding(s)
-([fnd_01M2G2AGNMHKF9PCB4C85A3JQ3], [fnd_01M2G2AGPX8KWSY1KXGYADK4TK], [fnd_01M2G2AGR581507FMK0EADFKY6],
-[fnd_01M2G2AGSC977KASP37WQXYSQA], [fnd_01M2G2AGTH64FMR4XR77ZAJH7B], [fnd_01M2G2AGVRZPBP3VH8FNAYH46V],
-[fnd_01M2G2AGX1GZ9THG6HJ1VPP1EP]), 0 re-seen (0 reopened), 13 observation(s) recorded (9 `not-satisfied`, 4
-`partial` against the schemas and tool contracts probed) [obs_01M2G24FKAKAVS5JTG628HDYT2],
-[obs_01M2G24FM6869QF05J12Z8TVGB], [obs_01M2G24FN1C2V6TGNBNKX670H0], [obs_01M2G24FNWEXHPV4BHQXK1FFQ0],
-[obs_01M2G24FPP5W96NFAQ6JF098SJ], [obs_01M2G2AGBTAPAK55XVEY24ANB4], [obs_01M2G2AGD08YM217WSQQWNP85A],
-[obs_01M2G2AGE8XFQ4B12MRJBDWYCA], [obs_01M2G2AGFHXSCH94CR7SMFERAW], [obs_01M2G2AGGSXWPRR33K23JB6E90],
-[obs_01M2G2AGHZT55J4AESPB6B0FPH], [obs_01M2G2AGK6ZVDTF4D9A0FNYF6V], [obs_01M2G2AGMDK4QXKHJRCYDQKTZT]. All
-7 new findings target the `mcp-gateway` repo `mongodb-mcp-server`: unmasked personal/financial data returned
-or exported by MCP tools, a plaintext-password response, missing default authentication on the HTTP
-transport, unbounded/unvalidated tool arguments reaching the MongoDB driver, and MCP tool schemas carrying no
-personal-data classification markers.
+`probe-iac` ran against `example-co` this run (`provenance.runId` run_01M2GDZ3Q3S5WYCB3MV02QJXZ1; the records below
+were appended by the `soc-ledger-keeper` session ses_f5d3c5391ffew77uIIkOBGAhOW): 8 new IaC misconfiguration
+finding(s) ([fnd_01M2HCWMBDDT80V2CWJ5Z7BH17], [fnd_01M2HCWMBDGA1D4Z54RET9CNC9], [fnd_01M2HCWMBDCEGN51BKVVXGTV67],
+[fnd_01M2HCWMBDJTN23D3600K6QX9M], [fnd_01M2HCWMBDH7QTRQH0XHDBPAJK], [fnd_01M2HCWMBD5YRM4M6TKKT1M974],
+[fnd_01M2HCWMBDBP41GF0TNY5731M8], [fnd_01M2HCWMBDEHJMTP3A934TCM7Q]), 0 re-seen (0 reopened), 18 observation(s)
+recorded (10 `not-satisfied`, 4 `partial`, 2 `satisfied`, 1 `inconclusive`, 1 `not-applicable` against the
+deployment IaC probed) [obs_01M2HCWMBC4HNCEBE4KE211CR8], [obs_01M2HCWMBDRMJR5688T83DZ7D2],
+[obs_01M2HCWMBDFXRJBM1B91SJZ88E], [obs_01M2HCWMBD08ZSH9214K2HDT06], [obs_01M2HCWMBD0EA9GJZXA5R47V0E],
+[obs_01M2HCWMBD9ARC6QND3WPHY0BX], [obs_01M2HCWMBDESJCQBHZ13H4JSCZ], [obs_01M2HCWMBDKX4BTWNYBA44KYDY],
+[obs_01M2HCWMBD8GEM9XVSRSTBQP7Y], [obs_01M2HCWMBDNBFDERYG7CA47F8E], [obs_01M2HCWMBD8DSRENHJK8Y8EY91],
+[obs_01M2HCWMBDS25YYCCRB29647W9], [obs_01M2HCWMBDEKVJM5HVANNF88ER], [obs_01M2HCWMBD6Q1M790RCE3HFTMQ],
+[obs_01M2HCWMBDP7KGMCSA2BJB53QK], [obs_01M2HCWMBDC2JAZFQ7YJANBGJR], [obs_01M2HCWMBDY4EFEAGYESRSCRMY],
+[obs_01M2HCWMBDQWCNJJ81EMMSEP6S]. All 8 new findings target the IaC roots of the `mcp-gateway` repo
+`mongodb-mcp-server` (evidence:
+`kpis/data/raw/sessions/opencode/run_01M2GDZ3Q3S5WYCB3MV02QJXZ1.probe-iac.mcp-gateway.mongodb-mcp-server.sarif.export.json`,
+sha256 9f3cc6ef…): the qa/prod Bicep deploys the gateway unauthenticated on a public endpoint by default, with no
+IP restrictions, WAF or rate limiting, and the shipped baseline parameters enable write mode; the template defines
+no logging, diagnostics or SIEM forwarding, so the CERT-In 180-day in-India retention duty cannot be met from this
+deployment; the deployment location is not constrained to India for a workload with declared `IN` residency; the
+order-routing critical function runs a single replica with autoscaling disabled and no DR site; both registered
+Dockerfiles install the server and base image unpinned (`latest`); and the created resources carry no inventory
+tags.
 
 Latest record per finding id in `company-profile/example-co/soc/main.jsonl` with `status` in
-`open | triaged | remediating`, as of `provenance.generatedAt` 2026-09-14T13:14:50Z (13 open, 0 past SLA):
+`open | triaged | remediating`, as of `provenance.generatedAt` 2026-09-15T00:05:59Z (21 open, 0 past SLA):
 
 ### High
 
 | Id | Title | Target | Regulatory ref | First seen | SLA due | SLA status | Status | Initiative |
 |---|---|---|---|---|---|---|---|---|
 | [fnd_01M2FS4806WHXANC3Q9QXEAXGF] | assurance-expiring: github-cloud SOC 2 Type II report expires 2026-09-30, inside 90-day window | vendor `github` | SEBI sebi-cscrf-2024 GV.SC.S4 (SEBI CSCRF 2024) | 2026-09-14 | 2026-10-14T10:46:39Z | due in 30 d | open | n/a |
-| [fnd_01M2FS9ECP3E0MTCRQFEJ97930] | contract-expiring: ATLAS-2025-1189 ended 2026-05-31, 106 days ago, no renewal evidence | vendor `mongodb-atlas` | SEBI sebi-cscrf-2024 GV.SC.S4 | 2026-09-14 | 2026-10-14T10:46:39Z | due in 30 d | open | n/a |
+| [fnd_01M2FS9ECP3E0MTCRQFEJ97930] | contract-expiring: ATLAS-2025-1189 ended 2026-05-31, 106 days before NOW, no renewal evidence | vendor `mongodb-atlas` | SEBI sebi-cscrf-2024 GV.SC.S4 | 2026-09-14 | 2026-10-14T10:46:39Z | due in 30 d | open | n/a |
 | [fnd_01M2G2AGPX8KWSY1KXGYADK4TK] | find tool returns full unmasked documents from pii/financial collections | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.DS.S4 | 2026-09-14 | 2026-09-21T13:14:50Z | due in 7 d | open | n/a |
 | [fnd_01M2G2AGR581507FMK0EADFKY6] | aggregate tool returns full unmasked pipeline results | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.DS.S4 | 2026-09-14 | 2026-09-21T13:14:50Z | due in 7 d | open | n/a |
 | [fnd_01M2G2AGSC977KASP37WQXYSQA] | export tool writes full unmasked documents to an unencrypted local file | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.DS.S4 | 2026-09-14 | 2026-09-21T13:14:50Z | due in 7 d | open | n/a |
 | [fnd_01M2G2AGTH64FMR4XR77ZAJH7B] | CreateDBUserTool returns a newly generated password in plain text | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S1 | 2026-09-14 | 2026-09-21T13:14:50Z | due in 7 d | open | n/a |
 | [fnd_01M2G2AGVRZPBP3VH8FNAYH46V] | MCP HTTP transport has no default authentication requirement | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S6 | 2026-09-14 | 2026-09-21T13:14:50Z | due in 7 d | open | n/a |
 | [fnd_01M2G2AGX1GZ9THG6HJ1VPP1EP] | Core MongoDB tool arguments accept unbounded, unvalidated input that reaches the driver | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S17 | 2026-09-14 | 2026-09-21T13:14:50Z | due in 7 d | open | n/a |
+| [fnd_01M2HCWMBDDT80V2CWJ5Z7BH17] | MCP gateway deploys unauthenticated on a public endpoint by default (qa/prod IaC root) | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S17 | 2026-09-15 | 2026-09-22T00:05:59Z | due in 7 d | open | n/a |
+| [fnd_01M2HCWMBDGA1D4Z54RET9CNC9] | Baseline deployment parameters ship the gateway with no auth and write mode enabled | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S17 | 2026-09-15 | 2026-09-22T00:05:59Z | due in 7 d | open | n/a |
+| [fnd_01M2HCWMBDCEGN51BKVVXGTV67] | qa/prod deployment template defines no logging, diagnostics or SIEM forwarding | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.AA.S8 | 2026-09-15 | 2026-09-22T00:05:59Z | due in 7 d | open | n/a |
+| [fnd_01M2HCWMBDJTN23D3600K6QX9M] | Deployment location not constrained to India for an IN-residency pii/financial workload | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.IP.S13 | 2026-09-15 | 2026-09-22T00:05:59Z | due in 7 d | open | n/a |
+| [fnd_01M2HCWMBDH7QTRQH0XHDBPAJK] | Single replica with autoscaling disabled for the order-routing critical function | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 RC.RP.S1 | 2026-09-15 | 2026-09-22T00:05:59Z | due in 7 d | open | n/a |
+| [fnd_01M2HCWMBD5YRM4M6TKKT1M974] | Dev-root Dockerfile installs the server and base image unpinned (latest by default) | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.DS.S6 | 2026-09-15 | 2026-09-22T00:05:59Z | due in 7 d | open | n/a |
+| [fnd_01M2HCWMBDBP41GF0TNY5731M8] | AWS deploy-root Dockerfile hardcodes @latest npm install for the qa/prod image | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 PR.DS.S6 | 2026-09-15 | 2026-09-22T00:05:59Z | due in 7 d | open | n/a |
+| [fnd_01M2HCWMBDEHJMTP3A934TCM7Q] | No owner, data-classification or environment tags on the deployed resources | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 ID.AM.S1 | 2026-09-15 | 2026-09-22T00:05:59Z | due in 7 d | open | n/a |
 
 ### Medium
 
@@ -322,9 +339,9 @@ Latest record per finding id in `company-profile/example-co/soc/main.jsonl` with
 | [fnd_01M2FRY4TTS6M3JJD1F1P7J0TQ] | material-without-evidence: aws-mumbai (order-routing, pii/financial) has no documented exit plan | vendor `aws` | SEBI sebi-cscrf-2024 GV.SC.S3 | 2026-09-14 | 2026-12-13T10:46:39Z | due in 90 d | open | n/a |
 | [fnd_01M2FS481DGTPTR9NJGKAAMF49] | contract-expiring: GH-ENT-2025-07 ended 2026-06-30, 76 days before now, no renewal evidence | vendor `github` | SEBI sebi-cscrf-2024 GV.SC.S3 | 2026-09-14 | 2026-12-13T10:46:39Z | due in 90 d | open | n/a |
 | [fnd_01M2FS482NWXE7E5MCZY2QMAZ0] | material-without-evidence: github lacks audit rights and a documented exit plan | vendor `github` | SEBI sebi-cscrf-2024 GV.SC.S3 | 2026-09-14 | 2026-12-13T10:46:39Z | due in 90 d | open | n/a |
-| [fnd_01M2FS9EBVSP2DPWN5K2D91QKW] | material-without-evidence: atlas-mumbai has no audit rights, no exit plan, contract lapsed | vendor `mongodb-atlas` | SEBI sebi-cscrf-2024 GV.SC.S3 | 2026-09-14 | 2026-12-13T10:46:39Z | due in 90 d | open | n/a |
+| [fnd_01M2FS9EBVSP2DPWN5K2D91QKW] | material-without-evidence: atlas-mumbai has no audit right and no documented exit plan | vendor `mongodb-atlas` | SEBI sebi-cscrf-2024 GV.SC.S3 | 2026-09-14 | 2026-12-13T10:46:39Z | due in 90 d | open | n/a |
 | [fnd_01M2G2AGNMHKF9PCB4C85A3JQ3] | MongoDB MCP tool schemas carry no personal-data classification markers | repo `mcp-gateway/mongodb-mcp-server` | SEBI sebi-cscrf-2024 ID.AM.S5 | 2026-09-14 | 2026-09-28T13:14:50Z | due in 14 d | open | n/a |
 
-<!-- source: latest-state map over soc/main.jsonl kind=finding, filtered to status in open|triaged|remediating; SLA status = ceil((slaDueAt - 2026-09-14T13:14:50Z)/86400000) days -->
+<!-- source: latest-state map over soc/main.jsonl kind=finding (785 lines, 33 finding records across 21 ids), last line per id, filtered to status in open|triaged|remediating; probe-iac batch = 43 records at recordedAt 2026-09-15T00:05:59Z (18 observations, ledger lines 744-761: 10 not-satisfied, 4 partial, 2 satisfied, 1 not-applicable, 1 inconclusive; 8 new findings, lines 762-769: all high, status open, firstSeenAt 2026-09-15T00:05:59Z, slaDueAt 2026-09-22T00:05:59Z, slaBasis sebi-cscrf-2024 PR.MA.S3 patch-sla high 7 d, target repo mcp-gateway/mongodb-mcp-server, primary ref = regulatoryRefs[0] as in the run SARIF); the 8 new records' status/firstSeenAt/slaDueAt re-asserted by the soc-ledger-keeper's post-append ledger check (session ses_f5d3c5391ffew77uIIkOBGAhOW export: "finding slaDueAt set: true" for slaDueAt 2026-09-22T00:05:59Z, slaBasis.days 7, status open, firstSeenAt 2026-09-15T00:05:59Z); vendor findings latest = refresh-vendor-ctx re-seen records, lines 714-721 (recordedAt 2026-09-14T20:15:18Z, status open, firstSeenAt preserved 2026-09-14T10:46:39Z); schema findings latest = probe-schemas records, lines 423-429, whose slaDueAt = firstSeenAt 2026-09-14T13:14:50Z + 7 d (high) / + 14 d (medium) per the batch's uniform patch-sla slaBasis; SLA status = ceil((slaDueAt - 2026-09-15T00:05:59Z)/86400000) days -->
 
 No findings in `risk-accepted`, `false-positive` or `duplicate` this period.
