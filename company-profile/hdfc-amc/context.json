@@ -1,0 +1,3853 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.company.context",
+  "companyId": "hdfc-amc",
+  "status": "in_progress",
+  "summary": "HDFC Asset Management Company Limited (brand HDFC Mutual Fund) is a publicly listed Indian asset management company based in Mumbai, Maharashtra (CIN L65991MH1999PLC123027). Its shares have been listed on the National Stock Exchange under the symbol HDFCAMC since 6 August 2018. It is the investment manager of HDFC Mutual Fund and sells mutual fund schemes, both actively managed and passive, to retail and institutional investors. It also offers portfolio management and advisory services to clients, through a network of investor service centres across India.",
+  "businessUnits": [
+    {
+      "unitId": "hdfc-amc",
+      "name": "HDFC Asset Management Company Limited",
+      "description": "A single legal entity with two SEBI-licensed lines of business: (1) asset management company and investment manager of HDFC Mutual Fund (SEBI MF registration MF/044/00/6), and (2) portfolio management and advisory services (SEBI portfolio manager registration INP000000506). A third-party profile also mentions alternative investment funds, but the profile has no AIF registration and none was confirmed on a SEBI register, so it is not modelled as a separate unit.",
+      "publiclyListed": true,
+      "listing": {
+        "exchanges": [
+          "NSE"
+        ],
+        "symbol": "HDFCAMC",
+        "isin": "INE127D01025"
+      },
+      "licenseIds": [
+        "sebi-mutual-fund-amc",
+        "sebi-portfolio-manager"
+      ],
+      "obligationIds": [
+        "mca-companies-act",
+        "mca-financial-reporting-audit",
+        "mca-board-governance-rpt",
+        "mca-csr-investor-protection",
+        "mca-listed-entity-disclosures",
+        "sebi-lodr-listed-entity"
+      ],
+      "processIds": [
+        "fund-management",
+        "secretarial-compliance",
+        "general-meetings",
+        "shareholder-servicing",
+        "shareholder-grievance-redressal",
+        "secretarial-audit",
+        "statutory-financial-reporting",
+        "statutory-audit",
+        "internal-audit",
+        "compliance-monitoring",
+        "board-committee-governance",
+        "enterprise-risk-management",
+        "cyber-risk-oversight",
+        "unitholder-service-oversight",
+        "trustee-operating-support",
+        "related-party-disclosure",
+        "whistle-blower-mechanism",
+        "upsi-leak-investigation",
+        "csr-programme-management",
+        "csr-implementing-agency-oversight",
+        "unclaimed-dividend-iepf-management",
+        "listed-entity-disclosures",
+        "grievance-redressal",
+        "cyber-risk-management",
+        "client-services",
+        "listed-entity-secretarial-compliance",
+        "related-party-transaction-review",
+        "distribution-partner-management"
+      ]
+    }
+  ],
+  "licenses": [
+    {
+      "licenseId": "sebi-mutual-fund-amc",
+      "name": "SEBI mutual fund asset management company (HDFC Mutual Fund)",
+      "regulator": "SEBI",
+      "registrationNo": "MF/044/00/6",
+      "entityType": "asset-management-company",
+      "status": "active",
+      "unitId": "hdfc-amc",
+      "obligationIds": [
+        "sebi-mutual-funds-regulations",
+        "sebi-cscrf-2024",
+        "sebi-aml-kyc-investor-grievance",
+        "sebi-lodr-listed-entity"
+      ],
+      "processIds": [
+        "enterprise-risk-management",
+        "scheme-fund-management",
+        "unit-distribution-channels",
+        "investor-onboarding-kyc",
+        "fund-accounting",
+        "mf-service-provider-oversight",
+        "unit-transactions",
+        "systematic-plans",
+        "account-statements-cas",
+        "unclaimed-amounts",
+        "cscrf-compliance",
+        "investor-transactions-servicing",
+        "digital-ekyc-onboarding",
+        "cyber-risk-governance",
+        "mf-investor-kyc",
+        "mf-investor-onboarding",
+        "pms-client-onboarding",
+        "mf-investor-grievance-redressal",
+        "pms-client-grievance-redressal",
+        "investor-complaint-disclosure",
+        "investor-due-diligence-fatca-ubo"
+      ],
+      "offeringIds": [
+        "hdfc-mutual-fund-schemes",
+        "segregated-account-services",
+        "alternative-investment-funds",
+        "hdfc-amc-aifs",
+        "hdfc-aif-schemes",
+        "mf-equity-schemes",
+        "mf-debt-schemes",
+        "mf-hybrid-schemes",
+        "mf-solution-oriented-schemes",
+        "mf-index-funds-etfs",
+        "mf-fund-of-funds",
+        "mf-close-ended-schemes"
+      ],
+      "platformIds": [
+        "hdfcfund-website",
+        "cams-rta",
+        "hdfc-mf-website-app",
+        "hdfc-mfonline-partners",
+        "hdfc-mf-whatsapp",
+        "stock-exchange-mf-platforms",
+        "mf-utility",
+        "mfcentral",
+        "scheme-custodians",
+        "hdfcfund-website-investor-portal",
+        "hdfc-mf-investor-app",
+        "partner-api-gateway",
+        "whatsapp-chatbot-channels",
+        "pms-client-portal",
+        "cams-rta-platforms",
+        "mf-central-mf-utility",
+        "hdfc-mfonline",
+        "hdfc-mf-mobile-app",
+        "investor-service-centres",
+        "kra-ckyc-registry",
+        "client-services-contact-centre",
+        "kfintech-share-registry",
+        "cams-mf-registrar",
+        "complaint-management-platform"
+      ]
+    },
+    {
+      "licenseId": "sebi-portfolio-manager",
+      "name": "SEBI portfolio manager",
+      "regulator": "SEBI",
+      "registrationNo": "INP000000506",
+      "entityType": "portfolio-manager",
+      "status": "active",
+      "unitId": "hdfc-amc",
+      "obligationIds": [
+        "sebi-portfolio-managers-regulations",
+        "sebi-cscrf-2024",
+        "sebi-aml-kyc-investor-grievance",
+        "sebi-lodr-listed-entity"
+      ],
+      "processIds": [
+        "enterprise-risk-management",
+        "pms-portfolio-management",
+        "pms-direct-onboarding",
+        "pms-aif-operations",
+        "mf-pms-segregation-conflict-management",
+        "cscrf-compliance",
+        "investor-transactions-servicing",
+        "digital-ekyc-onboarding",
+        "cyber-risk-governance",
+        "mf-investor-kyc",
+        "mf-investor-onboarding",
+        "pms-client-onboarding",
+        "mf-investor-grievance-redressal",
+        "pms-client-grievance-redressal",
+        "investor-complaint-disclosure",
+        "investor-due-diligence-fatca-ubo"
+      ],
+      "offeringIds": [
+        "pms-strategies",
+        "pms-discretionary-non-discretionary",
+        "pms-advisory-mandates",
+        "hdfc-pms-strategies",
+        "hdfc-pms",
+        "pms-discretionary",
+        "pms-non-discretionary",
+        "pms-advisory",
+        "pms-co-investment",
+        "pms-investment-approaches",
+        "aif-category-ii-schemes",
+        "hdfc-amc-pms",
+        "hdfc-pms-services"
+      ],
+      "platformIds": [
+        "hdfcfund-website",
+        "cams-rta",
+        "hdfc-mfonline-partners",
+        "hdfcfund-website-investor-portal",
+        "hdfc-mf-investor-app",
+        "partner-api-gateway",
+        "whatsapp-chatbot-channels",
+        "pms-client-portal",
+        "cams-rta-platforms",
+        "mf-central-mf-utility",
+        "hdfc-mfonline",
+        "hdfc-mf-mobile-app",
+        "investor-service-centres",
+        "kra-ckyc-registry",
+        "client-services-contact-centre",
+        "kfintech-share-registry",
+        "cams-mf-registrar",
+        "complaint-management-platform"
+      ]
+    }
+  ],
+  "obligations": [
+    {
+      "obligationId": "mca-companies-act",
+      "title": "Companies Act 2013 secretarial compliance: board and general meetings, annual return, registers, KMP and secretarial audit",
+      "regulator": "MCA",
+      "source": {
+        "type": "statute",
+        "ref": "Companies Act, 2013 sections 88, 92, 96, 118, 173, 203, 204 and 205",
+        "url": "https://www.mca.gov.in/content/mca/global/en/acts-rules/companies-act/companies-act-2013.html"
+      },
+      "summary": "HDFC Asset Management Company Limited (CIN L65991MH1999PLC123027) is a listed public company, so it holds board and annual general meetings, keeps minutes and statutory registers (members, directors and KMP, charges), files its annual return, must appoint key managerial personnel including a whole-time company secretary, and must have a secretarial audit. This is the base secretarial-compliance process for the entity.",
+      "questionnaireId": "q-mca-companies-act"
+    },
+    {
+      "obligationId": "mca-financial-reporting-audit",
+      "title": "Financial statements, board's report, statutory and internal audit",
+      "regulator": "MCA",
+      "source": {
+        "type": "statute",
+        "ref": "Companies Act, 2013 sections 129, 134, 138, 139, 143 and 211",
+        "url": "https://www.mca.gov.in/content/mca/global/en/acts-rules/companies-act/companies-act-2013.html"
+      },
+      "summary": "The company prepares standalone and consolidated financial statements under Ind AS, publishes a board's report (including the directors' responsibility statement and internal financial controls), appoints statutory auditors by shareholder resolution, runs an internal audit, and files financial statements with MCA.",
+      "questionnaireId": "q-mca-financial-reporting-audit"
+    },
+    {
+      "obligationId": "mca-board-governance-rpt",
+      "title": "Board composition, independent directors, audit and other committees, vigil mechanism and related-party transactions",
+      "regulator": "MCA",
+      "source": {
+        "type": "statute",
+        "ref": "Companies Act, 2013 sections 149, 150, 177, 178, 184 and 188",
+        "url": "https://www.mca.gov.in/content/mca/global/en/acts-rules/companies-act/companies-act-2013.html"
+      },
+      "summary": "As a listed company, it needs independent directors, an audit committee that approves related-party transactions and oversees a vigil mechanism, and nomination-and-remuneration and stakeholders-relationship committees. Directors must disclose their interests, and related-party transactions with the promoter group (HDFC Bank) and its group companies need approval under section 188.",
+      "questionnaireId": "q-mca-board-governance-rpt"
+    },
+    {
+      "obligationId": "mca-csr-investor-protection",
+      "title": "Corporate social responsibility, unclaimed dividends and IEPF, and shareholder grievance redressal",
+      "regulator": "MCA",
+      "source": {
+        "type": "statute",
+        "ref": "Companies Act, 2013 sections 124, 125 and 135 with the IEPF Authority Rules, 2016",
+        "url": "https://www.mca.gov.in/content/mca/global/en/acts-rules/companies-act/companies-act-2013.html"
+      },
+      "summary": "The company meets the section 135 thresholds, so it runs a CSR committee and policy and spends at least the prescribed amount. As a dividend-paying listed company it must transfer unpaid dividends and the underlying shares to the IEPF and resolve shareholder grievances through its stakeholders relationship committee and RTA.",
+      "questionnaireId": "q-mca-csr-investor-protection"
+    },
+    {
+      "obligationId": "mca-listed-entity-disclosures",
+      "title": "Listed-entity governance and disclosures under SEBI LODR (NSE: HDFCAMC, BSE: 541729)",
+      "regulator": "MCA",
+      "source": {
+        "type": "circular",
+        "ref": "SEBI (Listing Obligations and Disclosure Requirements) Regulations, 2015 [last amended 22 Jan 2026]",
+        "url": "https://www.sebi.gov.in/legal/regulations/jan-2026/securities-and-exchange-board-of-india-listing-obligations-and-disclosure-requirements-regulations-2015-last-amended-on-january-22-2026-_99375.html"
+      },
+      "summary": "The equity shares are listed on NSE and BSE, so listed-company duties apply on top of the Companies Act: quarterly results and a corporate governance report, material-event disclosures to the exchanges, a Business Responsibility and Sustainability Report, investor grievance handling through SCORES, insider-trading controls and an annual secretarial compliance report. SEBI issues LODR; it is listed here because it arises from the company's listed status, and the SEBI obligations workflow should cross-reference it.",
+      "questionnaireId": "q-mca-listed-entity-disclosures"
+    },
+    {
+      "obligationId": "sebi-mutual-funds-regulations",
+      "title": "SEBI Mutual Funds Regulations and Master Circular for Mutual Funds (AMC of HDFC Mutual Fund)",
+      "regulator": "SEBI",
+      "source": {
+        "type": "statute",
+        "ref": "Securities and Exchange Board of India (Mutual Funds) Regulations, 2026 (sebi.gov.in pages dated 16 Jan 2026 and 1 Apr 2026), read with the SEBI Master Circular for Mutual Funds dated 20 Mar 2026",
+        "url": "https://www.sebi.gov.in/legal/regulations/apr-2026/securities-and-exchange-board-of-india-mutual-funds-regulations-2026_100744.html"
+      },
+      "summary": "Binds the AMC of HDFC Mutual Fund (MF/044/00/6). Covers launching and managing schemes, investor services and disclosures, valuation and risk management, the trustee and custodian arrangements, the AMC's permitted other business activities, and reporting to SEBI in the formats of the Master Circular for Mutual Funds (20 Mar 2026). The fetched pages did not show when the 2026 Regulations come into force or whether they repeal the 1996 Regulations.",
+      "questionnaireId": "q-sebi-mutual-funds-regulations"
+    },
+    {
+      "obligationId": "sebi-portfolio-managers-regulations",
+      "title": "SEBI Portfolio Managers Regulations 2020 and Master Circular for Portfolio Managers",
+      "regulator": "SEBI",
+      "source": {
+        "type": "statute",
+        "ref": "Securities and Exchange Board of India (Portfolio Managers) Regulations, 2020 [last amended on February 10, 2025], read with the SEBI Master Circular for Portfolio Managers dated 16 Jul 2025",
+        "url": "https://www.sebi.gov.in/legal/regulations/feb-2025/securities-and-exchange-board-of-india-portfolio-managers-regulations-2020-last-amended-on-february-10-2025-_92413.html"
+      },
+      "summary": "Binds HDFC AMC as SEBI portfolio manager INP000000506. Covers the discretionary, non-discretionary and advisory services it offers, client onboarding and agreements, custody of client assets, disclosures, fees and client reporting under the PMS Regulations 2020 and the Master Circular for Portfolio Managers (16 Jul 2025).",
+      "questionnaireId": "q-sebi-portfolio-managers-regulations"
+    },
+    {
+      "obligationId": "sebi-cscrf-2024",
+      "title": "SEBI Cybersecurity and Cyber Resilience Framework (CSCRF) for SEBI Regulated Entities",
+      "regulator": "SEBI",
+      "source": {
+        "type": "instrument",
+        "ref": "sebi-cscrf-2024",
+        "url": "https://www.sebi.gov.in/legal/circulars/aug-2024/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res-_85964.html"
+      },
+      "summary": "In scope (frameworksInScope). instruments.json lists asset-management-company and portfolio-manager among its entity types and requires one of five RE categories. The profile records both SEBI registrations as not-categorised, so base obligations apply until the CSCRF category is captured. Covers governance, identification, protection, detection, response, recovery and evolution standards, VAPT and audit cadence, patch timelines, and 6-hour and 24-hour incident reporting to SEBI and CERT-In.",
+      "questionnaireId": "q-sebi-cscrf-2024"
+    },
+    {
+      "obligationId": "sebi-aml-kyc-investor-grievance",
+      "title": "SEBI AML/CFT obligations, investor KYC, and grievance and dispute redressal (SCORES and ODR)",
+      "regulator": "SEBI",
+      "source": {
+        "type": "circular",
+        "ref": "SEBI Master Circular 'Guidelines on Anti-Money Laundering (AML) Standards and Combating the Financing of Terrorism (CFT)/Obligations of Securities Market Intermediaries under the Prevention of...",
+        "url": "https://www.sebi.gov.in/legal/master-circulars/jun-2024/guidelines-on-anti-money-laundering-aml-standards-and-combating-the-financing-of-terrorism-cft-obligations-of-securities-market-intermediaries-under-the-prevention-of-money-laundering-act-2002-a-_83942.html"
+      },
+      "summary": "Binds the AMC and the portfolio manager as SEBI-registered intermediaries. Covers client due diligence and KYC at onboarding, transaction monitoring, and suspicious transaction reporting under the PMLA, plus redressal of investor complaints through SCORES and online dispute resolution (SMART ODR) for unitholders and PMS clients.",
+      "questionnaireId": "q-sebi-aml-kyc-investor-grievance"
+    },
+    {
+      "obligationId": "sebi-lodr-listed-entity",
+      "title": "SEBI Listing Obligations and Disclosure Requirements for the listed company",
+      "regulator": "SEBI",
+      "source": {
+        "type": "statute",
+        "ref": "Securities and Exchange Board of India (Listing Obligations and Disclosure Requirements) Regulations, 2015 [last amended on January 22, 2026]",
+        "url": "https://www.sebi.gov.in/legal/regulations/jan-2026/securities-and-exchange-board-of-india-listing-obligations-and-disclosure-requirements-regulations-2015-last-amended-on-january-22-2026-_99375.html"
+      },
+      "summary": "Binds HDFC Asset Management Company Limited as a listed company: the profile describes it as publicly listed and its CIN L65991MH1999PLC123027 carries the listed prefix. Covers board and committee governance, related-party transactions, shareholder grievance handling, and continuous disclosures to the stock exchanges. It attaches to the company, not to either SEBI licence.",
+      "questionnaireId": "q-sebi-lodr-listed-entity"
+    }
+  ],
+  "questionnaires": [
+    {
+      "questionnaireId": "q-mca-companies-act",
+      "obligationId": "mca-companies-act",
+      "questions": [
+        {
+          "questionId": "mca-companies-act-1",
+          "question": "Which lines of business does the company's annual report or MCA master data say it carries on (mutual fund management, PMS, AIF, advisory), directly or through subsidiaries?",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "HDFC Asset Management Company Limited is the investment manager of HDFC Mutual Fund. Its Directors' Report for FY 2025-26 says HDFC MF's AUM rose 12% to Rs 8.44 lakh crore by the end of FY 2025-26. It also says the company 'offers Portfolio Management, Segregated Account Services and Alternative Investment Funds to High Net-worth individuals, family offices, domestic corporates, trusts, provident funds and domestic & global institutions'. At 31 March 2026 the PMS business managed over Rs 10,500 crore and AIF commitments exceeded Rs 2,500 crore. The company has one wholly-owned subsidiary, HDFC AMC International (IFSC) Limited. The subsidiary is registered with IFSCA as a Registered Fund Management Entity (Retail) at GIFT City. That registration belongs to the subsidiary, not to this entity. The parent, HDFC Bank, is the promoter.",
+          "answeredBy": "research",
+          "confidence": "high",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://www.arihantcapital.com/company-information/directors-report/21272",
+              "description": "FY 2025-26 Directors' Report: 'The Company offers Portfolio Management, Segregated Account Services and Alternative Investment Funds to High Net-worth individuals, family offices, domestic..."
+            },
+            {
+              "type": "url",
+              "ref": "https://www.indiainfoline.com/company/hdfc-asset-management-company-ltd/reports/directors-report",
+              "description": "FY 2024-25 Directors' Report: mutual funds, PMS, segregated account services and AIFs, plus one wholly-owned subsidiary, HDFC AMC International (IFSC) Limited."
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "yields": [
+            {
+              "type": "process",
+              "id": "fund-management"
+            },
+            {
+              "type": "offering",
+              "id": "hdfc-mutual-fund-schemes"
+            },
+            {
+              "type": "offering",
+              "id": "pms-strategies"
+            },
+            {
+              "type": "offering",
+              "id": "segregated-account-services"
+            },
+            {
+              "type": "offering",
+              "id": "alternative-investment-funds"
+            },
+            {
+              "type": "segment",
+              "id": "hni"
+            },
+            {
+              "type": "segment",
+              "id": "family-offices"
+            },
+            {
+              "type": "segment",
+              "id": "domestic-corporates"
+            },
+            {
+              "type": "segment",
+              "id": "institutions"
+            },
+            {
+              "type": "segment",
+              "id": "trusts-and-provident-funds"
+            }
+          ]
+        },
+        {
+          "questionId": "mca-companies-act-2",
+          "question": "Who are the key managerial personnel (MD/CEO, CFO, company secretary), and which function runs secretarial compliance?",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "The key managerial personnel are Mr. Navneet Munot (Managing Director & CEO), Mr. Naozad Sirwalla (Chief Financial Officer) and Ms. Sonali Chandak (Company Secretary & Head-Legal, and Compliance Officer). Ms. Chandak took over from Ms. Sylvia Furtado with effect from 16 July 2024. The Company Secretary's office runs secretarial compliance. Ms. Chandak also signs the company's stock-exchange filings.",
+          "answeredBy": "research",
+          "confidence": "high",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://www.arihantcapital.com/company-information/directors-report/21272",
+              "description": "FY 2025-26 Directors' Report KMP list: Navneet Munot (MD & CEO), Naozad Sirwalla (CFO), Sonali Chandak (Company Secretary)."
+            },
+            {
+              "type": "url",
+              "ref": "https://www.marketscreener.com/quote/stock/HDFC-ASSET-MANAGEMENT-COM-45228895/news/HDFC-Asset-Management-Company-Limited-Announces-Changes-to-Company-Secretary-and-Compliance-Officer-46926908/",
+              "description": "'Ms. Sonali Chandak as Company Secretary & Head-Legal (Key Managerial Personnel) and Compliance Officer of the Company with effect from July 16, 2024', replacing Ms. Sylvia Furtado."
+            },
+            {
+              "type": "url",
+              "ref": "https://www.indiainfoline.com/company/hdfc-asset-management-company-ltd/reports/directors-report",
+              "description": "FY 2024-25 Directors' Report: the same three KMP."
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "yields": [
+            {
+              "type": "process",
+              "id": "secretarial-compliance"
+            }
+          ]
+        },
+        {
+          "questionId": "mca-companies-act-3",
+          "question": "How does the company run board and shareholder meetings, e.g. video conferencing, remote e-voting, and which agency provides the e-voting platform?",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "General meetings are held by video conferencing / other audio-visual means (VC/OAVM), with remote e-voting and e-voting during the meeting. The 27th AGM took place on 24 June 2026 by VC/OAVM. The cut-off date was 17 June 2026 and remote e-voting ran from 20 to 23 June 2026. Rauthan & Associates, Company Secretaries LLP, was the scrutinizer. The Postal Ballot Notice of January 2024 names KFin Technologies Limited, the company's RTA, as the e-voting agency ('KFintech'). A 2026 search snippet also names KFin as the AGM e-voting provider, but no 2026 document could be opened to confirm it. The Board met 8 times in FY 2025-26. The sources do not say whether Board meetings are held by video conferencing.",
+          "answeredBy": "research",
+          "confidence": "medium",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://www.investywise.com/hdfc-asset-management-company-limited-agm-notice-annual-report-2025-26/",
+              "description": "27th AGM notice: 'The meeting will be conducted through Video Conferencing (VC) / Other Audio-Visual Means (OAVM).' Wednesday 24 June 2026, cut-off Wednesday 17 June 2026."
+            },
+            {
+              "type": "url",
+              "ref": "https://scanx.trade/stock-market-news/companies/hdfc-amc-declares-54-dividend-approves-fy26-results-at-agm/43856739",
+              "description": "AGM held by video conferencing on 24 June 2026; remote e-voting 20-23 June 2026; 'Rauthan & Associates, Company Secretaries LLP, was appointed as the scrutinizer'."
+            },
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2024-02/Postal%20Ballot%20Notice.pdf",
+              "description": "Postal Ballot Notice dated 11 January 2024: voting questions go to 'Ms. Krishna Priya Maddula, Senior Manager, Registrar and Share Transfer Agent, KFin Technologies Limited, Unit: HDFC Asset..."
+            },
+            {
+              "type": "url",
+              "ref": "https://www.arihantcapital.com/company-information/directors-report/21272",
+              "description": "'During the FY 2025-26, 8 (Eight) meetings of the Board of Directors of your Company were held'"
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "yields": [
+            {
+              "type": "process",
+              "id": "general-meetings"
+            },
+            {
+              "type": "platform",
+              "id": "kfintech-evoting"
+            }
+          ]
+        },
+        {
+          "questionId": "mca-companies-act-4",
+          "question": "Which registrar and share transfer agent and which depositories keep the register of members and handle share transfers and transmission?",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "KFin Technologies Limited (formerly KFin Technologies Private Limited), Hyderabad, is the Registrar and Share Transfer Agent. The Register of Members / List of Beneficial Owners comes from the two depositories: National Securities Depository Limited and Central Depository Services (India) Limited. Shareholder grievances go first to KFintech (einward.ris@kfintech.com), then to the company at shareholders.relations@hdfcfund.com.",
+          "answeredBy": "research",
+          "confidence": "low",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2024-02/Postal%20Ballot%20Notice.pdf",
+              "description": "'M/s. KFin Technologies Limited (Formerly known as KFin Technologies Private Limited), Registrar and Share Transfer Agent (KFintech/RTA) and whose names appear on the Register of Members / List of..."
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "unverified": "entity-identity: The only source is the files.hdfcfund.com postal ballot PDF, on the company's own domain. It could not be rendered locally because pdftoppm is missing. Two fetches summarised by...",
+          "yields": [
+            {
+              "type": "process",
+              "id": "shareholder-servicing"
+            },
+            {
+              "type": "process",
+              "id": "shareholder-grievance-redressal"
+            },
+            {
+              "type": "platform",
+              "id": "kfintech-rta"
+            },
+            {
+              "type": "platform",
+              "id": "nsdl-cdsl-depositories"
+            }
+          ]
+        },
+        {
+          "questionId": "mca-companies-act-5",
+          "question": "Which firm conducts the secretarial audit, and did its latest report under section 204 record any qualifications?",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "M/s. Makarand M. Joshi & Co. (MMJC), Company Secretaries, conducts the secretarial audit. It audited FY 2024-25, and the Board appointed it for five consecutive financial years from 1 April 2025 to 31 March 2030. The FY 2025-26 Directors' Report says the auditors made no qualifications, reservations, adverse remarks/comments or disclaimer in their reports. The FY 2024-25 report says the same.",
+          "answeredBy": "research",
+          "confidence": "high",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://www.arihantcapital.com/company-information/directors-report/21272",
+              "description": "'M/s. Makarand M. Joshi & Co., ('MMJC') Company Secretaries to conduct the Secretarial Audit of your Company for a term of five consecutive financial years commencing from April 1, 2025 till March..."
+            },
+            {
+              "type": "url",
+              "ref": "https://www.indiainfoline.com/company/hdfc-asset-management-company-ltd/reports/directors-report",
+              "description": "FY 2024-25: MMJC conducted the secretarial audit; 'There were no qualifications, reservations or adverse comments or disclaimer made.'"
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "yields": [
+            {
+              "type": "process",
+              "id": "secretarial-audit"
+            }
+          ]
+        },
+        {
+          "questionId": "mca-companies-act-6",
+          "question": "Which internal system or compliance tool tracks MCA filings, statutory registers and board meeting minutes, and who reviews it?",
+          "answerableFrom": "internal",
+          "status": "open",
+          "reason": "internal: ask the compliance officer",
+          "yields": []
+        }
+      ]
+    },
+    {
+      "questionnaireId": "q-mca-financial-reporting-audit",
+      "obligationId": "mca-financial-reporting-audit",
+      "questions": [
+        {
+          "questionId": "mca-financial-reporting-audit-1",
+          "question": "Which subsidiaries and associates are consolidated in the financial statements, and what business does each carry on (e.g. IFSC fund management)?",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "HDFC Asset Management Company Limited has one wholly owned subsidiary, HDFC AMC International (IFSC) Limited, and no associates or joint ventures. The consolidated financial statements for FY2025-26 therefore cover only HDFC AMC and this subsidiary. The subsidiary was incorporated on 27 May 2022 and is based in GIFT City. It is registered with IFSCA as a Registered Fund Management Entity (Retail category), registration IFSCA/FME/III/2023-24/073, granted 14 August 2023. Its business is investment manager services, acting as sponsor or settler for the GIFT funds, and discretionary and non-discretionary portfolio management. At 31 March 2026 it had 5 Category III open-ended AIFs live, AUM of US$52.83 million and 247 active accounts. The board's report says it is not a material subsidiary, and the investor presentation calls it immaterial to the group. Group versus entity: the IFSCA registration and the GIFT City funds belong to the subsidiary, not to HDFC AMC, so they are not listed as HDFC AMC licences or offerings.",
+          "answeredBy": "research",
+          "confidence": "low",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://www.hdfc.bank.in/content/dam/hdfcbankpws/in/en/pdf/about-us/annual-reports-of-the-subsidiaries/2025-26/hdfc-asset-management-company-limited.pdf",
+              "description": "HDFC AMC 27th Annual Report 2025-26 (7.6 MB), board's report, about p.76: 'Except for the above subsidiary, during the financial year 2025-26 and as of the date of this report, your Company does..."
+            },
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2026-06/HDFC%20AMC%20International%20(IFSC)%20%20_190526.pdf%201.pdf",
+              "description": "HDFC AMC International (IFSC) Limited 4th Annual Report 2025-26 (1.1 MB): 'The Company is in the business of providing Investment Manager Services, act as a sponsor/settler for the GIFT Funds and..."
+            },
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2026-04/Shareholders%20Presentation%20Q4%20FY26.pdf",
+              "description": "Q4 FY26 shareholders presentation (2.7 MB), a smaller source for the same fact: 'A Wholly Owned Subsidiary ('WOS') of the Company namely 'HDFC AMC International (IFSC) Limited', located in Gujarat..."
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "unverified": "source-authenticity: All three cited PDFs (FY26 annual report, 7.6MB; IFSC subsidiary PDF, 1.1MB; Q4 FY26 presentation, 2.7MB) downloaded but came back as compressed binary, and no PDF renderer is...",
+          "yields": [
+            {
+              "type": "process",
+              "id": "statutory-financial-reporting"
+            }
+          ]
+        },
+        {
+          "questionId": "mca-financial-reporting-audit-2",
+          "question": "Which revenue streams does the annual report show (MF management fees, PMS and advisory fees, AIF), and in what proportion?",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "FY2025-26 standalone revenue from operations (Note 19, 'Asset Management Services') was Rs 4,118.53 crore. Of this, Rs 4,103.15 crore (about 99.6%) was investment management fees from the mutual fund. The remaining Rs 15.38 crore (about 0.4%) was fees for portfolio management, AIF and other advisory services. FY2024-25 comparatives were Rs 3,481.91 crore, Rs 16.12 crore and Rs 3,498.03 crore in total. On a consolidated basis, which adds the GIFT City subsidiary, the PMS, AIF and advisory line was Rs 19.01 crore, for total revenue of Rs 4,122.16 crore. HDFC Mutual Fund is the only customer above 10% of revenue. Revenue earned outside India was Rs 1.47 crore. The report does not show AIF fees separately from PMS and advisory fees. The company runs PMS, segregated account services and AIFs for high-net-worth individuals, family offices, corporates, trusts, provident funds and domestic and global institutions. Its PMS AUM passed Rs 100 billion, including mandates from EPFO and SPFO.",
+          "answeredBy": "research",
+          "confidence": "low",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://www.hdfc.bank.in/content/dam/hdfcbankpws/in/en/pdf/about-us/annual-reports-of-the-subsidiaries/2025-26/hdfc-asset-management-company-limited.pdf",
+              "description": "Annual Report 2025-26, standalone Note 19 ASSET MANAGEMENT SERVICES (Rs crore): 'Investment Management Fee - Mutual fund 4,103.15 [FY25 3,481.91]; Portfolio Management Fee, 'AIF and Other Advisory..."
+            },
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2026-04/Shareholders%20Presentation%20Q4%20FY26.pdf",
+              "description": "Q4 FY26 shareholders presentation: 'Revenue from Operations 41,185 [Rs mm, YE FY26] 34,980 [YE FY25] 18%'. Platforms named: 'Mutual Funds Active | Passive; Alternatives AIF | PMS; International..."
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "unverified": "source-authenticity: The annual report PDF (7.6MB) and the Q4 FY26 presentation (2.7MB) came back as unreadable compressed binary and could not be rendered locally, so I could not check the Note...",
+          "yields": [
+            {
+              "type": "offering",
+              "id": "hdfc-mutual-fund-schemes"
+            },
+            {
+              "type": "offering",
+              "id": "pms-discretionary-non-discretionary"
+            },
+            {
+              "type": "offering",
+              "id": "pms-advisory-mandates"
+            },
+            {
+              "type": "offering",
+              "id": "hdfc-amc-aifs"
+            },
+            {
+              "type": "segment",
+              "id": "hni"
+            },
+            {
+              "type": "segment",
+              "id": "family-offices"
+            },
+            {
+              "type": "segment",
+              "id": "corporates"
+            },
+            {
+              "type": "segment",
+              "id": "institutions"
+            },
+            {
+              "type": "segment",
+              "id": "provident-funds"
+            },
+            {
+              "type": "process",
+              "id": "fund-management"
+            }
+          ]
+        },
+        {
+          "questionId": "mca-financial-reporting-audit-3",
+          "question": "Who are the statutory auditors, and did their report on internal financial controls over financial reporting record any qualification or emphasis of matter?",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "The statutory auditors are B S R & Co. LLP, Chartered Accountants (ICAI FRN 101248W/W-100022; engagement partner Varun Kothari). Under s.139 they were re-appointed for 5 years, from the conclusion of the 23rd AGM to the conclusion of the 28th AGM. Their FY2025-26 reports are dated 16 April 2026. They include a report on internal financial controls over financial reporting under s.143(3)(i), and that opinion is unmodified: the controls were adequate and operating effectively as at 31 March 2026, for the standalone company and, in the consolidated report, for the subsidiary as well. The board's report says the financial statements carry unmodified audit opinions, and the auditors reported no fraud under s.143(12). No emphasis-of-matter paragraph appears in the extracted report text. The one key audit matter is revenue from investment management fees, because approved fee rates are entered manually into the system and fees are computed on daily scheme AUM. For comparison, FY2024-25 also had an unmodified opinion on internal financial controls, from the same auditor.",
+          "answeredBy": "research",
+          "confidence": "low",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://www.hdfc.bank.in/content/dam/hdfcbankpws/in/en/pdf/about-us/annual-reports-of-the-subsidiaries/2025-26/hdfc-asset-management-company-limited.pdf",
+              "description": "Annual Report 2025-26, board's report: 'M/s. B S R & Co. LLP, Chartered Accountants (ICAI FRN: 101248W/W-100022) were re-appointed as the Statutory Auditors of your Company for a period of 5..."
+            },
+            {
+              "type": "url",
+              "ref": "https://www.indiainfoline.com/company/hdfc-asset-management-company-ltd/reports/auditors-report",
+              "description": "Smaller page, prior year FY2024-25 auditor's report: BSR & Co. LLP (FRN 101248W/W-100022), with an unmodified opinion that 'the Company has, in all material respects, adequate internal financial..."
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "unverified": "source-authenticity: The primary annual report PDF could not be read (compressed binary, no renderer). The IndiaInfoline aggregator page (low confidence) quotes the FY2024-25 auditor's report, not...",
+          "yields": [
+            {
+              "type": "process",
+              "id": "statutory-audit"
+            },
+            {
+              "type": "process",
+              "id": "statutory-financial-reporting"
+            }
+          ]
+        },
+        {
+          "questionId": "mca-financial-reporting-audit-4",
+          "question": "Is internal audit run in-house or outsourced, and which areas (operations, IT, investment, compliance) does it cover?",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "Internal audit is outsourced. M/s. M P Chitale & Co were appointed as the company's internal auditors for FY2025-26. The MD&A says an independent professional firm oversees and carries out the internal audit, reviews internal controls, and reports independently to the Audit Committee on the adequacy and effectiveness of risk management and internal controls. The internal auditors report directly to the Audit Committee, which sets the scope, periodicity and methodology of the audit with them. Scope: the independent internal auditors review the activities of each department and function, including compliance, and review relevant reports before they go to the Board and regulators. Under the Board-approved Risk Management Framework, internal audit is the third line of defence. It gives independent assurance over risk categories that include outsourcing, financial reporting, technology, information and cyber risk. The reports do not list separate audit programmes for investments, IT or operations beyond 'each department and function', and they do not give an audit calendar.",
+          "answeredBy": "research",
+          "confidence": "low",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://www.hdfc.bank.in/content/dam/hdfcbankpws/in/en/pdf/about-us/annual-reports-of-the-subsidiaries/2025-26/hdfc-asset-management-company-limited.pdf",
+              "description": "Annual Report 2025-26, board's report: 'M/s. M P Chitale & Co were appointed as an Internal Auditors of your Company for the financial year 2025-26.' MD&A: 'The Company has appointed an..."
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "unverified": "source-authenticity: The only cited source, the FY26 annual report PDF (7.6MB), came back as compressed binary and could not be rendered locally, so I could not confirm M P Chitale & Co as...",
+          "yields": [
+            {
+              "type": "process",
+              "id": "internal-audit"
+            },
+            {
+              "type": "process",
+              "id": "compliance-monitoring"
+            }
+          ]
+        },
+        {
+          "questionId": "mca-financial-reporting-audit-5",
+          "question": "Which accounting/ERP and fund accounting systems produce the company's financial statements, and who owns them?",
+          "answerableFrom": "internal",
+          "status": "open",
+          "reason": "internal: ask the compliance officer. No fetched source or workspace file names the accounting, ERP or fund-accounting systems. The FY26 annual report says only that 'AUM is calculated by the...",
+          "yields": []
+        }
+      ]
+    },
+    {
+      "questionnaireId": "q-mca-board-governance-rpt",
+      "obligationId": "mca-board-governance-rpt",
+      "questions": [
+        {
+          "questionId": "mca-board-governance-rpt-1",
+          "question": "Which board committees does the company have (audit, NRC, stakeholders relationship, CSR, risk management, IT strategy), and what does each oversee?",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "The FY 2025-26 Corporate Governance Report (27th Annual Report, pp. 143-151) lists these board committees. (1) Audit Committee: four non-executive directors, three of them independent; 13 meetings. It oversees financial reporting, the auditors' appointment and pay, and the review of the annual financial statements. SEBI letters and action-taken reports also go to it. (2) Nomination & Remuneration Committee, chaired by Jairaj Purandare: director and senior-management appointments, remuneration policy, board evaluation and stock option plans. (3) Stakeholders Relationship and Unit Holder Protection Committee, chaired by Sanjay Bhandarkar: inactive folios, unclaimed dividends and redemptions, the service standards of HDFC Mutual Fund's registrar and transfer agent (RTA), compensation to investors and schemes, market abuse by employees, and investor education funds. (4) ESG & CSR Committee, chaired by Deepak S. Parekh: the ESG framework and disclosures, CSR policy, the annual action plan and CSR spend. (5) Risk Management Committee: approves risk policies at AMC and scheme level (investment, credit, liquidity, operational risk including incident reporting, outsourcing, cyber and information security, BCP/DR). It also sets risk appetite and limits, oversees the Executive Risk Management Committee (ERMC), and reviews cyber security risk and the business continuity plan. (6) Technology Committee, chaired by Roshni Nadar Malhotra; 1 meeting: future readiness of technology, key IT initiatives against business strategy, IT investments and resources for managing IT risk, and digitalisation. (7) Investment Committee: the company's own loans, guarantees and investments within board limits. (8) Share Allotment Committee: allotment of equity shares. Separately, the Directors' Report says cyber and information security risks are reviewed by the 'Information Technology & Security Committee' and the Risk Management Committee, with board oversight. That committee also oversees the business continuity programme (BRSR). The report does not say whether it is a board committee or an executive committee.",
+          "answeredBy": "research",
+          "confidence": "high",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://www.hdfc.bank.in/content/dam/hdfcbankpws/in/en/pdf/about-us/annual-reports-of-the-subsidiaries/2025-26/hdfc-asset-management-company-limited.pdf",
+              "description": "27th Annual Report 2025-26 (7.6 MB). Corporate Governance Report: Audit Committee p.143; NRC, Stakeholders Relationship and Unit Holder Protection, ESG & CSR, Risk Management and Technology..."
+            },
+            {
+              "type": "url",
+              "ref": "https://www.indiainfoline.com/company/hdfc-asset-management-company-ltd/reports/directors-report",
+              "description": "Smaller copy of the FY 2024-25 Directors' Report: 'cyber risk and mitigation controls are monitored by Information Technology and Security Committee and Risk Management Committee of the Company'."
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "yields": [
+            {
+              "type": "process",
+              "id": "board-committee-governance"
+            },
+            {
+              "type": "process",
+              "id": "enterprise-risk-management"
+            },
+            {
+              "type": "process",
+              "id": "cyber-risk-oversight"
+            },
+            {
+              "type": "process",
+              "id": "unitholder-service-oversight"
+            },
+            {
+              "type": "offering",
+              "id": "hdfc-mutual-fund-schemes"
+            },
+            {
+              "type": "offering",
+              "id": "hdfc-pms-strategies"
+            },
+            {
+              "type": "offering",
+              "id": "hdfc-aif-schemes"
+            },
+            {
+              "type": "platform",
+              "id": "mutual-fund-rta"
+            },
+            {
+              "type": "platform",
+              "id": "information-technology-security"
+            }
+          ]
+        },
+        {
+          "questionId": "mca-board-governance-rpt-2",
+          "question": "What related-party transactions does the company have with HDFC Bank and group entities (distribution commissions, banking, rent, deputation)?",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "FY 2025-26 standalone Ind AS 24 disclosure (Annual Report p.217). Related parties with transactions: HDFC Bank Limited (holding company); HDFC AMC International (IFSC) Limited (subsidiary); HDFC Trustee Company, HDFC Life, HDFC ERGO General Insurance and HDFC Securities (fellow subsidiaries); the employees' gratuity scheme; and key management personnel (KMP) and their relatives. Amounts are in Rs crore, FY26, with FY25 in brackets. With HDFC Bank: lease rent 13.81 (12.11), bank charges 0.01, fees and commission 3.77 (2.14), administration and other expenses 2.62 (2.37), trademark licence fees 15.88 (13.17), custodian charges 0.03 (0.06), equity dividend paid 1,009.62 (785.26). Year-end bank balances were 11.85, prepaid commission 1.66 and security deposit 4.32. With fellow subsidiaries: fees and commission 0.30 (0.31), insurance premium 4.58 (4.75), prepaid commission 2.21 and advance for expenses 2.42. With the IFSC subsidiary: reimbursement of expenses 0.16 and ESOP/PSU capital contribution 0.21; the investment in it stands at 34.24. The company provides operating and secretarial services to HDFC Trustee Company without charge. The notes say all transactions are at arm's length. The Corporate Governance Report says there was no materially significant related party transaction in FY 2025-26. No deputation line appears in the disclosure. The source does not say whether the commissions are for distribution.",
+          "answeredBy": "research",
+          "confidence": "high",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://www.hdfc.bank.in/content/dam/hdfcbankpws/in/en/pdf/about-us/annual-reports-of-the-subsidiaries/2025-26/hdfc-asset-management-company-limited.pdf",
+              "description": "27th Annual Report 2025-26 (7.6 MB). Notes to Standalone Financial Statements pp.216-217: '1 Holding Company HDFC Bank Limited ... EXPENSE Lease Rent 13.81 12.11 ... Fees and Commission 3.77 2.14..."
+            },
+            {
+              "type": "url",
+              "ref": "https://www.indiainfoline.com/company/hdfc-asset-management-company-ltd/reports/directors-report",
+              "description": "Smaller copy of the FY 2024-25 Directors' Report: 'During the year, there was no material transaction with any related parties as per the Related Party Transactions Policy.'"
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "yields": [
+            {
+              "type": "platform",
+              "id": "hdfc-bank-group-services"
+            },
+            {
+              "type": "platform",
+              "id": "hdfc-group-insurance"
+            },
+            {
+              "type": "process",
+              "id": "trustee-operating-support"
+            },
+            {
+              "type": "process",
+              "id": "related-party-disclosure"
+            }
+          ]
+        },
+        {
+          "questionId": "mca-board-governance-rpt-3",
+          "question": "How does the vigil mechanism or whistle-blower policy work: who can report, through which channel, and who receives the reports?",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "HDFC AMC's Whistle Blower Policy (approved 16 April 2018, last modified 15 October 2024) is made under s.177(9) of the Companies Act, LODR Reg. 22, MF Regulations Reg. 25 and PIT Regulations 9A(6) and 5H(5). Who can report: employees, directors and trustees, plus stakeholders such as investors and unit holders, shareholders, clients, vendors, distributors, brokers and service providers. What they can report: malpractice, actual or suspected fraud, breaches of the Code of Conduct or company policies, abuse of power, and leakage of AMC or HDFC MF unpublished price-sensitive information (UPSI). How: by email, in person, by letter, or through a third-party web portal (www.cwiportal.com, organisation code HDFCAMC), which issues a tracking number and keeps the reporter's identity confidential. Who receives reports: a Whistleblower-Complaints Committee (Head of HR, CFO, Company Secretary). UPSI leaks go to a separate AMC UPSI Committee or HDFC MF UPSI Committee. Complaints against a director or the MD, cases where the reporter is dissatisfied, and UPSI leaks involving the CS/CO or CEO/MD can go directly to the Chairperson of the Audit Committee. Timelines: a preliminary inquiry starts within 7 working days, the investigation finishes within 8 weeks, and action is decided within 7 working days after that. Status reports go to the Audit Committee every half-year, and records are kept for at least 8 years. The FY26 annual report says no person was denied access to the Audit Committee.",
+          "answeredBy": "research",
+          "confidence": "low",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2025-01/WHISTLE%20BLOWER%20POLICY.pdf",
+              "description": "Whistle Blower Policy, 13 pages. Section 4, p.5: 'through a third party web-based reporting tool... (www.cwiportal.com) and mentioning Organizational Code as HDFCAMC'. Section 2, p.3:..."
+            },
+            {
+              "type": "url",
+              "ref": "https://www.hdfc.bank.in/content/dam/hdfcbankpws/in/en/pdf/about-us/annual-reports-of-the-subsidiaries/2025-26/hdfc-asset-management-company-limited.pdf",
+              "description": "27th Annual Report 2025-26, Corporate Governance Report pp.154-155: 'The Company has adopted a third-party web-based reporting tool... no person was denied access to the Audit Committee'."
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "unverified": "entity-identity: Neither cited source could be read. The whistle-blower policy PDF from files.hdfcfund.com (246KB) downloaded but could not be parsed. The hdfc.bank.in annual report PDF (7.6MB)...",
+          "yields": [
+            {
+              "type": "process",
+              "id": "whistle-blower-mechanism"
+            },
+            {
+              "type": "process",
+              "id": "upsi-leak-investigation"
+            },
+            {
+              "type": "platform",
+              "id": "third-party-whistleblower-portal"
+            }
+          ]
+        },
+        {
+          "questionId": "mca-board-governance-rpt-4",
+          "question": "How are related-party transactions identified, approved by the audit committee and monitored between meetings?",
+          "answerableFrom": "internal",
+          "status": "open",
+          "reason": "internal: ask the compliance officer. The Related Party Transactions Policy PDF (July 2025) is public, but its text could not be extracted this session, and how RPTs are tracked between meetings...",
+          "yields": []
+        }
+      ]
+    },
+    {
+      "questionnaireId": "q-mca-csr-investor-protection",
+      "obligationId": "mca-csr-investor-protection",
+      "questions": [
+        {
+          "questionId": "mca-csr-investor-protection-1",
+          "question": "Which CSR programmes and implementing agencies does the company fund, and in which focus areas?",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "For FY 2024-25 (total CSR budget INR 34.59 crore), HDFC AMC funded four programmes under Schedule VII, all run through outside implementing partners. (1) Healthcare, Schedule VII item (i): Indian Cancer Society (Cancer Cure Fund and AKITF), Deepsikha, Rotary Club of Bombay (Dharamshala Project), St. Jude India ChildCare Centre, Akshaya Patra Foundation, Udhvum Ullangal Public Charitable Trust and King George V Memorial Trust. (2) Education and ending malnutrition, items (i) and (ii): Parivaar Education Society, Snehalaya, Bombay Scottish Orphanage Society, Catalyst for Social Action and Ashoka University. (3) Olympic and Paralympic sports, item (vii): Olympic Gold Quest, across India. (4) Environmental sustainability, item (iv): Rotary Club of Bombay (Urban Forest Project), Mumbai. The FY 2025-26 BRSR confirms that section 135 CSR applies (turnover INR 4,119 crore, net worth INR 9,231 crore). It lists the same focus areas: healthcare, education, environment and sports. It says projects are run through partner agencies, which the company engages 'at least monthly' for 'monitoring, evaluation, governance', with independent third-party impact assessments where required. The FY 2025-26 project list itself was not fetched, so partner names are as of FY 2024-25.",
+          "answeredBy": "research",
+          "confidence": "low",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2025-06/CSR%20-%20List%20of%20Projects%20-%20FY%202024-25.pdf",
+              "description": "Company PDF, 3 pages, 134 KB: 'Projects FY 2024-25 Total CSR Budget : INR 34.59 CR', with the project, implementing partner and geography table on pages 2-3"
+            },
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2026-06/Business%20Responsibility%20and%20Sustainability%20Report%20for%20the%20financial%20year%202025-%2026.pdf",
+              "description": "BRSR FY 2025-26 (1.1 MB). Part VI item 24: 'Whether CSR is applicable as per section 135 of Companies Act, 2013: Yes'. Also the stakeholder-engagement row 'Communities & Implementing Agencies/..."
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "unverified": "entity-identity: Entity not judged: both cited PDFs (CSR project list FY 2024-25 and BRSR 2025-26, both on the company's own hdfcfund.com domain) downloaded but could not be read as text, so no...",
+          "yields": [
+            {
+              "type": "process",
+              "id": "csr-programme-management"
+            },
+            {
+              "type": "process",
+              "id": "csr-implementing-agency-oversight"
+            }
+          ]
+        },
+        {
+          "questionId": "mca-csr-investor-protection-2",
+          "question": "Which shareholder segments does the company have (promoter HDFC Bank, FPIs, mutual funds, retail), and how are shareholder complaints received and resolved?",
+          "answerableFrom": "public",
+          "status": "open",
+          "reason": "refuted: source-authenticity: The cited Equitymaster page gives June 2026 'Other Institutions' as 3.18%, not the answer's 2.79%, and Tijori and IndiaInfoline both give total institutions of 38.86%...",
+          "yields": []
+        },
+        {
+          "questionId": "mca-csr-investor-protection-3",
+          "question": "How does the company find, notify and transfer unclaimed dividends and shares to the IEPF, and how does it handle shareholder claims?",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "Unpaid dividends sit in the company's Unpaid Dividend Accounts: INR 77,99,149 at 31 March 2024, and earmarked 'Unclaimed Equity Dividend' of INR 0.99 crore at 31 March 2025 (INR 0.78 crore a year earlier). The company posts the names and last known addresses of shareholders with unpaid dividends on its website. The corporate governance report gives, for each dividend, the last date to claim before transfer to the IEPF: interim 2018-19 by 29 Mar 2026, final 2018-19 by 18 Aug 2026, 2019-20 by 26 Aug 2027, 2020-21 by 18 Aug 2028, 2021-22 by 31 Jul 2029, and 2022-23 by 27 Jul 2030. The FY 2023-24 auditor's report says no amount had to be transferred to the IEPF, and the company holds no shares in a demat suspense or unclaimed suspense account. The Stakeholders Relationship and Unit Holder Protection Committee reviews unclaimed dividends and what is done to reduce them. The company contacts shareholders through the IEPF Authority's 'Saksham Niveshak' campaign; the second 100-day phase ran from 1 Apr to 9 Jul 2026. Shareholders update KYC with their depository participant and send KFin Technologies a self-attested copy of the updated Client Master List to claim unpaid dividends. Not confirmed from any page fetched this session: whether the interim 2018-19 dividend (due 29 Mar 2026) was actually moved to the IEPF, any section 124(6) share transfer, who the IEPF nodal officer is, and how the company handles IEPF-5 claims after transfer.",
+          "answeredBy": "research",
+          "confidence": "low",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://bsmedia.business-standard.com/_media/bs/data/announcements/bse/03072024/eed717df-23ba-4b6e-9bcc-153cd926c96e.pdf",
+              "description": "25th Annual Report FY 2023-24 (6.3 MB). Board's report: 'unclaimed dividend amounting to ` 77,99,149/- ... lying in the respective Unpaid Dividend Accounts'. Corporate governance report, about..."
+            },
+            {
+              "type": "url",
+              "ref": "https://www.hdfc.bank.in/content/dam/hdfcbankpws/in/en/pdf/about-us/annual-reports-of-the-subsidiaries/hdfc-asset-mangment-company-limited.pdf",
+              "description": "26th Annual Report FY 2024-25, hosted by the holding company (9.9 MB, close to the fetch limit). Notes: earmarked balances 'Unclaimed Equity Dividend 0.99' (prior year 0.78), INR crore; SR&UHPC..."
+            },
+            {
+              "type": "url",
+              "ref": "https://scanx.trade/stock-market-news/companies/hdfc-amc-urges-shareholders-to-update-kyc-for-dividend-claims/40898680",
+              "description": "Secondary news source, 21 May 2026, on HDFC AMC's Saksham Niveshak campaign 'effective from April 1, 2026 to July 9, 2026', in line with IEPFA/MCA directives; submit updated Client Master List to..."
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "unverified": "source-authenticity: Neither the BSE-filed annual report nor the HDFC Bank-hosted subsidiary annual report PDF (hdfc.bank.in) could be text-extracted, so the unpaid dividend balance of INR...",
+          "yields": [
+            {
+              "type": "process",
+              "id": "unclaimed-dividend-iepf-management"
+            },
+            {
+              "type": "process",
+              "id": "shareholder-grievance-redressal"
+            },
+            {
+              "type": "platform",
+              "id": "kfintech-rta"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "questionnaireId": "q-mca-listed-entity-disclosures",
+      "obligationId": "mca-listed-entity-disclosures",
+      "questions": [
+        {
+          "questionId": "mca-listed-entity-disclosures-1",
+          "question": "Through which channels does the company disclose to the market (exchange filings, investor presentations, earnings calls, investor relations website)?",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "The FY2025-26 BRSR lists how the company engages shareholders: quarterly earnings calls, audio recordings and transcripts of those calls, investor presentations, the AGM, filings with the stock exchanges (BSE and NSE), annual and quarterly financials, investor meetings and conferences, press releases, annual reports, email, SMS, newspapers, notices and the website (www.hdfcfund.com). This happens at least quarterly and whenever needed. A designated investor-relations contact (shareholders.relations@hdfcfund.com) handles queries.",
+          "answeredBy": "research",
+          "confidence": "low",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2026-06/Business%20Responsibility%20and%20Sustainability%20Report%20for%20the%20financial%20year%202025-%2026.pdf",
+              "description": "BRSR FY2025-26, Principle 4 stakeholder table (about p.23): 'Shareholders No Quarterly earnings calls, audio recording of earnings call, investor presentations, Annual General Meeting, intimation..."
+            },
+            {
+              "type": "url",
+              "ref": "https://www.investywise.com/hdfc-asset-management-company-limited-business-responsibility-and-sustainability-report/",
+              "description": "Confirms the FY2025-26 BRSR was filed with the exchanges on 1 June 2026."
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "unverified": "entity-identity: No source names a different entity: the investywise page covers the FY2025-26 BRSR of HDFC Asset Management Company Limited itself, but it does not list the shareholder channels...",
+          "yields": [
+            {
+              "type": "process",
+              "id": "listed-entity-disclosures"
+            },
+            {
+              "type": "platform",
+              "id": "hdfcfund-website"
+            }
+          ]
+        },
+        {
+          "questionId": "mca-listed-entity-disclosures-2",
+          "question": "What does the latest BRSR say about data privacy, cybersecurity incidents and customer complaints across the company's investor segments?",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "BRSR FY2025-26, Principle 9: no consumer complaints on data privacy or cybersecurity in FY2025-26 or FY2024-25. There were 1,561 complaints on delivery of essential services in FY2025-26 (9 pending at year end), against 2,042 (9 pending) in FY2024-25. Data breaches are reported as NIL, so the share involving customers' personal data and the impact are also NIL. Corrective actions on cybersecurity and customer data privacy are NIL. The company has a Board-approved Information Security Policy, a Cyber Security & Cyber Resilience Policy, a Cyber Crisis Management Plan, an Information Security and Cyber Risk Management Framework and a Business Continuity Policy. The IT & Security Committee and the Risk Management Committee monitor cyber risk, and the company follows SEBI guidelines and ISO 27001. Complaints come in by email, the website's Write to Us form, the RTA CAMS, toll-free call centres and an escalation matrix. A central CRM application routes them to branches and central staff under defined service levels. By investor type, individual investors contributed about 68% of March 2026 monthly average AUM and institutional investors about 32%. Products and services are also offered through the HDFC MF Online Investors and Partners apps, a WhatsApp transaction number, MF Central, the CAMS investor portal, distributors and RIAs, and fintech platforms.",
+          "answeredBy": "research",
+          "confidence": "high",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2026-06/Business%20Responsibility%20and%20Sustainability%20Report%20for%20the%20financial%20year%202025-%2026.pdf",
+              "description": "BRSR FY2025-26 p.41: 'Data privacy - - Advertising - - Cyber-security - - Delivery of essential services 1,561 9 - 2,042 9'. p.42: 'Number of instances of data breaches ... NIL'. p.40: 'processed..."
+            },
+            {
+              "type": "url",
+              "ref": "https://www.investywise.com/hdfc-asset-management-company-limited-business-responsibility-and-sustainability-report/",
+              "description": "Secondary summary of the same BRSR: 1,561 complaints on delivery of essential services, 9 pending."
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "yields": [
+            {
+              "type": "process",
+              "id": "grievance-redressal"
+            },
+            {
+              "type": "process",
+              "id": "cyber-risk-management"
+            },
+            {
+              "type": "process",
+              "id": "client-services"
+            },
+            {
+              "type": "offering",
+              "id": "hdfc-mutual-fund-schemes"
+            },
+            {
+              "type": "offering",
+              "id": "hdfc-pms"
+            },
+            {
+              "type": "segment",
+              "id": "individual-investors"
+            },
+            {
+              "type": "segment",
+              "id": "institutional-investors"
+            },
+            {
+              "type": "platform",
+              "id": "crm-application"
+            },
+            {
+              "type": "platform",
+              "id": "hdfcfund-website"
+            },
+            {
+              "type": "platform",
+              "id": "hdfc-mf-online-investors-app"
+            },
+            {
+              "type": "platform",
+              "id": "hdfc-mf-online-partners-app"
+            },
+            {
+              "type": "platform",
+              "id": "whatsapp-transactions"
+            },
+            {
+              "type": "platform",
+              "id": "cams-rta"
+            },
+            {
+              "type": "platform",
+              "id": "mf-central"
+            }
+          ]
+        },
+        {
+          "questionId": "mca-listed-entity-disclosures-3",
+          "question": "Did the latest annual secretarial compliance report or exchange notices record any non-compliance, fine or penalty against the company?",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "No penalty was found in the public sources I opened. BRSR FY2025-26 (Principle 1) reports NIL fines, penalties, settlements, compounding fees and non-monetary actions with regulators or courts in FY2025-26, and NIL corrective actions. The directors' report for FY2024-25 says the secretarial auditor (M/s. Makarand M. Joshi & Co.) made no qualification, reservation, adverse comment or disclaimer. The AMC's penalties disclosure as of 15 Dec 2025 lists only one SEBI action against the AMC itself: settlement order SO/EFD-2/SD/337/April/2020 of 16 Apr 2020 (Essel group FMPs), outside the last three years. Its other items are against the sponsor, HDFC Bank, a group entity, not this company. Gap: I could not open the FY2025-26 Annual Secretarial Compliance Report under Regulation 24A (hdfcfund.com returned 403 and no exchange copy was found). So a compliance officer should still confirm there were no FY2025-26 exchange notices or observations in it.",
+          "answeredBy": "research",
+          "confidence": "medium",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2026-06/Business%20Responsibility%20and%20Sustainability%20Report%20for%20the%20financial%20year%202025-%2026.pdf",
+              "description": "BRSR FY2025-26 p.13, Principle 1 EI 2: 'Monetary ... Penalty/ Fine NIL Settlement Compounding fee Non-Monetary ... Imprisonment NIL Punishment'."
+            },
+            {
+              "type": "url",
+              "ref": "https://www.indiainfoline.com/company/hdfc-asset-management-company-ltd/reports/directors-report",
+              "description": "Directors' report FY2024-25: 'There were no qualifications, reservations or adverse comments or disclaimer made by the aforesaid Auditors in their audit reports.'"
+            },
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2025-12/Penalties,%20Pending%20Litigation%20Or%20Proceedings,%20Findings%20Of%20Inspections%20Or%20Investigations%20as%20on%20Dec%2015,%202025.pdf",
+              "description": "Item 2(11): SEBI Settlement Order no. SO/EFD-2/SD/337/April/2020 dated April 16, 2020 (Essel FMPs) against the AMC, trustees and key personnel. Items 2(1)-(10) concern the sponsor HDFC Bank and..."
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "yields": [
+            {
+              "type": "process",
+              "id": "secretarial-compliance"
+            }
+          ]
+        },
+        {
+          "questionId": "mca-listed-entity-disclosures-4",
+          "question": "How are unpublished price-sensitive information and designated persons' trading controlled, e.g. structured digital database, pre-clearance tool?",
+          "answerableFrom": "internal",
+          "status": "open",
+          "reason": "internal: ask the compliance officer. The codes-policies page on hdfcfund.com returned 403. The BRSR only mentions refresher training on the 'Securities Dealing Code(s)' and says nothing about a...",
+          "yields": []
+        },
+        {
+          "questionId": "mca-listed-entity-disclosures-5",
+          "question": "Which function decides whether an event (including a cyber incident) is material for exchange disclosure, and how is it escalated?",
+          "answerableFrom": "internal",
+          "status": "open",
+          "reason": "internal: ask the compliance officer. The BRSR names the IT & Security Committee and the Risk Management Committee for cyber risk, but not who decides whether an event is material for disclosure....",
+          "yields": []
+        }
+      ]
+    },
+    {
+      "questionnaireId": "q-sebi-mutual-funds-regulations",
+      "obligationId": "sebi-mutual-funds-regulations",
+      "questions": [
+        {
+          "questionId": "sebi-mutual-funds-regulations-scheme-offerings",
+          "question": "How many schemes does HDFC Mutual Fund currently offer, and in which SEBI scheme categories (equity, debt, hybrid, solution-oriented, index funds/ETFs, fund of funds)?",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "The custodian section of HDFC Mutual Fund's SAI dated June 30, 2026 names 105 distinct schemes/plans. The source gives no total. I counted the unique names across the ICICI Bank (32), SBI-SG (45), HSBC (19) and Citibank N.A. (9) lists; the Citibank Hong Kong and Deutsche Bank lists repeat schemes already counted. Categories: (1) equity-oriented schemes, e.g. Flexi Cap, Large Cap, Mid Cap, Small Cap, ELSS Tax Saver and sectoral/thematic funds such as Defence, Technology and Manufacturing; (2) debt schemes, e.g. Liquid, Overnight, Money Market, Gilt, Corporate Bond, Credit Risk, plus target-maturity G-Sec/SDL and CRISIL-IBX index funds; (3) hybrid schemes: Balanced Advantage, Hybrid Equity, Hybrid Debt, Equity Savings, Arbitrage, Multi-Asset Allocation; (4) solution-oriented schemes: Retirement Savings Fund (Equity, Hybrid Equity and Hybrid Debt plans) and Children's Fund; (5) index funds and ETFs, including Gold and Silver ETFs; (6) fund of funds, e.g. Gold ETF FoF, Silver ETF FoF, Multi-Asset Active FOF, Developed World Overseas Equity Passive FOF; (7) close-ended schemes: Fixed Maturity Plans Series 46 and 47 and the Charity Fund for Cancer Cure. The Q1 FY27 shareholder presentation describes the mutual fund business as 'Active | Passive'. It gives closing AUM of Rs 9,319 bn at June 30, 2026, of which Rs 6,346 bn is equity-oriented.",
+          "answeredBy": "research",
+          "confidence": "low",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://portal.amfiindia.com/spages/sai9.pdf",
+              "description": "SAI dated June 30, 2026, pages 25-26 (PDF pages 30-31), 'Service Providers - 1. Custodians'. Lists schemes per custodian, e.g. 'Citibank N.A is presently the Custodian of the following schemes:-..."
+            },
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2026-07/SAI%20with%20updated%20Addendum%20dated%20July%2027,%202026.pdf",
+              "description": "Same SAI on the HDFC MF files bucket (about 2 MB), pages 25-26."
+            },
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2026-07/Shareholders%20Presentation%20Q1%20FY27.pdf",
+              "description": "Q1 FY27 earnings presentation, slide 2: 'Mutual Funds Active | Passive'; 'Closing AUM 1 Rs 9,319 bn'; 'Equity-Oriented Closing AUM Rs 6,346 bn'."
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "unverified": "source-authenticity: source-authenticity not judged: WebFetch returned unreadable binary for all three PDFs (AMFI sai9.pdf 2MB, hdfcfund SAI addendum 2MB, Q1 FY27 presentation 1.7MB) and local...",
+          "yields": [
+            {
+              "type": "offering",
+              "id": "mf-equity-schemes"
+            },
+            {
+              "type": "offering",
+              "id": "mf-debt-schemes"
+            },
+            {
+              "type": "offering",
+              "id": "mf-hybrid-schemes"
+            },
+            {
+              "type": "offering",
+              "id": "mf-solution-oriented-schemes"
+            },
+            {
+              "type": "offering",
+              "id": "mf-index-funds-etfs"
+            },
+            {
+              "type": "offering",
+              "id": "mf-fund-of-funds"
+            },
+            {
+              "type": "offering",
+              "id": "mf-close-ended-schemes"
+            },
+            {
+              "type": "process",
+              "id": "scheme-fund-management"
+            }
+          ]
+        },
+        {
+          "questionId": "sebi-mutual-funds-regulations-segments-channels",
+          "question": "Which investor segments do the schemes serve (retail, HNI, corporate and institutional, NRI), and through which channels are units sold (direct website/app, mutual fund distributors, investment...",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "Segments: individual (retail) investors are the largest group, with 31.01 mm live individual accounts, 17.1 mm unique investors and 69.2% of MAAUM from individuals at June 2026. The rest is institutional investors. The SAI also covers non-individual (corporate) investors and NRIs/PIOs/OCIs investing on repatriation or non-repatriation basis. FPIs may invest subject to the SEBI FPI Regulations. Neither source mentions an HNI segment. Channels (total AUM share, June 2026): Direct 44.5%, MFDs 23.3%, National Distributors 22.6%, Banks 9.6% (HDFC Bank 5.1%). Other figures: 110k+ empanelled distribution partners, 280 offices, and 98% of Q1 FY27 transactions were digital. Transactions are accepted at Investor Service Centres and Official Points of Acceptance. OPAs include distributors, RIAs, portfolio managers, execution-only platforms, stock exchange platforms (MFSS/BSE StAR MF/NMF II), MF Utilities points of service and MFCentral. Digital channels are the website www.hdfcfund.com, the HDFC Mutual Fund app for Investors, WhatsApp and the HDFC MFOnline Partners portal.",
+          "answeredBy": "research",
+          "confidence": "low",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2026-07/Shareholders%20Presentation%20Q1%20FY27.pdf",
+              "description": "Slide 18 'Multi-channel Distribution Network' Total AUM Jun-2026: 'HDFC Bank 5.1% Banks 9.6% MFDs 23.3% National Distributors 22.6% Direct 44.5%'. Slide 15: 'Number of Live Individual Accounts..."
+            },
+            {
+              "type": "url",
+              "ref": "https://portal.amfiindia.com/spages/sai9.pdf",
+              "description": "SAI dated June 30, 2026, page 44, How to Apply: 'OPAs include various Distributors, Registered Investment Advisers (RIAs), Portfolio Managers, Execution only Platforms (EOPs), Stock Exchange..."
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "unverified": "source-authenticity: source-authenticity not judged: Q1 FY27 Shareholders Presentation and AMFI sai9.pdf fetched but unreadable (binary PDF, pdftoppm missing), so account counts, channel mix and...",
+          "yields": [
+            {
+              "type": "segment",
+              "id": "retail-individual-investors"
+            },
+            {
+              "type": "segment",
+              "id": "institutional-investors"
+            },
+            {
+              "type": "segment",
+              "id": "non-individual-corporate-investors"
+            },
+            {
+              "type": "segment",
+              "id": "nri-pio-oci-investors"
+            },
+            {
+              "type": "segment",
+              "id": "fpi-investors"
+            },
+            {
+              "type": "process",
+              "id": "unit-distribution-channels"
+            },
+            {
+              "type": "process",
+              "id": "investor-onboarding-kyc"
+            },
+            {
+              "type": "platform",
+              "id": "hdfc-mf-website-app"
+            },
+            {
+              "type": "platform",
+              "id": "hdfc-mfonline-partners"
+            },
+            {
+              "type": "platform",
+              "id": "hdfc-mf-whatsapp"
+            },
+            {
+              "type": "platform",
+              "id": "stock-exchange-mf-platforms"
+            },
+            {
+              "type": "platform",
+              "id": "mf-utility"
+            },
+            {
+              "type": "platform",
+              "id": "mfcentral"
+            }
+          ]
+        },
+        {
+          "questionId": "sebi-mutual-funds-regulations-service-providers",
+          "question": "Which trustee company, registrar and transfer agent, custodian and fund accountant service HDFC Mutual Fund's schemes and unitholders?",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "Trustee: HDFC Trustee Company Limited (CIN U65991MH1999PLC123026). Registrar and Transfer Agent: Computer Age Management Services Limited (CAMS), SEBI Registration No. INR000002813. Custodians: ICICI Bank Limited (IN/CUS/005) for debt and arbitrage schemes; SBI-SG Global Securities Services Private Limited (IN/CUS/022) for index funds, ETFs and FoFs; The Hongkong and Shanghai Banking Corporation Limited (IN/CUS/009) for several equity and hybrid schemes; Citibank N.A. (IN/CUS/004) for schemes such as Balanced Advantage and Flexi Cap; Citibank Hong Kong for overseas investments of the Developed World Overseas Equity Passive FOF; Deutsche Bank A.G. (IN/CUS/003) for the physical gold and silver of the Gold and Silver ETFs. Fund accountant: fund accounting is handled by the AMC itself. Other providers named: HDFC Bank Limited is collecting banker for NFOs and professional clearing member in F&O for all schemes; statutory auditor is S.R. Batliboi & Co. LLP.",
+          "answeredBy": "research",
+          "confidence": "low",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://portal.amfiindia.com/spages/sai9.pdf",
+              "description": "SAI dated June 30, 2026. Page 1: 'Name of Trustee Company: HDFC Trustee Company Limited'. Page 26: 'Registrar and Transfer Agent Computer Age Management Services Limited (unit: HDFC Mutual Fund)..."
+            },
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2026-07/SAI%20with%20updated%20Addendum%20dated%20July%2027,%202026.pdf",
+              "description": "Same SAI on the HDFC MF files bucket, pages 1 and 25-26."
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "unverified": "source-authenticity: source-authenticity not judged: AMFI sai9.pdf and hdfcfund SAI addendum PDF fetched but unreadable (binary, pdftoppm missing), so trustee CIN, CAMS INR000002813 and custodian...",
+          "yields": [
+            {
+              "type": "process",
+              "id": "fund-accounting"
+            },
+            {
+              "type": "process",
+              "id": "mf-service-provider-oversight"
+            },
+            {
+              "type": "platform",
+              "id": "cams-rta"
+            },
+            {
+              "type": "platform",
+              "id": "scheme-custodians"
+            }
+          ]
+        },
+        {
+          "questionId": "sebi-mutual-funds-regulations-investor-services",
+          "question": "Which unitholder service processes does the AMC run (purchases, redemptions, SIP/STP/SWP, switches, NAV publication, account statements, unclaimed redemption and dividend amounts), and on which...",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "Unitholder service processes run by the AMC with its RTA CAMS include: purchases, redemptions and switches; systematic plans (SIP in six frequencies, STP, SWP/SWAP); e-KYC for resident individuals; monthly and half-yearly Consolidated Account Statements; and unclaimed redemption and IDCW amounts. Unclaimed amounts are moved within 15 days after 90 days from instrument issue, deployed in TREPS, and disclosed on the MF and AMFI websites and in the CAS. Other services: e-Docs, e-Alerts, e-Payouts, UPI payments, a missed-call valuation service, SMS-based HDFC Instainvest and Transact on Call. Digital platforms: the website www.hdfcfund.com and the HDFC Mutual Fund app for Investors (purchases, redemptions, switches, systematic transactions, nominee/bank/contact updates, statements); HDFC MFOnline Partners for distributors; WhatsApp at 8270682706 (purchase, SIP registration, statements); MFCentral (built by CAMS and KFintech); MF Utility; the stock exchange platforms; and CAMS's secured internet sites. The AMC and CAMS servers are the official points of acceptance for online transactions. NAV publication was not confirmed in the pages read and is not claimed here.",
+          "answeredBy": "research",
+          "confidence": "low",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://portal.amfiindia.com/spages/sai9.pdf",
+              "description": "SAI dated June 30, 2026, page 66, 'HDFC Mutual Fund app for Investors': 'enable Unitholders to execute purchases, redemptions, switches, Systematic transactions...'. Page 67: HDFCMF Online..."
+            },
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2026-07/Shareholders%20Presentation%20Q1%20FY27.pdf",
+              "description": "Slide 20 'Our Digital Stack': Investor Portal, AI Chat Bot, Tap2Invest on WhatsApp, Transact on Call, Website, HDFC MFOnline Partners, Statement on WhatsApp, API Gateway; '98% of transactions in..."
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "unverified": "source-authenticity: source-authenticity not judged: AMFI sai9.pdf and Q1 FY27 presentation fetched but unreadable (binary PDF, pdftoppm missing), so SIP/STP/SWP, unclaimed-amount rules and...",
+          "yields": [
+            {
+              "type": "process",
+              "id": "unit-transactions"
+            },
+            {
+              "type": "process",
+              "id": "systematic-plans"
+            },
+            {
+              "type": "process",
+              "id": "account-statements-cas"
+            },
+            {
+              "type": "process",
+              "id": "unclaimed-amounts"
+            },
+            {
+              "type": "process",
+              "id": "investor-onboarding-kyc"
+            },
+            {
+              "type": "platform",
+              "id": "hdfc-mf-website-app"
+            },
+            {
+              "type": "platform",
+              "id": "hdfc-mfonline-partners"
+            },
+            {
+              "type": "platform",
+              "id": "hdfc-mf-whatsapp"
+            },
+            {
+              "type": "platform",
+              "id": "mfcentral"
+            },
+            {
+              "type": "platform",
+              "id": "mf-utility"
+            },
+            {
+              "type": "platform",
+              "id": "stock-exchange-mf-platforms"
+            },
+            {
+              "type": "platform",
+              "id": "cams-rta"
+            }
+          ]
+        },
+        {
+          "questionId": "sebi-mutual-funds-regulations-risk-valuation",
+          "question": "Which function and system run scheme risk management, valuation, liquidity stress testing and surveillance for front-running and market abuse in scheme dealing?",
+          "answerableFrom": "internal",
+          "status": "open",
+          "reason": "internal: ask the compliance officer",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-mutual-funds-regulations-reporting",
+          "question": "Which team prepares the AMC's periodic regulatory reports to SEBI and AMFI and the reports to the trustees, and from which system are they generated?",
+          "answerableFrom": "internal",
+          "status": "open",
+          "reason": "internal: ask the compliance officer",
+          "yields": []
+        }
+      ]
+    },
+    {
+      "questionnaireId": "q-sebi-portfolio-managers-regulations",
+      "obligationId": "sebi-portfolio-managers-regulations",
+      "questions": [
+        {
+          "questionId": "sebi-portfolio-managers-regulations-services-strategies",
+          "question": "Which portfolio management services does HDFC AMC offer (discretionary, non-discretionary, advisory), and how many strategies or investment approaches does it run, in which asset classes?",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "Under SEBI registration PM/INP000000506, HDFC AMC offers four portfolio management services. Its PMS disclosure document dated 15 Jan 2026 (Section 5, p.26) says: 'the Portfolio Manager presently offers the following services: Discretionary, Non-Discretionary, Advisory, Co-investment Services'. Each service runs under a separate agreement with each client.\n\nThe same document describes 16 investment approaches (pp.28-52), plus a co-investment service that follows no specific investment approach:\n1. Diversified Portfolio Equity (equity, fixed income, MF units/ETFs, REITs/InvITs)\n2. Diversified Portfolio Hybrid\n3. Enhanced Portfolio 1\n4. Debt Mandate\n5. Provident Funds, Treasuries and Special Mandates (fixed income, equity, MF units, AIFs and trusts)\n6. Bespoke Accounts (all permissible securities, listed or unlisted)\n7. All Cap Portfolio-DPMS\n8. India Ascent Portfolio-DPMS\n9-12. Four approaches investing in mutual fund units and ETFs, introduced 24 May 2023: Equity, Debt, Hybrid and Multi-Asset\n13. HDFC AMC Liquid Portfolio\n14. HDFC Small Cap Multiplier-DPMS\n15. HDFC Core Equity NDPMS\n16. HDFC Growth for GOOD Portfolio (equity, REITs/InvITs, fixed income)\n\nThe co-investment service invests only in unlisted equity, equity-linked, debt or other unlisted securities where the Category II AIFs it manages invest; currently that is HDFC AMC Select AIF FoF I.\n\nAsset classes covered: listed equity, fixed income, hybrid and multi-asset, MF units and ETFs, liquid, REITs/InvITs, AIF units and unlisted securities.\n\nThe PMS business managed about Rs 10,600 crore at 31 Mar 2026 (annual report 2025-26). The public PMS trackers PMS Bazaar and Business Today list two equity approaches: All Cap Portfolio (multi/flexi cap) and India Ascent Portfolio (small and mid cap).",
+          "answeredBy": "research",
+          "confidence": "low",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2026-01/Disclosure%20Document%20dated%20January%2015,%202026_0.pdf?VersionId=.KLAti83icTA_lUS4bZuUkZcFo7lNIhJ",
+              "description": "PMS Disclosure Document dated 15 Jan 2026 (7.2 MB PDF; WebFetch returned binary, so the text was extracted locally from the downloaded file). p.26 Section 5: 'the Portfolio Manager presently..."
+            },
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2025-10/Disclosure%20Document_Dated_October%2015%202025_0.pdf",
+              "description": "Earlier PMS Disclosure Document dated 15 Oct 2025 (1.5 MB): same services list and investment approach sections."
+            },
+            {
+              "type": "url",
+              "ref": "https://www.hdfc.bank.in/content/dam/hdfcbankpws/in/en/pdf/about-us/annual-reports-of-the-subsidiaries/2025-26/hdfc-asset-management-company-limited.pdf",
+              "description": "27th Annual Report 2025-26 (7.6 MB), Management Discussion and Analysis, B1 Review of Business: 'As on March 31, 2026, the Portfolio Management Services business managed assets of about Rs 10,600..."
+            },
+            {
+              "type": "url",
+              "ref": "https://pmsbazaar.com/AMC/HDFC-Asset-Management-Company-Ltd",
+              "description": "HTML page a verifier can re-fetch: lists All Cap Portfolio (Multi Cap & Flexi Cap) and India Ascent Portfolio (Small & Mid Cap) as discretionary equity portfolios."
+            },
+            {
+              "type": "url",
+              "ref": "https://www.businesstoday.in/pms/amc/hdfc-asset-management-company-ltd-60",
+              "description": "HTML page a verifier can re-fetch: HDFC AMC PMS schemes India Ascent Portfolio (Small and Mid Cap) and HDFC - All Cap Portfolio (Multi Cap and Flexi Cap)."
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "unverified": "source-authenticity: Unverifiable: the Jan 2026 DD (7.2MB), Oct 2025 DD and FY26 annual report PDFs were fetched, but their text is compressed and no PDF renderer is available, so the four...",
+          "yields": [
+            {
+              "type": "offering",
+              "id": "pms-discretionary"
+            },
+            {
+              "type": "offering",
+              "id": "pms-non-discretionary"
+            },
+            {
+              "type": "offering",
+              "id": "pms-advisory"
+            },
+            {
+              "type": "offering",
+              "id": "pms-co-investment"
+            },
+            {
+              "type": "offering",
+              "id": "pms-investment-approaches"
+            },
+            {
+              "type": "process",
+              "id": "pms-portfolio-management"
+            }
+          ]
+        },
+        {
+          "questionId": "sebi-portfolio-managers-regulations-client-segments",
+          "question": "Which client segments does the PMS serve (resident individuals, HNIs, NRIs, corporates and institutions, accredited investors, offshore or pooled-fund advisory clients)?",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "The 2025-26 annual report says 'The Company offers Portfolio Management Services, Segregated Account Services and Alternative Investment Funds to high net-worth individuals, family offices, corporates, trusts, provident funds and domestic & global institutions'. The Directors' Report says 'domestic corporates'.\n\nThe MD and CEO's message says PMS AUM crossed Rs 100 billion 'reflecting deepening participation from institutional investors and high-net-worth individuals'. It also says HDFC AMC won mandates from EPFO and SPFO.\n\nThe disclosure document (pp.27-28) sets out services and regulatory concessions for Accredited Investors and Large Value Accredited Investors. It also has a 'Provident Funds, Treasuries and Special Mandates' approach.\n\nClient representation at 31 Mar 2025 (DD p.94): 124 clients, Rs 3,910.04 crore, discretionary and non-discretionary, none of them associate or group companies.\n\nNo fetched source positively states that NRI or FPI clients are served. The DD only defines those terms, so NRI and FPI segments are not recorded.",
+          "answeredBy": "research",
+          "confidence": "low",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://www.hdfc.bank.in/content/dam/hdfcbankpws/in/en/pdf/about-us/annual-reports-of-the-subsidiaries/2025-26/hdfc-asset-management-company-limited.pdf",
+              "description": "27th Annual Report 2025-26, MD&A B1 Review of Business and Directors' Report: 'The Company offers Portfolio Management Services, Segregated Account Services and Alternative Investment Funds to..."
+            },
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2026-01/Disclosure%20Document%20dated%20January%2015,%202026_0.pdf?VersionId=.KLAti83icTA_lUS4bZuUkZcFo7lNIhJ",
+              "description": "PMS DD 15 Jan 2026, p.27: 'Services offered to Accredited Investors and Large Value Accredited Investors'. p.94 Client Representation: 'Others (last 3 years) As at March 31, 2025 124 3,910.04..."
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "unverified": "source-authenticity: Unverifiable: both cited refs (the FY26 annual report PDF, 7.6MB, and the Jan 2026 DD PDF) were fetched, but their text is compressed and could not be extracted, so the quotes...",
+          "yields": [
+            {
+              "type": "segment",
+              "id": "hni"
+            },
+            {
+              "type": "segment",
+              "id": "family-offices"
+            },
+            {
+              "type": "segment",
+              "id": "domestic-corporates"
+            },
+            {
+              "type": "segment",
+              "id": "trusts"
+            },
+            {
+              "type": "segment",
+              "id": "provident-funds"
+            },
+            {
+              "type": "segment",
+              "id": "domestic-global-institutions"
+            },
+            {
+              "type": "segment",
+              "id": "accredited-investors"
+            }
+          ]
+        },
+        {
+          "questionId": "sebi-portfolio-managers-regulations-onboarding-custody",
+          "question": "How are PMS clients onboarded (directly, through distributors, digitally), and which custodian holds client funds and securities?",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "Onboarding: the disclosure document (p.91) says 'The Portfolio Manager provides a direct onboarding option to clients (other than co-investment services clients) who wish to avail our services, without intermediation of persons engaged in distribution services'. Only stamp duty and statutory charges are levied at direct onboarding. Enquiries go to pms@hdfcfund.com or NDPMS@hdfcfund.com.\n\nIn the Definitions section, Direct Onboarding is 'an option provided to clients to be on-boarded directly with the Portfolio Manager without intermediation of persons engaged in distribution services'. This implies clients can also come through distributors, but no fetched source names the PMS distributors or a digital onboarding channel.\n\nCustody: the DD defines the Custodian as 'an entity registered with the SEBI as a custodian under the Applicable Laws and appointed by the Portfolio Manager, from time to time, primarily for custody of Securities of the Client'. It lists custodian fees of up to 0.05% p.a. and custodian transaction costs of up to 4 bps. The 2025-26 annual report says the PMS/AIF Operations team handles 'liaising with bankers, fund accountants and custodians'.\n\nNo fetched source names the custodian. Three targeted searches and the disclosure document text did not identify it, so the custodian's name stays unrecorded; ask the compliance officer.",
+          "answeredBy": "research",
+          "confidence": "low",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2026-01/Disclosure%20Document%20dated%20January%2015,%202026_0.pdf?VersionId=.KLAti83icTA_lUS4bZuUkZcFo7lNIhJ",
+              "description": "PMS DD 15 Jan 2026, p.91: 'Direct Onboarding: The Portfolio Manager provides a direct onboarding option to clients (other than co-investment services clients) who wish to avail our services,..."
+            },
+            {
+              "type": "url",
+              "ref": "https://www.hdfc.bank.in/content/dam/hdfcbankpws/in/en/pdf/about-us/annual-reports-of-the-subsidiaries/2025-26/hdfc-asset-management-company-limited.pdf",
+              "description": "Annual Report 2025-26, MD&A F. Operations (Statutory Reports pp.65-66): PMS/AIF Operations team functions include 'recording of transactions in the books of accounts of the respective clients,..."
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "unverified": "source-authenticity: Unverifiable: the Jan 2026 DD and FY26 annual report PDFs were fetched, but their text is compressed and could not be extracted, so the p.91 direct-onboarding quote and...",
+          "yields": [
+            {
+              "type": "process",
+              "id": "pms-direct-onboarding"
+            },
+            {
+              "type": "process",
+              "id": "pms-aif-operations"
+            }
+          ]
+        },
+        {
+          "questionId": "sebi-portfolio-managers-regulations-business-segregation",
+          "question": "Which business activities besides the mutual fund does the AMC run (portfolio management, advisory to offshore funds, other permitted activities), and how does it keep them separate from mutual...",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "Besides acting as investment manager to HDFC Mutual Fund, HDFC AMC runs:\n- portfolio management, advisory and co-investment services under PM/INP000000506, including segregated account services;\n- investment management of Category II AIFs, with commitments above Rs 2,500 crore at 31 Mar 2026, including a private credit fund with IFC as anchor investor and HDFC AMC Select AIF FoF I.\n\nThe DD (pp.11-12) describes these as other business activities permitted under Regulation 24(b) of the SEBI (Mutual Funds) Regulations.\n\nInternational business runs mainly through a separate legal entity, the wholly owned subsidiary HDFC AMC International (IFSC) Limited in GIFT City. It is registered with IFSCA as a Fund Management Entity (Retail) and offers investment management, advisory and related services to global and offshore investors. The annual report also says the Company serves as investment advisor to three funds on its international business platform, without saying which legal entity advises them.\n\nSegregation from mutual fund activity:\n- The DD (p.11) states 'The portfolio management / advisory services provided by HDFC AMC are not in conflict with the activities of HDFC Mutual Fund'.\n- The 2025-26 annual report (MD&A F. Operations) says operations are bifurcated into MF Operations and PMS/AIF Operations, and 'The functions of the MF & PMS/AIF are segregated and they have their own discrete teams and systems'.\n- The DD (pp.57-58) says conflicts are managed under a Conflict of Interest policy implemented under SEBI circular CIR/MIRSD/5/2013 (27 Aug 2013), last updated with effect from 15 Jan 2025. The PMS must deal with clients at arm's length.",
+          "answeredBy": "research",
+          "confidence": "low",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2026-01/Disclosure%20Document%20dated%20January%2015,%202026_0.pdf?VersionId=.KLAti83icTA_lUS4bZuUkZcFo7lNIhJ",
+              "description": "PMS DD 15 Jan 2026, p.11: 'The portfolio management / advisory services provided by HDFC AMC are not in conflict with the activities of HDFC Mutual Fund.' pp.11-12: 'Other Permissible activities..."
+            },
+            {
+              "type": "url",
+              "ref": "https://www.hdfc.bank.in/content/dam/hdfcbankpws/in/en/pdf/about-us/annual-reports-of-the-subsidiaries/2025-26/hdfc-asset-management-company-limited.pdf",
+              "description": "Annual Report 2025-26, MD&A F. Operations (Statutory Reports pp.65-66): 'The functions of the MF & PMS/AIF are segregated and they have their own discrete teams and systems.' MD&A B1: wholly owned..."
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "unverified": "source-authenticity: Unverifiable: the Jan 2026 DD and FY26 annual report PDFs were fetched, but their text is compressed and could not be extracted, so the Regulation 24(b) text, Category II AIF...",
+          "yields": [
+            {
+              "type": "offering",
+              "id": "hdfc-mutual-fund-schemes"
+            },
+            {
+              "type": "offering",
+              "id": "aif-category-ii-schemes"
+            },
+            {
+              "type": "offering",
+              "id": "pms-co-investment"
+            },
+            {
+              "type": "process",
+              "id": "pms-aif-operations"
+            },
+            {
+              "type": "process",
+              "id": "mf-pms-segregation-conflict-management"
+            }
+          ]
+        },
+        {
+          "questionId": "sebi-portfolio-managers-regulations-client-platform",
+          "question": "Which system does the portfolio manager use for client portfolio accounting, fee computation and periodic client reports?",
+          "answerableFrom": "internal",
+          "status": "open",
+          "reason": "internal: ask the compliance officer. The annual report says only that PMS/AIF have 'their own discrete teams and systems' and names no system; no workspace README or env file mentions a PMS platform.",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-portfolio-managers-regulations-conflict-controls",
+          "question": "How does the compliance function monitor conflicts of interest and trade allocation between PMS client portfolios and mutual fund schemes?",
+          "answerableFrom": "internal",
+          "status": "open",
+          "reason": "internal: ask the compliance officer. The DD (pp.57-58) says only that a CoI policy under CIR/MIRSD/5/2013 exists (updated 15 Jan 2025); how trade allocation between PMS and MF is monitored is not...",
+          "yields": []
+        }
+      ]
+    },
+    {
+      "questionnaireId": "q-sebi-cscrf-2024",
+      "obligationId": "sebi-cscrf-2024",
+      "questions": [
+        {
+          "questionId": "sebi-cscrf-2024-re-category",
+          "question": "Which CSCRF regulated-entity category applies to HDFC AMC (qualified, mid-size, small-size or self-certification RE), judged by its assets under management?",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "Qualified RE. CSCRF Table 10 puts MFs/AMCs with AUM of Rs 1 lakh crore and above in the Qualified RE category. HDFC AMC's AUM is far above that: the FY2025-26 annual report timeline says it 'Reached Rs 9 Lakh Crore', and Q1 FY27 QAAUM was Rs 9,351 bn (Rs 9.35 lakh crore). The PMS registration is at most Mid-size (Table 11 gives portfolio managers no Qualified tier). Section 2 para 23 says 'the provision of highest category under which such an RE falls shall be applicable', so qualified-re applies to the whole entity. Both profile registrations currently say not-categorised.",
+          "answeredBy": "research",
+          "confidence": "low",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://www.sebi.gov.in/sebi_data/attachdocs/aug-2024/1724326790365.pdf",
+              "description": "CSCRF circular SEBI/HO/ITD-1/ITD_CSC_EXT/P/CIR/2024/113, Section 2 Table 10 (MFs/AMCs): 'Qualified REs ... Rs. 1 lakh crores and above'. Table 11 (Portfolio Managers): Qualified 'N.A.'. Para 23,..."
+            },
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2026-07/Shareholders%20Presentation%20Q1%20FY27.pdf",
+              "description": "Q1 FY27 earnings presentation, slide 2 'HDFC AMC at a Glance': '9,351 bn QAAUM'; closing AUM and 'Alternatives AUM' as of June 30, 2026."
+            },
+            {
+              "type": "url",
+              "ref": "https://www.hdfc.bank.in/content/dam/hdfcbankpws/in/en/pdf/about-us/annual-reports-of-the-subsidiaries/2025-26/hdfc-asset-management-company-limited.pdf",
+              "description": "HDFC AMC 27th Annual Report 2025-26 (7.6 MB). Corporate overview timeline: 'Reached Rs 9 Lakh Crore'. MD and CEO message (about page 20): 'Our Portfolio Management Services business has crossed Rs..."
+            },
+            {
+              "type": "workspace-file",
+              "ref": ".claude/skills/regulatory-catalogs/references/catalogs/sebi-cscrf-2024.catalog.json",
+              "description": "Control Sec-2.Categorisation summarises the thresholds as revised by CIR/2025/60 and CIR/2025/119 (MFs/AMCs Qualified at Rs 1 lakh crore AUM; portfolio managers Mid-size at Rs 10,000 crore) and..."
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "unverified": "source-authenticity: The workspace CSCRF catalog (Sec-2.Categorisation) backs the logic: MFs/AMCs are Qualified REs at Rs 1 lakh crore AUM, portfolio managers top out at Mid-size, and the highest...",
+          "yields": [
+            {
+              "type": "process",
+              "id": "cscrf-compliance"
+            },
+            {
+              "type": "offering",
+              "id": "hdfc-mutual-fund-schemes"
+            },
+            {
+              "type": "offering",
+              "id": "hdfc-amc-pms"
+            }
+          ]
+        },
+        {
+          "questionId": "sebi-cscrf-2024-digital-platforms",
+          "question": "Which customer-facing digital platforms (investor website, mobile apps, distributor and adviser portals, APIs) carry mutual fund and PMS transactions?",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "HDFC AMC names these customer-facing digital channels: the website www.hdfcfund.com with its investor portal (investor-web.hdfcfund.com); the 'HDFC Mutual Fund: Invest, SIP' investor app (iOS and Android, published by HDFC Asset Management Company Limited; SIP, lump sum, redemption, e-KYC onboarding); the 'HDFC MF Online Partners' distributor app and Partners Portal (partners raise investor transactions for approval, onboard investors and manage KYC); an Admin Portal and an API Gateway for partner integrations; One Click Link; Tap2Invest and account statements on WhatsApp (8270682706); an AI chatbot; and Transact on Call. PMS clients have a sign-in portal at pms.hdfcfund.com/wealthspectrum. Transactions also flow through third-party channels: the CAMS investor portal, MF Central, MF Utility, stock exchanges and fintech or distributor platforms. 98% of transactions in Q1 FY27 were digital.",
+          "answeredBy": "research",
+          "confidence": "low",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2026-07/Shareholders%20Presentation%20Q1%20FY27.pdf",
+              "description": "Q1 FY27 presentation, slide 20 'Our Digital Stack': Investor Portal, AI Chat Bot, One Click Link, Tap2Invest on WhatsApp, Transact on Call, Website, HDFC Mutual Fund (investors); Partners Portal,..."
+            },
+            {
+              "type": "url",
+              "ref": "https://www.hdfc.bank.in/content/dam/hdfcbankpws/in/en/pdf/about-us/annual-reports-of-the-subsidiaries/2025-26/hdfc-asset-management-company-limited.pdf",
+              "description": "Annual Report 2025-26, BRSR consumer section: 'Website: www.hdfcfund.com; Company WhatsApp transaction number 8270682706; Company's Mobile applications - HDFC MF Online - Investors, and HDFC MF..."
+            },
+            {
+              "type": "url",
+              "ref": "https://apps.apple.com/us/app/hdfc-mutual-fund-invest-sip/id1380088205",
+              "description": "App Store: 'HDFC Mutual Fund: Invest, SIP' by HDFC Asset Management Company Limited. 'Start your Systematic Investment Plan (SIP) or invest with a lump sum'; 'Paperless Onboarding ... with E-KYC'."
+            },
+            {
+              "type": "url",
+              "ref": "https://apps.apple.com/us/app/hdfc-mf-online-partners/id1335989019",
+              "description": "App Store: 'HDFC MF Online Partners' by HDFC Asset Management Company Limited. 'MFOnline Partners will enable its partners to raise investor transactions for approval, send investor statement and..."
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "unverified": "source-authenticity: Both App Store pages confirm HDFC Asset Management Company Limited as the developer. The investor app page shows e-KYC onboarding, SIP and lump sum; the HDFC MF Online...",
+          "yields": [
+            {
+              "type": "platform",
+              "id": "hdfcfund-website-investor-portal"
+            },
+            {
+              "type": "platform",
+              "id": "hdfc-mf-investor-app"
+            },
+            {
+              "type": "platform",
+              "id": "hdfc-mfonline-partners"
+            },
+            {
+              "type": "platform",
+              "id": "partner-api-gateway"
+            },
+            {
+              "type": "platform",
+              "id": "whatsapp-chatbot-channels"
+            },
+            {
+              "type": "platform",
+              "id": "pms-client-portal"
+            },
+            {
+              "type": "platform",
+              "id": "cams-rta-platforms"
+            },
+            {
+              "type": "platform",
+              "id": "mf-central-mf-utility"
+            },
+            {
+              "type": "process",
+              "id": "investor-transactions-servicing"
+            },
+            {
+              "type": "process",
+              "id": "digital-ekyc-onboarding"
+            },
+            {
+              "type": "offering",
+              "id": "hdfc-mutual-fund-schemes"
+            },
+            {
+              "type": "offering",
+              "id": "hdfc-amc-pms"
+            },
+            {
+              "type": "segment",
+              "id": "retail-investors"
+            },
+            {
+              "type": "segment",
+              "id": "distribution-partners"
+            }
+          ]
+        },
+        {
+          "questionId": "sebi-cscrf-2024-governance-committees",
+          "question": "Which board-level committees and senior roles oversee technology and cyber risk at the AMC (for example IT strategy, risk management, CISO)?",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "Board oversight is split across several bodies. The Technology Committee, constituted in FY2025-26 and chaired by Ms. Roshni Nadar Malhotra with Mr. V. Srinivasa Rangan and Mr. Navneet Munot, met once, on January 14, 2026; its remit is future readiness, key IT initiatives, IT investments and resources for managing IT risks. The Information Technology & Security Committee and the Risk Management Committee monitor cyber security and review cyber and information security risks periodically under a Cyber Risk Management framework, with oversight from the Board. The Audit Committee oversees risk management alongside the Risk Management Committee. Named senior roles: Mr. Krantikumar Sherkhane, Chief Information Security Officer (CISO); Dr. Leena Vijayvargiy, Chief Risk Officer; Mr. Harish Narayanan, Chief Digital and Marketing Officer. Supporting Board-approved policies are the Information Security Policy, the Cyber Security and Cyber Resilience Policy, and the Information and Cyber Risk Management Framework. The ISMS is certified to ISO/IEC 27001:2022.",
+          "answeredBy": "research",
+          "confidence": "low",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://www.hdfc.bank.in/content/dam/hdfcbankpws/in/en/pdf/about-us/annual-reports-of-the-subsidiaries/2025-26/hdfc-asset-management-company-limited.pdf",
+              "description": "Annual Report 2025-26. Corporate governance report, about page 151: 'the Company has constituted the Technology Committee. During the FY 2025-26, one (1) Technology Committee meeting was held i.e...."
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "unverified": "source-authenticity: The only cited source is the FY2025-26 annual report PDF (7.6 MB), and WebFetch returned it as unparseable binary, which the local reader could not render either. None of the...",
+          "yields": [
+            {
+              "type": "process",
+              "id": "cyber-risk-governance"
+            },
+            {
+              "type": "process",
+              "id": "enterprise-risk-management"
+            }
+          ]
+        },
+        {
+          "questionId": "sebi-cscrf-2024-soc-monitoring",
+          "question": "Does the AMC run its own security operations centre or use a third-party or market SOC, and which critical systems does it monitor?",
+          "answerableFrom": "internal",
+          "status": "open",
+          "reason": "internal: ask the compliance officer",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-cscrf-2024-technology-providers",
+          "question": "Which third-party technology providers host or operate regulated systems for the AMC (cloud hosting, fund accounting, order management, registrar systems), and how are they assessed?",
+          "answerableFrom": "internal",
+          "status": "open",
+          "reason": "internal: ask the compliance officer",
+          "yields": []
+        }
+      ]
+    },
+    {
+      "questionnaireId": "q-sebi-aml-kyc-investor-grievance",
+      "obligationId": "sebi-aml-kyc-investor-grievance",
+      "questions": [
+        {
+          "questionId": "sebi-aml-kyc-investor-grievance-onboarding-kyc",
+          "question": "How are mutual fund investors and PMS clients onboarded and KYC-verified (KRA lookup, Aadhaar e-KYC, video KYC, in-person verification), and through which channels?",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "Mutual fund: investors become KYC compliant by submitting the CKYC and KRA KYC form at any HDFC Mutual Fund Investor Service Centre or official point of acceptance, or through any SEBI-registered intermediary. The AMC records the initial KYC in the KRA module, which passes it to CERSAI for a KIN. In-person verification (IPV) is mandatory for CKYC-form KYC. HDFC AMC officials and KYD-compliant NISM/AMFI-certified distributors may perform it, and IPV done by any SEBI-registered intermediary is relied on. First-time resident individual investors can also complete paperless Aadhaar eKYC (PAN, Aadhaar and bank details) on the HDFC MFOnline platform via CAMS. This is not available to NRIs, non-individuals or minors. The HDFC Mutual Fund mobile app, published by HDFC Asset Management Company Limited, offers 'Paperless Onboarding ... with E-KYC'. Transactions can also go through MF Utility and MFCentral. PMS: HDFC AMC offers direct onboarding without distributors (enquiries to pms@hdfcfund.com / NDPMS@HDFCfund.com). The PMS disclosure document text I could decode does not describe the PMS KYC steps. No fetched source mentions video KYC.",
+          "answeredBy": "research",
+          "confidence": "low",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2025-06/HDFC%20Mutual%20Fund%20-%20SAI%20dated%20June%2030,%202025.pdf?VersionId=17xGy80ct17AtZTTk.8vFMlDoZWqfwZe",
+              "description": "SAI 30 Jun 2025, 'How to Apply for KYC?': 'Investors may visit any of the ISC of HDFC Mutual Fund for completion of their KYC formalities... mandatory for intermediaries including mutual funds to..."
+            },
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2024-06/19%20SAI%20Final-June%2030,%202024.pdf",
+              "description": "SAI 30 Jun 2024: 'The officials of HDFC Asset Management Company Limited and NISM/AMFI certified distributors who are Know Your Distributors (KYD) compliant are authorized to undertake the IPV';..."
+            },
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2026-01/Disclosure%20Document%20dated%20January%2015,%202026_0.pdf?VersionId=.KLAti83icTA_lUS4bZuUkZcFo7lNIhJ",
+              "description": "PMS Disclosure Document 15 Jan 2026, p.89-90, section 10 B: 'Direct Onboarding: The Portfolio Manager provides a direct onboarding option to clients (other than co-investment services clients)......"
+            },
+            {
+              "type": "url",
+              "ref": "https://apps.apple.com/us/app/-/id1380088205",
+              "description": "App Store, seller HDFC Asset Management Company Limited: 'Paperless Onboarding: Start your investment journey effortlessly with E-KYC.'"
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "unverified": "source-authenticity: I could not check the core claims. The 2025 SAI (2MB), the 2024 SAI (2.4MB) and the Jan 2026 PMS disclosure document all downloaded, but none could be read: WebFetch saw only...",
+          "yields": [
+            {
+              "type": "process",
+              "id": "mf-investor-kyc"
+            },
+            {
+              "type": "process",
+              "id": "mf-investor-onboarding"
+            },
+            {
+              "type": "process",
+              "id": "pms-client-onboarding"
+            },
+            {
+              "type": "offering",
+              "id": "hdfc-mutual-fund-schemes"
+            },
+            {
+              "type": "offering",
+              "id": "hdfc-pms-services"
+            },
+            {
+              "type": "platform",
+              "id": "hdfc-mfonline"
+            },
+            {
+              "type": "platform",
+              "id": "hdfc-mf-mobile-app"
+            },
+            {
+              "type": "platform",
+              "id": "investor-service-centres"
+            },
+            {
+              "type": "platform",
+              "id": "cams-rta"
+            },
+            {
+              "type": "platform",
+              "id": "kra-ckyc-registry"
+            }
+          ]
+        },
+        {
+          "questionId": "sebi-aml-kyc-investor-grievance-grievance-channels",
+          "question": "Which grievance channels does the AMC offer unitholders and PMS clients (investor service centres, email, call centre, SCORES, SMART ODR)?",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "Mutual fund unitholders can contact any Investor Service Centre, call the toll-free numbers 1800 3010 6767 / 1800 419 7676, email hello@hdfcfund.com, or use the 'Feedback or queries' form under 'Contact Us' on www.hdfcfund.com. The Head - Client Services (Mr. Sameer Seksaria) is the escalation point. PMS clients raise queries and complaints first with the Corporate Client Services Team (pms@hdfcfund.com), then Escalation 1 and Escalation 2 (Head Corporate Client Services). The target is redressal within 21 calendar days. After that they can go to SEBI SCORES (scores.sebi.gov.in), write to SEBI, or use SEBI's Online Dispute Resolution mechanism under circular SEBI/HO/OIAE/OIAE_IAD-1/P/CIR/2023/145. For mutual fund investors, the SCORES and SMART ODR route is stated only on hdfcfund.com's grievance page, which returned HTTP 403, so it is not confirmed from a fetched page for that business.",
+          "answeredBy": "research",
+          "confidence": "low",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2025-06/HDFC%20Mutual%20Fund%20-%20SAI%20dated%20June%2030,%202025.pdf?VersionId=17xGy80ct17AtZTTk.8vFMlDoZWqfwZe",
+              "description": "SAI 30 Jun 2025, section F (p.150-151): 'Investors may contact any of the Investor Service Centres (ISCs) 1800 3010 6767/1800 419 7676 (toll free), e-mail: hello@hdfcfund.com. Investors can also..."
+            },
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2026-01/Disclosure%20Document%20dated%20January%2015,%202026_0.pdf?VersionId=.KLAti83icTA_lUS4bZuUkZcFo7lNIhJ",
+              "description": "PMS DD 15 Jan 2026 p.90-92: 'redressal of grievances of the Clients within twenty-one calendar days'; 'Email pms@hdfcfund.com'; 'Escalation 2: ... Head Corporate Client Services'; 'Client can..."
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "unverified": "source-authenticity: Partly checked, with low confidence. WebFetch's summary of the Jan 2026 PMS disclosure document mentions pms@hdfcfund.com, the Corporate Client Services Team with escalation...",
+          "yields": [
+            {
+              "type": "process",
+              "id": "mf-investor-grievance-redressal"
+            },
+            {
+              "type": "process",
+              "id": "pms-client-grievance-redressal"
+            },
+            {
+              "type": "platform",
+              "id": "investor-service-centres"
+            },
+            {
+              "type": "platform",
+              "id": "client-services-contact-centre"
+            },
+            {
+              "type": "platform",
+              "id": "hdfcfund-website"
+            }
+          ]
+        },
+        {
+          "questionId": "sebi-aml-kyc-investor-grievance-complaint-disclosure",
+          "question": "What investor complaint data does the company publish for its mutual fund and PMS businesses (complaints received, resolved and pending, by category)?",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "For the mutual fund, the SAI publishes scheme-wise tables of complaints received, redressed and pending, updated every two months as SEBI prescribes. The totals in the 30 Jun 2025 SAI are: received 1,946 (FY2022-23), 1,715 (FY2023-24), 2,015 (FY2024-25) and 369 (1 Apr-31 May 2025); redressed 1,942, 1,721, 2,012 and 369. A separate table lists complaints received from SEBI: 224 in FY2022-23, 128 in FY2023-24, 20 in FY2024-25 and 2 in Apr-May 2025, all redressed. The FY2025-26 BRSR, as reported by InvestyWise, gives 1,561 customer complaints about delivery of essential services, with 9 pending. hdfcfund.com has an 'Investor Complaints & PMS' disclosure page, but it returned HTTP 403, so the PMS complaint figures are not confirmed. The scheme tables break complaints down by scheme; no category breakdown was found in the decoded text.",
+          "answeredBy": "research",
+          "confidence": "low",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2025-06/HDFC%20Mutual%20Fund%20-%20SAI%20dated%20June%2030,%202025.pdf?VersionId=17xGy80ct17AtZTTk.8vFMlDoZWqfwZe",
+              "description": "SAI 30 Jun 2025 p.151-154, 'INVESTOR COMPLAINTS': Grand Total row '1,946 1,715 2,015 369 | 1,942 1,721 2,012 369'; 'B. ... complaints received from SEBI': FY22-23 224/224, FY23-24 128/128, FY24-25..."
+            },
+            {
+              "type": "url",
+              "ref": "https://www.investywise.com/hdfc-asset-management-company-limited-business-responsibility-and-sustainability-report/",
+              "description": "Secondary summary of the FY2025-26 BRSR: 'The company processed 1,561 customer complaints related to delivery of essential services in FY 2025-26, with 9 pending resolution.'"
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "unverified": "source-authenticity: Mixed result. The InvestyWise page does state the FY2025-26 BRSR figures of 1,561 customer complaints about delivery of essential services with 9 pending. InvestyWise is a...",
+          "yields": [
+            {
+              "type": "process",
+              "id": "investor-complaint-disclosure"
+            },
+            {
+              "type": "offering",
+              "id": "hdfc-mutual-fund-schemes"
+            }
+          ]
+        },
+        {
+          "questionId": "sebi-aml-kyc-investor-grievance-segment-due-diligence",
+          "question": "Which investor types does the AMC accept, restrict or subject to extra onboarding checks (NRIs, US/Canada persons, FPIs, trusts, other non-individuals)?",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "The mutual fund accepts resident individuals, NRIs, PIOs, OCIs and FPIs. NRIs, PIOs and OCIs pay on a repatriation basis from NRE/FCNR accounts or on a non-repatriation basis from NRO accounts. These investors may be asked for any further documents the AMC, Mutual Fund or Registrar requires. FPIs must hold DDP registration under the SEBI FPI Regulations. Non-individual applicants must file an Ultimate Beneficial Ownership declaration, and each UBO must be KYC compliant. All investors go through FATCA/CRS due diligence to identify foreign reportable accounts. Aadhaar eKYC is limited to resident individuals and is not available to NRIs, non-individuals or minors. PAN-exempt micro investments (PEKRN) are open only to individuals (including NRIs but not PIOs), minors and sole proprietary firms. The PMS disclosure document defines accredited and large value accredited investors, who get regulatory concessions, and defines clients to include individuals, HUFs, corporates, trusts and Indian or foreign institutional investors. No fetched source states whether US or Canada residents are accepted or restricted: the SAI text I could decode mentions the US only in the FATCA context.",
+          "answeredBy": "research",
+          "confidence": "low",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2025-06/HDFC%20Mutual%20Fund%20-%20SAI%20dated%20June%2030,%202025.pdf?VersionId=17xGy80ct17AtZTTk.8vFMlDoZWqfwZe",
+              "description": "SAI 30 Jun 2025: 'NRIs, PIOs, OCIs, FPIs Repatriation Basis...'; 'In case of non-individual applicants/investors, it will be mandatory to provide the details on Ultimate Beneficial Owner(s)'; 'the..."
+            },
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2024-06/19%20SAI%20Final-June%2030,%202024.pdf",
+              "description": "SAI 30 Jun 2024 para 23-24: 'NRIs/PIOs/OCIs/FPIs may also be requested to furnish such other documents as may be necessary and as desired by the AMC/Mutual Fund/Registrar'; 'The FPI is required to..."
+            },
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2026-01/Disclosure%20Document%20dated%20January%2015,%202026_0.pdf?VersionId=.KLAti83icTA_lUS4bZuUkZcFo7lNIhJ",
+              "description": "PMS DD 15 Jan 2026 pp.4-11 and 27: definitions of Accredited Investor and 'Large Value Accredited Investor ... minimum investment amount of ten crore rupees'; client 'includes an individual, a..."
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "unverified": "source-authenticity: I could not check this answer. Neither SAI PDF (June 2025, June 2024) could be read, so the NRE/FCNR and NRO rules, FPI DDP registration, UBO declarations, FATCA/CRS checks...",
+          "yields": [
+            {
+              "type": "segment",
+              "id": "resident-individual-investors"
+            },
+            {
+              "type": "segment",
+              "id": "nri-pio-oci-investors"
+            },
+            {
+              "type": "segment",
+              "id": "fpi-investors"
+            },
+            {
+              "type": "segment",
+              "id": "non-individual-investors"
+            },
+            {
+              "type": "segment",
+              "id": "pms-accredited-investors"
+            },
+            {
+              "type": "process",
+              "id": "investor-due-diligence-fatca-ubo"
+            }
+          ]
+        },
+        {
+          "questionId": "sebi-aml-kyc-investor-grievance-aml-monitoring",
+          "question": "Which system screens investors against sanctions lists and monitors transactions to produce suspicious transaction reports to FIU-IND?",
+          "answerableFrom": "internal",
+          "status": "open",
+          "reason": "internal: ask the compliance officer. The SAI says only that the AMC reports suspicious transactions to FIU-IND under PMLA and does not name a screening system. No workspace application README or...",
+          "yields": []
+        },
+        {
+          "questionId": "sebi-aml-kyc-investor-grievance-outsourced-kyc",
+          "question": "Which KYC and AML steps are done by the registrar and transfer agent or by distributors, and how does the AMC oversee them?",
+          "answerableFrom": "internal",
+          "status": "open",
+          "reason": "internal: ask the compliance officer. Public documents show that CAMS (the RTA) runs the eKYC facility and that KYD distributors may perform IPV, but not how the KYC and AML work is split or how...",
+          "yields": []
+        }
+      ]
+    },
+    {
+      "questionnaireId": "q-sebi-lodr-listed-entity",
+      "obligationId": "sebi-lodr-listed-entity",
+      "questions": [
+        {
+          "questionId": "sebi-lodr-listed-entity-exchanges-promoter",
+          "question": "On which stock exchanges are the company's equity shares listed, and which promoter group holds control?",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "The equity shares of HDFC Asset Management Company Limited have been listed on both National Stock Exchange of India Limited (symbol HDFCAMC) and BSE Limited (scrip code 541729) since August 06, 2018 (ISIN INE127D01025). The promoter and holding company is HDFC Bank Limited, which held 52.37% of the equity share capital as at March 31, 2026 (rounded to 52.4% in the corporate overview). HDFC Bank replaced the erstwhile HDFC Limited as promoter on July 1, 2023. The Screener aggregator shows the promoter holding at 52.34% for the June 2026 quarter.",
+          "answeredBy": "research",
+          "confidence": "high",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://www.hdfc.bank.in/content/dam/hdfcbankpws/in/en/pdf/about-us/annual-reports-of-the-subsidiaries/2025-26/hdfc-asset-management-company-limited.pdf",
+              "description": "27th Annual Report 2025-26 (7.6 MB). Note 1, p.~213: 'As at March 31, 2026, HDFC Bank Limited ('HDFC Bank' or 'Holding Company') owned 52.37% of the Company's equity share capital. The equity..."
+            },
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2024-02/Postal%20Ballot%20Notice.pdf",
+              "description": "Postal ballot notice of January 31, 2024 (small file): 'Nominee of HDFC Bank Limited, Promoter of the Company'"
+            },
+            {
+              "type": "url",
+              "ref": "https://www.screener.in/company/HDFCAMC/",
+              "description": "Aggregator, secondary source only: BSE 541729, NSE HDFCAMC, promoter holding 52.34% for Jun 2026"
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "yields": [
+            {
+              "type": "process",
+              "id": "listed-entity-secretarial-compliance"
+            }
+          ]
+        },
+        {
+          "questionId": "sebi-lodr-listed-entity-board-committees",
+          "question": "Which board committees does the company run as a listed entity (audit, nomination and remuneration, stakeholders relationship, risk management, CSR)?",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "The FY 2025-26 corporate governance report names these board committees, with meetings held in the year:\n- Audit Committee (13 meetings)\n- Nomination & Remuneration Committee (7)\n- Stakeholders Relationship and Unit Holder Protection Committee (4; formerly the Stakeholders Relationship Committee)\n- Environmental, Social and Governance and Corporate Social Responsibility Committee, the 'ESG & CSR Committee' (5)\n- Risk Management Committee (4)\n- Technology Committee (1; constituted during the year)\n- Investment Committee (5; approves the company's own investment proposals)\n- Share Allotment Committee\n\nThe management discussion and the BRSR also say an Information Technology & Security Committee, together with the Risk Management Committee, monitors cyber risk.",
+          "answeredBy": "research",
+          "confidence": "low",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://www.hdfc.bank.in/content/dam/hdfcbankpws/in/en/pdf/about-us/annual-reports-of-the-subsidiaries/2025-26/hdfc-asset-management-company-limited.pdf",
+              "description": "27th Annual Report 2025-26, corporate governance report pp.~141-150. Meeting counts: 'thirteen (13) Audit Committee meetings'; 'seven (7) Nomination & Remuneration Committee meetings'; 'four (4)..."
+            },
+            {
+              "type": "url",
+              "ref": "https://bsmedia.business-standard.com/_media/bs/data/announcements/bse/03062025/c252a205-906a-4fb7-889b-42c65eae6e60.pdf",
+              "description": "BSE filing of June 3, 2025 (BRSR FY 2024-25): 'Stakeholders Relationship and Unit holder Protection Committee (formerly Stakeholders Relationship Committee)'; 'monitored by the Information..."
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "unverified": "source-authenticity: Unverifiable: both cited PDFs downloaded (7.6MB annual report, 7.5MB bsmedia BSE filing), but the fetch tool returned only encoded streams or signature data, with no readable...",
+          "yields": [
+            {
+              "type": "process",
+              "id": "board-committee-governance"
+            },
+            {
+              "type": "process",
+              "id": "enterprise-risk-management"
+            }
+          ]
+        },
+        {
+          "questionId": "sebi-lodr-listed-entity-shareholder-services",
+          "question": "Which registrar and share transfer agent serves the company's shareholders, and through which channels are shareholder grievances handled?",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "The registrar and share transfer agent for shareholders is KFin Technologies Limited, Hyderabad (KFintech; e-mail einward.ris@kfintech.com, toll free 1800-309-4001).\n\nShareholder grievances go through this sequence of channels:\n1. KFintech first.\n2. If unresolved, the company at shareholders.relations@hdfcfund.com.\n3. Then SEBI SCORES.\n4. Finally the SEBI Online Dispute Resolution portal (smartodr.in).\n\nMutual fund unitholders are served separately: the scheme RTA is CAMS, and customer grievances run through a Complaint Management Platform overseen by the Corporate Client Service team.",
+          "answeredBy": "research",
+          "confidence": "high",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://www.hdfc.bank.in/content/dam/hdfcbankpws/in/en/pdf/about-us/annual-reports-of-the-subsidiaries/2025-26/hdfc-asset-management-company-limited.pdf",
+              "description": "27th Annual Report 2025-26, corporate governance report p.~157: 'Registrar and Transfer Agent (RTA): KFin Technologies Limited Selenium Tower B ... Hyderabad ... E-mail: einward.ris@kfintech.com..."
+            },
+            {
+              "type": "url",
+              "ref": "https://files.hdfcfund.com/s3fs-public/2024-02/Postal%20Ballot%20Notice.pdf",
+              "description": "Postal ballot notice of January 31, 2024: 'address ... grievance(s) ... directly to the Company's Registrar & Share Transfer Agent viz. KFintech at einward.ris@kfintech.com and if the grievance is..."
+            },
+            {
+              "type": "url",
+              "ref": "https://bsmedia.business-standard.com/_media/bs/data/announcements/bse/03062025/c252a205-906a-4fb7-889b-42c65eae6e60.pdf",
+              "description": "BRSR FY 2024-25 BSE filing: 'the Company has a Complaint Management Platform to record and redress grievances/feedback from customers'"
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "yields": [
+            {
+              "type": "process",
+              "id": "shareholder-grievance-redressal"
+            },
+            {
+              "type": "platform",
+              "id": "kfintech-share-registry"
+            },
+            {
+              "type": "platform",
+              "id": "cams-mf-registrar"
+            },
+            {
+              "type": "platform",
+              "id": "complaint-management-platform"
+            }
+          ]
+        },
+        {
+          "questionId": "sebi-lodr-listed-entity-related-party-distribution",
+          "question": "Which promoter-group or other related entities distribute or service the company's products, as disclosed in its related-party transaction filings?",
+          "answerableFrom": "public",
+          "status": "answered",
+          "answer": "Note 26 (Related Party Transactions) of the FY 2025-26 standalone financial statements lists the related parties the company transacted with:\n- Holding company: HDFC Bank Limited.\n- Fellow subsidiaries: HDFC Trustee Company Limited, HDFC Life Insurance Company Limited, HDFC ERGO General Insurance Company Limited and HDFC Securities Limited.\n\nThe 'Fees and Commission' expense was Rs 3.77 crore paid to HDFC Bank (FY25: 2.14) and Rs 0.30 crore to fellow subsidiaries (FY25: 0.31). Prepaid commission was Rs 1.66 crore with HDFC Bank and Rs 2.21 crore with fellow subsidiaries. The note gives only the fellow-subsidiary total, so it does not say which fellow subsidiary (for example HDFC Securities) earns that commission.\n\nHDFC Bank also receives:\n- trademark licence fees (Rs 15.88 crore)\n- lease rent (Rs 13.81 crore)\n- bank and custodian charges\n\nInsurance premium (Rs 4.58 crore) is paid to fellow subsidiaries. The company provides operating and secretarial services to HDFC Trustee Company free of charge. Overall the company works with 1,09,000+ distribution partners, including banks, national distributors, mutual fund distributors and fintechs.",
+          "answeredBy": "research",
+          "confidence": "low",
+          "evidence": [
+            {
+              "type": "url",
+              "ref": "https://www.hdfc.bank.in/content/dam/hdfcbankpws/in/en/pdf/about-us/annual-reports-of-the-subsidiaries/2025-26/hdfc-asset-management-company-limited.pdf",
+              "description": "27th Annual Report 2025-26, Note 26, pp.216-217. Related parties: '1 Holding Company HDFC Bank Limited ... 3 Fellow Subsidiaries HDFC Trustee Company Limited HDFC Life Insurance Company Limited..."
+            }
+          ],
+          "answeredAt": "2026-09-15T10:27:04Z",
+          "unverified": "source-authenticity: Unverifiable: the only cited source, the 7.6MB FY26 annual report PDF, downloaded but gave no readable text for Note 26 (fellow subsidiary names, Rs 3.77/2.14 crore and...",
+          "yields": [
+            {
+              "type": "process",
+              "id": "related-party-transaction-review"
+            },
+            {
+              "type": "process",
+              "id": "distribution-partner-management"
+            },
+            {
+              "type": "offering",
+              "id": "hdfc-mutual-fund-schemes"
+            }
+          ]
+        },
+        {
+          "questionId": "sebi-lodr-listed-entity-disclosure-process",
+          "question": "Which team decides what material events and price-sensitive information are disclosed to the exchanges, and which system tracks designated persons' trading in the company's shares?",
+          "answerableFrom": "internal",
+          "status": "open",
+          "reason": "internal: ask the compliance officer. Public sources show only that the company has a Policy for Determination of Materiality of Events and a Code of Practices & Procedures for Fair Disclosure of...",
+          "yields": []
+        }
+      ]
+    }
+  ],
+  "processes": [
+    {
+      "processId": "fund-management",
+      "name": "Fund management for HDFC Mutual Fund schemes, PMS, segregated accounts and AIFs",
+      "kind": "fund-management",
+      "obligationIds": [
+        "mca-companies-act",
+        "mca-financial-reporting-audit"
+      ],
+      "unitIds": [
+        "hdfc-amc"
+      ],
+      "offeringIds": [
+        "hdfc-mutual-fund-schemes",
+        "pms-strategies",
+        "segregated-account-services",
+        "alternative-investment-funds",
+        "pms-discretionary-non-discretionary",
+        "pms-advisory-mandates",
+        "hdfc-amc-aifs"
+      ],
+      "segmentIds": [
+        "hni",
+        "family-offices",
+        "domestic-corporates",
+        "institutions",
+        "trusts-and-provident-funds",
+        "corporates",
+        "provident-funds"
+      ]
+    },
+    {
+      "processId": "secretarial-compliance",
+      "name": "Companies Act secretarial compliance, run by the Company Secretary & Head-Legal",
+      "kind": "secretarial-compliance",
+      "ownerRole": "compliance-officer",
+      "obligationIds": [
+        "mca-companies-act",
+        "mca-listed-entity-disclosures"
+      ],
+      "unitIds": [
+        "hdfc-amc"
+      ]
+    },
+    {
+      "processId": "general-meetings",
+      "name": "Board meetings and AGMs by VC/OAVM with remote e-voting",
+      "kind": "secretarial-compliance",
+      "ownerRole": "compliance-officer",
+      "obligationIds": [
+        "mca-companies-act"
+      ],
+      "unitIds": [
+        "hdfc-amc"
+      ]
+    },
+    {
+      "processId": "shareholder-servicing",
+      "name": "Register of members, share transfers and transmission through the RTA and depositories",
+      "kind": "secretarial-compliance",
+      "ownerRole": "compliance-officer",
+      "obligationIds": [
+        "mca-companies-act"
+      ],
+      "unitIds": [
+        "hdfc-amc"
+      ]
+    },
+    {
+      "processId": "shareholder-grievance-redressal",
+      "name": "Shareholder grievances, first to the RTA and then to shareholders.relations@hdfcfund.com",
+      "kind": "grievance-redressal",
+      "obligationIds": [
+        "mca-companies-act",
+        "mca-csr-investor-protection",
+        "sebi-lodr-listed-entity"
+      ],
+      "unitIds": [
+        "hdfc-amc"
+      ]
+    },
+    {
+      "processId": "secretarial-audit",
+      "name": "Independent secretarial audit under s.204 by Makarand M. Joshi & Co.",
+      "kind": "secretarial-compliance",
+      "obligationIds": [
+        "mca-companies-act"
+      ],
+      "unitIds": [
+        "hdfc-amc"
+      ]
+    },
+    {
+      "processId": "statutory-financial-reporting",
+      "name": "Standalone and consolidated financial statements, board's report and Form AOC-1 (Companies Act s.129, s.134)",
+      "kind": "regulatory-reporting",
+      "description": "Prepares standalone and consolidated financial statements that include the single wholly owned subsidiary HDFC AMC International (IFSC) Limited.",
+      "obligationIds": [
+        "mca-financial-reporting-audit"
+      ],
+      "unitIds": [
+        "hdfc-amc"
+      ]
+    },
+    {
+      "processId": "statutory-audit",
+      "name": "Statutory audit and audit of internal financial controls over financial reporting (s.139, s.143)",
+      "kind": "other",
+      "description": "B S R & Co. LLP, re-appointed from the 23rd to the 28th AGM. FY26 opinions, including the IFC opinion, are unmodified. The key audit matter is the computation of MF investment management fees.",
+      "obligationIds": [
+        "mca-financial-reporting-audit"
+      ],
+      "unitIds": [
+        "hdfc-amc"
+      ]
+    },
+    {
+      "processId": "internal-audit",
+      "name": "Outsourced internal audit (s.138) reporting to the Audit Committee",
+      "kind": "risk-management",
+      "description": "M P Chitale & Co for FY2025-26. Covers each department and function, including compliance. Acts as the third line of defence under the SEBI MF Risk Management Framework.",
+      "obligationIds": [
+        "mca-financial-reporting-audit"
+      ],
+      "unitIds": [
+        "hdfc-amc"
+      ]
+    },
+    {
+      "processId": "compliance-monitoring",
+      "name": "Compliance function and regulatory filings review",
+      "kind": "regulatory-reporting",
+      "description": "The Chief Compliance Officer updates the Board and Audit Committee. The compliance team files reports with regulators, and internal audit reviews those reports before submission.",
+      "obligationIds": [
+        "mca-financial-reporting-audit"
+      ],
+      "unitIds": [
+        "hdfc-amc"
+      ]
+    },
+    {
+      "processId": "board-committee-governance",
+      "name": "Board and committee governance (audit, NRC, stakeholders, ESG & CSR, investment, share allotment)",
+      "kind": "secretarial-compliance",
+      "obligationIds": [
+        "mca-board-governance-rpt",
+        "sebi-lodr-listed-entity"
+      ],
+      "unitIds": [
+        "hdfc-amc"
+      ],
+      "offeringIds": [
+        "hdfc-mutual-fund-schemes",
+        "hdfc-pms-strategies",
+        "hdfc-aif-schemes"
+      ]
+    },
+    {
+      "processId": "enterprise-risk-management",
+      "name": "Enterprise and scheme-level risk management overseen by the Risk Management Committee and ERMC",
+      "kind": "risk-management",
+      "obligationIds": [
+        "mca-board-governance-rpt",
+        "sebi-cscrf-2024",
+        "sebi-lodr-listed-entity"
+      ],
+      "unitIds": [
+        "hdfc-amc"
+      ],
+      "offeringIds": [
+        "hdfc-mutual-fund-schemes",
+        "hdfc-pms-strategies",
+        "hdfc-aif-schemes"
+      ],
+      "licenseIds": [
+        "sebi-mutual-fund-amc",
+        "sebi-portfolio-manager"
+      ]
+    },
+    {
+      "processId": "cyber-risk-oversight",
+      "name": "Cyber, information security and business continuity risk oversight (IT & Security Committee, RMC, Technology Committee)",
+      "kind": "risk-management",
+      "obligationIds": [
+        "mca-board-governance-rpt"
+      ],
+      "unitIds": [
+        "hdfc-amc"
+      ],
+      "offeringIds": [
+        "hdfc-mutual-fund-schemes",
+        "hdfc-pms-strategies",
+        "hdfc-aif-schemes"
+      ]
+    },
+    {
+      "processId": "unitholder-service-oversight",
+      "name": "Unit holder service standards, unclaimed amounts and investor compensation review",
+      "kind": "client-services",
+      "obligationIds": [
+        "mca-board-governance-rpt"
+      ],
+      "unitIds": [
+        "hdfc-amc"
+      ],
+      "offeringIds": [
+        "hdfc-mutual-fund-schemes",
+        "hdfc-pms-strategies",
+        "hdfc-aif-schemes"
+      ]
+    },
+    {
+      "processId": "trustee-operating-support",
+      "name": "Operating and secretarial services to HDFC Trustee Company",
+      "kind": "secretarial-compliance",
+      "obligationIds": [
+        "mca-board-governance-rpt"
+      ],
+      "unitIds": [
+        "hdfc-amc"
+      ]
+    },
+    {
+      "processId": "related-party-disclosure",
+      "name": "Related party transaction disclosure in financial statements",
+      "kind": "regulatory-reporting",
+      "obligationIds": [
+        "mca-board-governance-rpt"
+      ],
+      "unitIds": [
+        "hdfc-amc"
+      ]
+    },
+    {
+      "processId": "whistle-blower-mechanism",
+      "name": "Whistle blower / vigil mechanism with Whistleblower-Complaints and UPSI committees",
+      "kind": "grievance-redressal",
+      "obligationIds": [
+        "mca-board-governance-rpt"
+      ],
+      "unitIds": [
+        "hdfc-amc"
+      ]
+    },
+    {
+      "processId": "upsi-leak-investigation",
+      "name": "Investigation of leakage of AMC and HDFC MF unpublished price sensitive information",
+      "kind": "surveillance",
+      "obligationIds": [
+        "mca-board-governance-rpt"
+      ],
+      "unitIds": [
+        "hdfc-amc"
+      ]
+    },
+    {
+      "processId": "csr-programme-management",
+      "name": "CSR programme selection, funding and monitoring of implementing agencies under section 135",
+      "kind": "secretarial-compliance",
+      "ownerRole": "board-liaison",
+      "obligationIds": [
+        "mca-csr-investor-protection"
+      ],
+      "unitIds": [
+        "hdfc-amc"
+      ]
+    },
+    {
+      "processId": "csr-implementing-agency-oversight",
+      "name": "Monitoring and impact assessment of CSR implementing partners (NGOs and trusts)",
+      "kind": "vendor-management",
+      "obligationIds": [
+        "mca-csr-investor-protection"
+      ],
+      "unitIds": [
+        "hdfc-amc"
+      ]
+    },
+    {
+      "processId": "unclaimed-dividend-iepf-management",
+      "name": "Unpaid dividend account upkeep, shareholder outreach (Saksham Niveshak), and IEPF transfer tracking under sections 124-125",
+      "kind": "secretarial-compliance",
+      "ownerRole": "compliance-officer",
+      "obligationIds": [
+        "mca-csr-investor-protection"
+      ],
+      "unitIds": [
+        "hdfc-amc"
+      ]
+    },
+    {
+      "processId": "listed-entity-disclosures",
+      "name": "Listed-entity market disclosures (stock exchange filings, earnings calls, investor presentations)",
+      "kind": "regulatory-reporting",
+      "ownerRole": "compliance-officer",
+      "obligationIds": [
+        "mca-listed-entity-disclosures"
+      ],
+      "unitIds": [
+        "hdfc-amc"
+      ]
+    },
+    {
+      "processId": "grievance-redressal",
+      "name": "Investor query and grievance redressal (Customer Query & Grievance Redressal Policy)",
+      "kind": "grievance-redressal",
+      "ownerRole": "grievance-officer",
+      "obligationIds": [
+        "mca-listed-entity-disclosures"
+      ],
+      "unitIds": [
+        "hdfc-amc"
+      ],
+      "offeringIds": [
+        "hdfc-mutual-fund-schemes",
+        "hdfc-pms"
+      ],
+      "segmentIds": [
+        "individual-investors",
+        "institutional-investors"
+      ]
+    },
+    {
+      "processId": "cyber-risk-management",
+      "name": "Information security and cyber risk management framework (IT & Security Committee, Risk Management Committee)",
+      "kind": "risk-management",
+      "ownerRole": "it-committee-chair",
+      "obligationIds": [
+        "mca-listed-entity-disclosures"
+      ],
+      "unitIds": [
+        "hdfc-amc"
+      ],
+      "offeringIds": [
+        "hdfc-mutual-fund-schemes",
+        "hdfc-pms"
+      ],
+      "segmentIds": [
+        "individual-investors",
+        "institutional-investors"
+      ]
+    },
+    {
+      "processId": "client-services",
+      "name": "Investor servicing through branches, call centres and digital channels",
+      "kind": "client-services",
+      "obligationIds": [
+        "mca-listed-entity-disclosures"
+      ],
+      "unitIds": [
+        "hdfc-amc"
+      ],
+      "offeringIds": [
+        "hdfc-mutual-fund-schemes",
+        "hdfc-pms"
+      ],
+      "segmentIds": [
+        "individual-investors",
+        "institutional-investors"
+      ]
+    },
+    {
+      "processId": "scheme-fund-management",
+      "name": "Investment management of HDFC Mutual Fund schemes",
+      "kind": "fund-management",
+      "obligationIds": [
+        "sebi-mutual-funds-regulations"
+      ],
+      "licenseIds": [
+        "sebi-mutual-fund-amc"
+      ],
+      "offeringIds": [
+        "mf-equity-schemes",
+        "mf-debt-schemes",
+        "mf-hybrid-schemes",
+        "mf-solution-oriented-schemes",
+        "mf-index-funds-etfs",
+        "mf-fund-of-funds",
+        "mf-close-ended-schemes"
+      ]
+    },
+    {
+      "processId": "unit-distribution-channels",
+      "name": "Distribution of units through direct, MFD, national distributor, bank, RIA and EOP channels",
+      "kind": "client-services",
+      "obligationIds": [
+        "sebi-mutual-funds-regulations"
+      ],
+      "licenseIds": [
+        "sebi-mutual-fund-amc"
+      ],
+      "segmentIds": [
+        "retail-individual-investors",
+        "institutional-investors",
+        "non-individual-corporate-investors",
+        "nri-pio-oci-investors",
+        "fpi-investors"
+      ]
+    },
+    {
+      "processId": "investor-onboarding-kyc",
+      "name": "Investor onboarding and KYC at ISCs, OPAs and eKYC on HDFC MFOnline",
+      "kind": "kyc",
+      "obligationIds": [
+        "sebi-mutual-funds-regulations"
+      ],
+      "licenseIds": [
+        "sebi-mutual-fund-amc"
+      ],
+      "segmentIds": [
+        "retail-individual-investors",
+        "institutional-investors",
+        "non-individual-corporate-investors",
+        "nri-pio-oci-investors",
+        "fpi-investors"
+      ]
+    },
+    {
+      "processId": "fund-accounting",
+      "name": "In-house fund accounting for HDFC Mutual Fund schemes",
+      "kind": "other",
+      "obligationIds": [
+        "sebi-mutual-funds-regulations"
+      ],
+      "licenseIds": [
+        "sebi-mutual-fund-amc"
+      ]
+    },
+    {
+      "processId": "mf-service-provider-oversight",
+      "name": "Oversight of RTA, custodians and collecting banker for HDFC Mutual Fund",
+      "kind": "vendor-management",
+      "obligationIds": [
+        "sebi-mutual-funds-regulations"
+      ],
+      "licenseIds": [
+        "sebi-mutual-fund-amc"
+      ]
+    },
+    {
+      "processId": "unit-transactions",
+      "name": "Purchases, redemptions and switches of units",
+      "kind": "client-services",
+      "obligationIds": [
+        "sebi-mutual-funds-regulations"
+      ],
+      "licenseIds": [
+        "sebi-mutual-fund-amc"
+      ]
+    },
+    {
+      "processId": "systematic-plans",
+      "name": "SIP, STP and SWP/SWAP registration and processing",
+      "kind": "client-services",
+      "obligationIds": [
+        "sebi-mutual-funds-regulations"
+      ],
+      "licenseIds": [
+        "sebi-mutual-fund-amc"
+      ]
+    },
+    {
+      "processId": "account-statements-cas",
+      "name": "Account statements and Consolidated Account Statements",
+      "kind": "client-services",
+      "obligationIds": [
+        "sebi-mutual-funds-regulations"
+      ],
+      "licenseIds": [
+        "sebi-mutual-fund-amc"
+      ]
+    },
+    {
+      "processId": "unclaimed-amounts",
+      "name": "Unclaimed redemption and IDCW amount management and disclosure",
+      "kind": "client-services",
+      "obligationIds": [
+        "sebi-mutual-funds-regulations"
+      ],
+      "licenseIds": [
+        "sebi-mutual-fund-amc"
+      ]
+    },
+    {
+      "processId": "pms-portfolio-management",
+      "name": "Portfolio management of PMS client mandates",
+      "kind": "fund-management",
+      "obligationIds": [
+        "sebi-portfolio-managers-regulations"
+      ],
+      "licenseIds": [
+        "sebi-portfolio-manager"
+      ],
+      "offeringIds": [
+        "pms-discretionary",
+        "pms-non-discretionary",
+        "pms-advisory",
+        "pms-co-investment",
+        "pms-investment-approaches"
+      ]
+    },
+    {
+      "processId": "pms-direct-onboarding",
+      "name": "PMS client onboarding (direct option without distributors)",
+      "kind": "onboarding",
+      "obligationIds": [
+        "sebi-portfolio-managers-regulations"
+      ],
+      "licenseIds": [
+        "sebi-portfolio-manager"
+      ]
+    },
+    {
+      "processId": "pms-aif-operations",
+      "name": "PMS/AIF operations: client accounting, settlement, valuation and custodian liaison",
+      "kind": "client-services",
+      "obligationIds": [
+        "sebi-portfolio-managers-regulations"
+      ],
+      "licenseIds": [
+        "sebi-portfolio-manager"
+      ],
+      "offeringIds": [
+        "hdfc-mutual-fund-schemes",
+        "aif-category-ii-schemes",
+        "pms-co-investment"
+      ]
+    },
+    {
+      "processId": "mf-pms-segregation-conflict-management",
+      "name": "Segregation of MF and PMS/AIF functions and conflict of interest policy",
+      "kind": "risk-management",
+      "obligationIds": [
+        "sebi-portfolio-managers-regulations"
+      ],
+      "licenseIds": [
+        "sebi-portfolio-manager"
+      ],
+      "offeringIds": [
+        "hdfc-mutual-fund-schemes",
+        "aif-category-ii-schemes",
+        "pms-co-investment"
+      ]
+    },
+    {
+      "processId": "cscrf-compliance",
+      "name": "CSCRF compliance as a Qualified RE",
+      "kind": "risk-management",
+      "description": "Yearly CSCRF categorisation from prior-year AUM, then Qualified RE cybersecurity obligations across the MF and PMS registrations",
+      "obligationIds": [
+        "sebi-cscrf-2024"
+      ],
+      "licenseIds": [
+        "sebi-mutual-fund-amc",
+        "sebi-portfolio-manager"
+      ],
+      "offeringIds": [
+        "hdfc-mutual-fund-schemes",
+        "hdfc-amc-pms"
+      ]
+    },
+    {
+      "processId": "investor-transactions-servicing",
+      "name": "Investor transactions and servicing",
+      "kind": "client-services",
+      "description": "Purchases, SIPs, redemptions and service requests through digital and assisted channels",
+      "obligationIds": [
+        "sebi-cscrf-2024"
+      ],
+      "licenseIds": [
+        "sebi-mutual-fund-amc",
+        "sebi-portfolio-manager"
+      ],
+      "offeringIds": [
+        "hdfc-mutual-fund-schemes",
+        "hdfc-amc-pms"
+      ],
+      "segmentIds": [
+        "retail-investors",
+        "distribution-partners"
+      ]
+    },
+    {
+      "processId": "digital-ekyc-onboarding",
+      "name": "Digital e-KYC onboarding",
+      "kind": "kyc",
+      "description": "Paperless e-KYC onboarding in the investor app and distributor-assisted KYC in MFOnline Partners",
+      "obligationIds": [
+        "sebi-cscrf-2024"
+      ],
+      "licenseIds": [
+        "sebi-mutual-fund-amc",
+        "sebi-portfolio-manager"
+      ],
+      "offeringIds": [
+        "hdfc-mutual-fund-schemes",
+        "hdfc-amc-pms"
+      ],
+      "segmentIds": [
+        "retail-investors",
+        "distribution-partners"
+      ]
+    },
+    {
+      "processId": "cyber-risk-governance",
+      "name": "Cyber risk governance and oversight",
+      "kind": "risk-management",
+      "description": "Technology Committee, IT & Security Committee, Risk Management Committee and Board oversight of cyber risk; CISO-led information security programme under Board-approved policies",
+      "obligationIds": [
+        "sebi-cscrf-2024"
+      ],
+      "licenseIds": [
+        "sebi-mutual-fund-amc",
+        "sebi-portfolio-manager"
+      ]
+    },
+    {
+      "processId": "mf-investor-kyc",
+      "name": "Mutual fund investor KYC (CKYC/KRA form, IPV, Aadhaar eKYC)",
+      "kind": "kyc",
+      "obligationIds": [
+        "sebi-aml-kyc-investor-grievance"
+      ],
+      "licenseIds": [
+        "sebi-mutual-fund-amc",
+        "sebi-portfolio-manager"
+      ],
+      "offeringIds": [
+        "hdfc-mutual-fund-schemes",
+        "hdfc-pms-services"
+      ]
+    },
+    {
+      "processId": "mf-investor-onboarding",
+      "name": "Mutual fund investor onboarding via ISCs, distributors, MFOnline and mobile app",
+      "kind": "onboarding",
+      "obligationIds": [
+        "sebi-aml-kyc-investor-grievance"
+      ],
+      "licenseIds": [
+        "sebi-mutual-fund-amc",
+        "sebi-portfolio-manager"
+      ],
+      "offeringIds": [
+        "hdfc-mutual-fund-schemes",
+        "hdfc-pms-services"
+      ]
+    },
+    {
+      "processId": "pms-client-onboarding",
+      "name": "PMS client onboarding including direct onboarding",
+      "kind": "onboarding",
+      "obligationIds": [
+        "sebi-aml-kyc-investor-grievance"
+      ],
+      "licenseIds": [
+        "sebi-mutual-fund-amc",
+        "sebi-portfolio-manager"
+      ],
+      "offeringIds": [
+        "hdfc-mutual-fund-schemes",
+        "hdfc-pms-services"
+      ]
+    },
+    {
+      "processId": "mf-investor-grievance-redressal",
+      "name": "Mutual fund unitholder grievance redressal (ISCs, toll-free, email, web form)",
+      "kind": "grievance-redressal",
+      "obligationIds": [
+        "sebi-aml-kyc-investor-grievance"
+      ],
+      "licenseIds": [
+        "sebi-mutual-fund-amc",
+        "sebi-portfolio-manager"
+      ]
+    },
+    {
+      "processId": "pms-client-grievance-redressal",
+      "name": "PMS client grievance redressal with escalation matrix, SCORES and ODR",
+      "kind": "grievance-redressal",
+      "obligationIds": [
+        "sebi-aml-kyc-investor-grievance"
+      ],
+      "licenseIds": [
+        "sebi-mutual-fund-amc",
+        "sebi-portfolio-manager"
+      ]
+    },
+    {
+      "processId": "investor-complaint-disclosure",
+      "name": "Bi-monthly investor complaint status disclosure (SAI) and BRSR consumer complaint reporting",
+      "kind": "regulatory-reporting",
+      "obligationIds": [
+        "sebi-aml-kyc-investor-grievance"
+      ],
+      "licenseIds": [
+        "sebi-mutual-fund-amc",
+        "sebi-portfolio-manager"
+      ],
+      "offeringIds": [
+        "hdfc-mutual-fund-schemes"
+      ]
+    },
+    {
+      "processId": "investor-due-diligence-fatca-ubo",
+      "name": "Investor due diligence: FATCA/CRS, UBO declaration, NRI/FPI documentation",
+      "kind": "kyc",
+      "obligationIds": [
+        "sebi-aml-kyc-investor-grievance"
+      ],
+      "licenseIds": [
+        "sebi-mutual-fund-amc",
+        "sebi-portfolio-manager"
+      ],
+      "segmentIds": [
+        "resident-individual-investors",
+        "nri-pio-oci-investors",
+        "fpi-investors",
+        "non-individual-investors",
+        "pms-accredited-investors"
+      ]
+    },
+    {
+      "processId": "listed-entity-secretarial-compliance",
+      "name": "Listed-entity secretarial compliance (NSE and BSE listing obligations)",
+      "kind": "secretarial-compliance",
+      "description": "Equity is listed on NSE (HDFCAMC) and BSE (541729). The company pays listing fees and files compliances through NEAPS and the BSE Listing Centre. HDFC Bank Limited is the promoter and holding company (52.37% at 31 Mar 2026).",
+      "obligationIds": [
+        "sebi-lodr-listed-entity"
+      ],
+      "unitIds": [
+        "hdfc-amc"
+      ]
+    },
+    {
+      "processId": "related-party-transaction-review",
+      "name": "Related-party transaction approval and disclosure",
+      "kind": "secretarial-compliance",
+      "description": "The Audit Committee approves and reviews related-party transactions under the RPT policy. Group transactions are with HDFC Bank (fees and commission, trademark licence, lease, banking) and fellow subsidiaries (commission, insurance).",
+      "obligationIds": [
+        "sebi-lodr-listed-entity"
+      ],
+      "unitIds": [
+        "hdfc-amc"
+      ],
+      "offeringIds": [
+        "hdfc-mutual-fund-schemes"
+      ]
+    },
+    {
+      "processId": "distribution-partner-management",
+      "name": "Distribution partner management",
+      "kind": "client-services",
+      "description": "More than 1,09,000 distribution partners across banks (including holding company HDFC Bank), national distributors, mutual fund distributors and fintechs.",
+      "obligationIds": [
+        "sebi-lodr-listed-entity"
+      ],
+      "unitIds": [
+        "hdfc-amc"
+      ],
+      "offeringIds": [
+        "hdfc-mutual-fund-schemes"
+      ]
+    }
+  ],
+  "offerings": [
+    {
+      "offeringId": "hdfc-mutual-fund-schemes",
+      "name": "HDFC Mutual Fund schemes",
+      "category": "mutual-fund-scheme",
+      "licenseId": "sebi-mutual-fund-amc",
+      "segmentIds": [
+        "hni",
+        "family-offices",
+        "domestic-corporates",
+        "institutions",
+        "trusts-and-provident-funds",
+        "corporates",
+        "provident-funds",
+        "individual-investors",
+        "institutional-investors",
+        "retail-investors",
+        "distribution-partners"
+      ],
+      "processIds": [
+        "fund-management",
+        "board-committee-governance",
+        "enterprise-risk-management",
+        "cyber-risk-oversight",
+        "unitholder-service-oversight",
+        "grievance-redressal",
+        "cyber-risk-management",
+        "client-services",
+        "pms-aif-operations",
+        "mf-pms-segregation-conflict-management",
+        "cscrf-compliance",
+        "investor-transactions-servicing",
+        "digital-ekyc-onboarding",
+        "mf-investor-kyc",
+        "mf-investor-onboarding",
+        "pms-client-onboarding",
+        "investor-complaint-disclosure",
+        "related-party-transaction-review",
+        "distribution-partner-management"
+      ]
+    },
+    {
+      "offeringId": "pms-strategies",
+      "name": "Portfolio Management Services",
+      "category": "pms-strategy",
+      "licenseId": "sebi-portfolio-manager",
+      "segmentIds": [
+        "hni",
+        "family-offices",
+        "domestic-corporates",
+        "institutions",
+        "trusts-and-provident-funds"
+      ],
+      "processIds": [
+        "fund-management"
+      ]
+    },
+    {
+      "offeringId": "segregated-account-services",
+      "name": "Segregated Account Services",
+      "category": "advisory",
+      "licenseId": "sebi-mutual-fund-amc",
+      "description": "Named in the Directors' Report next to PMS. The source does not say which registration it is offered under, so no licenseId is set.",
+      "segmentIds": [
+        "hni",
+        "family-offices",
+        "domestic-corporates",
+        "institutions",
+        "trusts-and-provident-funds"
+      ],
+      "processIds": [
+        "fund-management"
+      ]
+    },
+    {
+      "offeringId": "alternative-investment-funds",
+      "name": "Alternative Investment Funds",
+      "category": "aif-scheme",
+      "licenseId": "sebi-mutual-fund-amc",
+      "description": "AIF commitments exceeded Rs 2,500 crore at 31 March 2026. No AIF registration is in the profile, so no licenseId is set.",
+      "segmentIds": [
+        "hni",
+        "family-offices",
+        "domestic-corporates",
+        "institutions",
+        "trusts-and-provident-funds"
+      ],
+      "processIds": [
+        "fund-management"
+      ]
+    },
+    {
+      "offeringId": "pms-discretionary-non-discretionary",
+      "name": "Portfolio Management Services and segregated accounts",
+      "category": "pms-strategy",
+      "licenseId": "sebi-portfolio-manager",
+      "description": "PMS AUM passed Rs 100 billion, with EPFO and SPFO mandates. The fee line shared with AIF and advisory fees was Rs 15.38 crore in FY26.",
+      "segmentIds": [
+        "hni",
+        "family-offices",
+        "corporates",
+        "institutions",
+        "provident-funds"
+      ],
+      "processIds": [
+        "fund-management"
+      ]
+    },
+    {
+      "offeringId": "pms-advisory-mandates",
+      "name": "Advisory mandates",
+      "category": "advisory",
+      "licenseId": "sebi-portfolio-manager",
+      "description": "'Other Advisory Services' fees, included in the Rs 15.38 crore line. The Q4 FY26 presentation lists advisory mandates within alternatives AUM.",
+      "segmentIds": [
+        "hni",
+        "family-offices",
+        "corporates",
+        "institutions",
+        "provident-funds"
+      ],
+      "processIds": [
+        "fund-management"
+      ]
+    },
+    {
+      "offeringId": "hdfc-amc-aifs",
+      "name": "Alternative Investment Funds managed by HDFC AMC (e.g. HDFC AMC Select AIF FOF - I, HDFC AMC Structured Credit Fund)",
+      "category": "aif-scheme",
+      "licenseId": "sebi-mutual-fund-amc",
+      "description": "AIF fees are included in the Rs 15.38 crore line. The skeleton has no AIF registration, so no licenseId is set.",
+      "segmentIds": [
+        "hni",
+        "family-offices",
+        "corporates",
+        "institutions",
+        "provident-funds"
+      ],
+      "processIds": [
+        "fund-management"
+      ]
+    },
+    {
+      "offeringId": "hdfc-pms-strategies",
+      "name": "Portfolio Management Services",
+      "category": "pms-strategy",
+      "licenseId": "sebi-portfolio-manager",
+      "processIds": [
+        "board-committee-governance",
+        "enterprise-risk-management",
+        "cyber-risk-oversight",
+        "unitholder-service-oversight"
+      ]
+    },
+    {
+      "offeringId": "hdfc-aif-schemes",
+      "name": "Alternative Investment Funds managed as investment manager",
+      "category": "aif-scheme",
+      "licenseId": "sebi-mutual-fund-amc",
+      "processIds": [
+        "board-committee-governance",
+        "enterprise-risk-management",
+        "cyber-risk-oversight",
+        "unitholder-service-oversight"
+      ]
+    },
+    {
+      "offeringId": "hdfc-pms",
+      "name": "Portfolio management services",
+      "category": "pms-strategy",
+      "licenseId": "sebi-portfolio-manager",
+      "segmentIds": [
+        "individual-investors",
+        "institutional-investors"
+      ],
+      "processIds": [
+        "grievance-redressal",
+        "cyber-risk-management",
+        "client-services"
+      ]
+    },
+    {
+      "offeringId": "mf-equity-schemes",
+      "name": "HDFC MF equity-oriented schemes",
+      "category": "mutual-fund-scheme",
+      "licenseId": "sebi-mutual-fund-amc",
+      "processIds": [
+        "scheme-fund-management"
+      ]
+    },
+    {
+      "offeringId": "mf-debt-schemes",
+      "name": "HDFC MF debt schemes (including liquid, overnight, money market and target-maturity index funds)",
+      "category": "mutual-fund-scheme",
+      "licenseId": "sebi-mutual-fund-amc",
+      "processIds": [
+        "scheme-fund-management"
+      ]
+    },
+    {
+      "offeringId": "mf-hybrid-schemes",
+      "name": "HDFC MF hybrid schemes (balanced advantage, arbitrage, equity savings, multi-asset)",
+      "category": "mutual-fund-scheme",
+      "licenseId": "sebi-mutual-fund-amc",
+      "processIds": [
+        "scheme-fund-management"
+      ]
+    },
+    {
+      "offeringId": "mf-solution-oriented-schemes",
+      "name": "HDFC MF solution-oriented schemes (Retirement Savings Fund, Children's Fund)",
+      "category": "mutual-fund-scheme",
+      "licenseId": "sebi-mutual-fund-amc",
+      "processIds": [
+        "scheme-fund-management"
+      ]
+    },
+    {
+      "offeringId": "mf-index-funds-etfs",
+      "name": "HDFC MF index funds and ETFs (including Gold and Silver ETFs)",
+      "category": "mutual-fund-scheme",
+      "licenseId": "sebi-mutual-fund-amc",
+      "processIds": [
+        "scheme-fund-management"
+      ]
+    },
+    {
+      "offeringId": "mf-fund-of-funds",
+      "name": "HDFC MF fund of funds schemes",
+      "category": "mutual-fund-scheme",
+      "licenseId": "sebi-mutual-fund-amc",
+      "processIds": [
+        "scheme-fund-management"
+      ]
+    },
+    {
+      "offeringId": "mf-close-ended-schemes",
+      "name": "HDFC MF close-ended schemes (Fixed Maturity Plans, Charity Fund for Cancer Cure)",
+      "category": "mutual-fund-scheme",
+      "licenseId": "sebi-mutual-fund-amc",
+      "processIds": [
+        "scheme-fund-management"
+      ]
+    },
+    {
+      "offeringId": "pms-discretionary",
+      "name": "Discretionary portfolio management services",
+      "category": "pms-strategy",
+      "licenseId": "sebi-portfolio-manager",
+      "processIds": [
+        "pms-portfolio-management"
+      ]
+    },
+    {
+      "offeringId": "pms-non-discretionary",
+      "name": "Non-discretionary portfolio management services",
+      "category": "pms-strategy",
+      "licenseId": "sebi-portfolio-manager",
+      "processIds": [
+        "pms-portfolio-management"
+      ]
+    },
+    {
+      "offeringId": "pms-advisory",
+      "name": "PMS investment advisory services (non-binding)",
+      "category": "advisory",
+      "licenseId": "sebi-portfolio-manager",
+      "processIds": [
+        "pms-portfolio-management"
+      ]
+    },
+    {
+      "offeringId": "pms-co-investment",
+      "name": "Co-investment portfolio management services for AIF investors",
+      "category": "pms-strategy",
+      "licenseId": "sebi-portfolio-manager",
+      "processIds": [
+        "pms-portfolio-management",
+        "pms-aif-operations",
+        "mf-pms-segregation-conflict-management"
+      ]
+    },
+    {
+      "offeringId": "pms-investment-approaches",
+      "name": "PMS investment approaches (equity, debt, hybrid, multi-asset, liquid, provident fund and bespoke mandates)",
+      "category": "pms-strategy",
+      "licenseId": "sebi-portfolio-manager",
+      "count": 16,
+      "processIds": [
+        "pms-portfolio-management"
+      ]
+    },
+    {
+      "offeringId": "aif-category-ii-schemes",
+      "name": "Category II AIFs managed by HDFC AMC (including private credit and HDFC AMC Select AIF FoF I)",
+      "category": "aif-scheme",
+      "licenseId": "sebi-portfolio-manager",
+      "processIds": [
+        "pms-aif-operations",
+        "mf-pms-segregation-conflict-management"
+      ]
+    },
+    {
+      "offeringId": "hdfc-amc-pms",
+      "name": "HDFC AMC Portfolio Management Services",
+      "category": "pms-strategy",
+      "licenseId": "sebi-portfolio-manager",
+      "description": "PMS business whose AUM crossed Rs 100 bn in FY2025-26",
+      "processIds": [
+        "cscrf-compliance",
+        "investor-transactions-servicing",
+        "digital-ekyc-onboarding"
+      ],
+      "segmentIds": [
+        "retail-investors",
+        "distribution-partners"
+      ]
+    },
+    {
+      "offeringId": "hdfc-pms-services",
+      "name": "HDFC AMC portfolio management services",
+      "category": "pms-strategy",
+      "licenseId": "sebi-portfolio-manager",
+      "processIds": [
+        "mf-investor-kyc",
+        "mf-investor-onboarding",
+        "pms-client-onboarding"
+      ]
+    }
+  ],
+  "customerSegments": [
+    {
+      "segmentId": "hni",
+      "name": "High net-worth individuals",
+      "kind": "hni",
+      "processIds": [
+        "fund-management"
+      ]
+    },
+    {
+      "segmentId": "family-offices",
+      "name": "Family offices",
+      "kind": "family-office",
+      "processIds": [
+        "fund-management"
+      ]
+    },
+    {
+      "segmentId": "domestic-corporates",
+      "name": "Domestic corporates",
+      "kind": "corporate",
+      "processIds": [
+        "fund-management"
+      ]
+    },
+    {
+      "segmentId": "institutions",
+      "name": "Domestic and global institutions",
+      "kind": "institutional",
+      "processIds": [
+        "fund-management"
+      ]
+    },
+    {
+      "segmentId": "trusts-and-provident-funds",
+      "name": "Trusts and provident funds",
+      "kind": "other",
+      "processIds": [
+        "fund-management"
+      ]
+    },
+    {
+      "segmentId": "corporates",
+      "name": "Corporates and trusts",
+      "kind": "corporate",
+      "processIds": [
+        "fund-management"
+      ]
+    },
+    {
+      "segmentId": "provident-funds",
+      "name": "Provident funds (e.g. EPFO, SPFO mandates)",
+      "kind": "pension-scheme",
+      "processIds": [
+        "fund-management"
+      ]
+    },
+    {
+      "segmentId": "individual-investors",
+      "name": "Individual (retail) investors, about 68% of March 2026 MAAUM",
+      "kind": "retail-investor",
+      "processIds": [
+        "grievance-redressal",
+        "cyber-risk-management",
+        "client-services"
+      ]
+    },
+    {
+      "segmentId": "institutional-investors",
+      "name": "Institutional investors, about 32% of March 2026 MAAUM",
+      "kind": "institutional",
+      "processIds": [
+        "grievance-redressal",
+        "cyber-risk-management",
+        "client-services",
+        "unit-distribution-channels",
+        "investor-onboarding-kyc"
+      ]
+    },
+    {
+      "segmentId": "retail-individual-investors",
+      "name": "Individual (retail) mutual fund investors",
+      "kind": "retail-investor",
+      "processIds": [
+        "unit-distribution-channels",
+        "investor-onboarding-kyc"
+      ]
+    },
+    {
+      "segmentId": "non-individual-corporate-investors",
+      "name": "Non-individual (corporate and other body) investors",
+      "kind": "corporate",
+      "processIds": [
+        "unit-distribution-channels",
+        "investor-onboarding-kyc"
+      ]
+    },
+    {
+      "segmentId": "nri-pio-oci-investors",
+      "name": "NRI, PIO and OCI investors",
+      "kind": "nri-investor",
+      "processIds": [
+        "unit-distribution-channels",
+        "investor-onboarding-kyc",
+        "investor-due-diligence-fatca-ubo"
+      ]
+    },
+    {
+      "segmentId": "fpi-investors",
+      "name": "Foreign Portfolio Investors",
+      "kind": "fpi",
+      "processIds": [
+        "unit-distribution-channels",
+        "investor-onboarding-kyc",
+        "investor-due-diligence-fatca-ubo"
+      ]
+    },
+    {
+      "segmentId": "trusts",
+      "name": "Trusts",
+      "kind": "other"
+    },
+    {
+      "segmentId": "domestic-global-institutions",
+      "name": "Domestic and global institutions",
+      "kind": "institutional"
+    },
+    {
+      "segmentId": "accredited-investors",
+      "name": "Accredited and large value accredited investors",
+      "kind": "other"
+    },
+    {
+      "segmentId": "retail-investors",
+      "name": "Retail mutual fund investors",
+      "kind": "retail-investor",
+      "description": "17.1 mm unique investors (Q1 FY27 presentation)",
+      "processIds": [
+        "investor-transactions-servicing",
+        "digital-ekyc-onboarding"
+      ]
+    },
+    {
+      "segmentId": "distribution-partners",
+      "name": "Distribution partners",
+      "kind": "other",
+      "description": "110k+ empanelled distributors, RIAs and fintech platforms that transact on behalf of investors",
+      "processIds": [
+        "investor-transactions-servicing",
+        "digital-ekyc-onboarding"
+      ]
+    },
+    {
+      "segmentId": "resident-individual-investors",
+      "name": "Resident individual investors",
+      "kind": "retail-investor",
+      "processIds": [
+        "investor-due-diligence-fatca-ubo"
+      ]
+    },
+    {
+      "segmentId": "non-individual-investors",
+      "name": "Non-individual investors (companies, trusts, firms, HUFs) subject to UBO declaration",
+      "kind": "corporate",
+      "processIds": [
+        "investor-due-diligence-fatca-ubo"
+      ]
+    },
+    {
+      "segmentId": "pms-accredited-investors",
+      "name": "PMS accredited and large value accredited investors",
+      "kind": "hni",
+      "processIds": [
+        "investor-due-diligence-fatca-ubo"
+      ]
+    }
+  ],
+  "platforms": [
+    {
+      "platformId": "kfintech-evoting",
+      "name": "KFintech e-voting platform",
+      "kind": "vendor-platform",
+      "description": "KFin Technologies Limited's e-voting service. The January 2024 postal ballot notice confirms it; the 2026 AGM is backed only by a search snippet.",
+      "appIds": [],
+      "licenseIds": [],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "kfintech-rta",
+      "name": "KFin Technologies Limited registrar and share transfer agent services",
+      "kind": "vendor-platform",
+      "appIds": [],
+      "licenseIds": [],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "nsdl-cdsl-depositories",
+      "name": "NSDL and CDSL depository systems (beneficial owner records)",
+      "kind": "vendor-platform",
+      "appIds": [],
+      "licenseIds": [],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "mutual-fund-rta",
+      "name": "Registrar and transfer agent of HDFC Mutual Fund",
+      "kind": "vendor-platform",
+      "appIds": [],
+      "licenseIds": [],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "information-technology-security",
+      "name": "Information technology and security function",
+      "kind": "supporting-function",
+      "appIds": [],
+      "licenseIds": [],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "hdfc-bank-group-services",
+      "name": "HDFC Bank group services (banking, custody, leased premises, trademark licence)",
+      "kind": "vendor-platform",
+      "appIds": [],
+      "licenseIds": [],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "hdfc-group-insurance",
+      "name": "HDFC Life and HDFC ERGO insurance cover",
+      "kind": "vendor-platform",
+      "appIds": [],
+      "licenseIds": [],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "third-party-whistleblower-portal",
+      "name": "Third-party web-based whistle blower reporting portal (cwiportal.com)",
+      "kind": "vendor-platform",
+      "appIds": [],
+      "licenseIds": [],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "hdfcfund-website",
+      "name": "HDFC Mutual Fund website (www.hdfcfund.com)",
+      "kind": "customer-platform",
+      "appIds": [],
+      "licenseIds": [
+        "sebi-mutual-fund-amc",
+        "sebi-portfolio-manager"
+      ],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "crm-application",
+      "name": "Central Customer Relationship Management application",
+      "kind": "supporting-function",
+      "appIds": [],
+      "licenseIds": [],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "hdfc-mf-online-investors-app",
+      "name": "HDFC MF Online - Investors mobile app",
+      "kind": "customer-platform",
+      "appIds": [],
+      "licenseIds": [],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "hdfc-mf-online-partners-app",
+      "name": "HDFC MF Online - Partners mobile app",
+      "kind": "customer-platform",
+      "appIds": [],
+      "licenseIds": [],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "whatsapp-transactions",
+      "name": "Company WhatsApp transaction number",
+      "kind": "customer-platform",
+      "appIds": [],
+      "licenseIds": [],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "cams-rta",
+      "name": "CAMS registrar and transfer agent (service centres, mycams investor portal)",
+      "kind": "vendor-platform",
+      "appIds": [],
+      "licenseIds": [
+        "sebi-mutual-fund-amc",
+        "sebi-portfolio-manager"
+      ],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "mf-central",
+      "name": "MF Central (www.mfcentral.com)",
+      "kind": "vendor-platform",
+      "appIds": [],
+      "licenseIds": [],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "hdfc-mf-website-app",
+      "name": "HDFC Mutual Fund website and HDFC Mutual Fund app for Investors",
+      "kind": "customer-platform",
+      "appIds": [],
+      "licenseIds": [
+        "sebi-mutual-fund-amc"
+      ],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "hdfc-mfonline-partners",
+      "name": "HDFC MFOnline Partners portal",
+      "kind": "customer-platform",
+      "appIds": [],
+      "licenseIds": [
+        "sebi-mutual-fund-amc",
+        "sebi-portfolio-manager"
+      ],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "hdfc-mf-whatsapp",
+      "name": "HDFC Mutual Fund WhatsApp transaction and statement service",
+      "kind": "customer-platform",
+      "appIds": [],
+      "licenseIds": [
+        "sebi-mutual-fund-amc"
+      ],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "stock-exchange-mf-platforms",
+      "name": "Stock exchange MF platforms (MFSS, BSE StAR MF, NSE NMF II)",
+      "kind": "vendor-platform",
+      "appIds": [],
+      "licenseIds": [
+        "sebi-mutual-fund-amc"
+      ],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "mf-utility",
+      "name": "MF Utilities India (MFU) points of service and portal",
+      "kind": "vendor-platform",
+      "appIds": [],
+      "licenseIds": [
+        "sebi-mutual-fund-amc"
+      ],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "mfcentral",
+      "name": "MFCentral RTA inter-operable platform",
+      "kind": "vendor-platform",
+      "appIds": [],
+      "licenseIds": [
+        "sebi-mutual-fund-amc"
+      ],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "scheme-custodians",
+      "name": "Scheme custodians (ICICI Bank, SBI-SG, HSBC, Citibank, Deutsche Bank)",
+      "kind": "vendor-platform",
+      "appIds": [],
+      "licenseIds": [
+        "sebi-mutual-fund-amc"
+      ],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "hdfcfund-website-investor-portal",
+      "name": "hdfcfund.com website and investor portal",
+      "kind": "customer-platform",
+      "description": "Corporate website and investor login portal for mutual fund transactions and servicing",
+      "appIds": [],
+      "licenseIds": [
+        "sebi-mutual-fund-amc",
+        "sebi-portfolio-manager"
+      ],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "hdfc-mf-investor-app",
+      "name": "HDFC Mutual Fund: Invest, SIP app",
+      "kind": "customer-platform",
+      "description": "Investor mobile app (iOS and Android) for SIP, lump sum, redemption and e-KYC onboarding",
+      "appIds": [],
+      "licenseIds": [
+        "sebi-mutual-fund-amc",
+        "sebi-portfolio-manager"
+      ],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "partner-api-gateway",
+      "name": "Partner API Gateway and Admin Portal",
+      "kind": "infrastructure",
+      "description": "API gateway and admin portal behind partner and distributor integrations",
+      "appIds": [],
+      "licenseIds": [
+        "sebi-mutual-fund-amc",
+        "sebi-portfolio-manager"
+      ],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "whatsapp-chatbot-channels",
+      "name": "WhatsApp transactions, AI chatbot and Transact on Call",
+      "kind": "customer-platform",
+      "description": "Messaging-led channels: Tap2Invest and statements on WhatsApp, AI chatbot, One Click Link, Transact on Call",
+      "appIds": [],
+      "licenseIds": [
+        "sebi-mutual-fund-amc",
+        "sebi-portfolio-manager"
+      ],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "pms-client-portal",
+      "name": "PMS client portal (pms.hdfcfund.com)",
+      "kind": "customer-platform",
+      "description": "Sign-in portal for Portfolio Management Services clients",
+      "appIds": [],
+      "licenseIds": [
+        "sebi-mutual-fund-amc",
+        "sebi-portfolio-manager"
+      ],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "cams-rta-platforms",
+      "name": "CAMS investor portal and service centres",
+      "kind": "vendor-platform",
+      "description": "Registrar and Transfer Agent platform through which investors transact and are serviced",
+      "appIds": [],
+      "licenseIds": [
+        "sebi-mutual-fund-amc",
+        "sebi-portfolio-manager"
+      ],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "mf-central-mf-utility",
+      "name": "MF Central, MF Utility and exchange platforms",
+      "kind": "vendor-platform",
+      "description": "Industry and exchange platforms that carry HDFC Mutual Fund transactions",
+      "appIds": [],
+      "licenseIds": [
+        "sebi-mutual-fund-amc",
+        "sebi-portfolio-manager"
+      ],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "hdfc-mfonline",
+      "name": "HDFC MFOnline investor platform (investor-web.hdfcfund.com)",
+      "kind": "customer-platform",
+      "appIds": [],
+      "licenseIds": [
+        "sebi-mutual-fund-amc",
+        "sebi-portfolio-manager"
+      ],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "hdfc-mf-mobile-app",
+      "name": "HDFC Mutual Fund mobile app",
+      "kind": "customer-platform",
+      "appIds": [],
+      "licenseIds": [
+        "sebi-mutual-fund-amc",
+        "sebi-portfolio-manager"
+      ],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "investor-service-centres",
+      "name": "HDFC Mutual Fund Investor Service Centres and points of acceptance",
+      "kind": "supporting-function",
+      "appIds": [],
+      "licenseIds": [
+        "sebi-mutual-fund-amc",
+        "sebi-portfolio-manager"
+      ],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "kra-ckyc-registry",
+      "name": "KYC Registration Agency module and CERSAI CKYC registry",
+      "kind": "vendor-platform",
+      "appIds": [],
+      "licenseIds": [
+        "sebi-mutual-fund-amc",
+        "sebi-portfolio-manager"
+      ],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "client-services-contact-centre",
+      "name": "Client services toll-free call centre and email desk",
+      "kind": "supporting-function",
+      "appIds": [],
+      "licenseIds": [
+        "sebi-mutual-fund-amc",
+        "sebi-portfolio-manager"
+      ],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "kfintech-share-registry",
+      "name": "KFin Technologies share registry (RTA for equity shareholders)",
+      "kind": "vendor-platform",
+      "appIds": [],
+      "licenseIds": [
+        "sebi-mutual-fund-amc",
+        "sebi-portfolio-manager"
+      ],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "cams-mf-registrar",
+      "name": "CAMS registrar and transfer agent for HDFC Mutual Fund unitholders",
+      "kind": "vendor-platform",
+      "appIds": [],
+      "licenseIds": [
+        "sebi-mutual-fund-amc",
+        "sebi-portfolio-manager"
+      ],
+      "cybersecurityInstruments": []
+    },
+    {
+      "platformId": "complaint-management-platform",
+      "name": "Complaint Management Platform for customer grievances",
+      "kind": "supporting-function",
+      "appIds": [],
+      "licenseIds": [
+        "sebi-mutual-fund-amc",
+        "sebi-portfolio-manager"
+      ],
+      "cybersecurityInstruments": []
+    }
+  ],
+  "provenance": {
+    "harness": "claude-code",
+    "generatedAt": "2026-09-15T10:27:04Z",
+    "sessionId": "3b21ec7f-e9e0-43fb-95bb-180391c88e48",
+    "runId": "run_01M2J9P78VT9RZ3CYFN8HJFF0C",
+    "workflow": "refresh-ctx",
+    "agent": "validator"
+  }
+}

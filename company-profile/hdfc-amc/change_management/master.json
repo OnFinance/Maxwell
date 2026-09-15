@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.master",
+  "companyId": "hdfc-amc",
+  "updatedAt": "2026-09-15T09:48:32Z",
+  "counters": {
+    "open": 0,
+    "closed": 0,
+    "cancelled": 0,
+    "overdue": 0
+  },
+  "initiatives": [],
+  "provenance": {
+    "harness": "script",
+    "generatedAt": "2026-09-15T09:48:32Z",
+    "workflow": "seed-company",
+    "agent": "seed"
+  }
+}

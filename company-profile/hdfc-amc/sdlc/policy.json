@@ -1,0 +1,103 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.company.sdlc",
+  "companyId": "hdfc-amc",
+  "policyVersion": "1.0.0",
+  "effectiveFrom": "2026-04-01",
+  "reviewCadenceMonths": 12,
+  "owner": "cto",
+  "branching": {
+    "model": "trunk",
+    "protectedBranches": [
+      "main",
+      "master",
+      "release/*"
+    ],
+    "signedCommitsRequired": false
+  },
+  "codeReview": {
+    "required": true,
+    "minApprovers": 1,
+    "codeownersEnforced": false,
+    "aiReviewAllowed": true,
+    "selfApprovalAllowed": false
+  },
+  "ciGates": [
+    {
+      "gate": "sast",
+      "tool": "semgrep",
+      "blocking": false,
+      "minSeverityToBlock": "high"
+    },
+    {
+      "gate": "secrets",
+      "tool": "gitleaks",
+      "blocking": true,
+      "minSeverityToBlock": "low"
+    },
+    {
+      "gate": "unit-tests",
+      "tool": "vitest",
+      "blocking": true
+    }
+  ],
+  "releaseProcess": {
+    "environmentsOrder": [
+      "dev",
+      "qa",
+      "prod"
+    ],
+    "approvalsRequired": 1,
+    "changeTypeDefault": "normal",
+    "rollbackPlanRequired": true,
+    "emergencyChangeProcess": "CTO approval on the incident bridge, ticket within 4 hours, CAB retrospective within 5 working days"
+  },
+  "secretsManagement": {
+    "backend": "aws-secrets-manager",
+    "rotationDays": 90,
+    "scanningInCi": true
+  },
+  "dependencyPolicy": {
+    "lockfilesRequired": true,
+    "allowedRegistries": [
+      "https://registry.npmjs.org",
+      "https://pypi.org/simple"
+    ],
+    "sbomRequired": false,
+    "vulnerabilitySlaDays": {
+      "critical": 7,
+      "high": 30,
+      "medium": 90,
+      "low": 180,
+      "info": 365
+    }
+  },
+  "aiCodingPolicy": {
+    "harnessesAllowed": [
+      "claude-code",
+      "opencode"
+    ],
+    "humanReviewRequired": true,
+    "promptInjectionControls": [
+      "tool-allowlist",
+      "human-approval-for-writes"
+    ],
+    "allowedDataClasses": [
+      "public",
+      "internal"
+    ]
+  },
+  "ssdfMapping": [
+    {
+      "practice": "PO.3.2",
+      "status": "partial",
+      "notes": "Branch protection on main; CI gates advisory for SAST"
+    }
+  ],
+  "provenance": {
+    "harness": "script",
+    "generatedAt": "2026-09-15T09:48:32Z",
+    "workflow": "seed-company",
+    "agent": "seed"
+  }
+}

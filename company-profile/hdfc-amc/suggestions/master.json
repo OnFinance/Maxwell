@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.sug.master",
+  "companyId": "hdfc-amc",
+  "updatedAt": "2026-09-15T09:48:32Z",
+  "suggestions": [],
+  "provenance": {
+    "harness": "script",
+    "generatedAt": "2026-09-15T09:48:32Z",
+    "workflow": "seed-company",
+    "agent": "seed"
+  }
+}

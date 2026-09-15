@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.company.details",
+  "companyId": "hdfc-amc",
+  "legalName": "HDFC Asset Management Company Limited",
+  "brandName": "HDFC Mutual Fund",
+  "description": "Publicly listed asset management company based in Mumbai, India, acting as the investment manager of HDFC Mutual Fund and offering portfolio management and advisory services.",
+  "website": "https://www.hdfcfund.com",
+  "identifiers": {
+    "cin": "L65991MH1999PLC123027",
+    "lei": "3358002FLK8AK8WSEP31",
+    "sebiRegistrationNos": [
+      "INP000000506"
+    ]
+  },
+  "headquarters": {
+    "city": "Mumbai",
+    "state": "Maharashtra",
+    "country": "IN"
+  },
+  "jurisdictions": [
+    {
+      "country": "IN",
+      "state": "Maharashtra",
+      "primary": true
+    }
+  ],
+  "entityTypes": [
+    "asset-management-company",
+    "portfolio-manager"
+  ],
+  "regulatoryRegistrations": [
+    {
+      "regulator": "SEBI",
+      "registrationNo": "MF/044/00/6",
+      "category": "not-categorised",
+      "registeredAt": "2000-06-30",
+      "status": "active"
+    },
+    {
+      "regulator": "SEBI",
+      "registrationNo": "INP000000506",
+      "category": "not-categorised",
+      "status": "active"
+    }
+  ],
+  "frameworksInScope": [
+    "sebi-cscrf-2024",
+    "cert-in-directions-2022",
+    "dpdp-rules-2025"
+  ],
+  "contacts": [
+    {
+      "role": "compliance-officer",
+      "name": "Shareholders relations desk",
+      "email": "shareholders.relations@hdfcfund.com"
+    }
+  ],
+  "dataResidency": [
+    "IN"
+  ],
+  "socModel": "in-house",
+  "tags": [
+    "trial",
+    "listed",
+    "amc",
+    "unverified-soc-model"
+  ],
+  "provenance": {
+    "harness": "script",
+    "generatedAt": "2026-09-15T09:48:32Z",
+    "workflow": "seed-company",
+    "agent": "seed"
+  }
+}
