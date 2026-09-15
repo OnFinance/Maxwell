@@ -400,33 +400,17 @@ with `npm run validate`.
 
 ### Validation
 
-- **Schemas.** 46 JSON Schemas under `.claude/schemas/`, checked for metaschema validity, lint and formatting with
-  [`@sourcemeta/jsonschema`](https://github.com/sourcemeta/jsonschema). Each has unit tests with valid and invalid
-  cases.
-- **Closed vocabularies.** Regulators, instruments, workflows, entity types and status lifecycles live in
-  `.claude/schemas/vocab/`, so an agent cannot invent an instrument or a status.
-- **Post-write validation.** Every JSON, JSONL or frontmatter file an agent writes is validated immediately, and
-  errors go back to the agent.
-- **Ledger helpers.** `soc/append.mjs` validates and appends one record or a JSONL batch (all-or-nothing), refusing
-  duplicate ids. `soc/version.mjs` writes `versions/commit_<n>.diff` and detects tampering with the append-only
-  history. `soc/migrate-instrument.mjs` moves a company off a repealed instrument onto its successor.
-- **Git hooks and CI.** Staged files are validated on commit, the full suite and tests run on push, and
-  `.github/workflows/validate.yml` repeats both in CI.
+- **Schemas:** 46 JSON Schemas with unit tests, plus closed vocabularies for regulators, instruments and statuses.
+- **On every write:** each JSON, JSONL or frontmatter file is validated as the agent writes it.
+- **Ledger:** append-only, written through helpers that validate each record and diff every version.
+- **Git and CI:** validation on commit, the full suite and tests on push and in CI.
 
 ### Guardrails
 
-- **Write guard.** A pre-write hook (Claude Code hooks, and the same scripts through the OpenCode plugin) blocks paths
-  outside the layout, edits inside repository checkouts, schema edits without `MAXWELL_SCHEMA_EDIT=1`, hand edits to
-  the generated `.agents/` mirror, and secret-shaped content. On OpenCode, a guard that cannot run blocks the write.
-- **Read-only runtime probes.** Runtime probes use read-only credentials and read-only command families. Production
-  needs explicit environment ids, allowed windows and rate limits, all enforced before a command runs.
-- **Sandboxed, pinned execution.** Scanners and runtime commands run only through `toolchain/scan.mjs` and
-  `sandbox/exec.mjs`, in the sandbox chosen with `/connect-sandbox`, at the versions pinned in
-  `.claude/skills/scanner-toolchain/references/toolchain.json`: exact version, sha256 per platform, image digest and
-  hash-locked Python installs. Each sandbox is verified by running a pinned tool when it is connected.
-- **Secrets stay out of the repository.** Application credentials are sops/age-encrypted references, and ComplianceOS
-  and sandbox logins live in `~/.config/maxwell/`, which agents are denied. The `example-co` demo age key protects
-  nothing real; never reuse it.
+- **Write guard:** blocks paths outside the layout, edits to repository checkouts and secret-shaped content.
+- **Runtime probes:** read-only, with production windows and rate limits enforced before any command runs.
+- **Scanners:** run only in the connected sandbox, at pinned versions verified by checksum.
+- **Secrets:** encrypted references in the repository; logins stay in `~/.config/maxwell/`, which agents cannot read.
 
 ## Contributing
 
