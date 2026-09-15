@@ -2,20 +2,18 @@
 
 **A self-hostable cybersecurity and compliance agent for regulated financial-services companies.**
 
-Maxwell runs security and compliance workflows over a company's own applications, infrastructure and vendors. It
-records everything as schema-validated JSON in a git workspace, and ties every finding to the regulation it breaks.
-It is built for Indian regulated entities first: SEBI, RBI, IRDAI, CERT-In and the DPDP Rules. It maps to global
-frameworks where they help. Maxwell is designed to run headlessly on [Claude Code](https://code.claude.com) and
-[OpenCode](https://opencode.ai), on your own infrastructure.
-
-> **Status: early development.** Schemas, guardrails, the seven India catalogs and all workflow definitions are in
-> place. End-to-end runs against the fictional `example-co` company are in progress. Expect breaking changes.
-
----
+Compliance teams at brokers, banks, NBFCs and insurers answer the same questions every audit cycle: which controls
+apply, whether the SBOM is real, whether last quarter's findings were fixed in time. Maxwell runs those security and
+compliance workflows over a company's own applications, infrastructure and vendors, built for Indian regulated
+entities first (SEBI, RBI, IRDAI, CERT-In and the DPDP Rules) and mapped to global frameworks where they help. AI
+agents do the legwork, but Maxwell constrains them instead of trusting them: only the layout in
+`.claude/schemas/layout.json` may exist, every file is validated against a JSON Schema as it is written, the control
+ledger is append-only with a versioned diff per refresh, every finding cites a regulatory clause with deadlines from
+an SLA table, and audit cost is measured from the session transcripts. It runs headlessly on
+[Claude Code](https://code.claude.com) and [OpenCode](https://opencode.ai), on your own infrastructure.
 
 ## Contents
 
-- [Why Maxwell](#why-maxwell)
 - [How it works](#how-it-works)
 - [Workspace layout](#workspace-layout)
 - [Workflows](#workflows)
@@ -26,25 +24,6 @@ frameworks where they help. Maxwell is designed to run headlessly on [Claude Cod
 - [Validation and guardrails](#validation-and-guardrails)
 - [Contributing](#contributing)
 - [License](#license)
-
-## Why Maxwell
-
-Compliance teams at brokers, banks, NBFCs and insurers answer the same questions every audit cycle. Which controls
-apply to us? Is the SBOM real? Did anyone fix last quarter's VAPT findings inside the deadline? AI agents can do
-much of that legwork, but left alone they drift: they invent fields, scatter notes across the repo and produce
-reports nobody can reproduce.
-
-Maxwell constrains the agent instead of trusting it:
-
-- **The layout is law.** Only the directories and files listed in `.claude/schemas/layout.json` may exist.
-- **Every file is validated.** Each JSON, JSONL and frontmatter file has a JSON Schema (draft 2020-12). Hooks reject
-  invalid writes as they happen, and the git hooks and CI reject them again.
-- **The control ledger is append-only.** Controls, observations, findings, risks and incidents are never edited in
-  place. Each refresh writes a versioned diff.
-- **Regulator-first.** Every finding, risk and initiative cites a clause from a closed vocabulary of instruments, and
-  deadlines come from an SLA table that quotes the clause.
-- **Measured.** Cost of audit and change-management KPIs are computed from the harness session transcripts
-  themselves.
 
 ## How it works
 
