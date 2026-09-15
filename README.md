@@ -303,7 +303,6 @@ flowchart LR
 ### How control generation works
 
 ```mermaid
-%%{init: {"theme": "base", "themeVariables": {"fontSize": "13px", "primaryColor": "#ffffff", "primaryBorderColor": "#333333", "primaryTextColor": "#111111", "lineColor": "#333333"}, "flowchart": {"nodeSpacing": 18, "rankSpacing": 28, "curve": "basis"}}}%%
 flowchart LR
   A(["Regulatory<br/>communication"]) --> B{"Related to an<br/>existing one?"}
   B -- No --> C["Extract<br/>clauses"]
@@ -311,9 +310,6 @@ flowchart LR
   C --> E["Generate<br/>obligations"]
   CI --> E
   E --> CTRL[("Controls registry<br/>delta")] --> CTX["Personalize to<br/>business context"] --> F[("Finalized<br/>control registry")]
-  classDef n fill:#ffffff,stroke:#333333,stroke-width:1px,color:#111111
-  class A,B,C,D,RL,CI,E,CTRL,CTX,F n
-  linkStyle default stroke:#333333,stroke-width:1.5px
 ```
 
 - **Regulation library:** the instrument registry and catalogs under `.claude/skills/regulatory-catalogs/`, searched
@@ -325,15 +321,18 @@ flowchart LR
 
 ### How organization context is built
 
-- **Company profile:** `details.json` records legal identity, jurisdictions, entity types, regulatory registrations,
-  frameworks in scope, data residency, critical functions and contacts.
-- **Regulatory posture:** `/refresh-ctx` rechecks every registration, entity type and listing against the regulators'
-  own registers, MCA and exchange filings, and a refuter verifies each change before the profile is updated.
-- **Estate:** `/refresh-apps` catalogs applications, repositories and environments, `/refresh-metastore` maps where
-  personal and financial data lives, and `/refresh-vendor-ctx` builds the vendor register with criticality, contracts
-  and assurance reports.
-- **Personalization:** `/refresh-soc` turns the entity types and frameworks in scope into the company's applicable
-  controls, scoped to its applications, environments and vendors.
+```mermaid
+flowchart LR
+  S(["Snapshot<br/>details.json"]) --> R["Recheck registrations,<br/>entity types, listing,<br/>frameworks, environments"]
+  S --> D["Discover via registers,<br/>corporate filings and<br/>regulatory change"]
+  R --> V{"Verify: source,<br/>identity and<br/>timing refuters"}
+  D --> V
+  V -- Confirmed --> A["Apply: ledger,<br/>new controls,<br/>profile patch"]
+  V -- "Disputed and<br/>destructive" --> K["Risk record<br/>for a human"]
+  V -- Refuted --> X["Dropped<br/>and logged"]
+  A --> VER[("Version<br/>ledger diff")]
+  K --> VER
+```
 
 ### Regulatory coverage
 
