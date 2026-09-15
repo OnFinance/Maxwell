@@ -42,9 +42,10 @@ const release = () => { running -= 1; const next = queue.shift(); if (next) next
 let agentCount = 0; let currentPhase = null; let outputTokens = 0;
 const progress = (line) => process.stderr.write(`[${name}] ${line}\n`);
 
-function runOpencode(prompt, { agentType, modelOverride, label }) {
+function runOpencode(prompt, { agentType, modelOverride, label, sessionId }) {
   return new Promise((resolve) => {
     const cliArgs = ['run', '--format', 'json', '--agent', agentType, '--title', `${name}:${label}`];
+    if (sessionId) cliArgs.push('--session', sessionId);
     const alias = { opus: 'anthropic/claude-opus-5', sonnet: 'anthropic/claude-sonnet-5', haiku: 'anthropic/claude-haiku-4-5-20251001', fable: 'anthropic/claude-fable-5-1' };
     const pinned = modelOverride ? (alias[modelOverride] || modelOverride) : null;
     const chosen = pinned ? (aliasTarget && pinned.startsWith('anthropic/') ? aliasTarget : pinned) : model;
@@ -103,6 +104,12 @@ async function agent(prompt, opts = {}) {
       }
       if (res.code !== 0 && !res.text) { progress(`✗ ${label} exited ${res.code}: ${res.stderr.slice(-300)}`); return null; }
       if (!opts.schema) return res.text;
+      // Some models end their turn on a narration ("now let me check the catalog") before the work is done. Rather
+      // than start a fresh session, the same session is asked to carry on, up to twice, so the context it built is kept.
+      for (let nudge = 0; nudge < 2 && res.sessionId && !/\{[\s\S]*\}/.test(res.text); nudge += 1) {
+        progress(`↻ ${label} stopped before answering; asking the same session to continue`);
+        res = await runOpencode('Continue where you stopped and finish the task. When you are done, reply with ONLY the single JSON object the task asked for, no prose.', { agentType, modelOverride: opts.model, label: `${label}+${nudge + 1}`, sessionId: res.sessionId });
+      }
       const m = /\{[\s\S]*\}/.exec(res.text);
       try {
         const obj = JSON.parse(m ? m[0] : res.text);
