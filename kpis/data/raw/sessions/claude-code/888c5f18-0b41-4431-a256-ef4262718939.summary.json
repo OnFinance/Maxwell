@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.session.summary",
+  "sessionId": "888c5f18-0b41-4431-a256-ef4262718939",
+  "harness": "claude-code",
+  "harnessVersion": "2.1.271",
+  "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+  "workflow": "report-audit-findings",
+  "companyId": "example-co",
+  "startedAt": "2026-09-14T23:54:34.554Z",
+  "endedAt": "2026-09-15T00:45:20.642Z",
+  "durationMs": 3046088,
+  "turns": 148,
+  "inferenceCalls": 148,
+  "toolCalls": {
+    "total": 146,
+    "byTool": {
+      "Skill": 1,
+      "Workflow": 1,
+      "Bash": 74,
+      "Read": 12,
+      "StructuredOutput": 13,
+      "Grep": 38,
+      "Glob": 7
+    }
+  },
+  "subagentSessions": 11,
+  "permissionDenials": [],
+  "models": [
+    {
+      "model": "claude-opus-5",
+      "provider": "anthropic",
+      "tokens": {
+        "input": 1778,
+        "output": 136789,
+        "cacheWrite5m": 1192442,
+        "cacheWrite1h": 34162,
+        "cacheRead": 7604783,
+        "thinking": 78551
+      },
+      "webSearchRequests": 0,
+      "webFetchRequests": 0,
+      "costUsd": 15.025389
+    },
+    {
+      "model": "claude-sonnet-5",
+      "provider": "anthropic",
+      "tokens": {
+        "input": 168,
+        "output": 206183,
+        "cacheWrite5m": 594651,
+        "cacheWrite1h": 0,
+        "cacheRead": 7825426,
+        "thinking": 72209
+      },
+      "webSearchRequests": 0,
+      "webFetchRequests": 0,
+      "costUsd": 5.113879
+    }
+  ],
+  "costUsd": {
+    "computed": 20.139268,
+    "reported": 20.148447,
+    "deltaPct": -0.05
+  },
+  "pricingVersion": "2026-09-14",
+  "dedup": {
+    "strategy": "requestId-max-total-tokens",
+    "duplicatesDropped": 356
+  },
+  "filesWritten": [],
+  "linesAdded": 0,
+  "linesRemoved": 0,
+  "outcome": "success",
+  "transcriptFormatVersion": "2.1.271",
+  "provenance": {
+    "harness": "script",
+    "generatedAt": "2026-09-15T00:45:21Z",
+    "sessionId": "888c5f18-0b41-4431-a256-ef4262718939",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "report-audit-findings",
+    "agent": ".claude/scripts/sessions/ingest.mjs"
+  }
+}
