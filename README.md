@@ -300,6 +300,19 @@ flowchart LR
 
 ## Regulatory coverage
 
+```mermaid
+---
+config:
+      theme: redux
+---
+flowchart TD
+  A(["Regulatory Communication"])
+  A --> B{"Is related to existing communications?"}
+  B --> |No| C["Extract Clauses"] --> E["Generate Obligations"]
+  B --> |Yes| D["Search"] --> RL[("Regulation Library")] --> CI["Unified Clause interpretation"]
+  CI --> E --> CTRL[("Extract controls delta into controls registry")] --> CTX["Personalize to regulated business context"] --> CTRLF[("Finalized control registry")]
+```
+
 Seven India catalogs ship with control-level detail. A registry in
 `.claude/skills/regulatory-catalogs/references/instruments.json` records the issuer, version, dates, applicability
 and hard numeric obligations of 37 instruments.
