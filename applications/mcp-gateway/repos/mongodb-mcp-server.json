@@ -8,27 +8,36 @@
   "visibility": "public",
   "defaultBranch": "main",
   "pinnedCommit": "aaa72a040db4c32f3d6488d5e28e2892a68e9ee0",
-  "lastFetchedAt": "2026-09-14T00:00:00Z",
+  "lastFetchedAt": "2026-09-15T01:07:20Z",
   "languages": [
     "typescript",
     "javascript",
+    "yaml",
     "dockerfile",
-    "shell"
+    "shell",
+    "html",
+    "css",
+    "other"
   ],
   "buildSystem": "pnpm",
   "ciSystem": "github-actions",
   "packageManifests": [
-    "package.json"
+    "package.json",
+    "packages/metrics/package.json",
+    "packages/types/package.json",
+    "tests/browser/package.json"
   ],
   "containsIac": true,
   "containsHelmChart": false,
   "containsAgentCode": true,
-  "codeownersPresent": false,
+  "codeownersPresent": true,
   "localCheckout": "applications/mcp-gateway/repos/mongodb-mcp-server",
   "provenance": {
-    "harness": "human",
-    "generatedAt": "2026-09-14T00:00:00Z",
-    "workflow": "refresh-ctx",
-    "agent": "ctx-researcher"
+    "harness": "claude-code",
+    "generatedAt": "2026-09-15T01:07:20Z",
+    "sessionId": "ba015ad3-cd5b-4821-8df0-4ceb2aa31e60",
+    "runId": "run_01M2FGNVVQ15ZKXZWGW74YWAAQ",
+    "workflow": "refresh-apps",
+    "agent": "validator"
   }
 }

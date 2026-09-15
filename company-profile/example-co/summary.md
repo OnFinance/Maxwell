@@ -3,16 +3,16 @@ schemaVersion: "1"
 kind: maxwell.company.summary
 companyId: example-co
 title: Example Capital Markets cyber resilience summary
-version: "5.1.0"
-sections: [overview, regulatory-posture, data-flows, vendors, control-summary, open-findings, initiatives, suggestions]
+version: "6.0.0"
+sections: [overview, regulatory-posture, applications, data-flows, vendors, control-summary, open-findings, initiatives, suggestions]
 provenance:
   harness: claude-code
-  generatedAt: "2026-09-14T22:49:19Z"
-  sessionId: "10a167a6-d35d-4c6d-8429-91eb2b64120e"
+  generatedAt: "2026-09-15T01:07:20Z"
+  sessionId: "ba015ad3-cd5b-4821-8df0-4ceb2aa31e60"
   runId: "run_01M2FGNVVQ15ZKXZWGW74YWAAQ"
-  workflow: impl-auto-improvement
+  workflow: refresh-apps
   agent: report-writer
-  inputsHash: "92b71c5a3d94ea56106b0e7c4a4fca35916c5dac6dbb94cf16be2ab27d774d9f"
+  inputsHash: "94280c70790a002d47310211e4641d86c6766157c3c5585f72962266238cea85"
 ---
 # Example Capital Markets — cyber resilience summary
 
@@ -44,6 +44,80 @@ and `mitigating` to `closed` after the profile, registry and ledger checks passe
 0 escalated claim(s) awaiting human resolution as of this refresh.
 
 Refresh date: 2026-09-14 (`provenance.generatedAt` 2026-09-14T08:31:29Z).
+
+## Applications
+`refresh-apps` refreshed this section as of `provenance.generatedAt` 2026-09-15T01:07:20Z
+(`provenance.runId` run_01M2FGNVVQ15ZKXZWGW74YWAAQ, `provenance.sessionId`
+ba015ad3-cd5b-4821-8df0-4ceb2aa31e60): 2/2 repos synced (0 advanced), 1 record written
+(`applications/mcp-gateway/repos/mongodb-mcp-server.json`), 5 confirmed gap(s). Source:
+`applications/*/README.md`, `applications/*/env/*.json`, `applications/*/images/*.json`,
+`applications/*/repos/*.json` and this run's `refresh-apps` observations in `soc/main.jsonl`. Both
+applications named in `details.json` `criticalFunctions[].appIds` (`mcp-gateway`) and present under
+`applications/` (`mcp-gateway`, `db-models`) have application records; neither is a bare id with no
+directory.
+
+### mcp-gateway
+Environments (`applications/mcp-gateway/env/*.json`):
+
+| Env | Tier | Exposure | Residency | Log retention (d) | ≥180 d (CERT-In Dir-iv) |
+|---|---|---|---|---|---|
+| `dev` | dev | internal | IN | 30 | below 180 d — `CERT-In cert-in-directions-2022 Dir-iv` (CERT-In Directions 2022) |
+| `qa` | qa | internal | IN | 180 | meets 180 d |
+| `prod` | prod | partner | IN | 365 | meets 180 d |
+
+Repos (`applications/mcp-gateway/repos/*.json`):
+
+| Repo | Host | Default branch | Head commit | Last fetched |
+|---|---|---|---|---|
+| `mongodb-mcp-server` | github | main | `aaa72a040db4c32f3d6488d5e28e2892a68e9ee0` | 2026-09-15T01:07:20Z |
+
+Images: `applications/mcp-gateway/images/` does not exist — no image record for the container built from
+`mongodb-mcp-server`'s `Dockerfile` and deployed to `dev` (no digest, no SBOM); flagged this run as
+image-untracked [obs_01M2HA93RFR9HZTQZ521NNKD25].
+
+Open findings targeting this application's repo (latest-state map over `soc/main.jsonl`, status
+open/triaged/remediating, as of 2026-09-14T21:01:13Z): 24 (18 high, 6 medium). Last probe `collectedAt`:
+2026-09-15T01:07:20Z (`refresh-apps` repo sync [obs_01M2HA93N1YBMSZ1MWH62PH4N3]); most recent
+security-finding probe `probe-agent-graph` at 2026-09-14T19:14:04Z.
+
+Confirmed drift and credential gaps this run:
+- untracked-repo: the generated `.github/workflows/vulnerability-scanner.lock.yml` checks out the upstream
+  `github.com/mongodb-js/mongodb-mcp-server`, which has no `applications/` repo record of its own
+  [obs_01M2HA93NV3WGRTKGNQMDTPEGB].
+- credentials-unverifiable: all three credential lookups for `mcp-gateway` (`dev-docker-socket`,
+  `prod-kubeconfig-ro`, `qa-kubeconfig-ro`) failed because no age decryption key was available in this
+  sandbox, so it is unknown whether the entries exist or are overdue for rotation
+  [obs_01M2HA93PRTNDKAN4WGGJ3F97S].
+- evidence-request (2): `prod` and `qa` declare IaC path `deploy` in `mongodb-mcp-server`, but at the
+  pinned commit `deploy/` contains only an Azure Bicep template and an AWS Bedrock AgentCore Dockerfile —
+  no Kubernetes manifest or Helm chart exists to confirm either environment's declared cluster/namespace
+  [obs_01M2HA93QKKY9J2JJT93FDJTHY].
+- image-untracked: `dev`'s container image (built from the repo `Dockerfile`) has no
+  `applications/mcp-gateway/images/` record, digest or SBOM [obs_01M2HA93RFR9HZTQZ521NNKD25].
+
+### db-models
+Environments (`applications/db-models/env/*.json`):
+
+| Env | Tier | Exposure | Residency | Log retention (d) | ≥180 d (CERT-In Dir-iv) |
+|---|---|---|---|---|---|
+| `dev` | dev | isolated | IN | 0 | below 180 d — `CERT-In cert-in-directions-2022 Dir-iv` (CERT-In Directions 2022) |
+
+Repos (`applications/db-models/repos/*.json`):
+
+| Repo | Host | Default branch | Head commit | Last fetched |
+|---|---|---|---|---|
+| `onfinance-db-model-master` | github | master | `70b3633e171a1b8d389b27bb901c84c34a0e9bf6` | 2026-09-14T00:00:00Z |
+
+Images: `applications/db-models/images/` does not exist — no image record.
+
+Open findings targeting this application (latest-state map over `soc/main.jsonl`, status
+open/triaged/remediating, as of 2026-09-14T21:01:13Z): 7 (2 high, 5 medium) against the
+`onfinance-db-model-master` repo. Last probe `collectedAt`: 2026-09-15T01:07:20Z (`refresh-apps` repo sync
+[obs_01M2HA718963SPZZBQGHZWRY0A], `result: satisfied`, 0 commits advanced).
+
+No drift or credential gaps confirmed against `db-models` this run.
+
+<!-- source: applications/*/env/*.json, applications/*/repos/*.json, applications/*/images/*.json (absent for both apps); open-findings counts = latest-state map over soc/main.jsonl kind:finding filtered to target.type in (repo, environment) with appId matching, status open|triaged|remediating; refresh-apps observations obs_01M2HA718963SPZZBQGHZWRY0A, obs_01M2HA93N1YBMSZ1MWH62PH4N3, obs_01M2HA93NV3WGRTKGNQMDTPEGB, obs_01M2HA93PRTNDKAN4WGGJ3F97S, obs_01M2HA93QKKY9J2JJT93FDJTHY, obs_01M2HA93RFR9HZTQZ521NNKD25 -->
 
 ## Vendors
 `refresh-vendor-ctx` refreshed this section as of 2026-09-14T10:46:39Z: 0 vendors onboarded, 1 updated
