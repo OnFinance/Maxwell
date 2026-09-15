@@ -303,16 +303,17 @@ flowchart LR
 ### How control generation works
 
 ```mermaid
----
-config:
-      theme: redux
----
-flowchart TD
-  A(["Regulatory Communication"])
-  A --> B{"Is related to existing communications?"}
-  B --> |No| C["Extract Clauses"] --> E["Generate Obligations"]
-  B --> |Yes| D["Search"] --> RL[("Regulation Library")] --> CI["Unified Clause interpretation"]
-  CI --> E --> CTRL[("Extract controls delta into controls registry")] --> CTX["Personalize to regulated business context"] --> CTRLF[("Finalized control registry")]
+%%{init: {"theme": "base", "themeVariables": {"fontSize": "13px", "primaryColor": "#ffffff", "primaryBorderColor": "#333333", "primaryTextColor": "#111111", "lineColor": "#333333"}, "flowchart": {"nodeSpacing": 18, "rankSpacing": 28, "curve": "basis"}}}%%
+flowchart LR
+  A(["Regulatory<br/>communication"]) --> B{"Related to an<br/>existing one?"}
+  B -- No --> C["Extract<br/>clauses"]
+  B -- Yes --> D["Search"] --> RL[("Regulation<br/>library")] --> CI["Unified clause<br/>interpretation"]
+  C --> E["Generate<br/>obligations"]
+  CI --> E
+  E --> CTRL[("Controls registry<br/>delta")] --> CTX["Personalize to<br/>business context"] --> F[("Finalized<br/>control registry")]
+  classDef n fill:#ffffff,stroke:#333333,stroke-width:1px,color:#111111
+  class A,B,C,D,RL,CI,E,CTRL,CTX,F n
+  linkStyle default stroke:#333333,stroke-width:1.5px
 ```
 
 - **Regulation library:** the instrument registry and catalogs under `.claude/skills/regulatory-catalogs/`, searched
