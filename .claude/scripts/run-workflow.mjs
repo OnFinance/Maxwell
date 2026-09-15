@@ -92,7 +92,15 @@ async function agent(prompt, opts = {}) {
     let last = null;
     for (let attempt = 0; attempt < (opts.schema ? 3 : 1); attempt += 1) {
       const retryNote = attempt ? `\n\nYour previous answer was not valid JSON for the schema (${last && last.error}). Return only the JSON object.` : '';
-      const res = await runOpencode(prompt + effortNote + schemaNote + retryNote, { agentType, modelOverride: opts.model, label: attempt ? `${label}#${attempt + 1}` : label });
+      let res = await runOpencode(prompt + effortNote + schemaNote + retryNote, { agentType, modelOverride: opts.model, label: attempt ? `${label}#${attempt + 1}` : label });
+      // Provider throttling (HTTP 429, "rate limit", "capacity") is waited out and retried, so that a high
+      // concurrency setting degrades to slower runs rather than to lost agents.
+      for (let wait = 0; wait < 3 && res.code !== 0 && !res.text && /429|rate.?limit|too many requests|capacity|overloaded/i.test(res.stderr + res.text); wait += 1) {
+        const seconds = 30 * (wait + 1);
+        progress(`↻ ${label} throttled by the provider; retrying in ${seconds}s`);
+        await new Promise((r) => setTimeout(r, seconds * 1000));
+        res = await runOpencode(prompt + effortNote + schemaNote + retryNote, { agentType, modelOverride: opts.model, label: `${label}~${wait + 1}` });
+      }
       if (res.code !== 0 && !res.text) { progress(`✗ ${label} exited ${res.code}: ${res.stderr.slice(-300)}`); return null; }
       if (!opts.schema) return res.text;
       const m = /\{[\s\S]*\}/.exec(res.text);
