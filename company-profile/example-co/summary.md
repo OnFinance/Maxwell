@@ -3,17 +3,17 @@ schemaVersion: "1"
 kind: maxwell.company.summary
 companyId: example-co
 title: Example Capital Markets cyber resilience summary
-version: "5.4.0"
-sections: [overview, regulatory-posture, applications, vendors, data-flows, control-summary, open-findings]
+version: "5.5.0"
+sections: [overview, regulatory-posture, applications, vendors, data-flows, control-summary, open-findings, initiatives]
 provenance:
   harness: opencode
-  generatedAt: "2026-09-15T19:42:44Z"
-  sessionId: ses_f5966a873ffeW6ABw4BrDNZjnn
+  generatedAt: "2026-09-15T23:48:58Z"
+  sessionId: ses_f5886b36bffe2kfOWH64YruZ39
   runId: run_01M2GDZ3Q3S5WYCB3MV02QJXZ1
-  workflow: execute-scr
+  workflow: impl-change-management
   agent: report-writer
   model: "cloudflare-workers-ai/@cf/zai-org/glm-5.3"
-  inputsHash: 3fc15d9176a3fd01f446a81cfabfd72665c67381b31aa91dbee5da177c71b90d
+  inputsHash: 2c2355ce4c927a4dc6346ad6516c716ecc453f3245956275314433e65d7e217e
 ---
 # Example Capital Markets — cyber resilience summary
 
@@ -398,3 +398,62 @@ Latest record per finding id in `company-profile/example-co/soc/main.jsonl` with
 <!-- source: latest-state map over soc/main.jsonl kind=finding (993 lines, 65 finding records across 50 ids), last line per id, filtered to status in open|triaged|remediating; execute-scr batch = lines 904-993 recordedAt 2026-09-15T19:42:44Z (73 observations 904-917/920-926/928-946/951-969/972-978/985-991, 16 findings 918-919/927/947-950/970-971/979-983/992-993, 1 control 984); severity counts 36 high + 14 medium = 50 open, 0 past SLA. The 16 new rows were verified field-by-field against the ledger: status open (grep "status":"open" over the 16 ids: 20 matches incl. commit_15.diff), firstSeenAt 2026-09-15T19:42:44Z (20 matches), severity via grep "severity":"high" over the 16 ids (8 of 10 non-SDLC rows matched: fnd_01M2KBJW4AHE221KPTRV1G60YC, fnd_01M2KC7W3QM0V86PVA3SVA01FN, fnd_01M2KM42DZQK8J4EZEB68ZQ103, fnd_01M2KM42DZDZSFHCN7YYBM94V2, fnd_01M2KM42DZ98VAGYD0E8TRV3FQ, fnd_01M2KM42DZE09A2PZ557A7SX2F, fnd_01M2KM42DZ66HX2ZKMY2QQ5JJC, fnd_01M2KMNHPKKK5K3C1EYGED2KGG; plus the 2 high SDLC rows read in full) and the SARIF result properties (sha256 1c38ee55…; medium = fnd_01M2KBJW4A8E9GMQHZT9F9WTAG dpdp-rules-2025:3 and fnd_01M2KMNHPJ7Z0Y0YJT6YZR4NZM sebi-cscrf-2024:PR.IP.S2, plus the 4 medium SDLC rows read in full: fnd_01M2KFQ6B40J52A6C0Q1XFPM10, fnd_01M2KFQ6B43WV47NMR95AXZBT0, fnd_01M2KGVJJ2AXNAXRE08PZ2Z7YP, fnd_01M2KGVJJ2Y4M9DRQY90C7TAMS); slaDueAt verified by grep over the 16 ids: 2026-09-22T19:42:44Z (7 d, sebi-cscrf-2024 PR.MA.S3 patch-sla high) for fnd_01M2KBJW4AHE221KPTRV1G60YC, fnd_01M2KC7W3QM0V86PVA3SVA01FN, fnd_01M2KM42DZQK8J4EZEB68ZQ103, fnd_01M2KM42DZ98VAGYD0E8TRV3FQ, fnd_01M2KM42DZE09A2PZ557A7SX2F, fnd_01M2KM42DZ66HX2ZKMY2QQ5JJC, fnd_01M2KMNHPKKK5K3C1EYGED2KGG; 2026-09-29T19:42:44Z (14 d, patch-sla medium) for fnd_01M2KBJW4A8E9GMQHZT9F9WTAG and fnd_01M2KMNHPJ7Z0Y0YJT6YZR4NZM; 2026-10-15T19:42:44Z (30 d) for fnd_01M2KM42DZDZSFHCN7YYBM94V2 and fnd_01M2KFQ6B4EF1Z113T0NKDY04Q; 2026-12-14T19:42:44Z (90 d) for fnd_01M2KFQ6B4KPYSFR0AR8SV4G4K, fnd_01M2KFQ6B40J52A6C0Q1XFPM10, fnd_01M2KFQ6B43WV47NMR95AXZBT0, fnd_01M2KGVJJ2AXNAXRE08PZ2Z7YP, fnd_01M2KGVJJ2Y4M9DRQY90C7TAMS (the last five read in full at lines 947-950, 970-971); targets verified by grep over the 16 ids (repo mcp-gateway/mongodb-mcp-server x6, repo db-models/onfinance-db-model-master x3) plus company x4 and environment mcp-gateway/dev x1 read in full; regulatoryRefs[0] as tabulated, from the records read in full (SDLC rows) or the SARIF result properties and each record's severity derivation (SCR and dev-env rows). The 34 pre-existing rows are unchanged: no line in 904-993 carries a pre-existing finding id (grep "supersedes":"fnd_ found no match in lines 904-993; this run re-seen 0 findings), so their latest records and the previous section's verified values stand (vendor rows lines 714-721, probe-iac rows 762-769, probe-schemas rows 825-830, first-run schema rows 423-429); their SLA status was recomputed against the new generatedAt: the 5 rows due 2026-09-21T13:14:50Z move 5 d -> 6 d and the 2 rows due 2026-09-28T13:14:50Z move 12 d -> 13 d, all other rows unchanged. Observation result counts 23 not-satisfied + 24 partial + 10 satisfied + 12 not-applicable + 4 inconclusive = 73 (inconclusive: obs_01M2KC7W3PDEXXXW7QC7BHMZE4, obs_01M2KFQ6B4A4R3KCJB4QYH58FR, obs_01M2KGVJJ21P79839X4NKNPAC1, obs_01M2KGVJJ2NB6FNRWWPSJF326D; the results of the 5 dev-env observations not fully visible in place were verified by grep: obs_01M2KM42DTR4YX8F7F0GDPB7QP, obs_01M2KM42DYFQ90GTVVXE6WSMFR, obs_01M2KM42DYNG2Z6PQVZ5CDJVP6 and obs_01M2KMNHPEX22EG5NSKATCAKN6 not-satisfied, obs_01M2KMNHPJB1NRPWQTYPREHRZ8 satisfied). SLA status = ceil((slaDueAt - 2026-09-15T19:42:44Z)/86400000) d; 0 rows past SLA -->
 
 No findings in `risk-accepted`, `false-positive` or `duplicate` this period.
+
+## Initiatives
+`impl-change-management` (runId `run_01M2GDZ3Q3S5WYCB3MV02QJXZ1`) created all 10 open initiatives this run
+(`createdAt` 2026-09-15T23:48:58Z; every status `proposed`, every `changeType` `normal`), linking 24 open ledger
+findings. Counters from `company-profile/example-co/change_management/master.json` (`updatedAt`
+2026-09-15T23:48:58Z): **10 open / 0 closed / 0 cancelled / 0 overdue** as of 2026-09-15T23:48:58Z. Overdue
+compares each initiative `dueAt` with `provenance.generatedAt`: the earliest `dueAt` is 2026-09-22T23:48:58Z,
+7 days out, so no row below carries an `**overdue <n> d**` marker. The 33 tasks across the 10 initiatives are
+all `todo` (0 done, 0 blocked).
+
+| Id | Title | Status | Priority | Change type | Owner | Due | Tasks (done/total, blocked) | Findings | Regulatory ref |
+|---|---|---|---|---|---|---|---|---|---|
+| [init_01M2KS6TE1ME2P52YKY64T06JY] | Close vendor governance gaps for AWS, GitHub and MongoDB Atlas: renew lapsed contracts, restore audit rights and assurance, document exit plans | proposed | p2 | normal | compliance@example-co.invalid | 2026-10-15T23:48:58Z | 0/4, 0 blocked | 6 | SEBI sebi-cscrf-2024 GV.SC.S3 (SEBI CSCRF 2024) + 5 refs |
+| [init_01M2KS0W59831JMAK8AVMGVZAN] | Mask, encrypt and allow-list sensitive data paths in MongoDB MCP tools and db models | proposed | p2 | normal | cto@example-co.invalid | 2026-09-22T23:48:58Z | 0/4, 0 blocked | 6 | SEBI sebi-cscrf-2024 PR.DS.S4 + 9 refs |
+| [init_01M2KRVFNGEJFKP3NR1V9M2PM5] | Make destructive-tool confirmation gates fail closed and enforce least-privilege write defaults | proposed | p2 | normal | cto@example-co.invalid | 2026-09-22T23:48:58Z | 0/4, 0 blocked | 3 | SEBI sebi-cscrf-2024 PR.AA.S3 + 5 refs |
+| [init_01M2KS1SY6B35R6CQ750H22FRW] | Bound and validate database-bound MCP tool input schemas in mongodb-mcp-server | proposed | p3 | normal | cto@example-co.invalid | 2026-09-29T23:48:58Z | 0/4, 0 blocked | 1 | SEBI sebi-cscrf-2024 PR.IP.S2 + 3 refs |
+| [init_01M2KRZA4RAAZS0KDBFDKRVRXR] | Enable diagnostics, SIEM forwarding and 180-day log retention for mcp-gateway | proposed | p2 | normal | cto@example-co.invalid | 2026-09-22T23:48:58Z | 0/3, 0 blocked | 2 | SEBI sebi-cscrf-2024 PR.AA.S8 + 4 refs |
+| [init_01M2KRS2JRQP1SV3DSBSDASETA] | Remove repo-shipped Copilot and gh-aw harness configuration from mongodb-mcp-server | proposed | p2 | normal | cto@example-co.invalid | 2026-09-22T23:48:58Z | 0/3, 0 blocked | 2 | SEBI sebi-cscrf-2024 GV.PO.S1 + 3 refs |
+| [init_01M2KS3JBZ99R9Y0888DF7WSWP] | Broaden .gitignore secret patterns in the public mongodb-mcp-server repo | proposed | p2 | normal | cto@example-co.invalid | 2026-09-22T23:48:58Z | 0/2, 0 blocked | 1 | SEBI sebi-cscrf-2024 PR.DS.S4 + 1 ref |
+| [init_01M2KSB50TKCHJMD8PT79GXGTM] | Add source pinning and checksum verification to the global third-party agent-skills install | proposed | p2 | normal | cto@example-co.invalid | 2026-09-22T23:48:58Z | 0/3, 0 blocked | 1 | SEBI sebi-cscrf-2024 PR.IP.S1 + 2 refs |
+| [init_01M2KSEQN8DMX4CRTN5RP1XND8] | Annotate the MongoDB MCP tool schemas with personal-data classification markers | proposed | p3 | normal | ciso@example-co.invalid | 2026-09-29T23:48:58Z | 0/3, 0 blocked | 1 | SEBI sebi-cscrf-2024 ID.AM.S5 + 2 refs |
+| [init_01M2KSV05T8TK1TJDJAS2EK3DW] | Add a local gitleaks pre-commit secrets-scanning hook to the db-models repo so the policy secret scan reaches it | proposed | p3 | normal | ciso@example-co.invalid | 2026-09-29T23:48:58Z | 0/3, 0 blocked | 1 | SEBI sebi-cscrf-2024 PR.IP.S2 + 1 ref |
+
+### Blocked
+
+No blocked tasks as of 2026-09-15T23:48:58Z: all 33 tasks carry `status: todo` and no task file has a
+`blockedReason` (Grep `"blockedReason"` over `change_management/initiatives/*/tasks/task_*.json` returns 0
+matches); `taskCounts.blocked` is 0 in all 10 `master.json` entries.
+
+### Evidence requests
+
+10 of the 33 tasks verify by `verificationMethod.type: re-probe` and none is done yet; each names the probe
+workflow that must re-run to supply the closing evidence for its linked finding(s):
+
+- [init_01M2KS0W59831JMAK8AVMGVZAN] task_1 — Mask pii and financial fields in find and aggregate tool results
+  (re-probe `probe-schemas`, owner cto@example-co.invalid, due 2026-09-21T23:48:58Z).
+- [init_01M2KS0W59831JMAK8AVMGVZAN] task_2 — Encrypt MongoDB MCP export files at rest and mask exported fields
+  (re-probe `probe-schemas`, owner cto@example-co.invalid, due 2026-09-22T23:48:58Z).
+- [init_01M2KS0W59831JMAK8AVMGVZAN] task_3 — Enforce a host allow-list on MongoDB MCP connection strings
+  (re-probe `probe-agent-graph`, owner cto@example-co.invalid, due 2026-09-21T23:48:58Z).
+- [init_01M2KRVFNGEJFKP3NR1V9M2PM5] task_2 — Default the gateway to least privilege behind an explicit
+  write-tool allow-list (re-probe `probe-agent-graph`, owner cto@example-co.invalid, due 2026-09-19T15:14:31Z).
+- [init_01M2KS1SY6B35R6CQ750H22FRW] task_4 — Add regression tests for tool-argument bounds and verify with
+  probe-schemas (re-probe `probe-schemas`, owner cto@example-co.invalid, due 2026-09-28T13:14:50Z).
+- [init_01M2KRZA4RAAZS0KDBFDKRVRXR] task_1 — Enable diagnostic settings and a Log Analytics workspace in the
+  mongodb-mcp-server bicep deployment (re-probe `probe-iac`, owner cto@example-co.invalid, due
+  2026-09-19T23:48:58Z).
+- [init_01M2KRS2JRQP1SV3DSBSDASETA] task_2 — Delete the repo-shipped GitHub Copilot and gh-aw harness
+  configuration (re-probe `probe-agent-graph`, owner cto@example-co.invalid, due 2026-09-21T23:48:58Z).
+- [init_01M2KSB50TKCHJMD8PT79GXGTM] task_1 — Pin the agent-skills source to a commit and gate the global skills
+  install on verified checksums (re-probe `probe-agent-graph`, owner cto@example-co.invalid, due
+  2026-09-21T23:48:58Z).
+- [init_01M2KSEQN8DMX4CRTN5RP1XND8] task_2 — Annotate the MongoDB tool schemas with data-classification
+  markers (re-probe `probe-schemas`, owner cto@example-co.invalid, due 2026-09-26T23:48:58Z).
+- [init_01M2KSV05T8TK1TJDJAS2EK3DW] task_3 — Verify the db-models secrets-scanning control with probe-sdlc and
+  reconcile the finding (re-probe `probe-sdlc`, owner ciso@example-co.invalid, due 2026-09-28T23:48:58Z).
+
+<!-- source: counters and per-initiative fields from change_management/master.json (counters open 10, closed 0, cancelled 0, overdue 0, updatedAt 2026-09-15T23:48:58Z; status/priority/changeType/owner.id/dueAt/taskCounts/findingIds/regulatoryRefs per initiative; Findings column = len(findingIds) = 6, 6, 3, 1, 2, 2, 1, 1, 1, 1 = 24 distinct finding ids); tasks = 33 files under change_management/initiatives/*/tasks/ (Grep '"status": "todo"' = 33 matches, "blockedReason" = 0 matches, '"type": "re-probe"' = 10 matches with verificationMethod.workflow as listed); overdue = dueAt earlier than provenance.generatedAt 2026-09-15T23:48:58Z (0 initiatives, earliest dueAt 2026-09-22T23:48:58Z); timelines initiatives/*/timeline.json record only created/task-added events at 2026-09-15T23:48:58Z, so no initiative has moved past proposed; inputsHash order per company-summary.schema.json -->
+

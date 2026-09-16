@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_1",
+  "initiativeId": "init_01M2KSB50TKCHJMD8PT79GXGTM",
+  "companyId": "example-co",
+  "seq": 1,
+  "title": "Pin the agent-skills source to a commit and gate the global skills install on verified checksums",
+  "description": "In the local checkout applications/mcp-gateway/repos/mongodb-mcp-server (repo record pinnedCommit aaa72a040db4c32f3d6488d5e28e2892a68e9ee0), edit src/setup/installSkills.ts (finding location lines 31-41): reference mongodb/agent-skills by an exact commit SHA instead of a branch, commit a sha256 checksum manifest covering every skill and prompt file the skills CLI fetches, and verify each fetched file against that manifest before the ['--yes', 'skills@1', 'add', ..., '-y', '-g'] step installs globally; on a checksum mismatch or an unlisted file, abort with a non-zero exit and copy nothing to the global skills directory. Keep the existing single interactive confirm for the five supported agents (cursor, github-copilot, windsurf, claude-code, opencode) and make the non-interactive path fail closed. Constraints: this is a developer-machine setup script, so no releaseProcess deployment window applies, but the PR needs one approver under the codeReview policy (self-approval not allowed) and must keep the blocking secrets CI gate green.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "src/setup/installSkills.ts references mongodb/agent-skills by an exact commit SHA (resolvable with git ls-remote), not by branch name",
+    "Every file the skills CLI fetches is sha256-verified against the committed manifest; a mismatched or unlisted file aborts the install with a non-zero exit before the global skills directory is written",
+    "Running the setup with a tampered skill fixture exits non-zero and leaves the agent's global skills directory unchanged"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-agent-graph",
+    "description": "Re-run /probe-agent-graph example-co --app mcp-gateway on the mongodb-mcp-server checkout; the AGENT-ASI04-02 result (fingerprint 571e78ae6bd7409b70f629686dc717e97be3ed379a6bdf584c7b62adc6d8d18e) is no longer produced at src/setup/installSkills.ts"
+  },
+  "rootCause": {
+    "category": "vulnerable-dependency",
+    "description": "The setup consumes third-party skill content from mongodb/agent-skills referenced only by branch with the CLI pinned to a major version, so upstream tampering flows unchecked into the global agent configuration"
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 6,
+  "createdAt": "2026-09-15T23:48:58Z",
+  "dueAt": "2026-09-21T23:48:58Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

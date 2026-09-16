@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_1",
+  "initiativeId": "init_01M2KSV05T8TK1TJDJAS2EK3DW",
+  "companyId": "example-co",
+  "seq": 1,
+  "title": "Add a .pre-commit-config.yaml running a pinned gitleaks hook to onfinance-db-model-master",
+  "description": "Create .pre-commit-config.yaml at the root of applications/db-models/repos/onfinance-db-model-master (repo onfinance-db-model-master, default branch master, pinned HEAD 70b3633e171a1b8d389b27bb901c84c34a0e9bf6) defining a gitleaks hook that scans every commit, mirroring the sdlc/policy.json secrets gate (ciGates: gate secrets, tool gitleaks, blocking, minSeverityToBlock low; secretsManagement.scanningInCi true) so the policy secret scan reaches this repo even though its ciSystem is none. Pin the hook rev to a released gitleaks tag, never a mutable branch, and add no SKIP or --no-verify bypass script. Constraints: db-models is a dev-only Python library with no runtime environment, sdlc/policy.json releaseProcess defines no deploymentWindows and no change freeze applies; keep the change to the single new file, and demonstrate in the PR that the hook aborts a commit containing a clearly-marked fake test credential while pre-commit run --all-files passes on the current tree (no secret at HEAD). Rollback: git revert of the single commit.",
+  "owner": {
+    "type": "human",
+    "id": "ciso@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "git -C applications/db-models/repos/onfinance-db-model-master ls-files lists .pre-commit-config.yaml tracked on master",
+    "The hook runs gitleaks on every commit, pinned to a released tag, matching the sdlc/policy.json secrets gate (gitleaks, blocking, minSeverityToBlock low), with no SKIP or --no-verify bypass added among the tracked files",
+    "The PR record shows a commit attempt containing a clearly-marked fake test credential aborted by the hook with a non-zero exit and no commit object created",
+    "pre-commit run --all-files exits 0 on the current tree (no secret committed at HEAD 70b3633e171a1b8d389b27bb901c84c34a0e9bf6)"
+  ],
+  "verificationMethod": {
+    "type": "code-review",
+    "description": "Reviewer inspects the merged .pre-commit-config.yaml diff on master: the hook repo, pinned released rev and id mirror the sdlc/policy.json secrets gate (gitleaks, blocking at low), no bypass script exists among the tracked files, and the PR record shows the blocked fake-credential commit attempt plus a passing pre-commit run --all-files. Expected result: the config exists, is pinned, blocks the planted test credential and passes on the clean tree."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "No local secrets-scanning control was ever implemented in onfinance-db-model-master: only .gitignore, setup.py and the two package files are tracked, so with ciSystem none there is nowhere for the policy gitleaks gate to run for this repo."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "db-models",
+      "repoId": "onfinance-db-model-master"
+    }
+  ],
+  "effortEstimateHours": 2,
+  "createdAt": "2026-09-15T23:48:58Z",
+  "dueAt": "2026-09-22T23:48:58Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_3",
+  "initiativeId": "init_01M2KS6TE1ME2P52YKY64T06JY",
+  "companyId": "example-co",
+  "seq": 3,
+  "title": "Obtain a current SOC 2 Type II report or bridge letter for GitHub Enterprise Cloud before 2026-09-30",
+  "description": "Request through the GitHub Enterprise account the latest SOC 2 Type II report or an Ernst & Young bridge letter covering GitHub Enterprise Cloud: the only assurance on file (company-profile/example-co/vendors/github.json assurance[0], E&Y, period 2024-10-01 to 2025-09-30) has expiresAt 2026-09-30, and no newer report period is published on github.com/trust-center or ghec.github.trust.page. File the artefact in the vendor assurance register recording issuer, period, scope and expiresAt, and hand it to the next refresh-vendor-ctx run so github.json assurance[] carries an entry whose expiresAt is later than 2026-09-30. Constraints: must complete before the current coverage lapses on 2026-09-30; verify the report scope still covers GitHub Enterprise Cloud including Actions and the package registry; record any exceptions with the vendor management response.",
+  "owner": {
+    "type": "human",
+    "id": "compliance@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "A SOC 2 Type II report for GitHub Enterprise Cloud with a period ending 2026-09-30 or later, or an Ernst & Young bridge letter extending the current report coverage beyond 2026-09-30, is filed in the vendor assurance register before 2026-09-30",
+    "The assurance register entry records issuer, periodStart, periodEnd, scope and an expiresAt later than 2026-09-30",
+    "company-profile/example-co/vendors/github.json assurance[] shows a current soc2-type2 entry with expiresAt later than 2026-09-30 after the next refresh-vendor-ctx run"
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "Reviewer opens the filed SOC 2 Type II report or bridge letter and its assurance register entry and confirms the reporting period, the GitHub Enterprise Cloud scope and an expiresAt later than 2026-09-30, satisfying SEBI CSCRF GV.SC.S4 and RBI Outsourcing Risk Directions 2025 para 79; expected result: current, in-scope assurance exists on file for github before the 2026-09-30 lapse"
+  },
+  "rootCause": {
+    "category": "vendor-gap",
+    "description": "GitHub publishes no newer SOC 2 Type II period on its public trust pages and the company never pulled the current report or a bridge letter through its Enterprise account, so the only assurance artefact on file (period ending 2025-09-30, bridge coverage expiring 2026-09-30) lapses with nothing replacing it"
+  },
+  "targets": [
+    {
+      "type": "vendor",
+      "vendorId": "github"
+    }
+  ],
+  "effortEstimateHours": 4,
+  "createdAt": "2026-09-15T23:48:58Z",
+  "dueAt": "2026-09-29T23:48:58Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "sessionId": "ses_f584f2afcffe9JipaZ3Bs7e3Dj",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

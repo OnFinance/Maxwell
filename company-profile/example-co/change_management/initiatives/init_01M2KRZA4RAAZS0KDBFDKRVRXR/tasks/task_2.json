@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_2",
+  "initiativeId": "init_01M2KRZA4RAAZS0KDBFDKRVRXR",
+  "companyId": "example-co",
+  "seq": 2,
+  "title": "Forward Container Apps logs to the India-resident Wazuh SIEM declared for prod",
+  "description": "In applications/mcp-gateway/repos/mongodb-mcp-server, extend deploy/azure/bicep/main.bicep so the logs collected by task 1 leave the platform: wire the Log Analytics data to the Wazuh SIEM endpoint declared in applications/mcp-gateway/env/prod.json (India-resident, 365-day retention) via an Azure Monitor export or ingestion resource kept in the same template, so containerApp and managed-environment platform, console and audit logs finally reach the SIEM that prod declares but the template never feeds. Constraints: keep the destination configuration in the template rather than hand-set in the portal; SIEM credentials go through the secrets backend, never hard-coded in bicep; deploy through the releaseProcess order dev -> qa -> prod with the required approval; verify SIEM ingestion on qa before promoting to prod; no deploymentWindows are declared in sdlc/policy.json.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "deploy/azure/bicep/main.bicep declares the export or forwarding resource that sends the Log Analytics tables to the SIEM endpoint recorded in applications/mcp-gateway/env/prod.json, with no endpoint or credential hard-coded in the template",
+    "After the qa rollout, the Wazuh SIEM lists the mcp-gateway container app as an active log source and shows qa platform and console log entries arriving within 15 minutes of generation",
+    "The forwarded logs land in the India-resident workspace (logsInIndia true) that retains them for the 365 days declared in applications/mcp-gateway/env/prod.json"
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "Review the post-deployment ingestion evidence attached to this task: the Wazuh log-source registration for the mcp-gateway container app and a sample of forwarded qa platform and console log entries; expected result: the SIEM shows live log flow from the qa environment within 15 minutes of generation and the merged bicep PR shows the forwarding resource."
+  },
+  "rootCause": {
+    "category": "misconfiguration",
+    "description": "applications/mcp-gateway/env/prod.json declares a Wazuh SIEM with 365-day India-resident retention, but the deployment template never configures any forwarding path to it, so the declared SIEM receives nothing from mcp-gateway"
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 5,
+  "createdAt": "2026-09-15T23:48:58Z",
+  "dueAt": "2026-09-21T23:48:58Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_1"
+  ],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

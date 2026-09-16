@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.session.summary",
+  "sessionId": "ses_f582a1066ffeSkE7j9vD6QgJR0",
+  "harness": "opencode",
+  "harnessVersion": "1.18.30",
+  "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+  "workflow": "impl-change-management",
+  "companyId": "example-co",
+  "startedAt": "2026-09-16T01:30:11Z",
+  "endedAt": "2026-09-16T01:33:54Z",
+  "durationMs": 223000,
+  "turns": 12,
+  "inferenceCalls": 12,
+  "toolCalls": {
+    "total": 24,
+    "byTool": {
+      "read": 6,
+      "bash": 5,
+      "grep": 7,
+      "write": 4,
+      "edit": 2
+    }
+  },
+  "subagentSessions": 0,
+  "permissionDenials": [],
+  "models": [
+    {
+      "model": "glm-5.3",
+      "provider": "other",
+      "tokens": {
+        "input": 91984,
+        "output": 14130,
+        "cacheWrite5m": 0,
+        "cacheWrite1h": 0,
+        "cacheRead": 766656,
+        "thinking": null
+      },
+      "webSearchRequests": 0,
+      "webFetchRequests": 0,
+      "costUsd": 0.39028
+    }
+  ],
+  "costUsd": {
+    "computed": 0.39028,
+    "reported": 0.39028,
+    "deltaPct": 0
+  },
+  "pricingVersion": "2026-09-14",
+  "dedup": {
+    "strategy": "requestId-max-total-tokens",
+    "duplicatesDropped": 0
+  },
+  "filesWritten": [
+    "company-profile/example-co/change_management/initiatives/init_01M2KSV05T8TK1TJDJAS2EK3DW/tasks/task_1.json",
+    "company-profile/example-co/change_management/initiatives/init_01M2KSV05T8TK1TJDJAS2EK3DW/tasks/task_2.json",
+    "company-profile/example-co/change_management/initiatives/init_01M2KSV05T8TK1TJDJAS2EK3DW/tasks/task_3.json",
+    "company-profile/example-co/change_management/initiatives/init_01M2KSV05T8TK1TJDJAS2EK3DW/timeline.json",
+    "company-profile/example-co/change_management/master.json"
+  ],
+  "linesAdded": 0,
+  "linesRemoved": 0,
+  "outcome": "success",
+  "transcriptFormatVersion": "1.18.30",
+  "provenance": {
+    "harness": "script",
+    "generatedAt": "2026-09-16T02:17:40Z",
+    "sessionId": "ses_f582a1066ffeSkE7j9vD6QgJR0",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": ".claude/scripts/sessions/ingest.mjs"
+  }
+}

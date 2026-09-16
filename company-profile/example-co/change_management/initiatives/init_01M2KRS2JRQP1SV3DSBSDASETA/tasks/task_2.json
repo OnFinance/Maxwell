@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_2",
+  "initiativeId": "init_01M2KRS2JRQP1SV3DSBSDASETA",
+  "companyId": "example-co",
+  "seq": 2,
+  "title": "Delete the repo-shipped GitHub Copilot and gh-aw harness configuration",
+  "description": "In applications/mcp-gateway/repos/mongodb-mcp-server (OnFinance/mongodb-mcp-server fork, default branch main) remove .github/copilot-instructions.md, .github/agents/agentic-workflows.agent.md (the gh-aw dispatcher agent), .github/workflows/copilot-setup-steps.yml (which installs the gh-aw extension v0.68.1 for the GitHub Copilot Agent) and the .github/aw/ directory including actions-lock.json, so the repo ships no harness configuration outside aiCodingPolicy.harnessesAllowed (claude-code, opencode). Leave .vscode/ in place (empty settings.json and a vitest-only extensions.json, no harness override). Land after task_1 so the guidance is preserved. Constraints: trunk-based development on protected branch main, one approving reviewer, blocking gitleaks and vitest CI gates, semgrep SAST advisory above high; repo-content-only change, so no deployment window applies; rollback is git revert of the removal commit.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "A fresh clone of the OnFinance/mongodb-mcp-server fork at merged main contains none of .github/copilot-instructions.md, .github/agents/agentic-workflows.agent.md, .github/workflows/copilot-setup-steps.yml or the .github/aw/ directory",
+    "A re-run of probe-agent-graph over applications/mcp-gateway/repos/mongodb-mcp-server reports zero AGENT-POL-01 results (harness configuration outside aiCodingPolicy.harnessesAllowed)",
+    "git revert of the removal commit applies cleanly on main and restores the deleted files, demonstrating the rollback plan"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-agent-graph",
+    "description": "Re-run probe-agent-graph on mcp-gateway repo mongodb-mcp-server after the merge: expected result - no AGENT-POL-01 result on any .github path, confirming fnd_01M2K7B0MJ3239WAE0AKHRMK5E and fnd_01M2KM42DZ66HX2ZKMY2QQ5JJC no longer reproduce (both target .github/copilot-instructions.md and the shipped Copilot/gh-aw configuration)."
+  },
+  "rootCause": {
+    "category": "misconfiguration",
+    "description": "The upstream mongodb-mcp-server ships GitHub Copilot and gh-aw harness configuration by default; the fork never pruned it after aiCodingPolicy.harnessesAllowed was restricted to claude-code and opencode"
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 2,
+  "createdAt": "2026-09-15T23:48:58Z",
+  "dueAt": "2026-09-21T23:48:58Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_1"
+  ],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

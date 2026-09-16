@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.timeline",
+  "initiativeId": "init_01M2KSEQN8DMX4CRTN5RP1XND8",
+  "companyId": "example-co",
+  "events": [
+    {
+      "eventId": "evt_1",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "created",
+      "toStatus": "proposed",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "Raised by change-planner from open ledger finding fnd_01M2G2AGNMHKF9PCB4C85A3JQ3 (MongoDB MCP tool schemas expose pii/financial stores to AI agents with no classification markers; SEBI CSCRF ID.AM.S5 and DPDP Rules 6(1)); no risks linked. Intended approver: ciso@example-co.invalid (CISO), for approval as a normal change. Refutation record: both lenses refuted=false. Actionability lens: owner ciso@example-co.invalid and task owners dpo@example-co.invalid and cto@example-co.invalid resolve to real details.json contacts, each of the 3 tasks carries three testable acceptance criteria, a verificationMethod in the enum (evidence-review, re-probe with probe-schemas on task_2, manual-test), a specific process-gap rootCause, effortEstimateHours 3/8/4 and dueAts 2026-09-21/26/28T23:48:58Z all on or before the initiative dueAt 2026-09-29T23:48:58Z, dependsOn [1]/[2] names only this draft's seqs and is acyclic, the normal changeType carries a concrete rollbackPlan naming the repo's actual pinnedCommit aaa72a040db4c32f3d6488d5e28e2892a68e9ee0 and matches sdlc/policy.json changeTypeDefault normal with rollbackPlanRequired true, changeType and priority p3 are justified by the linked finding (medium, open, not superseded, slaDueAt 2026-09-28T13:14:50Z still ahead of createdAt), the cited controlIds exist as ledger controls sebi-cscrf-2024:ID.AM.S5 and dpdp-rules-2025:6(1), and change_management/master.json has no existing initiative covering this finding; non-refuting note: draft dependsOn integers are materialised as the schema's string form task_1/task_2. Regulatory-mapping lens: sebi-cscrf-2024 (regulator SEBI, entityTypes stock-broker/depository-participant, active mid-size-re category, in frameworksInScope) is the most specific Indian instrument and is cited first, bare controlIds ID.AM.S5 and 6(1) exist in sebi-cscrf-2024.catalog.json and dpdp-rules-2025.catalog.json and as ledger control records whose prose covers the schema-classification gap, the ISO A.5.12 ref is exactly ID.AM.S5's own catalog crosswalk mapping, slaBasis matches the actual sla-table row sebi-cscrf-2024/PR.MA.S3/patch-sla/medium = 14 days under most-strict-wins with dueAt 2026-09-29T23:48:58Z exactly createdAt + 14 days, and the linked finding is open at medium in the ledger with exactly these controlIds and regulatoryRefs; non-refuting note: DPDP Rule 6 commences 2027-05-13 so the 6(1) ref is a readiness mapping, the same secondary ref the open finding already carries.",
+      "refs": {
+        "findingId": "fnd_01M2G2AGNMHKF9PCB4C85A3JQ3"
+      }
+    },
+    {
+      "eventId": "evt_2",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "task_1: Adopt a written data-classification convention for MCP tool schemas",
+      "refs": {
+        "taskId": "task_1"
+      }
+    },
+    {
+      "eventId": "evt_3",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "task_2: Annotate the MongoDB tool schemas with data-classification markers",
+      "refs": {
+        "taskId": "task_2"
+      }
+    },
+    {
+      "eventId": "evt_4",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "task_3: Gate CI on a data-classification marker check for every MCP tool schema",
+      "refs": {
+        "taskId": "task_3"
+      }
+    }
+  ],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

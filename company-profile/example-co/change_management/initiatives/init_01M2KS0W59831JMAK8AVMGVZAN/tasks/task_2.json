@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_2",
+  "initiativeId": "init_01M2KS0W59831JMAK8AVMGVZAN",
+  "companyId": "example-co",
+  "seq": 2,
+  "title": "Encrypt MongoDB MCP export files at rest and mask exported fields",
+  "description": "In the same mongodb-mcp-server checkout, apply the shared masking transform from task 1 in the export path (src/tools/mongodb/read/export.ts:68-98) before documents are streamed to the export file, and change ExportsManager.startExport (src/common/exportsManager.ts:198-249) so export files are written encrypted at rest with AES-256-GCM envelope encryption keyed from the company secrets backend (aws-secrets-manager per sdlc/policy.json secretsManagement.backend) instead of plaintext EJSON via createWriteStream; create files with mode 0600, ship the decrypt path in the same release so consumers can read new exports, and keep the existing exportTimeoutMs TTL cleanup. Unit-test that on-disk bytes are not plaintext and that the mask matches find and aggregate output. Roll out dev, then qa, then prod per sdlc/policy.json releaseProcess with one approval; rollback per the initiative plan.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "A unit test in mongodb-mcp-server asserts that bytes written by ExportsManager.startExport for a fixture document set are not plaintext EJSON and decrypt only through the new envelope-encryption path, and that export files are created with mode 0600",
+    "A unit test running the export tool over the same fixtures as task 1 asserts exported documents carry the same masked pii and financial values as find and aggregate results",
+    "Re-running probe-schemas on mcp-gateway/mongodb-mcp-server returns no SCH-PII-02 result for src/common/exportsManager.ts and no SCH-API-03 result for src/tools/mongodb/read/export.ts"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-schemas",
+    "description": "Re-run probe-schemas on mcp-gateway/mongodb-mcp-server and read the SARIF export; expected result: the SCH-PII-02 result for src/common/exportsManager.ts and the SCH-API-03 result for src/tools/mongodb/read/export.ts are both absent at the new pinned commit"
+  },
+  "rootCause": {
+    "category": "insecure-code",
+    "description": "ExportsManager.startExport (first-party code at commit aaa72a0) pipelines the cursor into createWriteStream with no encryption, no file-mode restriction and no KMS or vault reference, and the export tool adds no field mask, so client pii and financial data sits in plaintext EJSON under the default exports directory for the export TTL"
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 8,
+  "createdAt": "2026-09-15T23:48:58Z",
+  "dueAt": "2026-09-22T23:48:58Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_1"
+  ],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "sessionId": "ses_f584ba1f1ffeS1iSKEZtRqmdS0",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_1",
+  "initiativeId": "init_01M2KS3JBZ99R9Y0888DF7WSWP",
+  "companyId": "example-co",
+  "seq": 1,
+  "title": "Widen .gitignore secret patterns in the mongodb-mcp-server checkout",
+  "description": "Edit .gitignore in the local checkout applications/mcp-gateway/repos/mongodb-mcp-server (line 8 currently ignores only the exact name .env): add a `.env*` pattern immediately followed by `!.env.example` so the documented example template stays shareable; add `*.pem`, `*.key`, `id_rsa*`, `kubeconfig*` and the dump patterns `*.sql`, `*.dump`, `*.sqlite`, `*.sqlite3`; add the negations `!tests/integration/fixtures/server.pem` and `!tests/integration/fixtures/server.key` so the deliberate self-signed HTTPS proxy test fixtures (httpsServerProxyTest.ts, certificate CN VALHALLA) stay tracked; if a currently tracked file would be captured by a new pattern, keep it with a targeted negation line rather than untracking it (no tracked .env variant or *.sql file exists at HEAD aaa72a040db4c32f3d6488d5e28e2892a68e9ee0 today, so no tracked file should change). Land on the default branch main through one reviewed PR (trunk model, protected branches main, master and release/*, minApprovers 1 per company-profile/example-co/sdlc/policy.json); this is developer-repo configuration with no deployment window or environment rollout, and the blocking gitleaks CI gate must stay green. Do not touch .husky/pre-commit or any CI workflow in this task.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "git check-ignore -v in applications/mcp-gateway/repos/mongodb-mcp-server reports .gitignore as the matching source for each of the sample paths .env.local, .env.development, dev.pem, id_rsa.key, kubeconfig and dump.sql",
+    "git check-ignore -v exits without a match for .env.example, tests/integration/fixtures/server.pem and tests/integration/fixtures/server.key, and git ls-files still lists both fixture files",
+    "The PR merging the widened .gitignore to main has at least one approver and the blocking secrets gate (gitleaks) green"
+  ],
+  "verificationMethod": {
+    "type": "code-review",
+    "description": "Reviewer inspects the .gitignore diff in the PR - .env* immediately followed by !.env.example, *.pem and *.key followed by the two tests/integration/fixtures negations, kubeconfig* and the dump patterns present - then runs git check-ignore -v in the checkout applications/mcp-gateway/repos/mongodb-mcp-server against .env.local, id_rsa.pem, kubeconfig and dump.sql, expecting .gitignore named as the matching source for each, and against .env.example plus the two fixtures, expecting no match and both fixtures still listed by git ls-files."
+  },
+  "rootCause": {
+    "category": "misconfiguration",
+    "description": "The .gitignore of the repo was configured with a single `.env` line (line 8), so .env* variants, key and certificate files, kubeconfig and database dumps were never covered by the ignore mechanism of a public repository."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 2,
+  "createdAt": "2026-09-15T23:48:58Z",
+  "dueAt": "2026-09-17T23:48:58Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

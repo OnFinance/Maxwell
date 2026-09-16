@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_1",
+  "initiativeId": "init_01M2KRVFNGEJFKP3NR1V9M2PM5",
+  "companyId": "example-co",
+  "seq": 1,
+  "title": "Fail the destructive-tool confirmation gate closed for elicitation-incapable clients",
+  "description": "In the pinned checkout applications/mcp-gateway/repos/mongodb-mcp-server (pinned commit aaa72a040db4c32f3d6488d5e28e2892a68e9ee0), change src/elicitation.ts so Elicitation.requestConfirmation refuses the call (returns false with a tool-result error naming the reason) when the connected MCP client does not advertise the elicitation capability and a confirmation-required tool is being invoked, replacing the early return-true branch at src/elicitation.ts:30-44; route ToolBase.verifyConfirmed (src/tools/tool.ts:609-615) through the fail-closed path so no approval bypass remains, add a configuration flag that forces confirmation for the eight default confirmation-required tools regardless of client capability, and log every confirmation request and its outcome (approved or refused) with the tool name as a security event. Constraints: keep the per-tool Zod argsShape validation unchanged; no deployment in this task; land as a PR to protected main with at least 1 approver per sdlc/policy.json codeReview (trunk-based branching).",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "Inspection of src/elicitation.ts in applications/mcp-gateway/repos/mongodb-mcp-server shows no branch that returns true from requestConfirmation when supportsElicitation() is false and the tool is confirmation-required; every refusal emits a security log line naming the tool and the outcome.",
+    "An MCP client that omits the elicitation capability in initialize receives a refusal error on tools/call for every one of the eight confirmation-required tools (drop-database, drop-collection, delete-many, drop-index, atlas-create-access-list, atlas-create-db-user, atlas-streams-manage, atlas-streams-teardown) and no database operation is executed.",
+    "With the forced-confirmation flag set, requestConfirmation demands human confirmation for confirmation-required tools even when the client does advertise elicitation support."
+  ],
+  "verificationMethod": {
+    "type": "code-review",
+    "description": "A reviewer inspects the merged diff on src/elicitation.ts and src/tools/tool.ts in applications/mcp-gateway/repos/mongodb-mcp-server: expected result - the not-supportsElicitation branch refuses confirmation-required calls, ToolBase.verifyConfirmed has no approval bypass, the forced-confirmation flag and per-request security logging are present, so the AGENT-ASI09-01 and asvs-v2-confirmation-fail-open conditions of fnd_01M2K7B0MJ68AR00YTNE2N00V2 and fnd_01M2KBJW4AHE221KPTRV1G60YC no longer hold in the code."
+  },
+  "rootCause": {
+    "category": "insecure-code",
+    "description": "requestConfirmation in src/elicitation.ts was written to treat a missing client elicitation capability as approval (fail-open early return true), so the human-approval-for-writes control named in sdlc/policy.json aiCodingPolicy.promptInjectionControls was never actually enforced for elicitation-incapable clients."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 6,
+  "createdAt": "2026-09-15T23:48:58Z",
+  "dueAt": "2026-09-18T15:14:31Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

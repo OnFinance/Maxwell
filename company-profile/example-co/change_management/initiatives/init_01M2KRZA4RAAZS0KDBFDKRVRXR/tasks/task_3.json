@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_3",
+  "initiativeId": "init_01M2KRZA4RAAZS0KDBFDKRVRXR",
+  "companyId": "example-co",
+  "seq": 3,
+  "title": "Raise mcp-gateway dev-tier log retention to at least 180 days",
+  "description": "Centralise the developer-laptop fleet mcp-gateway logs into the same India-resident pipeline the qa tier already uses (qa retains 180 days), then update applications/mcp-gateway/env/dev.json observability.logsRetentionDays from 30 to 180 keeping logsInIndia true, closing the 150-day shortfall against CERT-In Direction iv (finding fnd_01M2KM42DZDZSFHCN7YYBM94V2). The dev tier is the first stage of sdlc/policy.json releaseProcess.environmentsOrder and hosts the developer-laptop fleet that builds the order-routing-critical mcp-gateway, so its evidence must survive the same 180-day baseline as qa and prod. Constraints: the environment record change is limited to the observability block; dev runs on the developer-laptop fleet (hosting.accountRef developer-laptops, probeAccess via docker-socket), so the pipeline centralisation is fleet configuration, not a change to the mongodb-mcp-server repo; no deploymentWindows or change freezes are declared.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "applications/mcp-gateway/env/dev.json observability.logsRetentionDays reads 180 or higher and logsInIndia remains true",
+    "The developer-laptop fleet log source for mcp-gateway is registered in the same India-resident pipeline the qa tier uses, with a sample dev-stage log queryable there",
+    "node .claude/scripts/validate-data.mjs applications/mcp-gateway/env/dev.json exits 0 after the edit"
+  ],
+  "verificationMethod": {
+    "type": "code-review",
+    "description": "Inspect the diff to applications/mcp-gateway/env/dev.json (observability.logsRetentionDays at least 180, logsInIndia true, no other fields changed) together with the developer-laptop log-source registration evidence for the India-resident pipeline; expected result: the retention value reads 180 or higher and a dev-stage log is queryable in the pipeline that qa uses."
+  },
+  "rootCause": {
+    "category": "misconfiguration",
+    "description": "The dev-tier environment record was seeded with observability.logsRetentionDays 30 while qa (180) and prod (365) meet the baseline; the value was never aligned to the CERT-In 180-day floor"
+  },
+  "targets": [
+    {
+      "type": "environment",
+      "appId": "mcp-gateway",
+      "envId": "dev"
+    }
+  ],
+  "effortEstimateHours": 4,
+  "createdAt": "2026-09-15T23:48:58Z",
+  "dueAt": "2026-09-22T23:48:58Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

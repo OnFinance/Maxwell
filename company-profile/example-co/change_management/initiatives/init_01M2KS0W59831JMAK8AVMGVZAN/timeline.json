@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.timeline",
+  "initiativeId": "init_01M2KS0W59831JMAK8AVMGVZAN",
+  "companyId": "example-co",
+  "events": [
+    {
+      "eventId": "evt_1",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "created",
+      "toStatus": "proposed",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "ses_f584ba1f1ffeS1iSKEZtRqmdS0",
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "Raised from open findings fnd_01M2G2AGPX8KWSY1KXGYADK4TK, fnd_01M2G2AGR581507FMK0EADFKY6, fnd_01M2G2AGSC977KASP37WQXYSQA, fnd_01M2HRGFABHFN9JE2TDMJX32RE, fnd_01M2KC7W3QM0V86PVA3SVA01FN and fnd_01M2K7B0MJJVWFWXF6KZ783GFZ (no linked risks): unmasked tool results, plaintext exports, open connection hosts and cleartext db-model credentials breach SEBI CSCRF PR.DS.S1/S4, PR.AA.S2 and DPDP 6(1)(a). Normal change, so the intended approver is ciso@example-co.invalid (CISO); no ECAB required. Due 2026-09-22T23:48:58Z under the 7-day patch-sla row sebi-cscrf-2024/PR.MA.S3/high. Refutation record: both refutation lenses returned refuted=false - every actionability check passed (owners and intendedApprover present in details.json contacts, all six findings open with severity high, changeType normal and priority p2, tasks testable with valid verification methods, dueAt on or before the initiative dueAt) and every regulatory check passed (registry-correct regulators and instruments, catalog and ledger control records, real sla-table row under most-strict-wins).",
+      "refs": {
+        "findingId": "fnd_01M2G2AGPX8KWSY1KXGYADK4TK"
+      }
+    },
+    {
+      "eventId": "evt_2",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "ses_f584ba1f1ffeS1iSKEZtRqmdS0",
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "task_1: mask pii and financial fields in find and aggregate tool results (mongodb-mcp-server), due 2026-09-21T23:48:58Z",
+      "refs": {
+        "taskId": "task_1"
+      }
+    },
+    {
+      "eventId": "evt_3",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "ses_f584ba1f1ffeS1iSKEZtRqmdS0",
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "task_2: encrypt MongoDB MCP export files at rest and mask exported fields (mongodb-mcp-server), due 2026-09-22T23:48:58Z, depends on task_1",
+      "refs": {
+        "taskId": "task_2"
+      }
+    },
+    {
+      "eventId": "evt_4",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "ses_f584ba1f1ffeS1iSKEZtRqmdS0",
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "task_3: enforce a host allow-list on MongoDB MCP connection strings (mongodb-mcp-server), due 2026-09-21T23:48:58Z",
+      "refs": {
+        "taskId": "task_3"
+      }
+    },
+    {
+      "eventId": "evt_5",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "ses_f584ba1f1ffeS1iSKEZtRqmdS0",
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "task_4: stop persisting cleartext broker credentials in db-models collections (onfinance-db-model-master), due 2026-09-22T23:48:58Z",
+      "refs": {
+        "taskId": "task_4"
+      }
+    }
+  ],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "sessionId": "ses_f584ba1f1ffeS1iSKEZtRqmdS0",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

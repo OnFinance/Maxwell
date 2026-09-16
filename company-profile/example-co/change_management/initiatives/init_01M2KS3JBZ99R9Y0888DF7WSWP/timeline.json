@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.timeline",
+  "initiativeId": "init_01M2KS3JBZ99R9Y0888DF7WSWP",
+  "companyId": "example-co",
+  "events": [
+    {
+      "eventId": "evt_1",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "created",
+      "toStatus": "proposed",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "Raised by change-planner from open ledger finding fnd_01M2KM42DZE09A2PZ557A7SX2F (the public mongodb-mcp-server .gitignore line 8 ignores only the exact name .env, leaving .env* variants, key, certificate, kubeconfig and dump files unignored, and .husky/pre-commit runs git-secrets AWS patterns only; SEBI CSCRF PR.DS.S4); no risks linked (riskIds empty). Normal change under the sla-table row sebi-cscrf-2024/PR.MA.S3/patch-sla high = 7 days (most-strict-wins over the looser 30-day company override; dueAt 2026-09-22T23:48:58Z = createdAt + 7 days); owner cto@example-co.invalid, intended approver ciso@example-co.invalid (CISO) for approval as a normal change. Refutation record: both lenses refuted=false. Actionability lens (confidence 0.9): owners cto@example-co.invalid and ciso@example-co.invalid are real details.json contacts, every task carries three testable acceptance criteria, code-review is a valid verificationMethod with workflow correctly omitted for non-re-probe, rootCauses are specific misconfigurations, task dueAts 2026-09-17 and 2026-09-21 sit at or before the initiative dueAt, dependsOn is acyclic, the rollbackPlan is concrete, changeType normal is justified by policy changeTypeDefault normal and the linked finding being open at high and not past its 2026-09-22T19:42:44Z slaDueAt (so emergency is unwarranted), and priority p2 fits a high next-sprint fix; the original three-task draft's task 2 was dropped because its first acceptance criterion and verificationMethod expected git ls-files -i -c --exclude-standard to list only tests/integration/fixtures/server.pem and server.key, yet the negation lines task_1 mandates (!tests/integration/fixtures/server.pem and !tests/integration/fixtures/server.key) make those files not ignored under gitignore last-match-wins, so that criterion could never pass on a correctly implemented branch; the surviving gitleaks-hook task keeps the synthetic-canary and PR-gate criteria and is renumbered task_2. Regulatory-mapping lens (confidence ~0.93): sebi-cscrf-2024 applies to example-co and is cited first with PR.DS.S4 present in the SEBI catalog (defaultSeverity high, data-leak-prevention) and as ledger control sebi-cscrf-2024:PR.DS.S4, nist-ssdf-800-218 PO.5.2 mirrors the linked finding's own ref as a voluntary global second mapping (a crosswalk-provenance nit inherited from the finding), slaBasis matches the verified table row, and the linked finding is open at high with firstSeenAt 2026-09-15T19:42:44Z and slaDueAt 2026-09-22T19:42:44Z, about four hours before the initiative dueAt because the initiative clock starts at createdAt 2026-09-15T23:48:58Z.",
+      "refs": {
+        "findingId": "fnd_01M2KM42DZE09A2PZ557A7SX2F"
+      }
+    },
+    {
+      "eventId": "evt_2",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "task_1: Widen .gitignore secret patterns in the mongodb-mcp-server checkout (due 2026-09-17T23:48:58Z)",
+      "refs": {
+        "taskId": "task_1"
+      }
+    },
+    {
+      "eventId": "evt_3",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "task_2: Add a pre-commit gitleaks scan alongside git-secrets (due 2026-09-21T23:48:58Z)",
+      "refs": {
+        "taskId": "task_2"
+      }
+    }
+  ],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

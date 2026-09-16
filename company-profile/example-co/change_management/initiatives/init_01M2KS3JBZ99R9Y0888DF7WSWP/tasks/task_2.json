@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_2",
+  "initiativeId": "init_01M2KS3JBZ99R9Y0888DF7WSWP",
+  "companyId": "example-co",
+  "seq": 2,
+  "title": "Add a pre-commit gitleaks scan alongside git-secrets",
+  "description": "Extend .husky/pre-commit in applications/mcp-gateway/repos/mongodb-mcp-server, which currently runs only `git-secrets --register-aws && git-secrets --scan` (AWS patterns), with a gitleaks staged scan after it, for example `gitleaks protect --staged --redact`, so staged content is checked by the same tool the policy pins for the secrets gate (company-profile/example-co/sdlc/policy.json ciGates secrets: gitleaks, blocking at low, secretsManagement.scanningInCi true). Keep the change confined to the hook file; do not modify .github/workflows/code-health.yml or any CI gate definition; use gitleaks at the version pinned in the scanner toolchain (8.30.1) and make the hook fail with a clear message when gitleaks is missing instead of skipping the scan. Land through the same reviewed PR flow as tasks 1 and 2; no deployment window applies and the unit-test gate must stay green.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    ".husky/pre-commit contains a redacted gitleaks staged scan that runs after the existing git-secrets --register-aws && git-secrets --scan",
+    "With the hook installed, staging a scratch file holding a synthetic high-entropy canary string (never a real credential) makes the hook exit non-zero and blocks the commit; removing the file lets the commit succeed",
+    "The pre-existing unit-test and secrets CI gates are green on the PR branch and no CI workflow file changed"
+  ],
+  "verificationMethod": {
+    "type": "code-review",
+    "description": "Reviewer inspects the .husky/pre-commit diff (a gitleaks protect --staged --redact invocation after the git-secrets scan, no CI workflow files changed), then stages a scratch file holding a synthetic high-entropy canary string in the checkout and invokes the hook directly, expecting a non-zero exit and a blocked commit, and expects the hook to pass once the canary file is removed."
+  },
+  "rootCause": {
+    "category": "misconfiguration",
+    "description": "The local pre-commit hook was configured with git-secrets AWS patterns only, weaker than the company secrets gate (gitleaks blocking at low), so generic high-entropy secrets in staged .env variants or key files were missed at the developer layer."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 3,
+  "createdAt": "2026-09-15T23:48:58Z",
+  "dueAt": "2026-09-21T23:48:58Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

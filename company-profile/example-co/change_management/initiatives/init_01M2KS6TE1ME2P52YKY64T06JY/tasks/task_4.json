@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_4",
+  "initiativeId": "init_01M2KS6TE1ME2P52YKY64T06JY",
+  "companyId": "example-co",
+  "seq": 4,
+  "title": "Document and test exit/transition plans for aws-mumbai, github-cloud and atlas-mumbai",
+  "description": "Author a documented exit/transition plan for each material service: aws-mumbai (EKS, RDS and S3 in ap-south-1 supporting order-routing over pii and financial data; contract AWS-EA-2025-0042 already carries rightToAudit true and noticePeriodDays 90), github-cloud (source hosting and CI; notice period per the renewed GitHub agreement from task 1) and atlas-mumbai (managed MongoDB clusters backing mcp-gateway; notice period per the renewed Atlas agreement from task 2). Each plan must cover continuity of the order-routing critical function during transition (impact tolerance 30 minutes outage, zero data loss), data extraction and migration mechanics, data return and deletion per the contract dataReturnAndDeletion clause, notice-period timelines, and a named owner for each step. Test each plan at least in tabletop form with engineering and the vendor manager, record dated results and remediation actions, file the plans and test records in the vendor governance evidence pack, and hand them to the next refresh-vendor-ctx run so exitPlanDocumented becomes true in company-profile/example-co/vendors/aws.json, github.json and mongodb-atlas.json. Constraints: the github-cloud and atlas-mumbai plans must reference the renewed contract terms from tasks 1 and 2, while the aws-mumbai plan can proceed immediately against AWS-EA-2025-0042; any migration rehearsal that touches an environment must respect the sdlc/policy.json releaseProcess and any change freeze.",
+  "owner": {
+    "type": "human",
+    "id": "compliance@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "A documented exit/transition plan exists for each of aws-mumbai, github-cloud and atlas-mumbai covering order-routing continuity within the 30-minute outage tolerance, data extraction and migration, data return and deletion, and the contract notice period",
+    "Each plan has a recorded tabletop or equivalent test with a date, named participants and tracked remediation actions",
+    "company-profile/example-co/vendors/aws.json, github.json and mongodb-atlas.json record exitPlanDocumented true after the next refresh-vendor-ctx run"
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "Reviewer opens the three exit/transition plans and their test records in the vendor governance evidence pack and checks that each covers order-routing continuity within the 30-minute outage tolerance, data extraction, data return and deletion, and the notice period, as required by RBI Outsourcing Risk Directions 2025 paras 84-86 and SEBI CSCRF GV.SC.S3; expected result: three documented and tested plans on file with dated test records"
+  },
+  "rootCause": {
+    "category": "vendor-gap",
+    "description": "None of the three material vendor arrangements (aws-mumbai, github-cloud, atlas-mumbai) ever produced a documented exit/transition plan, although RBI Outsourcing Risk Directions 2025 paras 84-86 and SEBI CSCRF GV.SC.S3 require one for material services; existing contract clauses (rightToAudit, dataReturnAndDeletion) were mistaken for exit preparedness"
+  },
+  "targets": [
+    {
+      "type": "vendor",
+      "vendorId": "aws"
+    },
+    {
+      "type": "vendor",
+      "vendorId": "github"
+    },
+    {
+      "type": "vendor",
+      "vendorId": "mongodb-atlas"
+    }
+  ],
+  "effortEstimateHours": 16,
+  "createdAt": "2026-09-15T23:48:58Z",
+  "dueAt": "2026-10-13T23:48:58Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_1",
+    "task_2"
+  ],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "sessionId": "ses_f584f2afcffe9JipaZ3Bs7e3Dj",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

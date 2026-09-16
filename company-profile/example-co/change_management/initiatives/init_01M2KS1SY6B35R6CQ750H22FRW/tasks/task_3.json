@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_3",
+  "initiativeId": "init_01M2KS1SY6B35R6CQ750H22FRW",
+  "companyId": "example-co",
+  "seq": 3,
+  "title": "Cap multi-document payloads and enforce the stdio transport size limit",
+  "description": "In the same checkout, cap collection-shaped payloads: add maxItems and a total-size bound to the documents array in src/tools/mongodb/create/insertMany.ts (lines 22-26); make the stdio payload limit advertised in src/transports/constants.ts (lines 15-17, 50 MiB) actually enforced on the stdio path, rejecting oversized framed messages before any tool handler runs, keeping the limit configurable with the 50 MiB default; leave the HTTP transport body limit (default 100 KiB) unchanged. Constraints: the vitest gate is blocking; no deployment windows or change freeze are configured in sdlc/policy.json, so only the dev -> qa -> prod environmentsOrder, one approval and the documented rollback apply.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "The insertMany documents schema in src/tools/mongodb/create/insertMany.ts has maxItems set; a call above the cap fails schema validation before the MongoDB driver is invoked",
+    "A stdio message larger than the configured limit (default 50 MiB) is rejected by the transport before any tool handler runs, and the enforcement code references the constant in src/transports/constants.ts",
+    "The HTTP transport body limit is unchanged and the full vitest run exits 0"
+  ],
+  "verificationMethod": {
+    "type": "manual-test",
+    "description": "Run the gateway from the local checkout over stdio and send (a) a tool-call payload above the configured limit and (b) an insert-many call above the documents cap: expected result - both are rejected with a schema or transport validation error before reaching the MongoDB driver, and a valid small call succeeds."
+  },
+  "rootCause": {
+    "category": "insecure-code",
+    "description": "The insert-many tool left its documents array without maxItems and the stdio transport advertised a 50 MiB payload limit as informational only with no enforcement code, so oversized payloads reached the MongoDB driver and the filesystem."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 5,
+  "createdAt": "2026-09-15T23:48:58Z",
+  "dueAt": "2026-09-26T23:48:58Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_1"
+  ],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

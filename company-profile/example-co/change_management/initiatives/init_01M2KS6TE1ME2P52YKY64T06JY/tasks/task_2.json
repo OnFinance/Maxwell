@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_2",
+  "initiativeId": "init_01M2KS6TE1ME2P52YKY64T06JY",
+  "companyId": "example-co",
+  "seq": 2,
+  "title": "Renew the lapsed MongoDB Atlas contract ATLAS-2025-1189 for the critical atlas-mumbai service",
+  "description": "Execute a renewal agreement with MongoDB, Inc. replacing contract ATLAS-2025-1189 (company-profile/example-co/vendors/mongodb-atlas.json: endDate 2026-05-31 lapsed, noticePeriodDays 30, rightToAudit false, exitPlanDocumented false) covering the critical atlas-mumbai service (criticality critical, supportsCriticalFunction true for order-routing on mcp-gateway, dataAccessed pii and financial, hosted in AWS ap-south-1). The renewed agreement must add audit and SEBI/RBI regulator-inspection rights, retain dataReturnAndDeletion, carry exit-strategy obligations per RBI Outsourcing Risk Directions 2025 paras 84-86, and run at least 12 months from execution. File the executed agreement in the vendor contract register and hand it to the next refresh-vendor-ctx run so mongodb-atlas.json reflects the new reference, endDate and rightToAudit true. Constraints: no migration, downtime or data movement for the production clusters backing mcp-gateway; negotiate under the company vendor-risk process (lastAssessment 2026-06-15 rating medium).",
+  "owner": {
+    "type": "human",
+    "id": "compliance@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "An executed MongoDB Atlas renewal agreement filed in the vendor contract register replaces ATLAS-2025-1189 with an endDate no earlier than 2027-05-31 and a recorded notice period",
+    "The renewed agreement grants audit and regulator-inspection rights (contract rightToAudit true) for atlas-mumbai, which supports the order-routing critical function over pii and financial data",
+    "company-profile/example-co/vendors/mongodb-atlas.json records the renewed contract reference, the new endDate and rightToAudit true after the next refresh-vendor-ctx run"
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "Compliance reviewer opens the executed Atlas renewal agreement and its vendor contract register entry and checks the clause set against SEBI CSCRF GV.SC.S3/GV.SC.S4 and RBI Outsourcing Risk Directions 2025 paras 84-86; expected result: an executed agreement exists with a term ending no earlier than 2027-05-31 and the audit, data-return and exit clauses present, and mongodb-atlas.json reflects the renewal after the next refresh-vendor-ctx run"
+  },
+  "rootCause": {
+    "category": "vendor-gap",
+    "description": "MongoDB Atlas agreement ATLAS-2025-1189 lapsed on 2026-05-31 with no renewal while the critical atlas-mumbai service (pii and financial data, order-routing) stayed in production use, and the agreement records rightToAudit false and exitPlanDocumented false, so the material outsourcing never met the SEBI GV.SC.S3 and RBI Outsourcing Risk Directions 2025 paras 84-86 requirements"
+  },
+  "targets": [
+    {
+      "type": "vendor",
+      "vendorId": "mongodb-atlas"
+    }
+  ],
+  "effortEstimateHours": 10,
+  "createdAt": "2026-09-15T23:48:58Z",
+  "dueAt": "2026-09-24T23:48:58Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "sessionId": "ses_f584f2afcffe9JipaZ3Bs7e3Dj",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

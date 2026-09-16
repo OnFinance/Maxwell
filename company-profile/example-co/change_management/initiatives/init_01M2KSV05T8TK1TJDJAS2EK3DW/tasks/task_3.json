@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_3",
+  "initiativeId": "init_01M2KSV05T8TK1TJDJAS2EK3DW",
+  "companyId": "example-co",
+  "seq": 3,
+  "title": "Verify the db-models secrets-scanning control with probe-sdlc and reconcile the finding",
+  "description": "After tasks 1 and 2 are on master, re-run the probe-sdlc workflow for company example-co, application db-models (node .claude/scripts/run-headless.mjs --workflow probe-sdlc --company example-co --app db-models) and confirm it detects the tracked .pre-commit-config.yaml and reports the local gitleaks hook as satisfying the policy secrets gate for onfinance-db-model-master. Attach the probe output as task evidence; let the refresh-soc reconciliation move finding fnd_01M2KMNHPJ7Z0Y0YJT6YZR4NZM towards resolved by its fingerprint (absent in two consecutive covered runs) and re-assess control record sebi-cscrf-2024:PR.IP.S2 from the new observation - do not edit the ledger by hand. Constraints: the probe runs read-only against the repo; sdlc/policy.json releaseProcess defines no deploymentWindows and no change freeze applies.",
+  "owner": {
+    "type": "human",
+    "id": "ciso@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "A probe-sdlc run over example-co/db-models records evidence showing the tracked .pre-commit-config.yaml running gitleaks on every commit for onfinance-db-model-master",
+    "The probe output does not reproduce finding fingerprint 0e4e502561dfb4e889818a778a0ce1f57a7c5c2528ab65bde825e8a074dbdd14, so per the refresh rules the finding closes after two consecutive clean covered runs",
+    "The task evidence[] carries the probe-sdlc observation or export reference for this run"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-sdlc",
+    "description": "Re-run probe-sdlc against example-co/db-models and confirm the local gitleaks hook is detected on onfinance-db-model-master and no secrets-hygiene gap is raised. Expected result: the secrets-scan control is reported satisfied for the repo and the finding's fingerprint does not reappear in the ledger after reconciliation."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "The SSDLC secret-scanning stage was absent from this repository's lifecycle, leaving control sebi-cscrf-2024:PR.IP.S2 unimplemented for db-models; the re-probe supplies the evidence that the newly added stage closes the gap."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "db-models",
+      "repoId": "onfinance-db-model-master"
+    }
+  ],
+  "effortEstimateHours": 1,
+  "createdAt": "2026-09-15T23:48:58Z",
+  "dueAt": "2026-09-28T23:48:58Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_1",
+    "task_2"
+  ],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

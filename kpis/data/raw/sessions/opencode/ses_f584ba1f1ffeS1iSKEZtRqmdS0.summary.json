@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.session.summary",
+  "sessionId": "ses_f584ba1f1ffeS1iSKEZtRqmdS0",
+  "harness": "opencode",
+  "harnessVersion": "1.18.30",
+  "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+  "workflow": "impl-change-management",
+  "companyId": "example-co",
+  "startedAt": "2026-09-16T00:53:31Z",
+  "endedAt": "2026-09-16T00:58:56Z",
+  "durationMs": 325000,
+  "turns": 23,
+  "inferenceCalls": 23,
+  "toolCalls": {
+    "total": 35,
+    "byTool": {
+      "read": 10,
+      "bash": 5,
+      "glob": 2,
+      "grep": 11,
+      "write": 5,
+      "edit": 2
+    }
+  },
+  "subagentSessions": 0,
+  "permissionDenials": [],
+  "models": [
+    {
+      "model": "glm-5.3",
+      "provider": "other",
+      "tokens": {
+        "input": 107996,
+        "output": 19302,
+        "cacheWrite5m": 0,
+        "cacheWrite1h": 0,
+        "cacheRead": 1522624,
+        "thinking": null
+      },
+      "webSearchRequests": 0,
+      "webFetchRequests": 0,
+      "costUsd": 0.632005
+    }
+  ],
+  "costUsd": {
+    "computed": 0.632005,
+    "reported": 0.632005,
+    "deltaPct": 0
+  },
+  "pricingVersion": "2026-09-14",
+  "dedup": {
+    "strategy": "requestId-max-total-tokens",
+    "duplicatesDropped": 0
+  },
+  "filesWritten": [
+    "company-profile/example-co/change_management/initiatives/init_01M2KS0W59831JMAK8AVMGVZAN/tasks/task_1.json",
+    "company-profile/example-co/change_management/initiatives/init_01M2KS0W59831JMAK8AVMGVZAN/tasks/task_2.json",
+    "company-profile/example-co/change_management/initiatives/init_01M2KS0W59831JMAK8AVMGVZAN/tasks/task_3.json",
+    "company-profile/example-co/change_management/initiatives/init_01M2KS0W59831JMAK8AVMGVZAN/tasks/task_4.json",
+    "company-profile/example-co/change_management/initiatives/init_01M2KS0W59831JMAK8AVMGVZAN/timeline.json",
+    "company-profile/example-co/change_management/master.json"
+  ],
+  "linesAdded": 0,
+  "linesRemoved": 0,
+  "outcome": "success",
+  "transcriptFormatVersion": "1.18.30",
+  "provenance": {
+    "harness": "script",
+    "generatedAt": "2026-09-16T02:17:28Z",
+    "sessionId": "ses_f584ba1f1ffeS1iSKEZtRqmdS0",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": ".claude/scripts/sessions/ingest.mjs"
+  }
+}

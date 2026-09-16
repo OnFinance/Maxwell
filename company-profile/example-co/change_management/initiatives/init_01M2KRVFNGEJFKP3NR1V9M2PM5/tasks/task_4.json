@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_4",
+  "initiativeId": "init_01M2KRVFNGEJFKP3NR1V9M2PM5",
+  "companyId": "example-co",
+  "seq": 4,
+  "title": "Roll the fail-closed, least-privilege gateway out to qa and prod inside the allowed windows",
+  "description": "Release the merged change per sdlc/policy.json releaseProcess: environmentsOrder dev -> qa -> prod, approvalsRequired 1, rollbackPlanRequired true, changeTypeDefault normal; releaseProcess defines no deploymentWindows and neither env/qa.json nor env/prod.json records a changeFreeze, so schedule the prod rollout inside the only recorded window, env/prod.json probeAccess.allowedWindows Mon-Fri 16:30-23:30 UTC. Deploy the new image to EKS eks-nonprod-mumbai namespace mcp-gateway-qa (qa first) and eks-prod-mumbai namespace mcp-gateway with per-environment tool allow-lists agreed with the order-routing critical-function owners, because the prod gateway is partner-exposed and holds pii and financial data; record the previous image tag and previous env values in the change ticket so the initiative rollbackPlan is executable without research.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "The new image runs in both EKS namespaces (mcp-gateway-qa on eks-nonprod-mumbai, mcp-gateway on eks-prod-mumbai) with the release approval recorded, and the prod deployment timestamp falls inside Mon-Fri 16:30-23:30 UTC.",
+    "From an MCP client that omits the elicitation capability, tools/call of a confirmation-required tool is refused with the security log line emitted in qa and in prod, and tools/list in each environment returns only the allow-listed tools.",
+    "The change ticket records the previous image tag and previous env values, so the initiative rollbackPlan can be executed as a single redeploy without research."
+  ],
+  "verificationMethod": {
+    "type": "manual-test",
+    "description": "After each rollout (qa first, then prod inside the allowed window), connect an elicitation-incapable MCP client to the deployed gateway, attempt tools/call of a confirmation-required tool (the refusal happens before any execution, so no data is touched) and list tools: expected result - the call is refused with the security event logged and tools/list shows only allow-listed tools; capture the command output as task evidence."
+  },
+  "rootCause": {
+    "category": "insecure-code",
+    "description": "The insecure userConfig defaults were carried into the shipped deploy configuration (deploy/aws/Dockerfile overrode only the atlas-local category), so the gateway reached qa and prod with 11 unconfirmed write tools enabled and a fail-open confirmation path."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 6,
+  "createdAt": "2026-09-15T23:48:58Z",
+  "dueAt": "2026-09-22T15:14:31Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_1",
+    "task_2",
+    "task_3"
+  ],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

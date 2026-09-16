@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.timeline",
+  "initiativeId": "init_01M2KSB50TKCHJMD8PT79GXGTM",
+  "companyId": "example-co",
+  "events": [
+    {
+      "eventId": "evt_1",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "created",
+      "toStatus": "proposed",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "Raised from finding fnd_01M2K7B0MJN2XBQRW2XYYD6EBJ (open, high; no linked risks): the mcp-gateway setup installs third-party agent skills globally with no integrity check (SEBI CSCRF PR.IP.S1). Normal change owned by cto@example-co.invalid; intended approver is ciso@example-co.invalid, to be recorded as approver with approvedAt only once the initiative leaves proposed. Refutation record: both lenses passed unrefuted - actionability (owners are real details.json contacts matching the vulnerable-dependency owner map, >=2 testable acceptance criteria per task, specific root causes, efforts 6/3/2h, task dueAt within the initiative dueAt 2026-09-22T23:48:58Z = createdAt 2026-09-15T23:48:58Z + 7 patch-sla days, acyclic dependsOn, re-probe workflow probe-agent-graph with the confirmed finding fingerprint) and regulatory mapping (sebi-cscrf-2024 applies and is cited first, PR.IP.S1 exists in the catalog and as ledger control record, secondary OWASP ASI04 and CSA 8.3 refs valid, slaBasis sebi-cscrf-2024 PR.MA.S3 patch-sla high 7 days is the strictest applicable row).",
+      "refs": {
+        "findingId": "fnd_01M2K7B0MJN2XBQRW2XYYD6EBJ"
+      }
+    },
+    {
+      "eventId": "evt_2",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "task_1 added: pin the agent-skills source to a commit and gate the global skills install on verified checksums in src/setup/installSkills.ts (due 2026-09-21T23:48:58Z, 6h, no dependencies)",
+      "refs": {
+        "taskId": "task_1"
+      }
+    },
+    {
+      "eventId": "evt_3",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "task_2 added: add CI tests that fail the build when the skills integrity gate regresses (due 2026-09-22T23:48:58Z, 3h, depends on task_1)",
+      "refs": {
+        "taskId": "task_2"
+      }
+    },
+    {
+      "eventId": "evt_4",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "task_3 added: roll the verified skills install out to mcp-gateway developer machines and capture evidence (due 2026-09-22T23:48:58Z, 2h, depends on task_1 and task_2)",
+      "refs": {
+        "taskId": "task_3"
+      }
+    }
+  ],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

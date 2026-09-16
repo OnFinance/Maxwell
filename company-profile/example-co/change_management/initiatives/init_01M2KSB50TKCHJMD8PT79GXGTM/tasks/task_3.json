@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_3",
+  "initiativeId": "init_01M2KSB50TKCHJMD8PT79GXGTM",
+  "companyId": "example-co",
+  "seq": 3,
+  "title": "Roll the verified skills install out to mcp-gateway developer machines and capture evidence",
+  "description": "Have the mcp-gateway engineers run the updated setup (src/setup, merged to main) on their developer machines on the developer-laptops dev tier recorded in applications/mcp-gateway/env/dev.json; confirm each global skills install reports the pinned agent-skills commit and a checksum-verified result, and attach the command output to this task as evidence. Constraints: coordinate the re-run so no engineer is mid-setup during the upgrade, and machines that already carry unverified global skill content from the pre-change setup must re-run the installer so existing content is replaced only after checksums verify.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "Every mcp-gateway engineer's setup run prints the pinned agent-skills commit SHA and a verified-checksum summary, and the outputs are attached to this task as evidence",
+    "On a machine carrying pre-change global skill content, the updated installer replaces the content only after checksums verify and exits non-zero otherwise"
+  ],
+  "verificationMethod": {
+    "type": "manual-test",
+    "description": "On one developer laptop on the dev tier, run the updated setup for two agents (e.g. claude-code and opencode) and observe every installed skill file reported as checksum-verified; then corrupt one checksum in a scratch clone and re-run. Expected result: the normal run completes with verified output for every file and the corrupted run exits non-zero, writing nothing to the global skills directory."
+  },
+  "rootCause": {
+    "category": "vulnerable-dependency",
+    "description": "Developer harnesses already carry third-party skills installed by the unverified setup path; the rollout converges existing global skill content on the pinned, checksum-verified source"
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 2,
+  "createdAt": "2026-09-15T23:48:58Z",
+  "dueAt": "2026-09-22T23:48:58Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_1",
+    "task_2"
+  ],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

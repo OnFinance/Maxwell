@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_3",
+  "initiativeId": "init_01M2KS0W59831JMAK8AVMGVZAN",
+  "companyId": "example-co",
+  "seq": 3,
+  "title": "Enforce a host allow-list on MongoDB MCP connection strings",
+  "description": "In the same mongodb-mcp-server checkout, validate the connection string accepted by the connect tool (src/tools/mongodb/connect/connect.ts:14) and switch-connection (src/tools/mongodb/connect/switch-connection.ts:13-20) before it reaches session.connectToMongoDB (src/common/session.ts:148) and MCPConnectionManager.connect: accept only mongodb:// and mongodb+srv:// schemes and only hosts present on an environment-configured allow-list (default deny, governed egress), and keep connect-type tools disabled in readOnly deployments unless explicitly enabled in deployment config. No egress class or allow-list exists anywhere in the server today, which is what lets a hijacked or prompt-injected agent redirect sessions to an attacker-chosen host. Unit-test scheme rejection, host rejection and readOnly behaviour. Roll out dev, then qa, then prod per sdlc/policy.json releaseProcess with one approval.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "A vitest case asserts that connect and switch-connection return a tool error instead of opening a session when the connection string scheme is not mongodb:// or mongodb+srv:// or when its host is not on the configured allow-list",
+    "A vitest case asserts that in readOnly mode connect and switch-connection are disabled unless the deployment config explicitly enables them",
+    "The allow-list is configuration-driven: dev, qa and prod deployment configs each declare a non-empty approved host list, verified by a test that loads each config",
+    "Re-running probe-agent-graph on mcp-gateway/mongodb-mcp-server returns no AGENT-ASI03-03 result for src/tools/mongodb/connect/connect.ts"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-agent-graph",
+    "description": "Re-run probe-agent-graph on mcp-gateway/mongodb-mcp-server and read the SARIF export; expected result: the AGENT-ASI03-03 result for src/tools/mongodb/connect/connect.ts no longer fires at the new pinned commit because connection strings are validated against a host allow-list before reaching the driver"
+  },
+  "rootCause": {
+    "category": "insecure-code",
+    "description": "connect.ts and switch-connection.ts (first-party code at commit aaa72a0) pass a model-controlled z.string() connection string straight to the MongoDB driver with no host allow-list, no scheme enforcement and no declared egress class, and connect-type tools stay enabled in readOnly mode"
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 6,
+  "createdAt": "2026-09-15T23:48:58Z",
+  "dueAt": "2026-09-21T23:48:58Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "sessionId": "ses_f584ba1f1ffeS1iSKEZtRqmdS0",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

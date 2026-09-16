@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_1",
+  "initiativeId": "init_01M2KS6TE1ME2P52YKY64T06JY",
+  "companyId": "example-co",
+  "seq": 1,
+  "title": "Renew the lapsed GitHub Enterprise contract GH-ENT-2025-07 with audit, exit and data-return clauses",
+  "description": "Execute a renewal order form with GitHub, Inc. replacing contract GH-ENT-2025-07 (company-profile/example-co/vendors/github.json: endDate 2026-06-30 already lapsed, noticePeriodDays 30, rightToAudit false, exitPlanDocumented false) for the github-cloud service (source hosting, GitHub Actions CI and package registry used by the mcp-gateway repo mongodb-mcp-server and the db-models repo onfinance-db-model-master, dataAccessed confidential). The renewed agreement must grant Example Capital Markets the right to audit and to have SEBI and RBI inspect the service, retain the dataReturnAndDeletion obligation, carry exit-strategy obligations per RBI Outsourcing Risk Directions 2025 paras 84-86, and run at least 12 months from execution. File the executed order form in the vendor contract register and hand it to the next refresh-vendor-ctx run so github.json reflects the new reference, endDate and rightToAudit true. Constraints: negotiate under the company vendor-risk process (lastAssessment 2026-06-15 rating low by vendor-risk@example-co.invalid); cause no interruption to GitHub Actions CI; include the SEBI GV.SC.S3 audit-access clause set in the renewed terms.",
+  "owner": {
+    "type": "human",
+    "id": "compliance@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "An executed GitHub Enterprise renewal order form filed in the vendor contract register shows a new contract reference replacing GH-ENT-2025-07 with an endDate no earlier than 2027-06-30 and a recorded notice period",
+    "The renewed agreement grants audit and regulator-inspection rights (contract rightToAudit true) and retains the data return and deletion obligation",
+    "company-profile/example-co/vendors/github.json records the renewed contract reference, the new endDate and rightToAudit true after the next refresh-vendor-ctx run"
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "Compliance reviewer opens the executed renewal order form and its vendor contract register entry and checks the clause set against SEBI CSCRF GV.SC.S3 (audit and regulator access) and RBI Outsourcing Risk Directions 2025 paras 84-86 (exit strategy); expected result: an executed order form exists with a term ending no earlier than 2027-06-30 and the audit, data-return and exit clauses present, and github.json reflects the renewal after the next refresh-vendor-ctx run"
+  },
+  "rootCause": {
+    "category": "vendor-gap",
+    "description": "GitHub Enterprise agreement GH-ENT-2025-07 was allowed to lapse on 2026-06-30 with no renewal or exit decision while the vendor remains in active use, and the agreement never carried audit or regulator-inspection rights, leaving the material arrangement outside the SEBI GV.SC.S3 contract-security and RBI exit-strategy clause set"
+  },
+  "targets": [
+    {
+      "type": "vendor",
+      "vendorId": "github"
+    }
+  ],
+  "effortEstimateHours": 12,
+  "createdAt": "2026-09-15T23:48:58Z",
+  "dueAt": "2026-09-24T23:48:58Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "sessionId": "ses_f584f2afcffe9JipaZ3Bs7e3Dj",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.timeline",
+  "initiativeId": "init_01M2KRVFNGEJFKP3NR1V9M2PM5",
+  "companyId": "example-co",
+  "events": [
+    {
+      "eventId": "evt_1",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "created",
+      "toStatus": "proposed",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "Raised from findings fnd_01M2K7B0MJ68AR00YTNE2N00V2, fnd_01M2K7B0MJQMT1S973WHW7K9GA and fnd_01M2KBJW4AHE221KPTRV1G60YC (no linked risks): the destructive-tool confirmation gate fails open and 11 of 19 write-capable tools ship enabled with no allow-list, breaching SEBI CSCRF PR.AA.S3 and DPDP 6(1)(b). Normal change under the sebi-cscrf-2024 PR.MA.S3 patch-sla (7 days, dueAt 2026-09-22T23:48:58Z); owner cto@example-co.invalid, intended approver ciso@example-co.invalid (CISO).",
+      "refs": {
+        "findingId": "fnd_01M2K7B0MJ68AR00YTNE2N00V2"
+      }
+    },
+    {
+      "eventId": "evt_2",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "task_1: fail the destructive-tool confirmation gate closed for elicitation-incapable clients (due 2026-09-18T15:14:31Z)",
+      "refs": {
+        "taskId": "task_1"
+      }
+    },
+    {
+      "eventId": "evt_3",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "task_2: default the gateway to least privilege behind an explicit write-tool allow-list (due 2026-09-19T15:14:31Z, depends on task_1)",
+      "refs": {
+        "taskId": "task_2"
+      }
+    },
+    {
+      "eventId": "evt_4",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "task_3: add regression tests for the fail-closed gate and the allow-list defaults (due 2026-09-21T15:14:31Z, depends on task_1 and task_2)",
+      "refs": {
+        "taskId": "task_3"
+      }
+    },
+    {
+      "eventId": "evt_5",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "task_4: roll the fail-closed, least-privilege gateway out to qa and prod inside the allowed windows (due 2026-09-22T15:14:31Z, depends on task_1, task_2 and task_3)",
+      "refs": {
+        "taskId": "task_4"
+      }
+    }
+  ],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_1",
+  "initiativeId": "init_01M2KS1SY6B35R6CQ750H22FRW",
+  "companyId": "example-co",
+  "seq": 1,
+  "title": "Bound the shared zod tool-argument primitives in src/tools/args.ts",
+  "description": "In the gitignored checkout applications/mcp-gateway/repos/mongodb-mcp-server (branch main, pre-fix pinned commit aaa72a040db4c32f3d6488d5e28e2892a68e9ee0), tighten the shared zod primitives in src/tools/args.ts: give CommonArgs.string() (lines 22-23) a maxLength alongside its no-Unicode regex; add a safe character pattern to AtlasArgs.password() (lines 74-76, keep min 1 / max 100); replace zEJSON() (lines 86-90, currently z.object({}).loose().transform(toEJSON)) with a bounded z.record of length-capped string keys whose values validate as EJSON, cap value size and nesting depth, and reject unknown $-prefixed MongoDB operators against an allowlist. Do not change exported signatures. Constraints: the vitest unit-tests CI gate is blocking and must stay green; semgrep SAST is advisory; no deployment windows or change freeze are configured in sdlc/policy.json, so scheduling follows the releaseProcess environmentsOrder dev -> qa -> prod with one approval and a documented rollback.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "grep for z.object({}).loose in src/tools/args.ts returns nothing; zEJSON() is a bounded z.record with length-capped keys and a MongoDB operator allowlist",
+    "CommonArgs.string() enforces a maxLength and AtlasArgs.password() enforces a pattern as well as min 1 / max 100",
+    "A new vitest case shows a 10,000-character string value and a document with an unknown $-prefixed operator key are both rejected by the schema before toEJSON or driver invocation, and the vitest run exits 0"
+  ],
+  "verificationMethod": {
+    "type": "code-review",
+    "description": "Reviewer inspects the src/tools/args.ts diff and the vitest output on the PR: expected result - zEJSON, CommonArgs.string and AtlasArgs.password each enforce length, pattern and operator bounds and the suite passes."
+  },
+  "rootCause": {
+    "category": "insecure-code",
+    "description": "The shared zod primitives in src/tools/args.ts were written for developer convenience without security bounds: zEJSON is an open z.object({}).loose() record and CommonArgs.string has a regex but no maxLength, so no length or operator constraint reaches database-bound arguments."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 6,
+  "createdAt": "2026-09-15T23:48:58Z",
+  "dueAt": "2026-09-21T23:48:58Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

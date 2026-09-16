@@ -1,0 +1,90 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.timeline",
+  "initiativeId": "init_01M2KS1SY6B35R6CQ750H22FRW",
+  "companyId": "example-co",
+  "events": [
+    {
+      "eventId": "evt_1",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "created",
+      "toStatus": "proposed",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "Raised from open finding fnd_01M2G2AGX1GZ9THG6HJ1VPP1EP (no linked risks): zod tool schemas in mongodb-mcp-server leave database-bound input unbounded and unvalidated, so oversized payloads and NoSQL operator injection reach the MongoDB driver (SEBI CSCRF PR.IP.S2, DPDP Act-8(3)). Normal change, so the intended approver is ciso@example-co.invalid (CISO); no ECAB required. Due 2026-09-29T23:48:58Z under the 14-day patch-sla row sebi-cscrf-2024/PR.MA.S3/medium. Refutation record: refuted=false - every regulatory-mapping check passed on bytes the refuter opened (sebi-cscrf-2024 applies to example-co, stock-broker/DP entityTypes with two active mid-size-re registrations in frameworksInScope, and is cited first as the most specific Indian instrument; dpdp-rules-2025 is in scope via MeitY with owasp-asvs-5.0 and nist-800-53-r5 correctly confined to secondary crosswalk positions as voluntary cross-sector instruments; all four instrument ids are in the vocab with registry-matching regulators; bare controlIds PR.IP.S2 and Act-8(3) exist in their catalogs and as ledger control records; controlIds and all four regulatoryRefs mirror the open record of the linked finding verbatim rather than inventing mappings; slaBasis is the actual sla-table row sebi-cscrf-2024/PR.MA.S3/patch-sla/medium = 14 days, the only patch-sla row among the candidate instruments so most-strict-wins selects it over the 90-day default; and dueAt 2026-09-29T23:48:58Z = createdAt + 14 days exactly). Confidence 0.95 with the caveat that the inherited global crosswalk ids 2.2.1 and SI-10 are verifiable here only against the finding's ledger record, not against the live OWASP/NIST texts.",
+      "refs": {
+        "findingId": "fnd_01M2G2AGX1GZ9THG6HJ1VPP1EP"
+      }
+    },
+    {
+      "eventId": "evt_2",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "task_1: Bound the shared zod tool-argument primitives in src/tools/args.ts, due 2026-09-21T23:48:58Z",
+      "refs": {
+        "taskId": "task_1"
+      }
+    },
+    {
+      "eventId": "evt_3",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "task_2: Constrain database, collection and free-text tool argument schemas, due 2026-09-24T23:48:58Z, depends on task_1",
+      "refs": {
+        "taskId": "task_2"
+      }
+    },
+    {
+      "eventId": "evt_4",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "task_3: Cap multi-document payloads and enforce the stdio transport size limit, due 2026-09-26T23:48:58Z, depends on task_1",
+      "refs": {
+        "taskId": "task_3"
+      }
+    },
+    {
+      "eventId": "evt_5",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "task_4: Add regression tests for tool-argument bounds and verify with probe-schemas, due 2026-09-28T13:14:50Z, depends on task_1, task_2 and task_3",
+      "refs": {
+        "taskId": "task_4"
+      }
+    }
+  ],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

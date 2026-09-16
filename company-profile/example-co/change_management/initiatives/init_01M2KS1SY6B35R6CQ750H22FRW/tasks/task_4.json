@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_4",
+  "initiativeId": "init_01M2KS1SY6B35R6CQ750H22FRW",
+  "companyId": "example-co",
+  "seq": 4,
+  "title": "Add regression tests for tool-argument bounds and verify with probe-schemas",
+  "description": "In the same checkout, add vitest regression cases (one per new bound: string maxLength, operator allowlist, documents maxItems, stdio payload cap) so the blocking unit-tests CI gate catches this class of defect, then re-run the probe-schemas workflow against mcp-gateway/mongodb-mcp-server on the merged main commit (not the pre-fix pinned aaa72a040db4c32f3d6488d5e28e2892a68e9ee0) and confirm rule SCH-API-02 no longer fires at src/tools/args.ts; attach the PR url(s) and the probe SARIF export as task evidence. Constraints: the probe must target the merged commit; no deployment windows or change freeze are configured in sdlc/policy.json.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "The vitest suite contains at least one regression case per new bound (string maxLength, operator allowlist, documents maxItems, stdio payload cap) and the blocking unit-tests CI gate passes on main",
+    "A probe-schemas run against the merged main commit produces no SCH-API-02 result at src/tools/args.ts",
+    "Task evidence contains the merged PR url(s) and the probe-schemas SARIF export path"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-schemas",
+    "description": "Re-run probe-schemas on mcp-gateway/mongodb-mcp-server against the merged main commit: expected result - rule SCH-API-02 yields no result at src/tools/args.ts and the refreshed sebi-cscrf-2024:PR.IP.S2 observation records the fix."
+  },
+  "rootCause": {
+    "category": "insecure-code",
+    "description": "First-party TypeScript code trusted MCP tool-argument input and no CI gate or test asserted bounds on it, so the SCH-API-02 defect reached the deployed gateway; this task closes the loop on that insecure code path with regression tests and a re-probe."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 3,
+  "createdAt": "2026-09-15T23:48:58Z",
+  "dueAt": "2026-09-28T13:14:50Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_1",
+    "task_2",
+    "task_3"
+  ],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

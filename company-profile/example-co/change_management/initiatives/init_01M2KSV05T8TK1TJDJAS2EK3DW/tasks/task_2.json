@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_2",
+  "initiativeId": "init_01M2KSV05T8TK1TJDJAS2EK3DW",
+  "companyId": "example-co",
+  "seq": 2,
+  "title": "Document the pre-commit secrets-scan setup and no-bypass rule in the db-models README",
+  "description": "Add a README.md at the root of applications/db-models/repos/onfinance-db-model-master (the repo currently tracks no README) with a contributor setup section: run pre-commit install after cloning so the gitleaks hook from task 1 runs on every commit, why it exists (sdlc/policy.json secretsManagement scanning gate and the SEBI CSCRF PR.IP.S2 system development life cycle), and a rule that bypassing the hook with --no-verify or SKIP=gitleaks is not permitted, with escalation to the CISO for genuine false positives. Note that the blocking CI-side gitleaks job lands with the repo's CI work tracked under finding fnd_01M2KGVJJ2AXNAXRE08PZ2Z7YP and is out of scope here. Constraints: documentation only, no new scripts, CI or runtime change; sdlc/policy.json releaseProcess defines no deploymentWindows and no change freeze applies.",
+  "owner": {
+    "type": "human",
+    "id": "ciso@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "A README.md is tracked at the repo root and its setup section instructs contributors to run pre-commit install after cloning",
+    "The README states that the gitleaks hook runs on every commit at the blocking low threshold and that --no-verify or SKIP=gitleaks bypasses are not permitted, naming the CISO as the escalation point",
+    "The README cites SEBI CSCRF 2024 PR.IP.S2 as the requirement the hook implements"
+  ],
+  "verificationMethod": {
+    "type": "code-review",
+    "description": "Reviewer reads the merged README.md diff on master and checks the setup and no-bypass sections against sdlc/policy.json ciGates (secrets: gitleaks, blocking, minSeverityToBlock low) and secretsManagement.scanningInCi. Expected result: both sections exist and accurately quote the pre-commit install step, the blocking low threshold and the no-bypass rule."
+  },
+  "rootCause": {
+    "category": "missing-control",
+    "description": "The repository never carried contributor documentation for secrets hygiene, so even a correct hook would not be installed by cloners and the missing control could silently regress."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "db-models",
+      "repoId": "onfinance-db-model-master"
+    }
+  ],
+  "effortEstimateHours": 1,
+  "createdAt": "2026-09-15T23:48:58Z",
+  "dueAt": "2026-09-25T23:48:58Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_1"
+  ],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

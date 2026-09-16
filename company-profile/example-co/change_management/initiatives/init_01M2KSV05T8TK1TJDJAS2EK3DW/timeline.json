@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.timeline",
+  "initiativeId": "init_01M2KSV05T8TK1TJDJAS2EK3DW",
+  "companyId": "example-co",
+  "events": [
+    {
+      "eventId": "evt_1",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "created",
+      "toStatus": "proposed",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "Raised by change-planner from finding fnd_01M2KMNHPJ7Z0Y0YJT6YZR4NZM (no local secrets-scanning hook and no CI in db-models/onfinance-db-model-master, control sebi-cscrf-2024:PR.IP.S2, SEBI CSCRF PR.IP.S2 with NIST SSDF PO.5.2 as global crosswalk); no risks are linked (riskIds empty). Intended approver: ciso@example-co.invalid (Meera Krishnan, CISO), to approve as a normal change; no approver or approvedAt is recorded while status is proposed. Draft refuted twice with refuted=false (actionability and regulatory lenses, confidence 0.95): owner and intended approver are real details.json contacts, all three tasks carry testable acceptanceCriteria with code-review/code-review/re-probe verificationMethods (the re-probe names probe-sdlc), missing-control root causes, and dueAts 2026-09-22/25/28 on or before the initiative dueAt 2026-09-29T23:48:58Z = createdAt + the sla-table sebi-cscrf-2024 PR.MA.S3 patch-sla medium row of 14 days (most-strict-wins over the policy's 90-day medium); dependsOn seqs [1] and [1,2] form no cycle; the linked finding is open with no existing initiativeId and its fingerprint 0e4e502561dfb4e889818a778a0ce1f57a7c5c2528ab65bde825e8a074dbdd14 matches task 3's acceptance criterion.",
+      "refs": {
+        "findingId": "fnd_01M2KMNHPJ7Z0Y0YJT6YZR4NZM"
+      }
+    },
+    {
+      "eventId": "evt_2",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "task_1: add a .pre-commit-config.yaml running a pinned gitleaks hook to onfinance-db-model-master, mirroring the sdlc/policy.json secrets gate (gitleaks, blocking, minSeverityToBlock low)",
+      "refs": {
+        "taskId": "task_1"
+      }
+    },
+    {
+      "eventId": "evt_3",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "task_2: document the pre-commit secrets-scan setup and the no-bypass rule (--no-verify or SKIP=gitleaks not permitted, CISO escalation) in the db-models README; depends on task_1",
+      "refs": {
+        "taskId": "task_2"
+      }
+    },
+    {
+      "eventId": "evt_4",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "task_3: verify the db-models secrets-scanning control with probe-sdlc and let refresh-soc reconcile finding fnd_01M2KMNHPJ7Z0Y0YJT6YZR4NZM and control sebi-cscrf-2024:PR.IP.S2; depends on task_1 and task_2",
+      "refs": {
+        "taskId": "task_3"
+      }
+    }
+  ],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

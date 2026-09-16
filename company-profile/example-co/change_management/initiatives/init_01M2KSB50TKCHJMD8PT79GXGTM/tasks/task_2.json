@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_2",
+  "initiativeId": "init_01M2KSB50TKCHJMD8PT79GXGTM",
+  "companyId": "example-co",
+  "seq": 2,
+  "title": "Add CI tests that fail the build when the skills integrity gate regresses",
+  "description": "In applications/mcp-gateway/repos/mongodb-mcp-server, add a vitest suite for the new verification logic in src/setup/installSkills.ts covering three cases: (1) a tampered checksum aborts with a non-zero exit and nothing copied; (2) an unlisted file in the fetched set aborts; (3) a branch reference instead of the pinned commit in SKILLS_REPO aborts. The unit-tests CI gate (vitest, blocking) already fails the build; do not weaken the sast or secrets gates, and keep the test fixtures local so no test fetches from github.com.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "pnpm test in the mongodb-mcp-server checkout runs the new skills-integrity suite and all three cases pass",
+    "Reverting the pinned commit or removing the checksum gate makes at least one integrity test fail, so the blocking unit-tests CI gate fails",
+    "The integrity tests use local fixtures only; no test performs a network fetch"
+  ],
+  "verificationMethod": {
+    "type": "code-review",
+    "description": "Reviewer inspects the PR diff in applications/mcp-gateway/repos/mongodb-mcp-server (src/setup/installSkills.ts plus the new test file), confirms the three tamper cases assert a non-zero exit and an untouched skills directory, then runs pnpm test and observes the integrity suite pass; corrupting one fixture checksum byte on a scratch branch makes the suite fail. Expected result: all three tamper cases pass on the fixed code and at least one fails on a reverted diff."
+  },
+  "rootCause": {
+    "category": "vulnerable-dependency",
+    "description": "No test or CI gate previously exercised the third-party skills install path, so unverified dependency consumption could regress without any build failure"
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 3,
+  "createdAt": "2026-09-15T23:48:58Z",
+  "dueAt": "2026-09-22T23:48:58Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_1"
+  ],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

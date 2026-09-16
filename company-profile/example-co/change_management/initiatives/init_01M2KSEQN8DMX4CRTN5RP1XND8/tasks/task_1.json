@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_1",
+  "initiativeId": "init_01M2KSEQN8DMX4CRTN5RP1XND8",
+  "companyId": "example-co",
+  "seq": 1,
+  "title": "Adopt a written data-classification convention for MCP tool schemas",
+  "description": "Write docs/data-classification.md in the mongodb-mcp-server fork (local checkout applications/mcp-gateway/repos/mongodb-mcp-server) defining the x-data-classification marker to carry on each Zod tool schema, the allowed values (public, internal, pii, financial - the data classes declared in applications/mcp-gateway/README.md and env/{qa,prod}.json), where markers attach (tool argsShape level and on filter, projection, document and pipeline fields), and the mapping of pii and financial fields to their DPDP Rules 2025 treatment so annotated schemas can feed the SEBI CSCRF ID.AM.S5 data inventory. Constraints: documentation and convention only in this task, no schema edits yet; trunk-based branching (short-lived branch off main, merge with one approver per sdlc/policy.json codeReview).",
+  "owner": {
+    "type": "human",
+    "id": "dpo@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "docs/data-classification.md exists on main of the mongodb-mcp-server fork and defines the x-data-classification marker, the allowed values public, internal, pii and financial, and the attachment points (tool argsShape level and filter, projection, document and pipeline fields)",
+    "The document maps each pii and financial field family to its DPDP Rules 2025 treatment so annotated tool schemas can feed the ID.AM.S5 data inventory",
+    "The DPO (dpo@example-co.invalid) approves the convention, recorded as an approval comment on the doc PR"
+  ],
+  "verificationMethod": {
+    "type": "evidence-review",
+    "description": "Inspect the merged docs/data-classification.md on main and its PR approval; expected result: the document names the marker syntax, the four allowed values, the DPDP mapping and the attachment points, and the DPO approval is recorded on the PR"
+  },
+  "rootCause": {
+    "category": "process-gap",
+    "description": "No written convention existed for carrying data-classification metadata on MCP tool schemas, so schema authors had no defined marker or allowed values to apply"
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 3,
+  "createdAt": "2026-09-15T23:48:58Z",
+  "dueAt": "2026-09-21T23:48:58Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

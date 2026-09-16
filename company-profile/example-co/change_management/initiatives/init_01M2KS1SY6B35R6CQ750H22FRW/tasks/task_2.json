@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_2",
+  "initiativeId": "init_01M2KS1SY6B35R6CQ750H22FRW",
+  "companyId": "example-co",
+  "seq": 2,
+  "title": "Constrain database, collection and free-text tool argument schemas",
+  "description": "In the same checkout, constrain the database-bound identifiers and free-text arguments: in src/tools/mongodb/mongodbTool.ts (lines 11-17) replace the unbounded z.string() database and collection fields with the bounded shared string primitive plus a MongoDB identifier pattern and maxLength; bound exportTitle in src/tools/mongodb/read/export.ts (line 16) and the assistant search query in src/tools/assistant/searchKnowledge.ts (lines 9-14), reusing the task 1 primitives rather than ad-hoc limits. Keep the tool schema describe() texts intact for MCP clients. Constraints: the vitest gate is blocking; no deployment windows or change freeze are configured in sdlc/policy.json, so only the dev -> qa -> prod environmentsOrder applies.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "src/tools/mongodb/mongodbTool.ts database and collection fields enforce a MongoDB identifier pattern with a maxLength and reject values containing spaces or $",
+    "exportTitle in src/tools/mongodb/read/export.ts and the query argument in src/tools/assistant/searchKnowledge.ts enforce a maxLength",
+    "A vitest case rejects a find with database name 'a b$' and a 5,000-character exportTitle while a valid normal-length call still passes, and the vitest run exits 0"
+  ],
+  "verificationMethod": {
+    "type": "code-review",
+    "description": "Reviewer inspects the diffs of src/tools/mongodb/mongodbTool.ts, src/tools/mongodb/read/export.ts and src/tools/assistant/searchKnowledge.ts with the vitest output: expected result - every database-bound string argument is a bounded, pattern-constrained schema and the suite passes."
+  },
+  "rootCause": {
+    "category": "insecure-code",
+    "description": "Per-tool schemas reused plain unbounded z.string() for database and collection names and free-text arguments, so no identifier pattern or size limit was enforced before values reached the MongoDB driver."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 4,
+  "createdAt": "2026-09-15T23:48:58Z",
+  "dueAt": "2026-09-24T23:48:58Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_1"
+  ],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

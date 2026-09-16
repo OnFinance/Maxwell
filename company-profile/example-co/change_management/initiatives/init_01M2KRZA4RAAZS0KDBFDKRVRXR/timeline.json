@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.timeline",
+  "initiativeId": "init_01M2KRZA4RAAZS0KDBFDKRVRXR",
+  "companyId": "example-co",
+  "events": [
+    {
+      "eventId": "evt_1",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "created",
+      "toStatus": "proposed",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "Raised by change-planner from open ledger findings fnd_01M2HCWMBDCEGN51BKVVXGTV67 (qa/prod bicep template defines no logging, diagnostics or SIEM forwarding; SEBI CSCRF PR.AA.S8) and fnd_01M2KM42DZDZSFHCN7YYBM94V2 (dev retains logs 30 days against the CERT-In 180-day baseline; Dir-iv); no risks linked. Intended approver: ciso@example-co.invalid (CISO), for approval as a normal change. Refutation record: both lenses refuted=false. Actionability lens: owner cto@example-co.invalid and intended approver ciso@example-co.invalid are real details.json contacts (misconfiguration maps to cto), every task carries three observable acceptance criteria, valid verificationMethods (re-probe with probe-iac for task_1; evidence-review and code-review for tasks 2 and 3), a specific misconfiguration rootCause, efforts 6/5/4h and dueAts 2026-09-19/21/22 all on or before the initiative dueAt = createdAt + the verified sla-table row sebi-cscrf-2024/PR.MA.S3/patch-sla/high = 7 days (most-strict-wins); dependsOn [1] is cycle-free, a concrete rollbackPlan backs the normal p2 change, both linked findings are open with earliest slaDueAt 2026-09-22T00:05:59Z not yet passed, no initiativeId on either, and every task premise is executable as written. Regulatory-mapping lens: all five regulatoryRefs are real registry instruments with correct regulator pairings, Indian instruments first (sebi-cscrf-2024, cert-in-directions-2022, rbi-outsourcing-risk-directions-2025) and ISO/NIST crosswalks last grounded in the catalog mappings, the three bare controlIds PR.AA.S8, Dir-iv and 97(xi) exist in their catalogs and as ledger control records, slaBasis is the verbatim sla-table row with dueAt exactly createdAt + 7 days, and both linked findings are open in the ledger, confirming the SLA posture and the normal (not emergency) changeType.",
+      "refs": {
+        "findingId": "fnd_01M2HCWMBDCEGN51BKVVXGTV67"
+      }
+    },
+    {
+      "eventId": "evt_2",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "task_1: Enable diagnostic settings and a Log Analytics workspace in the mongodb-mcp-server bicep deployment",
+      "refs": {
+        "taskId": "task_1"
+      }
+    },
+    {
+      "eventId": "evt_3",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "task_2: Forward Container Apps logs to the India-resident Wazuh SIEM declared for prod (depends on task_1)",
+      "refs": {
+        "taskId": "task_2"
+      }
+    },
+    {
+      "eventId": "evt_4",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "task_3: Raise mcp-gateway dev-tier log retention to at least 180 days",
+      "refs": {
+        "taskId": "task_3"
+      }
+    }
+  ],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

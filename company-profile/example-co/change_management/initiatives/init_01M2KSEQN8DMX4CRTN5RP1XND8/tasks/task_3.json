@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_3",
+  "initiativeId": "init_01M2KSEQN8DMX4CRTN5RP1XND8",
+  "companyId": "example-co",
+  "seq": 3,
+  "title": "Gate CI on a data-classification marker check for every MCP tool schema",
+  "description": "Add a vitest suite (src/tools/mongodb/__tests__/dataClassification.test.ts or equivalent) in the mongodb-mcp-server fork that enumerates every registered mongodb/* tool schema and asserts each carries a data-classification marker, failing with the offending tool name when one is missing, and wire it into the existing blocking unit-tests CI gate from sdlc/policy.json ciGates. Constraints: the suite must not require a database connection; merge via a reviewed PR with one approver; ship through the dev -> qa -> prod environments order; task dueAt no later than the initiative dueAt of 2026-09-29T23:48:58Z.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "A vitest suite enumerates every registered mongodb/* tool schema and fails, naming the tool, when any schema lacks a data-classification marker",
+    "The suite runs inside the blocking unit-tests CI gate from sdlc/policy.json ciGates and passes on main",
+    "Removing one marker on a scratch branch makes the suite fail, demonstrating that the guard catches regressions before they reach the gateway"
+  ],
+  "verificationMethod": {
+    "type": "manual-test",
+    "description": "Run pnpm vitest run src/tools/mongodb/__tests__/dataClassification.test.ts expecting all cases to pass; then on a scratch branch temporarily remove a marker from one schema and re-run expecting a failure that names the tool; restore the marker before merge"
+  },
+  "rootCause": {
+    "category": "process-gap",
+    "description": "No review, CI or probe step in the tool-schema process checked for classification markers, so the omission reached the gateway unchecked until the probe-schemas run"
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 4,
+  "createdAt": "2026-09-15T23:48:58Z",
+  "dueAt": "2026-09-28T23:48:58Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_2"
+  ],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

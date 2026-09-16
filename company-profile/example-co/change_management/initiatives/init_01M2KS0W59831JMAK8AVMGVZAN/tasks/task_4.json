@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_4",
+  "initiativeId": "init_01M2KS0W59831JMAK8AVMGVZAN",
+  "companyId": "example-co",
+  "seq": 4,
+  "title": "Stop persisting cleartext broker credentials in db-models collections",
+  "description": "In the onfinance-db-model-master checkout (applications/db-models/repos/onfinance-db-model-master, Python/mongoengine, pinned commit 70b3633e171a1b8d389b27bb901c84c34a0e9bf6), stop modelling credentials as cleartext fields: in the Secrets Document (onfinance_db_model_master/models.py:8-15) replace the plain StringField declarations for apiKey, zerodha_username, zerodha_password, zerodha_2fa, apiSecrets and accessToken with aws-secrets-manager locator references per sdlc/policy.json secretsManagement.backend (90-day rotation), or where database residency is required wrap the values in application-level envelope encryption (AES-256-GCM keyed from KMS) and mask them on serialisation; store user_password (models.py:390) only as an irreversible bcrypt or argon2 hash instead of a raw BinaryField, and reduce user_binance_auth_creds (models.py:397) to locator references. Add a model test asserting no credential field round-trips unencrypted. This is a shared dev-tier library with no runtime of its own, so coordinate the release with consuming services per sdlc/policy.json releaseProcess (one approval, rollback plan required).",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "At the merged commit the Secrets Document in onfinance_db_model_master/models.py declares no plain StringField for apiKey, zerodha_password, zerodha_2fa, apiSecrets or accessToken; the fields hold aws-secrets-manager locator references or AES-256-GCM envelope-encrypted values masked on serialisation",
+    "At the merged commit user_password (models.py:390) is stored only as a bcrypt or argon2 hash and user_binance_auth_creds (models.py:397) holds locator references, not credential values",
+    "A model test asserting that no credential field round-trips unencrypted (persist, reload, compare against plaintext input) passes in the db-models test suite",
+    "Code review of the merged commit records sign-off that no cleartext credential field remains in the secrets or user collections of the db-models-mongodb.default schema"
+  ],
+  "verificationMethod": {
+    "type": "code-review",
+    "description": "A reviewer (CTO or delegate) re-reads onfinance_db_model_master/models.py at the merged commit and confirms the Secrets Document fields (lines 8-15) hold locator references or envelope-encrypted values, user_password (line 390) is a bcrypt or argon2 hash, user_binance_auth_creds (line 397) holds locators, and the new no-cleartext-round-trip model test passes; expected result: a review sign-off recorded as task evidence with zero cleartext credential fields in the model"
+  },
+  "rootCause": {
+    "category": "insecure-code",
+    "description": "The Secrets Document (models.py:8-15 at commit 70b3633) models broker login credentials, the TOTP 2FA seed, API secrets and access tokens as plain StringField, and the user collection stores user_password as a raw BinaryField (models.py:390) and exchange auth credentials in a DynamicField (models.py:397), bypassing the aws-secrets-manager policy in sdlc/policy.json"
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "db-models",
+      "repoId": "onfinance-db-model-master"
+    }
+  ],
+  "effortEstimateHours": 12,
+  "createdAt": "2026-09-15T23:48:58Z",
+  "dueAt": "2026-09-22T23:48:58Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "sessionId": "ses_f584ba1f1ffeS1iSKEZtRqmdS0",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

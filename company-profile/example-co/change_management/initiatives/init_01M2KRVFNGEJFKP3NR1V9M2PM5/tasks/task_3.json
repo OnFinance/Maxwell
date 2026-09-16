@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_3",
+  "initiativeId": "init_01M2KRVFNGEJFKP3NR1V9M2PM5",
+  "companyId": "example-co",
+  "seq": 3,
+  "title": "Add regression tests for the fail-closed gate and the allow-list defaults",
+  "description": "Add vitest integration cases to applications/mcp-gateway/repos/mongodb-mcp-server covering: (a) an MCP client that omits the elicitation capability is refused on tools/call for each confirmation-required tool and no operation runs; (b) a client that advertises elicitation must answer a confirmation prompt before the tool executes; (c) with the default configuration tools/list registers no write-capable tool outside the explicit allow-list; (d) the task 1 forced-confirmation flag refuses destructive tools regardless of client capability; (e) a security log line is emitted for every confirmation decision. The unit-tests CI gate is blocking (sdlc/policy.json ciGates), so the cases run on every PR to protected main. Constraints: tests only, no deployment, no change to the task 1 and task 2 behaviour being asserted.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "pnpm vitest run in applications/mcp-gateway/repos/mongodb-mcp-server executes the new cases and all pass against the merged main branch.",
+    "Temporarily reverting src/elicitation.ts to the fail-open branch makes case (a) fail, proving the suite detects the fnd_01M2K7B0MJ68AR00YTNE2N00V2 / fnd_01M2KBJW4AHE221KPTRV1G60YC regression."
+  ],
+  "verificationMethod": {
+    "type": "manual-test",
+    "description": "Run pnpm vitest run in the local checkout and in the PR CI run: expected result - every new confirmation and allow-list case passes; then re-apply the old fail-open branch locally and confirm case (a) turns red, showing the tests guard the fix."
+  },
+  "rootCause": {
+    "category": "insecure-code",
+    "description": "No test exercised the confirmation gate for clients without elicitation capability or the default tool-registration surface, so the fail-open defect and the over-broad write defaults passed review undetected."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 4,
+  "createdAt": "2026-09-15T23:48:58Z",
+  "dueAt": "2026-09-21T15:14:31Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_1",
+    "task_2"
+  ],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

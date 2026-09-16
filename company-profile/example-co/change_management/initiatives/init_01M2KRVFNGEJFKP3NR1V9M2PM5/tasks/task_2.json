@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_2",
+  "initiativeId": "init_01M2KRVFNGEJFKP3NR1V9M2PM5",
+  "companyId": "example-co",
+  "seq": 2,
+  "title": "Default the gateway to least privilege behind an explicit write-tool allow-list",
+  "description": "In applications/mcp-gateway/repos/mongodb-mcp-server/src/common/config/userConfig.ts:74-103, change the shipped defaults so write-capable tools are off unless explicitly enabled: set readOnly .default(true) (or add an enabledTools allow-list defaulting to empty) so the 11 unconfirmed write tools named in fnd_01M2K7B0MJQMT1S973WHW7K9GA (update-many, insert-many, rename-collection, create-collection, create-index, atlas-upgrade-cluster, atlas-create-free-cluster, atlas-create-project, atlas-streams-build and the atlas-local create/delete deployment tools) no longer register by default, and extend confirmationRequiredTools so any allow-listed write tool that mutates pii or financial data is confirmation-gated. Update deploy/aws/Dockerfile:13 so the shipped deploy configuration sets an explicit enabled-tool allow-list (or MDB_MCP_READ_ONLY) instead of overriding only the atlas-local category. Constraints: keep per-tool Zod argsShape validation; PR to protected main with at least 1 approver; no rollout in this task.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "With no explicit tool configuration, a freshly built gateway exposes only read-only tools over tools/list; none of the 11 unconfirmed write tools from fnd_01M2K7B0MJQMT1S973WHW7K9GA is registered.",
+    "deploy/aws/Dockerfile no longer relies on MDB_MCP_DISABLED_TOOLS=atlas-local alone: it ships an explicit enabled-tool allow-list or read-only default for the qa/prod deployment path.",
+    "Every write-capable tool an operator allow-lists is either listed in confirmationRequiredTools or covered by the task 1 forced-confirmation flag before it can execute against pii or financial data."
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-agent-graph",
+    "description": "Re-run probe-agent-graph for mcp-gateway repo mongodb-mcp-server and inspect the SARIF export: expected result - no result with ruleId AGENT-ASI02-01 (fingerprint 5e8d5ad607ba7b8c4f85364640afdeca826d84ab45d32b497c7dba48e91dfb3d) or AGENT-ASI09-01 (fingerprint f658ce80746ca24360bbbc6ea77d7913bf57efcbcb4882305d7036800cecb0f0) is produced, and the probe reports write tools gated behind explicit allow-lists with a fail-closed confirmation path."
+  },
+  "rootCause": {
+    "category": "insecure-code",
+    "description": "userConfig.ts ships readOnly .default(false), disabledTools .default([]) and a confirmationRequiredTools list covering only 8 of 19 write-capable tools, so the tool-allowlist control of sdlc/policy.json aiCodingPolicy.promptInjectionControls was not implemented for this gateway."
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 6,
+  "createdAt": "2026-09-15T23:48:58Z",
+  "dueAt": "2026-09-19T15:14:31Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_1"
+  ],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

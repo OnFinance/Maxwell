@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.timeline",
+  "initiativeId": "init_01M2KRS2JRQP1SV3DSBSDASETA",
+  "companyId": "example-co",
+  "events": [
+    {
+      "eventId": "evt_1",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "created",
+      "toStatus": "proposed",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "Raised by change-planner from open ledger findings fnd_01M2K7B0MJ3239WAE0AKHRMK5E (repo ships Copilot and gh-aw harness configuration outside aiCodingPolicy.harnessesAllowed; SEBI CSCRF GV.PO.S1) and fnd_01M2KM42DZ66HX2ZKMY2QQ5JJC (devenv harness not allowed, same repo Copilot/gh-aw configuration); no risks linked. Intended approver: ciso@example-co.invalid (CISO Meera Krishnan), for approval as a normal change. Refutation record: both lenses refuted=false. Actionability lens: owner cto@example-co.invalid (Arjun Desai) and all three task owners resolve to real details.json contacts, each task carries three testable acceptance criteria, a verificationMethod in the enum (re-probe with probe-agent-graph only on task_2, code-review on tasks 1 and 3), a specific misconfiguration rootCause, efforts 3/2/4h and dueAts 2026-09-18/21/22T23:48:58Z on or before the initiative dueAt with no dependency cycle, rollbackPlan is concrete for the normal changeType (policy changeTypeDefault normal; both findings open at high severity, neither past slaDueAt at createdAt, earliest 2026-09-22T15:14:31Z, so no emergency is warranted), priority p2 matches the high-severity mapping, and slaBasis matches the sla-table row sebi-cscrf-2024/PR.MA.S3/patch-sla/high=7 days (most-strict-wins over the looser 30-day company override) with dueAt = createdAt + 7 days; every file the tasks name exists in the checkout and no AGENTS.md/CLAUDE.md exists yet; master.json holds no duplicate initiative; minor non-refuting note: task_2's draft dependsOn integer 1 is materialised as the schema's string form task_1. Regulatory-mapping lens: sebi-cscrf-2024 applies to this SEBI mid-size-re and is in frameworksInScope while owasp-agentic-top10-2026 and nist-ssdf-800-218 are global secondary crosswalks, all four regulatoryRefs grounded (ASI04 and PO.1.1 are the AGENT-POL-01 rule's documented crosswalks, PO.3.1 the devenv-harness-not-allowed crosswalk carried by the second finding), bare controlId GV.PO.S1 exists in the SEBI catalog with defaultSeverity high and as ledger control record sebi-cscrf-2024:GV.PO.S1, slaBasis is the verbatim sla-table row with dueAt exactly createdAt + 7 days, and both linked findings are open ledger records; the one prose defect it flagged - the summary's parenthetical reading GV.SC.S5 where the mapped control is GV.PO.S1 - is corrected in the master entry.",
+      "refs": {
+        "findingId": "fnd_01M2K7B0MJ3239WAE0AKHRMK5E"
+      }
+    },
+    {
+      "eventId": "evt_2",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "task_1: Port the repo agent instructions to the allowed claude-code and opencode harnesses",
+      "refs": {
+        "taskId": "task_1"
+      }
+    },
+    {
+      "eventId": "evt_3",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "task_2: Delete the repo-shipped GitHub Copilot and gh-aw harness configuration (depends on task_1)",
+      "refs": {
+        "taskId": "task_2"
+      }
+    },
+    {
+      "eventId": "evt_4",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "task_3: Restrict the bundled setup wizard to the approved harnesses",
+      "refs": {
+        "taskId": "task_3"
+      }
+    }
+  ],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

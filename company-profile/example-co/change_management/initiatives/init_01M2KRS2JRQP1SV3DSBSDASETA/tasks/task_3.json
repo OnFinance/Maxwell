@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_3",
+  "initiativeId": "init_01M2KRS2JRQP1SV3DSBSDASETA",
+  "companyId": "example-co",
+  "seq": 3,
+  "title": "Restrict the bundled setup wizard to the approved harnesses",
+  "description": "In applications/mcp-gateway/repos/mongodb-mcp-server edit src/setup/aiTool.ts so the interactive setup wizard no longer configures harnesses outside aiCodingPolicy.harnessesAllowed (claude-code, opencode): remove or gate the Cursor, VS Code (Copilot), Windsurf and Claude Desktop registration paths and their configuration templates, keeping claude-code and opencode setup working, and extend vitest coverage for the pruned harness-selection step. Constraints: trunk-based development on protected branch main, one approving reviewer, blocking gitleaks and vitest CI gates, semgrep SAST advisory above high; first-party code change with no runtime or environment impact, so no deployment window applies.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "Running the repo setup wizard (src/setup/aiTool.ts entry point, e.g. pnpm run setup) in a scratch clone offers only claude-code and opencode; no Cursor, VS Code (Copilot), Windsurf or Claude Desktop registration executes",
+    "grep -rniE 'cursor|windsurf' src/setup/ returns no matches and src/setup/aiTool.ts writes no configuration for any harness outside aiCodingPolicy.harnessesAllowed",
+    "vitest unit tests covering the harness-selection step pass on the PR branch"
+  ],
+  "verificationMethod": {
+    "type": "code-review",
+    "description": "Reviewer inspects the src/setup/aiTool.ts diff to confirm the four unapproved harness registration branches are removed and only claude-code and opencode remain, then runs the wizard in a scratch clone and steps through the harness-selection prompt: expected result - only the two approved harnesses are offered and configured, and the vitest suite passes."
+  },
+  "rootCause": {
+    "category": "misconfiguration",
+    "description": "The upstream setup wizard ships registrations for Cursor, VS Code (Copilot), Windsurf and Claude Desktop by default; it was never aligned to the company allowlist of claude-code and opencode"
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 4,
+  "createdAt": "2026-09-15T23:48:58Z",
+  "dueAt": "2026-09-22T23:48:58Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

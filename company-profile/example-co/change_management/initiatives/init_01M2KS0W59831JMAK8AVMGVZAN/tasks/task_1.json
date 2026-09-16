@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_1",
+  "initiativeId": "init_01M2KS0W59831JMAK8AVMGVZAN",
+  "companyId": "example-co",
+  "seq": 1,
+  "title": "Mask pii and financial fields in find and aggregate tool results",
+  "description": "In the mongodb-mcp-server checkout (applications/mcp-gateway/repos/mongodb-mcp-server, TypeScript/pnpm, pinned commit aaa72a040db4c32f3d6488d5e28e2892a68e9ee0), add a shared field-masking transform driven by the pii and financial data classification declared in env/qa.json and env/prod.json, and apply it in FindTool.execute (src/tools/mongodb/read/find.ts:108-118) and AggregateTool.execute (src/tools/mongodb/read/aggregate.ts:187-192) before EJSON.stringify returns documents to the MCP client, so classified client fields never reach an agent verbatim. Mask at serialisation only; stored documents must not be altered. Cover find and aggregate with vitest unit tests over fixtures with known classified fields (unit-tests is a blocking CI gate per sdlc/policy.json ciGates). Roll out through the releaseProcess environmentsOrder dev, then qa, then prod, with one approval and a rollback plan; no deployment windows or change freezes are configured in sdlc/policy.json.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "A shared masking module (for example src/common/masking.ts) exists in mongodb-mcp-server and unit tests assert that fields classified pii or financial are replaced with redacted placeholders before EJSON serialisation",
+    "A vitest case running FindTool and AggregateTool against fixtures with known classified fields asserts the returned EJSON payload contains masked values and passes in CI",
+    "Re-running probe-schemas on mcp-gateway/mongodb-mcp-server returns no SCH-API-03 result for src/tools/mongodb/read/find.ts or src/tools/mongodb/read/aggregate.ts"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-schemas",
+    "description": "Re-run probe-schemas on mcp-gateway/mongodb-mcp-server and read the SARIF export; expected result: zero SCH-API-03 results for src/tools/mongodb/read/find.ts and src/tools/mongodb/read/aggregate.ts at the new pinned commit"
+  },
+  "rootCause": {
+    "category": "insecure-code",
+    "description": "FindTool.execute and AggregateTool.execute (first-party code at commit aaa72a0) serialise entire cursor results with EJSON.stringify and return them verbatim; only byte and document count limits were ever applied, with no data-minimisation step for the pii and financial classes declared for this app"
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 10,
+  "createdAt": "2026-09-15T23:48:58Z",
+  "dueAt": "2026-09-21T23:48:58Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "sessionId": "ses_f584ba1f1ffeS1iSKEZtRqmdS0",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

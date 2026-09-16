@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_2",
+  "initiativeId": "init_01M2KSEQN8DMX4CRTN5RP1XND8",
+  "companyId": "example-co",
+  "seq": 2,
+  "title": "Annotate the MongoDB tool schemas with data-classification markers",
+  "description": "Annotate the Zod schemas in src/tools/mongodb/mongodbSchemas.ts (lines 1-107, the file flagged by finding fnd_01M2G2AGNMHKF9PCB4C85A3JQ3) and every mongodb/* tool argsShape it feeds (including find.ts and create/createIndex.ts, which use .passthrough()) with the x-data-classification markers adopted in task 1: filter, projection, document and pipeline fields that can carry client personal or financial data are marked pii and/or financial, internal-only helper parameters are marked internal. Constraints: markers are additive metadata only - do not change zEJSON, .passthrough() or any tool's validation semantics, or agent tool calls against the client-data and order stores could break; keep pnpm test and pnpm build green; merge via a reviewed PR with one approver per sdlc/policy.json codeReview; deploy through the dev -> qa -> prod environments order with rollback to pinned commit aaa72a040db4c32f3d6488d5e28e2892a68e9ee0; make no change during a declared change freeze.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "Every tool schema under src/tools/mongodb, including mongodbSchemas.ts and the mongodb/* tool argsShapes it feeds (find, create, createIndex), carries an x-data-classification marker consistent with the convention from task 1",
+    "pnpm test and pnpm build pass in CI with the annotations applied, with no change to zEJSON, .passthrough() or any tool's validation semantics",
+    "The annotations merge to main through a reviewed PR (one approver per sdlc/policy.json codeReview) and rule SCH-PII-01 no longer fires on src/tools/mongodb/mongodbSchemas.ts"
+  ],
+  "verificationMethod": {
+    "type": "re-probe",
+    "workflow": "probe-schemas",
+    "description": "Re-run /probe-schemas example-co --app mcp-gateway (the workflow that raised the finding); expected result: rule SCH-PII-01 reports no result for src/tools/mongodb/mongodbSchemas.ts and the mongodb/* tool schemas carry data-classification markers"
+  },
+  "rootCause": {
+    "category": "process-gap",
+    "description": "The tool-schema authoring procedure for mongodb-mcp-server had no classification step, so fields that read the pii and financial client-data and order stores were written as opaque EJSON records"
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 8,
+  "createdAt": "2026-09-15T23:48:58Z",
+  "dueAt": "2026-09-26T23:48:58Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [
+    "task_1"
+  ],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

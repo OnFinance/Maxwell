@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.timeline",
+  "initiativeId": "init_01M2KS6TE1ME2P52YKY64T06JY",
+  "companyId": "example-co",
+  "events": [
+    {
+      "eventId": "evt_1",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "created",
+      "toStatus": "proposed",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "ses_f584f2afcffe9JipaZ3Bs7e3Dj",
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "Initiative proposed from six open ledger findings (fnd_01M2FRY4TTS6M3JJD1F1P7J0TQ, fnd_01M2FS4806WHXANC3Q9QXEAXGF, fnd_01M2FS481DGTPTR9NJGKAAMF49, fnd_01M2FS482NWXE7E5MCZY2QMAZ0, fnd_01M2FS9EBVSP2DPWN5K2D91QKW, fnd_01M2FS9ECP3E0MTCRQFEJ97930; no linked risks) covering the lapsed GitHub and MongoDB Atlas contracts, the GitHub SOC 2 coverage expiring 2026-09-30 and missing exit plans; the refutation record found refuted=false on both the actionability and the regulatory-mapping checks (confidence 0.95 each); intended approver ciso@example-co.invalid (CISO) to approve this normal change; dueAt 2026-10-15T23:48:58Z = createdAt + 30 days under the defaults SLA (the sla-table has no vendor-due-diligence row).",
+      "refs": {
+        "findingId": "fnd_01M2FRY4TTS6M3JJD1F1P7J0TQ"
+      }
+    },
+    {
+      "eventId": "evt_2",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "ses_f584f2afcffe9JipaZ3Bs7e3Dj",
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "task_1 added: renew the lapsed GitHub Enterprise contract GH-ENT-2025-07 with audit, exit and data-return clauses; due 2026-09-24T23:48:58Z",
+      "refs": {
+        "taskId": "task_1"
+      }
+    },
+    {
+      "eventId": "evt_3",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "ses_f584f2afcffe9JipaZ3Bs7e3Dj",
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "task_2 added: renew the lapsed MongoDB Atlas contract ATLAS-2025-1189 for the critical atlas-mumbai service; due 2026-09-24T23:48:58Z",
+      "refs": {
+        "taskId": "task_2"
+      }
+    },
+    {
+      "eventId": "evt_4",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "ses_f584f2afcffe9JipaZ3Bs7e3Dj",
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "task_3 added: obtain a current SOC 2 Type II report or bridge letter for GitHub Enterprise Cloud before 2026-09-30; due 2026-09-29T23:48:58Z",
+      "refs": {
+        "taskId": "task_3"
+      }
+    },
+    {
+      "eventId": "evt_5",
+      "at": "2026-09-15T23:48:58Z",
+      "type": "task-added",
+      "toStatus": "todo",
+      "actor": {
+        "type": "agent",
+        "id": "change-planner"
+      },
+      "sessionId": "ses_f584f2afcffe9JipaZ3Bs7e3Dj",
+      "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+      "note": "task_4 added: document and test exit/transition plans for aws-mumbai, github-cloud and atlas-mumbai; depends on task_1 and task_2; due 2026-10-13T23:48:58Z",
+      "refs": {
+        "taskId": "task_4"
+      }
+    }
+  ],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "sessionId": "ses_f584f2afcffe9JipaZ3Bs7e3Dj",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}

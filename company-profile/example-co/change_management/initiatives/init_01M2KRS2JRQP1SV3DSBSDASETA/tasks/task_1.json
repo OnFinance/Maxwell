@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cm.task",
+  "taskId": "task_1",
+  "initiativeId": "init_01M2KRS2JRQP1SV3DSBSDASETA",
+  "companyId": "example-co",
+  "seq": 1,
+  "title": "Port the repo agent instructions to the allowed claude-code and opencode harnesses",
+  "description": "Create AGENTS.md and CLAUDE.md at the root of the mongodb-mcp-server checkout (applications/mcp-gateway/repos/mongodb-mcp-server, OnFinance fork, default branch main), carrying over the build, test and repository-convention guidance currently shipped in .github/copilot-instructions.md so that claude-code and opencode - the only harnesses in sdlc/policy.json aiCodingPolicy.harnessesAllowed - consume it. Keep the guidance data-class-appropriate (public/internal only, no client PII or financial data). Constraints: trunk-based development on protected branch main, one approving reviewer (codeReview.minApprovers 1), blocking gitleaks and vitest CI gates, semgrep SAST advisory above high; repo-content-only change, so no deployment window or change freeze applies.",
+  "owner": {
+    "type": "human",
+    "id": "cto@example-co.invalid"
+  },
+  "status": "todo",
+  "humanEdited": false,
+  "acceptanceCriteria": [
+    "AGENTS.md and CLAUDE.md exist at the root of applications/mcp-gateway/repos/mongodb-mcp-server on the fork's main branch and carry the guidance previously in .github/copilot-instructions.md (build and test commands, repo conventions)",
+    "Starting claude-code or opencode in the checkout loads the new project instruction files without errors (session rules list names AGENTS.md/CLAUDE.md)",
+    "The PR branch CI run is green on the blocking gitleaks and vitest gates"
+  ],
+  "verificationMethod": {
+    "type": "code-review",
+    "description": "Reviewer compares the PR diff adding AGENTS.md and CLAUDE.md section-by-section against the .github/copilot-instructions.md being replaced: expected result - every guidance section survives, wording is harness-neutral with no Copilot/gh-aw-specific instruction, and the files sit at repo root so both allowed harnesses load them."
+  },
+  "rootCause": {
+    "category": "misconfiguration",
+    "description": "Repo guidance shipped only as GitHub Copilot harness configuration; no instruction file existed for the harnesses actually allowed by aiCodingPolicy.harnessesAllowed (claude-code, opencode)"
+  },
+  "targets": [
+    {
+      "type": "repo",
+      "appId": "mcp-gateway",
+      "repoId": "mongodb-mcp-server"
+    }
+  ],
+  "effortEstimateHours": 3,
+  "createdAt": "2026-09-15T23:48:58Z",
+  "dueAt": "2026-09-18T23:48:58Z",
+  "evidence": [],
+  "suggestionIds": [],
+  "dependsOn": [],
+  "provenance": {
+    "harness": "opencode",
+    "generatedAt": "2026-09-15T23:48:58Z",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-change-management",
+    "agent": "validator"
+  }
+}
