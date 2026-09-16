@@ -29,6 +29,9 @@ const dryRun = argv.includes('--dry-run');
 const maxConcurrency = Number(opt('--concurrency', process.env.MAXWELL_OPENCODE_CONCURRENCY || Math.max(1, Math.min(16, cpus().length - 2))));
 const defaultAgentType = opt('--agent-type', 'general');
 const runId = process.env.MAXWELL_RUN_ID;
+// An agent that runs longer than this is killed and retried once in a fresh session: a GLM 5.3 auditor looped on the
+// same jq call for hours (2026-09-16). Minutes; 0 disables.
+const agentTimeoutMinutes = Number(process.env.MAXWELL_OPENCODE_AGENT_TIMEOUT_MINUTES || 75);
 const sessionLog = opencodeSessionLog();
 mkdirSync(dirname(sessionLog), { recursive: true });
 
@@ -57,10 +60,13 @@ function runOpencode(prompt, { agentType, modelOverride, label, sessionId }) {
     const child = spawn('opencode', cliArgs, { cwd: process.cwd(), stdio: ['pipe', 'pipe', 'pipe'], env: { ...process.env, MAXWELL_HARNESS: 'opencode', MAXWELL_WORKFLOW: name, ...(typeof args.companyId === 'string' ? { MAXWELL_COMPANY_ID: args.companyId } : {}), ...(runId ? { MAXWELL_RUN_ID: runId } : {}) } });
     child.stdin.on('error', () => {});
     child.stdin.end(prompt);
+    let timedOut = false;
+    const timer = agentTimeoutMinutes > 0 ? setTimeout(() => { timedOut = true; child.kill('SIGTERM'); setTimeout(() => child.kill('SIGKILL'), 10000).unref(); }, agentTimeoutMinutes * 60000) : null;
     let stdout = ''; let stderr = '';
     child.stdout.on('data', (d) => { stdout += d; });
     child.stderr.on('data', (d) => { stderr += d; });
     child.on('close', (code) => {
+      if (timer) clearTimeout(timer);
       const events = stdout.split('\n').filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
       let text = ''; let sessionId = null;
       for (const ev of events) {
@@ -73,7 +79,7 @@ function runOpencode(prompt, { agentType, modelOverride, label, sessionId }) {
       }
       if (!text) text = stdout.trim();
       appendFileSync(sessionLog, JSON.stringify({ at: new Date().toISOString(), workflow: name, ...(runId ? { runId } : {}), label, sessionId, code, events: events.length }) + '\n');
-      resolve({ code, text, stderr, sessionId });
+      resolve({ code: timedOut ? 124 : code, text: timedOut ? '' : text, stderr: timedOut ? `killed after ${agentTimeoutMinutes} minutes` : stderr, sessionId, timedOut });
     });
   });
 }
@@ -91,7 +97,7 @@ async function agent(prompt, opts = {}) {
     const schemaNote = opts.schema ? `\n\nRespond with ONLY a single JSON object (no prose, no code fence) that validates against this JSON Schema:\n${JSON.stringify(opts.schema)}` : '';
     const effortNote = opts.effort ? `\n\n(Reasoning effort requested: ${opts.effort}.)` : '';
     let last = null;
-    for (let attempt = 0; attempt < (opts.schema ? 3 : 1); attempt += 1) {
+    for (let attempt = 0; attempt < (opts.schema ? 3 : 2); attempt += 1) {
       const retryNote = attempt ? `\n\nYour previous answer was not valid JSON for the schema (${last && last.error}). Return only the JSON object.` : '';
       let res = await runOpencode(prompt + effortNote + schemaNote + retryNote, { agentType, modelOverride: opts.model, label: attempt ? `${label}#${attempt + 1}` : label });
       // Provider throttling (HTTP 429, "rate limit", "capacity") is waited out and retried, so that a high
@@ -102,6 +108,7 @@ async function agent(prompt, opts = {}) {
         await new Promise((r) => setTimeout(r, seconds * 1000));
         res = await runOpencode(prompt + effortNote + schemaNote + retryNote, { agentType, modelOverride: opts.model, label: `${label}~${wait + 1}` });
       }
+      if (res.timedOut && attempt === 0) { progress(`↻ ${label} killed after ${agentTimeoutMinutes} minutes; retrying once in a fresh session`); last = { error: 'timed out' }; continue; }
       if (res.code !== 0 && !res.text) { progress(`✗ ${label} exited ${res.code}: ${res.stderr.slice(-300)}`); return null; }
       if (!opts.schema) return res.text;
       // Some models end their turn on a narration ("now let me check the catalog") before the work is done. Rather
