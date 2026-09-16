@@ -3,17 +3,17 @@ schemaVersion: "1"
 kind: maxwell.company.summary
 companyId: example-co
 title: Example Capital Markets cyber resilience summary
-version: "6.0.0"
-sections: [overview, regulatory-posture, applications, vendors, data-flows, control-summary, open-findings, initiatives, suggestions]
+version: "7.0.0"
+sections: [overview, regulatory-posture, applications, vendors, data-flows, control-summary, open-findings, initiatives, suggestions, kpis]
 provenance:
   harness: opencode
-  generatedAt: "2026-09-16T02:18:09Z"
-  sessionId: 453ecc6e-1346-418f-a2c0-1bfcead851c3
+  generatedAt: "2026-09-16T07:19:56Z"
+  sessionId: ses_f56d48530ffeFybvZHn0U8JXIW
   runId: run_01M2GDZ3Q3S5WYCB3MV02QJXZ1
-  workflow: impl-auto-improvement
+  workflow: report-audit-improvements
   agent: report-writer
   model: "cloudflare-workers-ai/@cf/zai-org/glm-5.3"
-  inputsHash: 9faddd89ec7009eeff89e4b15fe452ae4582f388e0689dd48b97c18b3393465b
+  inputsHash: 73b5a9fc3399873dfae571b58ad987821d4ace8584a203c68959495ce7f01f35
 ---
 # Example Capital Markets — cyber resilience summary
 
@@ -400,114 +400,98 @@ Latest record per finding id in `company-profile/example-co/soc/main.jsonl` with
 No findings in `risk-accepted`, `false-positive` or `duplicate` this period.
 
 ## Initiatives
-`impl-change-management` (runId `run_01M2GDZ3Q3S5WYCB3MV02QJXZ1`) created all 10 open initiatives this run
-(`createdAt` 2026-09-15T23:48:58Z; every status `proposed`, every `changeType` `normal`), linking 24 open ledger
-findings. Counters from `company-profile/example-co/change_management/master.json` (`updatedAt`
-2026-09-15T23:48:58Z): **10 open / 0 closed / 0 cancelled / 0 overdue** as of 2026-09-15T23:48:58Z. Overdue
-compares each initiative `dueAt` with `provenance.generatedAt`: the earliest `dueAt` is 2026-09-22T23:48:58Z,
-7 days out, so no row below carries an `**overdue <n> d**` marker. The 33 tasks across the 10 initiatives are
-all `todo` (0 done, 0 blocked).
+
+`report-audit-improvements` renders this section as of 2026-09-16T07:19:56Z. `impl-change-management` (runId `run_01M2GDZ3Q3S5WYCB3MV02QJXZ1`) created all 10 initiatives this run at `createdAt` 2026-09-15T23:48:58Z (every status `proposed`, every `changeType` `normal`), whose `findingIds` name 24 distinct ledger findings. Counters from `company-profile/example-co/change_management/master.json` (`updatedAt` 2026-09-15T23:48:58Z): **10 open / 0 closed / 0 cancelled / 0 overdue** as of 2026-09-16T07:19:56Z. Overdue compares each initiative `dueAt` with `provenance.generatedAt` 2026-09-16T07:19:56Z: the earliest `dueAt` is 2026-09-22T23:48:58Z, due in 7 d, so no row below carries an `**overdue <n> d**` marker. The 33 tasks across the 10 initiatives are all `todo` (0 done, 0 blocked).
 
 | Id | Title | Status | Priority | Change type | Owner | Due | Tasks (done/total, blocked) | Findings | Regulatory ref |
 |---|---|---|---|---|---|---|---|---|---|
-| [init_01M2KS6TE1ME2P52YKY64T06JY] | Close vendor governance gaps for AWS, GitHub and MongoDB Atlas: renew lapsed contracts, restore audit rights and assurance, document exit plans | proposed | p2 | normal | compliance@example-co.invalid | 2026-10-15T23:48:58Z | 0/4, 0 blocked | 6 | SEBI sebi-cscrf-2024 GV.SC.S3 (SEBI CSCRF 2024) + 5 refs |
-| [init_01M2KS0W59831JMAK8AVMGVZAN] | Mask, encrypt and allow-list sensitive data paths in MongoDB MCP tools and db models | proposed | p2 | normal | cto@example-co.invalid | 2026-09-22T23:48:58Z | 0/4, 0 blocked | 6 | SEBI sebi-cscrf-2024 PR.DS.S4 + 9 refs |
-| [init_01M2KRVFNGEJFKP3NR1V9M2PM5] | Make destructive-tool confirmation gates fail closed and enforce least-privilege write defaults | proposed | p2 | normal | cto@example-co.invalid | 2026-09-22T23:48:58Z | 0/4, 0 blocked | 3 | SEBI sebi-cscrf-2024 PR.AA.S3 + 5 refs |
-| [init_01M2KS1SY6B35R6CQ750H22FRW] | Bound and validate database-bound MCP tool input schemas in mongodb-mcp-server | proposed | p3 | normal | cto@example-co.invalid | 2026-09-29T23:48:58Z | 0/4, 0 blocked | 1 | SEBI sebi-cscrf-2024 PR.IP.S2 + 3 refs |
-| [init_01M2KRZA4RAAZS0KDBFDKRVRXR] | Enable diagnostics, SIEM forwarding and 180-day log retention for mcp-gateway | proposed | p2 | normal | cto@example-co.invalid | 2026-09-22T23:48:58Z | 0/3, 0 blocked | 2 | SEBI sebi-cscrf-2024 PR.AA.S8 + 4 refs |
-| [init_01M2KRS2JRQP1SV3DSBSDASETA] | Remove repo-shipped Copilot and gh-aw harness configuration from mongodb-mcp-server | proposed | p2 | normal | cto@example-co.invalid | 2026-09-22T23:48:58Z | 0/3, 0 blocked | 2 | SEBI sebi-cscrf-2024 GV.PO.S1 + 3 refs |
-| [init_01M2KS3JBZ99R9Y0888DF7WSWP] | Broaden .gitignore secret patterns in the public mongodb-mcp-server repo | proposed | p2 | normal | cto@example-co.invalid | 2026-09-22T23:48:58Z | 0/2, 0 blocked | 1 | SEBI sebi-cscrf-2024 PR.DS.S4 + 1 ref |
-| [init_01M2KSB50TKCHJMD8PT79GXGTM] | Add source pinning and checksum verification to the global third-party agent-skills install | proposed | p2 | normal | cto@example-co.invalid | 2026-09-22T23:48:58Z | 0/3, 0 blocked | 1 | SEBI sebi-cscrf-2024 PR.IP.S1 + 2 refs |
-| [init_01M2KSEQN8DMX4CRTN5RP1XND8] | Annotate the MongoDB MCP tool schemas with personal-data classification markers | proposed | p3 | normal | ciso@example-co.invalid | 2026-09-29T23:48:58Z | 0/3, 0 blocked | 1 | SEBI sebi-cscrf-2024 ID.AM.S5 + 2 refs |
-| [init_01M2KSV05T8TK1TJDJAS2EK3DW] | Add a local gitleaks pre-commit secrets-scanning hook to the db-models repo so the policy secret scan reaches it | proposed | p3 | normal | ciso@example-co.invalid | 2026-09-29T23:48:58Z | 0/3, 0 blocked | 1 | SEBI sebi-cscrf-2024 PR.IP.S2 + 1 ref |
+| [init_01M2KS6TE1ME2P52YKY64T06JY] | Close vendor governance gaps for AWS, GitHub and MongoDB Atlas: renew lapsed contracts, restore audit rights and assurance, document exit plans | proposed | p2 | normal | compliance@example-co.invalid | 2026-10-15T23:48:58Z | 0/4, 0 blocked | 6 [fnd_01M2FRY4TTS6M3JJD1F1P7J0TQ], [fnd_01M2FS4806WHXANC3Q9QXEAXGF], [fnd_01M2FS481DGTPTR9NJGKAAMF49], [fnd_01M2FS482NWXE7E5MCZY2QMAZ0], [fnd_01M2FS9EBVSP2DPWN5K2D91QKW], [fnd_01M2FS9ECP3E0MTCRQFEJ97930] | SEBI sebi-cscrf-2024 GV.SC.S3 (SEBI CSCRF 2024) + 5 refs |
+| [init_01M2KS0W59831JMAK8AVMGVZAN] | Mask, encrypt and allow-list sensitive data paths in MongoDB MCP tools and db models | proposed | p2 | normal | cto@example-co.invalid | 2026-09-22T23:48:58Z | 0/4, 0 blocked | 6 [fnd_01M2G2AGPX8KWSY1KXGYADK4TK], [fnd_01M2G2AGR581507FMK0EADFKY6], [fnd_01M2G2AGSC977KASP37WQXYSQA], [fnd_01M2HRGFABHFN9JE2TDMJX32RE], [fnd_01M2KC7W3QM0V86PVA3SVA01FN], [fnd_01M2K7B0MJJVWFWXF6KZ783GFZ] | SEBI sebi-cscrf-2024 PR.DS.S4 + 9 refs |
+| [init_01M2KRVFNGEJFKP3NR1V9M2PM5] | Make destructive-tool confirmation gates fail closed and enforce least-privilege write defaults | proposed | p2 | normal | cto@example-co.invalid | 2026-09-22T23:48:58Z | 0/4, 0 blocked | 3 [fnd_01M2K7B0MJ68AR00YTNE2N00V2], [fnd_01M2K7B0MJQMT1S973WHW7K9GA], [fnd_01M2KBJW4AHE221KPTRV1G60YC] | SEBI sebi-cscrf-2024 PR.AA.S3 + 5 refs |
+| [init_01M2KS1SY6B35R6CQ750H22FRW] | Bound and validate database-bound MCP tool input schemas in mongodb-mcp-server | proposed | p3 | normal | cto@example-co.invalid | 2026-09-29T23:48:58Z | 0/4, 0 blocked | 1 [fnd_01M2G2AGX1GZ9THG6HJ1VPP1EP] | SEBI sebi-cscrf-2024 PR.IP.S2 + 3 refs |
+| [init_01M2KRZA4RAAZS0KDBFDKRVRXR] | Enable diagnostics, SIEM forwarding and 180-day log retention for mcp-gateway | proposed | p2 | normal | cto@example-co.invalid | 2026-09-22T23:48:58Z | 0/3, 0 blocked | 2 [fnd_01M2HCWMBDCEGN51BKVVXGTV67], [fnd_01M2KM42DZDZSFHCN7YYBM94V2] | SEBI sebi-cscrf-2024 PR.AA.S8 + 4 refs |
+| [init_01M2KRS2JRQP1SV3DSBSDASETA] | Remove repo-shipped Copilot and gh-aw harness configuration from mongodb-mcp-server | proposed | p2 | normal | cto@example-co.invalid | 2026-09-22T23:48:58Z | 0/3, 0 blocked | 2 [fnd_01M2K7B0MJ3239WAE0AKHRMK5E], [fnd_01M2KM42DZ66HX2ZKMY2QQ5JJC] | SEBI sebi-cscrf-2024 GV.PO.S1 + 3 refs |
+| [init_01M2KS3JBZ99R9Y0888DF7WSWP] | Broaden .gitignore secret patterns in the public mongodb-mcp-server repo | proposed | p2 | normal | cto@example-co.invalid | 2026-09-22T23:48:58Z | 0/2, 0 blocked | 1 [fnd_01M2KM42DZE09A2PZ557A7SX2F] | SEBI sebi-cscrf-2024 PR.DS.S4 + 1 ref |
+| [init_01M2KSB50TKCHJMD8PT79GXGTM] | Add source pinning and checksum verification to the global third-party agent-skills install | proposed | p2 | normal | cto@example-co.invalid | 2026-09-22T23:48:58Z | 0/3, 0 blocked | 1 [fnd_01M2K7B0MJN2XBQRW2XYYD6EBJ] | SEBI sebi-cscrf-2024 PR.IP.S1 + 2 refs |
+| [init_01M2KSEQN8DMX4CRTN5RP1XND8] | Annotate the MongoDB MCP tool schemas with personal-data classification markers | proposed | p3 | normal | ciso@example-co.invalid | 2026-09-29T23:48:58Z | 0/3, 0 blocked | 1 [fnd_01M2G2AGNMHKF9PCB4C85A3JQ3] | SEBI sebi-cscrf-2024 ID.AM.S5 + 2 refs |
+| [init_01M2KSV05T8TK1TJDJAS2EK3DW] | Add a local gitleaks pre-commit secrets-scanning hook to the db-models repo so the policy secret scan reaches it | proposed | p3 | normal | ciso@example-co.invalid | 2026-09-29T23:48:58Z | 0/3, 0 blocked | 1 [fnd_01M2KMNHPJ7Z0Y0YJT6YZR4NZM] | SEBI sebi-cscrf-2024 PR.IP.S2 + 1 ref |
 
 ### Blocked
 
-No blocked tasks as of 2026-09-15T23:48:58Z: all 33 tasks carry `status: todo` and no task file has a
-`blockedReason` (Grep `"blockedReason"` over `change_management/initiatives/*/tasks/task_*.json` returns 0
-matches); `taskCounts.blocked` is 0 in all 10 `master.json` entries.
+No blocked tasks as of 2026-09-16T07:19:56Z: all 33 task files under `change_management/initiatives/*/tasks/task_*.json` carry `status` `todo` (33 of 33 matches) and none has a `blockedReason` (0 matches); `taskCounts.blocked` is 0 in all 10 `master.json` entries.
 
 ### Evidence requests
 
-10 of the 33 tasks verify by `verificationMethod.type: re-probe` and none is done yet; each names the probe
-workflow that must re-run to supply the closing evidence for its linked finding(s):
+10 of the 33 tasks verify by `verificationMethod` `type` `re-probe` and none is done yet; each names the probe workflow that must re-run to supply the closing evidence for its linked finding(s):
 
-- [init_01M2KS0W59831JMAK8AVMGVZAN] task_1 — Mask pii and financial fields in find and aggregate tool results
-  (re-probe `probe-schemas`, owner cto@example-co.invalid, due 2026-09-21T23:48:58Z).
-- [init_01M2KS0W59831JMAK8AVMGVZAN] task_2 — Encrypt MongoDB MCP export files at rest and mask exported fields
-  (re-probe `probe-schemas`, owner cto@example-co.invalid, due 2026-09-22T23:48:58Z).
-- [init_01M2KS0W59831JMAK8AVMGVZAN] task_3 — Enforce a host allow-list on MongoDB MCP connection strings
-  (re-probe `probe-agent-graph`, owner cto@example-co.invalid, due 2026-09-21T23:48:58Z).
-- [init_01M2KRVFNGEJFKP3NR1V9M2PM5] task_2 — Default the gateway to least privilege behind an explicit
-  write-tool allow-list (re-probe `probe-agent-graph`, owner cto@example-co.invalid, due 2026-09-19T15:14:31Z).
-- [init_01M2KS1SY6B35R6CQ750H22FRW] task_4 — Add regression tests for tool-argument bounds and verify with
-  probe-schemas (re-probe `probe-schemas`, owner cto@example-co.invalid, due 2026-09-28T13:14:50Z).
-- [init_01M2KRZA4RAAZS0KDBFDKRVRXR] task_1 — Enable diagnostic settings and a Log Analytics workspace in the
-  mongodb-mcp-server bicep deployment (re-probe `probe-iac`, owner cto@example-co.invalid, due
-  2026-09-19T23:48:58Z).
-- [init_01M2KRS2JRQP1SV3DSBSDASETA] task_2 — Delete the repo-shipped GitHub Copilot and gh-aw harness
-  configuration (re-probe `probe-agent-graph`, owner cto@example-co.invalid, due 2026-09-21T23:48:58Z).
-- [init_01M2KSB50TKCHJMD8PT79GXGTM] task_1 — Pin the agent-skills source to a commit and gate the global skills
-  install on verified checksums (re-probe `probe-agent-graph`, owner cto@example-co.invalid, due
-  2026-09-21T23:48:58Z).
-- [init_01M2KSEQN8DMX4CRTN5RP1XND8] task_2 — Annotate the MongoDB tool schemas with data-classification
-  markers (re-probe `probe-schemas`, owner cto@example-co.invalid, due 2026-09-26T23:48:58Z).
-- [init_01M2KSV05T8TK1TJDJAS2EK3DW] task_3 — Verify the db-models secrets-scanning control with probe-sdlc and
-  reconcile the finding (re-probe `probe-sdlc`, owner ciso@example-co.invalid, due 2026-09-28T23:48:58Z).
+- [init_01M2KS0W59831JMAK8AVMGVZAN] task_1 — Mask pii and financial fields in find and aggregate tool results (re-probe `probe-schemas`, owner cto@example-co.invalid, due 2026-09-21T23:48:58Z).
+- [init_01M2KS0W59831JMAK8AVMGVZAN] task_2 — Encrypt MongoDB MCP export files at rest and mask exported fields (re-probe `probe-schemas`, owner cto@example-co.invalid, due 2026-09-22T23:48:58Z).
+- [init_01M2KS0W59831JMAK8AVMGVZAN] task_3 — Enforce a host allow-list on MongoDB MCP connection strings (re-probe `probe-agent-graph`, owner cto@example-co.invalid, due 2026-09-21T23:48:58Z).
+- [init_01M2KRVFNGEJFKP3NR1V9M2PM5] task_2 — Default the gateway to least privilege behind an explicit write-tool allow-list (re-probe `probe-agent-graph`, owner cto@example-co.invalid, due 2026-09-19T15:14:31Z).
+- [init_01M2KS1SY6B35R6CQ750H22FRW] task_4 — Add regression tests for tool-argument bounds and verify with probe-schemas (re-probe `probe-schemas`, owner cto@example-co.invalid, due 2026-09-28T13:14:50Z).
+- [init_01M2KRZA4RAAZS0KDBFDKRVRXR] task_1 — Enable diagnostic settings and a Log Analytics workspace in the mongodb-mcp-server bicep deployment (re-probe `probe-iac`, owner cto@example-co.invalid, due 2026-09-19T23:48:58Z).
+- [init_01M2KRS2JRQP1SV3DSBSDASETA] task_2 — Delete the repo-shipped GitHub Copilot and gh-aw harness configuration (re-probe `probe-agent-graph`, owner cto@example-co.invalid, due 2026-09-21T23:48:58Z).
+- [init_01M2KSB50TKCHJMD8PT79GXGTM] task_1 — Pin the agent-skills source to a commit and gate the global skills install on verified checksums (re-probe `probe-agent-graph`, owner cto@example-co.invalid, due 2026-09-21T23:48:58Z).
+- [init_01M2KSEQN8DMX4CRTN5RP1XND8] task_2 — Annotate the MongoDB tool schemas with data-classification markers (re-probe `probe-schemas`, owner cto@example-co.invalid, due 2026-09-26T23:48:58Z).
+- [init_01M2KSV05T8TK1TJDJAS2EK3DW] task_3 — Verify the db-models secrets-scanning control with probe-sdlc and reconcile the finding (re-probe `probe-sdlc`, owner ciso@example-co.invalid, due 2026-09-28T23:48:58Z).
 
-<!-- source: counters and per-initiative fields from change_management/master.json (counters open 10, closed 0, cancelled 0, overdue 0, updatedAt 2026-09-15T23:48:58Z; status/priority/changeType/owner.id/dueAt/taskCounts/findingIds/regulatoryRefs per initiative; Findings column = len(findingIds) = 6, 6, 3, 1, 2, 2, 1, 1, 1, 1 = 24 distinct finding ids); tasks = 33 files under change_management/initiatives/*/tasks/ (Grep '"status": "todo"' = 33 matches, "blockedReason" = 0 matches, '"type": "re-probe"' = 10 matches with verificationMethod.workflow as listed); overdue = dueAt earlier than provenance.generatedAt 2026-09-15T23:48:58Z (0 initiatives, earliest dueAt 2026-09-22T23:48:58Z); timelines initiatives/*/timeline.json record only created/task-added events at 2026-09-15T23:48:58Z, so no initiative has moved past proposed; inputsHash order per company-summary.schema.json -->
+<!-- source: counters and per-initiative fields from change_management/master.json (counters open 10, closed 0, cancelled 0, overdue 0, updatedAt 2026-09-15T23:48:58Z; status, priority, changeType, owner.id, dueAt, taskCounts and regulatoryRefs per initiative entry; Findings cell = the initiative findingIds as listed, 6+6+3+1+2+2+1+1+1+1 = 24 distinct ids; Regulatory ref = regulatoryRefs[0], remaining refs counted 5+9+5+3+4+3+1+2+2+1); tasks = 33 files under change_management/initiatives/*/tasks/task_*.json (all status todo, 0 blockedReason, 10 verificationMethod.type re-probe with the workflows and task dueAt as listed, verified file by file); timelines initiatives/*/timeline.json record only toStatus proposed (10 events) and todo (33 task events), all at 2026-09-15T23:48:58Z, so no initiative has moved past proposed; overdue = dueAt earlier than provenance.generatedAt 2026-09-16T07:19:56Z, 0 initiatives, earliest dueAt 2026-09-22T23:48:58Z = due in 7 d (ceil of 6 d 16 h 29 m) -->
 
 ## Suggestions
 
-`impl-auto-improvement` (runId `run_01M2GDZ3Q3S5WYCB3MV02QJXZ1`) early-refreshed this section as of
-2026-09-16T02:18:09Z; `report-audit-improvements` remains the owner of record.
-`company-profile/example-co/suggestions/master.json` (`updatedAt` 2026-09-16T02:18:09Z) holds **5 suggestions,
-all status `proposed`** (3 `iac-fix`, 1 `agent-guardrail`, 1 `cicd-gate`; 4 high, 1 medium), every one created this
-run (`createdAt` 2026-09-16T02:18:09Z, `sourceWorkflow` `impl-auto-improvement`); 0 merged, 0 reverted and 0
-retention checks recorded. Every entry is listed so reviewers see the open queue; none has reached `surfaced` yet,
-so no `surfacedAt`, `decidedAt` or `decidedBy` exists and every `prUrls` is empty.
+`report-audit-improvements` renders this section as of 2026-09-16T07:19:56Z. `impl-auto-improvement` (runId `run_01M2GDZ3Q3S5WYCB3MV02QJXZ1`) created and surfaced all 5 suggestions at 2026-09-16T02:18:09Z. `company-profile/example-co/suggestions/master.json` (`updatedAt` 2026-09-16T02:18:09Z) holds **5 suggestions, all status `surfaced`** (`surfacedAt` 2026-09-16T02:18:09Z on every entry; 3 `iac-fix`, 1 `agent-guardrail`, 1 `cicd-gate`; 4 high, 1 medium); 0 accepted, 0 merged, 0 reverted, 0 rejected, 0 expired — no `decidedAt`, `decidedBy`, `mergedAt`, `revertedAt`, `retentionCheckedAt` or `decisionNote` exists on any entry and every `prUrls` is empty.
 
 | Id | Title | Category | Severity | Status | Repo | +/- lines | Surfaced | Decided by | PR |
 |---|---|---|---|---|---|---|---|---|---|
-| [sug_01M2M19HQY6B6W6MRZW7HA1XA2] | Require platform auth for public ingress in the MCP gateway bicep template | iac-fix | high | proposed | `mcp-gateway/mongodb-mcp-server` | +4/-2 | n/a | n/a | none |
-| [sug_01M2M0T59E8XRGTF3HC7N9RVT0] | Require Microsoft Entra ID auth and read-only mode in the Azure Bicep baseline parameters | iac-fix | high | proposed | `mcp-gateway/mongodb-mcp-server` | +5/-2 | n/a | n/a | none |
-| [sug_01M2M1YDYTKJXNGMZTZEJNB4WR] | Bind integration-test mongod published port to loopback only | iac-fix | high | proposed | `mcp-gateway/mongodb-mcp-server` | +3/-2 | n/a | n/a | none |
-| [sug_01M2M1XNDXVS780KHSVW7GZSHN] | Require tool allowlists and human review instead of default bash in agentic-workflows agent instructions | agent-guardrail | high | proposed | `mcp-gateway/mongodb-mcp-server` | +2/-2 | n/a | n/a | none |
-| [sug_01M2M1Z5K82GX6E3YYZN2ZQVAW] | Add a pinned gitleaks pre-commit hook to scan every commit for secrets | cicd-gate | medium | proposed | `db-models/onfinance-db-model-master` | +10/-0 | n/a | n/a | none |
+| [sug_01M2M19HQY6B6W6MRZW7HA1XA2] | Require platform auth for public ingress in the MCP gateway bicep template | iac-fix | high | surfaced | `mcp-gateway/mongodb-mcp-server` | +4/-2 | 2026-09-16 | n/a | none |
+| [sug_01M2M0T59E8XRGTF3HC7N9RVT0] | Require Microsoft Entra ID auth and read-only mode in the Azure Bicep baseline parameters | iac-fix | high | surfaced | `mcp-gateway/mongodb-mcp-server` | +5/-2 | 2026-09-16 | n/a | none |
+| [sug_01M2M1YDYTKJXNGMZTZEJNB4WR] | Bind integration-test mongod published port to loopback only | iac-fix | high | surfaced | `mcp-gateway/mongodb-mcp-server` | +3/-2 | 2026-09-16 | n/a | none |
+| [sug_01M2M1XNDXVS780KHSVW7GZSHN] | Require tool allowlists and human review instead of default bash in agentic-workflows agent instructions | agent-guardrail | high | surfaced | `mcp-gateway/mongodb-mcp-server` | +2/-2 | 2026-09-16 | n/a | none |
+| [sug_01M2M1Z5K82GX6E3YYZN2ZQVAW] | Add a pinned gitleaks pre-commit hook to scan every commit for secrets | cicd-gate | medium | surfaced | `db-models/onfinance-db-model-master` | +10/-0 | 2026-09-16 | n/a | none |
 
-Each suggestion answers one open ledger finding (titles quoted from the latest record per id, recorded
-2026-09-16T02:18:09Z); primary regulatory ref per the suggestion's `regulatoryRefs[0]` in master.json:
+Each suggestion answers one open ledger finding (titles as recorded in this report's Open findings section); primary regulatory refs per each suggestion's `regulatoryRefs` in master.json:
 
-- [sug_01M2M19HQY6B6W6MRZW7HA1XA2] answers [fnd_01M2HCWMBDDT80V2CWJ5Z7BH17] "MCP gateway deploys unauthenticated on
-  a public endpoint by default (qa/prod IaC root)" — SEBI sebi-cscrf-2024 PR.AA.S17 (SEBI CSCRF 2024), PR.AA.S2;
-  MeitY dpdp-rules-2025 6(1)(b) (DPDP Rules 2025).
-- [sug_01M2M0T59E8XRGTF3HC7N9RVT0] answers [fnd_01M2HCWMBDGA1D4Z54RET9CNC9] "Baseline deployment parameters ship
-  the gateway with no auth and write mode enabled" — SEBI sebi-cscrf-2024 PR.AA.S17, PR.AA.S2; MeitY
-  dpdp-rules-2025 6(1)(b).
-- [sug_01M2M1YDYTKJXNGMZTZEJNB4WR] answers [fnd_01M2KM42DZQK8J4EZEB68ZQ103] "Integration-test mongod published
-  unauthenticated on all interfaces of developer laptops" — SEBI sebi-cscrf-2024 PR.IP.S1, PR.AA.S2.
-- [sug_01M2M1XNDXVS780KHSVW7GZSHN] answers [fnd_01M2KM42DZ98VAGYD0E8TRV3FQ] "Agentic-workflows agent file tells
-  developers AI agents run full bash and edit by default and should not be restricted" — SEBI sebi-cscrf-2024
-  PR.AA.S3.
-- [sug_01M2M1Z5K82GX6E3YYZN2ZQVAW] answers [fnd_01M2KMNHPJ7Z0Y0YJT6YZR4NZM] "db-models/onfinance-db-model-master:
-  no local secrets-scanning hook and no CI, so the policy CI secret scan never reaches this repo" — SEBI
-  sebi-cscrf-2024 PR.IP.S2; it is the local-hook variant of [init_01M2KSV05T8TK1TJDJAS2EK3DW] (`initiativeId` in
-  master.json).
+- [sug_01M2M19HQY6B6W6MRZW7HA1XA2] answers [fnd_01M2HCWMBDDT80V2CWJ5Z7BH17] MCP gateway deploys unauthenticated on a public endpoint by default (qa/prod IaC root) — SEBI sebi-cscrf-2024 PR.AA.S17 (SEBI CSCRF 2024), PR.AA.S2; MeitY dpdp-rules-2025 6(1)(b) (DPDP Rules 2025).
+- [sug_01M2M0T59E8XRGTF3HC7N9RVT0] answers [fnd_01M2HCWMBDGA1D4Z54RET9CNC9] Baseline deployment parameters ship the gateway with no auth and write mode enabled — SEBI sebi-cscrf-2024 PR.AA.S17, PR.AA.S2; MeitY dpdp-rules-2025 6(1)(b).
+- [sug_01M2M1YDYTKJXNGMZTZEJNB4WR] answers [fnd_01M2KM42DZQK8J4EZEB68ZQ103] Integration-test mongod published unauthenticated on all interfaces of developer laptops — SEBI sebi-cscrf-2024 PR.IP.S1, PR.AA.S2.
+- [sug_01M2M1XNDXVS780KHSVW7GZSHN] answers [fnd_01M2KM42DZ98VAGYD0E8TRV3FQ] Agentic-workflows agent file tells developers AI agents run full bash and edit by default and should not be restricted — SEBI sebi-cscrf-2024 PR.AA.S3.
+- [sug_01M2M1Z5K82GX6E3YYZN2ZQVAW] answers [fnd_01M2KMNHPJ7Z0Y0YJT6YZR4NZM] db-models/onfinance-db-model-master: no local secrets-scanning hook and no CI, so the policy CI secret scan never reaches this repo — SEBI sebi-cscrf-2024 PR.IP.S2; it is the local-hook variant of [init_01M2KSV05T8TK1TJDJAS2EK3DW] (`initiativeId` in master.json).
 
-Acceptance figures for the period to 2026-09-16T02:18:09Z, computed exactly like
-[suggestion_acceptance_rate v1.0.0](../../kpis/measurement/suggestion_acceptance_rate.md):
+Acceptance figures for the period 2026-08-17 -> 2026-09-16, defined exactly like [suggestion_acceptance_rate v1.0.0](../../kpis/measurement/suggestion_acceptance_rate.md) and quoted from the `suggestion_acceptance_rate` series (computed 2026-09-16T07:19:56Z, methodVersion 1.0.0):
 
-- acceptance_rate = |accepted ∪ merged ∪ reverted| / |accepted ∪ merged ∪ reverted ∪ rejected ∪ expired| = 0/0 —
-  not computable; no suggestion has been decided (0 accepted, 0 merged, 0 reverted, 0 rejected, 0 expired).
-- merge_rate = |merged ∪ reverted| / |accepted ∪ merged ∪ reverted| = 0/0 — not computable; nothing accepted.
-- revert_rate = |reverted within 30 days of mergedAt| / |merged ∪ reverted| = 0/0 — not computable; nothing merged.
-- retention_30d = |merged with retentionCheckedAt ≥ mergedAt+30d and retained = true| / |merged checked| = 0/0 —
-  not computable; 0 merged suggestions checked, no `retentionCheckedAt` recorded this run.
+- acceptance_rate = |accepted ∪ merged ∪ reverted| / |accepted ∪ merged ∪ reverted ∪ rejected ∪ expired| — 0 % (numerator 0, denominator 0; 5 suggestions `surfacedAt` in period, none decided). <!-- source: kpis/data/suggestion_acceptance_rate/series.jsonl line 1 -->
+- merge_rate = |merged ∪ reverted| / |accepted ∪ merged ∪ reverted| — 0 % (0/0; nothing accepted). <!-- source: kpis/data/suggestion_acceptance_rate/series.jsonl line 2 -->
+- revert_rate = |reverted within 30 days of mergedAt| / |merged ∪ reverted| — 0 % (0/0; nothing merged). <!-- source: kpis/data/suggestion_acceptance_rate/series.jsonl line 3 -->
+- retention_30d = |merged with retentionCheckedAt ≥ mergedAt+30d and retained = true| / |merged checked| — 0 % (0/0; no merged suggestion checked, no `retentionCheckedAt` recorded). <!-- source: kpis/data/suggestion_acceptance_rate/series.jsonl line 4 -->
 
 ### Rejections
 
-No rejections as of 2026-09-16T02:18:09Z: no entry in `suggestions/master.json` has status `rejected`, so there is
-no `decisionNote` to quote.
+No rejections as of 2026-09-16T07:19:56Z: no entry in `suggestions/master.json` has status `rejected` (all five are `surfaced`), so there is no `decisionNote` to quote.
 
-<!-- source: suggestions/master.json (5 entries in suggestions[], all "status":"proposed", all "createdAt":"2026-09-16T02:18:09Z", all "prUrls":[]; categories iac-fix 3 + agent-guardrail 1 + cicd-gate 1; severity high 4, medium 1; +/- lines = repos[0].linesAdded/repos[0].linesRemoved; 0 merged, 0 reverted, 0 retention checks = no entry carries mergedAt/revertedAt/retentionCheckedAt/decidedBy/decisionNote); finding titles from soc/main.jsonl latest kind:finding record per id (lines 1045-1049, recordedAt 2026-09-16T02:18:09Z); regulatory refs from each suggestion's regulatoryRefs in master.json; acceptance/merge/revert/retention formulae from kpis/measurement/suggestion_acceptance_rate.md applied to the same 5 entries -->
+<!-- source: suggestions/master.json (5 entries in suggestions[], all status surfaced with surfacedAt 2026-09-16T02:18:09Z, all createdAt 2026-09-16T02:18:09Z, all prUrls empty; categories iac-fix 3 + agent-guardrail 1 + cicd-gate 1; severity high 4, medium 1; +/- lines = repos[0].linesAdded / repos[0].linesRemoved; no entry carries decidedAt, decidedBy, mergedAt, revertedAt, retentionCheckedAt or decisionNote, so 0 accepted, 0 merged, 0 reverted, 0 rejected, 0 expired); finding titles from the Open findings section of this report (latest kind:finding record per id in soc/main.jsonl); regulatory refs from each suggestion regulatoryRefs in master.json; acceptance, merge, revert and retention figures quoted from kpis/data/suggestion_acceptance_rate/series.jsonl lines 1-4 (value 0, unit percent, sampleSize 5 on the raw line, computedAt 2026-09-16T07:19:56Z, methodVersion 1.0.0) -->
+
+## KPIs
+
+Newest datapoint per series for `example-co` from `kpis/data/<kpi_id>/series.jsonl` — 13 rows, every one computed 2026-09-16T07:19:56Z (`methodVersion` 1.0.0) and every one the `company` slice for this `companyId` (no all-up row, so no Series cell says so); no KPI is missing, so no row reads not computed; run /kpis. Targets are `targets.warn / targets.alert` from `kpis/metrics.json`; values are quoted from the datapoints, never computed here.
+
+| KPI | Series | Period | Value | Unit | Sample | Target (warn / alert) | Trend | Method |
+|---|---|---|---|---|---|---|---|---|
+| Cost of audit | raw | 2026-08-17 -> 2026-09-16 | 0.8512 | usd | 1 | 400 / 800 | n/a | [cost_of_audit v1.0.0](../../kpis/measurement/cost_of_audit.md) <!-- source: kpis/data/cost_of_audit/series.jsonl line 25 --> |
+| Cost of audit | usd-per-control-observed | 2026-08-17 -> 2026-09-16 | 3.2704 | usd-per-control | 304.143 / 93 | 400 / 800 | n/a | [cost_of_audit v1.0.0](../../kpis/measurement/cost_of_audit.md) <!-- source: kpis/data/cost_of_audit/series.jsonl line 26 --> |
+| Cost of audit | usd-per-application | 2026-08-17 -> 2026-09-16 | 152.0715 | usd-per-application | 304.143 / 2 | 400 / 800 | n/a | [cost_of_audit v1.0.0](../../kpis/measurement/cost_of_audit.md) <!-- source: kpis/data/cost_of_audit/series.jsonl line 27 --> |
+| Change-management actionability | raw | 2026-08-17 -> 2026-09-16 | 1 | ratio | 10 / 10 | 0.6 / 0.4 | n/a | [cm_actionability v1.0.0](../../kpis/measurement/cm_actionability.md) <!-- source: kpis/data/cm_actionability/series.jsonl line 1 --> |
+| Change-management coverage | raw | 2026-08-17 -> 2026-09-16 | **8.8** | percent | 38 / 432 | 85 / 70 | n/a | [cm_coverage v1.0.0](../../kpis/measurement/cm_coverage.md) <!-- source: kpis/data/cm_coverage/series.jsonl line 1 --> |
+| Change-management time to implementation | raw | 2026-08-17 -> 2026-09-16 | 0 | days | 0 | 30 / 60 | n/a | [cm_time_to_implementation v1.0.0](../../kpis/measurement/cm_time_to_implementation.md) <!-- source: kpis/data/cm_time_to_implementation/series.jsonl line 1 --> |
+| Change-management time to implementation | sla-compliance-rate | 2026-08-17 -> 2026-09-16 | 0 | ratio | 0 / 0 | 30 / 60 | n/a | [cm_time_to_implementation v1.0.0](../../kpis/measurement/cm_time_to_implementation.md) <!-- source: kpis/data/cm_time_to_implementation/series.jsonl line 2 --> |
+| Suggestion acceptance rate | raw | 2026-08-17 -> 2026-09-16 | **0** | percent | 0 / 0 | 50 / 30 | n/a | [suggestion_acceptance_rate v1.0.0](../../kpis/measurement/suggestion_acceptance_rate.md) <!-- source: kpis/data/suggestion_acceptance_rate/series.jsonl line 1 --> |
+| Suggestion acceptance rate | merge-rate | 2026-08-17 -> 2026-09-16 | **0** | percent | 0 / 0 | 50 / 30 | n/a | [suggestion_acceptance_rate v1.0.0](../../kpis/measurement/suggestion_acceptance_rate.md) <!-- source: kpis/data/suggestion_acceptance_rate/series.jsonl line 2 --> |
+| Suggestion acceptance rate | revert-rate | 2026-08-17 -> 2026-09-16 | **0** | percent | 0 / 0 | 50 / 30 | n/a | [suggestion_acceptance_rate v1.0.0](../../kpis/measurement/suggestion_acceptance_rate.md) <!-- source: kpis/data/suggestion_acceptance_rate/series.jsonl line 3 --> |
+| Suggestion acceptance rate | retention-30d | 2026-08-17 -> 2026-09-16 | **0** | percent | 0 / 0 | 50 / 30 | n/a | [suggestion_acceptance_rate v1.0.0](../../kpis/measurement/suggestion_acceptance_rate.md) <!-- source: kpis/data/suggestion_acceptance_rate/series.jsonl line 4 --> |
+| Incident rate | raw | 2026-08-17 -> 2026-09-16 | 0 | per-1000-changes | 0 / 0 | 5 / 10 | n/a | [incident_rate v1.0.0](../../kpis/measurement/incident_rate.md) <!-- source: kpis/data/incident_rate/series.jsonl line 1 --> |
+| Incident rate | incidents-per-application | 2026-08-17 -> 2026-09-16 | 0 | count | 0 / 2 | 5 / 10 | n/a | [incident_rate v1.0.0](../../kpis/measurement/incident_rate.md) <!-- source: kpis/data/incident_rate/series.jsonl line 2 --> |
+
+- Sample is the datapoint `sampleSize`, or `numerator / denominator` where the datapoint carries both (so the cost_of_audit normalised rows read 304.143 usd over 93 controls observed and over 2 applications).
+- Trend is `n/a` on every row: no earlier datapoint with the same `methodVersion` and dimensions exists for any of the 13 series (each rendered series holds exactly one example-co datapoint; the older `cost_of_audit` lines belong to other `runId`s, other harnesses or carry no `companyId`).
+- The cost_of_audit rows are the company slice of run `run_01M2GDZ3Q3S5WYCB3MV02QJXZ1` (harness `opencode`): the raw row is that run's `manual`-workflow slice (dimensions include `workflow: manual`), and the two normalised rows aggregate its 603 sampled sessions (`sampleSize` 603, sessionsConsidered 604, sessionsSampled 603, scaleFactor 1.0017).
+- Bold marks a value past its KPI's `alert` threshold, judged with the KPI-level `direction` from `kpis/metrics.json` (one `targets` block per KPI; the registry defines no per-series targets, so `revert-rate` is read against the same higher-is-better 50/30 block — 0 % passes the 30 alert only under that mechanical rule). Past alert: cm_coverage 8.8 below 70, and suggestion_acceptance_rate raw, merge-rate, revert-rate and retention-30d all 0 below 30. No cost_of_audit, cm_actionability, cm_time_to_implementation or incident_rate value is past its alert.
 

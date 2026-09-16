@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.session.meta",
+  "sessionId": "ses_f56e9d25affejpzh8xqczxT1he",
+  "harness": "opencode",
+  "harnessVersion": "1.18.30",
+  "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+  "workflow": "report-audit-improvements",
+  "companyId": "example-co",
+  "args": {
+    "appIds": [],
+    "envIds": [],
+    "dryRun": false
+  },
+  "startedAt": "2026-09-16T07:19:58Z",
+  "cwd": "/home/priyesh/.cache/maxwell-e2e/opencode-wt",
+  "gitBranch": "e2e-opencode",
+  "gitCommit": "1d9c7f565db924351bc3db4f4840f9dab3e8cd56",
+  "transcriptPath": "kpis/data/raw/sessions/opencode/ses_f56e9d25affejpzh8xqczxT1he.jsonl",
+  "sampled": true,
+  "samplingReason": "forced",
+  "model": "unknown",
+  "invokedBy": {
+    "type": "script",
+    "id": "headless"
+  },
+  "provenance": {
+    "harness": "script",
+    "generatedAt": "2026-09-16T07:19:58Z",
+    "sessionId": "ses_f56e9d25affejpzh8xqczxT1he",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "agent": "hooks/session-start"
+  },
+  "endedAt": "2026-09-16T07:23:16Z",
+  "exportPath": "kpis/data/raw/sessions/opencode/ses_f56e9d25affejpzh8xqczxT1he.export.json"
+}
