@@ -420,9 +420,10 @@ const probed = await pipeline(
       if (candidates.length) skipped.push({ appId: t.appId, repoId: t.repoId, reason: 'dry-run: ' + candidates.length + ' candidate finding(s) discarded; only inconclusive observations are written' });
       return { target: t, probe, findings: [] };
     }
-    const survivors = [];
-    for (let i = 0; i < candidates.length; i += 1) {
-      const f = candidates[i];
+    // Candidates are refuted concurrently, as many at a time as the harness allows; each returns its merged finding
+    // or null. Refuting them one after another made this stage take hours on a slow model (2026-09-16).
+    const refuted = await pipeline(candidates, async (f) => {
+      const i = candidates.indexOf(f);
       const lenses = ['evidence', 'regulatory-mapping'];
       const votes = await parallel(lenses.map((lens) => () =>
         agent(refutePrompt(t, probe, f, lens), { label: 'refute ' + lens + ' ' + t.repoId + ' #' + (i + 1), phase: 'Refute', agentType: 'refuter', schema: VERDICT_SCHEMA, effort: 'high' })));
@@ -430,9 +431,9 @@ const probed = await pipeline(
       const [ev, mp] = votes;
       const drop = (why) => skipped.push({ appId: t.appId, repoId: t.repoId, reason: why + ': ' + f.title });
       // Every finding must survive the evidence lens; a mapping-lens refutation means no applicable clause exists.
-      if (!ev) { drop('dropped: evidence lens returned no verdict'); continue; }
-      if (ev.refuted) { drop('refuted by the evidence lens (' + ev.reason + ')'); continue; }
-      if (mp && mp.refuted) { drop('refuted by the regulatory-mapping lens (' + mp.reason + ')'); continue; }
+      if (!ev) { drop('dropped: evidence lens returned no verdict'); return null; }
+      if (ev.refuted) { drop('refuted by the evidence lens (' + ev.reason + ')'); return null; }
+      if (mp && mp.refuted) { drop('refuted by the regulatory-mapping lens (' + mp.reason + ')'); return null; }
       const merged = { ...f };
       if (mp && mp.correctedRegulatoryRefs && mp.correctedRegulatoryRefs.length) merged.regulatoryRefs = mp.correctedRegulatoryRefs;
       if (mp && mp.correctedControlIds && mp.correctedControlIds.length) merged.controlIds = mp.correctedControlIds;
@@ -445,18 +446,19 @@ const probed = await pipeline(
         const again = await agent(refutePrompt(t, probe, { ...merged, severity }, 'evidence', 'The regulatory-mapping lens raised severity from ' + f.severity + ' to ' + severity + ' (' + mp.reason + '). Judge whether the evidence supports ' + severity + '.'),
           { label: 'refute evidence (raised) ' + t.repoId + ' #' + (i + 1), phase: 'Refute', agentType: 'refuter', schema: VERDICT_SCHEMA, effort: 'high' });
         noteSession(again);
-        if (!again || again.refuted) { drop('dropped after the mapping lens raised severity to ' + severity + ': evidence lens ' + (again ? 'refuted (' + again.reason + ')' : 'returned no verdict')); continue; }
+        if (!again || again.refuted) { drop('dropped after the mapping lens raised severity to ' + severity + ': evidence lens ' + (again ? 'refuted (' + again.reason + ')' : 'returned no verdict')); return null; }
         if (again.correctedSeverity) severity = lower(severity, again.correctedSeverity);
         evidenceReason = again.reason;
       }
       merged.severity = severity;
       // high/critical (before or after corrections) must have survived BOTH lenses.
-      if (isSevere(higher(f.severity, merged.severity)) && !mp) { drop('dropped: ' + higher(f.severity, merged.severity) + ' finding needs both lenses but the regulatory-mapping lens returned no verdict'); continue; }
+      if (isSevere(higher(f.severity, merged.severity)) && !mp) { drop('dropped: ' + higher(f.severity, merged.severity) + ' finding needs both lenses but the regulatory-mapping lens returned no verdict'); return null; }
       const postGap = requiredMappingGap(merged);
-      if (postGap || merged.severity === 'info') { drop('dropped after refutation corrections (' + (postGap || 'severity lowered to info; observation only') + ')'); continue; }
+      if (postGap || merged.severity === 'info') { drop('dropped after refutation corrections (' + (postGap || 'severity lowered to info; observation only') + ')'); return null; }
       merged.refutationSummary = 'Refutation: evidence lens not refuted (' + evidenceReason + ')' + (mp ? '; regulatory-mapping lens not refuted (' + mp.reason + ')' : '; regulatory-mapping lens returned no verdict') + '.';
-      survivors.push(merged);
-    }
+      return merged;
+    });
+    const survivors = refuted.filter(Boolean);
     log(t.appId + '/' + t.repoId + ': ' + survivors.length + '/' + candidates.length + ' finding(s) survived refutation');
     return { target: t, probe, findings: survivors };
   },
