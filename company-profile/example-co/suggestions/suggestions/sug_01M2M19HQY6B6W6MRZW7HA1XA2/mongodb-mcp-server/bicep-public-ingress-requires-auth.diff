@@ -1,0 +1,24 @@
+diff --git a/deploy/azure/bicep/main.bicep b/deploy/azure/bicep/main.bicep
+index caf934b..674f717 100644
+--- a/deploy/azure/bicep/main.bicep
++++ b/deploy/azure/bicep/main.bicep
+@@ -45,7 +45,7 @@ param appEnvironmentVars object = {
+   MDB_MCP_LOG_PATH: '/tmp/mongodb-mcp'
+ }
+ 
+-@description('Authentication mode toggle for the Container App. NOAUTH disables platform auth; MicrosoftMIBasedAuth enables Azure AD auth and enforces 401 for unauthenticated requests.')
++@description('Authentication mode toggle for the Container App. NOAUTH disables platform auth and keeps the ingress internal to the Container Apps environment; MicrosoftMIBasedAuth enables Azure AD auth, enforces 401 for unauthenticated requests, and exposes the app externally.')
+ @allowed([
+   'NOAUTH'
+   'MicrosoftMIBasedAuth'
+@@ -150,7 +150,9 @@ resource containerApp 'Microsoft.App/containerApps@2024-02-02-preview' = {
+     managedEnvironmentId: envResourceId
+     configuration: {
+       ingress: {
+-        external: true
++        // Internet exposure only when platform auth (Easy Auth) is enabled;
++        // NOAUTH deployments are reachable from within the environment only.
++        external: authMode == 'MicrosoftMIBasedAuth'
+         targetPort: int(appEnvironmentVars.MDB_MCP_HTTP_PORT)
+         transport: 'auto'
+       }

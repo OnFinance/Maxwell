@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.session.summary",
+  "sessionId": "ses_f57c25b7cffeP6W4FJw7lqSz9Y",
+  "harness": "opencode",
+  "harnessVersion": "1.18.30",
+  "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+  "workflow": "impl-auto-improvement",
+  "companyId": "example-co",
+  "startedAt": "2026-09-16T03:23:27Z",
+  "endedAt": "2026-09-16T03:23:43Z",
+  "durationMs": 16000,
+  "turns": 4,
+  "inferenceCalls": 4,
+  "toolCalls": {
+    "total": 3,
+    "byTool": {
+      "read": 1,
+      "write": 1,
+      "bash": 1
+    }
+  },
+  "subagentSessions": 0,
+  "permissionDenials": [],
+  "models": [
+    {
+      "model": "glm-5.3",
+      "provider": "other",
+      "tokens": {
+        "input": 15846,
+        "output": 609,
+        "cacheWrite5m": 0,
+        "cacheWrite1h": 0,
+        "cacheRead": 41152,
+        "thinking": null
+      },
+      "webSearchRequests": 0,
+      "webFetchRequests": 0,
+      "costUsd": 0.035564
+    }
+  ],
+  "costUsd": {
+    "computed": 0.035564,
+    "reported": 0.035564,
+    "deltaPct": 0
+  },
+  "pricingVersion": "2026-09-14",
+  "dedup": {
+    "strategy": "requestId-max-total-tokens",
+    "duplicatesDropped": 0
+  },
+  "filesWritten": [
+    "company-profile/example-co/suggestions/suggestions/sug_01M2M19HQY6B6W6MRZW7HA1XA2/mongodb-mcp-server/bicep-public-ingress-requires-auth.diff"
+  ],
+  "linesAdded": 0,
+  "linesRemoved": 0,
+  "outcome": "success",
+  "transcriptFormatVersion": "1.18.30",
+  "provenance": {
+    "harness": "script",
+    "generatedAt": "2026-09-16T04:01:44Z",
+    "sessionId": "ses_f57c25b7cffeP6W4FJw7lqSz9Y",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-auto-improvement",
+    "agent": ".claude/scripts/sessions/ingest.mjs"
+  }
+}

@@ -2,12 +2,296 @@
   "schemaVersion": "1",
   "kind": "maxwell.sug.master",
   "companyId": "example-co",
-  "updatedAt": "2026-09-14T00:00:00Z",
-  "suggestions": [],
+  "updatedAt": "2026-09-16T02:18:09Z",
+  "suggestions": [
+    {
+      "suggestionId": "sug_01M2M19HQY6B6W6MRZW7HA1XA2",
+      "title": "Require platform auth for public ingress in the MCP gateway bicep template",
+      "rationale": "SEBI CSCRF 2024 PR.AA.S17 requires that API security with proper authentication and authorisation mechanisms be defined and implemented, with access management so only intended entities reach APIs; PR.AA.S2 requires whitelist-based exposure of internet-facing infrastructure, and DPDP Rules 2025 6(1)(b) requires access controls on the computer resources holding client (PII/financial) data. Finding fnd_01M2HCWMBDDT80V2CWJ5Z7BH17 (probe-iac rule bicep-containerapp-public-noauth) showed that deploy/azure/bicep/main.bicep defaults authMode to NOAUTH while unconditionally setting ingress.external = true, so the default qa/prod deployment of this partner-exposed MongoDB MCP gateway (MDB_MCP_HTTP_AUTH_MODE=none, no authConfig resource, no WAF, rate limiting or allowlist) accepted unauthenticated requests over the public internet and exposed MongoDB query tools against the client-data and order stores. The diff makes internet exposure conditional on authentication: ingress.external is now true only when authMode is MicrosoftMIBasedAuth — the mode that deploys the Entra authConfig with unauthenticatedClientAction Return401 — while NOAUTH deployments keep the ingress internal to the Container Apps environment; the authMode parameter description documents that contract. A reviewer verifies by redeploying at the shipped defaults and confirming the Container App has no external ingress (az containerapp show reports externalIngress false), then deploying with authMode=MicrosoftMIBasedAuth plus authClientId/authIssuerUrl/authTenantId and confirming unauthenticated requests receive 401. Follow-ups outside this diff, recommended as change-management tasks: an IP allowlist/WAF in front of the public endpoint (ingress ipSecurityRestrictions or Front Door) and flipping params_template.json MDB_MCP_READ_ONLY from false.",
+      "category": "iac-fix",
+      "severity": "high",
+      "status": "surfaced",
+      "createdAt": "2026-09-16T02:18:09Z",
+      "surfacedAt": "2026-09-16T02:18:09Z",
+      "prUrls": [],
+      "repos": [
+        {
+          "appId": "mcp-gateway",
+          "repoId": "mongodb-mcp-server",
+          "diffPath": "company-profile/example-co/suggestions/suggestions/sug_01M2M19HQY6B6W6MRZW7HA1XA2/mongodb-mcp-server/bicep-public-ingress-requires-auth.diff",
+          "baseCommit": "aaa72a040db4c32f3d6488d5e28e2892a68e9ee0",
+          "linesAdded": 4,
+          "linesRemoved": 2,
+          "filesChanged": 1
+        }
+      ],
+      "findingIds": [
+        "fnd_01M2HCWMBDDT80V2CWJ5Z7BH17"
+      ],
+      "controlIds": [
+        "PR.AA.S17",
+        "PR.AA.S2",
+        "6(1)(b)"
+      ],
+      "regulatoryRefs": [
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "PR.AA.S17"
+        },
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "PR.AA.S2"
+        },
+        {
+          "regulator": "MeitY",
+          "instrument": "dpdp-rules-2025",
+          "controlId": "6(1)(b)"
+        },
+        {
+          "regulator": "ISO",
+          "instrument": "iso-27001-2022",
+          "controlId": "A.5.15"
+        }
+      ],
+      "sourceWorkflow": "impl-auto-improvement",
+      "provenance": {
+        "harness": "opencode",
+        "generatedAt": "2026-09-16T02:18:09Z",
+        "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+        "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+        "workflow": "impl-auto-improvement",
+        "agent": "fix-author",
+        "model": "cloudflare-workers-ai/@cf/zai-org/glm-5.3"
+      }
+    },
+    {
+      "suggestionId": "sug_01M2M0T59E8XRGTF3HC7N9RVT0",
+      "title": "Require Microsoft Entra ID auth and read-only mode in the Azure Bicep baseline parameters",
+      "rationale": "Finding fnd_01M2HCWMBDGA1D4Z54RET9CNC9 (rule bicep-containerapp-public-noauth, high): deploy/azure/README.md presents bicep/params_template.json as the baseline copy source for every deployment, yet it ships authMode NOAUTH (line 21) and MDB_MCP_READ_ONLY false (line 12, overriding main.bicep's own read-only default), so the copied baseline deploys an externally exposed Container App (main.bicep ingress external: true) accepting unauthenticated, write-capable MCP calls against the pii/financial client-data and order stores. This violates SEBI CSCRF 2024 PR.AA.S17 (API security with authentication, authorisation, rate limiting and whitelisting) and PR.AA.S2, and DPDP Rules 2025 rule 6(1)(b) (reasonable security safeguards including access control on computer resources processing personal data), with ISO 27001:2022 A.5.15 as a secondary mapping. The diff makes the shipped baseline safe by default using only modes the template already supports: MDB_MCP_READ_ONLY is restored to the bicep default \"true\" (write access becomes an explicit per-environment opt-in), authMode switches to the @allowed value MicrosoftMIBasedAuth - which makes main.bicep deploy the containerApps/authConfigs child resource with unauthenticatedClientAction Return401 and inject MDB_MCP_HTTP_AUTH_MODE=azure-managed-identity - and the three parameters that mode requires (authClientId, authIssuerUrl, authTenantId) are added with the same <PLACEHOLDER> convention as paramsWithAuthEnabled_template.json and the existing <MONGODB_CONNECTION_STRING> entry, so no secret is introduced and nothing that expects Azure params-file comment/placeholder syntax breaks. A reviewer verifies by applying the diff, filling the placeholders with tenant values and running az deployment group what-if against bicep/main.bicep: the authConfigs resource appears with platform enabled and Return401, and the deployed endpoint answers 401 to unauthenticated requests. Follow-ups not covered by this diff: deploy/azure/README.md still describes the baseline file as for deployments where external authentication is not required; paramsWithAuthEnabled_template.json also ships MDB_MCP_READ_ONLY false; main.bicep still defaults authMode to NOAUTH; authAllowedClientApps is left unset (all Entra-authenticated clients allowed) and should be filled in environment-specific copies for client-app whitelisting under PR.AA.S17; re-probe qa and prod deployments with probe-iac after merge.",
+      "category": "iac-fix",
+      "severity": "high",
+      "status": "surfaced",
+      "createdAt": "2026-09-16T02:18:09Z",
+      "surfacedAt": "2026-09-16T02:18:09Z",
+      "prUrls": [],
+      "repos": [
+        {
+          "appId": "mcp-gateway",
+          "repoId": "mongodb-mcp-server",
+          "diffPath": "company-profile/example-co/suggestions/suggestions/sug_01M2M0T59E8XRGTF3HC7N9RVT0/mongodb-mcp-server/params-template-entra-auth-readonly.diff",
+          "baseCommit": "aaa72a040db4c32f3d6488d5e28e2892a68e9ee0",
+          "linesAdded": 5,
+          "linesRemoved": 2,
+          "filesChanged": 1
+        }
+      ],
+      "findingIds": [
+        "fnd_01M2HCWMBDGA1D4Z54RET9CNC9"
+      ],
+      "controlIds": [
+        "PR.AA.S17",
+        "PR.AA.S2",
+        "6(1)(b)"
+      ],
+      "regulatoryRefs": [
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "PR.AA.S17"
+        },
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "PR.AA.S2"
+        },
+        {
+          "regulator": "MeitY",
+          "instrument": "dpdp-rules-2025",
+          "controlId": "6(1)(b)"
+        },
+        {
+          "regulator": "ISO",
+          "instrument": "iso-27001-2022",
+          "controlId": "A.5.15"
+        }
+      ],
+      "sourceWorkflow": "impl-auto-improvement",
+      "provenance": {
+        "harness": "opencode",
+        "generatedAt": "2026-09-16T02:18:09Z",
+        "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+        "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+        "workflow": "impl-auto-improvement",
+        "agent": "fix-author",
+        "model": "cloudflare-workers-ai/@cf/zai-org/glm-5.3"
+      }
+    },
+    {
+      "suggestionId": "sug_01M2M1YDYTKJXNGMZTZEJNB4WR",
+      "title": "Bind integration-test mongod published port to loopback only",
+      "rationale": "Finding fnd_01M2KM42DZQK8J4EZEB68ZQ103 (rule devenv-compose-exposed-ports) reported that the mongot community test fixture publishes mongod with the compose entry \"0:27017\", which binds a random host port on every interface of the developer-laptop fleet described in applications/mcp-gateway/env/dev.json, letting any network a laptop joins reach an unauthenticated MongoDB instance. SEBI CSCRF 2024 PR.IP.S1 requires port whitelisting and hardened baselines for enterprise assets and PR.AA.S2 requires dev-tier network segmentation (CIS Controls v8.1 4.1 maps the same gap). The diff changes the single ports entry to \"127.0.0.1:0:27017\" (a random port bound to the loopback interface only) and updates the adjacent comment, so the instance is reachable only from the developer's own machine and the cross-network exposure named in the finding is closed. Existing test behaviour is preserved: testcontainers resolves the mapped port from the Docker daemon and mongodbClusterProcess.ts connects to the host's loopback; only a remote DOCKER_HOST setup would stop working, which the dev-tier record does not describe. A reviewer verifies with git apply --check, then `docker compose -f tests/integration/tools/mongodb/mongot-community-setup/docker-compose.yml config` showing the 127.0.0.1:0->27017/tcp mapping, and by running the autoEmbed integration suites with MDB_MONGOT_PASSWORD and MDB_VOYAGE_API_KEY set. Follow-up not covered by this diff: starting mongod with --auth plus a keyFile and a scoped test user remains, and belongs in a change-management task because it restructures the fixture bootstrap (init-mongo.sh localhost-exception ordering, entrypoint-preserving keyFile generation, credentials in the autoEmbed connection string) and can only be validated by running the containerised integration suite; after this merge the unauthenticated instance is no longer network-reachable, which is the exposure PR.IP.S1 and PR.AA.S2 require closing.",
+      "category": "iac-fix",
+      "severity": "high",
+      "status": "surfaced",
+      "createdAt": "2026-09-16T02:18:09Z",
+      "surfacedAt": "2026-09-16T02:18:09Z",
+      "prUrls": [],
+      "repos": [
+        {
+          "appId": "mcp-gateway",
+          "repoId": "mongodb-mcp-server",
+          "diffPath": "company-profile/example-co/suggestions/suggestions/sug_01M2M1YDYTKJXNGMZTZEJNB4WR/mongodb-mcp-server/docker-compose-mongod-port-loopback.diff",
+          "baseCommit": "aaa72a040db4c32f3d6488d5e28e2892a68e9ee0",
+          "linesAdded": 3,
+          "linesRemoved": 2,
+          "filesChanged": 1
+        }
+      ],
+      "findingIds": [
+        "fnd_01M2KM42DZQK8J4EZEB68ZQ103"
+      ],
+      "controlIds": [
+        "PR.IP.S1",
+        "PR.AA.S2"
+      ],
+      "regulatoryRefs": [
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "PR.IP.S1"
+        },
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "PR.AA.S2"
+        },
+        {
+          "regulator": "CIS",
+          "instrument": "cis-controls-8.1",
+          "controlId": "4.1"
+        }
+      ],
+      "sourceWorkflow": "impl-auto-improvement",
+      "provenance": {
+        "harness": "opencode",
+        "generatedAt": "2026-09-16T02:18:09Z",
+        "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+        "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+        "workflow": "impl-auto-improvement",
+        "agent": "fix-author",
+        "model": "cloudflare-workers-ai/@cf/zai-org/glm-5.3"
+      }
+    },
+    {
+      "suggestionId": "sug_01M2M1XNDXVS780KHSVW7GZSHN",
+      "title": "Require tool allowlists and human review instead of default bash in agentic-workflows agent instructions",
+      "rationale": "SEBI CSCRF 2024 PR.AA.S3 (least privilege and segregation of duties while granting access permissions and authorisations) and OWASP Agentic Top 10 2026 ASI02 (tool misuse) require that AI agents never operate with unrestricted shell and file-edit capabilities by default. Finding fnd_01M2KM42DZ98VAGYD0E8TRV3FQ flagged .github/agents/agentic-workflows.agent.md of mongodb-mcp-server: line 184 advertised that all gh-aw workflows run with full `bash` and `edit` tools by default, and line 191 explicitly instructed agents \"Don't restrict bash commands unnecessarily since workflows are sandboxed by the AWF\". This guidance defeats the company aiCodingPolicy (humanReviewRequired: true, promptInjectionControls: [tool-allowlist, human-approval-for-writes], company-profile/example-co/sdlc/policy.json lines 80-84) on an AI-facing repository that is itself an MCP server product: prompt-injected workflow content could drive arbitrary shell and edits in the agent sandbox with no approval gate.\n\nThe diff rewrites only those two bullets: the \"Sandboxed Execution\" feature bullet now states the AWF limits blast radius but is not a substitute for least privilege and that `bash`/`edit` must be granted only when a workflow explicitly needs them, and the \"Important Notes\" bullet replaces \"Bash tools are enabled by default\" with an allowlist requirement: explicit bash command allowlist, `edit` scoped to the paths a workflow must change, and human review (pull request approval) of agent write operations because workflow content can carry prompt injection.\n\nA reviewer verifies by opening .github/agents/agentic-workflows.agent.md at baseCommit aaa72a040db4c32f3d6488d5e28e2892a68e9ee0 plus this diff (git apply --check passes): no line instructs agents that bash/edit are enabled by default or that bash should not be restricted, and the new guidance matches the existing line 192 security-best-practices bullet (minimal permissions, explicit network access, no template injection).\n\nNot covered by this diff, for follow-up through impl-change-management: enforcing an explicit `tools:` allowlist and a pull-request approval gate in each gh-aw workflow's frontmatter (.github/workflows/*.md) and any org-level gh-aw/AWF firewall policy - a repository instruction file cannot itself enforce tool grants; and no prior suggestion existed to supersede (suggestions/master.json was empty, priorRejections empty).",
+      "category": "agent-guardrail",
+      "severity": "high",
+      "status": "surfaced",
+      "createdAt": "2026-09-16T02:18:09Z",
+      "surfacedAt": "2026-09-16T02:18:09Z",
+      "prUrls": [],
+      "repos": [
+        {
+          "appId": "mcp-gateway",
+          "repoId": "mongodb-mcp-server",
+          "diffPath": "company-profile/example-co/suggestions/suggestions/sug_01M2M1XNDXVS780KHSVW7GZSHN/mongodb-mcp-server/agentic-workflows-agent-restrict-bash.diff",
+          "baseCommit": "aaa72a040db4c32f3d6488d5e28e2892a68e9ee0",
+          "linesAdded": 2,
+          "linesRemoved": 2,
+          "filesChanged": 1
+        }
+      ],
+      "findingIds": [
+        "fnd_01M2KM42DZ98VAGYD0E8TRV3FQ"
+      ],
+      "controlIds": [
+        "PR.AA.S3"
+      ],
+      "regulatoryRefs": [
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "PR.AA.S3"
+        },
+        {
+          "regulator": "OWASP",
+          "instrument": "owasp-agentic-top10-2026",
+          "controlId": "ASI02"
+        }
+      ],
+      "sourceWorkflow": "impl-auto-improvement",
+      "provenance": {
+        "harness": "opencode",
+        "generatedAt": "2026-09-16T02:18:09Z",
+        "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+        "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+        "workflow": "impl-auto-improvement",
+        "agent": "fix-author",
+        "model": "cloudflare-workers-ai/@cf/zai-org/glm-5.3"
+      }
+    },
+    {
+      "suggestionId": "sug_01M2M1Z5K82GX6E3YYZN2ZQVAW",
+      "title": "Add a pinned gitleaks pre-commit hook to scan every commit for secrets",
+      "rationale": "Why: SEBI CSCRF 2024 PR.IP.S2 (\"Implement a system development life cycle\", defaultSeverity medium) requires security controls during development, and NIST SSDF 800-218 PO.5.2 is the crosswalk. Finding fnd_01M2KMNHPJ7Z0Y0YJT6YZR4NZM (rule devenv-no-local-secret-scan) shows the policy's only secret-detection control - sdlc/policy.json ciGates secrets gate (gitleaks, blocking, minSeverityToBlock low; secretsManagement.scanningInCi true) - has no place to run for onfinance-db-model-master: the repo has no CI at all (ciSystem none; the missing CI is tracked separately by fnd_01M2KGVJJ2AXNAXRE08PZ2Z7YP) and no local scanning hook. This public repo models broker API keys, passwords, 2FA seeds and access tokens, so any future credential commit would reach the public repository unscanned; the offline sweep at HEAD 70b3633e171a1b8d389b27bb901c84c34a0e9bf6 found no committed secret, so the gap is the absent control, not an existing leak.\nWhat the diff does: adds one new file, .pre-commit-config.yaml, that runs the official gitleaks pre-commit hook (gitleaks protect --staged) on every commit, pinned to the released tag v8.24.3 (never a mutable branch), mirroring the policy secrets gate at its blocking low threshold; it adds no SKIP or --no-verify bypass. Until the repo gains CI, this local hook is the only enforcing variant of the control (initiative init_01M2KSV05T8TK1TJDJAS2EK3DW, task_1).\nHow a reviewer verifies: after pre-commit install, pre-commit run --all-files exits 0 on the current tree (no secret at HEAD 70b3633e171a1b8d389b27bb901c84c34a0e9bf6), and a commit attempt containing a clearly-marked fake test credential is aborted by the hook with a non-zero exit and no commit object created; once merged, git ls-files lists .pre-commit-config.yaml on master, and the hook rev is a released gitleaks tag.\nNot covered by this diff: the blocking CI-side gitleaks job lands with the repo's CI work tracked under fnd_01M2KGVJJ2AXNAXRE08PZ2Z7YP; contributor documentation (README, policy-document) is task_2 and the probe-sdlc verification run is task_3 of the same initiative. No prior rejections to address and no existing proposed suggestion to supersede (the suggestions index is empty).",
+      "category": "cicd-gate",
+      "severity": "medium",
+      "status": "surfaced",
+      "createdAt": "2026-09-16T02:18:09Z",
+      "surfacedAt": "2026-09-16T02:18:09Z",
+      "prUrls": [],
+      "repos": [
+        {
+          "appId": "db-models",
+          "repoId": "onfinance-db-model-master",
+          "diffPath": "company-profile/example-co/suggestions/suggestions/sug_01M2M1Z5K82GX6E3YYZN2ZQVAW/onfinance-db-model-master/pre-commit-gitleaks-hook.diff",
+          "baseCommit": "70b3633e171a1b8d389b27bb901c84c34a0e9bf6",
+          "linesAdded": 10,
+          "linesRemoved": 0,
+          "filesChanged": 1
+        }
+      ],
+      "findingIds": [
+        "fnd_01M2KMNHPJ7Z0Y0YJT6YZR4NZM"
+      ],
+      "controlIds": [
+        "PR.IP.S2"
+      ],
+      "regulatoryRefs": [
+        {
+          "regulator": "SEBI",
+          "instrument": "sebi-cscrf-2024",
+          "controlId": "PR.IP.S2"
+        },
+        {
+          "regulator": "NIST",
+          "instrument": "nist-ssdf-800-218",
+          "controlId": "PO.5.2"
+        }
+      ],
+      "initiativeId": "init_01M2KSV05T8TK1TJDJAS2EK3DW",
+      "sourceWorkflow": "impl-auto-improvement",
+      "provenance": {
+        "harness": "opencode",
+        "generatedAt": "2026-09-16T02:18:09Z",
+        "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+        "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+        "workflow": "impl-auto-improvement",
+        "agent": "fix-author",
+        "model": "cloudflare-workers-ai/@cf/zai-org/glm-5.3"
+      }
+    }
+  ],
   "provenance": {
-    "harness": "human",
-    "generatedAt": "2026-09-14T00:00:00Z",
-    "workflow": "seed-company",
-    "agent": "maxwell-maintainers"
+    "harness": "opencode",
+    "generatedAt": "2026-09-16T02:18:09Z",
+    "sessionId": "453ecc6e-1346-418f-a2c0-1bfcead851c3",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-auto-improvement",
+    "agent": "validator"
   }
 }

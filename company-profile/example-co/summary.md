@@ -3,17 +3,17 @@ schemaVersion: "1"
 kind: maxwell.company.summary
 companyId: example-co
 title: Example Capital Markets cyber resilience summary
-version: "5.5.0"
-sections: [overview, regulatory-posture, applications, vendors, data-flows, control-summary, open-findings, initiatives]
+version: "6.0.0"
+sections: [overview, regulatory-posture, applications, vendors, data-flows, control-summary, open-findings, initiatives, suggestions]
 provenance:
   harness: opencode
-  generatedAt: "2026-09-15T23:48:58Z"
-  sessionId: ses_f5886b36bffe2kfOWH64YruZ39
+  generatedAt: "2026-09-16T02:18:09Z"
+  sessionId: 453ecc6e-1346-418f-a2c0-1bfcead851c3
   runId: run_01M2GDZ3Q3S5WYCB3MV02QJXZ1
-  workflow: impl-change-management
+  workflow: impl-auto-improvement
   agent: report-writer
   model: "cloudflare-workers-ai/@cf/zai-org/glm-5.3"
-  inputsHash: 2c2355ce4c927a4dc6346ad6516c716ecc453f3245956275314433e65d7e217e
+  inputsHash: 9faddd89ec7009eeff89e4b15fe452ae4582f388e0689dd48b97c18b3393465b
 ---
 # Example Capital Markets — cyber resilience summary
 
@@ -456,4 +456,58 @@ workflow that must re-run to supply the closing evidence for its linked finding(
   reconcile the finding (re-probe `probe-sdlc`, owner ciso@example-co.invalid, due 2026-09-28T23:48:58Z).
 
 <!-- source: counters and per-initiative fields from change_management/master.json (counters open 10, closed 0, cancelled 0, overdue 0, updatedAt 2026-09-15T23:48:58Z; status/priority/changeType/owner.id/dueAt/taskCounts/findingIds/regulatoryRefs per initiative; Findings column = len(findingIds) = 6, 6, 3, 1, 2, 2, 1, 1, 1, 1 = 24 distinct finding ids); tasks = 33 files under change_management/initiatives/*/tasks/ (Grep '"status": "todo"' = 33 matches, "blockedReason" = 0 matches, '"type": "re-probe"' = 10 matches with verificationMethod.workflow as listed); overdue = dueAt earlier than provenance.generatedAt 2026-09-15T23:48:58Z (0 initiatives, earliest dueAt 2026-09-22T23:48:58Z); timelines initiatives/*/timeline.json record only created/task-added events at 2026-09-15T23:48:58Z, so no initiative has moved past proposed; inputsHash order per company-summary.schema.json -->
+
+## Suggestions
+
+`impl-auto-improvement` (runId `run_01M2GDZ3Q3S5WYCB3MV02QJXZ1`) early-refreshed this section as of
+2026-09-16T02:18:09Z; `report-audit-improvements` remains the owner of record.
+`company-profile/example-co/suggestions/master.json` (`updatedAt` 2026-09-16T02:18:09Z) holds **5 suggestions,
+all status `proposed`** (3 `iac-fix`, 1 `agent-guardrail`, 1 `cicd-gate`; 4 high, 1 medium), every one created this
+run (`createdAt` 2026-09-16T02:18:09Z, `sourceWorkflow` `impl-auto-improvement`); 0 merged, 0 reverted and 0
+retention checks recorded. Every entry is listed so reviewers see the open queue; none has reached `surfaced` yet,
+so no `surfacedAt`, `decidedAt` or `decidedBy` exists and every `prUrls` is empty.
+
+| Id | Title | Category | Severity | Status | Repo | +/- lines | Surfaced | Decided by | PR |
+|---|---|---|---|---|---|---|---|---|---|
+| [sug_01M2M19HQY6B6W6MRZW7HA1XA2] | Require platform auth for public ingress in the MCP gateway bicep template | iac-fix | high | proposed | `mcp-gateway/mongodb-mcp-server` | +4/-2 | n/a | n/a | none |
+| [sug_01M2M0T59E8XRGTF3HC7N9RVT0] | Require Microsoft Entra ID auth and read-only mode in the Azure Bicep baseline parameters | iac-fix | high | proposed | `mcp-gateway/mongodb-mcp-server` | +5/-2 | n/a | n/a | none |
+| [sug_01M2M1YDYTKJXNGMZTZEJNB4WR] | Bind integration-test mongod published port to loopback only | iac-fix | high | proposed | `mcp-gateway/mongodb-mcp-server` | +3/-2 | n/a | n/a | none |
+| [sug_01M2M1XNDXVS780KHSVW7GZSHN] | Require tool allowlists and human review instead of default bash in agentic-workflows agent instructions | agent-guardrail | high | proposed | `mcp-gateway/mongodb-mcp-server` | +2/-2 | n/a | n/a | none |
+| [sug_01M2M1Z5K82GX6E3YYZN2ZQVAW] | Add a pinned gitleaks pre-commit hook to scan every commit for secrets | cicd-gate | medium | proposed | `db-models/onfinance-db-model-master` | +10/-0 | n/a | n/a | none |
+
+Each suggestion answers one open ledger finding (titles quoted from the latest record per id, recorded
+2026-09-16T02:18:09Z); primary regulatory ref per the suggestion's `regulatoryRefs[0]` in master.json:
+
+- [sug_01M2M19HQY6B6W6MRZW7HA1XA2] answers [fnd_01M2HCWMBDDT80V2CWJ5Z7BH17] "MCP gateway deploys unauthenticated on
+  a public endpoint by default (qa/prod IaC root)" — SEBI sebi-cscrf-2024 PR.AA.S17 (SEBI CSCRF 2024), PR.AA.S2;
+  MeitY dpdp-rules-2025 6(1)(b) (DPDP Rules 2025).
+- [sug_01M2M0T59E8XRGTF3HC7N9RVT0] answers [fnd_01M2HCWMBDGA1D4Z54RET9CNC9] "Baseline deployment parameters ship
+  the gateway with no auth and write mode enabled" — SEBI sebi-cscrf-2024 PR.AA.S17, PR.AA.S2; MeitY
+  dpdp-rules-2025 6(1)(b).
+- [sug_01M2M1YDYTKJXNGMZTZEJNB4WR] answers [fnd_01M2KM42DZQK8J4EZEB68ZQ103] "Integration-test mongod published
+  unauthenticated on all interfaces of developer laptops" — SEBI sebi-cscrf-2024 PR.IP.S1, PR.AA.S2.
+- [sug_01M2M1XNDXVS780KHSVW7GZSHN] answers [fnd_01M2KM42DZ98VAGYD0E8TRV3FQ] "Agentic-workflows agent file tells
+  developers AI agents run full bash and edit by default and should not be restricted" — SEBI sebi-cscrf-2024
+  PR.AA.S3.
+- [sug_01M2M1Z5K82GX6E3YYZN2ZQVAW] answers [fnd_01M2KMNHPJ7Z0Y0YJT6YZR4NZM] "db-models/onfinance-db-model-master:
+  no local secrets-scanning hook and no CI, so the policy CI secret scan never reaches this repo" — SEBI
+  sebi-cscrf-2024 PR.IP.S2; it is the local-hook variant of [init_01M2KSV05T8TK1TJDJAS2EK3DW] (`initiativeId` in
+  master.json).
+
+Acceptance figures for the period to 2026-09-16T02:18:09Z, computed exactly like
+[suggestion_acceptance_rate v1.0.0](../../kpis/measurement/suggestion_acceptance_rate.md):
+
+- acceptance_rate = |accepted ∪ merged ∪ reverted| / |accepted ∪ merged ∪ reverted ∪ rejected ∪ expired| = 0/0 —
+  not computable; no suggestion has been decided (0 accepted, 0 merged, 0 reverted, 0 rejected, 0 expired).
+- merge_rate = |merged ∪ reverted| / |accepted ∪ merged ∪ reverted| = 0/0 — not computable; nothing accepted.
+- revert_rate = |reverted within 30 days of mergedAt| / |merged ∪ reverted| = 0/0 — not computable; nothing merged.
+- retention_30d = |merged with retentionCheckedAt ≥ mergedAt+30d and retained = true| / |merged checked| = 0/0 —
+  not computable; 0 merged suggestions checked, no `retentionCheckedAt` recorded this run.
+
+### Rejections
+
+No rejections as of 2026-09-16T02:18:09Z: no entry in `suggestions/master.json` has status `rejected`, so there is
+no `decisionNote` to quote.
+
+<!-- source: suggestions/master.json (5 entries in suggestions[], all "status":"proposed", all "createdAt":"2026-09-16T02:18:09Z", all "prUrls":[]; categories iac-fix 3 + agent-guardrail 1 + cicd-gate 1; severity high 4, medium 1; +/- lines = repos[0].linesAdded/repos[0].linesRemoved; 0 merged, 0 reverted, 0 retention checks = no entry carries mergedAt/revertedAt/retentionCheckedAt/decidedBy/decisionNote); finding titles from soc/main.jsonl latest kind:finding record per id (lines 1045-1049, recordedAt 2026-09-16T02:18:09Z); regulatory refs from each suggestion's regulatoryRefs in master.json; acceptance/merge/revert/retention formulae from kpis/measurement/suggestion_acceptance_rate.md applied to the same 5 entries -->
 

@@ -1,0 +1,16 @@
+diff --git a/.pre-commit-config.yaml b/.pre-commit-config.yaml
+new file mode 100644
+index 0000000..7088fb5
+--- /dev/null
++++ b/.pre-commit-config.yaml
+@@ -0,0 +1,10 @@
++# Secrets-scanning gate for this repository (SEBI CSCRF 2024 PR.IP.S2).
++# sdlc/policy.json ciGates runs gitleaks, blocking, at the low threshold, but this
++# repo has no CI (ciSystem: none), so this pre-commit hook is the only enforcing
++# place that control runs. Bypassing it with --no-verify or SKIP=gitleaks is not
++# permitted; escalate genuine false positives to the CISO.
++repos:
++  - repo: https://github.com/gitleaks/gitleaks
++    rev: v8.24.3
++    hooks:
++      - id: gitleaks

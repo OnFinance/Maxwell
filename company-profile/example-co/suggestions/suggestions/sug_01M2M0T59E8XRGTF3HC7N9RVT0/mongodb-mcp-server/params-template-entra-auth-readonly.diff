@@ -1,0 +1,24 @@
+diff --git a/deploy/azure/bicep/params_template.json b/deploy/azure/bicep/params_template.json
+index 23d87c5..2427ab0 100644
+--- a/deploy/azure/bicep/params_template.json
++++ b/deploy/azure/bicep/params_template.json
+@@ -9,7 +9,7 @@
+     "containerMemory": { "value": "2Gi" },
+     "appEnvironmentVars": {
+       "value": {
+-        "MDB_MCP_READ_ONLY": "false",
++        "MDB_MCP_READ_ONLY": "true",
+         "MDB_MCP_HTTP_PORT": "8080",
+         "MDB_MCP_HTTP_HOST": "::",
+         "MDB_MCP_TRANSPORT": "http",
+@@ -18,6 +18,9 @@
+       }
+     },
+     "mdbConnectionString": { "value": "<MONGODB_CONNECTION_STRING>" },
+-    "authMode": { "value": "NOAUTH" }
++    "authMode": { "value": "MicrosoftMIBasedAuth" },
++    "authClientId": { "value": "<AUTH_CLIENT_ID>" },
++    "authIssuerUrl": { "value": "<AUTH_ISSUER_URL>" },
++    "authTenantId": { "value": "<AUTH_TENANT_ID>" }
+   }
+ }

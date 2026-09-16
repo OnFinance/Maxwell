@@ -1,0 +1,16 @@
+diff --git a/tests/integration/tools/mongodb/mongot-community-setup/docker-compose.yml b/tests/integration/tools/mongodb/mongot-community-setup/docker-compose.yml
+index 6bf9e4d..06d85e0 100644
+--- a/tests/integration/tools/mongodb/mongot-community-setup/docker-compose.yml
++++ b/tests/integration/tools/mongodb/mongot-community-setup/docker-compose.yml
+@@ -8,8 +8,9 @@ services:
+     secrets:
+       - mongot_password
+     ports:
+-      # Bind to random available port on host
+-      - "0:27017"
++      # Bind to a random port on the loopback interface only, so the
++      # database is not reachable from other networks the host may join
++      - "127.0.0.1:0:27017"
+     volumes:
+       - mongod-data:/data/db
+       - ./config/mongod.conf:/etc/mongod.conf:ro

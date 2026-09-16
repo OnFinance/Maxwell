@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.session.summary",
+  "sessionId": "ses_f57b6f00bffecZ7dYp5PTrTPLw",
+  "harness": "opencode",
+  "harnessVersion": "1.18.30",
+  "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+  "workflow": "impl-auto-improvement",
+  "companyId": "example-co",
+  "startedAt": "2026-09-16T03:35:56Z",
+  "endedAt": "2026-09-16T03:36:10Z",
+  "durationMs": 14000,
+  "turns": 4,
+  "inferenceCalls": 4,
+  "toolCalls": {
+    "total": 3,
+    "byTool": {
+      "read": 1,
+      "write": 1,
+      "bash": 1
+    }
+  },
+  "subagentSessions": 0,
+  "permissionDenials": [],
+  "models": [
+    {
+      "model": "glm-5.3",
+      "provider": "other",
+      "tokens": {
+        "input": 5912,
+        "output": 485,
+        "cacheWrite5m": 0,
+        "cacheWrite1h": 0,
+        "cacheRead": 50368,
+        "thinking": null
+      },
+      "webSearchRequests": 0,
+      "webFetchRequests": 0,
+      "costUsd": 0.023506
+    }
+  ],
+  "costUsd": {
+    "computed": 0.023506,
+    "reported": 0.023506,
+    "deltaPct": 0
+  },
+  "pricingVersion": "2026-09-14",
+  "dedup": {
+    "strategy": "requestId-max-total-tokens",
+    "duplicatesDropped": 0
+  },
+  "filesWritten": [
+    "company-profile/example-co/suggestions/suggestions/sug_01M2M1YDYTKJXNGMZTZEJNB4WR/mongodb-mcp-server/docker-compose-mongod-port-loopback.diff"
+  ],
+  "linesAdded": 0,
+  "linesRemoved": 0,
+  "outcome": "success",
+  "transcriptFormatVersion": "1.18.30",
+  "provenance": {
+    "harness": "script",
+    "generatedAt": "2026-09-16T04:02:00Z",
+    "sessionId": "ses_f57b6f00bffecZ7dYp5PTrTPLw",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-auto-improvement",
+    "agent": ".claude/scripts/sessions/ingest.mjs"
+  }
+}

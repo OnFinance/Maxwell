@@ -1,0 +1,21 @@
+diff --git a/.github/agents/agentic-workflows.agent.md b/.github/agents/agentic-workflows.agent.md
+index ee7afa5..d606240 100644
+--- a/.github/agents/agentic-workflows.agent.md
++++ b/.github/agents/agentic-workflows.agent.md
+@@ -181,14 +181,14 @@ gh aw compile --validate
+ - **Strict Mode**: Security-first validation and sandboxing
+ - **Shared Components**: Reusable workflow building blocks
+ - **Repo Memory**: Persistent git-backed storage for agents
+-- **Sandboxed Execution**: All workflows run in the Agent Workflow Firewall (AWF) sandbox, enabling full `bash` and `edit` tools by default
++- **Sandboxed Execution**: All workflows run in the Agent Workflow Firewall (AWF) sandbox, which limits blast radius but is not a substitute for least privilege - grant `bash` and `edit` only when a workflow explicitly needs them, not by default
+ 
+ ## Important Notes
+ 
+ - Always reference the instructions file at https://github.com/github/gh-aw/blob/v0.68.1/.github/aw/github-agentic-workflows.md for complete documentation
+ - Use the MCP tool `agentic-workflows` when running in GitHub Copilot Cloud
+ - Workflows must be compiled to `.lock.yml` files before running in GitHub Actions
+-- **Bash tools are enabled by default** - Don't restrict bash commands unnecessarily since workflows are sandboxed by the AWF
++- **Allowlist the tools each workflow needs** - Do not enable `bash` or `edit` by default: keep bash commands to an explicit allowlist, scope `edit` to the paths a workflow must change, and require human review of agent write operations (pull request approval) since workflow content can carry prompt injection
+ - Follow security best practices: minimal permissions, explicit network access, no template injection
+ - **Network configuration**: Use ecosystem identifiers (`node`, `python`, `go`, etc.) or explicit FQDNs in `network.allowed`. Bare shorthands like `npm` or `pypi` are **not** valid. See https://github.com/github/gh-aw/blob/v0.68.1/.github/aw/network.md for the full list of valid ecosystem identifiers and domain patterns.
+ - **Single-file output**: When creating a workflow, produce exactly **one** workflow `.md` file. Do not create separate documentation files (architecture docs, runbooks, usage guides, etc.). If documentation is needed, add a brief `## Usage` section inside the workflow file itself.

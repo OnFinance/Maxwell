@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.session.summary",
+  "sessionId": "ses_f57afce08ffecDE4oM6deggRye",
+  "harness": "opencode",
+  "harnessVersion": "1.18.30",
+  "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+  "workflow": "impl-auto-improvement",
+  "companyId": "example-co",
+  "startedAt": "2026-09-16T03:43:43Z",
+  "endedAt": "2026-09-16T03:44:08Z",
+  "durationMs": 25000,
+  "turns": 4,
+  "inferenceCalls": 4,
+  "toolCalls": {
+    "total": 3,
+    "byTool": {
+      "read": 1,
+      "write": 1,
+      "bash": 1
+    }
+  },
+  "subagentSessions": 0,
+  "permissionDenials": [],
+  "models": [
+    {
+      "model": "glm-5.3",
+      "provider": "other",
+      "tokens": {
+        "input": 15770,
+        "output": 732,
+        "cacheWrite5m": 0,
+        "cacheWrite1h": 0,
+        "cacheRead": 40960,
+        "thinking": null
+      },
+      "webSearchRequests": 0,
+      "webFetchRequests": 0,
+      "costUsd": 0.035948
+    }
+  ],
+  "costUsd": {
+    "computed": 0.035948,
+    "reported": 0.035948,
+    "deltaPct": 0
+  },
+  "pricingVersion": "2026-09-14",
+  "dedup": {
+    "strategy": "requestId-max-total-tokens",
+    "duplicatesDropped": 0
+  },
+  "filesWritten": [
+    "company-profile/example-co/suggestions/suggestions/sug_01M2M1Z5K82GX6E3YYZN2ZQVAW/onfinance-db-model-master/pre-commit-gitleaks-hook.diff"
+  ],
+  "linesAdded": 0,
+  "linesRemoved": 0,
+  "outcome": "success",
+  "transcriptFormatVersion": "1.18.30",
+  "provenance": {
+    "harness": "script",
+    "generatedAt": "2026-09-16T04:02:09Z",
+    "sessionId": "ses_f57afce08ffecDE4oM6deggRye",
+    "runId": "run_01M2GDZ3Q3S5WYCB3MV02QJXZ1",
+    "workflow": "impl-auto-improvement",
+    "agent": ".claude/scripts/sessions/ingest.mjs"
+  }
+}
