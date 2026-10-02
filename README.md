@@ -411,6 +411,34 @@ Maxwell aligns its data to open standards rather than inventing formats: OSCAL f
 2.1.0 for static results, OCSF 1.9 for runtime findings, OSV and OpenVEX for vulnerabilities, CycloneDX 1.6 for
 SBOMs, OpenLineage for pipelines, and OpenTelemetry GenAI conventions for session metrics.
 
+### Real-time threat-detection recipes
+
+Maxwell includes a small deterministic engine for normalized security events. It currently detects repeated
+authentication failures, password spraying, a successful login after repeated failures, privileged-access grants
+and audit logging being disabled. Matches are **alert candidates**, not confirmed incidents. An investigation must
+confirm and convert them before they enter the state-of-controls ledger.
+
+The runner reads one normalized JSON event per line from standard input and writes alert candidates as JSONL:
+
+```bash
+npm run detect -- --company example-co < normalized-events.jsonl
+```
+
+`normalized-events.jsonl` is the event feed supplied by a source adapter. To exercise the engine before connecting
+one, run the built-in six-event demonstration:
+
+```bash
+npm run detect -- --company example-co --demo
+```
+
+Use `--replay-now 2026-10-03T10:10:00.000Z` for deterministic replay and `--list-recipes` to inspect the built-in
+recipes. Each event carries opaque, source-normalized identifiers: `schemaVersion`, `eventId`, `companyId`,
+`scopeId`, `source`, `eventTime`, `type`, `outcome`, `actorKey`, and the applicable `sourceKey`, `targetKey` or
+`privileged` field. Raw log messages and credentials are rejected. The engine isolates state by company, source and
+scope, deduplicates provider event IDs, accepts up to two minutes of late arrival, rejects silent state eviction and
+caps retained state. The process itself is intentionally stateless across restarts; a production connector must
+provide durable input offsets and replay uncommitted events.
+
 > Catalog text is a faithful summary of the published instruments, and entries that could not be verified against
 > the source carry a maintainer-verification note. It is not legal advice.
 
