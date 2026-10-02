@@ -439,6 +439,20 @@ scope, deduplicates provider event IDs, accepts up to two minutes of late arriva
 caps retained state. The process itself is intentionally stateless across restarts; a production connector must
 provide durable input offsets and replay uncommitted events.
 
+CloudTrail events can be replayed directly from EventBridge envelopes, raw CloudTrail records or SNS notification
+envelopes. The adapter pseudonymizes AWS principals, source addresses and target names before detection:
+
+```bash
+npm run detect:cloudtrail -- --company example-co --scope aws-prod \
+  --replay-now 2026-10-03T10:10:00.000Z < cloudtrail-events.jsonl
+```
+
+Use `--mode normalize` to inspect the normalized events without running recipes. The first adapter revision covers
+AWS console logins, confirmed attachment of the AWS-managed `AdministratorAccess` policy, and successful or failed
+CloudTrail `StopLogging`, `DeleteTrail`, `StopEventDataStoreIngestion` and `DeleteEventDataStore` calls. Other events
+are counted as ignored. Live SQS consumption is a separate deployment step; this replay adapter performs no AWS API
+calls and needs no AWS credentials.
+
 > Catalog text is a faithful summary of the published instruments, and entries that could not be verified against
 > the source carry a maintainer-verification note. It is not legal advice.
 

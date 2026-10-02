@@ -26,6 +26,7 @@
     "sync:agents": "node .claude/scripts/sync-agents-mirror.mjs",
     "ingest:session": "node .claude/scripts/sessions/ingest.mjs",
     "detect": "node .claude/scripts/threat-detection/run.mjs",
+    "detect:cloudtrail": "node .claude/scripts/threat-detection/cloudtrail-run.mjs",
     "kpis": "node .claude/scripts/kpis/compute.mjs",
     "test": "npm run --silent test:schemas && node --test \".claude/scripts/**/*.test.mjs\"",
     "test:schemas": "jsonschema test .claude/schemas/tests --resolve .claude/schemas/v1 --resolve .claude/schemas/vocab"
