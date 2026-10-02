@@ -436,8 +436,7 @@ recipes. Each event carries opaque, source-normalized identifiers: `schemaVersio
 `scopeId`, `source`, `eventTime`, `type`, `outcome`, `actorKey`, and the applicable `sourceKey`, `targetKey` or
 `privileged` field. Raw log messages and credentials are rejected. The engine isolates state by company, source and
 scope, deduplicates provider event IDs, accepts up to two minutes of late arrival, rejects silent state eviction and
-caps retained state. The process itself is intentionally stateless across restarts; a production connector must
-provide durable input offsets and replay uncommitted events.
+caps retained state. This stdin runner is intended for replay and local evaluation.
 
 CloudTrail events can be replayed directly from EventBridge envelopes, raw CloudTrail records or SNS notification
 envelopes. The adapter pseudonymizes AWS principals, source addresses and target names before detection:
@@ -450,8 +449,23 @@ npm run detect:cloudtrail -- --company example-co --scope aws-prod \
 Use `--mode normalize` to inspect the normalized events without running recipes. The first adapter revision covers
 AWS console logins, confirmed attachment of the AWS-managed `AdministratorAccess` policy, and successful or failed
 CloudTrail `StopLogging`, `DeleteTrail`, `StopEventDataStoreIngestion` and `DeleteEventDataStore` calls. Other events
-are counted as ignored. Live SQS consumption is a separate deployment step; this replay adapter performs no AWS API
-calls and needs no AWS credentials.
+are counted as ignored. This replay adapter performs no AWS API calls and needs no AWS credentials.
+
+For production, deploy
+`.claude/skills/threat-detection/references/aws-cloudformation.yaml`. It provisions customer-key-encrypted ingestion
+and dead-letter queues, a DynamoDB table with point-in-time recovery and TTL cleanup, and a stream-based alert
+handoff queue. The live worker long-polls SQS, persists every event and idempotency marker atomically, correlates with
+strongly consistent reads, and conditionally persists each candidate before deleting its input message:
+
+```bash
+npm run detect:cloudtrail:sqs -- \
+  --company example-co --region ap-south-1 \
+  --queue <IngestionQueueUrl> --table <DetectionTableName>
+```
+
+The alert queue receives only newly persisted candidates. A separate investigation consumer must enrich and confirm
+them before creating incidents. Deployment, IAM attachment, retry and dead-letter operations are documented in
+`.claude/skills/threat-detection/SKILL.md`.
 
 > Catalog text is a faithful summary of the published instruments, and entries that could not be verified against
 > the source carry a maintainer-verification note. It is not legal advice.

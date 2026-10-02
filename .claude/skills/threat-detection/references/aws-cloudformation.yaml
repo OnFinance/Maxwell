@@ -1,0 +1,402 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >-
+  Maxwell real-time AWS threat detection — buffers CloudTrail events for restart-safe correlation and streams
+  persisted alert candidates to an independent investigation queue
+
+Metadata:
+  AWSToolsMetrics:
+    AWSAgentToolkit: aws-cloudformation@3
+  com.aws.cloudformation.Context:
+    arch: CloudTrail -> EventBridge -> SQS -> external Maxwell worker -> DynamoDB -> Pipe -> alert SQS
+    must:
+      - CloudTrail management events enabled upstream
+      - worker deletes input only after durable processing
+      - alert consumer treats records as candidates, not confirmed incidents
+    ref:
+      - at: .claude/skills/threat-detection/SKILL.md
+        has: deploy + worker + handoff runbook
+        scope: repo
+
+Parameters:
+  CompanyId:
+    Type: String
+    Description: Opaque Maxwell company slug used for resource tags.
+    AllowedPattern: '^[a-z0-9][a-z0-9-]{0,62}$'
+  Environment:
+    Type: String
+    Description: Deployment tier used for resource tags.
+    Default: production
+    AllowedValues: [development, staging, production]
+
+Resources:
+  DetectionKey:
+    Type: AWS::KMS::Key
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Metadata:
+      com.aws.cloudformation.Context:
+        why: CMK for detection queues + state; EventBridge needs direct key-policy access for encrypted SQS targets
+        must:
+          - retain key while queues or table retain encrypted data
+          - key policy keeps account administration path
+        mutable: review-required
+    Properties:
+      Description: Encryption key for Maxwell threat-detection queues and state
+      EnableKeyRotation: true
+      PendingWindowInDays: 30
+      KeyPolicy:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: AccountAdministration
+            Effect: Allow
+            Principal:
+              AWS: !Sub arn:${AWS::Partition}:iam::${AWS::AccountId}:root
+            Action: kms:*
+            Resource: '*'
+          - Sid: EventBridgeEncryptedQueueDelivery
+            Effect: Allow
+            Principal:
+              Service: events.amazonaws.com
+            Action: [kms:Decrypt, kms:GenerateDataKey]
+            Resource: '*'
+            Condition:
+              StringEquals:
+                aws:SourceAccount: !Ref AWS::AccountId
+              ArnLike:
+                aws:SourceArn: !Sub arn:${AWS::Partition}:events:${AWS::Region}:${AWS::AccountId}:rule/*
+      Tags:
+        - {Key: maxwell:company, Value: !Ref CompanyId}
+        - {Key: maxwell:environment, Value: !Ref Environment}
+
+  DetectionKeyAlias:
+    Type: AWS::KMS::Alias
+    Properties:
+      AliasName: !Sub alias/${AWS::StackName}-threat-detection
+      TargetKeyId: !Ref DetectionKey
+
+  IngestionDeadLetterQueue:
+    Type: AWS::SQS::Queue
+    Metadata:
+      com.aws.cloudformation.Context:
+        why: preserves poison input and EventBridge delivery failures for controlled replay
+        must: [same Region + CMK as source queue]
+        mutable: change-with-constraints
+    Properties:
+      KmsMasterKeyId: !GetAtt DetectionKey.Arn
+      KmsDataKeyReusePeriodSeconds: 300
+      MessageRetentionPeriod: 1209600
+      Tags:
+        - {Key: maxwell:company, Value: !Ref CompanyId}
+        - {Key: maxwell:environment, Value: !Ref Environment}
+
+  IngestionQueue:
+    Type: AWS::SQS::Queue
+    Metadata:
+      com.aws.cloudformation.Context:
+        why: durable at-least-once buffer decouples CloudTrail delivery from worker availability
+        must:
+          - visibility timeout > normal batch processing time
+          - delete only after DynamoDB processing succeeds
+        mutable: change-with-constraints
+    Properties:
+      KmsMasterKeyId: !GetAtt DetectionKey.Arn
+      KmsDataKeyReusePeriodSeconds: 300
+      MessageRetentionPeriod: 1209600
+      ReceiveMessageWaitTimeSeconds: 20
+      VisibilityTimeout: 120
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt IngestionDeadLetterQueue.Arn
+        maxReceiveCount: 5
+      Tags:
+        - {Key: maxwell:company, Value: !Ref CompanyId}
+        - {Key: maxwell:environment, Value: !Ref Environment}
+
+  AlertDeadLetterQueue:
+    Type: AWS::SQS::Queue
+    Metadata:
+      com.aws.cloudformation.Context:
+        why: preserves failed stream handoffs and poison investigation messages
+        must: [same Region + CMK as alert queue]
+        mutable: change-with-constraints
+    Properties:
+      KmsMasterKeyId: !GetAtt DetectionKey.Arn
+      KmsDataKeyReusePeriodSeconds: 300
+      MessageRetentionPeriod: 1209600
+      Tags:
+        - {Key: maxwell:company, Value: !Ref CompanyId}
+        - {Key: maxwell:environment, Value: !Ref Environment}
+
+  AlertQueue:
+    Type: AWS::SQS::Queue
+    Metadata:
+      com.aws.cloudformation.Context:
+        why: async handoff keeps investigation failures from blocking detection
+        must: [consumer persists downstream state before delete]
+        mutable: change-with-constraints
+    Properties:
+      KmsMasterKeyId: !GetAtt DetectionKey.Arn
+      KmsDataKeyReusePeriodSeconds: 300
+      MessageRetentionPeriod: 1209600
+      ReceiveMessageWaitTimeSeconds: 20
+      VisibilityTimeout: 300
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt AlertDeadLetterQueue.Arn
+        maxReceiveCount: 5
+      Tags:
+        - {Key: maxwell:company, Value: !Ref CompanyId}
+        - {Key: maxwell:environment, Value: !Ref Environment}
+
+  DetectionTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Metadata:
+      com.aws.cloudformation.Context:
+        why: strongly consistent correlation state + conditional alert persistence survive worker restart and redelivery
+        must:
+          - pk + sk key schema unchanged
+          - stream keeps NEW_IMAGE for alert handoff
+          - expiresAt TTL is cleanup only; runtime queries enforce time bounds
+        mutable: change-with-constraints
+        mutability:
+          KeySchema: must-never-change
+    Properties:
+      AttributeDefinitions:
+        - {AttributeName: pk, AttributeType: S}
+        - {AttributeName: sk, AttributeType: S}
+      KeySchema:
+        - {AttributeName: pk, KeyType: HASH}
+        - {AttributeName: sk, KeyType: RANGE}
+      BillingMode: PAY_PER_REQUEST
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+      SSESpecification:
+        SSEEnabled: true
+        SSEType: KMS
+        KMSMasterKeyId: !GetAtt DetectionKey.Arn
+      StreamSpecification:
+        StreamViewType: NEW_IMAGE
+      TimeToLiveSpecification:
+        AttributeName: expiresAt
+        Enabled: true
+      Tags:
+        - {Key: maxwell:company, Value: !Ref CompanyId}
+        - {Key: maxwell:environment, Value: !Ref Environment}
+
+  ConsoleLoginRule:
+    Type: AWS::Events::Rule
+    Metadata:
+      com.aws.cloudformation.Context:
+        why: selects console login outcomes used by failure + spray recipes
+        must: [target ingestion queue only]
+        mutable: free-to-tune
+    Properties:
+      State: ENABLED
+      EventPattern:
+        source: [aws.signin]
+        detail-type: [AWS Console Sign In via CloudTrail]
+        detail:
+          eventSource: [signin.amazonaws.com]
+          eventName: [ConsoleLogin]
+      Targets:
+        - Id: IngestionQueue
+          Arn: !GetAtt IngestionQueue.Arn
+          DeadLetterConfig: {Arn: !GetAtt IngestionDeadLetterQueue.Arn}
+          RetryPolicy: {MaximumEventAgeInSeconds: 3600, MaximumRetryAttempts: 10}
+
+  PrivilegeGrantRule:
+    Type: AWS::Events::Rule
+    Metadata:
+      com.aws.cloudformation.Context:
+        why: selects IAM policy attachments; adapter confirms AdministratorAccess before alerting
+        must: [target ingestion queue only]
+        mutable: free-to-tune
+    Properties:
+      State: ENABLED
+      EventPattern:
+        source: [aws.iam]
+        detail-type: [AWS API Call via CloudTrail]
+        detail:
+          eventSource: [iam.amazonaws.com]
+          eventName: [AttachUserPolicy, AttachRolePolicy, AttachGroupPolicy]
+      Targets:
+        - Id: IngestionQueue
+          Arn: !GetAtt IngestionQueue.Arn
+          DeadLetterConfig: {Arn: !GetAtt IngestionDeadLetterQueue.Arn}
+          RetryPolicy: {MaximumEventAgeInSeconds: 3600, MaximumRetryAttempts: 10}
+
+  AuditDisableRule:
+    Type: AWS::Events::Rule
+    Metadata:
+      com.aws.cloudformation.Context:
+        why: selects CloudTrail shutdown and deletion operations for immediate candidates
+        must: [target ingestion queue only]
+        mutable: free-to-tune
+    Properties:
+      State: ENABLED
+      EventPattern:
+        source: [aws.cloudtrail]
+        detail-type: [AWS API Call via CloudTrail]
+        detail:
+          eventSource: [cloudtrail.amazonaws.com]
+          eventName: [StopLogging, DeleteTrail, StopEventDataStoreIngestion, DeleteEventDataStore]
+      Targets:
+        - Id: IngestionQueue
+          Arn: !GetAtt IngestionQueue.Arn
+          DeadLetterConfig: {Arn: !GetAtt IngestionDeadLetterQueue.Arn}
+          RetryPolicy: {MaximumEventAgeInSeconds: 3600, MaximumRetryAttempts: 10}
+
+  DetectionQueuePolicy:
+    Type: AWS::SQS::QueuePolicy
+    Metadata:
+      com.aws.cloudformation.Context:
+        why: admits only this account's three rules and denies plaintext transport to every queue
+        must: [SourceArn + SourceAccount constrain EventBridge]
+        mutable: review-required
+    Properties:
+      Queues: [!Ref IngestionQueue, !Ref IngestionDeadLetterQueue, !Ref AlertQueue, !Ref AlertDeadLetterQueue]
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: EventBridgeToIngestion
+            Effect: Allow
+            Principal: {Service: events.amazonaws.com}
+            Action: sqs:SendMessage
+            Resource: !GetAtt IngestionQueue.Arn
+            Condition:
+              StringEquals: {aws:SourceAccount: !Ref AWS::AccountId}
+              ArnEquals:
+                aws:SourceArn:
+                  - !GetAtt ConsoleLoginRule.Arn
+                  - !GetAtt PrivilegeGrantRule.Arn
+                  - !GetAtt AuditDisableRule.Arn
+          - Sid: EventBridgeDeliveryFailures
+            Effect: Allow
+            Principal: {Service: events.amazonaws.com}
+            Action: sqs:SendMessage
+            Resource: !GetAtt IngestionDeadLetterQueue.Arn
+            Condition:
+              StringEquals: {aws:SourceAccount: !Ref AWS::AccountId}
+              ArnEquals:
+                aws:SourceArn:
+                  - !GetAtt ConsoleLoginRule.Arn
+                  - !GetAtt PrivilegeGrantRule.Arn
+                  - !GetAtt AuditDisableRule.Arn
+          - Sid: DenyInsecureTransport
+            Effect: Deny
+            Principal: '*'
+            Action: sqs:*
+            Resource:
+              - !GetAtt IngestionQueue.Arn
+              - !GetAtt IngestionDeadLetterQueue.Arn
+              - !GetAtt AlertQueue.Arn
+              - !GetAtt AlertDeadLetterQueue.Arn
+            Condition:
+              Bool: {aws:SecureTransport: false}
+
+  AlertPipeRole:
+    Type: AWS::IAM::Role
+    Metadata:
+      com.aws.cloudformation.Context:
+        why: least-privilege identity for stream reads + alert/DLQ sends
+        must: [trust pipes service only]
+        mutable: review-required
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: {Service: pipes.amazonaws.com}
+            Action: sts:AssumeRole
+            Condition:
+              StringEquals:
+                aws:SourceAccount: !Ref AWS::AccountId
+              ArnLike:
+                aws:SourceArn: !Sub arn:${AWS::Partition}:pipes:${AWS::Region}:${AWS::AccountId}:pipe/*
+      Policies:
+        - PolicyName: AlertStreamHandoff
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: [dynamodb:DescribeStream, dynamodb:GetRecords, dynamodb:GetShardIterator]
+                Resource: !GetAtt DetectionTable.StreamArn
+              - Effect: Allow
+                Action: dynamodb:ListStreams
+                Resource: '*'
+              - Effect: Allow
+                Action: sqs:SendMessage
+                Resource: [!GetAtt AlertQueue.Arn, !GetAtt AlertDeadLetterQueue.Arn]
+              - Effect: Allow
+                Action: [kms:Decrypt, kms:GenerateDataKey]
+                Resource: !GetAtt DetectionKey.Arn
+
+  AlertPipe:
+    Type: AWS::Pipes::Pipe
+    DependsOn: DetectionQueuePolicy
+    Metadata:
+      com.aws.cloudformation.Context:
+        why: publishes new persisted candidates without coupling detector to downstream investigation availability
+        must:
+          - filter INSERT + entityType alert only
+          - start LATEST to avoid unintended historical flood on replacement
+        mutable: change-with-constraints
+    Properties:
+      Description: Maxwell persisted alert candidate handoff
+      DesiredState: RUNNING
+      RoleArn: !GetAtt AlertPipeRole.Arn
+      Source: !GetAtt DetectionTable.StreamArn
+      SourceParameters:
+        FilterCriteria:
+          Filters:
+            - Pattern: '{"eventName":["INSERT"],"dynamodb":{"NewImage":{"entityType":{"S":["alert"]}}}}'
+        DynamoDBStreamParameters:
+          BatchSize: 10
+          DeadLetterConfig: {Arn: !GetAtt AlertDeadLetterQueue.Arn}
+          MaximumBatchingWindowInSeconds: 1
+          MaximumRecordAgeInSeconds: 3600
+          MaximumRetryAttempts: 10
+          StartingPosition: LATEST
+      Target: !GetAtt AlertQueue.Arn
+
+  ConsumerManagedPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Metadata:
+      com.aws.cloudformation.Context:
+        why: attachable least-privilege policy leaves worker compute choice to operator
+        must: [attach only to Maxwell worker identity]
+        mutable: review-required
+    Properties:
+      Description: Read ingestion messages and persist Maxwell correlation state and alerts
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action: [sqs:ReceiveMessage, sqs:DeleteMessage, sqs:ChangeMessageVisibility, sqs:GetQueueAttributes]
+            Resource: !GetAtt IngestionQueue.Arn
+          - Effect: Allow
+            Action: [dynamodb:GetItem, dynamodb:PutItem, dynamodb:Query]
+            Resource: !GetAtt DetectionTable.Arn
+          - Effect: Allow
+            Action: [kms:Decrypt, kms:GenerateDataKey]
+            Resource: !GetAtt DetectionKey.Arn
+
+Outputs:
+  IngestionQueueUrl:
+    Description: Queue URL passed to the live Maxwell detector.
+    Value: !Ref IngestionQueue
+  IngestionDeadLetterQueueUrl:
+    Description: Queue URL for failed input delivery and poison messages.
+    Value: !Ref IngestionDeadLetterQueue
+  AlertQueueUrl:
+    Description: Queue URL consumed by investigation or case-management automation.
+    Value: !Ref AlertQueue
+  AlertDeadLetterQueueUrl:
+    Description: Queue URL for failed alert handoff and poison investigation messages.
+    Value: !Ref AlertDeadLetterQueue
+  DetectionTableName:
+    Description: DynamoDB table name passed to the live Maxwell detector.
+    Value: !Ref DetectionTable
+  ConsumerManagedPolicyArn:
+    Description: IAM managed policy to attach to the Maxwell worker role.
+    Value: !Ref ConsumerManagedPolicy
