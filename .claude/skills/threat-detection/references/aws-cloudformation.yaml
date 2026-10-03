@@ -381,6 +381,28 @@ Resources:
             Action: [kms:Decrypt, kms:GenerateDataKey]
             Resource: !GetAtt DetectionKey.Arn
 
+  InvestigationConsumerManagedPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Metadata:
+      com.aws.cloudformation.Context:
+        why: attachable least-privilege policy for the independent incident-investigation worker
+        must: [attach only to Maxwell investigation worker identity]
+        mutable: review-required
+    Properties:
+      Description: Read Maxwell alert candidates and persist investigation cases and their audit trail
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action: [sqs:ReceiveMessage, sqs:DeleteMessage, sqs:ChangeMessageVisibility, sqs:GetQueueAttributes]
+            Resource: !GetAtt AlertQueue.Arn
+          - Effect: Allow
+            Action: [dynamodb:GetItem, dynamodb:PutItem, dynamodb:Query, dynamodb:TransactWriteItems]
+            Resource: !GetAtt DetectionTable.Arn
+          - Effect: Allow
+            Action: kms:Decrypt
+            Resource: !GetAtt DetectionKey.Arn
+
 Outputs:
   IngestionQueueUrl:
     Description: Queue URL passed to the live Maxwell detector.
@@ -400,3 +422,6 @@ Outputs:
   ConsumerManagedPolicyArn:
     Description: IAM managed policy to attach to the Maxwell worker role.
     Value: !Ref ConsumerManagedPolicy
+  InvestigationConsumerManagedPolicyArn:
+    Description: IAM managed policy to attach to the Maxwell incident-investigation worker role.
+    Value: !Ref InvestigationConsumerManagedPolicy
