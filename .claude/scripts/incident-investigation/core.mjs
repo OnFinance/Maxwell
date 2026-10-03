@@ -8,7 +8,9 @@ const ALERT_FIELDS = new Set([
   'priority', 'status', 'group', 'detectedAt', 'windowStart', 'windowEnd', 'evidenceCount', 'evidenceEventIds',
   'evidenceTruncated',
 ]);
-const TERMINAL = new Set(['confirmed', 'false-positive', 'closed']);
+const TERMINAL = new Set(['confirmation-pending', 'confirmed', 'false-positive', 'closed']);
+export const INCIDENT_CATEGORIES = new Set(['targeted-scanning', 'compromise-critical-system', 'unauthorised-access', 'website-defacement', 'malware', 'ransomware', 'ddos', 'data-breach', 'data-leak', 'identity-theft', 'phishing', 'supply-chain', 'other']);
+export const DATA_CLASSIFICATIONS = new Set(['public', 'internal', 'confidential', 'restricted', 'pii', 'spdi', 'cardholder', 'financial', 'regulatory']);
 
 const canonical = (value) => {
   if (Array.isArray(value)) return `[${value.map(canonical).join(',')}]`;
@@ -93,11 +95,20 @@ export function applyCaseAction(current, action, now = Date.now()) {
     if (TERMINAL.has(current.status)) throw new Error(`cannot add note in ${current.status}`);
     if (next.notes.length >= 100) throw new Error('note limit reached');
     next.notes.push({ at, actor: action.actor, text: validateText(action.text, 'note') });
-  } else if (type === 'confirm') {
+  } else if (type === 'prepare-confirmation') {
     if (!['open', 'investigating'].includes(current.status)) throw new Error(`cannot confirm case from ${current.status}`);
     if (!next.owner) throw new Error('case must be assigned before confirmation');
     if (!next.evidence.length) throw new Error('case requires evidence before confirmation');
+    if (typeof action.incidentId !== 'string' || !/^inc_[0-7][0-9A-HJKMNP-TV-Z]{25}$/.test(action.incidentId)) throw new Error('invalid incident id');
+    if (!INCIDENT_CATEGORIES.has(action.category)) throw new Error('invalid incident category');
+    const classifications = action.affectedDataClassifications || [];
+    if (!Array.isArray(classifications) || classifications.some((value) => !DATA_CLASSIFICATIONS.has(value)) || new Set(classifications).size !== classifications.length) throw new Error('invalid data classifications');
+    next.status = 'confirmation-pending';
+    next.confirmation = { incidentId: action.incidentId, category: action.category, affectedDataClassifications: classifications };
+  } else if (type === 'complete-confirmation') {
+    if (current.status !== 'confirmation-pending') throw new Error(`cannot complete confirmation from ${current.status}`);
     next.status = 'confirmed';
+    next.confirmedIncidentId = current.confirmation.incidentId;
   } else if (type === 'dismiss') {
     if (!['open', 'investigating'].includes(current.status)) throw new Error(`cannot dismiss case from ${current.status}`);
     next.status = 'false-positive';
@@ -111,4 +122,3 @@ export function applyCaseAction(current, action, now = Date.now()) {
   next.timeline.push({ at, action: type, actor: action.actor });
   return next;
 }
-

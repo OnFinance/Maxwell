@@ -51,14 +51,15 @@ test('candidate intake rejects conflicting reuse of an alert id', async () => {
   await assert.rejects(service.intake(alert({ title: 'Changed content' })), /reused with different content/);
 });
 
-test('confirmation requires assignment and hashed evidence', () => {
+test('confirmation preparation requires assignment and hashed evidence', () => {
   let current = createCase(alert(), now);
-  assert.throws(() => applyCaseAction(current, { type: 'confirm', actor: 'analyst@example.com', expectedRevision: 1 }, now + 1000), /assigned/);
+  const prepare = (record) => ({ type: 'prepare-confirmation', actor: 'analyst@example.com', expectedRevision: record.revision, incidentId: 'inc_01K6K6J9R0ABCDEFGHJKMNPQRS', category: 'unauthorised-access' });
+  assert.throws(() => applyCaseAction(current, prepare(current), now + 1000), /assigned/);
   current = applyCaseAction(current, { type: 'assign', actor: 'lead@example.com', owner: 'analyst@example.com', expectedRevision: 1 }, now + 1000);
-  assert.throws(() => applyCaseAction(current, { type: 'confirm', actor: 'analyst@example.com', expectedRevision: 2 }, now + 2000), /evidence/);
+  assert.throws(() => applyCaseAction(current, prepare(current), now + 2000), /evidence/);
   current = applyCaseAction(current, { type: 'add-evidence', actor: 'analyst@example.com', expectedRevision: 2, ref: 'cloudtrail:event/evt-1', sha256: 'a'.repeat(64), description: 'Redacted authentication evidence' }, now + 2000);
-  current = applyCaseAction(current, { type: 'confirm', actor: 'analyst@example.com', expectedRevision: 3 }, now + 3000);
-  assert.equal(current.status, 'confirmed');
+  current = applyCaseAction(current, prepare(current), now + 3000);
+  assert.equal(current.status, 'confirmation-pending');
   assert.equal(current.revision, 4);
 });
 
