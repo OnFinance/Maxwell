@@ -413,6 +413,10 @@ SBOMs, OpenLineage for pipelines, and OpenTelemetry GenAI conventions for sessio
 
 ### Real-time threat-detection recipes
 
+> **Current scope:** Maxwell's real-time threat-detection feature currently supports AWS only. Its live ingestion,
+> infrastructure and source adapter are built for AWS CloudTrail; other cloud providers and endpoint sources are not
+> supported yet.
+
 Maxwell includes a small deterministic engine for normalized security events. It currently detects repeated
 authentication failures, password spraying, a successful login after repeated failures, privileged-access grants
 and audit logging being disabled. Matches are **alert candidates**, not confirmed incidents. An investigation must
