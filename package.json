@@ -25,6 +25,9 @@
     "fix:lint": "jsonschema lint .claude/schemas -e .schema.json --ignore .claude/schemas/layout.json --ignore .claude/schemas/tests --resolve .claude/schemas/v1 --resolve .claude/schemas/vocab --exclude orphan_definitions --exclude simple_properties_identifiers --fix",
     "sync:agents": "node .claude/scripts/sync-agents-mirror.mjs",
     "ingest:session": "node .claude/scripts/sessions/ingest.mjs",
+    "detect": "node .claude/scripts/threat-detection/run.mjs",
+    "detect:cloudtrail": "node .claude/scripts/threat-detection/cloudtrail-run.mjs",
+    "detect:cloudtrail:sqs": "node .claude/scripts/threat-detection/cloudtrail-sqs-run.mjs",
     "kpis": "node .claude/scripts/kpis/compute.mjs",
     "test": "npm run --silent test:schemas && node --test \".claude/scripts/**/*.test.mjs\"",
     "test:schemas": "jsonschema test .claude/schemas/tests --resolve .claude/schemas/v1 --resolve .claude/schemas/vocab"
@@ -34,5 +37,10 @@
     "ajv": "^8.20.0",
     "ajv-formats": "^3.0.1",
     "gray-matter": "^4.0.3"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "3.1146.0",
+    "@aws-sdk/client-sqs": "3.1146.0",
+    "@aws-sdk/lib-dynamodb": "3.1146.0"
   }
 }

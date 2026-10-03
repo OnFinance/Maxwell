@@ -411,6 +411,66 @@ Maxwell aligns its data to open standards rather than inventing formats: OSCAL f
 2.1.0 for static results, OCSF 1.9 for runtime findings, OSV and OpenVEX for vulnerabilities, CycloneDX 1.6 for
 SBOMs, OpenLineage for pipelines, and OpenTelemetry GenAI conventions for session metrics.
 
+### Real-time threat-detection recipes
+
+> **Current scope:** Maxwell's real-time threat-detection feature currently supports AWS only. Its live ingestion,
+> infrastructure and source adapter are built for AWS CloudTrail; other cloud providers and endpoint sources are not
+> supported yet.
+
+Maxwell includes a small deterministic engine for normalized security events. It currently detects repeated
+authentication failures, password spraying, a successful login after repeated failures, privileged-access grants
+and audit logging being disabled. Matches are **alert candidates**, not confirmed incidents. An investigation must
+confirm and convert them before they enter the state-of-controls ledger.
+
+The runner reads one normalized JSON event per line from standard input and writes alert candidates as JSONL:
+
+```bash
+npm run detect -- --company example-co < normalized-events.jsonl
+```
+
+`normalized-events.jsonl` is the event feed supplied by a source adapter. To exercise the engine before connecting
+one, run the built-in six-event demonstration:
+
+```bash
+npm run detect -- --company example-co --demo
+```
+
+Use `--replay-now 2026-10-03T10:10:00.000Z` for deterministic replay and `--list-recipes` to inspect the built-in
+recipes. Each event carries opaque, source-normalized identifiers: `schemaVersion`, `eventId`, `companyId`,
+`scopeId`, `source`, `eventTime`, `type`, `outcome`, `actorKey`, and the applicable `sourceKey`, `targetKey` or
+`privileged` field. Raw log messages and credentials are rejected. The engine isolates state by company, source and
+scope, deduplicates provider event IDs, accepts up to two minutes of late arrival, rejects silent state eviction and
+caps retained state. This stdin runner is intended for replay and local evaluation.
+
+CloudTrail events can be replayed directly from EventBridge envelopes, raw CloudTrail records or SNS notification
+envelopes. The adapter pseudonymizes AWS principals, source addresses and target names before detection:
+
+```bash
+npm run detect:cloudtrail -- --company example-co --scope aws-prod \
+  --replay-now 2026-10-03T10:10:00.000Z < cloudtrail-events.jsonl
+```
+
+Use `--mode normalize` to inspect the normalized events without running recipes. The first adapter revision covers
+AWS console logins, confirmed attachment of the AWS-managed `AdministratorAccess` policy, and successful or failed
+CloudTrail `StopLogging`, `DeleteTrail`, `StopEventDataStoreIngestion` and `DeleteEventDataStore` calls. Other events
+are counted as ignored. This replay adapter performs no AWS API calls and needs no AWS credentials.
+
+For production, deploy
+`.claude/skills/threat-detection/references/aws-cloudformation.yaml`. It provisions customer-key-encrypted ingestion
+and dead-letter queues, a DynamoDB table with point-in-time recovery and TTL cleanup, and a stream-based alert
+handoff queue. The live worker long-polls SQS, persists every event and idempotency marker atomically, correlates with
+strongly consistent reads, and conditionally persists each candidate before deleting its input message:
+
+```bash
+npm run detect:cloudtrail:sqs -- \
+  --company example-co --region ap-south-1 \
+  --queue <IngestionQueueUrl> --table <DetectionTableName>
+```
+
+The alert queue receives only newly persisted candidates. A separate investigation consumer must enrich and confirm
+them before creating incidents. Deployment, IAM attachment, retry and dead-letter operations are documented in
+`.claude/skills/threat-detection/SKILL.md`.
+
 > Catalog text is a faithful summary of the published instruments, and entries that could not be verified against
 > the source carry a maintainer-verification note. It is not legal advice.
 
