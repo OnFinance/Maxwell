@@ -52,3 +52,13 @@ test('EventBridge rules have bounded retries and the stream pipe publishes only 
   assert.deepEqual(pattern.eventName, ['INSERT']);
   assert.deepEqual(pattern.dynamodb.NewImage.entityType.S, ['alert']);
 });
+
+test('investigation worker policy is limited to the alert queue and durable case table', () => {
+  const statements = resources.InvestigationConsumerManagedPolicy.Properties.PolicyDocument.Statement;
+  assert.deepEqual(statements[0].Resource, { tag: '!GetAtt', value: 'AlertQueue.Arn' });
+  assert.ok(statements[0].Action.includes('sqs:DeleteMessage'));
+  assert.deepEqual(statements[1].Resource, { tag: '!GetAtt', value: 'DetectionTable.Arn' });
+  assert.ok(statements[1].Action.includes('dynamodb:TransactWriteItems'));
+  assert.deepEqual(statements[2].Action, 'kms:Decrypt');
+  assert.ok(!JSON.stringify(statements).includes('sqs:SendMessage'));
+});

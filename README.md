@@ -471,6 +471,28 @@ The alert queue receives only newly persisted candidates. A separate investigati
 them before creating incidents. Deployment, IAM attachment, retry and dead-letter operations are documented in
 `.claude/skills/threat-detection/SKILL.md`.
 
+### Incident investigation
+
+Maxwell's investigation worker turns each alert candidate into one durable case. It preserves state across worker
+restarts, rejects conflicting replays, uses revision checks to prevent analyst overwrites, and records an immutable
+activity item with every case change. The current live intake is wired to the AWS alert queue described above.
+
+```bash
+npm run investigate:aws:intake -- \
+  --company example-co --region ap-south-1 \
+  --queue <AlertQueueUrl> --table <DetectionTableName>
+
+npm run investigate -- \
+  --company example-co --region ap-south-1 --table <DetectionTableName> --action list
+```
+
+Analysts can inspect and assign cases, add redacted notes and SHA-256-addressed evidence, dismiss false positives,
+or explicitly confirm a case. Confirmation requires an owner and evidence, emits OCSF 1.9 class 2005, derives the
+applicable CERT-In, SEBI, RBI and DPDP reporting clocks, and appends a validated incident to the company's SOC
+ledger. Its recoverable pending state and deterministic incident ID prevent duplicate incidents after retries.
+Candidate alerts are never confirmed automatically. See `.claude/skills/incident-investigation/SKILL.md` for the
+complete triage and confirmation commands.
+
 > Catalog text is a faithful summary of the published instruments, and entries that could not be verified against
 > the source carry a maintainer-verification note. It is not legal advice.
 
