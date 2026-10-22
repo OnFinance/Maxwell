@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1",
   "kind": "maxwell.vocab.pricing",
-  "asOf": "2026-09-14",
+  "asOf": "2026-10-22",
   "source": "https://platform.claude.com/docs/en/about-claude/pricing",
   "models": [
     {
@@ -33,6 +33,20 @@
       "webSearchPerKRequests": 10
     },
     {
+      "model": "claude-opus-5-5",
+      "aliases": [
+        "claude-opus-5-5[1m]",
+        "anthropic/claude-opus-5-5"
+      ],
+      "provider": "anthropic",
+      "inputPerMTok": 4,
+      "outputPerMTok": 20,
+      "cacheWrite5mPerMTok": 5,
+      "cacheWrite1hPerMTok": 8,
+      "cacheReadPerMTok": 0.2,
+      "webSearchPerKRequests": 10
+    },
+    {
       "model": "claude-opus-5",
       "aliases": [
         "opus",
@@ -46,6 +60,20 @@
       "cacheWrite5mPerMTok": 6.25,
       "cacheWrite1hPerMTok": 10,
       "cacheReadPerMTok": 0.5,
+      "webSearchPerKRequests": 10
+    },
+    {
+      "model": "claude-sonnet-5-5",
+      "aliases": [
+        "claude-sonnet-5-5[1m]",
+        "anthropic/claude-sonnet-5-5"
+      ],
+      "provider": "anthropic",
+      "inputPerMTok": 2,
+      "outputPerMTok": 10,
+      "cacheWrite5mPerMTok": 2.5,
+      "cacheWrite1hPerMTok": 4,
+      "cacheReadPerMTok": 0.2,
       "webSearchPerKRequests": 10
     },
     {
