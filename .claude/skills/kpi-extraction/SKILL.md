@@ -37,3 +37,9 @@ x-maxwell:
 `references/pricing.json` is validated against `vocab/pricing.schema.json`. When Anthropic changes list prices,
 add a new file version by updating `asOf` and the affected rows; summaries record the `pricingVersion` they used,
 so older sessions remain comparable.
+Rows are keyed by Anthropic's first-party model id. Names that hosted providers and gateways report for the same
+model (Vertex `claude-opus-5-5`, `claude-haiku-4-5@20251001`; Bedrock `us.anthropic.claude-opus-5-5-v1:0`; a
+`provider/` prefix) resolve to that row in `lib/pricing.mjs`, so do not add them as aliases. A model with no row
+is costed at 0 and shows up as `deltaPct: -100` against the harness-reported cost: add its row.
+The summary's `models[].provider` still records where the call was served: `aws.bedrock` or `gcp.vertex_ai` from the
+id's packaging, or from `CLAUDE_CODE_USE_BEDROCK` / `CLAUDE_CODE_USE_VERTEX` for the bare ids Claude Code records.

@@ -3,7 +3,7 @@
 //   parseOpencodeExport(json)       — output of `opencode export <sid>`
 // Both return: { models: Map<model, {tokens, webSearchRequests, webFetchRequests}>, turns, inferenceCalls,
 //   toolCalls: {total, byTool}, permissionDenials[], filesWritten Set, startedAt, endedAt, reportedCostUsd,
-//   linesAdded, linesRemoved, apiDurationMs, formatVersion, duplicatesDropped, errors[] }
+//   linesAdded, linesRemoved, apiDurationMs, formatVersion, duplicatesDropped, errors[], apiErrors[] }
 // The Claude Code format is officially unstable; every field read here is guarded.
 
 const EMPTY_TOKENS = () => ({ input: 0, output: 0, cacheWrite5m: 0, cacheWrite1h: 0, cacheRead: 0, thinking: 0 });
@@ -14,7 +14,7 @@ function ensureModel(stats, model) {
 }
 
 function newStats() {
-  return { models: new Map(), turns: 0, inferenceCalls: 0, toolCalls: { total: 0, byTool: {} }, permissionDenials: [], filesWritten: new Set(), startedAt: null, endedAt: null, reportedCostUsd: null, linesAdded: 0, linesRemoved: 0, apiDurationMs: null, formatVersion: null, duplicatesDropped: 0, errors: [], subagentFiles: 0 };
+  return { models: new Map(), turns: 0, inferenceCalls: 0, toolCalls: { total: 0, byTool: {} }, permissionDenials: [], filesWritten: new Set(), startedAt: null, endedAt: null, reportedCostUsd: null, linesAdded: 0, linesRemoved: 0, apiDurationMs: null, formatVersion: null, duplicatesDropped: 0, errors: [], apiErrors: [], subagentFiles: 0 };
 }
 
 function bump(stats, ts) {
@@ -35,6 +35,15 @@ export function parseClaudeTranscript(lines, stats = newStats()) {
     try { rec = JSON.parse(line); } catch { continue; }
     if (rec.version && !stats.formatVersion) stats.formatVersion = rec.version;
     bump(stats, rec.timestamp);
+    // Claude Code writes API failures (cloud credentials it cannot read, a model the provider has not enabled, a
+    // refused request) as assistant records with model "<synthetic>" and zero usage. No inference happened, so they
+    // are not a model, a turn or an inference call; they are kept in apiErrors. They do not join `errors`, which
+    // decides the default outcome: a transient API error that the harness retried does not fail a session.
+    if (rec.type === 'assistant' && rec.message && rec.message.model === '<synthetic>') {
+      const text = (Array.isArray(rec.message.content) ? rec.message.content : []).map((b) => (b && b.type === 'text' ? b.text : '')).join(' ').trim();
+      stats.apiErrors.push({ kind: String(rec.error || 'api_error'), message: text.slice(0, 500) });
+      continue;
+    }
     if (rec.type === 'assistant' && rec.message) {
       const key = rec.requestId || (rec.message && rec.message.id) || rec.uuid;
       const prev = byRequest.get(key);
