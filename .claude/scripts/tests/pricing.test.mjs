@@ -55,5 +55,26 @@ test('a session on claude-opus-5-5 through Vertex gets a non-zero cost and a can
   assert.ok(usd > 0);
   assert.equal(usd, Math.round((142 * 4 + 47947 * 20 + 905359 * 5 + 5434477 * 0.2) / 1e6 * 1e6) / 1e6);
   assert.equal(canonicalModelId(pricing, 'us.anthropic.claude-opus-5-5-v1:0'), 'claude-opus-5-5');
-  assert.equal(providerOf(pricing, 'us.anthropic.claude-opus-5-5-v1:0'), 'anthropic');
+});
+
+test('the provider records where the call was served, not whose model it is', () => {
+  const none = {};
+  assert.equal(providerOf(pricing, 'claude-opus-5-5', undefined, none), 'anthropic');
+  assert.equal(providerOf(pricing, 'us.anthropic.claude-opus-5-5-v1:0', undefined, none), 'aws.bedrock');
+  assert.equal(providerOf(pricing, 'us-gov.anthropic.claude-opus-5-5-v1:0', undefined, none), 'aws.bedrock');
+  assert.equal(providerOf(pricing, 'anthropic.claude-opus-5-5', undefined, none), 'aws.bedrock');
+  assert.equal(providerOf(pricing, 'global.anthropic.claude-opus-5', undefined, none), 'aws.bedrock');
+  assert.equal(providerOf(pricing, 'bedrock/claude-opus-5-5', undefined, none), 'aws.bedrock');
+  assert.equal(providerOf(pricing, 'amazon-bedrock/anthropic.claude-opus-5-5', undefined, none), 'aws.bedrock');
+  assert.equal(providerOf(pricing, 'arn:aws:bedrock:ap-south-1:123456789012:inference-profile/apac.anthropic.claude-opus-5-5-v1:0', undefined, none), 'aws.bedrock');
+  assert.equal(providerOf(pricing, 'claude-haiku-4-5@20251001', undefined, none), 'gcp.vertex_ai');
+  assert.equal(providerOf(pricing, 'vertex_ai/claude-opus-5-5', undefined, none), 'gcp.vertex_ai');
+  assert.equal(providerOf(pricing, 'google-vertex-anthropic/claude-opus-5-5', undefined, none), 'gcp.vertex_ai');
+  // Claude Code on Vertex records bare ids, so the session's own setting decides.
+  assert.equal(providerOf(pricing, 'claude-opus-5-5', undefined, { CLAUDE_CODE_USE_VERTEX: '1' }), 'gcp.vertex_ai');
+  assert.equal(providerOf(pricing, 'claude-opus-5-5[1m]', undefined, { CLAUDE_CODE_USE_BEDROCK: 'true' }), 'aws.bedrock');
+  assert.equal(providerOf(pricing, 'claude-opus-5-5', undefined, { CLAUDE_CODE_USE_VERTEX: '0' }), 'anthropic');
+  assert.equal(providerOf(pricing, 'anthropic/claude-opus-5-5', undefined, { CLAUDE_CODE_USE_VERTEX: '1' }), 'anthropic', 'an OpenCode provider prefix wins over the Claude Code setting');
+  assert.equal(providerOf(pricing, 'cloudflare-workers-ai/@cf/zai-org/glm-5.3', undefined, none), 'other');
+  assert.equal(resolved('us-gov.anthropic.claude-opus-5-5-v1:0'), 'claude-opus-5-5');
 });
