@@ -593,8 +593,8 @@ it. The JSON also lists the files the run changed, the ledger records it appende
 > Show Maxwell's settings. / Run sonnet agents on claude-opus-5-5.
 
 `/config` reads and changes settings through `node .claude/scripts/config/config.mjs` (`keys`, `get [<key>]`,
-`set <key> <value>`, `set <key> --ref <ENV_NAME>`, `unset <key>`, and `set executor --company <c> --from-file <path>`;
-`set` and `unset` run only with `MAXWELL_CONFIG_WRITE=1` in the environment). Values are checked against
+`set <key> <value>`, `set <key> --ref <ENV_NAME>`, `unset <key>`, and `set executor --company <c> --from-file <path>`). Every setting is optional: with no host config file and none of
+the variables below, Maxwell runs exactly as described above. Values are checked against
 `.claude/schemas/v1/harness/host-config.schema.json` and kept in `~/.config/maxwell/config.json` (or the file named
 by `MAXWELL_CONFIG_FILE`), outside the workspace. Every setting's environment variable wins over that file, so a
 hosted harness can configure a run with environment variables and mounted files alone:
@@ -611,8 +611,8 @@ hosted harness can configure a run with environment variables and mounted files 
 
 Settings that decide where secrets are kept or sent are limited when set with the tool: folders and files under
 `~/.config/maxwell/`, an https origin, `MAXWELL_`/`COS_`/`COMPLIANCEOS_` variable names. Their environment variables
-may point anywhere outside the workspace; hosted operators set those variables rather than the file. Claude Code and
-OpenCode ask the person before an agent runs `config.mjs set` or `unset`. A ComplianceOS login goes to the configured
+may point anywhere outside the workspace; hosted operators set those variables rather than the file, and set
+`MAXWELL_CONFIG_READONLY=1` so that agents cannot change settings (`set` and `unset` then refuse). A ComplianceOS login goes to the configured
 origin only when it, too, comes from the `*Ref` settings. `executor.file` serves one company; a host running several keeps each executor in its company folder.
 
 ## Validation

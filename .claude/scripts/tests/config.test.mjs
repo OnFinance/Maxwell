@@ -16,7 +16,7 @@ const CLI = join(WORKSPACE, '.claude/scripts/config/config.mjs');
 // A clean environment: no inherited Maxwell, model or ComplianceOS variables, and a host config file in a temp dir.
 const cleanEnv = (dir, extra = {}) => {
   const env = Object.fromEntries(Object.entries(process.env).filter(([k]) => !/^(MAXWELL_|ANTHROPIC_DEFAULT_)/.test(k)));
-  return { ...env, HOME: dir, MAXWELL_CONFIG_FILE: join(dir, 'config.json'), MAXWELL_CONFIG_WRITE: '1', ...extra };
+  return { ...env, HOME: dir, MAXWELL_CONFIG_FILE: join(dir, 'config.json'), ...extra };
 };
 const run = (env, ...args) => {
   const r = spawnSync(process.execPath, [CLI, ...args], { cwd: WORKSPACE, encoding: 'utf8', env });
@@ -46,13 +46,19 @@ test('a host setting round-trips through set and get and records who set it', ()
     assert.equal(unset.status, 0, unset.out);
     assert.equal(run(env, 'get', 'models.map.sonnet').json.source, 'unset');
     assert.equal(run(env, 'get', 'models.default').json.value, 'opus');
-    // A change needs MAXWELL_CONFIG_WRITE=1, and the subcommand must come first so permission rules can see it.
-    const { MAXWELL_CONFIG_WRITE: _, ...unconfirmed } = env;
-    const r = run(unconfirmed, 'set', 'models.default', 'sonnet');
-    assert.equal(r.status, 2);
-    assert.equal(r.json.error, 'confirm');
+    // A person on their own machine needs no extra variable to change a setting; the subcommand comes first.
     assert.equal(run(env, '--by', 'x', 'set', 'models.default', 'sonnet').json.message, 'the subcommand (keys, get, set, unset) must come first');
     assert.equal(run(env, 'get', 'models.default').json.value, 'opus');
+    // Hosted mode: only the explicit MAXWELL_CONFIG_READONLY=1 a hosted harness sets turns set and unset off.
+    const before = readFileSync(file, 'utf8');
+    for (const args of [['set', 'models.default', 'sonnet'], ['unset', 'models.default']]) {
+      const r = run({ ...env, MAXWELL_CONFIG_READONLY: '1' }, ...args);
+      assert.equal(r.status, 2, r.out);
+      assert.equal(r.json.error, 'read-only');
+    }
+    assert.equal(readFileSync(file, 'utf8'), before, 'read-only mode leaves the file untouched');
+    assert.equal(run({ ...env, MAXWELL_CONFIG_READONLY: '1' }, 'get', 'models.default').json.value, 'opus', 'reads still work');
+    assert.equal(run({ ...env, MAXWELL_CONFIG_READONLY: '0' }, 'set', 'models.default', 'sonnet').status, 0, 'any other value is not read-only');
   } finally { rmSync(dir, { recursive: true, force: true }); }
 });
 

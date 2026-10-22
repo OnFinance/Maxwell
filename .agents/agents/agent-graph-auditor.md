@@ -41,9 +41,6 @@ permission:
     sops -d *: deny
     rm -rf *: deny
     git push --force *: deny
-    node .claude/scripts/config/config.mjs set *: deny
-    node .claude/scripts/config/config.mjs unset *: deny
-    node .claude/scripts/*..*: deny
     ssh *: deny
     curl *: deny
     git push *: deny

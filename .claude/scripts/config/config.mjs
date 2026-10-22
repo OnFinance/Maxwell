@@ -12,9 +12,13 @@
 // Host settings live in ~/.config/maxwell/config.json (or MAXWELL_CONFIG_FILE), outside the workspace; each one's
 // environment variable wins over the file. Secret values are never accepted, stored or printed: a secret-bearing
 // setting holds the name of an environment variable, and `get` shows that name and whether it is set. Settings that
-// decide where secrets are kept or sent accept only safe values here (see lib/config.mjs `guarded`). `set` and
-// `unset` run only with MAXWELL_CONFIG_WRITE=1 in the environment, and the subcommand must come first.
-// Prints one JSON object. Exit codes: 0 done, 2 refused (unknown key, invalid value, a secret given as a value).
+// decide where secrets are kept or sent accept only safe values here (see lib/config.mjs `guarded`). A person on
+// their own machine runs `set` and `unset` like any other helper: no extra variable and no extra prompt. Every
+// setting is optional; with no host config file and none of the variables, Maxwell behaves exactly as without
+// this tool. A hosted harness that supplies settings through the environment and must not let agents change them
+// sets MAXWELL_CONFIG_READONLY=1, and then `set` and `unset` refuse. The subcommand must come first.
+// Prints one JSON object. Exit codes: 0 done, 2 refused (unknown key, invalid value, a secret given as a value,
+// read-only hosted mode).
 import { parseArgs } from 'node:util';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -40,12 +44,11 @@ try {
   });
 } catch (err) { fail('usage', err.message); }
 const { values: flags, positionals: [cmd, key, value] } = parsed;
-// The subcommand comes first, so a permission rule written for `config.mjs set ...` sees it. A change also needs
-// MAXWELL_CONFIG_WRITE=1 in the environment: a hosted harness sets it in its own process, and a person in chat
-// approves the command line that carries it (it matches no auto-allowed rule), so an agent cannot change a setting
-// unseen by reordering arguments or spelling the script path differently.
+// The subcommand comes first, so a permission rule a hosted operator writes for `config.mjs set ...` sees it.
 if (process.argv[2] !== cmd) fail('usage', 'the subcommand (keys, get, set, unset) must come first');
-if (['set', 'unset'].includes(cmd) && process.env.MAXWELL_CONFIG_WRITE !== '1') fail('confirm', `${cmd} changes a setting: run it as \`MAXWELL_CONFIG_WRITE=1 node .claude/scripts/config/config.mjs ${cmd} ...\` so the change is approved where it is run`);
+// Hosted mode only: the harness that starts Maxwell sets MAXWELL_CONFIG_READONLY=1 when its settings come from its own
+// environment and agents must not change them. Unset (a person's own machine), set and unset work as normal.
+if (['set', 'unset'].includes(cmd) && process.env.MAXWELL_CONFIG_READONLY === '1') fail('read-only', `${cmd} is turned off here: whoever started Maxwell set MAXWELL_CONFIG_READONLY=1 and supplies its settings through the environment, so ask them to change the setting`);
 const by = String(flags.by || process.env.MAXWELL_INVOKED_BY || 'headless').slice(0, 120);
 
 const ajv = () => buildAjv().ajv;

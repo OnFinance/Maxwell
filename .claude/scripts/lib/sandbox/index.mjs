@@ -34,8 +34,10 @@ export function loadExecutor(companyId, { root = '.', env = process.env } = {}) 
     return null;
   }
   let config;
-  // The parser's message quotes file text, so it is never passed on.
-  try { config = JSON.parse(readFileSync(path, 'utf8')); } catch { throw new ExecutorError('invalid-config', `${path} is not valid JSON`); }
+  // A company's own file reads exactly as before; for a file from outside the workspace the parser's message, which
+  // quotes file text, is never passed on.
+  if (!override) config = JSON.parse(readFileSync(path, 'utf8'));
+  else try { config = JSON.parse(readFileSync(path, 'utf8')); } catch { throw new ExecutorError('invalid-config', `${path} is not valid JSON`); }
   const check = getValidator(buildAjv().ajv, EXECUTOR_SCHEMA);
   if (!check(config)) throw new ExecutorError('invalid-config', `${path} does not match its schema:\n${formatErrors(check.errors)}`);
   if (override) {

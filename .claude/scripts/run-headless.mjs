@@ -65,9 +65,11 @@ if (harness === 'claude-code') {
   const model = opt('--model', settingValue('models.default') || 'opus');
   const fallback = opt('--fallback-model', settingValue('models.fallback') || (/^(opus|claude-opus)/.test(model) ? '' : 'opus'));
   env.MAXWELL_MODEL = model;
+  // Only a mapping from the host config file is applied and announced here: an ANTHROPIC_DEFAULT_*_MODEL variable
+  // already in the environment reaches claude unchanged and silently, exactly as without the config tool.
   for (const alias of ['opus', 'sonnet', 'haiku']) {
-    const mapped = settingValue(`models.map.${alias}`);
-    if (mapped) { env[`ANTHROPIC_DEFAULT_${alias.toUpperCase()}_MODEL`] = mapped; console.error(`[run-headless] ${alias} runs on ${mapped}`); }
+    const mapped = hostSetting(`models.map.${alias}`);
+    if (mapped.source === 'file') { env[`ANTHROPIC_DEFAULT_${alias.toUpperCase()}_MODEL`] = mapped.value; console.error(`[run-headless] ${alias} runs on ${mapped.value}`); }
   }
   // Utility commands take the shorthand form; saved workflows get a structured args object (Claude passes it to
   // the Workflow tool as data, see code.claude.com/docs/en/workflows "Pass input to a saved workflow").
