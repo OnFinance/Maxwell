@@ -229,6 +229,16 @@
       "schema": "https://maxwell.onfinance.ai/schemas/v1/frontmatter/company-summary.schema.json"
     },
     {
+      "glob": "company-profile/*/catalogs/*.catalog.json",
+      "format": "json",
+      "schema": "https://maxwell.onfinance.ai/schemas/v1/company/catalog.schema.json"
+    },
+    {
+      "glob": "company-profile/*/regulators.json",
+      "format": "json",
+      "schema": "https://maxwell.onfinance.ai/schemas/v1/company/regulators.schema.json"
+    },
+    {
       "glob": "company-profile/*/sdlc/policy.json",
       "format": "json",
       "schema": "https://maxwell.onfinance.ai/schemas/v1/company/sdlc-policy.schema.json"

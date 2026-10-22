@@ -30,6 +30,10 @@ coverage.
 **Formula notes.** The ledger is append-only, so "latest record per id" is the last line with that `id` or a
 later line whose `supersedes` points at it. Observations count once per control id listed in `controlIds`.
 
+**Company-specific controls.** Controls from the company's own catalogs (ids `co:<company_id>:...`) count in the
+headline figure like any control. For a company that has such controls the same ratio over them alone is also
+published as the `company-specific-controls` series; a company without them gets no such datapoint.
+
 **Dimensions.** `companyId`, `workflow` (from `observation.methods`), `appId`, `envId`.
 
 **Source.** `company-profile/<c>/soc/main.jsonl`, `applications/*/env/*.json`, `change_management/master.json`.

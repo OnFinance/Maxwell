@@ -36,6 +36,17 @@ export const meta = {
 const WORKFLOW = 'refresh-apps';
 const a = args || {};
 const companyId = a.companyId;
+// Company catalogs (regulatory-catalogs skill section 8): run-headless passes args.companyCatalogs only when
+// company-profile/<companyId>/catalogs/ holds the company's own catalogs. Without them every prompt is exactly as before.
+const companyCatalogs = (args && Array.isArray(args.companyCatalogs) ? args.companyCatalogs : []).filter((c) => companyId && c
+  && /^co:[a-z0-9][a-z0-9-]{1,62}:[a-z0-9][a-z0-9-]{1,62}$/.test(c.instrumentId) && c.instrumentId.indexOf('co:' + companyId + ':') === 0
+  && c.file === 'company-profile/' + companyId + '/catalogs/' + c.instrumentId.slice(companyId.length + 4) + '.catalog.json');
+const COMPANY_CATALOG_RULE = !companyCatalogs.length ? '' : '\n\nCompany catalogs: besides the shared catalogs, company ' + companyId
+  + ' has its own catalogs, which apply to ' + companyId + ' only: ' + companyCatalogs.map((c) => c.instrumentId + ' (' + c.file + ')').join(', ')
+  + '. Follow section 8 of .claude/skills/regulatory-catalogs/SKILL.md. Treat each as an instrument in scope for ' + companyId
+  + ' (the instruments.json registry, frameworksInScope and the instrument-level entity filters do not apply to it; each control\'s own applicability does): include its controls wherever you select applicable instruments or controls, and key and cite them exactly like shared controls - ledger control id \'<instrumentId>:<controlId>\', regulatoryRef {regulator: the catalog\'s regulator, instrument: the instrumentId, controlId}. Severity comes from the control\'s defaultSeverity; the SLA from its slaDays (slaBasis.instrument = the instrumentId), else the sla-table defaults. Cite the most specific shared instrument first when one covers the gap and the company control after it; a company control comes first only when no shared control covers the gap. These ids are valid for ' + companyId
+  + ': never refute or drop a mapping only because it cites one of them. Never cite any other \'co:\' id, and label these controls company-specific wherever you report controls.';
+const ask = (prompt, opts) => agent(typeof prompt === 'string' ? prompt + COMPANY_CATALOG_RULE : prompt, opts);
 if (typeof companyId !== 'string' || !companyId) throw new Error('refresh-apps: args.companyId is required (company-profile/<companyId>)');
 const dryRun = a.dryRun === true;
 const NOW_RE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?Z$/;
@@ -70,7 +81,7 @@ ${dryRun ? 'DRY RUN: no clone, no fetch, no checkout and no file write in this s
 // ---------------------------------------------------------------- Scout
 phase('Scout');
 if (!now) {
-  const clock = await agent(`Company: ${companyId}. Workflow: ${WORKFLOW}. You are the 'soc-ledger-keeper' specialist, used here only as the workflow clock: read nothing, write nothing, append nothing.
+  const clock = await ask(`Company: ${companyId}. Workflow: ${WORKFLOW}. You are the 'soc-ledger-keeper' specialist, used here only as the workflow clock: read nothing, write nothing, append nothing.
 Run exactly once: node -e "console.log(new Date(Date.parse(Date())).toISOString().slice(0,19)+'Z')"
 Return its output verbatim as now.`, { label: 'clock', phase: 'Scout', agentType: 'soc-ledger-keeper', effort: 'low', schema: { type: 'object', required: ['now'], properties: { sessionId: { type: 'string' }, now: { type: 'string' } } } });
   if (!clock || typeof clock.now !== 'string' || !NOW_RE.test(clock.now.trim())) throw new Error(`refresh-apps: could not resolve NOW (clock returned ${JSON.stringify(clock && clock.now)}); pass args.now and re-run`);
@@ -103,7 +114,7 @@ const SCOUT_SCHEMA = {
     skipped: { type: 'array', items: { type: 'object', required: ['target', 'reason'], properties: { target: { type: 'string' }, reason: { type: 'string' } } } },
   },
 };
-const scout = await agent(`${common('app-cataloguer')}
+const scout = await ask(`${common('app-cataloguer')}
 SCOUT (read-only, write nothing, run no git command). Read ${PROFILE} (frameworksInScope) and ${LEDGER} if it exists (ids of the latest kind 'control' records).
 APPLICATION-TO-COMPANY RULE (deterministic; no application schema carries companyId, so never infer the link from README prose or hosting.accountRef): when company-profile/ contains exactly one company directory every applications/<app_id>/ belongs to it; otherwise the company's applications are the union of ${PROFILE} criticalFunctions[].appIds${appIds ? ` and ${JSON.stringify(appIds)} (args.appIds)` : ''}. List every other applications/<app_id>/ under skipped with reason 'no company link'.${appIds ? ` Of the linked applications keep only ${JSON.stringify(appIds)}; list every other one under skipped with reason 'filtered by args.appIds'.` : ''}
 For each kept application return: every repos/<repo_id>.json (repoId, recordPath, url, defaultBranch, pinnedCommit, lastFetchedAt, localCheckout, checkoutPresent = the checkout directory exists and contains a .git entry), every env/<env_id>.json${envIds ? ` whose envId is in ${JSON.stringify(envIds)} (others under skipped with reason 'filtered by args.envIds')` : ''} (envId, path, tier, exposure, probeMethod = probeAccess.method, probeCredentialKey = probeAccess.credentialKey, iac[]), every images/<image_id>.json that is not a .cdx.json (imageId, path, ref, builtFromRepoId = builtFrom.repoId, sbomPath), and credentialsPresent = credentials.json exists. Never decrypt or open credentials.json content. Nothing is dropped silently: every exclusion goes to skipped.`, { label: 'scout', phase: 'Scout', agentType: 'app-cataloguer', schema: SCOUT_SCHEMA, effort: 'low' });
@@ -163,7 +174,7 @@ sources: the checkout-relative files you read.`;
 
 phase('Sync');
 const synced = await pipeline(allRepos, async (r, _item, index) => {
-  const out = await agent(syncPrompt(r), { label: `sync ${r.appId}/${r.repoId} #${index + 1}`, phase: 'Sync', agentType: 'app-cataloguer', schema: SYNC_SCHEMA, effort: dryRun ? 'low' : 'medium' });
+  const out = await ask(syncPrompt(r), { label: `sync ${r.appId}/${r.repoId} #${index + 1}`, phase: 'Sync', agentType: 'app-cataloguer', schema: SYNC_SCHEMA, effort: dryRun ? 'low' : 'medium' });
   if (!out) { skipped.push(`sync: ${r.appId}/${r.repoId} returned nothing (agent failed or was skipped); its record is left unchanged`); return null; }
   noteSession(out);
   if (out.synced) result.reposSynced += 1;
@@ -197,7 +208,7 @@ phase('Review');
 const appsWithRepos = apps.filter((app) => perRepo.some((p) => p.repo.appId === app.appId));
 for (const app of apps.filter((x) => !appsWithRepos.includes(x))) skipped.push(`review: ${app.appId} has no synced repo output; environment, image and credential drift not reviewed`);
 const reviewed = await pipeline(appsWithRepos, async (app, _item, index) => {
-  const out = await agent(reviewPrompt(app, perRepo.filter((p) => p.repo.appId === app.appId)), { label: `review ${app.appId} #${index + 1}`, phase: 'Review', agentType: 'app-cataloguer', schema: REVIEW_SCHEMA, effort: dryRun ? 'low' : 'medium' });
+  const out = await ask(reviewPrompt(app, perRepo.filter((p) => p.repo.appId === app.appId)), { label: `review ${app.appId} #${index + 1}`, phase: 'Review', agentType: 'app-cataloguer', schema: REVIEW_SCHEMA, effort: dryRun ? 'low' : 'medium' });
   if (!out) { skipped.push(`review: ${app.appId} returned nothing; environment, image and credential drift not reviewed`); return null; }
   noteSession(out);
   return { appId: app.appId, gaps: out.gaps || [] };
@@ -246,7 +257,7 @@ const byApp = (items) => [...new Set(items.map((x) => x.appId))].map((appId) => 
 const judge = async (kind, groups, unanimous) => {
   if (dryRun) return groups.flatMap((g) => g.items).map((item) => ({ item, answers: [] }));
   const out = await pipeline(groups, async (g, _item, index) => {
-    const votes = await parallel(LENSES.map((lens) => () => agent(refutePrompt(kind, g.appId, g.items, lens), { label: `refute ${kind} ${g.appId} (${g.items.length}) [${lens}] #${index + 1}`, phase: 'Verify', agentType: 'refuter', schema: BATCH_VERDICT, effort: 'medium' })));
+    const votes = await parallel(LENSES.map((lens) => () => ask(refutePrompt(kind, g.appId, g.items, lens), { label: `refute ${kind} ${g.appId} (${g.items.length}) [${lens}] #${index + 1}`, phase: 'Verify', agentType: 'refuter', schema: BATCH_VERDICT, effort: 'medium' })));
     votes.forEach(noteSession);
     LENSES.forEach((lens, i) => { if (!votes[i]) skipped.push(`verify: lens ${lens} returned nothing for ${kind} of ${g.appId}; counted as abstention`); });
     return g.items.map((item) => ({ item, answers: votes.map((v, i) => { const x = v ? (v.verdicts || []).find((y) => y.key === item.key) : null; return x ? { ...x, lens: LENSES[i] } : null; }).filter(Boolean), unanimous }));
@@ -297,7 +308,7 @@ if (dryRun) {
   log('Write: no confirmed repo record update');
 } else {
   for (const app of byApp(confirmedRecords.map((c) => ({ ...c, appId: c.repo.appId })))) {
-    const w = await agent(`${common('validator')}
+    const w = await ask(`${common('validator')}
 Read ${REPO_SCHEMA}. Update these repo records of application '${app.appId}' in place: for each file set exactly the listed fields to the listed values, keep every other field byte-identical in meaning, and set provenance as instructed (agent 'validator').
 ${JSON.stringify(app.items.map((c) => ({ recordPath: c.repo.recordPath, set: c.update })))}
 Content rules: keys exactly as the schema names them, no extra keys; drop a listed value that violates its enum or pattern and name it under failures (never invent a replacement). Run \`node .claude/scripts/validate-data.mjs <path>\` for every file and fix content until it passes. Return {written: [paths that validate], failures, schemaIssues}.`, { label: `write repo records ${app.appId}`, phase: 'Write', agentType: 'validator', schema: WRITE_SCHEMA, effort: 'low' });
@@ -317,7 +328,7 @@ for (const app of [...new Set(perRepo.map((p) => p.repo.appId))]) {
   const appRepos = perRepo.filter((p) => p.repo.appId === app).map(({ repo, out }) => ({ repoId: repo.repoId, recordPath: repo.recordPath, synced: out.synced, previousCommit: out.previousCommit, headCommit: out.headCommit, commitsAdvanced: out.commitsAdvanced, recordWritten: !dryRun && confirmedRecords.some((c) => c.repo.recordPath === repo.recordPath) }));
   const appGaps = confirmedGaps.filter((g) => g.appId === app);
   if (dryRun && !existingControlIds.length) { skipped.push(`ledger ${app}: dry run and the ledger has no control record to cite; evidence-request observations not recorded`); continue; }
-  const w = await agent(`${common('soc-ledger-keeper')}
+  const w = await ask(`${common('soc-ledger-keeper')}
 Read .claude/skills/soc-ledger/SKILL.md sections 4, 5 and 9, ${PROFILE} and ${LEDGER}. Application '${app}'.
 ${dryRun
     ? `Step 1 - controls (READ-ONLY, dry run): cite only these existing ledger control ids: ${JSON.stringify(existingControlIds.slice(0, 200))}. Append NO control record; when none fits an observation, skip it with reason 'no existing control fits'.`
@@ -344,7 +355,7 @@ if (dryRun) {
 } else if (!result.observations) {
   log('No observation appended; applications section left unchanged');
 } else {
-  const summary = await agent(`${common('report-writer')}
+  const summary = await ask(`${common('report-writer')}
 Read .claude/skills/report-templates/SKILL.md. Rewrite ONLY the 'applications' section of ${SUMMARY} (create the file from the template when absent) from applications/*/ records and the ${WORKFLOW} observations in ${LEDGER}: per application its environments by tier and exposure, its repos with head commit and last fetch time, image records with digest and SBOM status, and the confirmed drift and credential gaps cited as [obs_...]. Mention this run: ${result.reposSynced}/${allRepos.length} repos synced, ${result.reposAdvanced} advanced, ${result.recordsWritten} record(s) written, ${result.gapsConfirmed} confirmed gap(s). Keep every other section byte-identical, bump the frontmatter version (minor), set provenance as instructed and recompute provenance.inputsHash exactly as the company-summary schema describes. Validate with \`node .claude/scripts/validate-data.mjs ${SUMMARY}\`. Do not append to the ledger: follow report-templates section 5 step 6 and return the report observation as proposedObservation (omit the field when the report was already current).`, {
     label: 'summary applications', phase: 'Summary', agentType: 'report-writer', effort: 'low',
     schema: { type: 'object', required: ['updated'], properties: { sessionId: { type: 'string' }, updated: { type: 'boolean' }, version: { type: 'string' }, proposedObservation: { type: 'object', description: 'report-templates section 5 step 6 observation record without id and recordedAt' }, notes: { type: 'string' } } },
@@ -360,7 +371,7 @@ if (dryRun) {
 } else if (!result.observations && !proposedObservation) {
   log('Nothing appended to the ledger; version skipped');
 } else {
-  const version = await agent(`${common('soc-ledger-keeper')}
+  const version = await ask(`${common('soc-ledger-keeper')}
 ${proposedObservation ? `First append the report-writer's proposed observation (report-templates section 5 step 6) via append.mjs: mint id obs_<ULID>, set recordedAt NOW, keep every other field; if its controlIds is empty or names a control that is not in the ledger, use the asset-inventory control this run's Ledger stage cited. Record: ${JSON.stringify(proposedObservation)}
 Then r` : 'R'}un \`node .claude/scripts/soc/version.mjs ${companyId} --session ${sessionId || '<your harness session id>'} --workflow ${WORKFLOW}\` from the workspace root, once. Never pass --force. Return the observation id you appended (if any), the file version.mjs wrote (empty if it printed that nothing was written) and any error verbatim.`, {
     label: 'version ledger', phase: 'Version', agentType: 'soc-ledger-keeper', effort: 'low',

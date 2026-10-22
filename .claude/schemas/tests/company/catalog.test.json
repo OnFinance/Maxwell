@@ -1,0 +1,426 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/v1/company/catalog.schema.json",
+  "tests": [
+    {
+      "description": "internal policy catalog with a crosswalk to a shared control",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.company",
+        "companyId": "example-co",
+        "instrumentId": "co:example-co:infosec-policy",
+        "regulator": "co:example-co:board",
+        "title": "Information security policy",
+        "sourceType": "internal-policy",
+        "version": "v3.2",
+        "sourceRef": "Board-approved information security policy, section 7",
+        "effectiveFrom": "2026-04-01",
+        "groups": [
+          {
+            "id": "Sec-7",
+            "title": "Access control",
+            "controls": [
+              {
+                "id": "AC-7",
+                "title": "Production access reviewed every month",
+                "prose": "Access to production systems shall be reviewed by the system owner every month and unused access removed within 5 working days",
+                "mandatory": true,
+                "defaultSeverity": "high",
+                "cadence": "monthly",
+                "slaDays": 5,
+                "evidenceExpected": [
+                  "Monthly access review sign-off per production system"
+                ],
+                "mappings": [
+                  {
+                    "regulator": "SEBI",
+                    "instrument": "sebi-cscrf-2024",
+                    "controlId": "PR.AA.S5"
+                  }
+                ],
+                "probeWorkflows": [
+                  "runtime-probe-identity-access"
+                ]
+              }
+            ]
+          }
+        ],
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-10-22T09:00:00Z",
+          "workflow": "add-company-catalog",
+          "agent": ".claude/scripts/catalogs/add-company-catalog.mjs"
+        }
+      }
+    },
+    {
+      "description": "sector circular issued by a shared regulator",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.company",
+        "companyId": "example-co",
+        "instrumentId": "co:example-co:sebi-circular-2026-12",
+        "regulator": "SEBI",
+        "title": "Information security policy",
+        "sourceType": "sector-circular",
+        "version": "v3.2",
+        "sourceRef": "Board-approved information security policy, section 7",
+        "effectiveFrom": "2026-04-01",
+        "groups": [
+          {
+            "id": "Sec-7",
+            "title": "Access control",
+            "controls": [
+              {
+                "id": "AC-7",
+                "title": "Production access reviewed every month",
+                "prose": "Access to production systems shall be reviewed by the system owner every month and unused access removed within 5 working days",
+                "mandatory": true,
+                "defaultSeverity": "high",
+                "cadence": "monthly",
+                "slaDays": 5,
+                "evidenceExpected": [
+                  "Monthly access review sign-off per production system"
+                ],
+                "mappings": [
+                  {
+                    "regulator": "SEBI",
+                    "instrument": "sebi-cscrf-2024",
+                    "controlId": "PR.AA.S5"
+                  }
+                ],
+                "probeWorkflows": [
+                  "runtime-probe-identity-access"
+                ]
+              }
+            ]
+          }
+        ],
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-10-22T09:00:00Z",
+          "workflow": "add-company-catalog",
+          "agent": ".claude/scripts/catalogs/add-company-catalog.mjs"
+        }
+      }
+    },
+    {
+      "description": "crosswalk to another catalog of the same company",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.company",
+        "companyId": "example-co",
+        "instrumentId": "co:example-co:infosec-policy",
+        "regulator": "co:example-co:board",
+        "title": "Information security policy",
+        "sourceType": "internal-policy",
+        "version": "v3.2",
+        "sourceRef": "Board-approved information security policy, section 7",
+        "effectiveFrom": "2026-04-01",
+        "groups": [
+          {
+            "id": "Sec-7",
+            "title": "Access control",
+            "controls": [
+              {
+                "id": "AC-7",
+                "title": "Production access reviewed every month",
+                "prose": "Access to production systems shall be reviewed by the system owner every month and unused access removed within 5 working days",
+                "mandatory": true,
+                "defaultSeverity": "high",
+                "cadence": "monthly",
+                "slaDays": 5,
+                "evidenceExpected": [
+                  "Monthly access review sign-off per production system"
+                ],
+                "mappings": [
+                  {
+                    "regulator": "SEBI",
+                    "instrument": "sebi-cscrf-2024",
+                    "controlId": "PR.AA.S5"
+                  },
+                  {
+                    "regulator": "co:example-co:customer-a",
+                    "instrument": "co:example-co:customer-a-schedule",
+                    "controlId": "S-4"
+                  }
+                ],
+                "probeWorkflows": [
+                  "runtime-probe-identity-access"
+                ]
+              }
+            ]
+          }
+        ],
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-10-22T09:00:00Z",
+          "workflow": "add-company-catalog",
+          "agent": ".claude/scripts/catalogs/add-company-catalog.mjs"
+        }
+      }
+    },
+    {
+      "description": "a shared instrument id is not a company catalog id",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.company",
+        "companyId": "example-co",
+        "instrumentId": "sebi-cscrf-2024",
+        "regulator": "co:example-co:board",
+        "title": "Information security policy",
+        "sourceType": "internal-policy",
+        "version": "v3.2",
+        "sourceRef": "Board-approved information security policy, section 7",
+        "effectiveFrom": "2026-04-01",
+        "groups": [
+          {
+            "id": "Sec-7",
+            "title": "Access control",
+            "controls": [
+              {
+                "id": "AC-7",
+                "title": "Production access reviewed every month",
+                "prose": "Access to production systems shall be reviewed by the system owner every month and unused access removed within 5 working days",
+                "mandatory": true,
+                "defaultSeverity": "high",
+                "cadence": "monthly",
+                "slaDays": 5,
+                "evidenceExpected": [
+                  "Monthly access review sign-off per production system"
+                ],
+                "mappings": [
+                  {
+                    "regulator": "SEBI",
+                    "instrument": "sebi-cscrf-2024",
+                    "controlId": "PR.AA.S5"
+                  }
+                ],
+                "probeWorkflows": [
+                  "runtime-probe-identity-access"
+                ]
+              }
+            ]
+          }
+        ],
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-10-22T09:00:00Z",
+          "workflow": "add-company-catalog",
+          "agent": ".claude/scripts/catalogs/add-company-catalog.mjs"
+        }
+      }
+    },
+    {
+      "description": "instrument id without a catalog slug",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.company",
+        "companyId": "example-co",
+        "instrumentId": "co:example-co",
+        "regulator": "co:example-co:board",
+        "title": "Information security policy",
+        "sourceType": "internal-policy",
+        "version": "v3.2",
+        "sourceRef": "Board-approved information security policy, section 7",
+        "effectiveFrom": "2026-04-01",
+        "groups": [
+          {
+            "id": "Sec-7",
+            "title": "Access control",
+            "controls": [
+              {
+                "id": "AC-7",
+                "title": "Production access reviewed every month",
+                "prose": "Access to production systems shall be reviewed by the system owner every month and unused access removed within 5 working days",
+                "mandatory": true,
+                "defaultSeverity": "high",
+                "cadence": "monthly",
+                "slaDays": 5,
+                "evidenceExpected": [
+                  "Monthly access review sign-off per production system"
+                ],
+                "mappings": [
+                  {
+                    "regulator": "SEBI",
+                    "instrument": "sebi-cscrf-2024",
+                    "controlId": "PR.AA.S5"
+                  }
+                ],
+                "probeWorkflows": [
+                  "runtime-probe-identity-access"
+                ]
+              }
+            ]
+          }
+        ],
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-10-22T09:00:00Z",
+          "workflow": "add-company-catalog",
+          "agent": ".claude/scripts/catalogs/add-company-catalog.mjs"
+        }
+      }
+    },
+    {
+      "description": "regulator outside the vocabulary and not a company source",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.company",
+        "companyId": "example-co",
+        "instrumentId": "co:example-co:infosec-policy",
+        "regulator": "FBI",
+        "title": "Information security policy",
+        "sourceType": "internal-policy",
+        "version": "v3.2",
+        "sourceRef": "Board-approved information security policy, section 7",
+        "effectiveFrom": "2026-04-01",
+        "groups": [
+          {
+            "id": "Sec-7",
+            "title": "Access control",
+            "controls": [
+              {
+                "id": "AC-7",
+                "title": "Production access reviewed every month",
+                "prose": "Access to production systems shall be reviewed by the system owner every month and unused access removed within 5 working days",
+                "mandatory": true,
+                "defaultSeverity": "high",
+                "cadence": "monthly",
+                "slaDays": 5,
+                "evidenceExpected": [
+                  "Monthly access review sign-off per production system"
+                ],
+                "mappings": [
+                  {
+                    "regulator": "SEBI",
+                    "instrument": "sebi-cscrf-2024",
+                    "controlId": "PR.AA.S5"
+                  }
+                ],
+                "probeWorkflows": [
+                  "runtime-probe-identity-access"
+                ]
+              }
+            ]
+          }
+        ],
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-10-22T09:00:00Z",
+          "workflow": "add-company-catalog",
+          "agent": ".claude/scripts/catalogs/add-company-catalog.mjs"
+        }
+      }
+    },
+    {
+      "description": "mandatory control without defaultSeverity",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.company",
+        "companyId": "example-co",
+        "instrumentId": "co:example-co:infosec-policy",
+        "regulator": "co:example-co:board",
+        "title": "Information security policy",
+        "sourceType": "internal-policy",
+        "version": "v3.2",
+        "sourceRef": "Board-approved information security policy, section 7",
+        "effectiveFrom": "2026-04-01",
+        "groups": [
+          {
+            "id": "Sec-7",
+            "title": "Access control",
+            "controls": [
+              {
+                "id": "AC-7",
+                "title": "Production access reviewed every month",
+                "prose": "Access to production systems shall be reviewed by the system owner every month and unused access removed within 5 working days",
+                "mandatory": true,
+                "cadence": "monthly",
+                "slaDays": 5,
+                "evidenceExpected": [
+                  "Monthly access review sign-off per production system"
+                ],
+                "mappings": [
+                  {
+                    "regulator": "SEBI",
+                    "instrument": "sebi-cscrf-2024",
+                    "controlId": "PR.AA.S5"
+                  }
+                ],
+                "probeWorkflows": [
+                  "runtime-probe-identity-access"
+                ]
+              }
+            ]
+          }
+        ],
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-10-22T09:00:00Z",
+          "workflow": "add-company-catalog",
+          "agent": ".claude/scripts/catalogs/add-company-catalog.mjs"
+        }
+      }
+    },
+    {
+      "description": "unknown top-level key",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.catalog.company",
+        "companyId": "example-co",
+        "instrumentId": "co:example-co:infosec-policy",
+        "regulator": "co:example-co:board",
+        "title": "Information security policy",
+        "sourceType": "internal-policy",
+        "version": "v3.2",
+        "sourceRef": "Board-approved information security policy, section 7",
+        "effectiveFrom": "2026-04-01",
+        "groups": [
+          {
+            "id": "Sec-7",
+            "title": "Access control",
+            "controls": [
+              {
+                "id": "AC-7",
+                "title": "Production access reviewed every month",
+                "prose": "Access to production systems shall be reviewed by the system owner every month and unused access removed within 5 working days",
+                "mandatory": true,
+                "defaultSeverity": "high",
+                "cadence": "monthly",
+                "slaDays": 5,
+                "evidenceExpected": [
+                  "Monthly access review sign-off per production system"
+                ],
+                "mappings": [
+                  {
+                    "regulator": "SEBI",
+                    "instrument": "sebi-cscrf-2024",
+                    "controlId": "PR.AA.S5"
+                  }
+                ],
+                "probeWorkflows": [
+                  "runtime-probe-identity-access"
+                ]
+              }
+            ]
+          }
+        ],
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-10-22T09:00:00Z",
+          "workflow": "add-company-catalog",
+          "agent": ".claude/scripts/catalogs/add-company-catalog.mjs"
+        },
+        "secret": "x"
+      }
+    }
+  ]
+}

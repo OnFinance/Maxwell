@@ -38,6 +38,17 @@ const WORKFLOW = 'impl-auto-improvement';
 const BASE_TAGS = ['auto-improvement', 'suggestion'];
 
 const companyId = args && args.companyId;
+// Company catalogs (regulatory-catalogs skill section 8): run-headless passes args.companyCatalogs only when
+// company-profile/<companyId>/catalogs/ holds the company's own catalogs. Without them every prompt is exactly as before.
+const companyCatalogs = (args && Array.isArray(args.companyCatalogs) ? args.companyCatalogs : []).filter((c) => companyId && c
+  && /^co:[a-z0-9][a-z0-9-]{1,62}:[a-z0-9][a-z0-9-]{1,62}$/.test(c.instrumentId) && c.instrumentId.indexOf('co:' + companyId + ':') === 0
+  && c.file === 'company-profile/' + companyId + '/catalogs/' + c.instrumentId.slice(companyId.length + 4) + '.catalog.json');
+const COMPANY_CATALOG_RULE = !companyCatalogs.length ? '' : '\n\nCompany catalogs: besides the shared catalogs, company ' + companyId
+  + ' has its own catalogs, which apply to ' + companyId + ' only: ' + companyCatalogs.map((c) => c.instrumentId + ' (' + c.file + ')').join(', ')
+  + '. Follow section 8 of .claude/skills/regulatory-catalogs/SKILL.md. Treat each as an instrument in scope for ' + companyId
+  + ' (the instruments.json registry, frameworksInScope and the instrument-level entity filters do not apply to it; each control\'s own applicability does): include its controls wherever you select applicable instruments or controls, and key and cite them exactly like shared controls - ledger control id \'<instrumentId>:<controlId>\', regulatoryRef {regulator: the catalog\'s regulator, instrument: the instrumentId, controlId}. Severity comes from the control\'s defaultSeverity; the SLA from its slaDays (slaBasis.instrument = the instrumentId), else the sla-table defaults. Cite the most specific shared instrument first when one covers the gap and the company control after it; a company control comes first only when no shared control covers the gap. These ids are valid for ' + companyId
+  + ': never refute or drop a mapping only because it cites one of them. Never cite any other \'co:\' id, and label these controls company-specific wherever you report controls.';
+const ask = (prompt, opts) => agent(typeof prompt === 'string' ? prompt + COMPANY_CATALOG_RULE : prompt, opts);
 if (!companyId) throw new Error('args.companyId is required (company-profile/<companyId>)');
 const dryRun = Boolean(args && args.dryRun);
 const now = (args && args.now) || null;
@@ -272,7 +283,7 @@ const SURFACE_SCHEMA = {
 // ---- Phase 1: Scout -------------------------------------------------------------------------------------
 phase('Scout');
 log('Scouting ' + companyId + ' for fixable findings' + (appFilter ? ' (apps: ' + appFilter.join(', ') + ')' : '') + (envFilter ? ' (envs: ' + envFilter.join(', ') + ')' : ''));
-const scout = await agent(
+const scout = await ask(
   [
     'You are scouting for the ' + WORKFLOW + ' workflow, company ' + companyId + '. READ-ONLY: append nothing, write no file.',
     'Read ' + SKILL_CONV + ', ' + SKILL_LEDGER + ' (latest state = last record per id) and ' + SKILL_DIFF + ' sections 1, 2, 7 and 9.',
@@ -347,7 +358,7 @@ const refutePrompt = (c, a, lens) => [
 const authored = await pipeline(
   candidates,
   async (c, _item, index) => {
-    const a = await agent(authorPrompt(c), { label: 'author ' + c.findingId + ' #' + (index + 1), phase: 'Author', agentType: 'fix-author', schema: AUTHOR_SCHEMA, effort: 'high' });
+    const a = await ask(authorPrompt(c), { label: 'author ' + c.findingId + ' #' + (index + 1), phase: 'Author', agentType: 'fix-author', schema: AUTHOR_SCHEMA, effort: 'high' });
     if (!a) { skip(c.findingId, 'fix-author returned no schema-valid result; scratch tree state unknown (check ' + SCRATCH_PREFIX + '* on this host)'); return null; }
     noteSession(a);
     for (const s of a.skipped || []) skip(c.findingId, 'author: ' + s);
@@ -365,7 +376,7 @@ const authored = await pipeline(
     if (!prev || prev.accepted === false) return prev;
     const { candidate: c, author: a } = prev;
     const votes = await parallel(LENSES.map((lens) => () =>
-      agent(refutePrompt(c, a, lens), { label: 'refute ' + lens + ' ' + a.suggestion.suggestionId, phase: 'Refute', agentType: 'refuter', schema: VERDICT_SCHEMA, effort: 'high' })));
+      ask(refutePrompt(c, a, lens), { label: 'refute ' + lens + ' ' + a.suggestion.suggestionId, phase: 'Refute', agentType: 'refuter', schema: VERDICT_SCHEMA, effort: 'high' })));
     const valid = votes.filter(Boolean);
     valid.forEach(noteSession);
     const refutations = valid.filter((v) => v.refuted).length;
@@ -397,7 +408,7 @@ log(accepted.length + '/' + candidates.length + ' suggestion(s) survived authori
 // ---- Phase 4: Register (sequential: master.json is one file) ---------------------------------------------
 phase('Register');
 const registered = [];
-const writeDiff = (s, diffPath, attempt) => agent(
+const writeDiff = (s, diffPath, attempt) => ask(
   [
     'You are the validator writing one auto-improvement diff for the ' + WORKFLOW + ' workflow, company ' + companyId + '. Read ' + SKILL_DIFF + ' sections 1 and 4 first.',
     (attempt > 1 ? 'SECOND ATTEMPT: the previous write did not reproduce the diff byte-for-byte (a dropped single-space context line, trailing whitespace or final newline is the usual cause). ' : '')
@@ -410,7 +421,7 @@ const writeDiff = (s, diffPath, attempt) => agent(
 );
 const verifyDiff = (p, diffPath, attempt) => {
   const s = p.author.suggestion;
-  return agent(
+  return ask(
     [
       'You are the fix-author re-proving a diff the validator just wrote for the ' + WORKFLOW + ' workflow, company ' + companyId + '. READ-ONLY: write nothing. ' + NEVER_TOUCH,
       'Diff: ' + diffPath + ' (workspace-relative). Expected: sha256 ' + s.diffSha256 + ', linesAdded ' + s.linesAdded + ', linesRemoved ' + s.linesRemoved + ', filesChanged ' + s.filesChanged + ', applies at ' + s.baseCommit + '.',
@@ -450,7 +461,7 @@ if (dryRun) {
       skip(s.suggestionId, 'NOT registered and finding not linked: ' + diffPath + ' could not be written byte-for-byte; the file (if present) is an orphan outside master.json and must be removed by a human or overwritten by the next run');
       continue;
     }
-    const r = await agent(
+    const r = await ask(
       [
         'You are the validator registering one auto-improvement suggestion for the ' + WORKFLOW + ' workflow, company ' + companyId + '. Read ' + SKILL_DIFF + ' sections 1, 7 and 8, ' + SKILL_CONV + ' and .claude/schemas/v1/suggestions/master.schema.json first.',
         'The diff is already written at ' + diffPath + ' and was re-proved by the fix-author (apply --check exit 0, counts and sha256 match). Do not rewrite or touch it.',
@@ -483,7 +494,7 @@ if (dryRun) {
     authorStatus: p.author && p.author.status, accepted: p.accepted,
     suggestion: p.author && p.author.suggestion ? { title: p.author.suggestion.title, category: p.author.suggestion.category, linesAdded: p.author.suggestion.linesAdded, linesRemoved: p.author.suggestion.linesRemoved, diffName: p.author.suggestion.diffName } : null,
   }));
-  const l = await agent(
+  const l = await ask(
     [
       'You are the soc-ledger-keeper for a DRY RUN of the ' + WORKFLOW + ' workflow, company ' + companyId + '. Read ' + SKILL_LEDGER + ' and ' + SKILL_CONV + '.',
       'Append exactly one observation via `node .claude/scripts/soc/append.mjs ' + companyId + ' -`: id obs_<ULID>, controlIds = the union of ledgerControlIds below that exist as control records (at least one is required; if none exists append nothing and say so in skipped), title "dry-run: impl-auto-improvement would propose ' + accepted.length + ' diff(s)", description starting "dry-run:" listing per finding the author status, the would-be suggestion title, category and +/- line counts, and the re-checks (' + recheckDue.length + ') and retention checks (' + retentionDue.length + ') that were not run, methods ["' + WORKFLOW + '"], subjects = the repo assetRefs involved, collectedAt = NOW, result "inconclusive", tags ' + JSON.stringify(BASE_TAGS.concat(['dry-run'])) + '. Supersede nothing.',
@@ -498,7 +509,7 @@ if (dryRun) {
 } else if (!registered.length && !checkoutProblems.length) {
   log('nothing registered and no checkout problem; ledger untouched');
 } else {
-  const l = await agent(
+  const l = await ask(
     [
       'You are the soc-ledger-keeper for the ' + WORKFLOW + ' workflow, company ' + companyId + '. Read ' + SKILL_LEDGER + ', ' + SKILL_CONV + ' and ' + SKILL_DIFF + ' section 8 first. Write every record by piping JSON to `node .claude/scripts/soc/append.mjs ' + companyId + ' -`; never open the ledger for writing.',
       registered.length ? 'Step 1 - findings: for each registered suggestion below take the LATEST record of its finding, copy it in full, set supersedes = the same id, add the suggestionId to suggestionIds (keep existing ones, no duplicates), keep status (do not resolve: a proposal fixes nothing yet), recordedAt = NOW, fresh provenance; append. Skip and report any finding whose latest status is no longer open|triaged|remediating.' : '',
@@ -532,7 +543,7 @@ if (!recheckDue.length) {
   const checks = await pipeline(
     recheckDue,
     async (r, _item, index) => {
-      const v = await agent(
+      const v = await ask(
         [
           'You are the fix-author running a READ-ONLY merge/revert re-check (diff-suggestions section 9) for the ' + WORKFLOW + ' workflow, company ' + companyId + '. ' + NEVER_TOUCH + ' This workflow never fetches: the checkout is whatever refresh-ctx last pinned.',
           'Suggestion ' + r.suggestionId + ' (status ' + r.status + (r.mergedAt ? ', mergedAt ' + r.mergedAt : '') + '). Repos: ' + JSON.stringify(r.repos),
@@ -571,7 +582,7 @@ if (!recheckDue.length) {
     }
   }
   if (recheckWrites.merged.length || recheckWrites.reverted.length) {
-    const w = await agent(
+    const w = await ask(
       [
         'You are the validator recording merge/revert re-check results for the ' + WORKFLOW + ' workflow, company ' + companyId + '. Read ' + SKILL_DIFF + ' sections 7 and 9 and .claude/schemas/v1/suggestions/master.schema.json.',
         'Edit ' + SUG_MASTER + ' in place for exactly these suggestion ids (never reorder or delete entries, never touch decidedAt, decidedBy or decisionNote):',
@@ -604,7 +615,7 @@ if (!retentionDue.length) {
   const checks = await pipeline(
     retentionDue,
     async (r, _item, index) => {
-      const v = await agent(
+      const v = await ask(
         [
           'You are the fix-author running a READ-ONLY 30-day retention check for the ' + WORKFLOW + ' workflow, company ' + companyId + '. Read ' + SKILL_DIFF + ' sections 7 and 9. ' + NEVER_TOUCH,
           'Suggestion ' + r.suggestionId + ' was merged at ' + r.mergedAt + '. Repos: ' + JSON.stringify(r.repos),
@@ -625,7 +636,7 @@ if (!retentionDue.length) {
       }
       // retained=false is a regression claim. The refuter cannot run git, so it judges only whether the reported evidence
       // is internally consistent with the workspace files it can Read; git state it cannot see is not grounds to refute.
-      const verdict = await agent(
+      const verdict = await ask(
         [
           'You are an adversarial refuter for the ' + WORKFLOW + ' workflow, company ' + companyId + '. Lens: correctness. Judge whether the claim that suggestion ' + r.suggestionId + ' was NOT retained 30 days after merge is INTERNALLY CONSISTENT. You cannot run git; do not refute merely because git history or ancestry cannot be checked from files - list that under unverifiable instead.',
           'Claim (from a fix-author that ran merge-base --is-ancestor and apply --check):\n' + JSON.stringify(v, null, 1),
@@ -644,7 +655,7 @@ if (!retentionDue.length) {
   );
   retentionResults.push(...checks.filter(Boolean));
   if (retentionResults.length) {
-    const w = await agent(
+    const w = await ask(
       [
         'You are the validator recording 30-day retention results for the ' + WORKFLOW + ' workflow, company ' + companyId + '. Read ' + SKILL_DIFF + ' section 7 and .claude/schemas/v1/suggestions/master.schema.json.',
         'Edit ' + SUG_MASTER + ' in place for exactly these suggestion ids (never reorder or delete entries): set retentionCheckedAt = NOW and retained = (verdict == "retained"). When a revertCommit was proven for every repo of a not-retained suggestion, also move status merged -> reverted with revertedAt = the revert commit time given in reason when stated, else NOW, and repos[].revertCommit; otherwise keep status merged. Set updatedAt = NOW and the index-level provenance.',
@@ -673,7 +684,7 @@ if (dryRun) {
 } else if (!registered.length && !retentionResults.length && !lifecycleChanged) {
   log('no suggestion registered, no merge/revert and no retention result; summary.md left unchanged');
 } else {
-  summary = await agent(
+  summary = await ask(
     [
       'You are the report-writer. Rewrite ONLY the "suggestions" section (## Suggestions) of ' + PROFILE + '/summary.md after the ' + WORKFLOW + ' workflow (an early refresh per report-templates; report-audit-improvements remains the owner of record). Read .claude/skills/report-templates/SKILL.md (sections 1, 2, 4 Suggestions and 5) and ' + SKILL_CONV + ' first.',
       'Source of truth: ' + SUG_MASTER + ' (every entry), ' + LEDGER + ' for finding titles, and kpis/measurement/suggestion_acceptance_rate.md for how acceptance, merge, revert and 30-day retention are computed. Render the table (include every entry with status proposed or surfaced so reviewers see them), the acceptance figures and the ### Rejections list exactly as the template says. New this run: ' + JSON.stringify(registered.map((r) => r.suggestion.suggestionId)) + '; merged: ' + JSON.stringify(recheckWrites.merged.map((x) => x.suggestionId)) + '; reverted: ' + JSON.stringify(recheckWrites.reverted.map((x) => x.suggestionId)) + '; retention recorded: ' + JSON.stringify(retentionResults.map((x) => x.result.suggestionId)) + '.',
@@ -693,7 +704,7 @@ let surfacedIds = [];
 const toSurface = summary && summary.updated ? registered.map((r) => r.suggestion.suggestionId).filter((id) => (summary.listedSuggestionIds || []).includes(id)) : [];
 for (const r of registered) if (!toSurface.includes(r.suggestion.suggestionId)) skip(r.suggestion.suggestionId, 'not listed in summary.md; stays proposed');
 if (toSurface.length) {
-  const s = await agent(
+  const s = await ask(
     [
       'You are the validator surfacing suggestions for the ' + WORKFLOW + ' workflow, company ' + companyId + '. Read ' + SKILL_DIFF + ' section 7 and .claude/schemas/v1/suggestions/master.schema.json.',
       'These suggestions were just shown to humans in the ## Suggestions section of ' + PROFILE + '/summary.md: ' + JSON.stringify(toSurface) + '. Verify each id appears in that section, then in ' + SUG_MASTER + ' move each from status proposed to surfaced with surfacedAt = NOW (leave prUrls as they are; add nothing else). Ignore ids whose status is no longer proposed and list them in skipped. Set updatedAt = NOW and the index-level provenance.',

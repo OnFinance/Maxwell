@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/company/regulators.schema.json",
+  "title": "Company regulators and sources",
+  "description": "Schema for company-profile/<company_id>/regulators.json (optional): the company's own regulators and sources that its own catalogs name as regulator, beside the shared vocabulary in vocab/regulators.schema.json. Ids are 'co:<company_id>:<sourceSlug>' and are cited only in that company's files. Written by node .claude/scripts/catalogs/add-company-catalog.mjs",
+  "examples": [
+    {
+      "schemaVersion": "1",
+      "kind": "maxwell.company.regulators",
+      "companyId": "example-co",
+      "sources": [
+        {
+          "id": "co:example-co:board",
+          "name": "Board of directors",
+          "type": "internal",
+          "notes": "Approves the information security policy"
+        },
+        {
+          "id": "co:example-co:customer-a",
+          "name": "Customer A",
+          "type": "customer"
+        }
+      ],
+      "provenance": {
+        "harness": "script",
+        "generatedAt": "2026-10-22T09:00:00Z",
+        "workflow": "add-company-catalog",
+        "agent": ".claude/scripts/catalogs/add-company-catalog.mjs"
+      }
+    }
+  ],
+  "type": "object",
+  "required": [ "schemaVersion", "kind", "companyId", "sources", "provenance" ],
+  "properties": {
+    "schemaVersion": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/schemaVersion"
+    },
+    "kind": {
+      "const": "maxwell.company.regulators"
+    },
+    "companyId": {
+      "description": "Company the sources belong to; must equal the <company_id> folder name",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+    },
+    "sources": {
+      "description": "The company's own regulators and sources; ids unique",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/source"
+      }
+    },
+    "provenance": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/provenance"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "source": {
+      "type": "object",
+      "required": [ "id", "name", "type" ],
+      "properties": {
+        "id": {
+          "description": "'co:<company_id>:<sourceSlug>'",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/companySourceId"
+        },
+        "name": {
+          "description": "Name of the regulator or source as the company refers to it",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        },
+        "type": {
+          "description": "internal: the company itself (board, CISO); customer: a customer whose contract sets controls; regulator: a regulator or sector body missing from the shared vocabulary; industry-body: a standards or industry body; other",
+          "enum": [
+            "internal",
+            "customer",
+            "regulator",
+            "industry-body",
+            "other"
+          ]
+        },
+        "url": {
+          "description": "Public page of the regulator or source, when there is one",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/url"
+        },
+        "notes": {
+          "description": "Anything a reviewer needs to know about the source; never a secret",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

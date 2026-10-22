@@ -36,6 +36,17 @@ export const meta = {
 
 async function main() {
 const companyId = args && args.companyId;
+// Company catalogs (regulatory-catalogs skill section 8): run-headless passes args.companyCatalogs only when
+// company-profile/<companyId>/catalogs/ holds the company's own catalogs. Without them every prompt is exactly as before.
+const companyCatalogs = (args && Array.isArray(args.companyCatalogs) ? args.companyCatalogs : []).filter((c) => companyId && c
+  && /^co:[a-z0-9][a-z0-9-]{1,62}:[a-z0-9][a-z0-9-]{1,62}$/.test(c.instrumentId) && c.instrumentId.indexOf('co:' + companyId + ':') === 0
+  && c.file === 'company-profile/' + companyId + '/catalogs/' + c.instrumentId.slice(companyId.length + 4) + '.catalog.json');
+const COMPANY_CATALOG_RULE = !companyCatalogs.length ? '' : '\n\nCompany catalogs: besides the shared catalogs, company ' + companyId
+  + ' has its own catalogs, which apply to ' + companyId + ' only: ' + companyCatalogs.map((c) => c.instrumentId + ' (' + c.file + ')').join(', ')
+  + '. Follow section 8 of .claude/skills/regulatory-catalogs/SKILL.md. Treat each as an instrument in scope for ' + companyId
+  + ' (the instruments.json registry, frameworksInScope and the instrument-level entity filters do not apply to it; each control\'s own applicability does): include its controls wherever you select applicable instruments or controls, and key and cite them exactly like shared controls - ledger control id \'<instrumentId>:<controlId>\', regulatoryRef {regulator: the catalog\'s regulator, instrument: the instrumentId, controlId}. Severity comes from the control\'s defaultSeverity; the SLA from its slaDays (slaBasis.instrument = the instrumentId), else the sla-table defaults. Cite the most specific shared instrument first when one covers the gap and the company control after it; a company control comes first only when no shared control covers the gap. These ids are valid for ' + companyId
+  + ': never refute or drop a mapping only because it cites one of them. Never cite any other \'co:\' id, and label these controls company-specific wherever you report controls.';
+const ask = (prompt, opts) => agent(typeof prompt === 'string' ? prompt + COMPANY_CATALOG_RULE : prompt, opts);
 if (!companyId) throw new Error('args.companyId is required');
 const dryRun = Boolean(args && args.dryRun);
 const NOW_RE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?Z$/;
@@ -131,7 +142,7 @@ const STR_LIST = { type: 'array', items: STR };
 
 // ---------------------------------------------------------------- Snapshot
 phase('Snapshot');
-const snapshot = await agent(`${common('ctx-researcher')}
+const snapshot = await ask(`${common('ctx-researcher')}
 Build the SNAPSHOT for refresh-ctx: a skeleton of the profile, never the whole file.
 Read ${PROFILE}, ${INSTRUMENTS}, ${LEDGER} (if it exists) and ${CONTEXT} (if it exists).
 APPLICATION-TO-COMPANY RULE (deterministic; no application schema carries companyId, so never infer the link from README prose or hosting.accountRef): when company-profile/ contains exactly one company directory every applications/<app_id>/ belongs to it; otherwise the company's applications are the union of ${PROFILE} criticalFunctions[].appIds${appIds ? ` and ${JSON.stringify(appIds)} (args.appIds)` : ''}. List every other applications/<app_id>/ under skipped with reason 'no company link'.
@@ -245,9 +256,9 @@ phase('Recheck');
 phase('Discover');
 phase('Structure');
 const [recheckResults, discoverResults, structureResult] = await parallel([
-  () => pipeline(worklist, (u) => agent(recheckPrompt(u), { label: `recheck ${u.unit}`, phase: 'Recheck', agentType: 'ctx-researcher', schema: DRIFT_SCHEMA, model: MODEL })),
-  () => pipeline(['registers', 'corporate', 'regulatory-change'], (lens) => agent(discoverPrompt(lens), { label: `discover ${lens}`, phase: 'Discover', agentType: 'ctx-researcher', schema: DRIFT_SCHEMA, model: MODEL })),
-  () => agent(structurePrompt(), { label: 'structure', phase: 'Structure', agentType: 'ctx-researcher', schema: STRUCTURE_SCHEMA, model: MODEL, effort: 'high' }),
+  () => pipeline(worklist, (u) => ask(recheckPrompt(u), { label: `recheck ${u.unit}`, phase: 'Recheck', agentType: 'ctx-researcher', schema: DRIFT_SCHEMA, model: MODEL })),
+  () => pipeline(['registers', 'corporate', 'regulatory-change'], (lens) => ask(discoverPrompt(lens), { label: `discover ${lens}`, phase: 'Discover', agentType: 'ctx-researcher', schema: DRIFT_SCHEMA, model: MODEL })),
+  () => ask(structurePrompt(), { label: 'structure', phase: 'Structure', agentType: 'ctx-researcher', schema: STRUCTURE_SCHEMA, model: MODEL, effort: 'high' }),
 ]);
 const recheckList = recheckResults || [];
 const discoverList = discoverResults || [];
@@ -326,7 +337,7 @@ OBLIGATIONS stage for regulator '${r.regulator}' (${r.reason}) and ${snapshot.le
 Skeleton: ${JSON.stringify({ legalName: snapshot.legalName, entityTypes: snapshot.entityTypes, frameworksInScope: snapshot.frameworksInScope, licenses: licenses.filter((l) => r.licenseIds.includes(l.licenseId) || l.regulator === r.regulator).map((l) => ({ licenseId: l.licenseId, name: l.name, registrationNo: l.registrationNo, entityType: l.entityType })) })}
 ${r.regulator === 'MCA' ? 'MCA: the Companies Act 2013 and its rules as they apply to this company form (private, public, listed): secretarial compliance (board and general meetings, annual return, financial statements, statutory registers, company secretary and auditors), related-party and disclosure duties, plus SEBI LODR only when a unit is listed. source.type statute or circular with the MCA URL.' : `${r.regulator}: for each licence above, the regulations, master circulars and in-scope instruments that bind it (source.type instrument with the vocab id when the obligation is an instrument in ${INSTRUMENTS}; circular or statute otherwise, with the URL). Use \`node .claude/scripts/cos/search.mjs search --query "<text>" --regulator ${r.regulator}\` for clause and circular text before any public search.`}
 For every obligation set, write the questionnaire whose answers describe how this company operates under it: which processes it runs (secretarial compliance, client services, market transactions, KYC and onboarding, grievance redressal, surveillance, regulatory reporting, risk management ...), which offerings it sells under the licence (schemes, strategies, products, with counts when the regulator lists them), which customer segments it serves, which platforms carry them. Every question is answerable in one sentence from a public source or by the company's compliance officer, and each should reveal a process, offering, segment or platform rather than a filing date or a form number: prefer few broad questions ('Which client segments does the broker onboard and through which channels?') over many narrow ones. Mark each question answerableFrom 'public' when MCA master data, a filing, an annual report, a scheme list, the company website, an exchange or a regulator page can answer it, and 'internal' when only the company's own staff can (which system, who tracks, how often the board reviews). Cap: ${MAX_OBLIGATIONS_PER_REGULATOR} obligation sets per regulator (merge related duties into one set), ${MAX_QUESTIONS} questions each, at most 2 internal questions per set. Ids are slugs (^[a-z0-9][a-z0-9-]{1,62}$); prefix question ids with the obligation id.`;
-const obligationResults = await parallel(regulatorPlan.map((r) => () => agent(obligationsPrompt(r), { label: `obligations ${r.regulator}`, phase: 'Obligations', agentType: 'ctx-researcher', schema: OBLIGATIONS_SCHEMA, model: MODEL, effort: 'high' })));
+const obligationResults = await parallel(regulatorPlan.map((r) => () => ask(obligationsPrompt(r), { label: `obligations ${r.regulator}`, phase: 'Obligations', agentType: 'ctx-researcher', schema: OBLIGATIONS_SCHEMA, model: MODEL, effort: 'high' })));
 const obligations = [];
 const questionnaires = [];
 const obligationIds = new Set();
@@ -387,7 +398,7 @@ ${humans.length ? `HUMAN ANSWERS (authoritative, keep verbatim as the answer wit
 RESEARCH BUDGET: before you mark a 'public' question open, run at least 3 targeted WebSearch queries for it (the legal name or brand plus the topic; site:mca.gov.in master data and filings; the annual report or board's report PDF; AMFI or SEBI scheme and intermediary pages; NSE and BSE member directories and announcements; SEBI SCORES and the company's grievance page; the company's fair practices code, KFS, policies and 'about' pages) and fetch the best hits; list every query in queriesTried. 'internal' questions get one quick check of the company's website and the workspace, then status open with reason 'internal: ask the compliance officer'. Prefer sources a verifier can open again (web pages, investor presentations, policy PDFs, BSE and NSE filings, AMFI and SEBI pages); an annual report PDF over 10 MB cannot be re-fetched, so when you rely on one also cite a smaller source for the same fact where one exists and quote the page number in the evidence description. Answer each question from pages you fetch this session: the company's own website${skeleton.identifiers && skeleton.identifiers.cin ? ', MCA master data' : ''}, annual report and filings, AMFI or SEBI scheme lists, exchange member pages, regulator registers, and the workspace files applications/*/README.md and env/*.json (evidence type workspace-file). A question no source answers is status 'open' with a reason; a question the obligation does not reach for this company is 'not-applicable' with a reason. Never guess.
 For every answered question list what it yields as context items: type process (kind from ${JSON.stringify(PROCESS_KINDS)}), offering (kind = category from ${JSON.stringify(OFFERING_CATEGORIES)}, licenseId from the skeleton, count when the source lists a number), segment (kind from ${JSON.stringify(SEGMENT_KINDS)}) or platform (kind from ${JSON.stringify(PLATFORM_KINDS)}, appIds from the skeleton; reuse an existing platformId when it is the same platform). Ids are slugs; reuse the same id for the same thing across questions. Record every page you relied on in sourcesFetched.`;
 };
-const answerResults = await parallel(questionnaires.map((q) => () => agent(answerPrompt(q), { label: `answer ${q.questionnaireId}`, phase: 'Answer', agentType: 'ctx-researcher', schema: ANSWER_SCHEMA, model: MODEL, effort: 'high' })));
+const answerResults = await parallel(questionnaires.map((q) => () => ask(answerPrompt(q), { label: `answer ${q.questionnaireId}`, phase: 'Answer', agentType: 'ctx-researcher', schema: ANSWER_SCHEMA, model: MODEL, effort: 'high' })));
 questionnaires.forEach((q, i) => {
   const res = answerResults[i];
   const byId = new Map(((res && res.answers) || []).map((a) => [a.questionId, a]));
@@ -406,7 +417,7 @@ questionnaires.forEach((q, i) => {
 });
 // Second pass: one deep-search agent per questionnaire that still has open public questions, told what was already tried.
 const secondPass = questionnaires.map((q) => ({ q, open: q.questions.filter((x) => x.status === 'open' && x.answerableFrom === 'public' && !humanByQuestion.has(x.questionId)) })).filter((e) => e.open.length);
-const secondResults = await parallel(secondPass.map((e) => () => agent(`${answerPrompt({ ...e.q, questions: e.open })}
+const secondResults = await parallel(secondPass.map((e) => () => ask(`${answerPrompt({ ...e.q, questions: e.open })}
 SECOND PASS: a first researcher left these ${e.open.length} public question(s) open after these queries: ${JSON.stringify(e.open.map((x) => ({ questionId: x.questionId, reason: x.reason, queriesTried: x.queriesTried || [] })))}. Try different sources and phrasings (regulator registers by registration number, the exchange member pages, annual report PDFs, news of the company's own announcements) with at least 4 new queries per question before leaving it open.`, { label: `answer again ${e.q.questionnaireId}`, phase: 'Answer', agentType: 'ctx-researcher', schema: ANSWER_SCHEMA, model: MODEL, effort: 'high' })));
 secondPass.forEach((e, i) => {
   const res = secondResults[i];
@@ -453,7 +464,7 @@ Read only what you need; never write any file.`;
 
 const [verified, answerVerdicts] = await parallel([
   () => pipeline(candidates, async (d) => {
-    const votes = await parallel(REFUTE_LENSES.map((lens) => () => agent(refutePrompt(d, lens), { label: `refute ${d.kind}@${d.branch} [${lens}]`, phase: 'Verify', agentType: 'refuter', schema: VERDICT, model: MODEL, effort: d.destructive ? 'high' : 'medium' })));
+    const votes = await parallel(REFUTE_LENSES.map((lens) => () => ask(refutePrompt(d, lens), { label: `refute ${d.kind}@${d.branch} [${lens}]`, phase: 'Verify', agentType: 'refuter', schema: VERDICT, model: MODEL, effort: d.destructive ? 'high' : 'medium' })));
     votes.forEach(noteSession);
     const labelled = votes.map((v, i) => (v ? { lens: REFUTE_LENSES[i], refuted: v.refuted, reason: v.reason } : null));
     const valid = labelled.filter(Boolean);
@@ -468,7 +479,7 @@ const [verified, answerVerdicts] = await parallel([
     const researched = q.questions.filter((x) => x.status === 'answered' && x.answeredBy === 'research');
     const chunks = [];
     for (let i = 0; i < researched.length; i += VERDICT_BATCH) chunks.push(researched.slice(i, i + VERDICT_BATCH));
-    const votes = await parallel(chunks.flatMap((subset, c) => ANSWER_LENSES.map((lens) => () => agent(answerRefutePrompt(q, lens, subset), { label: `refute answers ${q.questionnaireId}${chunks.length > 1 ? ` #${c + 1}` : ''} [${lens}]`, phase: 'Verify', agentType: 'refuter', schema: BATCH_VERDICT, model: MODEL, effort: 'medium' }))));
+    const votes = await parallel(chunks.flatMap((subset, c) => ANSWER_LENSES.map((lens) => () => ask(answerRefutePrompt(q, lens, subset), { label: `refute answers ${q.questionnaireId}${chunks.length > 1 ? ` #${c + 1}` : ''} [${lens}]`, phase: 'Verify', agentType: 'refuter', schema: BATCH_VERDICT, model: MODEL, effort: 'medium' }))));
     votes.forEach(noteSession);
     return { questionnaireId: q.questionnaireId, votes: votes.map((v, i) => ({ lens: ANSWER_LENSES[i % ANSWER_LENSES.length], verdicts: (v && v.verdicts) || null })) };
   }),
@@ -574,7 +585,7 @@ const newInstruments = dryRun ? [] : [...new Set(confirmed.filter((d) => d.kind 
 const CONTROL_SCHEMA = { type: 'object', required: ['controlIds', 'skippedControlIds'], properties: { sessionId: STR, controlIds: STR_LIST, skippedControlIds: STR_LIST, notes: STR } };
 let controlsAppended = 0;
 for (const instrumentId of newInstruments) {
-  const c = await agent(`${common('soc-ledger-keeper')}
+  const c = await ask(`${common('soc-ledger-keeper')}
 Read .claude/skills/soc-ledger/SKILL.md section 4 and .claude/skills/regulatory-catalogs/SKILL.md. Instrument '${instrumentId}' became applicable to ${companyId} (confirmed drift). Load its catalogFile from ${INSTRUMENTS}; if the catalog file does not exist, append nothing and say so in notes.
 For every catalog control whose applicability is absent or matches the company's entityTypes and regulatoryRegistrations[].category values (read ${PROFILE}), append a control record via append.mjs (JSON on stdin): id '${instrumentId}:<controlId>', kind 'control', schemaVersion '1', companyId '${companyId}', frameworkRefs[0] = {regulator, instrument:'${instrumentId}', controlId} followed by the catalog mappings, title and category from the catalog, implementationStatus 'unknown', effectiveness 'not-tested', nextDueAt = NOW plus ${CADENCE_RULE}, evidence [{type:'workspace-file', ref:'<catalogFile>'}], recordedAt NOW, provenance. Ids already in ${LEDGER} are not re-appended: list them under skippedControlIds. You may loop with node -e over the catalog to call append.mjs once per record, but never write a scratch file.
 Return {controlIds, skippedControlIds, notes}.`, { label: `controls ${instrumentId}`, phase: 'Apply', agentType: 'soc-ledger-keeper', schema: CONTROL_SCHEMA, model: MODEL, effort: 'medium' });
@@ -587,7 +598,7 @@ Return {controlIds, skippedControlIds, notes}.`, { label: `controls ${instrument
 const haveDrift = confirmed.length || escalated.length;
 const dryRunNoControl = dryRun && !(snapshot.ledgerControlIds || []).length;
 if (dryRunNoControl && haveDrift) skipped.push(`apply: dry run and the ledger has no control record to cite; ${confirmed.length + escalated.length} evidence-request observation(s) not recorded (a dry run never appends controls)`);
-const ledgerWrite = !haveDrift || dryRunNoControl ? null : await agent(`${common('soc-ledger-keeper')}
+const ledgerWrite = !haveDrift || dryRunNoControl ? null : await ask(`${common('soc-ledger-keeper')}
 Read .claude/skills/soc-ledger/SKILL.md and .claude/skills/regulatory-catalogs/SKILL.md. Read ${PROFILE} and ${LEDGER}.
 ${dryRun ? `DRY RUN. Only drift that survived verification (confirmed) or was escalated (destructive, not unanimously confirmed) is recorded; refuted drift is dropped (offline copy section 2). For each item below append ONE observation and nothing else: methods ['refresh-ctx'], subjects [{type:'company'}] (for hosting_changed the environment assetRef {type:'environment', appId, envId} taken from the branch path), controlIds = ONE existing governance / applicability control chosen ONLY from these ledger control ids: ${JSON.stringify(snapshot.ledgerControlIds || [])} (prefer the most specific in-scope Indian instrument's governance clause, e.g. sebi-cscrf-2024 GV.*), result 'inconclusive', title prefixed 'Evidence requested: ', description starting 'dry-run: evidence requested — ' stating the drift, whether it was confirmed or escalated, and what evidence a human must supply (register URL, letter, circular) and why, evidence = the item's evidenceUrl as {type:'url'} when it is an http(s) URL or {type:'workspace-file'} for a 'workspace:' ref (prefix stripped). Append NO control, risk or finding; if no listed control id fits, append nothing for that item and list it under skipped.
 Confirmed: ${JSON.stringify(confirmed)}
@@ -614,7 +625,7 @@ else if (!haveDrift) log('No confirmed or escalated drift: profile unchanged, no
 
 let proposedObservation = null;
 if (!dryRun && confirmed.length) {
-  const patch = await agent(`${common('validator')}
+  const patch = await ask(`${common('validator')}
 Read .claude/skills/maxwell-conventions/SKILL.md. Patch ${PROFILE} for the confirmed drift below, touching ONLY the named branches:
 - DO NOT DELETE, MARK: registration_surrendered/registration_suspended/registration_expired set regulatoryRegistrations[i].status to surrendered/suspended/expired; entity_type_removed is NOT applied to entityTypes (the ledger risk/observation records it; a human removes the type) — instead add tag 'entity-type-review'.
 - registration_added appends a regulatoryRegistrations entry (regulator, registrationNo, category from the drift "to" value, status 'active', registeredAt = effectiveDate when given) and the number to identifiers.sebiRegistrationNos/rbiCorNo/irdaiRegistrationNo as appropriate; entity_type_added appends to entityTypes; category_changed sets category and categorisedAt; registration_changed/listing_changed update only the field named in the branch.
@@ -636,7 +647,7 @@ Confirmed drift: ${JSON.stringify(confirmed)}`, {
 if (dryRun) {
   skipped.push(`dry run: ${CONTEXT} not written by design (${allQuestions.length} question(s), ${openCount} open); details.json patch and summary.md update skipped`);
 } else {
-  const write = await agent(`${common('validator')}
+  const write = await ask(`${common('validator')}
 MATERIALISE mode. Write the organization context document below to ${CONTEXT} EXACTLY as given (JSON, two-space indent, trailing newline), replacing the file if it exists. The workflow composed it from refuted research and it must not be reworded. Set provenance.harness to the harness you run on and provenance.sessionId to ${sessionId ? `'${sessionId}'` : 'your own session id'}; change nothing else. Then run \`node .claude/scripts/validate-data.mjs ${CONTEXT}\` (schema ${CONTEXT_SCHEMA} plus cross-reference checks). If it reports a problem, fix ONLY the minimal offending value (a slug, an enum, an id that must be dropped from a list) and report every fix; never invent a question, an answer or an evidence ref.
 Document: ${JSON.stringify(contextDoc)}
 Return {written, validated, fixes, sessionId}.`, {
@@ -650,7 +661,7 @@ Return {written, validated, fixes, sessionId}.`, {
     if (!write.validated) skipped.push(`context write: ${CONTEXT} did not validate${write.error ? `: ${write.error}` : ''}; needs manual review`);
   } else skipped.push(`context write: validator returned nothing; ${CONTEXT} unchanged`);
 
-  const summary = await agent(`${common('report-writer')}
+  const summary = await ask(`${common('report-writer')}
 Read .claude/skills/report-templates/SKILL.md. Update ONLY the 'regulatory-posture' and 'organization-context' sections of ${SUMMARY} (create the file from the template if absent) from ${PROFILE}, ${CONTEXT} and the ledger ${LEDGER}: registrations with status and category, frameworks in scope, the drift applied in this run (${confirmed.map((d) => `${d.kind}@${d.branch}`).join(', ') || 'none'}), the ${escalated.length} escalated claim(s) awaiting human resolution, the date of this refresh; and the organization context per the template (business units, licences, obligations, questionnaires with every open question verbatim and its questionId, processes, offerings, segments, platforms). Keep other sections byte-identical. Bump the frontmatter version (major when sections[] gains organization-context, else minor), set provenance as instructed, and recompute provenance.inputsHash exactly as the company-summary frontmatter schema describes. Validate with \`node .claude/scripts/validate-data.mjs ${SUMMARY}\`. Do not append to the ledger: follow report-templates section 5 step 6 and return the report observation as proposedObservation (omit the field when the report was already current).
 Return counts.`, {
     label: 'summary regulatory-posture and organization-context', phase: 'Apply', agentType: 'report-writer', model: MODEL, effort: 'low',
@@ -671,7 +682,7 @@ if (dryRun) {
   log(`refresh-ctx dry run done: ${result.observations} evidence-request observations for ${confirmed.length} confirmed and ${escalated.length} escalated drift item(s) (${dropped.length} refuted and dropped); context tree ${allQuestions.length} question(s), ${openCount} open; nothing patched, nothing versioned`);
   return result;
 }
-const version = await agent(`${common('soc-ledger-keeper')}
+const version = await ask(`${common('soc-ledger-keeper')}
 ${proposedObservation ? `First append the report-writer's proposed observation (report-templates section 5 step 6) via append.mjs: mint id obs_<ULID>, set recordedAt NOW, keep every other field; if its controlIds is empty or names a control that is not in the ledger, use the governance control this run's Apply stage cited or, when none was cited, the most specific in-scope governance control already in the ledger (existing ids: ${JSON.stringify((snapshot.ledgerControlIds || []).slice(0, 40))}). Record: ${JSON.stringify(proposedObservation)}
 Then r` : 'R'}un \`node .claude/scripts/soc/version.mjs ${companyId} --session ${sessionId || '<your harness session id>'} --workflow refresh-ctx\` from the workspace root, once. Do not pass --force. Report the observation id you appended (if any), the file version.mjs wrote (empty if it printed that nothing was written) and any error verbatim.`, {
   label: 'version ledger', phase: 'Version', agentType: 'soc-ledger-keeper', model: MODEL, effort: 'low',

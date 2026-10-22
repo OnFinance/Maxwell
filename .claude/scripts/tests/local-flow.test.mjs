@@ -160,3 +160,29 @@ test('a person changes their own settings with no extra variable, and only then 
     assert.deepEqual(back.lines, linesOf('opus', ''));
   } finally { rmSync(w.dir, { recursive: true, force: true }); }
 });
+
+// A company's own catalogs (company-profile/<c>/catalogs/) reach only that company's runs. A company without them,
+// even beside a company that has them, gets exactly the prompt, variables and output lines main gave it.
+test('company catalogs change nothing for a company without them, and reach only their own company', () => {
+  const w = workspace();
+  try {
+    const catalog = (c, slug) => {
+      mkdirSync(join(w.ws, 'company-profile', c, 'catalogs'), { recursive: true });
+      writeFileSync(join(w.ws, 'company-profile', c, 'catalogs', `${slug}.catalog.json`), JSON.stringify({ schemaVersion: '1', kind: 'maxwell.catalog.company', companyId: c, instrumentId: `co:${c}:${slug}`, regulator: 'SEBI', title: 'Sector circular', groups: [{ id: 'A', title: 'A', controls: [{ id: 'C-1', title: 'C', prose: 'C', mandatory: false }] }] }));
+    };
+    mkdirSync(join(w.ws, 'company-profile', 'example-co'), { recursive: true });
+    catalog('other-co', 'circular');
+    const iac = ['--workflow', 'probe-iac', '--company', 'example-co', '--dry-run'];
+    const before = headless(w, iac);
+    assert.deepEqual(before.calls[0].argv, argvOf('opus', ''), 'the prompt is exactly as on main');
+    assert.deepEqual(before.calls[0].env, envOf('opus'));
+    assert.deepEqual(before.lines, linesOf('opus', ''));
+    catalog('example-co', 'circular');
+    const after = headless(w, iac);
+    const prompt = after.calls[0].argv[after.calls[0].argv.length - 1];
+    const args = JSON.parse(prompt.slice(prompt.indexOf('{')));
+    assert.deepEqual(args.companyCatalogs, [{ instrumentId: 'co:example-co:circular', file: 'company-profile/example-co/catalogs/circular.catalog.json', regulator: 'SEBI', title: 'Sector circular', controls: 1 }]);
+    assert.doesNotMatch(prompt, /other-co/, 'another company\'s catalog never reaches this run');
+    assert.deepEqual(after.calls[0].env, envOf('opus'), 'no new variables');
+  } finally { rmSync(w.dir, { recursive: true, force: true }); }
+});

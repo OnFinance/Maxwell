@@ -1,0 +1,142 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/company/catalog.schema.json",
+  "title": "Company control catalog",
+  "description": "Schema for company-profile/<company_id>/catalogs/<catalogSlug>.catalog.json: a company's own source of controls (an internal security policy, a customer contract's security schedule, a sector circular that no shared catalog carries) in the same group and control shape as the shared regulator catalogs (v1/catalog/regulator-catalog.schema.json). instrumentId is 'co:<company_id>:<catalogSlug>' so it can never collide with a shared instrument or with another company's catalog; it applies to its company only, alongside the shared catalogs. Controls are keyed '<instrumentId>:<control id>' in the company's soc ledger and cited as regulatoryRefs exactly like shared controls; mappings may crosswalk to shared instruments and to the same company's other catalogs, never to another company's. Write it with node .claude/scripts/catalogs/add-company-catalog.mjs",
+  "examples": [
+    {
+      "schemaVersion": "1",
+      "kind": "maxwell.catalog.company",
+      "companyId": "example-co",
+      "instrumentId": "co:example-co:infosec-policy",
+      "regulator": "co:example-co:board",
+      "title": "Information security policy",
+      "sourceType": "internal-policy",
+      "version": "v3.2",
+      "sourceRef": "Board-approved information security policy, section 7",
+      "effectiveFrom": "2026-04-01",
+      "groups": [
+        {
+          "id": "Sec-7",
+          "title": "Access control",
+          "controls": [
+            {
+              "id": "AC-7",
+              "title": "Production access reviewed every month",
+              "prose": "Access to production systems shall be reviewed by the system owner every month and unused access removed within 5 working days",
+              "mandatory": true,
+              "defaultSeverity": "high",
+              "cadence": "monthly",
+              "slaDays": 5,
+              "evidenceExpected": [
+                "Monthly access review sign-off per production system"
+              ],
+              "mappings": [
+                {
+                  "regulator": "SEBI",
+                  "instrument": "sebi-cscrf-2024",
+                  "controlId": "PR.AA.S5"
+                }
+              ],
+              "probeWorkflows": [ "runtime-probe-identity-access" ]
+            }
+          ]
+        }
+      ],
+      "provenance": {
+        "harness": "script",
+        "generatedAt": "2026-10-22T09:00:00Z",
+        "workflow": "add-company-catalog",
+        "agent": ".claude/scripts/catalogs/add-company-catalog.mjs"
+      }
+    }
+  ],
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "kind",
+    "companyId",
+    "instrumentId",
+    "regulator",
+    "title",
+    "sourceType",
+    "version",
+    "groups",
+    "provenance"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/schemaVersion"
+    },
+    "kind": {
+      "const": "maxwell.catalog.company"
+    },
+    "companyId": {
+      "description": "Company the catalog belongs to; must equal the <company_id> folder name",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/slug"
+    },
+    "instrumentId": {
+      "description": "'co:<companyId>:<catalogSlug>' where catalogSlug is the file's basename before .catalog.json",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/companyInstrumentId"
+    },
+    "regulator": {
+      "description": "Who issued the source: a shared regulator (e.g. SEBI for a sector circular not in the shared catalogs) or one of the company's own sources from company-profile/<company_id>/regulators.json (e.g. its board, a customer)",
+      "anyOf": [
+        {
+          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/regulators.schema.json"
+        },
+        {
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/companySourceId"
+        }
+      ]
+    },
+    "title": {
+      "description": "Name of the source document",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+    },
+    "sourceType": {
+      "description": "What kind of source the controls come from",
+      "enum": [
+        "internal-policy",
+        "customer-contract",
+        "sector-circular",
+        "industry-standard",
+        "audit-commitment",
+        "other"
+      ]
+    },
+    "version": {
+      "description": "Version or reference number of the source the catalog reflects",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+    },
+    "sourceUrl": {
+      "description": "URL of the source document, when it has one (an internal policy usually has none)",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/url"
+    },
+    "sourceRef": {
+      "description": "Where the source document is kept when it has no URL, e.g. 'Board-approved policy, section 7'. Never paste the document or any secret here",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+    },
+    "effectiveFrom": {
+      "description": "Date the source took effect",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/date"
+    },
+    "retrievedAt": {
+      "description": "When the source was read to write this catalog",
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+    },
+    "groups": {
+      "description": "Sections of the source, each holding controls; control ids must be unique across the whole catalog",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "https://maxwell.onfinance.ai/schemas/v1/catalog/regulator-catalog.schema.json#/$defs/group"
+      }
+    },
+    "provenance": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/provenance"
+    }
+  },
+  "additionalProperties": false
+}

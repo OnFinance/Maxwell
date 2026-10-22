@@ -4,6 +4,7 @@
 import { readFileSync, existsSync, appendFileSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { buildAjv, getValidator, formatErrors } from './schemas.mjs';
+import { controlKeyProblem, loadOverlay, refProblems, walkCo } from './company-catalogs.mjs';
 
 export const RECORD_SCHEMA = 'https://maxwell.onfinance.ai/schemas/v1/soc/record.schema.json';
 
@@ -34,11 +35,22 @@ export function appendRecords(companyId, records, { root = '.', allowDuplicateId
     try { ids.add(JSON.parse(line).id); } catch { /* validated elsewhere */ }
   }
   const problems = [];
+  // Records citing the company's own catalogs ('co:' ids) must cite this company's, and those must exist.
+  let overlay = null;
+  const coProblems = (record) => {
+    let any = false;
+    walkCo(record, () => { any = true; });
+    if (!any) return [];
+    overlay = overlay || loadOverlay(companyId, root);
+    const key = controlKeyProblem(record);
+    return [...refProblems(companyId, record, overlay), ...(key ? [key] : [])];
+  };
   records.forEach((record, i) => {
     const where = records.length > 1 ? `record ${i + 1} (${record && record.id})` : `record ${record && record.id}`;
     if (!record || typeof record !== 'object') { problems.push(`${where} is not a JSON object`); return; }
     if (record.companyId && record.companyId !== companyId) problems.push(`${where}: companyId ${record.companyId} != ${companyId}`);
     if (!check(record)) problems.push(`${where} does not match soc/record.schema.json:\n${formatErrors(check.errors)}`);
+    for (const p of coProblems(record)) problems.push(`${where}: ${p}`);
     if (ids.has(record.id) && !record.supersedes && !allowDuplicateIds) problems.push(`id ${record.id} already exists in the ledger; set "supersedes" or append a new id`);
     if (record.supersedes && !ids.has(record.supersedes)) problems.push(`supersedes ${record.supersedes} but no such id exists in the ledger`);
     ids.add(record.id);

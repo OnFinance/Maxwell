@@ -152,7 +152,7 @@
       ]
     },
     "observationMethod": {
-      "description": "OSCAL observation method: the Maxwell workflow that produced the observation, or 'manual', 'interview', 'document-review' for human collection. The utility entry points (validate, kpis, seed-company, status, connect-sandbox) are not observation methods",
+      "description": "OSCAL observation method: the Maxwell workflow that produced the observation, or 'manual', 'interview', 'document-review' for human collection. The utility entry points (validate, kpis, seed-company, status, connect-sandbox, add-company-catalog) are not observation methods",
       "anyOf": [
         {
           "$ref": "https://maxwell.onfinance.ai/schemas/vocab/workflows.schema.json"
@@ -167,7 +167,8 @@
           "kpis",
           "seed-company",
           "status",
-          "connect-sandbox"
+          "connect-sandbox",
+          "add-company-catalog"
         ]
       }
     },

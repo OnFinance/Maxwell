@@ -582,7 +582,7 @@
       ]
     },
     "normalisationName": {
-      "description": "Closed list of normalised series names. A datapoint's series is 'raw' or one of these, so the list is fixed here rather than in the registry data; add a name here before adding the normalisation to kpis/metrics.json",
+      "description": "Closed list of normalised series names. A datapoint's series is 'raw' or one of these, so the list is fixed here rather than in the registry data; add a name here before adding the normalisation to kpis/metrics.json. company-specific-controls is cm_coverage over the controls of the company's own catalogs only, emitted only for a company that has such controls",
       "enum": [
         "usd-per-control-observed",
         "usd-per-application",
@@ -590,7 +590,8 @@
         "merge-rate",
         "revert-rate",
         "retention-30d",
-        "incidents-per-application"
+        "incidents-per-application",
+        "company-specific-controls"
       ]
     },
     "rawInput": {

@@ -7,6 +7,7 @@ import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { buildAjv, getValidator, formatErrors } from '../lib/schemas.mjs';
+import { companyCatalogArgs } from '../lib/company-catalogs.mjs';
 
 const argv = process.argv.slice(2);
 const opts = (f) => argv.flatMap((a, i) => (a === f ? [argv[i + 1]] : []));
@@ -147,6 +148,13 @@ for (const company of companies) {
     const assetsObserved = new Set(recs.filter((r) => r.kind === 'observation' && inPeriod(r.collectedAt || r.recordedAt) && observationCounts(r)).flatMap((r) => (r.subjects || []).filter((s) => s.appId && s.envId).map((s) => `${s.appId}/${s.envId}`)));
     const openHigh = recs.filter((r) => r.kind === 'finding' && ['open', 'triaged', 'remediating'].includes(r.status) && ['critical', 'high'].includes(r.severity));
     emit({ kpiId: 'cm_coverage', series: 'raw', unit: 'percent', dimensions: dims, value: controls.length ? round((100 * covered) / controls.length, 2) : 0, numerator: covered, denominator: controls.length, sampleSize: controls.length, inputsRef: { files: [files[0]] }, notes: `asset coverage ${assetsObserved.size}/${envPairs.length} (app,env) pairs; high+ findings linked to initiatives ${openHigh.filter((f) => f.initiativeId).length}/${openHigh.length}` });
+    // Controls from the company's own catalogs ('co:<company>:...') are in the headline figure like any control, and
+    // also reported apart as the company-specific series; a company without them gets no such datapoint.
+    const own = controls.filter((c) => String(c.id).startsWith(`co:${company}:`));
+    if (own.length) {
+      const ownCovered = own.filter((c) => observed.has(c.id)).length;
+      emit({ kpiId: 'cm_coverage', series: 'company-specific-controls', unit: 'percent', dimensions: dims, value: round((100 * ownCovered) / own.length, 2), numerator: ownCovered, denominator: own.length, sampleSize: own.length, inputsRef: { files: [files[0], ...companyCatalogArgs(company).map((c) => c.file)] }, notes: 'controls of the company\'s own catalogs only (company-specific)' });
+    }
   }
 
   if (wants('cm_time_to_implementation')) {
