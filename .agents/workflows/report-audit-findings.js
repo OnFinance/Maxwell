@@ -31,6 +31,17 @@ const OWNED_SECTIONS = ['overview', 'regulatory-posture', 'applications', 'data-
 const MAX_REPAIR_ROUNDS = 2;
 
 const companyId = args && args.companyId;
+// Company catalogs (regulatory-catalogs skill section 8): run-headless passes args.companyCatalogs only when
+// company-profile/<companyId>/catalogs/ holds the company's own catalogs. Without them every prompt is exactly as before.
+const companyCatalogs = (args && Array.isArray(args.companyCatalogs) ? args.companyCatalogs : []).filter((c) => companyId && c
+  && /^co:[a-z0-9][a-z0-9-]{1,62}:[a-z0-9][a-z0-9-]{1,62}$/.test(c.instrumentId) && c.instrumentId.indexOf('co:' + companyId + ':') === 0
+  && c.file === 'company-profile/' + companyId + '/catalogs/' + c.instrumentId.slice(companyId.length + 4) + '.catalog.json');
+const COMPANY_CATALOG_RULE = !companyCatalogs.length ? '' : '\n\nCompany catalogs: besides the shared catalogs, company ' + companyId
+  + ' has its own catalogs, which apply to ' + companyId + ' only: ' + companyCatalogs.map((c) => c.instrumentId + ' (' + c.file + ')').join(', ')
+  + '. Follow section 8 of .claude/skills/regulatory-catalogs/SKILL.md. Treat each as an instrument in scope for ' + companyId
+  + ' (the instruments.json registry, frameworksInScope and the instrument-level entity filters do not apply to it; each control\'s own applicability does): include its controls wherever you select applicable instruments or controls, and key and cite them exactly like shared controls - ledger control id \'<instrumentId>:<controlId>\', regulatoryRef {regulator: the catalog\'s regulator, instrument: the instrumentId, controlId}. Severity comes from the control\'s defaultSeverity; the SLA from its slaDays (slaBasis.instrument = the instrumentId), else the sla-table defaults. Cite the most specific shared instrument first when one covers the gap and the company control after it; a company control comes first only when no shared control covers the gap. These ids are valid for ' + companyId
+  + ': never refute or drop a mapping only because it cites one of them. Never cite any other \'co:\' id, and label these controls company-specific wherever you report controls.';
+const ask = (prompt, opts) => agent(typeof prompt === 'string' ? prompt + COMPANY_CATALOG_RULE : prompt, opts);
 if (!companyId) throw new Error('args.companyId is required (company-profile/<companyId>)');
 const dryRun = Boolean(args && args.dryRun);
 const now = (args && args.now) || null;
@@ -186,7 +197,7 @@ const RECORD_SCHEMA = {
 
 // ---- Phase 1: Scout ---------------------------------------------------------------------------------------------
 phase('Scout');
-const scout = await agent(
+const scout = await ask(
   [
     'You are scouting for the ' + WORKFLOW + ' workflow, company ' + companyId + '. READ-ONLY: append nothing and write no file. You compute the fact sheet the report and its refuters are checked against, so compute with node -e over the files, never by eyeballing.',
     'Read ' + TEMPLATES + ' (sections 1-3, including the quiet-exit rules), ' + SKILL_LEDGER + ' (latest state per id: last record wins, supersession chains) and ' + SKILL_CONV + '.',
@@ -249,7 +260,7 @@ const renderPrompt = (repairs, previousMarkdown) => [
   'Return {written: false, sectionsRewritten (section ids rendered), sectionsOmitted, markdown, counts {openFindings, pastSla, openRisks, incidents, controlsAssessed, coveragePercent}, missedRegulatorClocks, notes}.',
 ].filter(Boolean).join('\n');
 
-let draft = await agent(renderPrompt(null, null), { label: 'render sections', phase: 'Render', agentType: 'report-writer', schema: DRAFT_SCHEMA, effort: 'high' });
+let draft = await ask(renderPrompt(null, null), { label: 'render sections', phase: 'Render', agentType: 'report-writer', schema: DRAFT_SCHEMA, effort: 'high' });
 if (!draft) throw new Error('report-writer returned nothing; summary.md sections not rendered');
 noteSession(draft);
 if (draft.written) skip(SUMMARY, 'report-writer reported written=true in the render step, which must not write; the Write step will overwrite the owned sections with the refuted text');
@@ -274,7 +285,7 @@ let openDiscrepancies = [];
 let repairRounds = 0;
 for (let round = 0; round <= MAX_REPAIR_ROUNDS; round += 1) {
   const verdicts = await parallel(CHECK_SPLIT.map((split) => () =>
-    agent(checkPrompt(split, draft.markdown), { label: 'check ' + split.lens + ' round ' + (round + 1), phase: 'Refute', agentType: 'refuter', schema: CHECK_SCHEMA, effort: 'high' })));
+    ask(checkPrompt(split, draft.markdown), { label: 'check ' + split.lens + ' round ' + (round + 1), phase: 'Refute', agentType: 'refuter', schema: CHECK_SCHEMA, effort: 'high' })));
   openDiscrepancies = [];
   verdicts.forEach((v, i) => {
     if (!v) { openDiscrepancies.push({ section: CHECK_SPLIT[i].sections.join(','), claim: 'unchecked', expected: 'a verdict', source: 'refuter returned no result' }); return; }
@@ -284,7 +295,7 @@ for (let round = 0; round <= MAX_REPAIR_ROUNDS; round += 1) {
   });
   log('round ' + (round + 1) + ': ' + openDiscrepancies.length + ' discrepancy(ies)');
   if (!openDiscrepancies.length || round === MAX_REPAIR_ROUNDS) break;
-  const repaired = await agent(renderPrompt(openDiscrepancies, draft.markdown), { label: 'repair round ' + (round + 1), phase: 'Refute', agentType: 'report-writer', schema: DRAFT_SCHEMA, effort: 'high' });
+  const repaired = await ask(renderPrompt(openDiscrepancies, draft.markdown), { label: 'repair round ' + (round + 1), phase: 'Refute', agentType: 'report-writer', schema: DRAFT_SCHEMA, effort: 'high' });
   if (!repaired) { skip(null, 'report-writer returned nothing in repair round ' + (round + 1)); break; }
   noteSession(repaired);
   repairRounds += 1;
@@ -301,7 +312,7 @@ if (dryRun) {
 } else if (!approved) {
   log('refuters left ' + openDiscrepancies.length + ' discrepancy(ies): summary.md left unchanged');
 } else {
-  writeResult = await agent(
+  writeResult = await ask(
     [
       'You are the report-writer for the ' + WORKFLOW + ' workflow, company ' + companyId + '. Read ' + TEMPLATES + ' sections 1 and 5 first.',
       'Write the APPROVED sections below into ' + SUMMARY + ' (template section 5 steps 2-5): split the existing file on level-2 headings, replace only the sections ' + JSON.stringify(draft.sectionsRewritten || []) + ' with the approved text EXACTLY as given (no re-rendering, no re-counting, no rewording: adversarial refuters already checked these bytes), remove an owned section that the approved text omits by template rule, keep every foreign section and the title line byte-for-byte, keep canonical order.',
@@ -324,7 +335,7 @@ let validation = null;
 if (!written) {
   log('nothing written: validation of summary.md skipped');
 } else {
-  validation = await agent(
+  validation = await ask(
     [
       'You are the validator for the ' + WORKFLOW + ' workflow, company ' + companyId + '. Run node .claude/scripts/validate-data.mjs ' + SUMMARY + ' (frontmatter against .claude/schemas/v1/frontmatter/company-summary.schema.json and the layout), then npm run validate.',
       'Fix only the CONTENT of ' + SUMMARY + ' frontmatter when it fails (quoting of timestamps, sections[] matching the level-2 headings in canonical order, semver version, provenance keys incl. inputsHash = ' + scout.inputsHash + '); never edit section bodies, schemas or other files.',
@@ -363,7 +374,7 @@ if (dryRun) {
 } else {
   recordInstruction = 'Step 1: compute sha256 of ' + SUMMARY + ' (node -e with createHash from node:crypto) and append one observation: id obs_<ULID>, ' + controlRule + ', title "' + WORKFLOW + ' regenerated summary.md sections ' + ((writeResult.sectionsWritten || draft.sectionsRewritten || []).join(', ')) + '", description with the report version ' + (writeResult.version || '') + ', the headline counts ' + JSON.stringify(draft.counts || {}) + ', missed regulator clocks ' + JSON.stringify(draft.missedRegulatorClocks || []) + ' and the ' + repairRounds + ' repair round(s) needed before the refuters passed, methods ["' + WORKFLOW + '"], subjects [{type: "company"}], collectedAt = generatedAt, result "not-applicable", evidence [{type: "workspace-file", ref: "' + SUMMARY + '", sha256}], tags ["report"]. Step 2: run node .claude/scripts/soc/version.mjs ' + companyId + ' --session ' + (sessionId || '<your session id>') + ' --workflow ' + WORKFLOW + ' and return the versions file it wrote.';
 }
-const record = await agent(
+const record = await ask(
   [
     'You are the soc-ledger-keeper for the ' + WORKFLOW + ' workflow, company ' + companyId + '. Read ' + SKILL_LEDGER + ' and ' + SKILL_CONV + '. Append via `node .claude/scripts/soc/append.mjs ' + companyId + ' -` only.',
     recordInstruction,

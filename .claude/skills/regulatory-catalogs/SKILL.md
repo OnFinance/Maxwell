@@ -1,6 +1,6 @@
 ---
 name: regulatory-catalogs
-description: The regulatory reference data every Maxwell finding, risk, control and initiative depends on - references/instruments.json (all 37 vocab instruments with regulator, version, dates, official URL, applicability and the hard numeric obligations such as CERT-In 6 h reporting and 180-day logs, DPDP 72 h breach notice, SEBI CSCRF 1-week patching, RBI DAKSH 6 h), references/sla-table.json (remediation and reporting deadlines with the clause quoted, most-strict-wins), and the OSCAL-lite India catalogs under references/catalogs/. Explains how to select the instruments that bind a company from details.json, how to form control ids and cite regulatoryRefs, how to look up an SLA, and how catalogs are refreshed under the grounding contract. Load before citing any regulation, choosing a severity or SLA, or editing a catalog.
+description: The regulatory reference data every Maxwell finding, risk, control and initiative depends on - references/instruments.json (all 37 vocab instruments with regulator, version, dates, official URL, applicability and the hard numeric obligations such as CERT-In 6 h reporting and 180-day logs, DPDP 72 h breach notice, SEBI CSCRF 1-week patching, RBI DAKSH 6 h), references/sla-table.json (remediation and reporting deadlines with the clause quoted, most-strict-wins), and the OSCAL-lite India catalogs under references/catalogs/. Explains how to select the instruments that bind a company from details.json, how to form control ids and cite regulatoryRefs, how to look up an SLA, how catalogs are refreshed under the grounding contract, and how a company's own catalogs (company-profile/<c>/catalogs/) are used. Load before citing any regulation, choosing a severity or SLA, or editing a catalog.
 license: AGPL-3.0-only
 compatibility: Node 22 and the Maxwell workspace layout; catalogs validate against v1/catalog/regulator-catalog.schema.json, the registry against v1/catalog/instruments.schema.json and the SLA table against vocab/sla-table.schema.json. Refreshing catalogs needs WebSearch/WebFetch
 metadata:
@@ -267,3 +267,42 @@ Catalog changes are human-reviewed changes to `.claude/skills/**`, made with the
   portal details within 24 hours; RBI entities report on DAKSH within 6 hours of detection.
 - Pairing an instrument with the wrong regulator (DPDP is `MeitY`, not `CERT-In`; SS1/21 is `PRA`, not `FCA`).
 - Converting units in hard requirements, or typing SLA days from memory instead of copying a row.
+
+## 8. A company's own catalogs
+
+A company may have controls that no shared catalog carries: its internal information security policy, the security
+schedule of a customer contract, a sector circular the shared catalogs do not cover yet. They live under that
+company's profile and apply to that company only, beside the shared catalogs:
+
+| File | Schema | What it holds |
+| --- | --- | --- |
+| `company-profile/<c>/catalogs/<slug>.catalog.json` | `v1/company/catalog.schema.json` | One source's controls, in the shared control shape (`regulator-catalog.schema.json#/$defs/group`) |
+| `company-profile/<c>/regulators.json` (optional) | `v1/company/regulators.schema.json` | The company's own regulators and sources (its board, a customer) that its catalogs name as `regulator` |
+
+- **Ids are namespaced.** A company catalog's `instrumentId` is `co:<c>:<slug>` (the file's basename), a company
+  source is `co:<c>:<slug>`, and a ledger control is `co:<c>:<slug>:<controlId>`. They can never equal a shared id
+  (vocab ids never start with `co:`) or another company's. `regulator` is a shared regulator (a SEBI circular not in
+  the shared catalogs) or one of the company's sources.
+- **Traced exactly like shared controls.** Control records are keyed `<instrumentId>:<controlId>` from
+  `frameworkRefs[0]`; findings, risks and initiatives cite them as `regulatoryRefs`
+  `{regulator: <the catalog's regulator>, instrument: co:<c>:<slug>, controlId}`. Severity is the control's
+  `defaultSeverity`; the SLA is its `slaDays` (`slaBasis.instrument` = the company instrument), else the sla-table
+  defaults. Cite the most specific shared instrument first when one covers the gap and the company control after it;
+  a company control is the first ref only when no shared control covers the gap. `mappings` crosswalk a company
+  control to shared controls (or to the company's other catalogs).
+- **Selection.** Every company catalog is in scope for its company: the registry, `frameworksInScope` and
+  instrument-level filters do not apply to it; each control's own `applicability` does. Headless runs name the
+  catalogs in the workflow's `args.companyCatalogs`; from chat, pass the output of
+  `node .claude/scripts/catalogs/company.mjs args <c>` as `companyCatalogs` (it is `[]` for a company without
+  any). `node .claude/scripts/catalogs/company.mjs controls <c>` lists the shared and the company's controls,
+  each labelled `shared` or `company`.
+- **One company only.** Never read, cite or copy another company's `co:` ids. `npm run validate` refuses a `co:` id
+  of another company anywhere under `company-profile/<c>/`, any `co:` id in shared files (catalogs, registry,
+  applications, cves, kpis), a ref to a catalog, control or source the company does not have, and duplicate or
+  wrongly named ids. `soc/append.mjs` refuses the same in records.
+- **Adding one.** Never write these files by hand: `node .claude/scripts/catalogs/add-company-catalog.mjs
+  <spec.json | -> [--dry-run] [--force]` (chat: `/add-company-catalog <c>`) validates the spec and writes the
+  catalog and any new sources. It never replaces a catalog without `--force`, and never drops a control the
+  company's files cite. Then run `/refresh-soc <c>` to add the applicable controls to the ledger.
+- **Reports and KPIs** label these controls company-specific; `cm_coverage` reports them apart as the
+  `company-specific-controls` series.

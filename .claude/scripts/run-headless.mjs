@@ -17,6 +17,7 @@ import { changedFiles, checkResultPath, ledgerAppended, ledgerPath, ledgerState,
 import { ulid } from '../hooks/lib.mjs';
 import { ACCOUNT_LIMIT, classifyWorkflowRun, opencodeSessionLog, parseLimitReset, workflowStatus } from './lib/workflow-status.mjs';
 import { hostSetting, settingValue } from './lib/config.mjs';
+import { companyCatalogArgs } from './lib/company-catalogs.mjs';
 
 const argv = process.argv.slice(2);
 const opt = (f, d) => { const i = argv.indexOf(f); return i >= 0 ? argv[i + 1] : d; };
@@ -52,7 +53,11 @@ let workflowRun = null; let outcomeReason = null;
 // Workflows are deterministic scripts: they cannot read the clock, so the run timestamp is taken once here.
 const now = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
 const workflowArgs = { companyId: company, appIds: apps, envIds: envs, dryRun, now, runId };
-const utility = new Set(['validate', 'kpis', 'seed-company', 'status', 'connect-sandbox', 'config', 'manual']);
+// A company with its own catalogs (company-profile/<company>/catalogs/) has them named in args.companyCatalogs, so the
+// workflow's agents use them beside the shared catalogs; for a company without any, args are exactly as before.
+const companyCatalogs = ledgerFile ? companyCatalogArgs(company) : [];
+if (companyCatalogs.length) workflowArgs.companyCatalogs = companyCatalogs;
+const utility = new Set(['validate', 'kpis', 'seed-company', 'status', 'connect-sandbox', 'config', 'add-company-catalog', 'manual']);
 // report-audit-improvements renders KPI series but no roster agent may run `npm run kpis`, so compute them first.
 if (workflow === 'report-audit-improvements') {
   const k = spawnSync(process.execPath, ['.claude/scripts/kpis/compute.mjs', '--company', company], { encoding: 'utf8', env });

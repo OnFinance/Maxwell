@@ -48,6 +48,17 @@ const PROBE_CHECKS = [
 ];
 
 const companyId = args && args.companyId;
+// Company catalogs (regulatory-catalogs skill section 8): run-headless passes args.companyCatalogs only when
+// company-profile/<companyId>/catalogs/ holds the company's own catalogs. Without them every prompt is exactly as before.
+const companyCatalogs = (args && Array.isArray(args.companyCatalogs) ? args.companyCatalogs : []).filter((c) => companyId && c
+  && /^co:[a-z0-9][a-z0-9-]{1,62}:[a-z0-9][a-z0-9-]{1,62}$/.test(c.instrumentId) && c.instrumentId.indexOf('co:' + companyId + ':') === 0
+  && c.file === 'company-profile/' + companyId + '/catalogs/' + c.instrumentId.slice(companyId.length + 4) + '.catalog.json');
+const COMPANY_CATALOG_RULE = !companyCatalogs.length ? '' : '\n\nCompany catalogs: besides the shared catalogs, company ' + companyId
+  + ' has its own catalogs, which apply to ' + companyId + ' only: ' + companyCatalogs.map((c) => c.instrumentId + ' (' + c.file + ')').join(', ')
+  + '. Follow section 8 of .claude/skills/regulatory-catalogs/SKILL.md. Treat each as an instrument in scope for ' + companyId
+  + ' (the instruments.json registry, frameworksInScope and the instrument-level entity filters do not apply to it; each control\'s own applicability does): include its controls wherever you select applicable instruments or controls, and key and cite them exactly like shared controls - ledger control id \'<instrumentId>:<controlId>\', regulatoryRef {regulator: the catalog\'s regulator, instrument: the instrumentId, controlId}. Severity comes from the control\'s defaultSeverity; the SLA from its slaDays (slaBasis.instrument = the instrumentId), else the sla-table defaults. Cite the most specific shared instrument first when one covers the gap and the company control after it; a company control comes first only when no shared control covers the gap. These ids are valid for ' + companyId
+  + ': never refute or drop a mapping only because it cites one of them. Never cite any other \'co:\' id, and label these controls company-specific wherever you report controls.';
+const ask = (prompt, opts) => agent(typeof prompt === 'string' ? prompt + COMPANY_CATALOG_RULE : prompt, opts);
 if (!companyId) throw new Error('args.companyId is required (company-profile/<companyId>)');
 const dryRun = Boolean(args && args.dryRun);
 const RFC3339_Z = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{1,9})?Z$/;
@@ -244,7 +255,7 @@ const SUMMARY_SCHEMA = {
 // ---- Phase 1: Scout -----------------------------------------------------------------------------------
 phase('Scout');
 log('Scouting ' + companyId + ' for ' + TARGET_NOUN + ' repos' + (appFilter ? ' (apps: ' + appFilter.join(', ') + ')' : '') + (envFilter ? ' (envs: ' + envFilter.join(', ') + ')' : ''));
-const scout = await agent(
+const scout = await ask(
   [
     'You are scouting the Maxwell workspace for the ' + WORKFLOW + ' workflow. Company: ' + companyId + '. Read-only: do not write any file.',
     argNow ? 'Run timestamp: ' + argNow + ' (return it verbatim as now).' : 'Run `' + CLOCK_CMD + '` once and return its output as now; every later stage of this run reuses that single timestamp.',
@@ -402,7 +413,7 @@ const isSevere = (s) => s === 'high' || s === 'critical';
 const probed = await pipeline(
   targets,
   async (t, _item, index) => {
-    const r = await agent(probePrompt(t), { label: 'probe ' + t.appId + '/' + t.repoId + ' #' + (index + 1), phase: 'Probe', agentType: PROBE_AGENT, schema: PROBE_SCHEMA, effort: 'high' });
+    const r = await ask(probePrompt(t), { label: 'probe ' + t.appId + '/' + t.repoId + ' #' + (index + 1), phase: 'Probe', agentType: PROBE_AGENT, schema: PROBE_SCHEMA, effort: 'high' });
     if (!r) { skipped.push({ appId: t.appId, repoId: t.repoId, reason: 'probe agent returned no schema-valid result' }); log('probe failed for ' + t.appId + '/' + t.repoId); return null; }
     noteSession(r);
     for (const s of r.skipped || []) skipped.push({ appId: t.appId, repoId: t.repoId, reason: 'probe: ' + s });
@@ -439,7 +450,7 @@ const probed = await pipeline(
       const i = candidates.indexOf(f);
       const lenses = ['evidence', 'regulatory-mapping'];
       const votes = await parallel(lenses.map((lens) => () =>
-        agent(refutePrompt(t, probe, f, lens), { label: 'refute ' + lens + ' ' + t.repoId + ' #' + (i + 1), phase: 'Refute', agentType: 'refuter', schema: VERDICT_SCHEMA, effort: 'high' })));
+        ask(refutePrompt(t, probe, f, lens), { label: 'refute ' + lens + ' ' + t.repoId + ' #' + (i + 1), phase: 'Refute', agentType: 'refuter', schema: VERDICT_SCHEMA, effort: 'high' })));
       votes.forEach(noteSession);
       const [ev, mp] = votes;
       const drop = (why) => skipped.push({ appId: t.appId, repoId: t.repoId, reason: why + ': ' + f.title });
@@ -456,7 +467,7 @@ const probed = await pipeline(
       let evidenceReason = ev.reason;
       if (rank(severity) > rank(f.severity) && isSevere(severity) && !(ev.correctedSeverity && rank(ev.correctedSeverity) >= rank(severity))) {
         // The evidence lens judged the lower original severity: re-run it on the raised candidate before accepting high/critical.
-        const again = await agent(refutePrompt(t, probe, { ...merged, severity }, 'evidence', 'The regulatory-mapping lens raised severity from ' + f.severity + ' to ' + severity + ' (' + mp.reason + '). Judge whether the evidence supports ' + severity + '.'),
+        const again = await ask(refutePrompt(t, probe, { ...merged, severity }, 'evidence', 'The regulatory-mapping lens raised severity from ' + f.severity + ' to ' + severity + ' (' + mp.reason + '). Judge whether the evidence supports ' + severity + '.'),
           { label: 'refute evidence (raised) ' + t.repoId + ' #' + (i + 1), phase: 'Refute', agentType: 'refuter', schema: VERDICT_SCHEMA, effort: 'high' });
         noteSession(again);
         if (!again || again.refuted) { drop('dropped after the mapping lens raised severity to ' + severity + ': evidence lens ' + (again ? 'refuted (' + again.reason + ')' : 'returned no verdict')); return null; }
@@ -514,7 +525,7 @@ const CATALOG_RULE = 'A control is applicable only when its instrument is one of
 for (const p of perTarget) {
   if (!p.observations.length && !p.findings.length) { log('nothing to write for ' + p.target.appId + '/' + p.target.repoId); continue; }
   const sarifEvidence = p.probe.sarifPath ? JSON.stringify(Object.assign({ type: 'sarif', ref: p.probe.sarifPath }, p.probe.sarifSha256 ? { sha256: p.probe.sarifSha256 } : {})) : null;
-  const w = await agent(
+  const w = await ask(
     [
       'You are the soc-ledger-keeper for the ' + WORKFLOW + ' workflow, company ' + companyId + '. Read .claude/skills/soc-ledger/SKILL.md (sections 2, 4, 5, 6, 8 and 9), .claude/skills/maxwell-conventions/SKILL.md and .claude/skills/regulatory-catalogs/SKILL.md (references/instruments.json, sla-table.json and catalogs) before writing.',
       'Ledger: ' + LEDGER + ' (append-only). Write EVERY record by piping JSON to `node .claude/scripts/soc/append.mjs ' + companyId + ' -`; never edit the ledger directly. A rejected append means the record is wrong: fix it and retry. Read the latest state per id (last line per id, soc-ledger section 3) before deciding anything. Mint obs_/fnd_ ULIDs with the helper in maxwell-conventions, never by hand.',
@@ -551,7 +562,7 @@ for (const p of perTarget) {
 
 // Controls follow observations (soc-ledger 8.4): one re-assessment across every repo written in this run.
 if (!dryRun && observedControlIds.size) {
-  const c = await agent(
+  const c = await ask(
     [
       'You are the soc-ledger-keeper re-assessing controls after the ' + WORKFLOW + ' workflow wrote its observations and findings for company ' + companyId + '. Read .claude/skills/soc-ledger/SKILL.md sections 3, 4 and 8.4 first.',
       'Controls to re-assess (only those that exist as kind "control" records in ' + LEDGER + '; skip the rest and say so): ' + JSON.stringify([...observedControlIds]),
@@ -579,7 +590,7 @@ if (dryRun) {
 } else if (!written.observationIds.length && !written.findingIds.length && !written.supersededFindingIds.length) {
   log('nothing was written to the ledger; summary.md left unchanged');
 } else {
-  summary = await agent(
+  summary = await ask(
     [
       'You are the report-writer. Refresh the "open-findings" section of company-profile/' + companyId + '/summary.md after the ' + WORKFLOW + ' workflow. Read .claude/skills/report-templates/SKILL.md and .claude/skills/maxwell-conventions/SKILL.md first.',
       'Source of truth: ' + LEDGER + '. Take the latest record per finding id (the last line for that id), keep status open|triaged|remediating, and render the open-findings section grouped by severity with title, target, primary regulatoryRef, slaDueAt and finding id. Mention the ' + SUMMARY_NOUN + ' written in this run: ' + written.findingIds.length + ' new finding(s) ' + JSON.stringify(written.findingIds) + ', ' + written.supersededFindingIds.length + ' re-seen (' + written.reopenedFindingIds.length + ' reopened), ' + written.observationIds.length + ' observation(s).',

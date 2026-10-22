@@ -40,6 +40,17 @@ export const meta = {
 const WORKFLOW = 'refresh-metastore';
 const a = args || {};
 const companyId = a.companyId;
+// Company catalogs (regulatory-catalogs skill section 8): run-headless passes args.companyCatalogs only when
+// company-profile/<companyId>/catalogs/ holds the company's own catalogs. Without them every prompt is exactly as before.
+const companyCatalogs = (args && Array.isArray(args.companyCatalogs) ? args.companyCatalogs : []).filter((c) => companyId && c
+  && /^co:[a-z0-9][a-z0-9-]{1,62}:[a-z0-9][a-z0-9-]{1,62}$/.test(c.instrumentId) && c.instrumentId.indexOf('co:' + companyId + ':') === 0
+  && c.file === 'company-profile/' + companyId + '/catalogs/' + c.instrumentId.slice(companyId.length + 4) + '.catalog.json');
+const COMPANY_CATALOG_RULE = !companyCatalogs.length ? '' : '\n\nCompany catalogs: besides the shared catalogs, company ' + companyId
+  + ' has its own catalogs, which apply to ' + companyId + ' only: ' + companyCatalogs.map((c) => c.instrumentId + ' (' + c.file + ')').join(', ')
+  + '. Follow section 8 of .claude/skills/regulatory-catalogs/SKILL.md. Treat each as an instrument in scope for ' + companyId
+  + ' (the instruments.json registry, frameworksInScope and the instrument-level entity filters do not apply to it; each control\'s own applicability does): include its controls wherever you select applicable instruments or controls, and key and cite them exactly like shared controls - ledger control id \'<instrumentId>:<controlId>\', regulatoryRef {regulator: the catalog\'s regulator, instrument: the instrumentId, controlId}. Severity comes from the control\'s defaultSeverity; the SLA from its slaDays (slaBasis.instrument = the instrumentId), else the sla-table defaults. Cite the most specific shared instrument first when one covers the gap and the company control after it; a company control comes first only when no shared control covers the gap. These ids are valid for ' + companyId
+  + ': never refute or drop a mapping only because it cites one of them. Never cite any other \'co:\' id, and label these controls company-specific wherever you report controls.';
+const ask = (prompt, opts) => agent(typeof prompt === 'string' ? prompt + COMPANY_CATALOG_RULE : prompt, opts);
 if (typeof companyId !== 'string' || !companyId) throw new Error('refresh-metastore: args.companyId is required (company-profile/<companyId>)');
 const dryRun = a.dryRun === true;
 const NOW_RE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?Z$/;
@@ -74,7 +85,7 @@ ${dryRun ? 'DRY RUN: write no file in this stage.' : ''}`;
 // ---------------------------------------------------------------- Scout
 phase('Scout');
 if (!now) {
-  const clock = await agent(`Company: ${companyId}. Workflow: ${WORKFLOW}. You are the 'soc-ledger-keeper' specialist, used here only as the workflow clock: read nothing, write nothing, append nothing.
+  const clock = await ask(`Company: ${companyId}. Workflow: ${WORKFLOW}. You are the 'soc-ledger-keeper' specialist, used here only as the workflow clock: read nothing, write nothing, append nothing.
 Run exactly once: node -e "console.log(new Date(Date.parse(Date())).toISOString().slice(0,19)+'Z')"
 Return its output verbatim as now.`, { label: 'clock', phase: 'Scout', agentType: 'soc-ledger-keeper', effort: 'low', schema: { type: 'object', required: ['now'], properties: { sessionId: { type: 'string' }, now: { type: 'string' } } } });
   if (!clock || typeof clock.now !== 'string' || !NOW_RE.test(clock.now.trim())) throw new Error(`refresh-metastore: could not resolve NOW (clock returned ${JSON.stringify(clock && clock.now)}); pass args.now and re-run`);
@@ -98,7 +109,7 @@ const SCOUT_SCHEMA = {
     skipped: { type: 'array', items: { type: 'object', required: ['target', 'reason'], properties: { target: { type: 'string' }, reason: { type: 'string' } } } },
   },
 };
-const scout = await agent(`${common('metastore-cataloguer')}
+const scout = await ask(`${common('metastore-cataloguer')}
 SCOUT (read-only, write nothing). Read ${PROFILE} (entityTypes, frameworksInScope, dataResidency), ${METASTORE} if it exists (summarise only: catalogId, appId, type and table count per catalog, pipelineId with sourceRepo appId/repoId per pipeline, lineage edge count, snapshotAt), and ${LEDGER} if it exists (ids of the latest kind 'control' records).
 retentionRequirements: from ${INSTRUMENTS}, every hardRequirements[] entry with topic 'log-retention' or 'data-retention' of an instrument in frameworksInScope whose unit is days, months or years (skip boolean ones), copied verbatim (instrumentId, controlId, topic, value, unit, requirement, source '${INSTRUMENTS}'); add any retention-period param (params[] with a numeric default and a days/months/years unit) of a control in that instrument's catalog file under .claude/skills/regulatory-catalogs/references/catalogs/ with source = the catalog path. Never add a period that neither file states.
 APPLICATION-TO-COMPANY RULE (deterministic; no application schema carries companyId, so never infer the link from README prose or hosting.accountRef): when company-profile/ contains exactly one company directory every applications/<app_id>/ belongs to it; otherwise the company's applications are the union of ${PROFILE} criticalFunctions[].appIds${appIds ? ` and ${JSON.stringify(appIds)} (args.appIds)` : ''}. List every other applications/<app_id>/ under skipped with reason 'no company link'.${appIds ? ` Of the linked applications keep only ${JSON.stringify(appIds)}; list every other one under skipped with reason 'filtered by args.appIds'.` : ''}
@@ -152,7 +163,7 @@ List previous-snapshot catalogs of application '${r.appId}' this repo should hav
 
 phase('Catalogue');
 const catalogued = await pipeline(repos, async (r, _item, index) => {
-  const out = await agent(cataloguePrompt(r), { label: `catalogue ${r.appId}/${r.repoId} #${index + 1}`, phase: 'Catalogue', agentType: 'metastore-cataloguer', schema: CATALOGUE_SCHEMA, effort: dryRun ? 'low' : 'high' });
+  const out = await ask(cataloguePrompt(r), { label: `catalogue ${r.appId}/${r.repoId} #${index + 1}`, phase: 'Catalogue', agentType: 'metastore-cataloguer', schema: CATALOGUE_SCHEMA, effort: dryRun ? 'low' : 'high' });
   if (!out) { skipped.push(`catalogue: ${r.appId}/${r.repoId} returned nothing (agent failed or was skipped); its previous catalogs are carried forward`); return null; }
   noteSession(out);
   for (const n of out.notRecrawled || []) skipped.push(`catalogue ${r.appId}/${r.repoId}: catalog ${n.catalogId} not recrawled — ${n.reason}`);
@@ -303,7 +314,7 @@ const GAP_BATCH = 30;
 const gapBatches = [];
 for (const app of gapAppIds) { const list = gapCandidates.filter((g) => g.appId === app); for (let i = 0; i < list.length; i += GAP_BATCH) gapBatches.push({ appId: app, items: list.slice(i, i + GAP_BATCH) }); }
 const verifiedBatches = dryRun ? gapBatches.map((b) => b.items) : await pipeline(gapBatches, async (b, _item, index) => {
-  const votes = await parallel(LENSES.map((lens) => () => agent(refutePrompt(b.appId, b.items, lens), { label: `refute gaps ${b.appId} (${b.items.length}) [${lens}] #${index + 1}`, phase: 'Verify', agentType: 'refuter', schema: BATCH_VERDICT, effort: 'medium' })));
+  const votes = await parallel(LENSES.map((lens) => () => ask(refutePrompt(b.appId, b.items, lens), { label: `refute gaps ${b.appId} (${b.items.length}) [${lens}] #${index + 1}`, phase: 'Verify', agentType: 'refuter', schema: BATCH_VERDICT, effort: 'medium' })));
   votes.forEach(noteSession);
   LENSES.forEach((lens, i) => { if (!votes[i]) skipped.push(`verify: lens ${lens} returned nothing for ${b.appId} gap batch #${index + 1}; counted as abstention`); });
   return b.items.filter((g) => {
@@ -348,7 +359,7 @@ if (dryRun) {
   let ok = true;
   for (let i = 0; i < batches.length && ok; i += 1) {
     const first = i === 0;
-    const w = await agent(`${common('validator')}
+    const w = await ask(`${common('validator')}
 Read ${SCHEMA_FILE}. ${first ? `REPLACE ${METASTORE} with a new snapshot (read the previous file first if it exists; you need it for carried-forward catalogs).
 Document: schemaVersion '1', kind 'maxwell.company.metastore', companyId '${companyId}', snapshotAt '${snapshotAt}', provenance as instructed (agent 'validator').
 catalogs = the catalog/schema units of this batch (group units with the same catalogId into one catalog entry; a unit with schema null is a catalog with schemas []) PLUS, copied verbatim from the previous file, exactly these carried-forward catalogs: ${JSON.stringify(carryForward.map((c) => c.catalogId))}. Every other previous catalog is NOT copied (dropped: ${JSON.stringify(droppedCatalogs.map((c) => c.catalogId))}).
@@ -384,7 +395,7 @@ for (const app of ledgerApps) {
   const repoEvidence = metastoreCitable
     ? `[{type:'workspace-file', ref:'${METASTORE}'}, {type:'workspace-file', ref:'applications/${app}/repos/<repoId>.json'}]`
     : `[{type:'workspace-file', ref:'applications/${app}/repos/<repoId>.json'}] (do NOT cite ${METASTORE}: ${dryRun ? 'a dry run never writes it' : 'this run did not write it successfully'})`;
-  const w = await agent(`${common('soc-ledger-keeper')}
+  const w = await ask(`${common('soc-ledger-keeper')}
 Read .claude/skills/soc-ledger/SKILL.md sections 4, 5 and 9, ${PROFILE} and ${LEDGER}. Application '${app}'.
 ${dryRun
     ? `Step 1 - controls (READ-ONLY, dry run): observations must cite control records that already exist. Choose the most specific Indian data inventory / classification control (and, for retention or personal-data evidence requests, the matching retention or personal-data control) ONLY from these existing ledger control ids: ${JSON.stringify(existingControlIds)}. Append NO control record. When no existing id fits an observation, do not append that observation and list it under skipped with reason 'no existing control fits'.`
@@ -413,7 +424,7 @@ if (dryRun) {
 } else if (!result.metastoreWritten) {
   log('metastore.json was not (fully) written; data-flows section left unchanged');
 } else {
-  const summary = await agent(`${common('report-writer')}
+  const summary = await ask(`${common('report-writer')}
 Read .claude/skills/report-templates/SKILL.md. Rewrite ONLY the 'data-flows' section of ${SUMMARY} (create the file from the template when absent) from ${METASTORE} and the ${WORKFLOW} observations in ${LEDGER}: catalogs by application with table and PII-column counts, the pipelines and lineage chains that carry pii, spdi, cardholder or financial data (source -> job -> sink), retention versus the periods the in-scope instruments state (${JSON.stringify(retentionRequirements.map((x) => `${x.instrumentId}${x.controlId ? `:${x.controlId}` : ''} ${x.topic} ${x.value} ${x.unit}`))}; say 'no record-keeping period stated by an in-scope instrument' where none applies), and the confirmed gaps cited as [obs_…]. Mention this run: ${result.catalogs} catalogs (${result.carriedForwardCatalogs} carried forward, ${result.droppedCatalogs} dropped), ${result.tables} tables, ${result.piiColumns} PII columns, ${result.pipelines} pipelines, ${result.lineageEdges} lineage edges, ${result.gapsConfirmed} confirmed gap(s). Keep every other section byte-identical, bump the frontmatter version (minor), set provenance as instructed and recompute provenance.inputsHash exactly as the company-summary schema describes. Validate with \`node .claude/scripts/validate-data.mjs ${SUMMARY}\`. Do not append to the ledger: follow report-templates section 5 step 6 and return the report observation as proposedObservation (omit the field when the report was already current).`, {
     label: 'summary data-flows', phase: 'Summary', agentType: 'report-writer', effort: 'low',
     schema: { type: 'object', required: ['updated'], properties: { sessionId: { type: 'string' }, updated: { type: 'boolean' }, version: { type: 'string' }, proposedObservation: { type: 'object', description: 'report-templates section 5 step 6 observation record without id and recordedAt' }, notes: { type: 'string' } } },
@@ -429,7 +440,7 @@ if (dryRun) {
 } else if (!result.observations && !proposedObservation) {
   log('Nothing appended to the ledger; version skipped');
 } else {
-  const version = await agent(`${common('soc-ledger-keeper')}
+  const version = await ask(`${common('soc-ledger-keeper')}
 ${proposedObservation ? `First append the report-writer's proposed observation (report-templates section 5 step 6) via append.mjs: mint id obs_<ULID>, set recordedAt NOW, keep every other field; if its controlIds is empty or names a control that is not in the ledger, use the data-inventory control this run's Ledger stage cited. Record: ${JSON.stringify(proposedObservation)}
 Then r` : 'R'}un \`node .claude/scripts/soc/version.mjs ${companyId} --session ${sessionId || '<your harness session id>'} --workflow ${WORKFLOW}\` from the workspace root, once. Never pass --force. Return the observation id you appended (if any), the file version.mjs wrote (empty if it printed that nothing was written) and any error verbatim.`, {
     label: 'version ledger', phase: 'Version', agentType: 'soc-ledger-keeper', effort: 'low',

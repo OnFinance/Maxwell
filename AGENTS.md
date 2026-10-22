@@ -46,6 +46,8 @@ Maxwell/
 │       └── credentials.json              # sops/age-encrypted references, never values
 ├── company-profile/
 │   └── <company_id>/
+│       ├── catalogs/                     # optional: the company's own controls (co:<company_id>:<slug>)
+│       │   └── <slug>.catalog.json
 │       ├── change_management/
 │       │   ├── initiatives/
 │       │   │   └── <init_id>/
@@ -71,6 +73,7 @@ Maxwell/
 │       │   └── <vendor_id>.json
 │       ├── context.json              # organization context tree built by refresh-ctx
 │       ├── details.json
+│       ├── regulators.json               # optional: the company's own regulators and sources
 │       └── summary.md
 ├── cves/
 │   ├── data/
@@ -139,6 +142,14 @@ Every finding, risk and initiative must cite at least one `regulatoryRef` from t
 specific Indian instrument that applies to the company's `entityTypes` (SEBI CSCRF, RBI Directions 2026, IRDAI
 2023, CERT-In 2022, DPDP Rules 2025) and add global mappings second. Severity and SLA due dates come from
 `.claude/skills/regulatory-catalogs/references/sla-table.json`, not from intuition.
+A company may also have its own catalogs (an internal policy, a customer contract's security schedule, a sector
+circular the shared catalogs lack) under `company-profile/<company_id>/catalogs/`, with ids `co:<company_id>:<slug>`.
+They apply to that company only and are cited exactly like shared controls (regulatory-catalogs skill section 8);
+never cite one company's `co:` ids in another company's files or in shared files. Add one with
+`node .claude/scripts/catalogs/add-company-catalog.mjs <spec.json | -> [--dry-run] [--force]` (`/add-company-catalog`
+in chat), never by hand. When you start a workflow from chat for a company that has them, pass
+`node .claude/scripts/catalogs/company.mjs args <company_id>` as `companyCatalogs` in the args; headless runs do this
+themselves.
 
 ## 7. Workflows, agents, skills
 - The 26 workflows are `.claude/workflows/<name>.js`; invoke them as `/<name> <company_id> [flags]`. They fan out
@@ -147,7 +158,7 @@ specific Indian instrument that applies to the company's `entityTypes` (SEBI CSC
   `.claude/skills/runtime-probe-rules-of-engagement`, and honour `--dry-run` by planning and requesting evidence
   instead of executing.
 - Reports are written to `summary.md` sections and `soc` observations, never to new files.
-- Utility commands: `/validate`, `/kpis`, `/seed-company`, `/status`, `/connect-sandbox`, `/config`.
+- Utility commands: `/validate`, `/kpis`, `/seed-company`, `/status`, `/connect-sandbox`, `/config`, `/add-company-catalog`.
 - Add an application with `node .claude/scripts/apps/add.mjs <spec.json | -> [--checkout] [--dry-run]` (appId, repos
   with url and full pinnedCommit, age `sopsRecipients`); it validates before writing and never overwrites an existing
   application without `--force`. Never write `applications/<app_id>/` files for a new application by hand. Run

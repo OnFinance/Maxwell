@@ -21,6 +21,17 @@ export const meta = {
 
 const a = args || {};
 const companyId = a.companyId;
+// Company catalogs (regulatory-catalogs skill section 8): run-headless passes args.companyCatalogs only when
+// company-profile/<companyId>/catalogs/ holds the company's own catalogs. Without them every prompt is exactly as before.
+const companyCatalogs = (args && Array.isArray(args.companyCatalogs) ? args.companyCatalogs : []).filter((c) => companyId && c
+  && /^co:[a-z0-9][a-z0-9-]{1,62}:[a-z0-9][a-z0-9-]{1,62}$/.test(c.instrumentId) && c.instrumentId.indexOf('co:' + companyId + ':') === 0
+  && c.file === 'company-profile/' + companyId + '/catalogs/' + c.instrumentId.slice(companyId.length + 4) + '.catalog.json');
+const COMPANY_CATALOG_RULE = !companyCatalogs.length ? '' : '\n\nCompany catalogs: besides the shared catalogs, company ' + companyId
+  + ' has its own catalogs, which apply to ' + companyId + ' only: ' + companyCatalogs.map((c) => c.instrumentId + ' (' + c.file + ')').join(', ')
+  + '. Follow section 8 of .claude/skills/regulatory-catalogs/SKILL.md. Treat each as an instrument in scope for ' + companyId
+  + ' (the instruments.json registry, frameworksInScope and the instrument-level entity filters do not apply to it; each control\'s own applicability does): include its controls wherever you select applicable instruments or controls, and key and cite them exactly like shared controls - ledger control id \'<instrumentId>:<controlId>\', regulatoryRef {regulator: the catalog\'s regulator, instrument: the instrumentId, controlId}. Severity comes from the control\'s defaultSeverity; the SLA from its slaDays (slaBasis.instrument = the instrumentId), else the sla-table defaults. Cite the most specific shared instrument first when one covers the gap and the company control after it; a company control comes first only when no shared control covers the gap. These ids are valid for ' + companyId
+  + ': never refute or drop a mapping only because it cites one of them. Never cite any other \'co:\' id, and label these controls company-specific wherever you report controls.';
+const ask = (prompt, opts) => agent(typeof prompt === 'string' ? prompt + COMPANY_CATALOG_RULE : prompt, opts);
 if (typeof companyId !== 'string' || !companyId) throw new Error('probe-sdlc: args.companyId is required');
 const WORKFLOW = 'probe-sdlc';
 const dryRun = a.dryRun === true;
@@ -194,7 +205,7 @@ const correctSeverity = (f, lenses, votes) => {
 
 // ---------- Scout ----------
 phase('Scout');
-const scout = await agent(`Scout company "${companyId}" for an SDLC policy probe. ${appFilterNote}
+const scout = await ask(`Scout company "${companyId}" for an SDLC policy probe. ${appFilterNote}
 Read .claude/skills/maxwell-conventions/SKILL.md first. Then read ${profile}/details.json (entityTypes, regulators), ${profile}/sdlc/policy.json (if absent set policyFound=false and say so in policySummary) and every applications/*/repos/*.json record.
 For each repo return appId, repoId, recordPath (the workspace path of the record), localCheckout (from the record; omit when the directory does not exist on disk), host, ciSystem, buildSystem, containsAgentCode, codeownersPresent, a one-line branchProtectionSummary, and exposure = the highest exposure of that application's environments in applications/<appId>/env/*.json (internet > partner > internal > isolated; "unknown" when no env file exists).
 policySummary: a compact plain-text digest of branching, codeReview, ciGates (gate/tool/blocking/threshold), releaseProcess, secretsManagement, dependencyPolicy and aiCodingPolicy so an auditor can compare without re-reading. ssdfPracticesClaimed: the policy's ssdfMapping entries verbatim.
@@ -242,7 +253,7 @@ Compare, clause by clause:
 };
 
 const auditStage = async (t) => {
-  const r = await agent(auditPrompt(t), { label: `audit ${t.type === 'company' ? 'company' : `${t.appId}/${t.repoId}`}`, phase: 'Audit', schema: AUDIT_SCHEMA, agentType: 'sdlc-auditor', effort: 'high' });
+  const r = await ask(auditPrompt(t), { label: `audit ${t.type === 'company' ? 'company' : `${t.appId}/${t.repoId}`}`, phase: 'Audit', schema: AUDIT_SCHEMA, agentType: 'sdlc-auditor', effort: 'high' });
   if (!r) { skipped.push({ target: targetKey(t), reason: 'sdlc-auditor returned no schema-valid result' }); return null; }
   noteSession(r);
   skipped.push(...(r.skipped || []).map((s) => ({ target: `${targetKey(t)}: ${s.target}`, reason: s.reason })));
@@ -269,7 +280,7 @@ const refuteStage = async (r, t) => {
   const kept = []; const rejected = []; let unavailable = 0;
   await pipeline(r.findings, async (f, item, fi) => {
     const tag = `refute ${targetKey(t)} #${fi + 1}`;
-    const votes = await parallel(LENSES.map((lens) => () => agent(refutePrompt(t, f, lens), { label: `refute ${lens} ${targetKey(t)} #${fi + 1}`, phase: 'Refute', schema: REFUTE_SCHEMA, agentType: 'refuter', effort: 'high' })));
+    const votes = await parallel(LENSES.map((lens) => () => ask(refutePrompt(t, f, lens), { label: `refute ${lens} ${targetKey(t)} #${fi + 1}`, phase: 'Refute', schema: REFUTE_SCHEMA, agentType: 'refuter', effort: 'high' })));
     votes.forEach(noteSession);
     const d = decide(f, LENSES, votes);
     if (d.unavailable) log(`${tag}: ${d.unavailable} lens(es) returned nothing (counted as unavailable, not as refuted)`);
@@ -315,7 +326,7 @@ for (const r of audited) {
   const sourceRule = r.sarifPath
     ? `{"kind":"sarif","ruleId":"<ruleId>","tool":"maxwell-sdlc-auditor","toolVersion":"1.0.0"} (the results are in the hand-authored SARIF export ${r.sarifPath})`
     : '{"kind":"agent-analysis","ruleId":"<ruleId>","tool":"sdlc-auditor"} (no SARIF log exists for this target)';
-  const w = await agent(`You are the soc-ledger-keeper for company "${companyId}". Read .claude/skills/soc-ledger/SKILL.md, .claude/skills/maxwell-conventions/SKILL.md and .claude/skills/regulatory-catalogs/SKILL.md (with references/sla-table.json) before writing. Every ledger write goes through \`node .claude/scripts/soc/append.mjs ${companyId} -\` (record JSON on stdin); never edit ${profile}/soc/main.jsonl directly. ${provenanceNote('soc-ledger-keeper')}
+  const w = await ask(`You are the soc-ledger-keeper for company "${companyId}". Read .claude/skills/soc-ledger/SKILL.md, .claude/skills/maxwell-conventions/SKILL.md and .claude/skills/regulatory-catalogs/SKILL.md (with references/sla-table.json) before writing. Every ledger write goes through \`node .claude/scripts/soc/append.mjs ${companyId} -\` (record JSON on stdin); never edit ${profile}/soc/main.jsonl directly. ${provenanceNote('soc-ledger-keeper')}
 Target: ${JSON.stringify(r.target)}. Candidate records from the sdlc-auditor (already refuted): ${JSON.stringify({ observations: r.observations, findings: r.findings, sarifPath: r.sarifPath || null, sarifSha256: r.sarifSha256 || null })}
 Rules:
 1. Observations: kind "observation", id a fresh obs_ ULID (mint ids the way the soc-ledger skill describes), methods ["${WORKFLOW}"], subjects [${r.target.type === 'company' ? '{"type":"company"}' : `{"type":"repo","appId":"${r.target.appId}","repoId":"${r.target.repoId}"}`}], result as given, collectedAt = now, expiresAt = now + 30 days, evidence as given${sarifEvidence ? ` plus ${sarifEvidence}, toolOutput {"format":"sarif","path":"${r.sarifPath}"${r.sarifSha256 ? `,"sha256":"${r.sarifSha256}"` : ''}}` : ''}, ${practiceTag}. controlIds must hold at least one "<instrument>:<controlId>" built from the candidate's regulatoryRefs; if that control record does not yet exist in the ledger, first append a control record for it (kind "control", id "<instrument>:<controlId>", frameworkRefs [the ref itself, then the catalog mappings], title and category from the catalog entry, implementationStatus "unknown", effectiveness "not-tested", applicableAssets = the subject; skip a regulatoryRef whose control id does not exist in the catalogs and say so in skipped) and count it in controlsAppended.
@@ -333,7 +344,7 @@ log(`Ledger: ${controlsAppended} controls, ${observationIds.length} observations
 phase('Report');
 let versionFile = null;
 if (observationIds.length || findingIds.length || controlsAppended) {
-  const v = await agent(`You are the soc-ledger-keeper for company "${companyId}", closing workflow "${WORKFLOW}". Run \`node .claude/scripts/soc/version.mjs ${companyId} --session ${sessionId || '<your harness session id>'} --workflow ${WORKFLOW}\` from the workspace root. Never pass --force and never edit the ledger. Return written = the path of the versions/commit_<n>.diff it wrote (empty string when nothing was written) and error = its stderr verbatim when it failed.`, { label: 'version', phase: 'Report', schema: VERSION_SCHEMA, agentType: 'soc-ledger-keeper', effort: 'low' });
+  const v = await ask(`You are the soc-ledger-keeper for company "${companyId}", closing workflow "${WORKFLOW}". Run \`node .claude/scripts/soc/version.mjs ${companyId} --session ${sessionId || '<your harness session id>'} --workflow ${WORKFLOW}\` from the workspace root. Never pass --force and never edit the ledger. Return written = the path of the versions/commit_<n>.diff it wrote (empty string when nothing was written) and error = its stderr verbatim when it failed.`, { label: 'version', phase: 'Report', schema: VERSION_SCHEMA, agentType: 'soc-ledger-keeper', effort: 'low' });
   if (!v) skipped.push({ target: `${profile}/soc/versions`, reason: 'version.mjs step returned no schema-valid result; ledger diff not written' });
   else { noteSession(v); versionFile = v.written || null; if (v.error) skipped.push({ target: `${profile}/soc/versions`, reason: `version.mjs failed: ${v.error}` }); }
 }
@@ -343,7 +354,7 @@ if (dryRun) {
 } else if (!observationIds.length && !findingIds.length) {
   log('nothing was written to the ledger; summary.md left unchanged');
 } else {
-  report = await agent(`You are the report-writer for company "${companyId}", called by workflow "${WORKFLOW}". Read .claude/skills/report-templates/SKILL.md and .claude/skills/maxwell-conventions/SKILL.md first. Requested sections: ["control-summary", "open-findings"].
+  report = await ask(`You are the report-writer for company "${companyId}", called by workflow "${WORKFLOW}". Read .claude/skills/report-templates/SKILL.md and .claude/skills/maxwell-conventions/SKILL.md first. Requested sections: ["control-summary", "open-findings"].
 Regenerate those two sections of ${profile}/summary.md from ${profile}/soc/main.jsonl using the report-templates layouts ("## Control summary": control implementation and latest observation result per control with the coverage paragraph; "## Open findings": latest record per finding id, status open | triaged | remediating, grouped by severity with title, target, primary regulatoryRef, slaDueAt with SLA status and [fnd_...] citation). This run appended SDLC observations ${JSON.stringify(observationIds)} and SDLC gap findings ${JSON.stringify(findingIds)}; ${supersededFindingIds.length} findings were re-seen ${JSON.stringify(supersededFindingIds)}. Check every one of these ids is reflected.
 Follow your section-ownership table: when it has no row for "${WORKFLOW}" or the row does not include a requested section, do not edit that section, list it in sectionsSkipped with the reason, and still return the counts you computed from the ledger. For sections you do write: keep every other section byte-for-byte, keep frontmatter sections[] in document order, bump version minor and recompute provenance.inputsHash exactly as the company-summary schema description prescribes. ${provenanceNote('report-writer')}${runNow ? '' : ' Your tools cannot read the clock: use the latest recordedAt among this run\'s records in the ledger as generatedAt.'}
 Run \`node .claude/scripts/validate-data.mjs ${profile}/summary.md\` after any edit and fix anything it rejects. Return sectionsUpdated, sectionsSkipped, openFindings (count of open, triaged and remediating findings in the ledger), observations (count of this run's observations you could read back) and the new version.`, { label: 'report', phase: 'Report', schema: REPORT_SCHEMA, agentType: 'report-writer', effort: 'medium' });

@@ -5883,6 +5883,321 @@
           "agent": "cicd-auditor"
         }
       }
+    },
+    {
+      "description": "control from the company's own catalog, crosswalked to a shared control",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "control",
+        "id": "co:example-co:infosec-policy:AC-7",
+        "recordedAt": "2026-09-13T08:00:00Z",
+        "companyId": "example-co",
+        "frameworkRefs": [
+          {
+            "regulator": "co:example-co:board",
+            "instrument": "co:example-co:infosec-policy",
+            "controlId": "AC-7"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "PR.AA.S5"
+          }
+        ],
+        "title": "Production access reviewed every month",
+        "implementationStatus": "unknown",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T08:00:00Z",
+          "workflow": "refresh-soc",
+          "agent": "control-assessor",
+          "sessionId": "8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b"
+        }
+      }
+    },
+    {
+      "description": "company control superseding itself",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "control",
+        "id": "co:example-co:infosec-policy:AC-7",
+        "recordedAt": "2026-09-13T08:00:00Z",
+        "companyId": "example-co",
+        "frameworkRefs": [
+          {
+            "regulator": "co:example-co:board",
+            "instrument": "co:example-co:infosec-policy",
+            "controlId": "AC-7"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "PR.AA.S5"
+          }
+        ],
+        "title": "Production access reviewed every month",
+        "implementationStatus": "unknown",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T08:00:00Z",
+          "workflow": "refresh-soc",
+          "agent": "control-assessor",
+          "sessionId": "8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b"
+        },
+        "supersedes": "co:example-co:infosec-policy:AC-7"
+      }
+    },
+    {
+      "description": "finding citing a company control with the SLA the control states",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "finding",
+        "id": "fnd_01J7Q3V8K2M4N6P8R0S2T4V6X9",
+        "recordedAt": "2026-09-13T08:20:00Z",
+        "companyId": "example-co",
+        "title": "batch-settlement image ships lodash 4.17.20 with CVE-2021-23337",
+        "description": "The batch-settlement production image contains lodash 4.17.20, vulnerable to command injection via template. No SBOM was generated so the package was not tracked",
+        "severity": "high",
+        "confidence": "confirmed",
+        "controlIds": [
+          "co:example-co:infosec-policy:AC-7"
+        ],
+        "regulatoryRefs": [
+          {
+            "regulator": "co:example-co:board",
+            "instrument": "co:example-co:infosec-policy",
+            "controlId": "AC-7"
+          }
+        ],
+        "target": {
+          "type": "image",
+          "appId": "trading-api",
+          "imageId": "batch-settlement"
+        },
+        "location": {
+          "path": "package-lock.json",
+          "startLine": 1421,
+          "endLine": 1426
+        },
+        "fingerprint": "c5d3c5d3c5d3c5d3c5d3c5d3c5d3c5d3c5d3c5d3c5d3c5d3c5d3c5d3c5d3c5d3",
+        "source": {
+          "kind": "sarif",
+          "ruleId": "CVE-2021-23337",
+          "tool": "grype",
+          "toolVersion": "0.92.0"
+        },
+        "cvss": {
+          "version": "3.1",
+          "vector": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H",
+          "score": 7.2
+        },
+        "cveIds": [
+          "CVE-2021-23337"
+        ],
+        "status": "open",
+        "slaDueAt": "2026-09-20T08:05:00Z",
+        "slaBasis": {
+          "instrument": "co:example-co:infosec-policy",
+          "controlId": "AC-7",
+          "severity": "high",
+          "days": 5
+        },
+        "relatedObservationIds": [
+          "obs_01J7Q3V8K2M4N6P8R0S2T4V6W8"
+        ],
+        "firstSeenAt": "2026-09-13T08:05:00Z",
+        "lastSeenAt": "2026-09-13T08:05:00Z",
+        "evidence": [
+          {
+            "type": "sarif",
+            "ref": "kpis/data/raw/sessions/8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b/probe-cicd-env.sarif.export.json"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T08:20:00Z",
+          "sessionId": "8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b",
+          "runId": "run_01J7Q3V8K2M4N6P8R0S2T4V702",
+          "workflow": "probe-cicd-env",
+          "agent": "cicd-auditor"
+        }
+      }
+    },
+    {
+      "description": "company control id without the catalog slug",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "control",
+        "id": "co:example-co:AC-7",
+        "recordedAt": "2026-09-13T08:00:00Z",
+        "companyId": "example-co",
+        "frameworkRefs": [
+          {
+            "regulator": "co:example-co:board",
+            "instrument": "co:example-co:infosec-policy",
+            "controlId": "AC-7"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "PR.AA.S5"
+          }
+        ],
+        "title": "Production access reviewed every month",
+        "implementationStatus": "unknown",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T08:00:00Z",
+          "workflow": "refresh-soc",
+          "agent": "control-assessor",
+          "sessionId": "8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b"
+        }
+      }
+    },
+    {
+      "description": "company instrument without the co: namespace",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "control",
+        "id": "co:example-co:infosec-policy:AC-7",
+        "recordedAt": "2026-09-13T08:00:00Z",
+        "companyId": "example-co",
+        "frameworkRefs": [
+          {
+            "regulator": "co:example-co:board",
+            "instrument": "example-co:infosec-policy",
+            "controlId": "AC-7"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "PR.AA.S5"
+          }
+        ],
+        "title": "Production access reviewed every month",
+        "implementationStatus": "unknown",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T08:00:00Z",
+          "workflow": "refresh-soc",
+          "agent": "control-assessor",
+          "sessionId": "8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b"
+        }
+      }
+    },
+    {
+      "description": "company source regulator without the co: namespace",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "control",
+        "id": "co:example-co:infosec-policy:AC-7",
+        "recordedAt": "2026-09-13T08:00:00Z",
+        "companyId": "example-co",
+        "frameworkRefs": [
+          {
+            "regulator": "board",
+            "instrument": "co:example-co:infosec-policy",
+            "controlId": "AC-7"
+          },
+          {
+            "regulator": "SEBI",
+            "instrument": "sebi-cscrf-2024",
+            "controlId": "PR.AA.S5"
+          }
+        ],
+        "title": "Production access reviewed every month",
+        "implementationStatus": "unknown",
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T08:00:00Z",
+          "workflow": "refresh-soc",
+          "agent": "control-assessor",
+          "sessionId": "8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b"
+        }
+      }
+    },
+    {
+      "description": "finding id shaped like a company control id",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "finding",
+        "id": "co:example-co:infosec-policy:AC-7",
+        "recordedAt": "2026-09-13T08:20:00Z",
+        "companyId": "example-co",
+        "title": "batch-settlement image ships lodash 4.17.20 with CVE-2021-23337",
+        "description": "The batch-settlement production image contains lodash 4.17.20, vulnerable to command injection via template. No SBOM was generated so the package was not tracked",
+        "severity": "high",
+        "confidence": "confirmed",
+        "controlIds": [
+          "co:example-co:infosec-policy:AC-7"
+        ],
+        "regulatoryRefs": [
+          {
+            "regulator": "co:example-co:board",
+            "instrument": "co:example-co:infosec-policy",
+            "controlId": "AC-7"
+          }
+        ],
+        "target": {
+          "type": "image",
+          "appId": "trading-api",
+          "imageId": "batch-settlement"
+        },
+        "location": {
+          "path": "package-lock.json",
+          "startLine": 1421,
+          "endLine": 1426
+        },
+        "fingerprint": "c5d3c5d3c5d3c5d3c5d3c5d3c5d3c5d3c5d3c5d3c5d3c5d3c5d3c5d3c5d3c5d3",
+        "source": {
+          "kind": "sarif",
+          "ruleId": "CVE-2021-23337",
+          "tool": "grype",
+          "toolVersion": "0.92.0"
+        },
+        "cvss": {
+          "version": "3.1",
+          "vector": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H",
+          "score": 7.2
+        },
+        "cveIds": [
+          "CVE-2021-23337"
+        ],
+        "status": "open",
+        "slaDueAt": "2026-09-20T08:05:00Z",
+        "slaBasis": {
+          "instrument": "co:example-co:infosec-policy",
+          "controlId": "AC-7",
+          "severity": "high",
+          "days": 5
+        },
+        "relatedObservationIds": [
+          "obs_01J7Q3V8K2M4N6P8R0S2T4V6W8"
+        ],
+        "firstSeenAt": "2026-09-13T08:05:00Z",
+        "lastSeenAt": "2026-09-13T08:05:00Z",
+        "evidence": [
+          {
+            "type": "sarif",
+            "ref": "kpis/data/raw/sessions/8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b/probe-cicd-env.sarif.export.json"
+          }
+        ],
+        "provenance": {
+          "harness": "claude-code",
+          "generatedAt": "2026-09-13T08:20:00Z",
+          "sessionId": "8f3b1c2a-4d5e-4f60-9a7b-1c2d3e4f5a6b",
+          "runId": "run_01J7Q3V8K2M4N6P8R0S2T4V702",
+          "workflow": "probe-cicd-env",
+          "agent": "cicd-auditor"
+        }
+      }
     }
   ]
 }

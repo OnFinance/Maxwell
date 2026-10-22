@@ -26,6 +26,17 @@ const WORKFLOW = 'impl-change-management';
 const BASE_TAGS = ['change-management', 'remediation'];
 
 const companyId = args && args.companyId;
+// Company catalogs (regulatory-catalogs skill section 8): run-headless passes args.companyCatalogs only when
+// company-profile/<companyId>/catalogs/ holds the company's own catalogs. Without them every prompt is exactly as before.
+const companyCatalogs = (args && Array.isArray(args.companyCatalogs) ? args.companyCatalogs : []).filter((c) => companyId && c
+  && /^co:[a-z0-9][a-z0-9-]{1,62}:[a-z0-9][a-z0-9-]{1,62}$/.test(c.instrumentId) && c.instrumentId.indexOf('co:' + companyId + ':') === 0
+  && c.file === 'company-profile/' + companyId + '/catalogs/' + c.instrumentId.slice(companyId.length + 4) + '.catalog.json');
+const COMPANY_CATALOG_RULE = !companyCatalogs.length ? '' : '\n\nCompany catalogs: besides the shared catalogs, company ' + companyId
+  + ' has its own catalogs, which apply to ' + companyId + ' only: ' + companyCatalogs.map((c) => c.instrumentId + ' (' + c.file + ')').join(', ')
+  + '. Follow section 8 of .claude/skills/regulatory-catalogs/SKILL.md. Treat each as an instrument in scope for ' + companyId
+  + ' (the instruments.json registry, frameworksInScope and the instrument-level entity filters do not apply to it; each control\'s own applicability does): include its controls wherever you select applicable instruments or controls, and key and cite them exactly like shared controls - ledger control id \'<instrumentId>:<controlId>\', regulatoryRef {regulator: the catalog\'s regulator, instrument: the instrumentId, controlId}. Severity comes from the control\'s defaultSeverity; the SLA from its slaDays (slaBasis.instrument = the instrumentId), else the sla-table defaults. Cite the most specific shared instrument first when one covers the gap and the company control after it; a company control comes first only when no shared control covers the gap. These ids are valid for ' + companyId
+  + ': never refute or drop a mapping only because it cites one of them. Never cite any other \'co:\' id, and label these controls company-specific wherever you report controls.';
+const ask = (prompt, opts) => agent(typeof prompt === 'string' ? prompt + COMPANY_CATALOG_RULE : prompt, opts);
 if (!companyId) throw new Error('args.companyId is required (company-profile/<companyId>)');
 const dryRun = Boolean(args && args.dryRun);
 const now = (args && args.now) || null;
@@ -230,7 +241,7 @@ const SUMMARY_SCHEMA = {
 // ---- Phase 1: Scout -----------------------------------------------------------------------------------
 phase('Scout');
 log('Scouting ' + companyId + ' for open findings and risks without an initiative' + (appFilter ? ' (apps: ' + appFilter.join(', ') + ')' : '') + (envFilter ? ' (envs: ' + envFilter.join(', ') + ')' : ''));
-const scout = await agent(
+const scout = await ask(
   [
     'You are scouting the Maxwell workspace for the ' + WORKFLOW + ' workflow. Company: ' + companyId + '. Read-only: do not append to the ledger and do not write any file.',
     now ? 'Run timestamp: ' + now + ' (return it as now).' : 'Run ' + CLOCK_CMD + ' once and return the value as now; every later stage reuses it so the run has one consistent timestamp.',
@@ -296,7 +307,7 @@ const refutePrompt = (g, draft, lens) => [
 const planned = await pipeline(
   groups,
   async (g, _item, index) => {
-    const r = await agent(planPrompt(g), { label: 'plan ' + g.groupId + ' #' + (index + 1), phase: 'Plan', agentType: 'change-planner', schema: PLAN_SCHEMA, effort: 'high' });
+    const r = await ask(planPrompt(g), { label: 'plan ' + g.groupId + ' #' + (index + 1), phase: 'Plan', agentType: 'change-planner', schema: PLAN_SCHEMA, effort: 'high' });
     if (!r) { skipped.push({ id: g.groupId, reason: 'change-planner returned no schema-valid draft' }); log('plan failed for ' + g.groupId); return null; }
     noteSession(r);
     for (const s of r.skipped || []) skipped.push({ id: g.groupId, reason: 'plan: ' + s });
@@ -312,7 +323,7 @@ const planned = await pipeline(
     if (dryRun) { skipped.push({ id: g.groupId, reason: 'dry-run: draft "' + (draft.initiative && draft.initiative.title) + '" not refuted or written' }); return { group: g, draft, accepted: false }; }
     const candidate = { initiative: draft.initiative, tasks: draft.tasks, rubric: draft.rubric };
     const votes = await parallel(['actionability', 'regulatory-mapping'].map((lens) => () =>
-      agent(refutePrompt(g, candidate, lens), { label: 'refute ' + lens + ' ' + g.groupId, phase: 'Refute', agentType: 'refuter', schema: VERDICT_SCHEMA, effort: 'high' })));
+      ask(refutePrompt(g, candidate, lens), { label: 'refute ' + lens + ' ' + g.groupId, phase: 'Refute', agentType: 'refuter', schema: VERDICT_SCHEMA, effort: 'high' })));
     const valid = votes.filter(Boolean);
     valid.forEach(noteSession);
     const refutations = valid.filter((v) => v.refuted).length;
@@ -367,7 +378,7 @@ if (dryRun) {
   log('dry-run: no initiative files written');
 } else {
   for (const p of accepted) {
-    const w = await agent(
+    const w = await ask(
       [
         'You are the validator materialising one change-management initiative for the ' + WORKFLOW + ' workflow, company ' + companyId + '. Read .claude/skills/maxwell-conventions/SKILL.md, .claude/schemas/v1/change-management/master.schema.json, timeline.schema.json and task.schema.json first.',
         'initiativeId = ' + p.draft.initiativeId + ' (minted by the change-planner; if it already exists in master.json stop and return validationGreen false with the reason). Files to write, all validated with node .claude/scripts/validate-data.mjs <path>:',
@@ -396,7 +407,7 @@ if (dryRun) {
 phase('Link');
 const linked = { findingIds: [], riskIds: [], observationIds: [] };
 if (dryRun) {
-  const l = await agent(
+  const l = await ask(
     [
       'You are the soc-ledger-keeper for a DRY RUN of the ' + WORKFLOW + ' workflow, company ' + companyId + '. Read .claude/skills/soc-ledger/SKILL.md and .claude/skills/maxwell-conventions/SKILL.md.',
       'Append exactly one observation via `node .claude/scripts/soc/append.mjs ' + companyId + ' -`: kind observation, id obs_<ULID>, controlIds = the union of ledgerControlIds of the groups below that exist as control records (the schema requires at least one; when none exists, do not append and report that in skipped), title "dry-run: impl-change-management planned ' + planned.filter(Boolean).length + ' initiative(s)", description starting with "dry-run:" stating that ' + planned.filter(Boolean).length + ' draft(s) were produced for ' + groups.length + ' group(s) (not refuted or written) and listing per group the draft title, changeType, owner and member finding/risk ids, methods ["' + WORKFLOW + '"], subjects = the union of group targets, collectedAt, result "inconclusive", tags ' + JSON.stringify(BASE_TAGS.concat(['dry-run'])) + '. Do not supersede any finding or risk.',
@@ -412,7 +423,7 @@ if (dryRun) {
   log('no initiative written; ledger untouched');
 } else {
   for (const w of written) {
-    const l = await agent(
+    const l = await ask(
       [
         'You are the soc-ledger-keeper for the ' + WORKFLOW + ' workflow, company ' + companyId + '. Read .claude/skills/soc-ledger/SKILL.md and .claude/skills/maxwell-conventions/SKILL.md before writing. Ledger: company-profile/' + companyId + '/soc/main.jsonl (append-only). Write EVERY record by piping JSON to `node .claude/scripts/soc/append.mjs ' + companyId + ' -`; never edit the ledger directly.',
         'Initiative ' + w.initiativeId + ' ("' + w.draft.initiative.title + '") now remediates findings ' + JSON.stringify(w.draft.initiative.findingIds || []) + ' and mitigates risks ' + JSON.stringify(w.draft.initiative.riskIds || []) + '; its dueAt is ' + w.draft.initiative.dueAt + '.',
@@ -443,7 +454,7 @@ if (dryRun) {
 } else if (!written.length) {
   log('nothing was written; summary.md left unchanged');
 } else {
-  summary = await agent(
+  summary = await ask(
     [
       'You are the report-writer. Refresh the "initiatives" section of company-profile/' + companyId + '/summary.md after the ' + WORKFLOW + ' workflow. Read .claude/skills/report-templates/SKILL.md (section 4, Initiatives template) and .claude/skills/maxwell-conventions/SKILL.md first.',
       'Sources of truth: company-profile/' + companyId + '/change_management/master.json, initiatives/*/timeline.json and tasks/*.json, and the ledger company-profile/' + companyId + '/soc/main.jsonl. Render the counters line and the initiatives table (overdue rows first), the "### Blocked" and "### Evidence requests" subsections exactly as the template says. New this run: ' + JSON.stringify(written.map((w) => w.initiativeId)) + '.',

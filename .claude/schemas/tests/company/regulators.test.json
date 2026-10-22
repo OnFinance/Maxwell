@@ -1,0 +1,77 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/v1/company/regulators.schema.json",
+  "tests": [
+    {
+      "description": "board and a customer",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.regulators",
+        "companyId": "example-co",
+        "sources": [
+          {
+            "id": "co:example-co:board",
+            "name": "Board of directors",
+            "type": "internal",
+            "notes": "Approves the information security policy"
+          },
+          {
+            "id": "co:example-co:customer-a",
+            "name": "Customer A",
+            "type": "customer"
+          }
+        ],
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-10-22T09:00:00Z",
+          "workflow": "add-company-catalog",
+          "agent": ".claude/scripts/catalogs/add-company-catalog.mjs"
+        }
+      }
+    },
+    {
+      "description": "source id without the company namespace",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.regulators",
+        "companyId": "example-co",
+        "sources": [
+          {
+            "id": "board",
+            "name": "Board of directors",
+            "type": "internal",
+            "notes": "Approves the information security policy"
+          },
+          {
+            "id": "co:example-co:customer-a",
+            "name": "Customer A",
+            "type": "customer"
+          }
+        ],
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-10-22T09:00:00Z",
+          "workflow": "add-company-catalog",
+          "agent": ".claude/scripts/catalogs/add-company-catalog.mjs"
+        }
+      }
+    },
+    {
+      "description": "no sources",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.company.regulators",
+        "companyId": "example-co",
+        "sources": [],
+        "provenance": {
+          "harness": "script",
+          "generatedAt": "2026-10-22T09:00:00Z",
+          "workflow": "add-company-catalog",
+          "agent": ".claude/scripts/catalogs/add-company-catalog.mjs"
+        }
+      }
+    }
+  ]
+}

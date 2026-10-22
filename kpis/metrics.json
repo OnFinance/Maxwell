@@ -129,7 +129,13 @@
       ],
       "aggregation": "rate",
       "cadence": "weekly",
-      "normalisations": [],
+      "normalisations": [
+        {
+          "name": "company-specific-controls",
+          "denominator": "controls-applicable",
+          "unit": "percent"
+        }
+      ],
       "targets": {
         "warn": 85,
         "alert": 70

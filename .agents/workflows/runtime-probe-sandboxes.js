@@ -44,6 +44,17 @@ const UNREDACTABLE_RISK_TITLE = 'Probe exposed to unredactable sensitive data';
 const ASSESSED_RESULTS = ['satisfied', 'not-satisfied', 'partial'];
 
 const companyId = args && args.companyId;
+// Company catalogs (regulatory-catalogs skill section 8): run-headless passes args.companyCatalogs only when
+// company-profile/<companyId>/catalogs/ holds the company's own catalogs. Without them every prompt is exactly as before.
+const companyCatalogs = (args && Array.isArray(args.companyCatalogs) ? args.companyCatalogs : []).filter((c) => companyId && c
+  && /^co:[a-z0-9][a-z0-9-]{1,62}:[a-z0-9][a-z0-9-]{1,62}$/.test(c.instrumentId) && c.instrumentId.indexOf('co:' + companyId + ':') === 0
+  && c.file === 'company-profile/' + companyId + '/catalogs/' + c.instrumentId.slice(companyId.length + 4) + '.catalog.json');
+const COMPANY_CATALOG_RULE = !companyCatalogs.length ? '' : '\n\nCompany catalogs: besides the shared catalogs, company ' + companyId
+  + ' has its own catalogs, which apply to ' + companyId + ' only: ' + companyCatalogs.map((c) => c.instrumentId + ' (' + c.file + ')').join(', ')
+  + '. Follow section 8 of .claude/skills/regulatory-catalogs/SKILL.md. Treat each as an instrument in scope for ' + companyId
+  + ' (the instruments.json registry, frameworksInScope and the instrument-level entity filters do not apply to it; each control\'s own applicability does): include its controls wherever you select applicable instruments or controls, and key and cite them exactly like shared controls - ledger control id \'<instrumentId>:<controlId>\', regulatoryRef {regulator: the catalog\'s regulator, instrument: the instrumentId, controlId}. Severity comes from the control\'s defaultSeverity; the SLA from its slaDays (slaBasis.instrument = the instrumentId), else the sla-table defaults. Cite the most specific shared instrument first when one covers the gap and the company control after it; a company control comes first only when no shared control covers the gap. These ids are valid for ' + companyId
+  + ': never refute or drop a mapping only because it cites one of them. Never cite any other \'co:\' id, and label these controls company-specific wherever you report controls.';
+const ask = (prompt, opts) => agent(typeof prompt === 'string' ? prompt + COMPANY_CATALOG_RULE : prompt, opts);
 if (!companyId) throw new Error('args.companyId is required (company-profile/<companyId>)');
 const dryRun = Boolean(args && args.dryRun);
 const argNow = (args && args.now) || null;
@@ -310,7 +321,7 @@ const SUMMARY_SCHEMA = {
 // ---- Phase 1: Scout ------------------------------------------------------------------------------------------------
 phase('Scout');
 log('Scouting ' + companyId + ' for ' + DOMAIN + ' targets' + (appFilter ? ' (apps: ' + appFilter.join(', ') + ')' : '') + (envFilter ? ' (envs: ' + envFilter.join(', ') + ')' : '') + (dryRun ? ' [dry run]' : ''));
-const scout = await agent(
+const scout = await ask(
   [
     'SCOUT MODE for the ' + WORKFLOW + ' workflow, company ' + companyId + '. You only list targets from workspace files: run no command against any system, do not call creds/sops.mjs, and write no file. Your probing instructions (sections 1-9 of your definition) do not apply in this step.',
     argNow
@@ -469,7 +480,7 @@ const judge = async (t, c, i) => {
     const needed = lensesFor(c.recordKind, record.severity).filter((l) => !(l in verdicts));
     if (!needed.length) break;
     const votes = await parallel(needed.map((lens) => () =>
-      agent(refutePrompt(t, { ...c, record }, lens), { label: 'refute ' + lens + ' ' + t.appId + '/' + t.envId + ' ' + c.recordKind + ' #' + (i + 1), phase: 'Refute', agentType: 'refuter', schema: VERDICT_SCHEMA, effort: 'high' })));
+      ask(refutePrompt(t, { ...c, record }, lens), { label: 'refute ' + lens + ' ' + t.appId + '/' + t.envId + ' ' + c.recordKind + ' #' + (i + 1), phase: 'Refute', agentType: 'refuter', schema: VERDICT_SCHEMA, effort: 'high' })));
     needed.forEach((lens, k) => { verdicts[lens] = votes[k] || null; noteSession(votes[k]); });
     record = applyVerdicts(c.record, verdicts);
   }
@@ -491,7 +502,7 @@ const judge = async (t, c, i) => {
 const refuteObservations = async (t, probe, observations) => {
   const keyed = observations.map((o, k) => ({ key: 'o' + (k + 1), o }));
   if (!keyed.length) return observations;
-  const res = await agent(
+  const res = await ask(
     [
       'You are an adversarial refuter for the ' + WORKFLOW + ' workflow (company ' + companyId + '). Lens: evidence. BATCH MODE: judge every keyed observation on its own and return exactly one verdict per key, in input order; default to refuted=true when you cannot verify it. Never run a command against, or send a request to, the target.',
       'Context: app ' + t.appId + ', environment ' + t.envId + ' (tier ' + t.tier + '), text export ' + (probe.exportPath || 'none') + ', OCSF export ' + (probe.ocsfPath || 'none') + ', prober definition ' + AGENT_DEF + '.',
@@ -525,7 +536,7 @@ const isSafetyIncident = (inc) => inc && /probe side effect/i.test(String(inc.ti
 const probed = await pipeline(
   targets,
   async (t, _item, index) => {
-    const r = await agent(probePrompt(t), { label: t.mode + ' ' + t.appId + '/' + t.envId + ' #' + (index + 1), phase: 'Probe', agentType: PROBE_AGENT, schema: PROBE_SCHEMA, effort: t.mode === 'probe' ? 'high' : 'medium' });
+    const r = await ask(probePrompt(t), { label: t.mode + ' ' + t.appId + '/' + t.envId + ' #' + (index + 1), phase: 'Probe', agentType: PROBE_AGENT, schema: PROBE_SCHEMA, effort: t.mode === 'probe' ? 'high' : 'medium' });
     probeOutcomes.set(t.appId + '/' + t.envId, r ? { returned: true, aborted: Boolean(r.aborted), abortReason: r.abortReason || null } : { returned: false });
     if (!r) { skip({ appId: t.appId, envId: t.envId, reason: 'probe agent returned no schema-valid result; nothing recorded for this environment' }); return null; }
     noteSession(r);
@@ -658,7 +669,7 @@ for (const p of perTarget) {
   const t = p.target;
   if (!p.observations.length && !p.findings.length && !p.risks.length && !p.incidents.length) { log('nothing to write for ' + t.appId + '/' + t.envId); evidenceRequests.push(...p.requests); continue; }
   const findingsForWrite = p.findings.map((k) => (k.alsoSeenIn.length ? { ...k.record, description: k.record.description + ' Also observed with the same fingerprint in: ' + k.alsoSeenIn.join(', ') + '.' } : k.record));
-  const w = await agent(
+  const w = await ask(
     [
       'You are the soc-ledger-keeper for the ' + WORKFLOW + ' workflow, company ' + companyId + '. Read .claude/skills/soc-ledger/SKILL.md (sections 2, 6, 7 and 8), .claude/skills/maxwell-conventions/SKILL.md, .claude/skills/regulatory-catalogs/SKILL.md (references/sla-table.json for slaDueAt and regulatorReportRefs) and sections 4, 5, 7, 8 and 10 of ' + ROE + ' before writing.',
       'Ledger: company-profile/' + companyId + '/soc/main.jsonl (append-only). Append EVERY record by piping JSON to `node .claude/scripts/soc/append.mjs ' + companyId + ' -`; never edit the ledger directly and never create a scratch file anywhere. A rejected append means the record is wrong: fix it and retry. Never write a secret-shaped string.',
@@ -700,7 +711,7 @@ for (const q of evidenceRequests) if (!q.observationId) skipped.push({ appId: q.
 let version = null;
 const anythingWritten = written.observationIds.length + written.findingIds.length + written.supersededFindingIds.length + written.reopenedFindingIds.length + written.riskIds.length + written.incidentIds.length + written.controlIds.length > 0;
 if (anythingWritten) {
-  version = await agent(
+  version = await ask(
     'You are the soc-ledger-keeper closing the ' + WORKFLOW + ' probe for company ' + companyId + ' (rules-of-engagement section 10). Run exactly: `node .claude/scripts/soc/version.mjs ' + companyId + ' --session ' + runSessionId + ' --workflow ' + WORKFLOW + '`. It writes company-profile/' + companyId + '/soc/versions/commit_<n>.diff for the lines appended in this run. Never pass --force; if it reports a prefix mismatch return written: false with the message in notes. Return {written, diffPath, notes}.',
     { label: 'version', phase: 'Write', agentType: 'soc-ledger-keeper', schema: VERSION_SCHEMA, effort: 'low' },
   );
@@ -719,7 +730,7 @@ if (dryRun) {
   log('nothing was written to the ledger; summary.md left unchanged');
 } else {
   const sections = ['control-summary', 'open-findings'].concat(written.riskIds.length ? ['risks'] : []).concat(written.incidentIds.length ? ['incidents'] : []);
-  summary = await agent(
+  summary = await ask(
     [
       'You are the report-writer. Refresh the ' + sections.map((s) => '"' + s + '"').join(', ') + ' section(s) of company-profile/' + companyId + '/summary.md after the ' + WORKFLOW + ' workflow. Read .claude/skills/report-templates/SKILL.md and .claude/skills/maxwell-conventions/SKILL.md first and follow their section templates and [fnd_...]/[obs_...] citation style.',
       'Source of truth: company-profile/' + companyId + '/soc/main.jsonl (latest record per id; follow supersedes). This run: ' + written.findingIds.length + ' new finding(s) ' + JSON.stringify(written.findingIds) + ', ' + written.supersededFindingIds.length + ' re-seen, ' + written.reopenedFindingIds.length + ' reopened, ' + written.observationIds.length + ' observation(s) (' + written.inconclusiveObservationIds.length + ' inconclusive), ' + written.riskIds.length + ' risk(s) ' + JSON.stringify(written.riskIds) + ', ' + written.incidentIds.length + ' incident(s) ' + JSON.stringify(written.incidentIds) + ', ' + evidenceRequests.length + ' evidence request(s) pending, ' + perTarget.length + ' environment(s) covered: ' + perTarget.map((p) => p.target.appId + '/' + p.target.envId + ' [' + p.target.mode + (p.target.blockers.length ? ': ' + p.target.blockers.join('; ') : '') + ']').join(', ') + '. Call out blocked environments and UNVERIFIED observations as coverage gaps.',

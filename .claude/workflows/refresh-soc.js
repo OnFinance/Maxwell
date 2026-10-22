@@ -34,6 +34,17 @@ export const meta = {
 async function main() {
 const WORKFLOW = 'refresh-soc';
 const companyId = args && args.companyId;
+// Company catalogs (regulatory-catalogs skill section 8): run-headless passes args.companyCatalogs only when
+// company-profile/<companyId>/catalogs/ holds the company's own catalogs. Without them every prompt is exactly as before.
+const companyCatalogs = (args && Array.isArray(args.companyCatalogs) ? args.companyCatalogs : []).filter((c) => companyId && c
+  && /^co:[a-z0-9][a-z0-9-]{1,62}:[a-z0-9][a-z0-9-]{1,62}$/.test(c.instrumentId) && c.instrumentId.indexOf('co:' + companyId + ':') === 0
+  && c.file === 'company-profile/' + companyId + '/catalogs/' + c.instrumentId.slice(companyId.length + 4) + '.catalog.json');
+const COMPANY_CATALOG_RULE = !companyCatalogs.length ? '' : '\n\nCompany catalogs: besides the shared catalogs, company ' + companyId
+  + ' has its own catalogs, which apply to ' + companyId + ' only: ' + companyCatalogs.map((c) => c.instrumentId + ' (' + c.file + ')').join(', ')
+  + '. Follow section 8 of .claude/skills/regulatory-catalogs/SKILL.md. Treat each as an instrument in scope for ' + companyId
+  + ' (the instruments.json registry, frameworksInScope and the instrument-level entity filters do not apply to it; each control\'s own applicability does): include its controls wherever you select applicable instruments or controls, and key and cite them exactly like shared controls - ledger control id \'<instrumentId>:<controlId>\', regulatoryRef {regulator: the catalog\'s regulator, instrument: the instrumentId, controlId}. Severity comes from the control\'s defaultSeverity; the SLA from its slaDays (slaBasis.instrument = the instrumentId), else the sla-table defaults. Cite the most specific shared instrument first when one covers the gap and the company control after it; a company control comes first only when no shared control covers the gap. These ids are valid for ' + companyId
+  + ': never refute or drop a mapping only because it cites one of them. Never cite any other \'co:\' id, and label these controls company-specific wherever you report controls.';
+const ask = (prompt, opts) => agent(typeof prompt === 'string' ? prompt + COMPANY_CATALOG_RULE : prompt, opts);
 if (!companyId) throw new Error('args.companyId is required (company-profile/<companyId>)');
 const dryRun = Boolean(args && args.dryRun);
 const NOW_RE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?Z$/;
@@ -70,7 +81,7 @@ ${dryRun ? 'DRY RUN: propose only; write nothing in this stage.' : ''}`;
 
 // ---------------------------------------------------------------- Scout
 phase('Scout');
-const scout = await agent(`${common('soc-ledger-keeper')}
+const scout = await ask(`${common('soc-ledger-keeper')}
 SCOUT (read-only, write nothing). Read ${PROFILE}, ${INSTRUMENTS}, ${LEDGER} (if it exists; an absent or empty ledger is a valid starting point) and the catalog files under ${CATALOG_DIR}/.
 Return:
 - frameworksInScope, entityTypes, reCategories (regulatoryRegistrations[].category, deduplicated), jurisdictions (country codes).
@@ -173,8 +184,8 @@ Never propose a status the lifecycle forbids (maxwell-conventions lifecycles: ri
 phase('Inventory');
 phase('Reconcile');
 const [inventoryResults, reconcileResults] = await parallel([
-  () => pipeline(instruments, (inst, _item, index) => agent(inventoryPrompt(inst), { label: `inventory ${inst.instrumentId} #${index + 1}`, phase: 'Inventory', agentType: 'soc-ledger-keeper', schema: CONTROL_PROPOSAL, effort: 'medium' })),
-  () => pipeline(findingGroups, (g, _item, index) => agent(reconcilePrompt(g), { label: `reconcile ${g.workflow} #${index + 1}`, phase: 'Reconcile', agentType: 'soc-ledger-keeper', schema: RECONCILE, effort: 'high' })),
+  () => pipeline(instruments, (inst, _item, index) => ask(inventoryPrompt(inst), { label: `inventory ${inst.instrumentId} #${index + 1}`, phase: 'Inventory', agentType: 'soc-ledger-keeper', schema: CONTROL_PROPOSAL, effort: 'medium' })),
+  () => pipeline(findingGroups, (g, _item, index) => ask(reconcilePrompt(g), { label: `reconcile ${g.workflow} #${index + 1}`, phase: 'Reconcile', agentType: 'soc-ledger-keeper', schema: RECONCILE, effort: 'high' })),
 ]);
 const inventoryList = (inventoryResults || []);
 const reconcileList = (reconcileResults || []);
@@ -220,7 +231,7 @@ Candidates (${batch.length}): ${JSON.stringify(batch)}`;
 const chunk = (items, size) => { const out = []; for (let i = 0; i < items.length; i += size) out.push(items.slice(i, i + size)); return out; };
 const isDestructive = (kind, c) => kind === 'transition' || kind === 'risk' || (kind === 'control' && Boolean(c.notApplicable));
 const verifyBatches = (kind, batches, labelOf) => pipeline(batches, async (batch, _item, index) => {
-  const votes = await parallel(LENSES.map((lens) => () => agent(refuteBatchPrompt(kind, batch, lens), { label: `refute ${kind} ${labelOf(batch)} [${lens}] #${index + 1}`, phase: 'Verify', agentType: 'refuter', schema: BATCH_VERDICT, effort: kind === 'control' ? 'medium' : 'high' })));
+  const votes = await parallel(LENSES.map((lens) => () => ask(refuteBatchPrompt(kind, batch, lens), { label: `refute ${kind} ${labelOf(batch)} [${lens}] #${index + 1}`, phase: 'Verify', agentType: 'refuter', schema: BATCH_VERDICT, effort: kind === 'control' ? 'medium' : 'high' })));
   votes.forEach(noteSession);
   LENSES.forEach((lens, i) => { if (!votes[i]) skipped.push(`verify: lens ${lens} returned nothing for ${kind} batch ${labelOf(batch)}; its votes count as abstentions (destructive candidates in the batch cannot pass)`); });
   const lost = votes.filter((v) => !v).length;
@@ -349,7 +360,7 @@ if (dryRun) {
   if (!existingControlIds.length) {
     skipped.push('dry run: the ledger has no control record to cite, so the reconciliation-plan observation was not appended (a dry run never appends controls)');
   } else {
-    const w = await agent(`${common('soc-ledger-keeper')}
+    const w = await ask(`${common('soc-ledger-keeper')}
 WRITE stage, DRY RUN (this stage may append exactly ONE record despite the dry-run note above). Append exactly ONE observation and nothing else: methods ['${WORKFLOW}'], subjects [{type:'company'}], result 'inconclusive', title 'Dry run: refresh-soc reconciliation plan', description starting 'dry-run: evidence requested — ' and listing what a live run would append (${controls.length} control records: ${controls.slice(0, 60).map((c) => `${c.op} ${c.id}`).join(', ') || 'none'}${controls.length > 60 ? ` and ${controls.length - 60} more` : ''}; ${transitions.length} finding transitions: ${transitions.map((t) => `${t.findingId} ${t.from}->${t.to}`).join(', ') || 'none'}; ${riskUpdates.length} risk reopenings: ${riskUpdates.map((r) => `${r.riskId} ${r.from}->open`).join(', ') || 'none'}; ${slaUpdates.length} SLA updates) and which observations a human should confirm first, controlIds = one governance control id chosen ONLY from these existing ledger control ids: ${JSON.stringify(existingControlIds)} (prefer the most specific Indian instrument's governance control, e.g. sebi-cscrf-2024:GV.RR.S1 or the RBI/IRDAI governance clause). Do not append controls, findings, risks or a version.
 ${CLOSE}`, { label: 'write dry-run plan observation', phase: 'Write', agentType: 'soc-ledger-keeper', schema: WRITE_SCHEMA, effort: 'low' });
     absorb(w, 'dry-run plan');
@@ -358,7 +369,7 @@ ${CLOSE}`, { label: 'write dry-run plan observation', phase: 'Write', agentType:
   const controlBatches = chunk(controls, WRITE_BATCH);
   for (let i = 0; i < controlBatches.length; i += 1) {
     const batch = controlBatches[i];
-    const w = await agent(`${common('soc-ledger-keeper')}
+    const w = await ask(`${common('soc-ledger-keeper')}
 WRITE stage, control batch ${i + 1}/${controlBatches.length}. Append one control record per append.mjs call (pipe the JSON on stdin), validating each:
 - op 'new': kind 'control', schemaVersion '1', companyId '${companyId}', id, frameworkRefs, title, category, implementationStatus, effectiveness, lastAssessedAt when given, nextDueAt, applicableAssets when given, evidence [{type:'workspace-file', ref:'<the instrument catalogFile>'}], recordedAt NOW, provenance. If the id already exists in the ledger (a concurrent run), treat it as op 'update' instead.
 - op 'update': read the latest record with that id, copy it, apply only the fields in changes, set supersedes = the id, recordedAt NOW, fresh provenance, evidence plus the cited observation as {type:'workspace-file', ref:'${LEDGER}', description:'<observation id>'}.
@@ -369,7 +380,7 @@ ${CLOSE}`, { label: `write controls ${i + 1}/${controlBatches.length}`, phase: '
   const findingBatches = chunk(findingUpdates, WRITE_BATCH);
   for (let i = 0; i < findingBatches.length; i += 1) {
     const batch = findingBatches[i];
-    const w = await agent(`${common('soc-ledger-keeper')}
+    const w = await ask(`${common('soc-ledger-keeper')}
 WRITE stage, finding batch ${i + 1}/${findingBatches.length}. For each entry append ONE supersession of the finding (read its latest record, copy it in full, supersedes = findingId, recordedAt NOW, fresh provenance, keep firstSeenAt and fingerprint):
 - transition present: status = transition.to, statusReason = transition.statusReason, resolvedAt = transition.resolvedAt only for 'resolved' (remove resolvedAt on reopen), refresh lastSeenAt only on reopen, relatedObservationIds += transition.evidenceObservationIds.
 - sla present: slaDueAt = sla.to, slaBasis = sla.slaBasis (applied on top of the transition in the same record when both are present).
@@ -382,7 +393,7 @@ ${CLOSE}`, { label: `write findings ${i + 1}/${findingBatches.length}`, phase: '
   const riskBatches = chunk(riskUpdates, WRITE_BATCH);
   for (let i = 0; i < riskBatches.length; i += 1) {
     const batch = riskBatches[i];
-    const w = await agent(`${common('soc-ledger-keeper')}
+    const w = await ask(`${common('soc-ledger-keeper')}
 WRITE stage, risk batch ${i + 1}/${riskBatches.length}. Expired risk acceptances reopen per soc-ledger SKILL section 8 rule 2 (the linked findings were reopened in the previous batch). For each entry append ONE supersession of the risk: read its latest record, copy it in full, supersedes = riskId, status 'open', keep acceptedBy and acceptedUntil unchanged as history, and — because the risk record has no statusReason field (never add one) — append ' Reopened <NOW>: <entry.statusReason>.' to description, recordedAt NOW, fresh provenance. List every appended risk id under reopenedRiskIds.
 Ignore the helper fields "key", "workflow" and "id". Entries: ${JSON.stringify(batch)}
 ${CLOSE}`, { label: `write risks ${i + 1}/${riskBatches.length}`, phase: 'Write', agentType: 'soc-ledger-keeper', schema: WRITE_SCHEMA, effort: 'low' });
@@ -400,7 +411,7 @@ if (dryRun) {
 } else if (!result.controls && !result.findings && !result.reopenedRisks) {
   log('Nothing was appended; summary and version skipped');
 } else {
-  const summary = await agent(`${common('report-writer')}
+  const summary = await ask(`${common('report-writer')}
 Read .claude/skills/report-templates/SKILL.md. Rewrite ONLY the 'control-summary' section of ${SUMMARY} (create the file from the template when absent) from the latest control record per id in ${LEDGER}: one line per control family with counts of effective / partially-effective / ineffective / not-tested and coverage (controls with at least one observation over applicable controls), then the coverage paragraph citing inconclusive observations. Mention this run: ${result.newControls} new control records, ${result.updatedControls} re-assessed, ${result.resolvedFindings} findings resolved by the absent-twice rule, ${result.reopenedFindings} findings and ${result.reopenedRisks} risks reopened after expired acceptances, ${result.slaUpdated} SLA dates recomputed. Keep every other section byte-identical, bump the frontmatter version (minor), set provenance as instructed and recompute provenance.inputsHash exactly as the company-summary schema describes. Validate with \`node .claude/scripts/validate-data.mjs ${SUMMARY}\`. Do not append to the ledger: follow report-templates section 5 step 6 and return the report observation as proposedObservation (omit the field when the report was already current).`, {
     label: 'summary control-summary', phase: 'Summary', agentType: 'report-writer', effort: 'low',
     schema: { type: 'object', required: ['updated', 'controlsTotal'], properties: { sessionId: { type: 'string' }, updated: { type: 'boolean' }, controlsTotal: { type: 'integer' }, coveragePercent: { type: 'number' }, version: { type: 'string' }, proposedObservation: { type: 'object', description: 'report-templates section 5 step 6 observation record without id and recordedAt' }, notes: { type: 'string' } } },
@@ -416,7 +427,7 @@ if (dryRun) {
 } else if (!result.controls && !result.findings && !result.reopenedRisks && !proposedObservation) {
   log('Nothing was appended; version skipped');
 } else {
-  const version = await agent(`${common('soc-ledger-keeper')}
+  const version = await ask(`${common('soc-ledger-keeper')}
 ${proposedObservation ? `First append the report-writer's proposed observation (report-templates section 5 step 6) via append.mjs: mint id obs_<ULID>, set recordedAt NOW, keep every other field; if its controlIds is empty or names a control that is not in the ledger, use the most specific Indian governance control record in the ledger. Record: ${JSON.stringify(proposedObservation)}
 Then r` : 'R'}un \`node .claude/scripts/soc/version.mjs ${companyId} --session ${sessionId || '<your harness session id>'} --workflow ${WORKFLOW}\` from the workspace root, once. Never pass --force. Return the observation id you appended (if any), the file version.mjs wrote (empty if it printed that nothing was written) and any error verbatim.`, {
     label: 'version ledger', phase: 'Version', agentType: 'soc-ledger-keeper', effort: 'low',

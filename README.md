@@ -87,6 +87,8 @@ Maxwell/
 │       └── credentials.json              # sops/age-encrypted references, never values
 ├── company-profile/
 │   └── <company_id>/
+│       ├── catalogs/                     # optional: the company's own controls (co:<company_id>:<slug>)
+│       │   └── <slug>.catalog.json
 │       ├── change_management/
 │       │   ├── initiatives/
 │       │   │   └── <init_id>/
@@ -112,6 +114,7 @@ Maxwell/
 │       │   └── <vendor_id>.json
 │       ├── context.json              # organization context tree built by refresh-ctx
 │       ├── details.json
+│       ├── regulators.json               # optional: the company's own regulators and sources
 │       └── summary.md
 ├── cves/
 │   ├── data/
@@ -387,6 +390,37 @@ flowchart TD
   Q4 --> PROC4
   PROC4 --> KYC
 ```
+
+### A company's own controls
+
+Some controls come from no shared catalog: a company's internal information security policy, the security schedule
+of a customer contract, a sector circular the shared catalogs do not carry yet. Add them as a catalog under that
+company's profile; they apply to that company only, beside the shared catalogs, and nothing changes for a company
+without one.
+
+```bash
+node .claude/scripts/catalogs/add-company-catalog.mjs infosec-policy.json --dry-run   # then without --dry-run
+```
+
+```json
+{ "companyId": "acme-securities",
+  "sources": [{ "id": "board", "name": "Board of directors", "type": "internal" }],
+  "catalog": { "id": "infosec-policy", "title": "Information security policy", "sourceType": "internal-policy",
+               "regulator": "board", "version": "v3.2", "sourceRef": "Board-approved policy, section 7",
+               "groups": [{ "id": "Sec-7", "title": "Access control", "controls": [
+                 { "id": "AC-7", "title": "Production access reviewed every month", "prose": "...",
+                   "mandatory": true, "defaultSeverity": "high", "cadence": "monthly", "slaDays": 5,
+                   "mappings": [{ "regulator": "SEBI", "instrument": "sebi-cscrf-2024", "controlId": "PR.AA.S5" }] } ] }] } }
+```
+
+The writer namespaces the ids (`co:acme-securities:infosec-policy`, control `co:acme-securities:infosec-policy:AC-7`),
+writes `company-profile/acme-securities/catalogs/infosec-policy.catalog.json` and the new source in `regulators.json`,
+and refuses a spec that does not validate, names another company's ids, or would replace a catalog without `--force`.
+In chat, `/add-company-catalog acme-securities` builds the spec with you. Then `/refresh-soc acme-securities` adds the
+applicable controls to the ledger; probes and reports use them for that company and label them company-specific, and
+`cm_coverage` reports them apart as the `company-specific-controls` series. `node .claude/scripts/catalogs/company.mjs
+controls acme-securities` lists the shared and company controls together. `npm run validate` refuses a company's ids in
+another company's files or in shared files.
 
 ### Regulatory coverage
 

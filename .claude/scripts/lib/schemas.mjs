@@ -31,6 +31,8 @@ export function buildAjv({ root = SCHEMA_ROOT } = {}) {
     allowUnionTypes: true,
     validateFormats: true,
     $data: false,
+    // parentSchema on errors lets formatErrors recognise the company-id branches.
+    verbose: true,
   });
   addFormats(ajv);
   // Maxwell extension keywords: annotations only, tolerated by strict mode.
@@ -59,7 +61,11 @@ export function getValidator(ajv, id) {
   return v;
 }
 
+// The 'co:' company-id branches (if a string starts with 'co:' then a company id, else the shared vocabulary) add an
+// "must match else schema" line next to the vocabulary error itself; it is dropped so errors read exactly as before.
+
 export function formatErrors(errors, limit = 20) {
+  if (errors) errors = errors.filter((e) => !(e.keyword === 'if' && e.parentSchema && /^company-id-branch/.test(e.parentSchema['x-maxwell-notes'] || '')));
   if (!errors || errors.length === 0) return '';
   return errors
     .slice(0, limit)

@@ -37,6 +37,7 @@
     "status",
     "connect-sandbox",
     "config",
+    "add-company-catalog",
     "manual"
   ]
 }

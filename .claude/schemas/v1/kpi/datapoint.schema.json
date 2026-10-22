@@ -101,7 +101,7 @@
       "then": {
         "properties": {
           "series": {
-            "const": "raw"
+            "enum": [ "raw", "company-specific-controls" ]
           }
         }
       }

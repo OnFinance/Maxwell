@@ -32,6 +32,17 @@ export const meta = {
 async function main() {
 const WORKFLOW = 'refresh-vendor-ctx';
 const companyId = args && args.companyId;
+// Company catalogs (regulatory-catalogs skill section 8): run-headless passes args.companyCatalogs only when
+// company-profile/<companyId>/catalogs/ holds the company's own catalogs. Without them every prompt is exactly as before.
+const companyCatalogs = (args && Array.isArray(args.companyCatalogs) ? args.companyCatalogs : []).filter((c) => companyId && c
+  && /^co:[a-z0-9][a-z0-9-]{1,62}:[a-z0-9][a-z0-9-]{1,62}$/.test(c.instrumentId) && c.instrumentId.indexOf('co:' + companyId + ':') === 0
+  && c.file === 'company-profile/' + companyId + '/catalogs/' + c.instrumentId.slice(companyId.length + 4) + '.catalog.json');
+const COMPANY_CATALOG_RULE = !companyCatalogs.length ? '' : '\n\nCompany catalogs: besides the shared catalogs, company ' + companyId
+  + ' has its own catalogs, which apply to ' + companyId + ' only: ' + companyCatalogs.map((c) => c.instrumentId + ' (' + c.file + ')').join(', ')
+  + '. Follow section 8 of .claude/skills/regulatory-catalogs/SKILL.md. Treat each as an instrument in scope for ' + companyId
+  + ' (the instruments.json registry, frameworksInScope and the instrument-level entity filters do not apply to it; each control\'s own applicability does): include its controls wherever you select applicable instruments or controls, and key and cite them exactly like shared controls - ledger control id \'<instrumentId>:<controlId>\', regulatoryRef {regulator: the catalog\'s regulator, instrument: the instrumentId, controlId}. Severity comes from the control\'s defaultSeverity; the SLA from its slaDays (slaBasis.instrument = the instrumentId), else the sla-table defaults. Cite the most specific shared instrument first when one covers the gap and the company control after it; a company control comes first only when no shared control covers the gap. These ids are valid for ' + companyId
+  + ': never refute or drop a mapping only because it cites one of them. Never cite any other \'co:\' id, and label these controls company-specific wherever you report controls.';
+const ask = (prompt, opts) => agent(typeof prompt === 'string' ? prompt + COMPANY_CATALOG_RULE : prompt, opts);
 if (!companyId) throw new Error('args.companyId is required (company-profile/<companyId>)');
 const dryRun = Boolean(args && args.dryRun);
 const NOW_RE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?Z$/;
@@ -77,7 +88,7 @@ Report a change only when a source positively contradicts or extends the file.`;
 
 // ---------------------------------------------------------------- Scout
 phase('Scout');
-const scout = await agent(`${common('vendor-analyst')}
+const scout = await ask(`${common('vendor-analyst')}
 SCOUT (read-only, write nothing). Read ${PROFILE} (criticalFunctions[].functionId, dataResidency, entityTypes, frameworksInScope), every ${VENDOR_DIR}/*.json (the directory may not exist yet: then vendors is empty), ${METASTORE} if present, ${LEDGER} if present, and the application files of this company: applications/<app_id>/README.md, env/*.json, repos/*.json, images/*.json.
 ${APP_LINK_RULE}${appIds ? ` Of the linked applications keep only ${JSON.stringify(appIds)}; list every other linked application under skipped with reason 'filtered by args.appIds'.` : ''}${envIds ? `; only environment files whose envId is in ${JSON.stringify(envIds)} count, list the others under skipped` : ''}.
 Return:
@@ -185,7 +196,7 @@ phase('Refresh');
 const refreshed = await pipeline(
   units,
   async (u, _item, index) => {
-    const r = await agent(refreshPrompt(u), { label: `refresh ${u.vendorId} #${index + 1}`, phase: 'Refresh', agentType: 'vendor-analyst', schema: REFRESH_SCHEMA, effort: 'high' });
+    const r = await ask(refreshPrompt(u), { label: `refresh ${u.vendorId} #${index + 1}`, phase: 'Refresh', agentType: 'vendor-analyst', schema: REFRESH_SCHEMA, effort: 'high' });
     if (!r) { skipped.push(`refresh: vendor ${u.vendorId} returned nothing (agent failed or was skipped)`); return null; }
     noteSession(r);
     for (const g of r.ungrounded || []) skipped.push(`refresh ${u.vendorId}: ungrounded ${g.field} — ${g.note}`);
@@ -208,7 +219,7 @@ const refreshed = await pipeline(
     ];
     if (!items.length) return { unit: u, refresh: r, action: 'unchanged', changes: [], flags: [], document: null };
     const effort = items.some((x) => x.destructive) ? 'high' : 'medium';
-    const votes = await parallel(LENSES.map((lens) => () => agent(refutePrompt(u, items.map((x) => ({ key: x.key, type: x.type, ...x.item })), lens, r.sources), { label: `refute ${u.vendorId} (${items.length}) [${lens}] #${index + 1}`, phase: 'Verify', agentType: 'refuter', schema: BATCH_VERDICT, effort })));
+    const votes = await parallel(LENSES.map((lens) => () => ask(refutePrompt(u, items.map((x) => ({ key: x.key, type: x.type, ...x.item })), lens, r.sources), { label: `refute ${u.vendorId} (${items.length}) [${lens}] #${index + 1}`, phase: 'Verify', agentType: 'refuter', schema: BATCH_VERDICT, effort })));
     votes.forEach(noteSession);
     LENSES.forEach((lens, i) => { if (!votes[i]) skipped.push(`verify ${u.vendorId}: lens ${lens} returned nothing; counted as abstention (destructive items cannot pass)`); });
     if (votes.filter((v) => !v).length >= 2) log(`verify ${u.vendorId}: ${votes.filter((v) => !v).length} of ${LENSES.length} lenses returned nothing; no candidate of this vendor can pass — re-run refresh-vendor-ctx`);
@@ -297,7 +308,7 @@ if (dryRun) {
   skipped.push(`dry run: ${toWrite.length} vendor file write(s) skipped by design (${toWrite.map((p) => `${p.action} ${p.unit.vendorId}`).join(', ') || 'none'})`);
 } else {
   for (const p of toWrite) {
-    const w = await agent(`${common('vendor-analyst')}
+    const w = await ask(`${common('vendor-analyst')}
 APPLY verified changes to ${VENDOR_DIR}/${p.unit.vendorId}.json. Read .claude/schemas/v1/company/vendor.schema.json first.
 ${p.action === 'create' ? `Create the file from this refuter-verified document (2-space JSON, keys in schema order; set provenance as instructed, companyId '${companyId}'). Fields and services absent from it were refuted or ungrounded: do not re-add them:\n${JSON.stringify(p.document)}` : `Edit ONLY these JSON-pointer branches (never delete a vendor, service or assurance entry; a stale assurance stays with its expiresAt; a status change is a mark, not a removal):\n${JSON.stringify(p.changes)}\nThen update provenance (generatedAt NOW, sessionId, runId, workflow, agent).`}
 Run \`node .claude/scripts/validate-data.mjs ${VENDOR_DIR}/${p.unit.vendorId}.json\` and fix the content until it passes; if a branch cannot be expressed within the schema, leave it unchanged and list it under unapplied with the reason.`, {
@@ -323,7 +334,7 @@ for (const p of ledgerUnits) {
     ? `the vendor file ${VENDOR_DIR}/${p.unit.vendorId}.json${p.action === 'update' && !p.fileWritten ? ` (its verified changes were NOT applied this run${dryRun ? ': dry run' : ': write failed'}; say so in the description)` : ''} plus the sources`
     : `the sources only (the onboarding vendor file was not written${dryRun ? ': dry run' : ' or failed validation; say so in the description'})`;
   const knownFindings = (scout.existingVendorFindingFingerprints || []).filter((f) => f.vendorId === p.unit.vendorId);
-  const w = await agent(`${common('soc-ledger-keeper')}
+  const w = await ask(`${common('soc-ledger-keeper')}
 Read .claude/skills/soc-ledger/SKILL.md, .claude/skills/regulatory-catalogs/SKILL.md, ${SLA_TABLE}, ${PROFILE} and ${LEDGER}. Vendor '${p.unit.vendorId}' (${VENDOR_DIR}/${p.unit.vendorId}.json${p.action === 'create' && !p.fileWritten ? ' — not created in this run' : ''}).
 ${dryRun
     ? `Step 1 - control (READ-ONLY, dry run): choose the third-party / outsourcing governance control of the most specific Indian instrument in frameworksInScope ${JSON.stringify(scout.frameworksInScope)} ONLY from these control ids that already exist in the ledger: ${JSON.stringify(existingControlIds)}. Append NO control record. If none of them covers third-party / outsourcing risk, append nothing at all for this vendor and return skipped ['no existing third-party governance control in the ledger; dry-run evidence request not recorded'].`
@@ -351,7 +362,7 @@ if (dryRun) {
 } else if (!result.vendorsCreated && !result.vendorsUpdated && !result.findings && !result.reseenFindings) {
   log('No vendor file or finding changed; summary.md left unchanged');
 } else {
-  const summary = await agent(`${common('report-writer')}
+  const summary = await ask(`${common('report-writer')}
 Read .claude/skills/report-templates/SKILL.md. Rewrite ONLY the 'vendors' section of ${SUMMARY} (create the file from the template when absent) from ${VENDOR_DIR}/*.json and the vendor-targeted findings in ${LEDGER}: one row per vendor (legal name, status, materiality, critical functions supported, hosting countries versus data residency, newest assurance and its expiry, open findings by id). Mention this run: ${result.vendorsCreated} onboarded, ${result.vendorsUpdated} updated, ${result.findings} new finding(s), ${result.reseenFindings} re-seen. Keep every other section byte-identical, bump the frontmatter version (minor), set provenance as instructed and recompute provenance.inputsHash exactly as the company-summary schema describes. Validate with \`node .claude/scripts/validate-data.mjs ${SUMMARY}\`. Do not append to the ledger: follow report-templates section 5 step 6 and return the report observation as proposedObservation (omit the field when the report was already current).`, {
     label: 'summary vendors', phase: 'Summary', agentType: 'report-writer', effort: 'low',
     schema: { type: 'object', required: ['updated', 'vendors'], properties: { sessionId: { type: 'string' }, updated: { type: 'boolean' }, vendors: { type: 'integer' }, materialVendors: { type: 'integer' }, version: { type: 'string' }, proposedObservation: { type: 'object', description: 'report-templates section 5 step 6 observation record without id and recordedAt' }, notes: { type: 'string' } } },
@@ -367,7 +378,7 @@ if (dryRun) {
 } else if (!result.observations && !result.findings && !proposedObservation) {
   log('Nothing appended to the ledger; version skipped');
 } else {
-  const version = await agent(`${common('soc-ledger-keeper')}
+  const version = await ask(`${common('soc-ledger-keeper')}
 ${proposedObservation ? `First append the report-writer's proposed observation (report-templates section 5 step 6) via append.mjs: mint id obs_<ULID>, set recordedAt NOW, keep every other field; if its controlIds is empty or names a control that is not in the ledger, use the existing third-party governance control from ${JSON.stringify(existingControlIds)} or the one this run appended. Record: ${JSON.stringify(proposedObservation)}
 Then r` : 'R'}un \`node .claude/scripts/soc/version.mjs ${companyId} --session ${sessionId || '<your harness session id>'} --workflow ${WORKFLOW}\` from the workspace root, once. Never pass --force. Return the observation id you appended (if any), the file version.mjs wrote (empty if nothing was written) and any error verbatim.`, {
     label: 'version ledger', phase: 'Version', agentType: 'soc-ledger-keeper', effort: 'low',

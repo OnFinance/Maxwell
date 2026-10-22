@@ -81,6 +81,16 @@
       "type": "string",
       "pattern": "^[A-Za-z0-9][A-Za-z0-9._()\\-]{0,63}$"
     },
+    "companyInstrumentId": {
+      "description": "Instrument id of a company's own catalog, 'co:<companyId>:<catalogSlug>' (company-profile/<companyId>/catalogs/<catalogSlug>.catalog.json). The 'co:' namespace keeps it apart from every vocab/instruments id, and the company id inside it ties it to one company: it may be cited only in that company's files",
+      "type": "string",
+      "pattern": "^co:[a-z0-9][a-z0-9-]{1,62}:[a-z0-9][a-z0-9-]{1,62}$"
+    },
+    "companySourceId": {
+      "description": "Id of a company's own regulator or source (company-profile/<companyId>/regulators.json sources[].id), 'co:<companyId>:<sourceSlug>', e.g. the company's board for an internal policy or a customer for a contract's security schedule. Cited only in that company's files",
+      "type": "string",
+      "pattern": "^co:[a-z0-9][a-z0-9-]{1,62}:[a-z0-9][a-z0-9-]{1,62}$"
+    },
     "timestamp": {
       "description": "RFC 3339 timestamp in UTC",
       "type": "string",
@@ -369,15 +379,35 @@
       "additionalProperties": false
     },
     "regulatoryRef": {
-      "description": "Pointer to a clause or control in a regulatory instrument or framework",
+      "description": "Pointer to a clause or control in a regulatory instrument or framework: a shared one (vocab regulators and instruments) or one of the citing company's own catalogs (companyInstrumentId, with the catalog's regulator, which is a vocab regulator or a companySourceId)",
       "type": "object",
       "required": [ "regulator", "instrument", "controlId" ],
       "properties": {
         "regulator": {
-          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/regulators.schema.json"
+          "x-maxwell-notes": "company-id-branch: a string starting with co: is a company id, anything else the shared vocabulary",
+          "if": {
+            "type": "string",
+            "pattern": "^co:"
+          },
+          "then": {
+            "$ref": "#/$defs/companySourceId"
+          },
+          "else": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/vocab/regulators.schema.json"
+          }
         },
         "instrument": {
-          "$ref": "https://maxwell.onfinance.ai/schemas/vocab/instruments.schema.json"
+          "x-maxwell-notes": "company-id-branch: a string starting with co: is a company id, anything else the shared vocabulary",
+          "if": {
+            "type": "string",
+            "pattern": "^co:"
+          },
+          "then": {
+            "$ref": "#/$defs/companyInstrumentId"
+          },
+          "else": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/vocab/instruments.schema.json"
+          }
         },
         "version": {
           "$ref": "#/$defs/shortText"

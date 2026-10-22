@@ -8,6 +8,7 @@ import matter from 'gray-matter';
 import { buildAjv, getValidator, formatErrors } from './lib/schemas.mjs';
 import { loadLayout, matchRule, walkWorkspace } from './lib/layout.mjs';
 import { contextProblems } from './lib/context-refs.mjs';
+import { overlayChecker } from './lib/company-catalogs.mjs';
 
 const CONTEXT_SCHEMA = 'https://maxwell.onfinance.ai/schemas/v1/company/context.schema.json';
 
@@ -19,6 +20,7 @@ const report = (file, msg) => problems.push(`${file}: ${msg}`);
 function validateJson(file, rule, data) {
   const validate = getValidator(ajv, rule.schema);
   if (!validate(data)) { report(file, `does not match ${rule.schema}\n${formatErrors(validate.errors)}`); return; }
+  overlay.note(file, data);
   if (rule.schema === CONTEXT_SCHEMA) {
     const details = join(dirname(file), 'details.json');
     const registrationNos = existsSync(details) ? new Set((JSON.parse(readFileSync(details, 'utf8')).regulatoryRegistrations || []).map((r) => r.registrationNo)) : null;
@@ -39,6 +41,7 @@ function validateJsonl(file, rule) {
     let obj;
     try { obj = JSON.parse(line); } catch (e) { report(file, `line ${i + 1}: invalid JSON (${e.message})`); return; }
     if (!validate(obj)) report(file, `line ${i + 1}: does not match ${rule.schema}\n${formatErrors(validate.errors)}`);
+    else overlay.note(file, obj, ` line ${i + 1}`);
   });
 }
 
@@ -92,6 +95,8 @@ function validateSymlink(file, rule) {
 }
 
 const explicit = process.argv.slice(2).map((p) => p.replace(/^\.\//, ''));
+// A company's own catalogs and sources ('co:<company_id>:...' ids) are cross-checked once every file has been read.
+const overlay = overlayChecker({ allCompanies: !explicit.length });
 const entries = explicit.length ? explicit.map((relPath) => ({ relPath, isDir: false, isSymlink: false })) : walkWorkspace('.');
 
 for (const entry of entries) {
@@ -114,6 +119,8 @@ for (const entry of entries) {
     report(entry.relPath, `${e.message}`);
   }
 }
+
+for (const p of overlay.problems()) problems.push(p);
 
 if (problems.length) {
   console.error(`validate:data FAILED (${problems.length} problem${problems.length === 1 ? '' : 's'})`);
