@@ -172,6 +172,11 @@ timelines agree with each other. 4. You did not create any file outside the layo
   A run succeeds only when the workflow itself completed with no failed agent. Otherwise the JSON result says why in
   `outcomeReason`, `workflowRun` gives `{name, launched, status, failedAgents}`, and `outcome` is `max-budget` when
   the `--budget-usd` cap was reached (also while the workflow ran in the background), `max-turns`, or `error`.
+  The JSON result also lists what the run did: `files` (workspace files it changed; session KPI files apart in
+  `sessionFiles`), `ledger` (records appended to the company's `soc/main.jsonl`: count, by kind, ids; or
+  `{rewritten: true}` when the file was rewritten instead of appended to), `findings` (id, title, severity, status,
+  fingerprint of each new finding record) and `validation` (`--validate` runs `npm run validate` afterwards).
+  `--result-file <path>` also writes it to a file outside the workspace.
 - OpenCode: add `--harness opencode`. Default model `anthropic/claude-opus-5` (override with `--model` or
   `MAXWELL_OPENCODE_MODEL`). OpenCode authenticates from `ANTHROPIC_API_KEY` in the environment, so no interactive
   `opencode auth login` is needed on headless hosts. Keep the key in the host environment or a secret manager,
