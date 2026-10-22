@@ -44,7 +44,9 @@ function headless(w, args, extra = {}) {
   rmSync(w.log, { force: true });
   const r = spawnSync(process.execPath, [join(WORKSPACE, '.claude/scripts/run-headless.mjs'), ...args], { cwd: w.ws, encoding: 'utf8', env: baseEnv(w.home, w.bin, extra) });
   const calls = existsSync(w.log) ? readFileSync(w.log, 'utf8').trim().split('\n').map((l) => JSON.parse(norm(l))) : [];
-  return { calls, lines: norm(r.stderr).split('\n').filter((l) => l.startsWith('[run-headless]')) };
+  const err = norm(r.stderr).split('\n');
+  assert.deepEqual(err.filter((l) => l.startsWith('[maxwell]')), [], 'no new warnings');
+  return { calls, lines: err.filter((l) => l.startsWith('[run-headless]')) };
 }
 
 const PROMPT = 'Run /probe-iac with exactly this args object, passed as structured data (not a string), and report its result: {"companyId":"example-co","appIds":[],"envIds":[],"dryRun":true,"now":"<TIME>","runId":"run_<ULID>","sessionId":"<UUID>"}';
@@ -94,7 +96,11 @@ test('local helpers print what they printed before', () => {
     const fromFile = run(['cos/search.mjs', 'status']);
     assert.deepEqual(fromFile, { status: 0, out: json({ configured: true, source: 'file', baseUrl: 'https://file.example.com', email: 'f***@example.com', credentialsFile: '<HOME>/.config/maxwell/complianceos.env', tokenCached: false }), err: '' });
     assert.doesNotMatch(fromFile.out, /pw-file|file\.person/, 'the stored login is never printed');
-    assert.deepEqual(run(['sandbox/connect.mjs', 'status', '--company', 'example-co']), { status: 0, out: json({ configured: false, action: 'run /connect-sandbox' }), err: '' });
+    // hdfc-amc ships without an executor (config.test.mjs writes example-co's, possibly in parallel); a checkout where
+    // someone ran /connect-sandbox for it has nothing to compare against.
+    if (!existsSync(join(WORKSPACE, 'company-profile/hdfc-amc/sdlc/executor.json'))) {
+      assert.deepEqual(run(['sandbox/connect.mjs', 'status', '--company', 'hdfc-amc']), { status: 0, out: json({ configured: false, action: 'run /connect-sandbox' }), err: '' });
+    }
   } finally { rmSync(w.dir, { recursive: true, force: true }); }
 });
 

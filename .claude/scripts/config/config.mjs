@@ -119,7 +119,7 @@ try {
         let doc;
         try { doc = JSON.parse(readValueFile(flags['from-file'])); } catch { fail('invalid-value', `${flags['from-file']} is not valid JSON`); }
         if (!doc || typeof doc !== 'object' || Array.isArray(doc)) fail('invalid-value', 'the executor must be a JSON object');
-        if (doc.companyId !== flags.company) fail('invalid-value', `the executor is for company ${doc.companyId}, not ${flags.company}`);
+        if (doc.companyId !== flags.company) fail('invalid-value', `the executor document names a different company, not ${flags.company}`);
         const residency = residencyProblem(doc, JSON.parse(readFileSync(join(WORKSPACE, 'company-profile', flags.company, 'details.json'), 'utf8')));
         if (residency && !flags['accept-residency']) fail('residency', `${residency}. Use an Indian region, or pass --accept-residency after the user explicitly accepts that checkouts are scanned outside India.`);
         doc.provenance = { harness: process.env.MAXWELL_HARNESS || 'script', generatedAt: now(), ...(process.env.MAXWELL_RUN_ID ? { runId: process.env.MAXWELL_RUN_ID } : {}), workflow: 'config', agent: `.claude/scripts/config/config.mjs (${by})`.slice(0, 200) };
