@@ -528,9 +528,25 @@ claude
 
 > Add my company acme-securities, legal name "Acme Securities Private Limited".
 
-Then add each application under `applications/<app_id>/`, using `applications/mcp-gateway/` as a template. Credentials
-are stored as encrypted references with [sops](https://github.com/getsops/sops) and [age](https://github.com/FiloSottile/age),
-never as values.
+Then add each application from a short JSON spec. The writer validates everything before it writes, creates
+`README.md`, one `repos/<repo_id>.json` per repository at its pinned commit and an empty, encrypted `credentials.json`,
+and with `--checkout` fetches each repository at that commit (`--dry-run` shows the files first):
+
+```bash
+node .claude/scripts/apps/add.mjs payments-api.json --checkout
+```
+
+```json
+{ "appId": "payments-api", "description": "Card payments API.", "sopsRecipients": ["age1..."],
+  "repos": [{ "repoId": "payments", "url": "https://github.com/acme/payments.git",
+              "pinnedCommit": "<full 40-character commit SHA>", "visibility": "private" }] }
+```
+
+Repository facts Maxwell has not looked at yet (languages, build and CI system, IaC, Helm, agent code, CODEOWNERS) start
+at their "not yet known" values and `/refresh-apps` fills them in. You can also copy `applications/mcp-gateway/` by
+hand. Credentials are stored as encrypted references with [sops](https://github.com/getsops/sops) and
+[age](https://github.com/FiloSottile/age), never as values; private repositories authenticate through git's own
+credential helper or SSH key, never a token in the URL.
 
 **3. Choose where scans run**
 
