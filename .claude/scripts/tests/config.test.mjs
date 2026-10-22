@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { existsSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { hostSetting, settingValue } from '../lib/config.mjs';
@@ -32,14 +32,14 @@ test('a host setting round-trips through set and get and records who set it', ()
   const dir = tmp();
   try {
     const env = cleanEnv(dir);
-    const set = run(env, 'set', 'models.map.sonnet', 'claude-opus-5-5', '--by', 'ops@example.com');
+    const set = run(env, 'set', 'models.map.sonnet', 'claude-opus-5-5', '--by', 'ops-1');
     assert.equal(set.status, 0, set.out);
     assert.equal(set.json.value, 'claude-opus-5-5');
     const get = run(env, 'get', 'models.map.sonnet');
     assert.deepEqual(get.json, { key: 'models.map.sonnet', value: 'claude-opus-5-5', source: 'file', env: 'ANTHROPIC_DEFAULT_SONNET_MODEL' });
     const file = join(dir, 'config.json');
     const doc = JSON.parse(readFileSync(file, 'utf8'));
-    assert.equal(doc.updated['models.map.sonnet'].by, 'ops@example.com');
+    assert.equal(doc.updated['models.map.sonnet'].by, 'ops-1');
     assert.match(doc.updated['models.map.sonnet'].at, /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/);
     assert.equal(statSync(file).mode & 0o777, 0o600);
     const unset = run(env, 'unset', 'models.map.sonnet');
@@ -57,10 +57,14 @@ test('unknown keys and values that fail the schema are refused and leave the fil
     const before = readFileSync(join(dir, 'config.json'), 'utf8');
     const refuse = (args, re) => { const r = run(env, ...args); assert.equal(r.status, 2, r.out); assert.match(r.json.message, re); };
     refuse(['set', 'models.map.gpt', 'x'], /unknown setting/);
-    refuse(['set', 'models.map.sonnet', 'not a model id!'], /schema/);
+    refuse(['set', 'models.map.sonnet', 'not a model id!'], /model id/);
     refuse(['set', 'pricing.file', 'relative/prices.json'], /absolute path/);
     refuse(['set', 'sandbox.credentialsDir', join(WORKSPACE, 'kpis')], /outside the workspace/);
-    refuse(['set', 'complianceos.baseUrl', 'http://insecure.example'], /schema/);
+    refuse(['set', 'complianceos.baseUrl', 'http://insecure.example'], /https origin/);
+    refuse(['set', 'complianceos.baseUrl', 'https://cos.example/api/login'], /https origin/);
+    refuse(['set', 'sandbox.credentialsDir', '/var/tmp/keys'], /must be under/);
+    refuse(['set', 'complianceos.passwordRef', '--ref', 'ANTHROPIC_API_KEY'], /MAXWELL_, COS_ or COMPLIANCEOS_/);
+    refuse(['set', 'models.default', '--from-file', '/etc/hostname'], /only for set executor/);
     refuse(['set', 'models.default', '--ref', 'SOME_VAR'], /not a secret reference/);
     refuse(['set', 'models.default', 'opus', '--ref', 'SOME_VAR'], /exactly one/);
     refuse(['set', 'models.default'], /exactly one/);
@@ -68,6 +72,16 @@ test('unknown keys and values that fail the schema are refused and leave the fil
     writeFileSync(join(dir, 'config.json'), '{ not json');
     assert.equal(run(env, 'set', 'models.default', 'opus').status, 2, 'a malformed file is reported, not replaced');
     assert.match(run(env, 'get').json.fileProblem, /not valid JSON/);
+    // A hand-edited file with impossible values never breaks readers (hooks included): the values are ignored.
+    writeFileSync(join(dir, 'config.json'), JSON.stringify({ schemaVersion: '1', kind: 'maxwell.host.config', settings: null }));
+    assert.equal(settingValue('models.default', env), 'opus');
+    writeFileSync(join(dir, 'config.json'), JSON.stringify({ schemaVersion: '1', kind: 'maxwell.host.config', settings: { 'models.default': 123, 'pricing.file': 'relative.json', 'complianceos.baseUrl': 'https://evil.example/x' } }));
+    assert.equal(settingValue('models.default', env), 'opus');
+    assert.equal(settingValue('pricing.file', env), undefined);
+    assert.equal(settingValue('complianceos.baseUrl', env), undefined);
+    assert.match(run(env, 'get').json.fileProblem, /is not a valid setting value/);
+    const hook = spawnSync(process.execPath, ['-e', "import('./.claude/scripts/lib/complianceos.mjs').then((m) => m.resolveCredentials(process.env, undefined))"], { cwd: WORKSPACE, env, encoding: 'utf8' });
+    assert.equal(hook.status, 0, hook.stderr);
   } finally { rmSync(dir, { recursive: true, force: true }); }
 });
 
@@ -75,7 +89,7 @@ test('secret-bearing settings take only a variable name, and no output ever show
   const dir = tmp();
   try {
     const secret = 'pw-7f3a9c1e-never-print';
-    const env = cleanEnv(dir, { COS_LOGIN_PASSWORD: secret, COS_LOGIN_EMAIL: 'analyst@example.com' });
+    const env = cleanEnv(dir, { COS_LOGIN_PASSWORD: secret, COS_LOGIN_EMAIL: 'analyst@example.com', ANTHROPIC_API_KEY: 'sk-ant-not-a-login' });
     const raw = run(env, 'set', 'complianceos.passwordRef', secret);
     assert.equal(raw.status, 2);
     assert.equal(raw.json.error, 'secret-value');
@@ -97,6 +111,13 @@ test('secret-bearing settings take only a variable name, and no output ever show
     assert.equal(creds.source, 'env');
     // MAXWELL_COS_* set directly still win over a reference.
     assert.equal(resolveCredentials({ ...env, MAXWELL_COS_PASSWORD: 'direct' }, undefined).password, 'direct');
+    // A changed origin never receives a password stored by set-credentials: that goes only to its own address.
+    assert.equal(run(env, 'set', 'complianceos.baseUrl', 'https://other.example').status, 0);
+    const stored = 'MAXWELL_COS_BASE_URL="https://cos.example"\nMAXWELL_COS_EMAIL="a@example.com"\nMAXWELL_COS_PASSWORD="stored"\n';
+    const noRefs = cleanEnv(dir, { MAXWELL_CONFIG_FILE: join(dir, 'origin-only.json') });
+    assert.equal(spawnSync(process.execPath, [CLI, 'set', 'complianceos.baseUrl', 'https://other.example'], { cwd: WORKSPACE, env: noRefs }).status, 0);
+    assert.equal(resolveCredentials(noRefs, stored).baseUrl, 'https://cos.example');
+    assert.equal(resolveCredentials(env, undefined).baseUrl, 'https://other.example', 'referenced credentials use the configured origin');
   } finally { rmSync(dir, { recursive: true, force: true }); }
 });
 
@@ -105,15 +126,16 @@ test('an environment variable wins over the host config file, which wins over th
   try {
     const env = cleanEnv(dir);
     assert.equal(run(env, 'set', 'models.map.sonnet', 'claude-opus-5-5').status, 0);
-    assert.equal(run(env, 'set', 'sandbox.credentialsDir', join(dir, 'sandbox')).status, 0);
-    assert.equal(run(env, 'set', 'complianceos.credentialsFile', join(dir, 'cos.env')).status, 0);
+    const cfgDir = join(dir, '.config', 'maxwell');
+    assert.equal(run(env, 'set', 'sandbox.credentialsDir', join(cfgDir, 'sandbox')).status, 0);
+    assert.equal(run(env, 'set', 'complianceos.credentialsFile', join(cfgDir, 'cos.env')).status, 0);
     assert.equal(settingValue('models.map.sonnet', env), 'claude-opus-5-5');
     const over = { ...env, ANTHROPIC_DEFAULT_SONNET_MODEL: 'claude-sonnet-5-5', MAXWELL_SANDBOX_CREDENTIALS_DIR: join(dir, 'other') };
     assert.deepEqual(hostSetting('models.map.sonnet', over), { key: 'models.map.sonnet', value: 'claude-sonnet-5-5', source: 'env' });
     assert.equal(run(over, 'get', 'models.map.sonnet').json.source, 'env');
-    assert.equal(credentialsDir(env), join(dir, 'sandbox'));
+    assert.equal(credentialsDir(env), join(cfgDir, 'sandbox'));
     assert.equal(credentialsDir(over), join(dir, 'other'));
-    assert.equal(configPaths(env).credentials, join(dir, 'cos.env'));
+    assert.equal(configPaths(env).credentials, join(cfgDir, 'cos.env'));
     assert.equal(hostSetting('models.default', env).source, 'default');
   } finally { rmSync(dir, { recursive: true, force: true }); }
 });
@@ -134,6 +156,11 @@ test('executor.file supplies a company executor from outside the workspace and m
     const set = run(env, 'set', 'executor', '--company', 'example-co', '--from-file', file);
     assert.equal(set.status, 2, 'the company file is not written while an override supplies the executor');
     assert.equal(set.json.error, 'overridden');
+    // A file from outside meets the same data-residency rule as /connect-sandbox (example-co is India-only).
+    writeFileSync(file, JSON.stringify({ ...EXECUTOR, static: { provider: 'modal', region: 'us-east', network: 'none' } }));
+    assert.throws(() => loadExecutor('example-co', { root: WORKSPACE, env }), /data residency to India/);
+    writeFileSync(file, JSON.stringify({ ...EXECUTOR, static: { provider: 'modal', region: 'ap-south', network: 'none' } }));
+    assert.equal(loadExecutor('example-co', { root: WORKSPACE, env }).static.region, 'ap-south');
   } finally { rmSync(dir, { recursive: true, force: true }); }
 });
 
@@ -181,9 +208,28 @@ test('pricing.file adds provider entries ahead of the built-in table', () => {
     assert.equal(pricing.asOf, '2099-01-01');
     assert.equal(resolveModel(pricing, 'gateway-opus').inputPerMTok, 1);
     assert.equal(pricing.models.filter((m) => m.model === 'claude-opus-5').length, 1, 'the override replaces the built-in entry');
+    assert.equal(resolveModel(pricing, 'opus').inputPerMTok, 1, 'built-in aliases still resolve to the overriding entry');
     assert.ok(resolveModel(pricing, 'haiku'), 'other built-in entries remain');
     writeFileSync(file, JSON.stringify({ models: [] }));
-    assert.throws(() => loadPricing(undefined, env), /pricing schema/);
+    const base = loadPricing(undefined, cleanEnv(dir));
+    assert.deepEqual(loadPricing(undefined, env), base, 'a broken extra table falls back to the built-in one');
     assert.equal(loadPricing(undefined, cleanEnv(dir)).asOf, JSON.parse(readFileSync(join(WORKSPACE, '.claude/skills/kpi-extraction/references/pricing.json'), 'utf8')).asOf);
+  } finally { rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('a symlink cannot place the host config inside the workspace', () => {
+  const dir = tmp();
+  try {
+    symlinkSync(WORKSPACE, join(dir, 'ws'));
+    const env = cleanEnv(dir, { MAXWELL_CONFIG_FILE: join(dir, 'ws', 'hostcfg.json') });
+    const r = run(env, 'set', 'models.default', 'opus');
+    assert.equal(r.status, 2, r.out);
+    assert.match(r.json.message, /outside the workspace/);
+    assert.ok(!existsSync(join(WORKSPACE, 'hostcfg.json')));
+    assert.equal(run(env, 'unset', 'models.default').status, 2);
+    mkdirSync(join(dir, '.config', 'maxwell'), { recursive: true });
+    symlinkSync(WORKSPACE, join(dir, '.config', 'maxwell', 'ws'));
+    const inside = run(cleanEnv(dir), 'set', 'sandbox.credentialsDir', join(dir, '.config', 'maxwell', 'ws', 'keys'));
+    assert.equal(inside.status, 2, inside.out);
   } finally { rmSync(dir, { recursive: true, force: true }); }
 });

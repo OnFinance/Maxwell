@@ -63,29 +63,28 @@
           "$ref": "#/$defs/absolutePath"
         },
         "sandbox.credentialsDir": {
-          "description": "Absolute path of the directory holding sandbox provider credential files, outside the workspace (environment MAXWELL_SANDBOX_CREDENTIALS_DIR)",
+          "description": "Absolute path of the directory holding sandbox provider credential files (environment MAXWELL_SANDBOX_CREDENTIALS_DIR). config.mjs stores only a path under ~/.config/maxwell, which agents cannot read; the environment variable may point anywhere outside the workspace",
           "$ref": "#/$defs/absolutePath"
         },
         "complianceos.baseUrl": {
-          "description": "ComplianceOS base URL (environment MAXWELL_COS_BASE_URL)",
+          "description": "ComplianceOS origin (environment MAXWELL_COS_BASE_URL). A login stored by cos/search.mjs set-credentials is only ever sent to the address stored with it",
           "type": "string",
-          "pattern": "^https://",
-          "format": "uri"
+          "pattern": "^https://[A-Za-z0-9.-]+(:[0-9]{1,5})?/?$"
         },
         "complianceos.credentialsFile": {
-          "description": "Absolute path of the ComplianceOS login file written by cos/search.mjs set-credentials, outside the workspace (environment MAXWELL_COS_CREDENTIALS_FILE)",
+          "description": "Absolute path of the ComplianceOS login file written by cos/search.mjs set-credentials (environment MAXWELL_COS_CREDENTIALS_FILE). config.mjs stores only a path under ~/.config/maxwell; the environment variable may point anywhere outside the workspace",
           "$ref": "#/$defs/absolutePath"
         },
         "complianceos.emailRef": {
-          "description": "Name of the environment variable that holds the ComplianceOS login email",
+          "description": "Name of the environment variable (MAXWELL_, COS_ or COMPLIANCEOS_ prefix) that holds the ComplianceOS login email. MAXWELL_COS_EMAIL, when set, holds the value itself and wins over this reference",
           "$ref": "#/$defs/envName"
         },
         "complianceos.passwordRef": {
-          "description": "Name of the environment variable that holds the ComplianceOS password",
+          "description": "Name of the environment variable (MAXWELL_, COS_ or COMPLIANCEOS_ prefix) that holds the ComplianceOS password. MAXWELL_COS_PASSWORD, when set, holds the value itself and wins over this reference",
           "$ref": "#/$defs/envName"
         },
         "complianceos.tokenRef": {
-          "description": "Name of the environment variable that holds a ComplianceOS bearer token",
+          "description": "Name of the environment variable (MAXWELL_, COS_ or COMPLIANCEOS_ prefix) that holds the ComplianceOS bearer token. MAXWELL_COS_TOKEN, when set, holds the value itself and wins over this reference",
           "$ref": "#/$defs/envName"
         }
       },
@@ -117,9 +116,9 @@
       "maxLength": 1024
     },
     "envName": {
-      "description": "An environment variable name; the value itself is read from the environment at run time and never stored",
+      "description": "Name of an environment variable with a MAXWELL_, COS_ or COMPLIANCEOS_ prefix, so no other credential in the environment can be named; the value is read at run time and never stored",
       "type": "string",
-      "pattern": "^[A-Z_][A-Z0-9_]{0,127}$"
+      "pattern": "^(MAXWELL|COS|COMPLIANCEOS)_[A-Z0-9_]{1,100}$"
     }
   }
 }

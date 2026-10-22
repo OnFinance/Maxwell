@@ -11,7 +11,7 @@ import * as daytona from './backends/daytona.mjs';
 import * as modal from './backends/modal.mjs';
 import * as vercel from './backends/vercel.mjs';
 import * as lambdaMicrovms from './backends/lambda-microvms.mjs';
-import { ExecutorError, HOSTED, RUNTIME_PROVIDERS, limitsOf } from './common.mjs';
+import { ExecutorError, HOSTED, RUNTIME_PROVIDERS, limitsOf, residencyProblem } from './common.mjs';
 import { hostSetting } from '../config.mjs';
 
 export const BACKENDS = { host, docker, kubernetes, e2b, daytona, modal, vercel, 'lambda-microvms': lambdaMicrovms };
@@ -36,7 +36,14 @@ export function loadExecutor(companyId, { root = '.', env = process.env } = {}) 
   const config = JSON.parse(readFileSync(path, 'utf8'));
   const check = getValidator(buildAjv().ajv, EXECUTOR_SCHEMA);
   if (!check(config)) throw new ExecutorError('invalid-config', `${path} does not match its schema:\n${formatErrors(check.errors)}`);
-  if (override && config.companyId !== companyId) throw new ExecutorError('invalid-config', `${path} is for company ${config.companyId}, not ${companyId}`);
+  if (override) {
+    // One executor.file serves one company: a host running several companies keeps theirs in each company's folder.
+    if (config.companyId !== companyId) throw new ExecutorError('invalid-config', `${path} is for company ${config.companyId}, not ${companyId}`);
+    // A file from outside never went through /connect-sandbox, so its data-residency rule is applied here.
+    const detailsPath = join(root, 'company-profile', companyId, 'details.json');
+    const problem = existsSync(detailsPath) ? residencyProblem(config, JSON.parse(readFileSync(detailsPath, 'utf8'))) : null;
+    if (problem) throw new ExecutorError('invalid-config', `${path}: ${problem}; use an Indian region, or set the executor with /connect-sandbox once the user accepts scanning outside India`);
+  }
   return config;
 }
 

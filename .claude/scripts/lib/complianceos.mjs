@@ -69,7 +69,11 @@ export function resolveCredentials(env = process.env, fileText) {
   const password = fromEnv.password || file.MAXWELL_COS_PASSWORD || undefined;
   const token = fromEnv.token || undefined;
   const source = fromEnv.email || fromEnv.token ? 'env' : file.MAXWELL_COS_EMAIL ? 'file' : null;
-  const baseUrl = settingValue('complianceos.baseUrl', env) || file.MAXWELL_COS_BASE_URL || DEFAULT_BASE_URL;
+  // A login stored by set-credentials goes only to the address stored with it (or one set in the environment), so a
+  // changed host setting can never redirect a stored password to another server.
+  const baseUrl = env.MAXWELL_COS_BASE_URL
+    || (!fromEnv.password && file.MAXWELL_COS_PASSWORD ? file.MAXWELL_COS_BASE_URL : settingValue('complianceos.baseUrl', env) || file.MAXWELL_COS_BASE_URL)
+    || DEFAULT_BASE_URL;
   return { baseUrl: baseUrl.replace(/\/+$/, ''), email, password, token, source };
 }
 

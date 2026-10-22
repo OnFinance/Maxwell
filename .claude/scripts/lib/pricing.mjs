@@ -13,11 +13,21 @@ export function loadPricing(path = PRICING_PATH, env = process.env) {
   const base = JSON.parse(readFileSync(path, 'utf8'));
   const extra = settingValue('pricing.file', env);
   if (!extra) return base;
-  const doc = JSON.parse(readFileSync(extra, 'utf8'));
-  const check = getValidator(buildAjv().ajv, PRICING_SCHEMA);
-  if (!check(doc)) throw new Error(`${extra} does not match the pricing schema:\n${formatErrors(check.errors)}`);
+  // A broken extra table must not cost a session its summary: warn and use the built-in table.
+  let doc;
+  try {
+    doc = JSON.parse(readFileSync(extra, 'utf8'));
+    const check = getValidator(buildAjv().ajv, PRICING_SCHEMA);
+    if (!check(doc)) throw new Error(`does not match the pricing schema:\n${formatErrors(check.errors)}`);
+  } catch (err) {
+    process.stderr.write(`[maxwell] pricing.file ${extra} ignored: ${err.message}\n`);
+    return base;
+  }
+  // An entry for a built-in model replaces its prices and adds its aliases to the built-in ones.
+  const builtIn = new Map(base.models.map((m) => [m.model, m]));
+  const merged = doc.models.map((m) => (builtIn.has(m.model) ? { ...m, aliases: [...new Set([...(m.aliases || []), ...(builtIn.get(m.model).aliases || [])])] } : m));
   const replaced = new Set(doc.models.map((m) => m.model));
-  return { ...base, asOf: doc.asOf > base.asOf ? doc.asOf : base.asOf, models: [...doc.models, ...base.models.filter((m) => !replaced.has(m.model))] };
+  return { ...base, asOf: doc.asOf > base.asOf ? doc.asOf : base.asOf, models: [...merged, ...base.models.filter((m) => !replaced.has(m.model))] };
 }
 
 // Resolves a raw model identifier (Claude Code message.model, OpenCode provider/model, aliases, "[1m]" suffix).

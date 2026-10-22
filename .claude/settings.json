@@ -101,6 +101,8 @@
       "Edit(./applications/*/repos/**)"
     ],
     "ask": [
+      "Bash(node .claude/scripts/config/config.mjs set *)",
+      "Bash(node .claude/scripts/config/config.mjs unset *)",
       "Bash(ssh *)",
       "Bash(curl *)",
       "Bash(git push *)"

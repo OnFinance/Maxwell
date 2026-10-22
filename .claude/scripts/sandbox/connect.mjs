@@ -18,11 +18,10 @@ import { buildAjv, getValidator, formatErrors } from '../lib/schemas.mjs';
 import { ensureHostTool, getTool, imageRef, loadToolchain } from '../lib/toolchain.mjs';
 import { BACKENDS, EXECUTOR_SCHEMA, executorPath, executorSource, loadExecutor, runtimeExecutor, staticExecutor } from '../lib/sandbox/index.mjs';
 import { PROVIDER_CREDENTIALS, applyCredentials, writeCredentials } from '../lib/sandbox/credentials.mjs';
-import { ExecutorError, HOSTED, RUNTIME_PROVIDERS, limitsOf } from '../lib/sandbox/common.mjs';
+import { ExecutorError, HOSTED, RUNTIME_PROVIDERS, limitsOf, INDIA_REGIONS } from '../lib/sandbox/common.mjs';
 
 const WORKSPACE = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 const now = () => new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
-const INDIA_REGIONS = { modal: ['ap-south'], vercel: ['bom1'], 'lambda-microvms': ['ap-south-1'] };
 
 export const OPTIONS = {
   static: [
