@@ -13,7 +13,7 @@
 import { spawnSync } from 'node:child_process';
 import { writeFileSync, mkdirSync, readFileSync, existsSync } from 'node:fs';
 import { randomUUID } from 'node:crypto';
-import { changedFiles, checkResultPath, ledgerOffset, ledgerPath, readAppended, runValidation, summarizeLedger, workspaceSnapshot, writeResultFile } from './lib/run-result.mjs';
+import { changedFiles, checkResultPath, ledgerAppended, ledgerPath, ledgerState, runValidation, summarizeLedger, workspaceSnapshot, writeResultFile } from './lib/run-result.mjs';
 import { ulid } from '../hooks/lib.mjs';
 import { ACCOUNT_LIMIT, classifyWorkflowRun, opencodeSessionLog, parseLimitReset, workflowStatus } from './lib/workflow-status.mjs';
 
@@ -36,7 +36,7 @@ const resultFileError = argv.includes('--result-file') && !resultFile ? '--resul
 if (resultFileError) { console.error(resultFileError); process.exit(1); }
 const ledgerFile = /^[a-z0-9][a-z0-9-]{1,62}$/.test(company) ? ledgerPath(company) : null;
 const snapshotBefore = workspaceSnapshot();
-const ledgerBefore = ledgerFile ? ledgerOffset(ledgerFile) : 0;
+const ledgerBefore = ledgerFile ? ledgerState(ledgerFile) : null;
 const logDir = `kpis/data/raw/sessions/${harness}`;
 mkdirSync(logDir, { recursive: true });
 const env = { ...process.env, MAXWELL_RUN_ID: runId, MAXWELL_HARNESS: harness, MAXWELL_INVOKED_BY: process.env.MAXWELL_INVOKED_BY || '', MAXWELL_KPI_SAMPLE: '1' };
@@ -95,7 +95,7 @@ if (harness === 'claude-code') {
     try { result = JSON.parse(raw); } catch { result = null; }
     if (!result) {
       console.error(`[run-headless] claude exited ${res.status}: ${(res.stderr || '').slice(-2000)}`);
-      if (resultFile) writeResultFile(resultFile, { workflow, company, harness, runId, sessionId: null, reportedCostUsd: null, outcome: 'error', durationMs: Date.now() - started, result: null, workflowRun: null, outcomeReason: `claude exited ${res.status} without a JSON result` });
+      if (resultFile) writeResultFile(resultFile, { workflow, company, harness, runId, sessionId: null, reportedCostUsd: null, outcome: 'error', durationMs: Date.now() - started, result: null, workflowRun: null, outcomeReason: `claude exited ${res.status} without a JSON result`, files: null, sessionFiles: null, ledger: null, findings: null, validation: { ran: false } });
       process.exit(res.status || 1);
     }
     sessionId = result.session_id;
@@ -156,10 +156,14 @@ if (harness === 'claude-code' && sessionId) {
   process.stderr.write(ing.stdout + ing.stderr);
 }
 if (harness !== 'claude-code' && outcome !== 'success') outcomeReason = 'the OpenCode workflow runner exited with an error';
+// The run's duration excludes the bookkeeping below (git status, ledger read, validation).
+const durationMs = Date.now() - started;
 const { files, sessionFiles } = changedFiles(snapshotBefore, workspaceSnapshot());
-const { ledger, findings } = ledgerFile ? summarizeLedger(readAppended(ledgerFile, ledgerBefore)) : { ledger: null, findings: [] };
+const appendedText = ledgerFile ? ledgerAppended(ledgerFile, ledgerBefore) : null;
+const { ledger, findings } = !appendedText ? { ledger: null, findings: [] }
+  : appendedText.rewritten ? { ledger: { rewritten: true }, findings: null } : summarizeLedger(appendedText.text);
 const validation = argv.includes('--validate') ? runValidation() : { ran: false };
-const output = { workflow, company, harness, runId, sessionId, reportedCostUsd: reported, outcome, durationMs: Date.now() - started, result: harness === 'claude-code' ? (result && result.result) : result, workflowRun, outcomeReason, files, sessionFiles, ledger, findings, validation };
+const output = { workflow, company, harness, runId, sessionId, reportedCostUsd: reported, outcome, durationMs, result: harness === 'claude-code' ? (result && result.result) : result, workflowRun, outcomeReason, files, sessionFiles, ledger, findings, validation };
 if (resultFile) writeResultFile(resultFile, output);
 console.log(JSON.stringify(output, null, 2));
 process.exit(outcome === 'success' ? 0 : 1);

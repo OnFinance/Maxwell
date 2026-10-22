@@ -1,10 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { appendFileSync, chmodSync, copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { appendFileSync, chmodSync, copyFileSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { changedFiles, checkResultPath, ledgerOffset, readAppended, runValidation, summarizeLedger, workspaceSnapshot, writeResultFile } from '../lib/run-result.mjs';
+import { changedFiles, checkResultPath, ledgerAppended, ledgerState, runValidation, summarizeLedger, workspaceSnapshot, writeResultFile } from '../lib/run-result.mjs';
 import { WORKSPACE } from '../lib/toolchain.mjs';
 
 const git = (dir, ...args) => spawnSync('git', args, { cwd: dir, encoding: 'utf8' });
@@ -44,15 +44,25 @@ test('appended ledger records are counted by kind and new findings are listed wi
   const dir = repo();
   try {
     const ledger = join(dir, 'company-profile/acme/soc/main.jsonl');
-    const offset = ledgerOffset(ledger);
+    const before = ledgerState(ledger);
     const finding = { kind: 'finding', id: 'fnd_1', title: 'unpinned base image', severity: 'high', status: 'open', fingerprint: 'abc', firstSeenAt: '2026-09-14T00:00:00Z', lastSeenAt: '2026-09-14T00:00:00Z', description: 'long text', evidence: [{ excerpt: 'token=hunter2' }] };
     appendFileSync(ledger, [{ kind: 'observation', id: 'obs_1' }, { kind: 'observation', id: 'obs_2' }, finding].map((r) => JSON.stringify(r)).join('\n') + '\n');
-    const { ledger: l, findings } = summarizeLedger(readAppended(ledger, offset));
+    const { ledger: l, findings } = summarizeLedger(ledgerAppended(ledger, before).text);
     assert.deepEqual(l, { appended: 3, byKind: { observation: 2, finding: 1 }, ids: ['obs_1', 'obs_2', 'fnd_1'], unparsable: 0 });
     assert.deepEqual(findings, [{ id: 'fnd_1', title: 'unpinned base image', severity: 'high', status: 'open', fingerprint: 'abc', firstSeenAt: '2026-09-14T00:00:00Z', lastSeenAt: '2026-09-14T00:00:00Z' }]);
     assert.doesNotMatch(JSON.stringify(findings), /hunter2|long text/);
-    assert.equal(readAppended(join(dir, 'missing.jsonl'), 0), '');
+    assert.deepEqual(ledgerAppended(join(dir, 'missing.jsonl'), ledgerState(join(dir, 'missing.jsonl'))), { text: '' });
+    // A rewritten ledger (shrunk, or its first bytes changed) is reported as such, not parsed from a stale offset.
+    const after = ledgerState(ledger);
+    writeFileSync(ledger, `${JSON.stringify({ kind: 'control', id: 'ctl-X' })}\n`);
+    assert.deepEqual(ledgerAppended(ledger, after), { rewritten: true });
+    const same = ledgerState(ledger);
+    writeFileSync(ledger, `${JSON.stringify({ kind: 'control', id: 'ctl-Y' })}\n${JSON.stringify({ kind: 'observation', id: 'obs_3' })}\n`);
+    assert.deepEqual(ledgerAppended(ledger, same), { rewritten: true });
     assert.equal(summarizeLedger('not json\n').ledger.unparsable, 1);
+    const keyShaped = ['sk', 'ant', 'y'.repeat(24)].join('-');
+    const [titled] = summarizeLedger(JSON.stringify({ kind: 'finding', id: 'fnd_2', title: `leaked ${keyShaped}` })).findings;
+    assert.equal(titled.title.includes(keyShaped), false);
   } finally { rmSync(dir, { recursive: true, force: true }); }
 });
 
@@ -65,8 +75,14 @@ test('the result file must be outside the workspace and is written whole', () =>
     assert.match(checkResultPath(join(out, 'nope/result.json'), dir), /does not exist/);
     assert.equal(checkResultPath(join(out, 'result.json'), dir), null);
     assert.equal(checkResultPath(undefined, dir), null);
+    assert.match(checkResultPath('..result.json', dir), /outside the workspace/, 'a name starting with two dots is still inside');
+    const link = join(out, 'into-workspace');
+    symlinkSync(dir, link);
+    assert.match(checkResultPath(join(link, 'result.json'), dir), /outside the workspace/, 'a symlinked parent is followed');
+    assert.match(checkResultPath(join(link, 'kpis', 'deeper', 'r.json'), dir), /outside the workspace/);
     writeResultFile(join(out, 'result.json'), { outcome: 'success' }, dir);
     assert.deepEqual(JSON.parse(readFileSync(join(out, 'result.json'), 'utf8')), { outcome: 'success' });
+    assert.deepEqual(readdirSync(out).filter((f) => f.endsWith('.tmp')), [], 'no temporary file is left');
   } finally { rmSync(dir, { recursive: true, force: true }); rmSync(out, { recursive: true, force: true }); }
 });
 
@@ -119,4 +135,21 @@ test('a headless run reports the files, ledger records and findings it produced 
     assert.match(refused.stderr, /outside the workspace/);
     assert.equal(existsSync(join(dir, 'result.json')), false);
   } finally { rmSync(dir, { recursive: true, force: true }); rmSync(out, { recursive: true, force: true }); }
+});
+
+test('workspace paths are relative to a workspace that is a folder of a larger repository, and renames keep their origin', () => {
+  const top = mkdtempSync(join(tmpdir(), 'maxwell-sub-'));
+  try {
+    git(top, 'init', '-q'); git(top, 'config', 'user.email', 't@example.invalid'); git(top, 'config', 'user.name', 't');
+    mkdirSync(join(top, 'ws/company-profile/acme'), { recursive: true });
+    writeFileSync(join(top, 'outside.txt'), 'x\n');
+    writeFileSync(join(top, 'ws/company-profile/acme/a.md'), 'a\n');
+    git(top, 'add', '.'); git(top, 'commit', '-qm', 'base');
+    const root = join(top, 'ws');
+    const before = workspaceSnapshot(root);
+    writeFileSync(join(top, 'outside.txt'), 'changed outside the workspace\n');
+    git(top, 'mv', 'ws/company-profile/acme/a.md', 'ws/company-profile/acme/b.md');
+    const { files } = changedFiles(before, workspaceSnapshot(root));
+    assert.deepEqual(files, ['company-profile/acme/a.md', 'company-profile/acme/b.md']);
+  } finally { rmSync(top, { recursive: true, force: true }); }
 });
