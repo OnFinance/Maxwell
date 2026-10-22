@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/harness/host-config.schema.json",
+  "title": "Host configuration",
+  "description": "Schema for the host settings file read and written only by .claude/scripts/config/config.mjs: ~/.config/maxwell/config.json by default, or the path in MAXWELL_CONFIG_FILE. It lives outside the workspace. It holds model choices, paths and the names of environment variables that carry secrets, never a secret value. An environment variable named for a setting wins over the file, so a hosted harness can seed or override every setting without writing it",
+  "examples": [
+    {
+      "schemaVersion": "1",
+      "kind": "maxwell.host.config",
+      "settings": {
+        "models.map.sonnet": "claude-opus-5-5",
+        "sandbox.credentialsDir": "/home/ops/.config/maxwell/sandbox",
+        "complianceos.emailRef": "COS_LOGIN_EMAIL",
+        "complianceos.passwordRef": "COS_LOGIN_PASSWORD"
+      },
+      "updated": {
+        "models.map.sonnet": {
+          "at": "2026-10-22T09:30:00Z",
+          "by": "headless"
+        }
+      }
+    }
+  ],
+  "type": "object",
+  "required": [ "schemaVersion", "kind", "settings" ],
+  "properties": {
+    "schemaVersion": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/schemaVersion"
+    },
+    "kind": {
+      "const": "maxwell.host.config"
+    },
+    "settings": {
+      "description": "Current values by setting key. Keys are closed: config.mjs refuses any key not listed here",
+      "type": "object",
+      "properties": {
+        "models.default": {
+          "description": "Model run-headless.mjs asks Claude Code for when --model is not given (environment MAXWELL_MODEL)",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/modelId"
+        },
+        "models.fallback": {
+          "description": "Model Claude Code retries on after a usage limit or overload (environment MAXWELL_FALLBACK_MODEL)",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/modelId"
+        },
+        "models.map.opus": {
+          "description": "Provider model the opus alias runs on, for agents that pin model: opus (environment ANTHROPIC_DEFAULT_OPUS_MODEL)",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/modelId"
+        },
+        "models.map.sonnet": {
+          "description": "Provider model the sonnet alias runs on, for agents that pin model: sonnet (environment ANTHROPIC_DEFAULT_SONNET_MODEL)",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/modelId"
+        },
+        "models.map.haiku": {
+          "description": "Provider model the haiku alias runs on, for agents that pin model: haiku (environment ANTHROPIC_DEFAULT_HAIKU_MODEL)",
+          "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/modelId"
+        },
+        "pricing.file": {
+          "description": "Absolute path to an extra price table (same shape as vocab/pricing) whose entries override or extend the built-in one, for provider list prices (environment MAXWELL_PRICING_FILE)",
+          "$ref": "#/$defs/absolutePath"
+        },
+        "executor.file": {
+          "description": "Absolute path to an executor document (company/executor schema) used instead of company-profile/<company_id>/sdlc/executor.json; its companyId must match the company being run (environment MAXWELL_EXECUTOR_FILE)",
+          "$ref": "#/$defs/absolutePath"
+        },
+        "sandbox.credentialsDir": {
+          "description": "Absolute path of the directory holding sandbox provider credential files (environment MAXWELL_SANDBOX_CREDENTIALS_DIR). config.mjs stores only a path under ~/.config/maxwell, which agents cannot read; the environment variable may point anywhere outside the workspace",
+          "$ref": "#/$defs/absolutePath"
+        },
+        "complianceos.baseUrl": {
+          "description": "ComplianceOS origin (environment MAXWELL_COS_BASE_URL). A login stored by cos/search.mjs set-credentials is only ever sent to the address stored with it",
+          "type": "string",
+          "pattern": "^https://[A-Za-z0-9.-]+(:[0-9]{1,5})?/?$"
+        },
+        "complianceos.credentialsFile": {
+          "description": "Absolute path of the ComplianceOS login file written by cos/search.mjs set-credentials (environment MAXWELL_COS_CREDENTIALS_FILE). config.mjs stores only a path under ~/.config/maxwell; the environment variable may point anywhere outside the workspace",
+          "$ref": "#/$defs/absolutePath"
+        },
+        "complianceos.emailRef": {
+          "description": "Name of the environment variable (MAXWELL_, COS_ or COMPLIANCEOS_ prefix) that holds the ComplianceOS login email. MAXWELL_COS_EMAIL, when set, holds the value itself and wins over this reference",
+          "$ref": "#/$defs/envName"
+        },
+        "complianceos.passwordRef": {
+          "description": "Name of the environment variable (MAXWELL_, COS_ or COMPLIANCEOS_ prefix) that holds the ComplianceOS password. MAXWELL_COS_PASSWORD, when set, holds the value itself and wins over this reference",
+          "$ref": "#/$defs/envName"
+        },
+        "complianceos.tokenRef": {
+          "description": "Name of the environment variable (MAXWELL_, COS_ or COMPLIANCEOS_ prefix) that holds the ComplianceOS bearer token. MAXWELL_COS_TOKEN, when set, holds the value itself and wins over this reference",
+          "$ref": "#/$defs/envName"
+        }
+      },
+      "additionalProperties": false
+    },
+    "updated": {
+      "description": "When and by whom each setting was last set, by setting key",
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [ "at", "by" ],
+        "properties": {
+          "at": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/timestamp"
+          },
+          "by": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/shortText"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "absolutePath": {
+      "type": "string",
+      "pattern": "^/[^\\u0000\\n\\r]*$",
+      "maxLength": 1024
+    },
+    "envName": {
+      "description": "Name of an environment variable with a MAXWELL_, COS_ or COMPLIANCEOS_ prefix, so no other credential in the environment can be named; the value is read at run time and never stored",
+      "type": "string",
+      "pattern": "^(MAXWELL|COS|COMPLIANCEOS)_[A-Z0-9_]{1,100}$"
+    }
+  }
+}

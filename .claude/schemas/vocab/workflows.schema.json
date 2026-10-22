@@ -36,6 +36,7 @@
     "seed-company",
     "status",
     "connect-sandbox",
+    "config",
     "manual"
   ]
 }

@@ -16,6 +16,7 @@ import { randomUUID } from 'node:crypto';
 import { changedFiles, checkResultPath, ledgerAppended, ledgerPath, ledgerState, runValidation, summarizeLedger, workspaceSnapshot, writeResultFile } from './lib/run-result.mjs';
 import { ulid } from '../hooks/lib.mjs';
 import { ACCOUNT_LIMIT, classifyWorkflowRun, opencodeSessionLog, parseLimitReset, workflowStatus } from './lib/workflow-status.mjs';
+import { hostSetting, settingValue } from './lib/config.mjs';
 
 const argv = process.argv.slice(2);
 const opt = (f, d) => { const i = argv.indexOf(f); return i >= 0 ? argv[i + 1] : d; };
@@ -51,16 +52,25 @@ let workflowRun = null; let outcomeReason = null;
 // Workflows are deterministic scripts: they cannot read the clock, so the run timestamp is taken once here.
 const now = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
 const workflowArgs = { companyId: company, appIds: apps, envIds: envs, dryRun, now, runId };
-const utility = new Set(['validate', 'kpis', 'seed-company', 'status', 'connect-sandbox', 'manual']);
+const utility = new Set(['validate', 'kpis', 'seed-company', 'status', 'connect-sandbox', 'config', 'manual']);
 // report-audit-improvements renders KPI series but no roster agent may run `npm run kpis`, so compute them first.
 if (workflow === 'report-audit-improvements') {
   const k = spawnSync(process.execPath, ['.claude/scripts/kpis/compute.mjs', '--company', company], { encoding: 'utf8', env });
   process.stderr.write(`[run-headless] kpis computed before report (exit ${k.status})\n${(k.stdout || '') + (k.stderr || '')}`);
 }
 if (harness === 'claude-code') {
-  const model = opt('--model', process.env.MAXWELL_MODEL || 'opus');
-  const fallback = opt('--fallback-model', process.env.MAXWELL_FALLBACK_MODEL || (/^(opus|claude-opus)/.test(model) ? '' : 'opus'));
+  // Host settings (environment first, then the host config file; see config/config.mjs) choose the default and fallback
+  // models and map the opus/sonnet/haiku aliases that agents pin to the provider's model names, for providers where
+  // an alias's default model is not enabled.
+  const model = opt('--model', settingValue('models.default') || 'opus');
+  const fallback = opt('--fallback-model', settingValue('models.fallback') || (/^(opus|claude-opus)/.test(model) ? '' : 'opus'));
   env.MAXWELL_MODEL = model;
+  // Only a mapping from the host config file is applied and announced here: an ANTHROPIC_DEFAULT_*_MODEL variable
+  // already in the environment reaches claude unchanged and silently, exactly as without the config tool.
+  for (const alias of ['opus', 'sonnet', 'haiku']) {
+    const mapped = hostSetting(`models.map.${alias}`);
+    if (mapped.source === 'file') { env[`ANTHROPIC_DEFAULT_${alias.toUpperCase()}_MODEL`] = mapped.value; console.error(`[run-headless] ${alias} runs on ${mapped.value}`); }
+  }
   // Utility commands take the shorthand form; saved workflows get a structured args object (Claude passes it to
   // the Workflow tool as data, see code.claude.com/docs/en/workflows "Pass input to a saved workflow").
   const promptFor = (sid) => (utility.has(workflow)

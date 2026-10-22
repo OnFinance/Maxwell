@@ -147,7 +147,7 @@ specific Indian instrument that applies to the company's `entityTypes` (SEBI CSC
   `.claude/skills/runtime-probe-rules-of-engagement`, and honour `--dry-run` by planning and requesting evidence
   instead of executing.
 - Reports are written to `summary.md` sections and `soc` observations, never to new files.
-- Utility commands: `/validate`, `/kpis`, `/seed-company`, `/status`, `/connect-sandbox`.
+- Utility commands: `/validate`, `/kpis`, `/seed-company`, `/status`, `/connect-sandbox`, `/config`.
 - Add an application with `node .claude/scripts/apps/add.mjs <spec.json | -> [--checkout] [--dry-run]` (appId, repos
   with url and full pinnedCommit, age `sopsRecipients`); it validates before writing and never overwrites an existing
   application without `--force`. Never write `applications/<app_id>/` files for a new application by hand. Run
@@ -177,6 +177,14 @@ timelines agree with each other. 4. You did not create any file outside the layo
   `{rewritten: true}` when the file was rewritten instead of appended to), `findings` (id, title, severity, status,
   fingerprint of each new finding record) and `validation` (`--validate` runs `npm run validate` afterwards).
   `--result-file <path>` also writes it to a file outside the workspace.
+- Settings (models and the opus/sonnet/haiku aliases, the price table, the executor file, the sandbox credentials
+  folder, the ComplianceOS login) can be shown and changed with `node .claude/scripts/config/config.mjs`
+  (`keys`, `get`, `set`, `unset`; `/config` in chat). All of them are optional: with no host config file and none of
+  their environment variables, Maxwell runs exactly as it always has. Each setting's environment variable wins over
+  the host config file (`~/.config/maxwell/config.json` or `MAXWELL_CONFIG_FILE`), so a hosted run can supply all of
+  them without writing anything; a hosted harness that must not let agents change settings sets
+  `MAXWELL_CONFIG_READONLY=1`. Secret-bearing settings hold the name of an environment variable, never a value:
+  never pass a secret to `config.mjs`, and never edit the host config file or `sdlc/executor.json` by hand.
 - OpenCode: add `--harness opencode`. Default model `anthropic/claude-opus-5` (override with `--model` or
   `MAXWELL_OPENCODE_MODEL`). OpenCode authenticates from `ANTHROPIC_API_KEY` in the environment, so no interactive
   `opencode auth login` is needed on headless hosts. Keep the key in the host environment or a secret manager,

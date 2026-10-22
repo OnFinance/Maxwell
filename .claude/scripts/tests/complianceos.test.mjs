@@ -113,11 +113,11 @@ test('env file round-trips passwords with quotes, equals and hashes', () => {
 
 test('environment variables win over the credentials file', () => {
   const file = formatEnvFile({ baseUrl: 'https://file.example.com/', email: 'file@example.com', password: 'from-file' });
-  const fromFile = resolveCredentials({}, file);
+  const fromFile = resolveCredentials({ MAXWELL_CONFIG_FILE: '/nonexistent/maxwell-config.json' }, file);
   assert.deepEqual([fromFile.baseUrl, fromFile.email, fromFile.source], ['https://file.example.com', 'file@example.com', 'file']);
-  const fromEnv = resolveCredentials({ MAXWELL_COS_EMAIL: 'env@example.com' }, file);
+  const fromEnv = resolveCredentials({ MAXWELL_CONFIG_FILE: '/nonexistent/maxwell-config.json', MAXWELL_COS_EMAIL: 'env@example.com' }, file);
   assert.deepEqual([fromEnv.email, fromEnv.password, fromEnv.source], ['env@example.com', 'from-file', 'env']);
-  assert.equal(resolveCredentials({}, undefined).baseUrl, DEFAULT_BASE_URL);
+  assert.equal(resolveCredentials({ MAXWELL_CONFIG_FILE: '/nonexistent/maxwell-config.json' }, undefined).baseUrl, DEFAULT_BASE_URL);
 });
 
 test('helpers: jwt expiry, email masking, path containment', () => {

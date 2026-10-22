@@ -16,13 +16,12 @@ import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 import { buildAjv, getValidator, formatErrors } from '../lib/schemas.mjs';
 import { ensureHostTool, getTool, imageRef, loadToolchain } from '../lib/toolchain.mjs';
-import { BACKENDS, EXECUTOR_SCHEMA, executorPath, loadExecutor, runtimeExecutor, staticExecutor } from '../lib/sandbox/index.mjs';
+import { BACKENDS, EXECUTOR_SCHEMA, executorPath, executorSource, loadExecutor, runtimeExecutor, staticExecutor } from '../lib/sandbox/index.mjs';
 import { PROVIDER_CREDENTIALS, applyCredentials, writeCredentials } from '../lib/sandbox/credentials.mjs';
-import { ExecutorError, HOSTED, RUNTIME_PROVIDERS, limitsOf } from '../lib/sandbox/common.mjs';
+import { ExecutorError, HOSTED, RUNTIME_PROVIDERS, limitsOf, INDIA_REGIONS } from '../lib/sandbox/common.mjs';
 
 const WORKSPACE = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 const now = () => new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
-const INDIA_REGIONS = { modal: ['ap-south'], vercel: ['bom1'], 'lambda-microvms': ['ap-south-1'] };
 
 export const OPTIONS = {
   static: [
@@ -139,11 +138,13 @@ async function main() {
       const config = loadExecutor(flags.company, { root: WORKSPACE });
       if (!config) { console.log(JSON.stringify({ configured: false, action: 'run /connect-sandbox' }, null, 2)); return; }
       const creds = Object.fromEntries([...new Set([config.static.provider, config.runtime.provider])].filter((p) => PROVIDER_CREDENTIALS[p]).map((p) => [p, applyCredentials(p, { ...process.env })]));
-      console.log(JSON.stringify({ configured: true, static: config.static, runtime: config.runtime, providers: config.providers || {}, credentials: Object.fromEntries(Object.entries(creds).map(([p, c]) => [p, { present: c.present, missing: c.missing }])), lastChecks: (config.verification || []).slice(-4) }, null, 2));
+      const src = executorSource(flags.company, { root: WORKSPACE });
+      console.log(JSON.stringify({ configured: true, ...(src.override ? { from: `executor.file (${src.source})` } : {}), static: config.static, runtime: config.runtime, providers: config.providers || {}, credentials: Object.fromEntries(Object.entries(creds).map(([p, c]) => [p, { present: c.present, missing: c.missing }])), lastChecks: (config.verification || []).slice(-4) }, null, 2));
       return;
     }
     case 'set': {
       needCompany();
+      if (executorSource(flags.company, { root: WORKSPACE }).override) fail('usage', 'the host setting executor.file supplies this executor, so a change here would not take effect; change that file, or clear it with `node .claude/scripts/config/config.mjs unset executor.file`');
       const staticProvider = flags.static; const runtimeProvider = flags.runtime;
       if (!OPTIONS.static.some((o) => o.provider === staticProvider)) fail('usage', `--static must be one of ${OPTIONS.static.map((o) => o.provider).join(', ')}`);
       if (![...RUNTIME_PROVIDERS, 'none'].includes(runtimeProvider)) fail('usage', `--runtime must be one of ${[...RUNTIME_PROVIDERS, 'none'].join(', ')}; hosted sandboxes never receive target credentials`);
@@ -199,7 +200,8 @@ async function main() {
         }
       }
       const recorded = checks.filter((c) => !c.skipped);
-      if (recorded.length) writeConfig({ ...config, verification: [...(config.verification || []), ...recorded].slice(-20), provenance: { ...config.provenance, generatedAt: now() } });
+      // An executor supplied by the host setting executor.file is not the company's file: its checks are reported only.
+      if (recorded.length && !executorSource(flags.company, { root: WORKSPACE }).override) writeConfig({ ...config, verification: [...(config.verification || []), ...recorded].slice(-20), provenance: { ...config.provenance, generatedAt: now() } });
       console.log(JSON.stringify({ checks }, null, 2));
       process.exit(recorded.some((c) => c.result === 'failed') ? 1 : 0);
     }

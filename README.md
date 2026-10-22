@@ -588,6 +588,33 @@ with no failed agent; otherwise `outcome` (`error`, `max-budget` or `max-turns`)
 it. The JSON also lists the files the run changed, the ledger records it appended and the findings among them;
 `--result-file <path>` writes the same JSON to a file outside the workspace.
 
+**7. Settings and hosted runs (optional)**
+
+> Show Maxwell's settings. / Run sonnet agents on claude-opus-5-5.
+
+`/config` reads and changes settings through `node .claude/scripts/config/config.mjs` (`keys`, `get [<key>]`,
+`set <key> <value>`, `set <key> --ref <ENV_NAME>`, `unset <key>`, and `set executor --company <c> --from-file <path>`). Every setting is optional: with no host config file and none of
+the variables below, Maxwell runs exactly as described above. Values are checked against
+`.claude/schemas/v1/harness/host-config.schema.json` and kept in `~/.config/maxwell/config.json` (or the file named
+by `MAXWELL_CONFIG_FILE`), outside the workspace. Every setting's environment variable wins over that file, so a
+hosted harness can configure a run with environment variables and mounted files alone:
+
+| Setting | Environment variable | What it does |
+|---|---|---|
+| `models.default`, `models.fallback` | `MAXWELL_MODEL`, `MAXWELL_FALLBACK_MODEL` | Claude Code model and fallback for headless runs |
+| `models.map.opus`, `.sonnet`, `.haiku` | `ANTHROPIC_DEFAULT_OPUS_MODEL`, `_SONNET_`, `_HAIKU_` | The provider model an agent's pinned alias runs on, where that alias's default is not enabled |
+| `pricing.file` | `MAXWELL_PRICING_FILE` | Extra price table (same shape as `kpi-extraction/references/pricing.json`) for the cost of audit |
+| `executor.file` | `MAXWELL_EXECUTOR_FILE` | Executor document used instead of `company-profile/<c>/sdlc/executor.json` |
+| `sandbox.credentialsDir` | `MAXWELL_SANDBOX_CREDENTIALS_DIR` | Folder of sandbox provider credential files |
+| `complianceos.baseUrl`, `.credentialsFile` | `MAXWELL_COS_BASE_URL`, `MAXWELL_COS_CREDENTIALS_FILE` | ComplianceOS origin and login file; a stored login only goes to the origin stored with it |
+| `complianceos.emailRef`, `.passwordRef`, `.tokenRef` | `MAXWELL_COS_EMAIL`, `_PASSWORD`, `_TOKEN` (these hold the value itself) | The name of a `MAXWELL_`, `COS_` or `COMPLIANCEOS_` variable holding each login secret; the value is never stored or shown |
+
+Settings that decide where secrets are kept or sent are limited when set with the tool: folders and files under
+`~/.config/maxwell/`, an https origin, `MAXWELL_`/`COS_`/`COMPLIANCEOS_` variable names. Their environment variables
+may point anywhere outside the workspace; hosted operators set those variables rather than the file, and set
+`MAXWELL_CONFIG_READONLY=1` so that agents cannot change settings (`set` and `unset` then refuse). A ComplianceOS login goes to the configured
+origin only when it, too, comes from the `*Ref` settings. `executor.file` serves one company; a host running several keeps each executor in its company folder.
+
 ## Validation
 
 - **Schemas:** 46 JSON Schemas with unit tests, plus closed vocabularies for regulators, instruments and statuses.

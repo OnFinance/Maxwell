@@ -10,6 +10,18 @@ export const PROVIDERS = ['docker', 'kubernetes', 'e2b', 'daytona', 'modal', 've
 export const HOSTED = ['e2b', 'daytona', 'modal', 'vercel', 'lambda-microvms'];
 export const RUNTIME_PROVIDERS = ['docker', 'kubernetes', 'host'];
 
+// Regions of hosted sandboxes that are in India, for companies whose details.json restricts dataResidency to India.
+export const INDIA_REGIONS = { modal: ['ap-south'], vercel: ['bom1'], 'lambda-microvms': ['ap-south-1'] };
+
+// The data-residency rule /connect-sandbox applies before it stores an executor: a company restricted to India may
+// scan on a hosted sandbox only in an Indian region. Returns a message, or null when the executor complies.
+export function residencyProblem(config, details) {
+  const provider = config && config.static && config.static.provider;
+  const indiaOnly = details && Array.isArray(details.dataResidency) && details.dataResidency.length > 0 && details.dataResidency.every((c) => c === 'IN');
+  if (!indiaOnly || !HOSTED.includes(provider) || (INDIA_REGIONS[provider] || []).includes(config.static.region)) return null;
+  return `${config.companyId} restricts data residency to India, and ${provider}${config.static.region ? ` region ${config.static.region}` : ''} is not an Indian region`;
+}
+
 // Paths a scanner sees inside a sandbox. Agents write {src} (the checkout, read-only) and {result} (the one file the
 // scanner writes) in their arguments.
 export const sandboxPaths = (root) => ({ root, src: `${root}/src`, result: `${root}/out/result`, opt: `${root}/opt` });

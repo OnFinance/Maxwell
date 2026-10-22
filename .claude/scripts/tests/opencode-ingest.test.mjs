@@ -9,7 +9,7 @@ import { opencodeSessionLog } from '../lib/workflow-status.mjs';
 import { WORKSPACE } from '../lib/toolchain.mjs';
 
 test('session summaries name a gen_ai provider the schema accepts', () => {
-  const pricing = loadPricing();
+  const pricing = loadPricing(undefined, { MAXWELL_CONFIG_FILE: '/nonexistent/maxwell-config.json' });
   assert.equal(providerOf(pricing, 'claude-opus-5[1m]'), 'anthropic');
   assert.equal(providerOf(pricing, 'anthropic/claude-sonnet-5'), 'anthropic');
   assert.equal(providerOf(pricing, 'cloudflare-workers-ai/@cf/zai-org/glm-5.3'), 'other', 'priced GLM keeps its pricing provider');
