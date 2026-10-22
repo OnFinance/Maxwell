@@ -150,7 +150,8 @@ specific Indian instrument that applies to the company's `entityTypes` (SEBI CSC
 - Utility commands: `/validate`, `/kpis`, `/seed-company`, `/status`, `/connect-sandbox`.
 - Add an application with `node .claude/scripts/apps/add.mjs <spec.json | -> [--checkout] [--dry-run]` (appId, repos
   with url and full pinnedCommit, age `sopsRecipients`); it validates before writing and never overwrites an existing
-  application without `--force`. Never write `applications/<app_id>/` files for a new application by hand.
+  application without `--force`. Never write `applications/<app_id>/` files for a new application by hand. Run
+  `/refresh-apps` before any probe: probes pick targets from repository facts the writer cannot fully know.
 - `/refresh-ctx` builds `company-profile/<c>/context.json` (business units, licences, obligations, questionnaires,
   processes, offerings, segments, platforms). Questions no source could answer stay `open`; when a human is chatting,
   ask them and record each answer with `node .claude/scripts/ctx/answer.mjs <c> <question_id>` (answer on stdin).
