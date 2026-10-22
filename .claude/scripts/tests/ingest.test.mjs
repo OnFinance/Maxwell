@@ -54,5 +54,19 @@ test('an ingest whose summary would be invalid writes neither the summary nor a 
     const base = join(dir, 'kpis/data/raw/sessions/claude-code', SID);
     assert.equal(existsSync(`${base}.summary.json`), false);
     assert.equal(existsSync(`${base}.meta.json`), false);
+    assert.equal(existsSync(`${base}.jsonl`), false, 'no orphan transcript copy');
+  } finally { rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('without --outcome (the SessionEnd hook), a session that only hit API errors is recorded as an error', () => {
+  const dir = workspace();
+  try {
+    const r = ingest(dir);
+    assert.equal(r.status, 0, r.stderr);
+    const base = join(dir, 'kpis/data/raw/sessions/claude-code', SID);
+    const summary = JSON.parse(readFileSync(`${base}.summary.json`, 'utf8'));
+    assert.equal(summary.outcome, 'error');
+    assert.equal(summary.turns, 0);
+    assert.equal(existsSync(`${base}.jsonl`), true, 'the transcript is copied once the summary is valid');
   } finally { rmSync(dir, { recursive: true, force: true }); }
 });
