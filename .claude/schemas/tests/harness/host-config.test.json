@@ -9,7 +9,7 @@
         "kind": "maxwell.host.config",
         "settings": {
           "models.map.sonnet": "claude-opus-5-5",
-          "sandbox.credentialsDir": "/run/maxwell/sandbox",
+          "sandbox.credentialsDir": "/home/ops/.config/maxwell/sandbox",
           "complianceos.emailRef": "COS_LOGIN_EMAIL",
           "complianceos.passwordRef": "COS_LOGIN_PASSWORD"
         },

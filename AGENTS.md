@@ -167,7 +167,8 @@ timelines agree with each other. 4. You did not create any file outside the layo
   runner retries the whole invocation on `--fallback-model` (default `opus`). Every session is ingested for KPIs.
 - Settings (models and the opus/sonnet/haiku aliases, the price table, the executor file, the sandbox credentials
   folder, the ComplianceOS login) are read and changed only with `node .claude/scripts/config/config.mjs`
-  (`keys`, `get`, `set`, `unset`; `/config` in chat). Each setting's environment variable wins over the host config
+  (`keys`, `get`, `set`, `unset`; `/config` in chat; `set`/`unset` need `MAXWELL_CONFIG_WRITE=1`, which marks a
+  change the person approves). Each setting's environment variable wins over the host config
   file (`~/.config/maxwell/config.json` or `MAXWELL_CONFIG_FILE`), so a hosted run can supply all of them without
   writing anything. Secret-bearing settings hold the name of an environment variable, never a value: never pass a
   secret to `config.mjs`, and never edit the host config file or `sdlc/executor.json` by hand.

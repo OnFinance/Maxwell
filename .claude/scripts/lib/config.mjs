@@ -64,7 +64,8 @@ export function readHostConfig(env = process.env) {
   const path = hostConfigPath(env);
   if (!existsSync(path)) return emptyHostConfig();
   let doc;
-  try { doc = JSON.parse(readFileSync(path, 'utf8')); } catch (err) { throw new ConfigError('invalid-config', `${path} is not valid JSON: ${err.message}`); }
+  // The parser's message quotes file text, so it is never passed on.
+  try { doc = JSON.parse(readFileSync(path, 'utf8')); } catch { throw new ConfigError('invalid-config', `${path} is not valid JSON`); }
   if (!doc || doc.kind !== 'maxwell.host.config' || !doc.settings || typeof doc.settings !== 'object' || Array.isArray(doc.settings)) throw new ConfigError('invalid-config', `${path} is not a Maxwell host config`);
   return { updated: {}, ...doc };
 }
@@ -127,6 +128,13 @@ export function checkValue(key, value, { ref = false, env = process.env } = {}) 
     const home = join(env.HOME || homedir(), '.config', 'maxwell');
     if (spec.guarded && !isInside(home, value)) throw new ConfigError('invalid-value', `${key} must be under ${home}; to keep it elsewhere, set ${spec.env} in the environment that starts Maxwell`);
   }
+  // The login file and the sandbox folder must not overlap the host config or each other: set-credentials and
+  // connect.mjs overwrite what they point at.
+  if (key === 'complianceos.credentialsFile') {
+    const sandboxDir = settingValue('sandbox.credentialsDir', env) || join(env.HOME || homedir(), '.config', 'maxwell', 'sandbox');
+    if (resolve(value) === resolve(hostConfigPath(env)) || isInside(sandboxDir, value)) throw new ConfigError('invalid-value', `${key} must not be the host config file or inside the sandbox credentials folder`);
+  }
+  if (key === 'sandbox.credentialsDir' && isInside(value, hostConfigPath(env))) throw new ConfigError('invalid-value', `${key} must not contain the host config file`);
   if (spec.kind === 'model' && !/^[A-Za-z0-9./:_@\[\]-]{1,128}$/.test(value)) throw new ConfigError('invalid-value', `${key} must be a model id such as claude-opus-5-5`);
   if (spec.kind === 'url' && !ORIGIN.test(value)) throw new ConfigError('invalid-value', `${key} must be an https origin such as https://host.example`);
   if (spec.kind === 'ref' && !REF_NAME.test(value)) throw new ConfigError('invalid-value', `${key} must name a variable starting MAXWELL_, COS_ or COMPLIANCEOS_ (so no other credential in the environment can be sent as a login)`);

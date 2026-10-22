@@ -4,7 +4,7 @@
 // host environment; the token cache lives in ~/.cache/maxwell. Nothing here ever prints a password or token.
 import { homedir } from 'node:os';
 import { join, resolve, relative, isAbsolute } from 'node:path';
-import { settingValue } from './config.mjs';
+import { hostSetting, settingValue } from './config.mjs';
 
 export const DEFAULT_BASE_URL = 'https://complianceos-prod.onfinance.ai';
 export const DEFAULT_COLLECTION = 'regulatory_communication';
@@ -62,6 +62,9 @@ export function formatEnvFile({ baseUrl, email, password }) {
 // Environment variables win over the file, field by field. A host setting complianceos.emailRef / passwordRef /
 // tokenRef names another environment variable to read instead (a hosted harness's own secret names); the
 // MAXWELL_COS_* variables still win over a reference.
+// The origin follows the credentials: MAXWELL_COS_BASE_URL, else the host setting complianceos.baseUrl only when every
+// credential in use came through a host-config reference, else the origin stored in the credentials file, else the
+// default. A changed host setting can never redirect a login it did not also supply.
 export function resolveCredentials(env = process.env, fileText) {
   const file = parseEnvFile(fileText);
   const fromEnv = { email: settingValue('complianceos.emailRef', env), password: settingValue('complianceos.passwordRef', env), token: settingValue('complianceos.tokenRef', env) };
@@ -69,10 +72,13 @@ export function resolveCredentials(env = process.env, fileText) {
   const password = fromEnv.password || file.MAXWELL_COS_PASSWORD || undefined;
   const token = fromEnv.token || undefined;
   const source = fromEnv.email || fromEnv.token ? 'env' : file.MAXWELL_COS_EMAIL ? 'file' : null;
-  // A login stored by set-credentials goes only to the address stored with it (or one set in the environment), so a
-  // changed host setting can never redirect a stored password to another server.
+  const viaRef = (field, key) => Boolean(fromEnv[field]) && hostSetting(key, env).source === 'file';
+  const used = [['email', 'complianceos.emailRef', email], ['password', 'complianceos.passwordRef', password], ['token', 'complianceos.tokenRef', token]].filter(([, , v]) => v);
+  const allViaRefs = used.length > 0 && used.every(([field, key]) => viaRef(field, key));
+  const hostUrl = hostSetting('complianceos.baseUrl', env);
   const baseUrl = env.MAXWELL_COS_BASE_URL
-    || (!fromEnv.password && file.MAXWELL_COS_PASSWORD ? file.MAXWELL_COS_BASE_URL : settingValue('complianceos.baseUrl', env) || file.MAXWELL_COS_BASE_URL)
+    || (allViaRefs && hostUrl.source === 'file' ? hostUrl.value : undefined)
+    || file.MAXWELL_COS_BASE_URL
     || DEFAULT_BASE_URL;
   return { baseUrl: baseUrl.replace(/\/+$/, ''), email, password, token, source };
 }

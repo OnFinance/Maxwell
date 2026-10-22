@@ -16,7 +16,7 @@ export function loadPricing(path = PRICING_PATH, env = process.env) {
   // A broken extra table must not cost a session its summary: warn and use the built-in table.
   let doc;
   try {
-    doc = JSON.parse(readFileSync(extra, 'utf8'));
+    try { doc = JSON.parse(readFileSync(extra, 'utf8')); } catch { throw new Error('is not valid JSON'); }
     const check = getValidator(buildAjv().ajv, PRICING_SCHEMA);
     if (!check(doc)) throw new Error(`does not match the pricing schema:\n${formatErrors(check.errors)}`);
   } catch (err) {

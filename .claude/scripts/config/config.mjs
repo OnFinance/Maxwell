@@ -12,8 +12,8 @@
 // Host settings live in ~/.config/maxwell/config.json (or MAXWELL_CONFIG_FILE), outside the workspace; each one's
 // environment variable wins over the file. Secret values are never accepted, stored or printed: a secret-bearing
 // setting holds the name of an environment variable, and `get` shows that name and whether it is set. Settings that
-// decide where secrets are kept or sent accept only safe values here (see lib/config.mjs `guarded`); .claude/settings.json
-// asks the person before an agent runs `set` or `unset`.
+// decide where secrets are kept or sent accept only safe values here (see lib/config.mjs `guarded`). `set` and
+// `unset` run only with MAXWELL_CONFIG_WRITE=1 in the environment, and the subcommand must come first.
 // Prints one JSON object. Exit codes: 0 done, 2 refused (unknown key, invalid value, a secret given as a value).
 import { parseArgs } from 'node:util';
 import { existsSync, readFileSync } from 'node:fs';
@@ -40,6 +40,12 @@ try {
   });
 } catch (err) { fail('usage', err.message); }
 const { values: flags, positionals: [cmd, key, value] } = parsed;
+// The subcommand comes first, so a permission rule written for `config.mjs set ...` sees it. A change also needs
+// MAXWELL_CONFIG_WRITE=1 in the environment: a hosted harness sets it in its own process, and a person in chat
+// approves the command line that carries it (it matches no auto-allowed rule), so an agent cannot change a setting
+// unseen by reordering arguments or spelling the script path differently.
+if (process.argv[2] !== cmd) fail('usage', 'the subcommand (keys, get, set, unset) must come first');
+if (['set', 'unset'].includes(cmd) && process.env.MAXWELL_CONFIG_WRITE !== '1') fail('confirm', `${cmd} changes a setting: run it as \`MAXWELL_CONFIG_WRITE=1 node .claude/scripts/config/config.mjs ${cmd} ...\` so the change is approved where it is run`);
 const by = String(flags.by || process.env.MAXWELL_INVOKED_BY || 'headless').slice(0, 120);
 
 const ajv = () => buildAjv().ajv;
@@ -108,7 +114,7 @@ try {
         const src = executorSource(flags.company, { root: WORKSPACE });
         if (src.override) fail('overridden', 'the host setting executor.file supplies this executor, so a change to the company file would not take effect; clear it with `config.mjs unset executor.file` first');
         let doc;
-        try { doc = JSON.parse(readValueFile(flags['from-file'])); } catch (err) { fail('invalid-value', `${flags['from-file']} is not JSON: ${err.message}`); }
+        try { doc = JSON.parse(readValueFile(flags['from-file'])); } catch { fail('invalid-value', `${flags['from-file']} is not valid JSON`); }
         if (!doc || typeof doc !== 'object' || Array.isArray(doc)) fail('invalid-value', 'the executor must be a JSON object');
         if (doc.companyId !== flags.company) fail('invalid-value', `the executor is for company ${doc.companyId}, not ${flags.company}`);
         const residency = residencyProblem(doc, JSON.parse(readFileSync(join(WORKSPACE, 'company-profile', flags.company, 'details.json'), 'utf8')));

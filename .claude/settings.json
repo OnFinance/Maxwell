@@ -103,6 +103,7 @@
     "ask": [
       "Bash(node .claude/scripts/config/config.mjs set *)",
       "Bash(node .claude/scripts/config/config.mjs unset *)",
+      "Bash(node .claude/scripts/*..*)",
       "Bash(ssh *)",
       "Bash(curl *)",
       "Bash(git push *)"
