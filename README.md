@@ -557,8 +557,10 @@ node .claude/scripts/run-headless.mjs --workflow probe-iac --company acme-securi
 ```
 
 Add `--harness opencode --model <provider/model>` to run on OpenCode. The run commits nothing itself: check the result
-with `npm run validate`. It prints one JSON result and exits 0 only when the workflow completed with no failed agent;
-otherwise `outcome` (`error`, `max-budget` or `max-turns`) and `outcomeReason` say what stopped it.
+with `npm run validate`, or add `--validate`. It prints one JSON result and exits 0 only when the workflow completed
+with no failed agent; otherwise `outcome` (`error`, `max-budget` or `max-turns`) and `outcomeReason` say what stopped
+it. The JSON also lists the files the run changed, the ledger records it appended and the findings among them;
+`--result-file <path>` writes the same JSON to a file outside the workspace.
 
 ## Validation
 
