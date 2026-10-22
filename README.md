@@ -510,7 +510,16 @@ state (`refresh-*` sessions excluded); methods are in `kpis/measurement/`.
 
 ## Quick start
 
-You need Node.js 22 or later, git, and [Claude Code](https://code.claude.com) (or [OpenCode](https://opencode.ai)).
+You need Node.js 22 or later, git, [Claude Code](https://code.claude.com) (or [OpenCode](https://opencode.ai)), and
+[sops](https://github.com/getsops/sops) with [age](https://github.com/FiloSottile/age) for each application's encrypted
+`credentials.json`. Create an age key once, outside this repository, and keep the private key file to yourself:
+
+```bash
+age-keygen -o ~/.config/sops/age/keys.txt   # prints "Public key: age1..."
+```
+
+The public key (`age1...`) is the recipient: put it in an application spec's `sopsRecipients` or in
+`SOPS_AGE_RECIPIENTS`. Set `SOPS_AGE_KEY_FILE` to the key file when you need to read the references back.
 
 **1. Install**
 
@@ -528,9 +537,26 @@ claude
 
 > Add my company acme-securities, legal name "Acme Securities Private Limited".
 
-Then add each application under `applications/<app_id>/`, using `applications/mcp-gateway/` as a template. Credentials
-are stored as encrypted references with [sops](https://github.com/getsops/sops) and [age](https://github.com/FiloSottile/age),
-never as values.
+Then add each application from a short JSON spec. The writer validates everything before it writes, creates
+`README.md`, one `repos/<repo_id>.json` per repository at its pinned commit and an empty `credentials.json` encrypted to
+your age public key, and with `--checkout` fetches each repository at that commit (`--dry-run` shows the files first):
+
+```bash
+node .claude/scripts/apps/add.mjs payments-api.json --checkout
+```
+
+```json
+{ "appId": "payments-api", "description": "Card payments API.", "sopsRecipients": ["age1..."],
+  "repos": [{ "repoId": "payments", "url": "https://github.com/acme/payments.git",
+              "pinnedCommit": "<full 40-character commit SHA>", "visibility": "private" }] }
+```
+
+With `--checkout`, whether a repository has IaC, Helm charts or Kustomize overlays, agent code and CODEOWNERS is read
+from the checkout; languages, build and CI system and the rest start at "not yet known" values (the output lists them
+as `unverified`). Probes choose their targets from these facts, so run `/refresh-apps` before the first probe. You can
+also copy `applications/mcp-gateway/` by hand. Credentials are stored as encrypted references with [sops](https://github.com/getsops/sops) and
+[age](https://github.com/FiloSottile/age), never as values; private repositories authenticate through git's own
+credential helper or SSH key, never a token in the URL.
 
 **3. Choose where scans run**
 
