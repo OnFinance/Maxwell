@@ -14,8 +14,10 @@
 // mappings may crosswalk to shared instruments and to the company's other catalogs.
 // An existing catalog is replaced only with --force, and never so that a control the company's ledger or other files
 // cite disappears. Files are staged under the git-ignored .claude/worktrees/ and moved into place with a rename each.
-// Exit codes: 0 done, 1 usage, 2 invalid spec or refused (nothing written).
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs';
+// One writer at a time per company: two concurrent runs may each keep only their own new sources.
+// Exit codes: 0 done, 1 usage, 2 invalid spec or refused (nothing written), or the files were written but failed the
+// check that follows (the message says which).
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, renameSync, rmdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { buildAjv, getValidator, formatErrors } from '../lib/schemas.mjs';
@@ -61,7 +63,10 @@ if (dryRun) {
 // appears whole through a rename. regulators.json goes first: the catalog may name a source it adds.
 mkdirSync(join('.claude', 'worktrees'), { recursive: true });
 const stage = mkdtempSync(join('.claude', 'worktrees', `maxwell-catalog-${plan.companyId}-`));
-const cleanup = () => { try { rmSync(stage, { recursive: true, force: true }); } catch { /* best effort */ } };
+const cleanup = () => {
+  try { rmSync(stage, { recursive: true, force: true }); } catch { /* best effort */ }
+  try { rmdirSync(join('.claude', 'worktrees')); } catch { /* not empty, or already gone */ }
+};
 process.on('exit', cleanup);
 for (const [sig, code] of [['SIGINT', 130], ['SIGTERM', 143], ['SIGHUP', 129]]) process.on(sig, () => { cleanup(); process.exit(code); });
 try {

@@ -67,8 +67,8 @@ test('the writer namespaces ids to the company, writes the catalog and its sourc
     assert.deepEqual(cat.provenance, { harness: 'script', generatedAt: NOW, workflow: 'add-company-catalog', agent: '.claude/scripts/catalogs/add-company-catalog.mjs' });
     const regs = JSON.parse(readFileSync(join(dir, 'company-profile/acme/regulators.json'), 'utf8'));
     assert.deepEqual(regs.sources.map((s) => s.id), ['co:acme:board']);
-    assert.deepEqual(readdirSync(join(dir, '.claude/worktrees')), [], 'the staging directory is gone');
-    assert.deepEqual(companyCatalogArgs('acme', dir), [{ instrumentId: 'co:acme:infosec-policy', file: 'company-profile/acme/catalogs/infosec-policy.catalog.json', regulator: 'co:acme:board', title: 'Information security policy', controls: 1 }]);
+    assert.ok(!existsSync(join(dir, '.claude/worktrees')), 'the staging directory is gone');
+    assert.deepEqual(companyCatalogArgs('acme', dir), [{ instrumentId: 'co:acme:infosec-policy', file: 'company-profile/acme/catalogs/infosec-policy.catalog.json', regulator: 'co:acme:board', controls: 1 }]);
     assert.deepEqual(companyCatalogArgs('beta', dir), [], 'the overlay is loaded only for its own company');
     // A second catalog of the same company may crosswalk to the first.
     const second = add(dir, spec({ sources: [{ id: 'customer-a', name: 'Customer A', type: 'customer' }] }, { id: 'customer-a-schedule', sourceType: 'customer-contract', regulator: 'customer-a', groups: [{ id: 'S', title: 'Security schedule', controls: [control({ id: 'S-4', mappings: [{ regulator: 'co:acme:board', instrument: 'co:acme:infosec-policy', controlId: 'AC-7' }] })] }] }));
@@ -97,7 +97,7 @@ test('the writer refuses another company\'s ids, unknown regulators, duplicate i
     refused(spec(), /already exists; nothing written/);
     // --force may replace the catalog, but never drop a control the company's ledger cites.
     assert.equal(append(dir, 'acme', ctlRecord('acme')).status, 0);
-    refused(spec({}, { groups: [{ id: 'A', title: 'A', controls: [control({ id: 'AC-8' })] }] }), /AC-7 is not in .*keep it in the catalog/, '--force');
+    refused(spec({}, { groups: [{ id: 'A', title: 'A', controls: [control({ id: 'AC-8' })] }] }), /AC-7 is not in .*keep the control in the catalog/, '--force');
     assert.equal(add(dir, spec({}, { version: 'v3.3' }), '--force').status, 0);
   } finally { rmSync(dir, { recursive: true, force: true }); }
 });
@@ -227,4 +227,61 @@ test('workflows give a company\'s agents its own catalogs and nothing else; with
       assert.doesNotMatch(extra, /co:beta|\.\.\//, `${f}: no other company's catalog`);
     });
   }
+});
+
+test('review follow-ups: free text, stray files, symlinks, single-file checks, id kinds, secrets and error text', async () => {
+  const dir = workspace();
+  try {
+    // Free text that merely starts with "co:" is not a company id, as before company catalogs existed.
+    const finding = JSON.parse(readFileSync(join(WORKSPACE, 'company-profile/example-co/soc/main.jsonl'), 'utf8').split('\n').find((l) => l.includes('"kind":"finding"')));
+    const free = { ...finding, companyId: 'beta', title: 'co: owned with the vendor' };
+    delete free.supersedes;
+    const r = append(dir, 'beta', free);
+    assert.equal(r.status, 0, r.stderr);
+    assert.equal(validate(dir, 'company-profile/beta/soc/main.jsonl').status, 0);
+    // A stray file named catalogs is reported, not a crash, and gives a run no catalogs.
+    writeFileSync(join(dir, 'company-profile/beta/catalogs'), 'x');
+    const v = validate(dir, 'company-profile/beta/catalogs');
+    assert.equal(v.status, 2);
+    assert.doesNotMatch(v.stderr, /at .*\.mjs:\d+/, 'no stack trace');
+    assert.deepEqual(companyCatalogArgs('beta', dir), []);
+    rmSync(join(dir, 'company-profile/beta/catalogs'));
+    // A catalogs folder that links to another company's is never followed.
+    assert.equal(add(dir, spec()).status, 0);
+    symlinkSync('../acme/catalogs', join(dir, 'company-profile/beta/catalogs'));
+    assert.deepEqual(companyCatalogArgs('beta', dir), []);
+    const listed = JSON.parse(spawnSync(process.execPath, [join(WORKSPACE, '.claude/scripts/catalogs/company.mjs'), 'list', 'beta'], { cwd: dir, encoding: 'utf8' }).stdout);
+    assert.deepEqual(listed.catalogs, []);
+    assert.match(listed.unreadable.join(), /not a symbolic link/);
+    assert.match(add(dir, spec({ companyId: 'beta' })).stderr, /symbolic link/);
+    rmSync(join(dir, 'company-profile/beta/catalogs'));
+    // Checking only the catalog still finds a control it dropped that the ledger cites.
+    assert.equal(append(dir, 'acme', ctlRecord('acme')).status, 0);
+    const file = join(dir, 'company-profile/acme/catalogs/infosec-policy.catalog.json');
+    const cat = JSON.parse(readFileSync(file, 'utf8'));
+    const good = JSON.stringify(cat);
+    cat.groups[0].controls[0].id = 'AC-8';
+    writeFileSync(file, JSON.stringify(cat));
+    const one = validate(dir, 'company-profile/acme/catalogs/infosec-policy.catalog.json');
+    assert.equal(one.status, 2);
+    assert.match(one.stderr, /main\.jsonl line 1: .*AC-7/);
+    writeFileSync(file, good);
+    // Ids are checked for their kind, and crosswalks to shared catalogs for the control.
+    const wrongKind = ctlRecord('acme', { id: 'co:acme:infosec-policy:AC-7', frameworkRefs: [{ regulator: 'co:acme:infosec-policy', instrument: 'co:acme:infosec-policy', controlId: 'AC-7' }] });
+    assert.match(append(dir, 'acme', { ...wrongKind, supersedes: wrongKind.id }).stderr, /is not a source/);
+    const noShared = add(dir, spec({}, { id: 'other', groups: [{ id: 'A', title: 'A', controls: [control({ mappings: [{ regulator: 'SEBI', instrument: 'sebi-cscrf-2024', controlId: 'NOPE-999' }] })] }] }));
+    assert.match(noShared.stderr, /NOPE-999, which is not in that instrument's catalog/);
+    // A secret-shaped value is never repeated back.
+    const secret = add(dir, spec({}, { id: 'ghp_' + 'a'.repeat(36) }));
+    assert.equal(secret.status, 2);
+    assert.doesNotMatch(secret.stderr, /ghp_a/);
+    // Errors for shared data read as before: no extra line from the company-id branch.
+    const { buildAjv, getValidator, formatErrors } = await import('../lib/schemas.mjs');
+    const val = getValidator(buildAjv({ root: join(WORKSPACE, '.claude/schemas') }).ajv, 'https://maxwell.onfinance.ai/schemas/v1/soc/record.schema.json');
+    const bad = { ...finding, regulatoryRefs: [{ ...finding.regulatoryRefs[0], instrument: 'sebi-cscrf-2025' }] };
+    assert.equal(val(bad), false);
+    const text = formatErrors(val.errors, 100);
+    assert.match(text, /\/regulatoryRefs\/0\/instrument must be equal to one of the allowed values/);
+    assert.doesNotMatch(text, /"else"|\^co:/);
+  } finally { rmSync(dir, { recursive: true, force: true }); }
 });

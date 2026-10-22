@@ -181,7 +181,7 @@ test('company catalogs change nothing for a company without them, and reach only
     const after = headless(w, iac);
     const prompt = after.calls[0].argv[after.calls[0].argv.length - 1];
     const args = JSON.parse(prompt.slice(prompt.indexOf('{')));
-    assert.deepEqual(args.companyCatalogs, [{ instrumentId: 'co:example-co:circular', file: 'company-profile/example-co/catalogs/circular.catalog.json', regulator: 'SEBI', title: 'Sector circular', controls: 1 }]);
+    assert.deepEqual(args.companyCatalogs, [{ instrumentId: 'co:example-co:circular', file: 'company-profile/example-co/catalogs/circular.catalog.json', regulator: 'SEBI', controls: 1 }]);
     assert.doesNotMatch(prompt, /other-co/, 'another company\'s catalog never reaches this run');
     assert.deepEqual(after.calls[0].env, envOf('opus'), 'no new variables');
   } finally { rmSync(w.dir, { recursive: true, force: true }); }

@@ -384,24 +384,30 @@
       "required": [ "regulator", "instrument", "controlId" ],
       "properties": {
         "regulator": {
-          "anyOf": [
-            {
-              "$ref": "https://maxwell.onfinance.ai/schemas/vocab/regulators.schema.json"
-            },
-            {
-              "$ref": "#/$defs/companySourceId"
-            }
-          ]
+          "x-maxwell-notes": "company-id-branch: a string starting with co: is a company id, anything else the shared vocabulary",
+          "if": {
+            "type": "string",
+            "pattern": "^co:"
+          },
+          "then": {
+            "$ref": "#/$defs/companySourceId"
+          },
+          "else": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/vocab/regulators.schema.json"
+          }
         },
         "instrument": {
-          "anyOf": [
-            {
-              "$ref": "https://maxwell.onfinance.ai/schemas/vocab/instruments.schema.json"
-            },
-            {
-              "$ref": "#/$defs/companyInstrumentId"
-            }
-          ]
+          "x-maxwell-notes": "company-id-branch: a string starting with co: is a company id, anything else the shared vocabulary",
+          "if": {
+            "type": "string",
+            "pattern": "^co:"
+          },
+          "then": {
+            "$ref": "#/$defs/companyInstrumentId"
+          },
+          "else": {
+            "$ref": "https://maxwell.onfinance.ai/schemas/vocab/instruments.schema.json"
+          }
         },
         "version": {
           "$ref": "#/$defs/shortText"

@@ -8,7 +8,7 @@
 // run-headless.mjs (args.companyCatalogs, passed only when the company has catalogs) and catalogs/*.mjs.
 // A company without catalogs or regulators.json, and with no 'co:' id in its files, produces no problem and no args:
 // everything behaves exactly as it does without this module.
-import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { existsSync, lstatSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 export const CATALOG_SCHEMA = 'https://maxwell.onfinance.ai/schemas/v1/company/catalog.schema.json';
@@ -19,6 +19,12 @@ export const SLUG = new RegExp(`^${SLUG_RE}$`);
 // 'co:<company>:<slug>' (an instrument or source id) or 'co:<company>:<slug>:<controlId>' (a ledger control id).
 const CO_ID = new RegExp(`^co:(${SLUG_RE}):(${SLUG_RE})(?::([A-Za-z0-9][A-Za-z0-9._()\\-]{0,63}))?$`);
 const CO_PREFIX = /^co:([^:]*):/;
+// What counts as a company id at all: 'co:', a slug-shaped company, ':' and no whitespace. Free text that merely
+// starts with "co:" ("co: owned with the vendor") is not one and is left alone, as before company catalogs existed.
+const CO_LIKE = /^co:[A-Za-z0-9][A-Za-z0-9_-]*:\S*$/;
+export const isCoId = (s) => typeof s === 'string' && CO_LIKE.test(s);
+// lstat without throwing: 'dir', 'file', 'link', or null when absent.
+const kindOf = (path) => { try { const st = lstatSync(path); return st.isSymbolicLink() ? 'link' : st.isDirectory() ? 'dir' : 'file'; } catch { return null; } };
 
 export const catalogsDir = (companyId, root = '.') => join(root, 'company-profile', companyId, 'catalogs');
 export const regulatorsPath = (companyId, root = '.') => join(root, 'company-profile', companyId, 'regulators.json');
@@ -27,15 +33,17 @@ export const instrumentIdFor = (companyId, slug) => `co:${companyId}:${slug}`;
 
 // Parses a 'co:' id into { companyId, slug, controlId? }, or null when the string is not one.
 export function parseCoId(s) {
-  if (typeof s !== 'string' || !s.startsWith('co:')) return null;
+  if (!isCoId(s)) return null;
   const m = CO_ID.exec(s);
   return m ? { companyId: m[1], slug: m[2], controlId: m[3] } : { companyId: (CO_PREFIX.exec(s) || [])[1] || '', slug: null, malformed: true };
 }
 
 export function hasOverlay(companyId, root = '.') {
   if (!SLUG.test(companyId || '')) return false;
-  const dir = catalogsDir(companyId, root);
-  return existsSync(regulatorsPath(companyId, root)) || (existsSync(dir) && readdirSync(dir).some((f) => f.endsWith('.catalog.json')));
+  if (kindOf(regulatorsPath(companyId, root))) return true;
+  const kind = kindOf(catalogsDir(companyId, root));
+  if (kind !== 'dir') return kind === 'link';
+  try { return readdirSync(catalogsDir(companyId, root)).some((f) => f.endsWith('.catalog.json')); } catch { return false; }
 }
 
 const readJson = (path) => { try { return { doc: JSON.parse(readFileSync(path, 'utf8')) }; } catch (e) { return { error: e.code === 'ENOENT' ? 'missing' : 'not valid JSON' }; } };
@@ -52,7 +60,9 @@ export function loadOverlay(companyId, root = '.') {
   const overlay = { companyId, catalogs: new Map(), sources: new Map(), regulators: null, unreadable: [] };
   if (!SLUG.test(companyId || '')) return overlay;
   const rp = regulatorsPath(companyId, root);
-  if (existsSync(rp)) {
+  const rkind = kindOf(rp);
+  if (rkind && rkind !== 'file') overlay.unreadable.push(`company-profile/${companyId}/regulators.json: must be a regular file, not a ${rkind === 'link' ? 'symbolic link' : 'directory'}`);
+  else if (rkind) {
     const r = readJson(rp);
     if (r.error) overlay.unreadable.push(`company-profile/${companyId}/regulators.json: ${r.error}`);
     else {
@@ -61,10 +71,16 @@ export function loadOverlay(companyId, root = '.') {
     }
   }
   const dir = catalogsDir(companyId, root);
-  if (existsSync(dir)) {
-    for (const f of readdirSync(dir).filter((x) => x.endsWith('.catalog.json')).sort()) {
+  const dkind = kindOf(dir);
+  // A company's catalogs are its own files: a symbolic link (to another company's folder, say) is never followed.
+  if (dkind && dkind !== 'dir') overlay.unreadable.push(`company-profile/${companyId}/catalogs: must be a folder, not a ${dkind === 'link' ? 'symbolic link' : 'file'}`);
+  else if (dkind) {
+    let names = [];
+    try { names = readdirSync(dir); } catch (e) { overlay.unreadable.push(`company-profile/${companyId}/catalogs: ${e.code || 'unreadable'}`); }
+    for (const f of names.filter((x) => x.endsWith('.catalog.json')).sort()) {
       const slug = f.slice(0, -'.catalog.json'.length);
       const file = catalogRel(companyId, slug);
+      if (kindOf(join(dir, f)) !== 'file') { overlay.unreadable.push(`${file}: must be a regular file`); continue; }
       const r = readJson(join(dir, f));
       if (r.error) { overlay.unreadable.push(`${file}: ${r.error}`); continue; }
       const instrumentId = instrumentIdFor(companyId, slug);
@@ -82,35 +98,44 @@ export function companyCatalogArgs(companyId, root = '.') {
   const out = [];
   for (const c of overlay.catalogs.values()) {
     if (!c.doc || c.doc.instrumentId !== c.instrumentId || c.doc.companyId !== companyId) continue;
-    out.push({ instrumentId: c.instrumentId, file: c.file, regulator: typeof c.doc.regulator === 'string' ? c.doc.regulator : null, title: typeof c.doc.title === 'string' ? c.doc.title.slice(0, 200) : null, controls: c.controls.size });
+    // Only ids, the file and a count: nothing free-form from the catalog reaches the run's prompt.
+    if (typeof c.doc.regulator !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9:-]{0,130}$/.test(c.doc.regulator)) continue;
+    out.push({ instrumentId: c.instrumentId, file: c.file, regulator: c.doc.regulator, controls: c.controls.size });
   }
   return out;
 }
 
 let registryCache = null;
+// instrumentId -> { regulator, controls: Set of control ids, or null when the instrument has no catalog file }.
 function registryRegulators(root) {
   if (registryCache && registryCache.root === root) return registryCache.map;
   const map = new Map();
-  try { for (const i of JSON.parse(readFileSync(join(root, REGISTRY), 'utf8')).instruments || []) map.set(i.instrumentId, i.regulator); } catch { /* the registry is validated on its own */ }
+  try {
+    for (const i of JSON.parse(readFileSync(join(root, REGISTRY), 'utf8')).instruments || []) {
+      let controls = null;
+      if (i.catalogFile) { try { controls = new Set(catalogControls(JSON.parse(readFileSync(join(root, i.catalogFile), 'utf8'))).map(({ control }) => control.id)); } catch { controls = null; } }
+      map.set(i.instrumentId, { regulator: i.regulator, controls });
+    }
+  } catch { /* the registry is validated on its own */ }
   registryCache = { root, map };
   return map;
 }
 
 // Walks any JSON value and calls visit(kind, value, path) for every string that starts with 'co:' ('id') and every
 // object shaped like a regulatoryRef whose instrument starts with 'co:' ('ref').
-export function walkCo(value, visit, path = '') {
-  if (typeof value === 'string') { if (value.startsWith('co:')) visit('id', value, path); return; }
-  if (Array.isArray(value)) { value.forEach((v, i) => walkCo(v, visit, `${path}/${i}`)); return; }
+export function walkCo(value, visit, path = '', key = null) {
+  if (typeof value === 'string') { if (isCoId(value)) visit('id', value, path, key); return; }
+  if (Array.isArray(value)) { value.forEach((v, i) => walkCo(v, visit, `${path}/${i}`, key)); return; }
   if (!value || typeof value !== 'object') return;
-  if (typeof value.instrument === 'string' && value.instrument.startsWith('co:') && typeof value.controlId === 'string') visit('ref', value, path);
-  for (const [k, v] of Object.entries(value)) walkCo(v, visit, `${path}/${k}`);
+  if (isCoId(value.instrument) && typeof value.controlId === 'string') visit('ref', value, path);
+  for (const [k, v] of Object.entries(value)) walkCo(v, visit, `${path}/${k}`, k);
 }
 
 // Problems with the 'co:' ids and refs inside `value`, a document or record held in company `companyId`'s files.
 // overlay: loadOverlay(companyId). Ids of another company are refused outright; the company's own ids must exist.
 export function refProblems(companyId, value, overlay) {
   const out = [];
-  walkCo(value, (kind, v, path) => {
+  walkCo(value, (kind, v, path, key) => {
     const at = path || '/';
     if (kind === 'ref') {
       const cat = overlay.catalogs.get(v.instrument);
@@ -133,6 +158,9 @@ export function refProblems(companyId, value, overlay) {
       else if (!cat.controls.has(p.controlId)) out.push(`${at}: ${v} names control ${p.controlId}, which is not in ${cat.file}`);
       return;
     }
+    // A field says which kind of id it holds: regulators are sources (or shared), instruments are catalogs.
+    if (key === 'regulator' && !overlay.sources.has(v)) { out.push(`${at}: ${v} is not a source in company-profile/${companyId}/regulators.json`); return; }
+    if (key === 'instrument' && !overlay.catalogs.has(id)) { out.push(`${at}: ${v} is not a catalog in company-profile/${companyId}/catalogs/`); return; }
     if (!overlay.catalogs.has(id) && !overlay.sources.has(v)) out.push(`${at}: ${v} is neither a catalog in company-profile/${companyId}/catalogs/ nor a source in company-profile/${companyId}/regulators.json`);
   });
   return out;
@@ -181,7 +209,11 @@ export function overlayFileProblems(companyId, overlay, root = '.') {
       for (const m of (Array.isArray(control.mappings) ? control.mappings : [])) {
         if (!m || typeof m.instrument !== 'string') continue;
         if (m.instrument === cat.instrumentId) out.push(`${file}: control ${control.id} maps to its own catalog; crosswalks name another instrument`);
-        else if (!m.instrument.startsWith('co:') && shared.has(m.instrument) && shared.get(m.instrument) !== m.regulator) out.push(`${file}: control ${control.id} maps to ${m.instrument} with regulator ${m.regulator}; the registry names ${shared.get(m.instrument)}`);
+        else if (!m.instrument.startsWith('co:') && shared.has(m.instrument)) {
+          const entry = shared.get(m.instrument);
+          if (entry.regulator !== m.regulator) out.push(`${file}: control ${control.id} maps to ${m.instrument} with regulator ${m.regulator}; the registry names ${entry.regulator}`);
+          if (entry.controls && !entry.controls.has(m.controlId)) out.push(`${file}: control ${control.id} maps to ${m.instrument} ${m.controlId}, which is not in that instrument's catalog`);
+        }
       }
     }
     for (const p of refProblems(companyId, doc, overlay)) out.push(`${file}: ${p}`);
@@ -217,6 +249,11 @@ export function overlayChecker({ root = '.', allCompanies = false } = {}) {
       if (allCompanies && existsSync(join(root, 'company-profile'))) for (const c of readdirSync(join(root, 'company-profile'))) if (SLUG.test(c)) companies.add(c);
       for (const c of [...companies].sort()) {
         if (hasOverlay(c, root)) for (const p of overlayFileProblems(c, overlayOf(c), root)) out.push(p);
+        // Checking only a company's catalog (an edit hook, a pre-commit on one file) still checks what cites it.
+        if (!allCompanies && [...found.keys()].some((rel) => rel.startsWith(`company-profile/${c}/`) && /\/(catalogs\/[^/]+\.catalog\.json|regulators\.json)$/.test(rel))) {
+          const noted = new Set(found.keys());
+          for (const p of companyFileProblems(c, overlayOf(c), root)) if (!noted.has(p.split(/:| line /)[0])) out.push(p);
+        }
       }
       for (const [rel, items] of found) {
         const c = companyOf(rel);
@@ -254,6 +291,7 @@ export function companyFileProblems(companyId, overlay, root = '.') {
       let text;
       if (e.name.endsWith('.jsonl') || e.name.endsWith('.json')) { try { text = readFileSync(join(dir, e.name), 'utf8'); } catch { continue; } } else continue;
       if (!text.includes('"co:')) continue;
+      if (kindOf(join(dir, e.name)) !== 'file') continue;
       const docs = e.name.endsWith('.jsonl')
         ? text.split('\n').map((l, i) => [l, ` line ${i + 1}`]).filter(([l]) => l.trim())
         : [[text, '']];
@@ -293,6 +331,9 @@ export function planCompanyCatalog(spec, { now, root = '.', force = false, prove
   const problems = [];
   const fail = (p) => ({ problems: [...problems, p] });
   if (!spec || typeof spec !== 'object' || Array.isArray(spec)) return fail('the spec must be a JSON object');
+  // Checked before anything else so that no message ever repeats a secret-shaped value.
+  const secret = findSecret(JSON.stringify(spec));
+  if (secret) return fail(`the spec looks like it contains a secret (${secret}); catalogs hold control text, never credentials`);
   for (const k of Object.keys(spec)) if (!SPEC_KEYS.has(k)) problems.push(`unknown spec key '${k}' (allowed: ${[...SPEC_KEYS].join(', ')})`);
   const companyId = spec.companyId;
   if (typeof companyId !== 'string' || !SLUG.test(companyId)) return fail('companyId must be a company slug');
@@ -347,14 +388,15 @@ export function planCompanyCatalog(spec, { now, root = '.', force = false, prove
     const vr = getValidator(ajv, REGULATORS_SCHEMA);
     if (!vr(regulators)) problems.push(`regulators.json would not match v1/company/regulators.schema.json:\n${formatErrors(vr.errors)}`);
   }
-  const secret = findSecret(JSON.stringify(spec));
-  if (secret) problems.push(`the spec looks like it contains a secret (${secret}); catalogs hold control text, never credentials`);
   if (problems.length) return { problems };
 
   // The state after the write, checked like validate would check it.
   const next = { ...overlay, catalogs: new Map(overlay.catalogs), sources, regulators, unreadable: [] };
   next.catalogs.set(instrumentId, { instrumentId, slug, file: catalogRel(companyId, slug), doc: catalog, controls: new Map(catalogControls(catalog).map(({ control }) => [control.id, control])) });
   for (const p of overlayFileProblems(companyId, next, root)) problems.push(p);
-  for (const p of companyFileProblems(companyId, next, root)) problems.push(`${p} (the company's files cite it; keep it in the catalog)`);
+  // As with shared catalogs (skill section 6, "apply without deleting"), a control id the append-only ledger has cited
+  // stays: to retire a clause keep the control (reword it, set mandatory false) and supersede its ledger control as
+  // not-applicable.
+  for (const p of companyFileProblems(companyId, next, root)) problems.push(`${p} (the company's files cite it: keep the control in the catalog; to retire it, reword it, set mandatory false and supersede its ledger control as not-applicable)`);
   return { problems, companyId, instrumentId, catalogPath: catalogRel(companyId, slug), catalog, regulatorsPath: `company-profile/${companyId}/regulators.json`, regulators, sourcesAdded, replaced: !!existing, controls: next.catalogs.get(instrumentId).controls.size, now };
 }
