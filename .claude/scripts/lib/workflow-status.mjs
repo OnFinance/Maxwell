@@ -103,3 +103,37 @@ export function workflowStatus(sessionId) {
   const failures = st.outputFile && existsSync(st.outputFile) ? agentFailures(readFileSync(st.outputFile, 'utf8')) : { failedAgents: 0, errors: [] };
   return { ...st, ...failures, transcript: file };
 }
+
+// The true outcome of one headless Claude Code invocation that ran a saved workflow. `claude -p` can report success
+// while the workflow it launched never finished: the budget ran out while the workflow ran in the background, the
+// idle ceiling dropped it, an agent failed, or it was never launched. Pure: every input is passed in.
+//   result: the parsed `claude -p --output-format json` object; wf: workflowStatus(); budgetUsd: --budget-usd or null.
+// Returns { outcome, finished, reason } with outcome in success|error|max-turns|max-budget (the session summary vocabulary)
+// and reason a plain sentence (null on success) that never quotes the session's own text.
+export function classifyWorkflowRun({ result, wf, budgetUsd = null }) {
+  const r = result || {};
+  const reported = typeof r.total_cost_usd === 'number' ? r.total_cost_usd : null;
+  const budget = budgetUsd === null || budgetUsd === undefined || budgetUsd === '' ? null : Number(budgetUsd);
+  const subtype = r.is_error ? (r.subtype === 'error_max_turns' ? 'max-turns' : r.subtype === 'error_max_budget_usd' ? 'max-budget' : 'error') : 'success';
+  const w = wf || { launched: false, status: null, failedAgents: 0, errors: [] };
+  const finished = Boolean(w.launched && w.status === 'completed' && (w.failedAgents || 0) === 0);
+  if (finished) {
+    // Every agent finished; a limit that only cut off the session's closing report does not fail the run.
+    if (subtype === 'error' && ACCOUNT_LIMIT.test(String(r.result || ''))) return { outcome: 'success', finished, reason: null };
+    return { outcome: subtype, finished, reason: subtype === 'success' ? null : `the workflow completed but the session ended with ${r.subtype || 'an error'}` };
+  }
+  const budgetHit = subtype === 'max-budget' || (budget !== null && Number.isFinite(budget) && reported !== null && reported >= budget);
+  const where = !w.launched ? 'before the workflow was launched'
+    : w.status === null ? 'while the workflow was still running in the background, so its result was dropped'
+      : w.status === 'completed' ? `after the workflow completed with ${w.failedAgents} failed agent${w.failedAgents === 1 ? '' : 's'}`
+        : `after the workflow ended with status ${w.status}`;
+  if (budgetHit) return { outcome: 'max-budget', finished, reason: `the budget${budget !== null ? ` of ${budget} USD` : ''} was reached${reported !== null ? ` (reported ${Math.round(reported * 100) / 100} USD)` : ''} ${where}` };
+  if (subtype === 'max-turns') return { outcome: 'max-turns', finished, reason: `the turn limit was reached ${where}` };
+  if (!w.launched) return { outcome: 'error', finished, reason: r.is_error ? 'the session failed before the workflow was launched (see result)' : 'the session ended without launching the workflow' };
+  if (w.status === null) return { outcome: 'error', finished, reason: 'the session ended while the workflow was still running in the background, so its result was dropped' };
+  if (w.status === 'completed') {
+    const labels = (w.errors || []).map((e) => e.label).filter(Boolean).slice(0, 5);
+    return { outcome: 'error', finished, reason: `${w.failedAgents} agent${w.failedAgents === 1 ? '' : 's'} failed${labels.length ? ` (${labels.join(', ')})` : ''}` };
+  }
+  return { outcome: 'error', finished, reason: `the workflow ended with status ${w.status}` };
+}

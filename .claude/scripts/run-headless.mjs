@@ -13,7 +13,7 @@ import { spawnSync } from 'node:child_process';
 import { writeFileSync, mkdirSync, readFileSync, existsSync } from 'node:fs';
 import { randomUUID } from 'node:crypto';
 import { ulid } from '../hooks/lib.mjs';
-import { ACCOUNT_LIMIT, opencodeSessionLog, parseLimitReset, workflowStatus } from './lib/workflow-status.mjs';
+import { ACCOUNT_LIMIT, classifyWorkflowRun, opencodeSessionLog, parseLimitReset, workflowStatus } from './lib/workflow-status.mjs';
 
 const argv = process.argv.slice(2);
 const opt = (f, d) => { const i = argv.indexOf(f); return i >= 0 ? argv[i + 1] : d; };
@@ -37,6 +37,8 @@ const env = { ...process.env, MAXWELL_RUN_ID: runId, MAXWELL_HARNESS: harness, M
 if (!env.CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS) env.CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS = String(4 * 60 * 60 * 1000);
 
 let sessionId = null; let reported = null; let outcome = 'success'; let result = null;
+// workflowRun: whether the saved workflow was launched and finished (Claude Code); outcomeReason: why a run is not a success.
+let workflowRun = null; let outcomeReason = null;
 // Workflows are deterministic scripts: they cannot read the clock, so the run timestamp is taken once here.
 const now = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
 const workflowArgs = { companyId: company, appIds: apps, envIds: envs, dryRun, now, runId };
@@ -89,18 +91,16 @@ if (harness === 'claude-code') {
     console.error(`[run-headless] model=${m} session ${sessionId} turns=${result.num_turns} cost=${reported} denials=${(result.permission_denials || []).length} outcome=${outcome}`);
     const limitMessages = ACCOUNT_LIMIT.test(String(result.result || '')) ? [String(result.result)] : [];
     let finished = outcome === 'success';
+    outcomeReason = finished ? null : `the session ended with ${result.subtype || 'an error'}`;
     if (!utility.has(workflow)) {
       const wf = workflowStatus(sessionId);
       for (const e of wf.errors) if (ACCOUNT_LIMIT.test(e.error)) limitMessages.push(e.error);
-      finished = wf.launched && wf.status === 'completed' && wf.failedAgents === 0;
-      if (finished) {
-        // Every agent finished; a limit that only cut off the session's closing report does not fail the run.
-        if (outcome === 'error' && ACCOUNT_LIMIT.test(String(result.result || ''))) outcome = 'success';
-        console.error(`[run-headless] ${workflow} completed (task-notification status ${wf.status}, no failed agents)`);
-      } else {
-        if (outcome === 'success') outcome = 'error';
-        console.error(`[run-headless] ${workflow} did not complete: launched=${wf.launched} status=${wf.status || 'none'} failedAgents=${wf.failedAgents} (transcript ${wf.transcript || 'not found'})`);
-      }
+      const run = classifyWorkflowRun({ result, wf, budgetUsd: opt('--budget-usd', null) });
+      ({ finished, outcome } = run);
+      outcomeReason = run.reason;
+      workflowRun = { name: wf.workflowName, launched: wf.launched, status: wf.status, failedAgents: wf.failedAgents };
+      if (finished) console.error(`[run-headless] ${workflow} completed (task-notification status ${wf.status}, no failed agents)`);
+      else console.error(`[run-headless] ${workflow} did not complete: launched=${wf.launched} status=${wf.status || 'none'} failedAgents=${wf.failedAgents} outcome=${outcome}: ${outcomeReason} (transcript ${wf.transcript || 'not found'})`);
     }
     if (!finished && limitMessages.length && limitWaits < maxLimitWaits) {
       spawnSync(process.execPath, ['.claude/scripts/sessions/ingest.mjs', '--harness', 'claude-code', '--session', sessionId, '--force', '--outcome', 'error'], { encoding: 'utf8', env });
@@ -142,5 +142,6 @@ if (harness === 'claude-code' && sessionId) {
   const ing = spawnSync(process.execPath, ingestArgs, { encoding: 'utf8', env: { ...env, MAXWELL_WORKFLOW: workflow, MAXWELL_COMPANY_ID: company } });
   process.stderr.write(ing.stdout + ing.stderr);
 }
-console.log(JSON.stringify({ workflow, company, harness, runId, sessionId, reportedCostUsd: reported, outcome, durationMs: Date.now() - started, result: harness === 'claude-code' ? (result && result.result) : result }, null, 2));
+if (harness !== 'claude-code' && outcome !== 'success') outcomeReason = 'the OpenCode workflow runner exited with an error';
+console.log(JSON.stringify({ workflow, company, harness, runId, sessionId, reportedCostUsd: reported, outcome, durationMs: Date.now() - started, result: harness === 'claude-code' ? (result && result.result) : result, workflowRun, outcomeReason }, null, 2));
 process.exit(outcome === 'success' ? 0 : 1);

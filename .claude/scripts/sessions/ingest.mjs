@@ -138,8 +138,8 @@ meta.harnessVersion = semver(harnessVersion || meta.harnessVersion || '0.0.0');
 const { ajv } = buildAjv();
 const validateMeta = getValidator(ajv, 'https://maxwell.onfinance.ai/schemas/v1/session/meta.schema.json');
 if (!validateMeta(meta)) { console.error(`meta invalid:\n${formatErrors(validateMeta.errors)}`); process.exit(2); }
-writeFileSync(metaPath, JSON.stringify(meta, null, 2) + '\n');
 if (!meta.sampled) {
+  writeFileSync(metaPath, JSON.stringify(meta, null, 2) + '\n');
   const staleSummary = `${dir}/${sessionId}.summary.json`;
   if (excluded && existsSync(staleSummary)) unlinkSync(staleSummary);
   console.log(`session ${sessionId} not sampled (${meta.samplingReason}); meta updated`);
@@ -191,6 +191,8 @@ const summary = {
   provenance: { harness: 'script', generatedAt: now(), sessionId, ...(meta.runId ? { runId: meta.runId } : {}), workflow: meta.workflow, agent: '.claude/scripts/sessions/ingest.mjs' },
 };
 const validateSummary = getValidator(ajv, 'https://maxwell.onfinance.ai/schemas/v1/session/summary.schema.json');
+// Both files are written only once both are valid, so a failed ingest never leaves a sampled meta without its summary.
 if (!validateSummary(summary)) { console.error(`summary invalid:\n${formatErrors(validateSummary.errors)}`); process.exit(2); }
+writeFileSync(metaPath, JSON.stringify(meta, null, 2) + '\n');
 writeFileSync(`${dir}/${sessionId}.summary.json`, JSON.stringify(summary, null, 2) + '\n');
 console.log(`session ${sessionId}: ${basename(dir)} sampled=${meta.sampled} cost=${computed} USD (reported ${reported}) turns=${stats.turns} tools=${stats.toolCalls.total} subagents=${stats.subagentFiles}`);

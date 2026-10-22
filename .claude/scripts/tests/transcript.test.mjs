@@ -63,3 +63,19 @@ test('opencode export walker finds assistant tokens, tool parts and ignores stor
   assert.equal(s.reportedCostUsd, 0);
   assert.equal(s.startedAt, '2026-09-13T16:37:22Z');
 });
+
+test('synthetic API-error records are not a model, a turn or an error that fails the session', () => {
+  const synthetic = JSON.stringify({
+    type: 'assistant', uuid: 'u-syn', timestamp: '2026-09-13T17:50:00.000Z', isSidechain: false, version: '2.1.270', isApiErrorMessage: true, error: 'cloud_credential_error',
+    message: { id: 'syn-1', model: '<synthetic>', role: 'assistant', usage: { input_tokens: 0, output_tokens: 0, cache_creation_input_tokens: 0, cache_read_input_tokens: 0 }, content: [{ type: 'text', text: 'API Error: Could not load cloud credentials.' }] },
+  });
+  const s = parseClaudeTranscript([assistant('req1', 20), synthetic]);
+  assert.deepEqual([...s.models.keys()], ['claude-fable-5-1']);
+  assert.equal(s.turns, 1);
+  assert.equal(s.inferenceCalls, 1);
+  assert.equal(s.errors.length, 0);
+  assert.deepEqual(s.apiErrors, [{ kind: 'cloud_credential_error', message: 'API Error: Could not load cloud credentials.' }]);
+  const only = parseClaudeTranscript([synthetic]);
+  assert.equal(only.models.size, 0);
+  assert.equal(only.endedAt, '2026-09-13T17:50:00.000Z');
+});
