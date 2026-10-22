@@ -148,6 +148,10 @@ specific Indian instrument that applies to the company's `entityTypes` (SEBI CSC
   instead of executing.
 - Reports are written to `summary.md` sections and `soc` observations, never to new files.
 - Utility commands: `/validate`, `/kpis`, `/seed-company`, `/status`, `/connect-sandbox`, `/config`.
+- Add an application with `node .claude/scripts/apps/add.mjs <spec.json | -> [--checkout] [--dry-run]` (appId, repos
+  with url and full pinnedCommit, age `sopsRecipients`); it validates before writing and never overwrites an existing
+  application without `--force`. Never write `applications/<app_id>/` files for a new application by hand. Run
+  `/refresh-apps` before any probe: probes pick targets from repository facts the writer cannot fully know.
 - `/refresh-ctx` builds `company-profile/<c>/context.json` (business units, licences, obligations, questionnaires,
   processes, offerings, segments, platforms). Questions no source could answer stay `open`; when a human is chatting,
   ask them and record each answer with `node .claude/scripts/ctx/answer.mjs <c> <question_id>` (answer on stdin).
@@ -165,13 +169,22 @@ timelines agree with each other. 4. You did not create any file outside the layo
 - Claude Code: `node .claude/scripts/run-headless.mjs --workflow <name> --company <company_id> [--app <id>] [--env <id>] [--dry-run]`.
   Default model is Opus (`--model opus`). If another model is requested and it hits a usage limit (HTTP 429), the
   runner retries the whole invocation on `--fallback-model` (default `opus`). Every session is ingested for KPIs.
+  A run succeeds only when the workflow itself completed with no failed agent. Otherwise the JSON result says why in
+  `outcomeReason`, `workflowRun` gives `{name, launched, status, failedAgents}`, and `outcome` is `max-budget` when
+  the `--budget-usd` cap was reached (also while the workflow ran in the background), `max-turns`, or `error`.
+  The JSON result also lists what the run did: `files` (workspace files it changed; session KPI files apart in
+  `sessionFiles`), `ledger` (records appended to the company's `soc/main.jsonl`: count, by kind, ids; or
+  `{rewritten: true}` when the file was rewritten instead of appended to), `findings` (id, title, severity, status,
+  fingerprint of each new finding record) and `validation` (`--validate` runs `npm run validate` afterwards).
+  `--result-file <path>` also writes it to a file outside the workspace.
 - Settings (models and the opus/sonnet/haiku aliases, the price table, the executor file, the sandbox credentials
-  folder, the ComplianceOS login) are read and changed only with `node .claude/scripts/config/config.mjs`
-  (`keys`, `get`, `set`, `unset`; `/config` in chat; `set`/`unset` need `MAXWELL_CONFIG_WRITE=1`, which marks a
-  change the person approves). Each setting's environment variable wins over the host config
-  file (`~/.config/maxwell/config.json` or `MAXWELL_CONFIG_FILE`), so a hosted run can supply all of them without
-  writing anything. Secret-bearing settings hold the name of an environment variable, never a value: never pass a
-  secret to `config.mjs`, and never edit the host config file or `sdlc/executor.json` by hand.
+  folder, the ComplianceOS login) can be shown and changed with `node .claude/scripts/config/config.mjs`
+  (`keys`, `get`, `set`, `unset`; `/config` in chat). All of them are optional: with no host config file and none of
+  their environment variables, Maxwell runs exactly as it always has. Each setting's environment variable wins over
+  the host config file (`~/.config/maxwell/config.json` or `MAXWELL_CONFIG_FILE`), so a hosted run can supply all of
+  them without writing anything; a hosted harness that must not let agents change settings sets
+  `MAXWELL_CONFIG_READONLY=1`. Secret-bearing settings hold the name of an environment variable, never a value:
+  never pass a secret to `config.mjs`, and never edit the host config file or `sdlc/executor.json` by hand.
 - OpenCode: add `--harness opencode`. Default model `anthropic/claude-opus-5` (override with `--model` or
   `MAXWELL_OPENCODE_MODEL`). OpenCode authenticates from `ANTHROPIC_API_KEY` in the environment, so no interactive
   `opencode auth login` is needed on headless hosts. Keep the key in the host environment or a secret manager,

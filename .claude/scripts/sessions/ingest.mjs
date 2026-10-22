@@ -90,13 +90,15 @@ function collectSubagentFiles(transcriptPath) {
 
 let stats = newStats();
 let harnessVersion = meta.harnessVersion;
+// Transcript copies are made only after the summary validates, so a failed ingest leaves nothing new behind.
+const pendingCopies = [];
 if (meta.sampled) {
   if (harness === 'claude-code') {
     const src = findClaudeTranscript();
     if (!src) { console.error(`transcript for ${sessionId} not found; pass --transcript`); meta.sampled = false; meta.samplingReason = 'pending'; }
     else {
       const dest = `${dir}/${sessionId}.jsonl`;
-      copyFileSync(src, dest);
+      pendingCopies.push(() => copyFileSync(src, dest));
       meta.transcriptPath = dest;
       stats = parseClaudeTranscript(readFileSync(src, 'utf8').split('\n'));
       const subs = collectSubagentFiles(src);
@@ -123,7 +125,7 @@ if (meta.sampled) {
     }
     if (!doc) { console.error(`opencode export ${sessionId} failed; pass --transcript <export.json>`); meta.sampled = false; meta.samplingReason = 'pending'; }
     else {
-      writeFileSync(dest, JSON.stringify(doc));
+      pendingCopies.push(() => writeFileSync(dest, JSON.stringify(doc)));
       meta.exportPath = dest;
       stats = parseOpencodeExport(doc);
       if (!harnessVersion) {
@@ -138,8 +140,8 @@ meta.harnessVersion = semver(harnessVersion || meta.harnessVersion || '0.0.0');
 const { ajv } = buildAjv();
 const validateMeta = getValidator(ajv, 'https://maxwell.onfinance.ai/schemas/v1/session/meta.schema.json');
 if (!validateMeta(meta)) { console.error(`meta invalid:\n${formatErrors(validateMeta.errors)}`); process.exit(2); }
-writeFileSync(metaPath, JSON.stringify(meta, null, 2) + '\n');
 if (!meta.sampled) {
+  writeFileSync(metaPath, JSON.stringify(meta, null, 2) + '\n');
   const staleSummary = `${dir}/${sessionId}.summary.json`;
   if (excluded && existsSync(staleSummary)) unlinkSync(staleSummary);
   console.log(`session ${sessionId} not sampled (${meta.samplingReason}); meta updated`);
@@ -163,6 +165,8 @@ for (const [raw, entry] of stats.models) {
     costUsd: usd ?? 0,
   });
 }
+// The summary schema requires at least one model row; a session with no inference gets a zero-token row for the
+// model it was started with.
 if (models.length === 0) models.push({ model: meta.model && meta.model !== 'unknown' ? meta.model : 'claude-opus-5', provider: 'anthropic', tokens: { input: 0, output: 0, cacheWrite5m: 0, cacheWrite1h: 0, cacheRead: 0, thinking: null }, webSearchRequests: 0, webFetchRequests: 0, costUsd: 0 });
 computed = Math.round(computed * 1e6) / 1e6;
 const reportedArg = opt('--reported');
@@ -173,7 +177,8 @@ const startedAt = stats.startedAt || meta.startedAt;
 const endedAt = stats.endedAt || meta.endedAt;
 const durationMs = Math.max(0, Date.parse(endedAt) - Date.parse(startedAt));
 const filesWritten = [...stats.filesWritten].map((p) => (p.startsWith('/') ? relative(root, p) : p)).filter((p) => p && !p.startsWith('..')).sort();
-const outcome = opt('--outcome', stats.errors.length ? 'error' : 'success');
+// A session whose only assistant output was API errors (no inference ran) failed, even when no --outcome is passed.
+const outcome = opt('--outcome', stats.errors.length || (stats.apiErrors.length && stats.inferenceCalls === 0) ? 'error' : 'success');
 
 const summary = {
   schemaVersion: '1', kind: 'maxwell.session.summary', sessionId, harness,
@@ -191,6 +196,9 @@ const summary = {
   provenance: { harness: 'script', generatedAt: now(), sessionId, ...(meta.runId ? { runId: meta.runId } : {}), workflow: meta.workflow, agent: '.claude/scripts/sessions/ingest.mjs' },
 };
 const validateSummary = getValidator(ajv, 'https://maxwell.onfinance.ai/schemas/v1/session/summary.schema.json');
+// Both files are written only once both are valid, so a failed ingest never leaves a sampled meta without its summary.
 if (!validateSummary(summary)) { console.error(`summary invalid:\n${formatErrors(validateSummary.errors)}`); process.exit(2); }
+for (const copy of pendingCopies) copy();
+writeFileSync(metaPath, JSON.stringify(meta, null, 2) + '\n');
 writeFileSync(`${dir}/${sessionId}.summary.json`, JSON.stringify(summary, null, 2) + '\n');
 console.log(`session ${sessionId}: ${basename(dir)} sampled=${meta.sampled} cost=${computed} USD (reported ${reported}) turns=${stats.turns} tools=${stats.toolCalls.total} subagents=${stats.subagentFiles}`);

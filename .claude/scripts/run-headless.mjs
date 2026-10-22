@@ -2,6 +2,7 @@
 // Runs one Maxwell workflow headlessly on a harness and ingests the session for KPIs.
 // Usage: run-headless.mjs --workflow <name> --company <id> [--harness claude-code|opencode] [--model opus|provider/model]
 //        [--fallback-model <m>] [--app <id>]... [--env <id>]... [--dry-run] [--run-id run_...] [--max-turns 400] [--budget-usd <n>]
+//        [--validate] [--result-file <path outside the workspace>]
 // Model policy: default --model opus. When another model is requested (e.g. fable) Claude Code is given
 // --fallback-model opus so a usage limit or overload on that model continues on Opus instead of failing.
 // OpenCode defaults to anthropic/claude-opus-5 (override with --model or MAXWELL_OPENCODE_MODEL).
@@ -12,9 +13,10 @@
 import { spawnSync } from 'node:child_process';
 import { writeFileSync, mkdirSync, readFileSync, existsSync } from 'node:fs';
 import { randomUUID } from 'node:crypto';
+import { changedFiles, checkResultPath, ledgerAppended, ledgerPath, ledgerState, runValidation, summarizeLedger, workspaceSnapshot, writeResultFile } from './lib/run-result.mjs';
 import { ulid } from '../hooks/lib.mjs';
-import { ACCOUNT_LIMIT, opencodeSessionLog, parseLimitReset, workflowStatus } from './lib/workflow-status.mjs';
-import { settingValue } from './lib/config.mjs';
+import { ACCOUNT_LIMIT, classifyWorkflowRun, opencodeSessionLog, parseLimitReset, workflowStatus } from './lib/workflow-status.mjs';
+import { hostSetting, settingValue } from './lib/config.mjs';
 
 const argv = process.argv.slice(2);
 const opt = (f, d) => { const i = argv.indexOf(f); return i >= 0 ? argv[i + 1] : d; };
@@ -29,6 +31,13 @@ if (!vocab.includes(workflow)) { console.error(`unknown workflow ${workflow}`); 
 const runId = opt('--run-id', process.env.MAXWELL_RUN_ID || `run_${ulid()}`);
 const apps = multi('--app'); const envs = multi('--env');
 const started = Date.now();
+// Machine-readable result: what the run changed is measured against a snapshot taken before it starts.
+const resultFile = opt('--result-file');
+const resultFileError = argv.includes('--result-file') && !resultFile ? '--result-file needs a path' : checkResultPath(resultFile);
+if (resultFileError) { console.error(resultFileError); process.exit(1); }
+const ledgerFile = /^[a-z0-9][a-z0-9-]{1,62}$/.test(company) ? ledgerPath(company) : null;
+const snapshotBefore = workspaceSnapshot();
+const ledgerBefore = ledgerFile ? ledgerState(ledgerFile) : null;
 const logDir = `kpis/data/raw/sessions/${harness}`;
 mkdirSync(logDir, { recursive: true });
 const env = { ...process.env, MAXWELL_RUN_ID: runId, MAXWELL_HARNESS: harness, MAXWELL_INVOKED_BY: process.env.MAXWELL_INVOKED_BY || '', MAXWELL_KPI_SAMPLE: '1' };
@@ -38,6 +47,8 @@ const env = { ...process.env, MAXWELL_RUN_ID: runId, MAXWELL_HARNESS: harness, M
 if (!env.CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS) env.CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS = String(4 * 60 * 60 * 1000);
 
 let sessionId = null; let reported = null; let outcome = 'success'; let result = null;
+// workflowRun: whether the saved workflow was launched and finished (Claude Code); outcomeReason: why a run is not a success.
+let workflowRun = null; let outcomeReason = null;
 // Workflows are deterministic scripts: they cannot read the clock, so the run timestamp is taken once here.
 const now = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
 const workflowArgs = { companyId: company, appIds: apps, envIds: envs, dryRun, now, runId };
@@ -90,25 +101,27 @@ if (harness === 'claude-code') {
     const raw = (res.stdout || '').trim();
     writeFileSync(`${logDir}/${runId}.${workflow}${i ? '.' + m : ''}.export.json`, raw || res.stderr || '');
     try { result = JSON.parse(raw); } catch { result = null; }
-    if (!result) { console.error(`[run-headless] claude exited ${res.status}: ${(res.stderr || '').slice(-2000)}`); process.exit(res.status || 1); }
+    if (!result) {
+      console.error(`[run-headless] claude exited ${res.status}: ${(res.stderr || '').slice(-2000)}`);
+      if (resultFile) writeResultFile(resultFile, { workflow, company, harness, runId, sessionId: null, reportedCostUsd: null, outcome: 'error', durationMs: Date.now() - started, result: null, workflowRun: null, outcomeReason: `claude exited ${res.status} without a JSON result`, files: null, sessionFiles: null, ledger: null, findings: null, validation: { ran: false } });
+      process.exit(res.status || 1);
+    }
     sessionId = result.session_id;
     reported = typeof result.total_cost_usd === 'number' ? result.total_cost_usd : null;
     outcome = result.is_error ? (result.subtype === 'error_max_turns' ? 'max-turns' : result.subtype === 'error_max_budget_usd' ? 'max-budget' : 'error') : 'success';
     console.error(`[run-headless] model=${m} session ${sessionId} turns=${result.num_turns} cost=${reported} denials=${(result.permission_denials || []).length} outcome=${outcome}`);
     const limitMessages = ACCOUNT_LIMIT.test(String(result.result || '')) ? [String(result.result)] : [];
     let finished = outcome === 'success';
+    outcomeReason = finished ? null : `the session ended with ${result.subtype || 'an error'}`;
     if (!utility.has(workflow)) {
       const wf = workflowStatus(sessionId);
       for (const e of wf.errors) if (ACCOUNT_LIMIT.test(e.error)) limitMessages.push(e.error);
-      finished = wf.launched && wf.status === 'completed' && wf.failedAgents === 0;
-      if (finished) {
-        // Every agent finished; a limit that only cut off the session's closing report does not fail the run.
-        if (outcome === 'error' && ACCOUNT_LIMIT.test(String(result.result || ''))) outcome = 'success';
-        console.error(`[run-headless] ${workflow} completed (task-notification status ${wf.status}, no failed agents)`);
-      } else {
-        if (outcome === 'success') outcome = 'error';
-        console.error(`[run-headless] ${workflow} did not complete: launched=${wf.launched} status=${wf.status || 'none'} failedAgents=${wf.failedAgents} (transcript ${wf.transcript || 'not found'})`);
-      }
+      const run = classifyWorkflowRun({ result, wf, budgetUsd: opt('--budget-usd', null) });
+      ({ finished, outcome } = run);
+      outcomeReason = run.reason;
+      workflowRun = { name: wf.workflowName, launched: wf.launched, status: wf.status, failedAgents: wf.failedAgents };
+      if (finished) console.error(`[run-headless] ${workflow} completed (task-notification status ${wf.status}, no failed agents)`);
+      else console.error(`[run-headless] ${workflow} did not complete: launched=${wf.launched} status=${wf.status || 'none'} failedAgents=${wf.failedAgents} outcome=${outcome}: ${outcomeReason} (transcript ${wf.transcript || 'not found'})`);
     }
     if (!finished && limitMessages.length && limitWaits < maxLimitWaits) {
       spawnSync(process.execPath, ['.claude/scripts/sessions/ingest.mjs', '--harness', 'claude-code', '--session', sessionId, '--force', '--outcome', 'error'], { encoding: 'utf8', env });
@@ -150,5 +163,15 @@ if (harness === 'claude-code' && sessionId) {
   const ing = spawnSync(process.execPath, ingestArgs, { encoding: 'utf8', env: { ...env, MAXWELL_WORKFLOW: workflow, MAXWELL_COMPANY_ID: company } });
   process.stderr.write(ing.stdout + ing.stderr);
 }
-console.log(JSON.stringify({ workflow, company, harness, runId, sessionId, reportedCostUsd: reported, outcome, durationMs: Date.now() - started, result: harness === 'claude-code' ? (result && result.result) : result }, null, 2));
+if (harness !== 'claude-code' && outcome !== 'success') outcomeReason = 'the OpenCode workflow runner exited with an error';
+// The run's duration excludes the bookkeeping below (git status, ledger read, validation).
+const durationMs = Date.now() - started;
+const { files, sessionFiles } = changedFiles(snapshotBefore, workspaceSnapshot());
+const appendedText = ledgerFile ? ledgerAppended(ledgerFile, ledgerBefore) : null;
+const { ledger, findings } = !appendedText ? { ledger: null, findings: [] }
+  : appendedText.rewritten ? { ledger: { rewritten: true }, findings: null } : summarizeLedger(appendedText.text);
+const validation = argv.includes('--validate') ? runValidation() : { ran: false };
+const output = { workflow, company, harness, runId, sessionId, reportedCostUsd: reported, outcome, durationMs, result: harness === 'claude-code' ? (result && result.result) : result, workflowRun, outcomeReason, files, sessionFiles, ledger, findings, validation };
+if (resultFile) writeResultFile(resultFile, output);
+console.log(JSON.stringify(output, null, 2));
 process.exit(outcome === 'success' ? 0 : 1);
