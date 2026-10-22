@@ -1,4 +1,5 @@
-// Sandbox provider credentials live outside the workspace in ~/.config/maxwell/sandbox/<provider>.env (mode 0600;
+// Sandbox provider credentials live outside the workspace in ~/.config/maxwell/sandbox/<provider>.env, or the host
+// setting sandbox.credentialsDir (MAXWELL_SANDBOX_CREDENTIALS_DIR) (mode 0600;
 // .claude/settings.json denies agent file tools on ~/.config/maxwell). Only variable names appear in the workspace.
 import { existsSync, mkdirSync, readFileSync, writeFileSync, chmodSync } from 'node:fs';
 import { homedir } from 'node:os';
@@ -6,6 +7,7 @@ import { join, relative, resolve, isAbsolute } from 'node:path';
 import { parseEnvFile } from '../complianceos.mjs';
 import { WORKSPACE } from '../toolchain.mjs';
 import { ExecutorError } from './common.mjs';
+import { settingValue } from '../config.mjs';
 
 export const PROVIDER_CREDENTIALS = {
   e2b: ['E2B_API_KEY'],
@@ -25,7 +27,7 @@ const inside = (dir, path) => {
 };
 
 export function credentialsDir(env = process.env) {
-  const dir = env.MAXWELL_SANDBOX_CREDENTIALS_DIR || join(env.HOME || homedir(), '.config', 'maxwell', 'sandbox');
+  const dir = settingValue('sandbox.credentialsDir', env) || join(env.HOME || homedir(), '.config', 'maxwell', 'sandbox');
   if (inside(WORKSPACE, dir)) throw new ExecutorError('credentials-in-workspace', `sandbox credentials must be stored outside the workspace, not in ${dir}`);
   return dir;
 }

@@ -12,18 +12,31 @@ import * as modal from './backends/modal.mjs';
 import * as vercel from './backends/vercel.mjs';
 import * as lambdaMicrovms from './backends/lambda-microvms.mjs';
 import { ExecutorError, HOSTED, RUNTIME_PROVIDERS, limitsOf } from './common.mjs';
+import { hostSetting } from '../config.mjs';
 
 export const BACKENDS = { host, docker, kubernetes, e2b, daytona, modal, vercel, 'lambda-microvms': lambdaMicrovms };
 export const EXECUTOR_SCHEMA = 'https://maxwell.onfinance.ai/schemas/v1/company/executor.schema.json';
 
 export const executorPath = (companyId, root = '.') => join(root, 'company-profile', companyId, 'sdlc', 'executor.json');
 
-export function loadExecutor(companyId, { root = '.' } = {}) {
-  const path = executorPath(companyId, root);
-  if (!existsSync(path)) return null;
+// Where the executor for a company comes from: the host setting executor.file (MAXWELL_EXECUTOR_FILE, or the host config
+// file) when set, so a hosted harness can supply it without writing into the workspace; else the company's own file.
+export function executorSource(companyId, { root = '.', env = process.env } = {}) {
+  const override = hostSetting('executor.file', env);
+  if (override.value) return { path: override.value, override: true, source: override.source };
+  return { path: executorPath(companyId, root), override: false, source: 'company' };
+}
+
+export function loadExecutor(companyId, { root = '.', env = process.env } = {}) {
+  const { path, override } = executorSource(companyId, { root, env });
+  if (!existsSync(path)) {
+    if (override) throw new ExecutorError('invalid-config', `executor.file points to ${path}, which does not exist`);
+    return null;
+  }
   const config = JSON.parse(readFileSync(path, 'utf8'));
   const check = getValidator(buildAjv().ajv, EXECUTOR_SCHEMA);
   if (!check(config)) throw new ExecutorError('invalid-config', `${path} does not match its schema:\n${formatErrors(check.errors)}`);
+  if (override && config.companyId !== companyId) throw new ExecutorError('invalid-config', `${path} is for company ${config.companyId}, not ${companyId}`);
   return config;
 }
 

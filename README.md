@@ -559,6 +559,26 @@ node .claude/scripts/run-headless.mjs --workflow probe-iac --company acme-securi
 Add `--harness opencode --model <provider/model>` to run on OpenCode. The run commits nothing itself: check the result
 with `npm run validate`.
 
+**7. Settings and hosted runs (optional)**
+
+> Show Maxwell's settings. / Run sonnet agents on claude-opus-5-5.
+
+`/config` reads and changes settings through `node .claude/scripts/config/config.mjs` (`keys`, `get [<key>]`,
+`set <key> <value>`, `set <key> --ref <ENV_NAME>`, `unset <key>`). Values are checked against
+`.claude/schemas/v1/harness/host-config.schema.json` and kept in `~/.config/maxwell/config.json` (or the file named
+by `MAXWELL_CONFIG_FILE`), outside the workspace. Every setting's environment variable wins over that file, so a
+hosted harness can configure a run with environment variables and mounted files alone:
+
+| Setting | Environment variable | What it does |
+|---|---|---|
+| `models.default`, `models.fallback` | `MAXWELL_MODEL`, `MAXWELL_FALLBACK_MODEL` | Claude Code model and fallback for headless runs |
+| `models.map.opus`, `.sonnet`, `.haiku` | `ANTHROPIC_DEFAULT_OPUS_MODEL`, `_SONNET_`, `_HAIKU_` | The provider model an agent's pinned alias runs on, where that alias's default is not enabled |
+| `pricing.file` | `MAXWELL_PRICING_FILE` | Extra price table (same shape as `kpi-extraction/references/pricing.json`) for the cost of audit |
+| `executor.file` | `MAXWELL_EXECUTOR_FILE` | Executor document used instead of `company-profile/<c>/sdlc/executor.json` |
+| `sandbox.credentialsDir` | `MAXWELL_SANDBOX_CREDENTIALS_DIR` | Folder of sandbox provider credential files |
+| `complianceos.baseUrl`, `.credentialsFile` | `MAXWELL_COS_BASE_URL`, `MAXWELL_COS_CREDENTIALS_FILE` | ComplianceOS address and login file |
+| `complianceos.emailRef`, `.passwordRef`, `.tokenRef` | `MAXWELL_COS_EMAIL`, `_PASSWORD`, `_TOKEN` | The name of the variable holding each login secret; the value is never stored or shown |
+
 ## Validation
 
 - **Schemas:** 46 JSON Schemas with unit tests, plus closed vocabularies for regulators, instruments and statuses.

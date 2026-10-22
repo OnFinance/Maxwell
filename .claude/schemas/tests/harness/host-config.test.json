@@ -1,0 +1,67 @@
+{
+  "target": "https://maxwell.onfinance.ai/schemas/v1/harness/host-config.schema.json",
+  "tests": [
+    {
+      "description": "schema example",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.host.config",
+        "settings": {
+          "models.map.sonnet": "claude-opus-5-5",
+          "sandbox.credentialsDir": "/run/maxwell/sandbox",
+          "complianceos.emailRef": "COS_LOGIN_EMAIL",
+          "complianceos.passwordRef": "COS_LOGIN_PASSWORD"
+        },
+        "updated": {
+          "models.map.sonnet": {
+            "at": "2026-10-22T09:30:00Z",
+            "by": "headless"
+          }
+        }
+      }
+    },
+    {
+      "description": "an empty config is valid",
+      "valid": true,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.host.config",
+        "settings": {}
+      }
+    },
+    {
+      "description": "unknown setting keys are refused",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.host.config",
+        "settings": {
+          "models.map.gpt": "x"
+        }
+      }
+    },
+    {
+      "description": "a secret reference must be an environment variable name, not a value",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.host.config",
+        "settings": {
+          "complianceos.passwordRef": "correct horse battery staple"
+        }
+      }
+    },
+    {
+      "description": "paths must be absolute",
+      "valid": false,
+      "data": {
+        "schemaVersion": "1",
+        "kind": "maxwell.host.config",
+        "settings": {
+          "pricing.file": "prices.json"
+        }
+      }
+    }
+  ]
+}

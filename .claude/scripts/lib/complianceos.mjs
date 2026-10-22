@@ -4,6 +4,7 @@
 // host environment; the token cache lives in ~/.cache/maxwell. Nothing here ever prints a password or token.
 import { homedir } from 'node:os';
 import { join, resolve, relative, isAbsolute } from 'node:path';
+import { settingValue } from './config.mjs';
 
 export const DEFAULT_BASE_URL = 'https://complianceos-prod.onfinance.ai';
 export const DEFAULT_COLLECTION = 'regulatory_communication';
@@ -22,7 +23,7 @@ export class ComplianceOsError extends Error {
 export function configPaths(env = process.env) {
   const home = env.HOME || homedir();
   return {
-    credentials: env.MAXWELL_COS_CREDENTIALS_FILE || join(home, '.config', 'maxwell', 'complianceos.env'),
+    credentials: settingValue('complianceos.credentialsFile', env) || join(home, '.config', 'maxwell', 'complianceos.env'),
     token: env.MAXWELL_COS_TOKEN_FILE || join(home, '.cache', 'maxwell', 'complianceos-token.json'),
   };
 }
@@ -58,15 +59,18 @@ export function formatEnvFile({ baseUrl, email, password }) {
   ].join('\n');
 }
 
-// Environment variables win over the file, field by field.
+// Environment variables win over the file, field by field. A host setting complianceos.emailRef / passwordRef /
+// tokenRef names another environment variable to read instead (a hosted harness's own secret names); the
+// MAXWELL_COS_* variables still win over a reference.
 export function resolveCredentials(env = process.env, fileText) {
   const file = parseEnvFile(fileText);
-  const pick = (k) => env[k] || file[k] || undefined;
-  const email = pick('MAXWELL_COS_EMAIL');
-  const password = pick('MAXWELL_COS_PASSWORD');
-  const token = env.MAXWELL_COS_TOKEN || undefined;
-  const source = env.MAXWELL_COS_EMAIL || env.MAXWELL_COS_TOKEN ? 'env' : file.MAXWELL_COS_EMAIL ? 'file' : null;
-  return { baseUrl: (pick('MAXWELL_COS_BASE_URL') || DEFAULT_BASE_URL).replace(/\/+$/, ''), email, password, token, source };
+  const fromEnv = { email: settingValue('complianceos.emailRef', env), password: settingValue('complianceos.passwordRef', env), token: settingValue('complianceos.tokenRef', env) };
+  const email = fromEnv.email || file.MAXWELL_COS_EMAIL || undefined;
+  const password = fromEnv.password || file.MAXWELL_COS_PASSWORD || undefined;
+  const token = fromEnv.token || undefined;
+  const source = fromEnv.email || fromEnv.token ? 'env' : file.MAXWELL_COS_EMAIL ? 'file' : null;
+  const baseUrl = settingValue('complianceos.baseUrl', env) || file.MAXWELL_COS_BASE_URL || DEFAULT_BASE_URL;
+  return { baseUrl: baseUrl.replace(/\/+$/, ''), email, password, token, source };
 }
 
 export function maskEmail(email) {

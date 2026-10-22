@@ -1,10 +1,23 @@
 // Pricing table access and cost arithmetic shared by session ingest and KPI computation.
 import { readFileSync } from 'node:fs';
+import { settingValue } from './config.mjs';
+import { buildAjv, getValidator, formatErrors } from './schemas.mjs';
 
 export const PRICING_PATH = '.claude/skills/kpi-extraction/references/pricing.json';
+const PRICING_SCHEMA = 'https://maxwell.onfinance.ai/schemas/vocab/pricing.schema.json';
 
-export function loadPricing(path = PRICING_PATH) {
-  return JSON.parse(readFileSync(path, 'utf8'));
+// The built-in table, extended by the host setting pricing.file (MAXWELL_PRICING_FILE) when set: a table of the same
+// shape whose entries replace built-in entries with the same model id and are matched first, so a host can price the
+// model names or list prices of the provider it runs on. asOf (session pricingVersion) is the later of the two dates.
+export function loadPricing(path = PRICING_PATH, env = process.env) {
+  const base = JSON.parse(readFileSync(path, 'utf8'));
+  const extra = settingValue('pricing.file', env);
+  if (!extra) return base;
+  const doc = JSON.parse(readFileSync(extra, 'utf8'));
+  const check = getValidator(buildAjv().ajv, PRICING_SCHEMA);
+  if (!check(doc)) throw new Error(`${extra} does not match the pricing schema:\n${formatErrors(check.errors)}`);
+  const replaced = new Set(doc.models.map((m) => m.model));
+  return { ...base, asOf: doc.asOf > base.asOf ? doc.asOf : base.asOf, models: [...doc.models, ...base.models.filter((m) => !replaced.has(m.model))] };
 }
 
 // Resolves a raw model identifier (Claude Code message.model, OpenCode provider/model, aliases, "[1m]" suffix).
