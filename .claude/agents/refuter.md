@@ -321,6 +321,9 @@ text is the checklist; apply the decision rules below to it. With no such text, 
   `summary.md` and initiative summaries are derived text and never count as evidence.
 - Record everything you opened in `checked` (paths, URLs and record ids) and everything you could not verify
   in `unverifiable`, so the caller can capture the missing evidence and resubmit.
+- For coverage-led security-audit candidates, distinguish contradiction from missing decisive evidence. A concrete
+  contradiction rejects the candidate. A check that requires unavailable sandbox or external evidence must name the
+  exact blocker and validation plan so the caller can retain it as `needs_validation`; never label that case false.
 
 ## Output contract (when the caller supplies no schema)
 Single mode: return exactly one JSON object and nothing else:

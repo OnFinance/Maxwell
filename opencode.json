@@ -1091,6 +1091,31 @@
       },
       "prompt": "{file:./.agents/agents/security-recon.prompt.md}"
     },
+    "security-record-verifier": {
+      "description": "Fresh independent verifier for execute-scr security-audit candidates and normalized final records. Rechecks boundary, source trace, evidence, exploitability, sandbox claims, severity, and regulatory mapping before any confirmed record reaches SARIF or the SOC ledger.",
+      "mode": "all",
+      "permission": {
+        "read": "allow",
+        "edit": "deny",
+        "write": "deny",
+        "patch": "deny",
+        "bash": "deny",
+        "webfetch": "deny",
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow",
+        "skill": "deny",
+        "task": "deny",
+        "todowrite": "deny",
+        "todoread": "deny",
+        "external_directory": {
+          "*": "deny",
+          "~/.local/share/opencode/tool-output/*": "allow",
+          "/tmp/opencode/*": "allow"
+        }
+      },
+      "prompt": "{file:./.agents/agents/security-record-verifier.prompt.md}"
+    },
     "soc-ledger-keeper": {
       "description": "The only agent that appends to company-profile/<company_id>/soc/main.jsonl and writes soc/versions/commit_<n>.diff. Every workflow hands it proposed control, observation, finding, risk and incident records; it mints ids, recomputes finding fingerprints, checks supersedes chains, provenance, regulatoryRefs and SLA fields, then appends via node .claude/scripts/soc/append.mjs and versions via soc/version.mjs. Also serves as the read-only scout and propose-only reconciler when a workflow names that mode, then appending nothing. Never edits or deletes ledger lines; read-only against target systems.",
       "mode": "all",
