@@ -1025,6 +1025,31 @@
       },
       "prompt": "{file:./.agents/agents/secure-code-reviewer.prompt.md}"
     },
+    "security-coverage-critic": {
+      "description": "Independent read-only critic for execute-scr. Challenges whether assigned attack surfaces and trust boundaries were actually covered, identifies missing source-to-sink work, and returns coverage gaps without creating findings.",
+      "mode": "all",
+      "permission": {
+        "read": "allow",
+        "edit": "deny",
+        "write": "deny",
+        "patch": "deny",
+        "bash": "deny",
+        "webfetch": "deny",
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow",
+        "skill": "deny",
+        "task": "deny",
+        "todowrite": "deny",
+        "todoread": "deny",
+        "external_directory": {
+          "*": "deny",
+          "~/.local/share/opencode/tool-output/*": "allow",
+          "/tmp/opencode/*": "allow"
+        }
+      },
+      "prompt": "{file:./.agents/agents/security-coverage-critic.prompt.md}"
+    },
     "security-recon": {
       "description": "Read-only reconnaissance for execute-scr. Maps entry points, subsystems, trust boundaries, principals, sensitive resources, and applicable attack classes so the parent can seed a deterministic coverage ledger.",
       "mode": "all",

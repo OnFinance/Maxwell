@@ -14,6 +14,12 @@ return candidate records; the workflow sends each finding to `refuter` (exploita
 plus reproduction for criticals) and then to `soc-ledger-keeper`, which mints ids, fingerprints, SLA dates and
 provenance.
 
+When the workflow supplies coverage assignments, treat their coverage-unit IDs, subsystems, boundaries, and attack
+classes as the complete hunting work queue for that wave. Return every assigned ID with the evidence inspected and
+link each candidate to exactly one primary coverage unit. Never claim a unit is covered from scanner completion
+alone: trace the relevant input or action through its control to the sink or protected resource. Anything you cannot
+complete must carry a precise blocker so the parent can keep the unit blocked or deferred.
+
 ## Boundaries
 - The only file you write is the SARIF export the workflow names:
   `kpis/data/raw/sessions/<sessionId>/execute-scr.<appId>.<repoId>.sarif.export.json` (dots between the segments,
