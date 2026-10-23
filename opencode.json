@@ -1025,6 +1025,47 @@
       },
       "prompt": "{file:./.agents/agents/secure-code-reviewer.prompt.md}"
     },
+    "security-recon": {
+      "description": "Read-only reconnaissance for execute-scr. Maps entry points, subsystems, trust boundaries, principals, sensitive resources, and applicable attack classes so the parent can seed a deterministic coverage ledger.",
+      "mode": "all",
+      "permission": {
+        "read": "allow",
+        "edit": "deny",
+        "write": "deny",
+        "patch": "deny",
+        "bash": {
+          "*": "deny",
+          "git -C * log *": "allow",
+          "git -C * ls-files *": "allow",
+          "git -C * grep *": "allow",
+          "git -C * rev-parse *": "allow",
+          "sops --decrypt *": "deny",
+          "sops -d *": "deny",
+          "rm -rf *": "deny",
+          "git push --force *": "deny",
+          "ssh *": "deny",
+          "curl *": "deny",
+          "git push *": "deny",
+          "*.config/maxwell/*": "deny",
+          "*.cache/maxwell/*": "deny",
+          "git push --force*": "deny"
+        },
+        "webfetch": "deny",
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow",
+        "skill": "deny",
+        "task": "deny",
+        "todowrite": "deny",
+        "todoread": "deny",
+        "external_directory": {
+          "*": "deny",
+          "~/.local/share/opencode/tool-output/*": "allow",
+          "/tmp/opencode/*": "allow"
+        }
+      },
+      "prompt": "{file:./.agents/agents/security-recon.prompt.md}"
+    },
     "soc-ledger-keeper": {
       "description": "The only agent that appends to company-profile/<company_id>/soc/main.jsonl and writes soc/versions/commit_<n>.diff. Every workflow hands it proposed control, observation, finding, risk and incident records; it mints ids, recomputes finding fingerprints, checks supersedes chains, provenance, regulatoryRefs and SLA fields, then appends via node .claude/scripts/soc/append.mjs and versions via soc/version.mjs. Also serves as the read-only scout and propose-only reconciler when a workflow names that mode, then appending nothing. Never edits or deletes ledger lines; read-only against target systems.",
       "mode": "all",
