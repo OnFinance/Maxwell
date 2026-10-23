@@ -89,5 +89,15 @@ export function validateAuditExport(value) {
   if (value.kind === 'maxwell.security-audit.run') return validateRunMetadata(value);
   if (value.kind === 'maxwell.security-audit.coverage') return validateCoverageLedger(value);
   if (value.kind === 'maxwell.security-audit.candidates') return validateCandidateRecords(value);
+  if (value.kind === 'maxwell.security-audit.architecture') {
+    const errors = [];
+    requireField(errors, value, 'schemaVersion', (x) => x === '1');
+    requireField(errors, value, 'runId');
+    if (!Array.isArray(value.repositories)) errors.push('repositories must be an array');
+    return errors;
+  }
+  if (value.kind === 'maxwell.security-audit.final-records') {
+    return validateCandidateRecords({ ...value, kind: 'maxwell.security-audit.candidates' });
+  }
   return [`unsupported security-audit kind: ${String(value.kind)}`];
 }
