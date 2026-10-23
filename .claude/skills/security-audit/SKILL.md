@@ -44,6 +44,13 @@ findings continue through the existing SARIF and `soc/main.jsonl` writers. `need
 inconclusive observation when they carry a valid regulatory mapping. Rejected candidates remain in the audit export
 for traceability and never enter the SOC ledger.
 
+## Prior runs
+
+Compare hashes for the relevant source trace; a matching commit alone is insufficient. Carry an unchanged confirmed
+record only as a candidate that must pass the current final verifier. Reopen changed source and every unresolved,
+blocked, or deferred item. An unchanged rejected claim may suppress that exact claim, while its coverage unit remains
+planned. Deep audits also give unchanged prior coverage an independent second pass.
+
 Run the validators before accepting an export:
 
 ```bash
