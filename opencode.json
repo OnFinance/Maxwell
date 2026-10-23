@@ -1025,6 +1025,47 @@
       },
       "prompt": "{file:./.agents/agents/secure-code-reviewer.prompt.md}"
     },
+    "security-audit-state-writer": {
+      "description": "Trusted parent-side writer for execute-scr security-audit session exports. Writes only the five immutable audit export files supplied by the workflow and validates them with Maxwell's deterministic validator.",
+      "mode": "all",
+      "permission": {
+        "read": "allow",
+        "edit": "deny",
+        "write": {
+          "*": "deny",
+          "kpis/data/raw/sessions/**": "allow"
+        },
+        "patch": "deny",
+        "bash": {
+          "*": "deny",
+          "node .claude/scripts/security-audit/validate.mjs *": "allow",
+          "sops --decrypt *": "deny",
+          "sops -d *": "deny",
+          "rm -rf *": "deny",
+          "git push --force *": "deny",
+          "ssh *": "deny",
+          "curl *": "deny",
+          "git push *": "deny",
+          "*.config/maxwell/*": "deny",
+          "*.cache/maxwell/*": "deny",
+          "git push --force*": "deny"
+        },
+        "webfetch": "deny",
+        "glob": "deny",
+        "grep": "deny",
+        "list": "deny",
+        "skill": "deny",
+        "task": "deny",
+        "todowrite": "deny",
+        "todoread": "deny",
+        "external_directory": {
+          "*": "deny",
+          "~/.local/share/opencode/tool-output/*": "allow",
+          "/tmp/opencode/*": "allow"
+        }
+      },
+      "prompt": "{file:./.agents/agents/security-audit-state-writer.prompt.md}"
+    },
     "security-coverage-critic": {
       "description": "Independent read-only critic for execute-scr. Challenges whether assigned attack surfaces and trust boundaries were actually covered, identifies missing source-to-sink work, and returns coverage gaps without creating findings.",
       "mode": "all",

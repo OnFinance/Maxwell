@@ -245,7 +245,7 @@ flowchart LR
 | `probe-schemas` | Migrations, ORM models, OpenAPI, GraphQL and event schemas: unprotected PII/SPDI and weak contracts. |
 | `probe-cicd-env` | CI/CD pinning, secrets, OIDC, scan gates and SBOM presence (an empty SBOM counts as missing). |
 | `probe-agent-graph` | LLM agent code: tools, MCP servers, prompts, memory and egress, mapped to the OWASP Agentic Top 10 2026. |
-| `execute-scr` | Secure code review scoped by exposure and data class, which also runs `probe-sdlc` and `probe-dev-env`. |
+| `execute-scr` | Coverage-led secure code review scoped by exposure and data class, with independent candidate and final-record verification; also runs `probe-sdlc` and `probe-dev-env`. |
 | `probe-sdlc` | The SDLC policy compared with repository evidence, one observation per NIST SSDF practice. |
 | `probe-dev-env` | Developer environment configuration against the SDLC policy. |
 
@@ -301,6 +301,25 @@ flowchart LR
 3. Is our CI/CD pipeline pinned, gated and producing a real SBOM?
 4. Do a security code review of mcp-gateway.
 5. Suggest code fixes for the open findings.
+
+### Coverage-led security audit
+
+`execute-scr` uses the `security-audit` skill adapted from Cloudflare's MIT-licensed security-audit method. It maps
+trust boundaries, plans deterministic coverage units, hunts by attack class, challenges coverage with an independent
+critic, and retains three explicit outcomes: `confirmed`, `needs_validation`, and `rejected`. Only twice-verified
+confirmed records may reach SARIF and the SOC ledger. Missing safe execution capability becomes a validation blocker,
+not a clean result.
+
+Use `quick`, `standard` (default), or `deep` scope in workflow arguments. A strict agent budget reserves
+reconnaissance, critic, and verifier calls before hunter work. Audit state is retained as immutable exports under
+`kpis/data/raw/sessions/<sessionId>/`; validate one or more files with:
+
+```bash
+npm run audit:security:validate -- <security-audit.export.json> [...]
+```
+
+The implementation never runs target-controlled code outside Maxwell's configured sandbox and never probes a
+deployed service as part of source review.
 
 ## Controls registry
 
