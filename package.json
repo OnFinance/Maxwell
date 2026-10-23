@@ -30,6 +30,7 @@
     "detect:cloudtrail:sqs": "node .claude/scripts/threat-detection/cloudtrail-sqs-run.mjs",
     "investigate": "node .claude/scripts/incident-investigation/run.mjs",
     "investigate:aws:intake": "node .claude/scripts/incident-investigation/alert-sqs-run.mjs",
+    "audit:security:validate": "node .claude/scripts/security-audit/validate.mjs",
     "kpis": "node .claude/scripts/kpis/compute.mjs",
     "test": "npm run --silent test:schemas && node --test \".claude/scripts/**/*.test.mjs\"",
     "test:schemas": "jsonschema test .claude/schemas/tests --resolve .claude/schemas/v1 --resolve .claude/schemas/vocab"
