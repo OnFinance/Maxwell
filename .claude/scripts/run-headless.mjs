@@ -2,7 +2,10 @@
 // Runs one Maxwell workflow headlessly on a harness and ingests the session for KPIs.
 // Usage: run-headless.mjs --workflow <name> --company <id> [--harness claude-code|opencode] [--model opus|provider/model]
 //        [--fallback-model <m>] [--app <id>]... [--env <id>]... [--dry-run] [--run-id run_...] [--max-turns 400] [--budget-usd <n>]
-//        [--validate] [--result-file <path outside the workspace>]
+//        [--validate] [--result-file <path outside the workspace>] [--arg <value>]...
+// --arg: a further argument of a utility command, after the company id (seed-company's facts file:
+//   --workflow seed-company --company acme --arg in/company.json runs "/seed-company acme in/company.json"). One word
+//   each (letters, digits and ._/@:+=-), at most 300 characters; refused for a saved workflow, whose input is its args.
 // Model policy: default --model opus. When another model is requested (e.g. fable) Claude Code is given
 // --fallback-model opus so a usage limit or overload on that model continues on Opus instead of failing.
 // OpenCode defaults to anthropic/claude-opus-5 (override with --model or MAXWELL_OPENCODE_MODEL).
@@ -31,6 +34,10 @@ const vocab = JSON.parse(readFileSync('.claude/schemas/vocab/workflows.schema.js
 if (!vocab.includes(workflow)) { console.error(`unknown workflow ${workflow}`); process.exit(1); }
 const runId = opt('--run-id', process.env.MAXWELL_RUN_ID || `run_${ulid()}`);
 const apps = multi('--app'); const envs = multi('--env');
+const extra = multi('--arg');
+const utility = new Set(['validate', 'kpis', 'seed-company', 'status', 'connect-sandbox', 'config', 'add-company-catalog', 'manual']);
+for (const x of extra) if (typeof x !== 'string' || !/^[A-Za-z0-9._/@:+=][A-Za-z0-9._/@:+=-]{0,299}$/.test(x)) { console.error(`--arg ${JSON.stringify(String(x).slice(0, 80))}: one word of letters, digits and ._/@:+=- (not starting with -), at most 300 characters`); process.exit(1); }
+if (extra.length && (!utility.has(workflow) || harness !== 'claude-code')) { console.error(`--arg is for a utility command run on claude-code (${[...utility].join(', ')}); ${workflow} takes its input as args`); process.exit(1); }
 const started = Date.now();
 // Machine-readable result: what the run changed is measured against a snapshot taken before it starts.
 const resultFile = opt('--result-file');
@@ -57,7 +64,6 @@ const workflowArgs = { companyId: company, appIds: apps, envIds: envs, dryRun, n
 // workflow's agents use them beside the shared catalogs; for a company without any, args are exactly as before.
 const companyCatalogs = ledgerFile ? companyCatalogArgs(company) : [];
 if (companyCatalogs.length) workflowArgs.companyCatalogs = companyCatalogs;
-const utility = new Set(['validate', 'kpis', 'seed-company', 'status', 'connect-sandbox', 'config', 'add-company-catalog', 'manual']);
 // report-audit-improvements renders KPI series but no roster agent may run `npm run kpis`, so compute them first.
 if (workflow === 'report-audit-improvements') {
   const k = spawnSync(process.execPath, ['.claude/scripts/kpis/compute.mjs', '--company', company], { encoding: 'utf8', env });
@@ -79,7 +85,7 @@ if (harness === 'claude-code') {
   // Utility commands take the shorthand form; saved workflows get a structured args object (Claude passes it to
   // the Workflow tool as data, see code.claude.com/docs/en/workflows "Pass input to a saved workflow").
   const promptFor = (sid) => (utility.has(workflow)
-    ? [`/${workflow}`, company, ...apps.map((a) => `--app=${a}`), ...envs.map((e) => `--env=${e}`), ...(dryRun ? ['--dry-run'] : [])].join(' ')
+    ? [`/${workflow}`, company, ...extra, ...apps.map((a) => `--app=${a}`), ...envs.map((e) => `--env=${e}`), ...(dryRun ? ['--dry-run'] : [])].join(' ')
     : `Run /${workflow} with exactly this args object, passed as structured data (not a string), and report its result: ${JSON.stringify({ ...workflowArgs, sessionId: sid })}`);
   // A usage limit on the requested model comes back as a 429 api_error result, which --fallback-model does not
   // cover (it only handles overload). Retry the whole invocation on the fallback model in that case.

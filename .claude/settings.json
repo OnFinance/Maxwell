@@ -97,8 +97,8 @@
       "Bash(sops -d *)",
       "Bash(rm -rf *)",
       "Bash(git push --force *)",
-      "Write(./applications/*/repos/**)",
-      "Edit(./applications/*/repos/**)"
+      "Write(./applications/*/repos/*/**)",
+      "Edit(./applications/*/repos/*/**)"
     ],
     "ask": [
       "Bash(ssh *)",

@@ -106,7 +106,7 @@ test('local helpers print what they printed before', () => {
 
 // The permission rules main shipped; the config tool may only add allow rules for its own /config command.
 const MAIN_ASK = ['Bash(ssh *)', 'Bash(curl *)', 'Bash(git push *)'];
-const MAIN_DENY = ['Read(./applications/*/credentials.dec.json)', 'Read(./.sops-key.txt)', 'Read(~/.ssh/**)', 'Read(~/.aws/**)', 'Read(~/.config/gcloud/**)', 'Read(~/.kube/**)', 'Read(~/.config/maxwell/**)', 'Read(~/.cache/maxwell/**)', 'Bash(sops --decrypt *)', 'Bash(sops -d *)', 'Bash(rm -rf *)', 'Bash(git push --force *)', 'Write(./applications/*/repos/**)', 'Edit(./applications/*/repos/**)'];
+const MAIN_DENY = ['Read(./applications/*/credentials.dec.json)', 'Read(./.sops-key.txt)', 'Read(~/.ssh/**)', 'Read(~/.aws/**)', 'Read(~/.config/gcloud/**)', 'Read(~/.kube/**)', 'Read(~/.config/maxwell/**)', 'Read(~/.cache/maxwell/**)', 'Bash(sops --decrypt *)', 'Bash(sops -d *)', 'Bash(rm -rf *)', 'Bash(git push --force *)', 'Write(./applications/*/repos/*/**)', 'Edit(./applications/*/repos/*/**)'];
 const MAIN_OC_BASH = { '*': 'ask', 'npm run *': 'allow', 'npm test*': 'allow', 'node .claude/scripts/*': 'allow', 'npx jsonschema *': 'allow', 'git status*': 'allow', 'git diff*': 'allow', 'git log*': 'allow', 'sops --decrypt *': 'deny', 'sops -d *': 'deny', '*.config/maxwell/*': 'deny', '*.cache/maxwell/*': 'deny', 'rm -rf *': 'deny', 'git push --force*': 'deny' };
 const glob = (p) => new RegExp(`^${p.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*')}$`, 's');
 
@@ -185,4 +185,28 @@ test('company catalogs change nothing for a company without them, and reach only
     assert.doesNotMatch(prompt, /other-co/, 'another company\'s catalog never reaches this run');
     assert.deepEqual(after.calls[0].env, envOf('opus'), 'no new variables');
   } finally { rmSync(w.dir, { recursive: true, force: true }); }
+});
+
+// Claude Code reads Write/Edit path rules with gitignore semantics ("./" is the project root, "*" one path segment,
+// "**" any depth). The checkouts under applications/<app_id>/repos/<repo_id>/ are never edited; the repository records
+// beside them (applications/<app_id>/repos/<repo_id>.json) are what refresh-apps' validator and probe-sdlc write.
+const pathRule = (rule) => {
+  const m = /^(Write|Edit)\(\.\/(.*)\)$/s.exec(rule);
+  if (!m) return null;
+  const body = m[2].split('/').map((seg) => (seg === '**' ? '.*' : seg.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '[^/]*'))).join('/');
+  // A trailing "/**" is everything inside, never the directory itself (gitignore).
+  return { tool: m[1], re: new RegExp(`^${body.replace(/\/\.\*$/, '/.+')}$`) };
+};
+test('a repository record beside its checkout can be written; the checkout itself cannot', () => {
+  const deny = JSON.parse(readFileSync(join(WORKSPACE, '.claude/settings.json'), 'utf8')).permissions.deny.map(pathRule).filter(Boolean);
+  const denied = (tool, p) => deny.some((r) => r.tool === tool && r.re.test(p));
+  for (const tool of ['Write', 'Edit']) {
+    for (const p of ['applications/payments-api/repos/payments.json', 'applications/maxwell/repos/maxwell.json'])
+      assert.equal(denied(tool, p), false, `${tool} ${p}: the repository record is writable (refresh-apps writes it)`);
+    for (const p of ['applications/payments-api/repos/payments/src/app.ts', 'applications/maxwell/repos/maxwell/.git/config', 'applications/maxwell/repos/maxwell/README.md'])
+      assert.equal(denied(tool, p), true, `${tool} ${p}: inside a checkout, denied`);
+  }
+  // The rule this replaced also caught the records: refresh-apps' Write stage was refused and the record kept
+  // add.mjs's placeholders (Maxwell hosted, 2026-10-30).
+  assert.equal(pathRule('Write(./applications/*/repos/**)').re.test('applications/maxwell/repos/maxwell.json'), true);
 });
