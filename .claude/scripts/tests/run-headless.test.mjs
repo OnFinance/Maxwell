@@ -40,3 +40,20 @@ test('a headless run whose budget ran out while the workflow ran in the backgrou
     assert.equal(res.reportedCostUsd, 7.07);
   } finally { rmSync(dir, { recursive: true, force: true }); }
 });
+
+test('--arg passes a further argument to a utility command (seed-company\'s facts file) and is refused elsewhere', () => {
+  const dir = fakeWorkspace();
+  try {
+    const run = (...a) => spawnSync(process.execPath, [join(WORKSPACE, '.claude/scripts/run-headless.mjs'), ...a], {
+      cwd: dir, encoding: 'utf8', env: { PATH: `${join(dir, 'bin')}:${process.env.PATH}`, HOME: dir, CLAUDE_CONFIG_DIR: join(dir, 'claude') },
+    });
+    const seed = run('--workflow', 'seed-company', '--company', 'acme', '--arg', 'in/company.json');
+    assert.match(seed.stderr, /\[run-headless\] claude -p .* "\/seed-company acme in\/company\.json"/, seed.stderr);
+    const saved = run('--workflow', 'probe-iac', '--company', 'acme', '--arg', 'in/company.json');
+    assert.equal(saved.status, 1); assert.match(saved.stderr, /--arg is for a utility command/);
+    for (const bad of ['-x', 'two words', 'a\nb', 'x'.repeat(301)]) {
+      const r = run('--workflow', 'seed-company', '--company', 'acme', '--arg', bad);
+      assert.equal(r.status, 1, bad); assert.match(r.stderr, /one word of letters/);
+    }
+  } finally { rmSync(dir, { recursive: true, force: true }); }
+});
