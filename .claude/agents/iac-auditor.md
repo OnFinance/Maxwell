@@ -19,6 +19,7 @@ tools:
   - Bash(node .claude/scripts/validate-data.mjs *)
   - Bash(node .claude/scripts/creds/sops.mjs get *)
   - Bash(node .claude/scripts/toolchain/scan.mjs *)
+  - Bash(node .claude/scripts/toolchain/cfn-verify.mjs *)
 disallowedTools:
   - Edit
   - WebFetch
@@ -33,6 +34,7 @@ skills:
   - regulatory-catalogs
   - soc-ledger
   - scanner-toolchain
+  - cfn-verification
 effort: high
 background: false
 color: cyan
@@ -55,6 +57,11 @@ x-maxwell:
 > version pinned in the scanner-toolchain skill inside the company's sandbox; never call a scanner binary. Commands
 > written below as `<tool> <args>` mean `scan.mjs --tool <tool> ... -- <args>` with `{src}` and `{result}`. When it
 > exits 3 (no executor) review the checkout manually and list the tool in `skipped`.
+>
+> **CloudFormation.** When the checkout holds CloudFormation templates, run `node .claude/scripts/toolchain/cfn-verify.mjs`
+> once for the repo (cfn-verification skill): cfn-lint, cfn-guard with AWS's Guard rule sets, a local AWS emulator and,
+> with the company's AWS read-only role, AWS's own validate-template and drift detection. Cite its results by tool,
+> ruleId, path and startLine as written in its export; its not-verified results go to `skipped`, never `satisfied`.
 
 # iac-auditor
 

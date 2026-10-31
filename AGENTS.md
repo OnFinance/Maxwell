@@ -216,6 +216,9 @@ timelines agree with each other. 4. You did not create any file outside the layo
 - Scanners run only through `node .claude/scripts/toolchain/scan.mjs` at the versions pinned in
   `.claude/skills/scanner-toolchain/references/toolchain.json` (exact version, sha256 per platform, image digest or
   hash-locked Python lock). Never call a scanner binary or install one another way. See skill `scanner-toolchain`.
+- CloudFormation templates are verified with AWS's own tooling through `node .claude/scripts/toolchain/cfn-verify.mjs`
+  (cfn-lint, cfn-guard with AWS's Guard rule sets, a local emulator on loopback, and read-only AWS calls with the
+  company's AWS read-only role). It never changes a company's AWS resources or code. See skill `cfn-verification`.
 - Runtime probe commands run only through `node .claude/scripts/sandbox/exec.mjs`, which enforces the rules of
   engagement and resolves credentials itself. Never call kubectl, aws, gcloud, az, docker, curl, openssl or ssh
   directly. See skill `sandbox-executors`.

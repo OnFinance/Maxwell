@@ -54,6 +54,7 @@ packs and flags that upload results are refused.
 | gosec | `-fmt sarif -out {result} {src}/...` |
 | bandit | `-r {src} -f json -o {result}` (bandit has no SARIF formatter; write the SARIF log from its JSON) |
 | cfn-lint, ansible-lint | `-f sarif --output-file {result} {src}/template.yaml` and `-f sarif --sarif-file {result} {src}/playbooks` |
+| cfn-guard | `validate --rules {src}/rules.guard --data {src}/template.yaml --output-format sarif --structured --show-summary none` with `--from-stdout` (for AWS's own rule sets and the emulator use cfn-verify: skill `cfn-verification`) |
 | helm, kustomize (renderers) | `template {src}/<chart> -f {src}/<chart>/values.yaml` and `build {src}/<overlay>`, with `--from-stdout` |
 | syft, grype | `dir:{src} -o cyclonedx-json={result}` and `dir:{src} -o sarif --file {result}` |
 
