@@ -1,0 +1,40 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "MaxwellCloudFormationVerification",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:ValidateTemplate",
+        "cloudformation:DescribeStacks",
+        "cloudformation:DescribeStackResources",
+        "cloudformation:DescribeStackEvents",
+        "cloudformation:GetTemplateSummary",
+        "cloudformation:DetectStackDrift",
+        "cloudformation:DetectStackResourceDrift",
+        "cloudformation:DescribeStackDriftDetectionStatus",
+        "cloudformation:DescribeStackResourceDrifts"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MaxwellNeverChangesStacks",
+      "Effect": "Deny",
+      "Action": [
+        "cloudformation:Create*",
+        "cloudformation:Update*",
+        "cloudformation:Delete*",
+        "cloudformation:Execute*",
+        "cloudformation:Set*",
+        "cloudformation:Signal*",
+        "cloudformation:Cancel*",
+        "cloudformation:Continue*",
+        "cloudformation:Rollback*",
+        "cloudformation:Import*",
+        "cloudformation:Tag*",
+        "cloudformation:Untag*"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

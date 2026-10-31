@@ -155,10 +155,39 @@
       "python": {
         "package": "cfn-lint",
         "lock": "locks/cfn-lint.txt",
-        "lockSha256": "f9a103d16afa2c89fd79110e590c872646c5aec13b193a49c65f96fe7960502c",
-        "packages": 10,
+        "lockSha256": "dff54592aca91a2110f8145dec55bc915df796da403d626a0d663ac6a59cc8b2",
+        "packages": 15,
         "installer": "uv",
         "pythonVersion": "3.12"
+      }
+    },
+    {
+      "name": "cfn-guard",
+      "category": "scanner",
+      "version": "3.2.1",
+      "source": "https://github.com/aws-cloudformation/cloudformation-guard/releases/tag/3.2.1",
+      "versionCheck": {
+        "args": [
+          "--version"
+        ],
+        "expect": "3.2.1"
+      },
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://github.com/aws-cloudformation/cloudformation-guard/releases/download/3.2.1/cfn-guard-v3-x86_64-linux-latest.tar.gz",
+          "sha256": "8c66efb19c63e6c2bf26b9a41bbcf2f85baa8a937b01d350940194faaf64cf1d",
+          "sha256Source": "upstream-checksums-verified",
+          "archive": "tar.gz",
+          "binaryPath": "cfn-guard-v3-x86_64-linux-latest/cfn-guard",
+          "verifiedVersionOutput": "cfn-guard 3.2.1"
+        },
+        "linux-arm64": {
+          "url": "https://github.com/aws-cloudformation/cloudformation-guard/releases/download/3.2.1/cfn-guard-v3-aarch64-linux-latest.tar.gz",
+          "sha256": "cd378026dad0f865926ab1d1c082e2faf825f7fd888a9fe6b5c142cdf175c129",
+          "sha256Source": "upstream-checksums",
+          "archive": "tar.gz",
+          "binaryPath": "cfn-guard-v3-aarch64-linux-latest/cfn-guard"
+        }
       }
     },
     {

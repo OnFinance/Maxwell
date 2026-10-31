@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "1",
+  "kind": "maxwell.cfn-verification-pins",
+  "pinnedAt": "2026-10-31T05:00:00Z",
+  "description": "What cfn-verify.mjs runs besides the toolchain's cfn-lint and cfn-guard: AWS's Guard rule sets, the moto emulator and the LocalStack image, each pinned. A hosted run gets them from the platform's run tools (the same pins, checked by the platform before the run starts); the wrapper checks them again.",
+  "guardRules": {
+    "version": "1.0.2",
+    "source": "https://github.com/aws-cloudformation/aws-guard-rules-registry/releases/tag/1.0.2",
+    "url": "https://github.com/aws-cloudformation/aws-guard-rules-registry/releases/download/1.0.2/ruleset-build-v1.0.2.zip",
+    "sha256": "dc21aaad601c673843c299191d864cd9b9db32475b1937d930d6069ddde73296",
+    "sha256Source": "computed-at-pin",
+    "run": {
+      "guard-rules-registry-all-rules.guard": "77e4292a22df7184fff4f6f968308a2b7e767b951ae951c74de53d63fc73b3ae",
+      "rbi-md-itf.guard": "f2bf31deab0a9e6c8c4b67fd6a7dee7e23882dca97b9c1d84221413301eb75e2",
+      "cis-aws-benchmark-level-1.guard": "acd668dfd1254833b38a6d7766cd0dfca03da0a6f4485279e324ece24787c2e7"
+    }
+  },
+  "moto": {
+    "version": "5.2.4",
+    "source": "https://pypi.org/project/moto/5.2.4/",
+    "package": "moto[server]",
+    "lock": "../../scanner-toolchain/references/locks/moto.txt",
+    "lockSha256": "c4be8ac1b39e7d47b758d11e9933d9eafdeb6fa8dbb369a8d4a7db2bf67586f8",
+    "pythonVersion": "3.12"
+  },
+  "localstack": {
+    "version": "2026.09.1",
+    "ref": "docker.io/localstack/localstack:2026.09.1",
+    "digest": "sha256:0c644ede65c2d0c95737e09a39007828bd381bdb07ca8200c6bf17d66a4ed191",
+    "needs": "LOCALSTACK_AUTH_TOKEN (mandatory since the 2026-03 consolidation; the free Hobby plan is for non-commercial use) and Docker for the user that runs cfn-verify"
+  },
+  "emulatorPort": 45660
+}

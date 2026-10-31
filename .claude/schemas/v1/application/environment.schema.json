@@ -260,6 +260,11 @@
             "cdk",
             "other"
           ]
+        },
+        "stackName": {
+          "description": "For a cloudformation root: the name of the stack deployed from it, so probe-iac can describe the stack and detect its drift with the company's AWS read-only role (read calls only)",
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9-]{0,127}$"
         }
       },
       "additionalProperties": false
