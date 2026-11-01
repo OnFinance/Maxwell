@@ -1,11 +1,12 @@
-// The company's own AWS account, read-only (optional): with the company's "AWS read-only role" credential, each
+// The company's own AWS account, read-only (optional): with the company's AWS read-only access key, each
 // template is validated by CloudFormation itself (validate-template) and, when the application's environment names
 // the template's stack, the deployed stack is described and its drift detected (detect-stack-drift reads resources and
 // changes none). Every call goes through lib/cfn/aws.mjs in "aws" mode: read-only calls only, anything that starts
 // like a change refused before the CLI runs.
-//   MAXWELL_AWS_RO_ROLE_ARN + MAXWELL_AWS_RO_EXTERNAL_ID   a role in the company's account Maxwell assumes, with
-//        Maxwell's own principal (MAXWELL_AWS_ASSUMER_ACCESS_KEY_ID / MAXWELL_AWS_ASSUMER_SECRET_ACCESS_KEY)
-//   MAXWELL_AWS_RO_ACCESS_KEY_ID + MAXWELL_AWS_RO_SECRET_ACCESS_KEY   or an access key pair of a read-only principal
+//   MAXWELL_AWS_RO_ACCESS_KEY_ID + MAXWELL_AWS_RO_SECRET_ACCESS_KEY   an access key pair of a read-only IAM user (the
+//        documented way, and the only one the hosted platform offers: its Credentials page's two CloudFormation fields)
+//   MAXWELL_AWS_RO_ROLE_ARN + MAXWELL_AWS_RO_EXTERNAL_ID   local use only: a role in the company's account assumed with
+//        your own principal (MAXWELL_AWS_ASSUMER_ACCESS_KEY_ID / MAXWELL_AWS_ASSUMER_SECRET_ACCESS_KEY); wins when set
 //   MAXWELL_AWS_RO_REGION   the region (else the environment's hosting.region, else us-east-1)
 import { statSync } from 'node:fs';
 import { awsCall, awsContext } from './aws.mjs';
@@ -16,13 +17,13 @@ export const VALIDATE_BODY_MAX = 51200; // validate-template --template-body lim
 export function liveCredential(env = process.env) {
   if (env.MAXWELL_AWS_RO_ROLE_ARN) {
     if (!/^arn:aws[a-z-]*:iam::\d{12}:role\/[A-Za-z0-9+=,.@_\/-]{1,512}$/.test(env.MAXWELL_AWS_RO_ROLE_ARN)) return { kind: null, why: 'the AWS read-only role ARN is not a role ARN' };
-    if (!env.MAXWELL_AWS_ASSUMER_ACCESS_KEY_ID || !env.MAXWELL_AWS_ASSUMER_SECRET_ACCESS_KEY) return { kind: null, why: 'a role ARN is set but the platform holds no principal to assume it with' };
+    if (!env.MAXWELL_AWS_ASSUMER_ACCESS_KEY_ID || !env.MAXWELL_AWS_ASSUMER_SECRET_ACCESS_KEY) return { kind: null, why: 'a role ARN is set (local use) but no principal to assume it with is set (MAXWELL_AWS_ASSUMER_ACCESS_KEY_ID, MAXWELL_AWS_ASSUMER_SECRET_ACCESS_KEY)' };
     return { kind: 'role', roleArn: env.MAXWELL_AWS_RO_ROLE_ARN, externalId: env.MAXWELL_AWS_RO_EXTERNAL_ID || null,
       assumer: { accessKeyId: env.MAXWELL_AWS_ASSUMER_ACCESS_KEY_ID, secretAccessKey: env.MAXWELL_AWS_ASSUMER_SECRET_ACCESS_KEY } };
   }
   if (env.MAXWELL_AWS_RO_ACCESS_KEY_ID && env.MAXWELL_AWS_RO_SECRET_ACCESS_KEY)
     return { kind: 'keys', creds: { accessKeyId: env.MAXWELL_AWS_RO_ACCESS_KEY_ID, secretAccessKey: env.MAXWELL_AWS_RO_SECRET_ACCESS_KEY } };
-  return { kind: null, why: "no AWS read-only role is set on the company's Credentials page: live AWS checks not run (cfn-lint, cfn-guard and the emulator ran offline)" };
+  return { kind: null, why: "no AWS read-only access key is set on the company's Credentials page: live AWS checks not run (cfn-lint, cfn-guard and the emulator ran offline)" };
 }
 
 /** A read-only context (the role assumed when it is a role). Returns { ctx, identity } or { ctx: null, why }. */

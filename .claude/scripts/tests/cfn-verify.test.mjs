@@ -122,7 +122,7 @@ test('the AWS policy: real AWS gets read-only calls only; create and delete go o
 
 test('what the read-only credential is; an emulator\'s errors and policy documents', () => {
   assert.equal(liveCredential({}).kind, null);
-  assert.match(liveCredential({}).why, /no AWS read-only role/);
+  assert.match(liveCredential({}).why, /no AWS read-only access key/);
   assert.equal(liveCredential({ MAXWELL_AWS_RO_ACCESS_KEY_ID: 'A', MAXWELL_AWS_RO_SECRET_ACCESS_KEY: 'B' }).kind, 'keys');
   assert.match(liveCredential({ MAXWELL_AWS_RO_ROLE_ARN: 'arn:aws:iam::123456789012:role/maxwell-ro' }).why, /no principal to assume it/);
   assert.equal(liveCredential({ MAXWELL_AWS_RO_ROLE_ARN: 'arn:aws:iam::123456789012:role/maxwell-ro', MAXWELL_AWS_RO_EXTERNAL_ID: 'e', MAXWELL_AWS_ASSUMER_ACCESS_KEY_ID: 'a', MAXWELL_AWS_ASSUMER_SECRET_ACCESS_KEY: 'b' }).kind, 'role');
@@ -255,7 +255,7 @@ test('no AWS credential: lint runs, the emulator\'s absence is explained, live A
     const r = runCli(w, { AWS_ACCESS_KEY_ID: 'AKIASHOULDNOTBEUSED00', AWS_SECRET_ACCESS_KEY: 'nope' });
     assert.equal(r.status, 0, r.stderr);
     const s = JSON.parse(r.stdout);
-    assert.match(s.liveAws, /not run \(no AWS read-only role is set/);
+    assert.match(s.liveAws, /not run \(no AWS read-only access key is set/);
     assert.match(s.emulator, /none \(no emulator ran: .*moto not run: moto_server is not installed here/);
     const doc = JSON.parse(readFileSync(join(WORKSPACE, w.out), 'utf8'));
     assert.equal(doc.version, '2.1.0');

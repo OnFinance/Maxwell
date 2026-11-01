@@ -2,11 +2,11 @@
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "MaxwellAssumesWithExternalId",
+      "Sid": "LocalMaxwellAssumesWithExternalId",
       "Effect": "Allow",
-      "Principal": { "AWS": "arn:aws:iam::<MAXWELL_ACCOUNT_ID>:root" },
+      "Principal": { "AWS": "arn:aws:iam::<YOUR_ASSUMING_ACCOUNT_ID>:root" },
       "Action": "sts:AssumeRole",
-      "Condition": { "StringEquals": { "sts:ExternalId": "<EXTERNAL_ID_FROM_THE_CREDENTIALS_PAGE>" } }
+      "Condition": { "StringEquals": { "sts:ExternalId": "<YOUR_EXTERNAL_ID>" } }
     }
   ]
 }

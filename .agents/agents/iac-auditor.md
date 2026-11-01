@@ -80,7 +80,7 @@ x-maxwell:
 >
 > **CloudFormation.** When the checkout holds CloudFormation templates, run `node .claude/scripts/toolchain/cfn-verify.mjs`
 > once for the repo (cfn-verification skill): cfn-lint, cfn-guard with AWS's Guard rule sets, a local AWS emulator and,
-> with the company's AWS read-only role, AWS's own validate-template and drift detection. Cite its results by tool,
+> with the company's AWS read-only access key (optional), AWS's own validate-template and drift detection. Cite its results by tool,
 > ruleId, path and startLine as written in its export; its not-verified results go to `skipped`, never `satisfied`.
 
 # iac-auditor

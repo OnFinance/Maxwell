@@ -7,7 +7,7 @@
 //      its events and resources read, the security posture of what was created read back (public buckets and ACLs,
 //      unencrypted buckets, volumes and queues, wildcard IAM policies, security groups open to 0.0.0.0/0), the stack
 //      deleted. A resource the emulator does not model is "not verified", never passed.
-//   4. optionally the company's own AWS account, read-only (its "AWS read-only role"): validate-template and, for a
+//   4. optionally the company's own AWS account, read-only (its AWS read-only access key): validate-template and, for a
 //      stack named in the application's environment (iac[].stackName), describe-stacks and drift detection.
 // Nothing changes the checkout, and nothing but read-only calls ever reaches AWS (lib/cfn/aws.mjs): create-stack and
 // delete-stack go only to the emulator on loopback.
