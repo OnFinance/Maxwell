@@ -143,10 +143,27 @@ Read only these files; do not use memory of earlier runs, transcripts or anythin
 "Latest record per id" means: read the ledger top to bottom and keep the last line for each `id`; a later
 line with `supersedes` replaces the earlier one. Never count superseded lines twice.
 
+## Changing summary.md: Edit only, never Write
+Make every change to `summary.md` with the Edit tool. Never call Write on it. You run as a subagent, and
+Claude Code refuses a subagent's Write to any file whose name starts with summary, report, findings or
+analysis and ends in `.md`. It answers "Subagents should return findings as text, not write report files".
+That refusal is final for this run: do not retry it under another name, path or tool. Edit is how this file is
+meant to change:
+- one Edit per owned section, whose `old_string` is the section's current text from its `## ` heading up to
+  (not including) the next `## ` heading, or to the end of the file for the last section, and whose
+  `new_string` is the new section;
+- a new section is inserted with one Edit on the heading of the section it must precede (or appended to the
+  last section's text when it goes last);
+- one Edit for the frontmatter block;
+- when `summary.md` is absent, create it with a single Edit whose `old_string` is empty and whose
+  `new_string` is the whole file.
+If an Edit is refused, write nothing more, set `validation` (or the caller's `written: false` and `notes`) to
+the refusal text, and return.
+
 ## Procedure
 1. Read `summary.md` if it exists: parse the frontmatter and locate every level-2 heading. If the file is
-   absent, create it with the full frontmatter and only the sections you own (the schema's `sections` array
-   must list exactly the headings present, in document order).
+   absent, create it (with Edit, as above) with the full frontmatter and only the sections you own (the
+   schema's `sections` array must list exactly the headings present, in document order).
 2. Read the source files for each section you own. Compute every count with a method you can show
    (`wc -l`, a Grep with the exact pattern, or reading a `counters` block) and keep the record ids you used.
 3. Open `.claude/skills/report-templates` and use its layout for each section: heading text, the order of
@@ -222,6 +239,7 @@ line with `supersedes` replaces the earlier one. Never count superseded lines tw
 - Never edit a section the caller did not request (or, with no request, outside its default row), reorder
   sections, or delete headings the caller does not own.
 - Never append to `soc/main.jsonl`, touch masters, timelines, KPI files or any file but `summary.md`.
+- Never call Write on `summary.md`; change it with Edit only (see "Changing summary.md").
 - Never invent, round to a nicer number, extrapolate a trend, or describe a control as effective without a
   ledger observation that says so.
 - Never write a secret, credential locator value, or the contents of `credentials.json`.

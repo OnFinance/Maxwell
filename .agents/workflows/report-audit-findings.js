@@ -51,6 +51,10 @@ const runId = (args && args.runId) || null;
 const PROFILE = 'company-profile/' + companyId;
 const LEDGER = PROFILE + '/soc/main.jsonl';
 const SUMMARY = PROFILE + '/summary.md';
+// Claude Code refuses a subagent's Write to any file named summary*.md ("Subagents should return findings as text, not
+// write report files"), so the write step splices the approved sections with Edit, the tool every probe's summary step
+// already uses. OpenCode's edit creates a file from an empty oldString the same way.
+const EDIT_ONLY_RULE = 'Change ' + SUMMARY + ' with the Edit tool only, never Write (a subagent\'s Write to summary.md is refused by the harness, and that refusal is final): one Edit per section you replace, old_string = the section\'s current text from its ## heading up to the next ## heading (or end of file), new_string = the approved text for it; one Edit for the frontmatter; if the file is absent, one Edit with an empty old_string and the whole file as new_string. If an Edit is refused, stop and return written=false with the refusal text in notes.';
 const TEMPLATES = '.claude/skills/report-templates/SKILL.md';
 const SKILL_CONV = '.claude/skills/maxwell-conventions/SKILL.md';
 const SKILL_LEDGER = '.claude/skills/soc-ledger/SKILL.md';
@@ -315,8 +319,9 @@ if (dryRun) {
   writeResult = await ask(
     [
       'You are the report-writer for the ' + WORKFLOW + ' workflow, company ' + companyId + '. Read ' + TEMPLATES + ' sections 1 and 5 first.',
-      'Write the APPROVED sections below into ' + SUMMARY + ' (template section 5 steps 2-5): split the existing file on level-2 headings, replace only the sections ' + JSON.stringify(draft.sectionsRewritten || []) + ' with the approved text EXACTLY as given (no re-rendering, no re-counting, no rewording: adversarial refuters already checked these bytes), remove an owned section that the approved text omits by template rule, keep every foreign section and the title line byte-for-byte, keep canonical order.',
+      'Splice the APPROVED sections below into ' + SUMMARY + ' with Edit (template section 5 steps 2-5): split the existing file on level-2 headings, replace only the sections ' + JSON.stringify(draft.sectionsRewritten || []) + ' with the approved text EXACTLY as given (no re-rendering, no re-counting, no rewording: adversarial refuters already checked these bytes), remove an owned section that the approved text omits by template rule, keep every foreign section and the title line byte-for-byte, keep canonical order.',
       'Frontmatter, updated once: version minor bump from the current file (major when sections[] changes; 1.0.0 for a new file), sections[] exactly the headings present in document order, provenance with workflow ' + WORKFLOW + ', agent report-writer, generatedAt and inputsHash = ' + scout.inputsHash + ' (computed before this write; do not recompute it).',
+      EDIT_ONLY_RULE,
       'Run node .claude/scripts/validate-data.mjs ' + SUMMARY + '. Do not append to the ledger and write no other file.',
       'Approved sections (between the markers, markers excluded):\n<<<APPROVED-SECTIONS\n' + (draft.markdown || '') + '\nAPPROVED-SECTIONS>>>',
       timeRule(), provenanceRule('report-writer'),

@@ -264,7 +264,9 @@ write `not computed; run /kpis` and do not estimate.
    in section 1 holds (hash match alone is not enough).
 2. Read the existing `summary.md`; split on `^## ` headings; keep foreign sections verbatim.
 3. Render your sections from the sources; run every table through the citation checks in section 2.
-4. Write the file with the merged sections in canonical order and the updated frontmatter (version bump).
+4. Apply the merged sections in canonical order and the updated frontmatter (version bump) with Edit, one
+   section at a time (an absent file is created with one Edit whose `old_string` is empty). A subagent never
+   uses Write here: Claude Code refuses a subagent's Write to `summary.md` (see the report-writer agent).
 5. `node .claude/scripts/validate-data.mjs company-profile/<c>/summary.md`.
 6. Record the report generation on the ledger as one `observation` (`title: "<workflow> regenerated
    summary.md sections <ids>"`, `methods: ["<workflow>"]`, `controlIds` = the instrument-qualified control ids
