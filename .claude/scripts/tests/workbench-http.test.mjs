@@ -137,3 +137,23 @@ test('HTTP policy prevents protected requests, binds review policy and rejects s
     assert.equal(f.responses.get(r.responseId).state, 'requested');
   } finally { await f.close(); }
 });
+
+test('HTTP provider review is analyst-only and bound to current evidence and revision', async () => {
+  const { applyProviderUpdate } = await import('../incident-investigation/core.mjs');
+  const { normalizeDefenderAlert } = await import('../threat-detection/microsoft-adapter.mjs');
+  const f = await workbenchFixture();
+  try {
+    const analyst = await login(f, 'analyst'); const viewer = await login(f, 'viewer');
+    f.source.lastUpdateDateTime = new Date(Date.parse(f.source.lastUpdateDateTime) + 1000).toISOString();
+    const next = applyProviderUpdate(f.cases.get(f.caseId), normalizeDefenderAlert(f.source, { companyId: f.companyId, tenantId: f.source.tenantId }));
+    f.cases.set(f.caseId, next);
+    const url = `/api/companies/example-co/cases/${f.caseId}/actions`;
+    const action = { type: 'review-provider-update', expectedRevision: next.revision, alertSignature: next.alertSignature, text: 'Reviewed latest provider evidence' };
+    assert.equal((await api(f, viewer, url, action)).status, 403);
+    assert.equal((await api(f, analyst, url, { ...action, alertSignature: '0'.repeat(64) })).status, 409);
+    const reviewed = await api(f, analyst, url, action);
+    assert.equal(reviewed.status, 200); assert.equal(reviewed.data.providerReviewRequired, false);
+    assert.equal(reviewed.data.notes[0].actor, analyst.actorId);
+    assert.equal((await api(f, analyst, url, action)).status, 409);
+  } finally { await f.close(); }
+});

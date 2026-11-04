@@ -488,8 +488,8 @@ SBOMs, OpenLineage for pipelines, and OpenTelemetry GenAI conventions for sessio
 Entra sign-in records feed the existing authentication recipes. Defender for Endpoint alerts from Microsoft
 Graph `security/alerts_v2` become candidate alerts accepted by the investigation backend; they do not confirm
 incidents or trigger response. Other Defender service sources are excluded. Each updated provider alert is an
-immutable revision with a separate candidate ID; consolidating provider revisions into one analyst case remains
-work for the SOC workbench. This is alert telemetry, not a full endpoint process/network event stream.
+immutable revision with a separate candidate ID. Investigation intake consolidates new revisions into a stable
+company/tenant/provider-identity case, preserving analyst state. This is alert telemetry, not a full endpoint process/network event stream.
 
 An administrator must grant the collector application **AuditLog.Read.All** for sign-ins and
 **SecurityAlert.Read.All** for alerts. Use a dedicated application with only those permissions; no device-action
@@ -778,6 +778,25 @@ route. Provider calls and persistence are mocked; real IdP/tenant/database deplo
 visual QA remain pending. No cloud resources are deployed by this command's setup instructions.
 
 ### Incident investigation
+
+Defender case identity now uses company, tenant and the stable provider alert group hash. Newer provider timestamps
+replace the current alert snapshot, increment the case revision and record both old/new snapshots in the atomic
+DynamoDB activity write. Exact replay is a no-op; older updates cannot regress the case; different content at the
+same current timestamp is rejected. Concurrent intake retries optimistic conflicts up to five times before queue
+retry. Source identity and non-Microsoft case IDs remain separate.
+
+A provider update preserves notes, owner, evidence and disposition, and sets `providerReviewRequired`. Analysts
+review the latest alert in the workbench and submit a note bound to its signature and current case revision.
+Confirmation and new response requests are blocked until review; old response approvals fail revision checks.
+Updates never auto-reopen closed/false-positive cases or rewrite a confirmed incident ledger record. Intake
+retries updates while confirmation is pending, so the confirmation snapshot cannot change midway through writing.
+
+**Migration boundary:** Existing cases created using the old per-revision IDs are not rewritten or merged.
+The first delivery under this implementation starts a canonical case; historical cases remain accessible and
+require an operator-reviewed migration if consolidation of old history is needed. No migration or deployment is
+performed by this PR. Activity snapshots retain the existing table retention policy. Automated tests use mocked
+persistence/provider calls; real concurrent DynamoDB and live tenant validation remain pending.
+
 
 Maxwell's investigation worker turns each alert candidate into one durable case. It preserves state across worker
 restarts, rejects conflicting replays, uses revision checks to prevent analyst overwrites, and records an immutable

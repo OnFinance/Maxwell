@@ -37,7 +37,7 @@ test('intake acknowledges successful, duplicate, and irrelevant records while re
   ];
   const result = await processMessages({ messages, companyId: 'example-co', service, onCase: async (value) => seen.push(value), onError: async (value) => errors.push(value) });
   assert.deepEqual(result.acknowledged.map((item) => item.Id), ['created', 'duplicate', 'ignored']);
-  assert.deepEqual(result.stats, { received: 4, ignored: 1, created: 1, duplicates: 1, failed: 1 });
+  assert.deepEqual(result.stats, { received: 4, ignored: 1, created: 1, updated: 0, duplicates: 1, failed: 1 });
   assert.equal(seen.length, 2);
   assert.deepEqual({ messageId: errors[0].messageId, receiveCount: errors[0].receiveCount }, { messageId: 'poison', receiveCount: '3' });
   assert.ok(!JSON.stringify(errors).includes('{bad'));

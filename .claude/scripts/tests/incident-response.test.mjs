@@ -282,3 +282,16 @@ test('a newly protected device blocks an approved response and old unbound propo
   assert.equal(f.postCount, 0);
   assert.equal((await f.decide(approved, { decision: 'cancel' })).state, 'cancelled');
 });
+
+test('provider updates invalidate approved responses and require review before a fresh request', async () => {
+  const { applyProviderUpdate, applyCaseAction } = await import('../incident-investigation/core.mjs');
+  const f = setup(); const approved = await f.decide(await f.request());
+  f.source.lastUpdateDateTime = new Date(time + 1000).toISOString();
+  f.case = applyProviderUpdate(f.case, normalizeDefenderAlert(f.source, { companyId, tenantId }), time + 1000);
+  await assert.rejects(f.execute(approved), /requires analyst review/);
+  await assert.rejects(f.request(), /requires analyst review/);
+  f.case = applyCaseAction(f.case, { type: 'review-provider-update', actor: 'analyst', expectedRevision: f.case.revision, alertSignature: f.case.alertSignature, text: 'Reviewed updated endpoint evidence' }, time + 2000);
+  await assert.rejects(f.execute(approved), /case changed/);
+  assert.equal(f.postCount, 0);
+  assert.equal((await f.decide(await f.request())).state, 'approved');
+});

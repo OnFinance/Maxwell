@@ -75,9 +75,12 @@ function clientApp() {
     root.append(node('span', item.status || item.state, 'badge'));
     if (mode === 'cases') {
       values(root, { Case: item.caseId, Severity: item.severity, Owner: item.owner, Revision: item.revision, Source: item.alert.source });
+      dump(root, 'Latest provider alert', item.alert);
+      if (item.providerReviewRequired) root.append(node('p', 'Provider evidence changed. Review the latest alert before confirming or requesting a response.', 'muted'));
       dump(root, 'Evidence', item.evidence); dump(root, 'Notes', item.notes); dump(root, 'Activity', item.timeline);
       const action = async (type, data = {}) => { await api(`${base()}/cases/${item.caseId}/actions`, { type, expectedRevision: item.revision, ...data }); await detail(item.caseId); message('Case updated.'); };
       if (can('case.write')) {
+        if (item.providerReviewRequired && item.status !== 'confirmation-pending') form(root, 'Review provider update', [['text', 'Review note', 'text']], (data) => action('review-provider-update', { ...data, alertSignature: item.alertSignature }), 'Record review');
         if (item.status === 'open') root.append(button('Start investigation', () => action('start')));
         if (['open', 'investigating'].includes(item.status)) {
           form(root, 'Assign case', [['owner', 'Owner']], (data) => action('assign', data));
@@ -87,11 +90,11 @@ function clientApp() {
         }
         if (['confirmed', 'false-positive'].includes(item.status)) root.append(button('Close case', () => action('close')));
       }
-      if (can('case.confirm') && ['open', 'investigating', 'confirmation-pending'].includes(item.status)) {
+      if (!item.providerReviewRequired && can('case.confirm') && ['open', 'investigating', 'confirmation-pending'].includes(item.status)) {
         form(root, 'Confirm incident', [['category', 'Incident category', ['other', 'malware', 'ransomware', 'unauthorised-access', 'data-breach', 'phishing']], ['classification', 'Affected data', ['none', 'pii', 'spdi', 'financial', 'cardholder', 'confidential']]],
           ({ category, classification }) => action('confirm', { category, affectedDataClassifications: classification === 'none' ? [] : [classification] }), 'Confirm incident');
       }
-      if (can('response.request') && ['confirmed', 'closed'].includes(item.status) && item.alert.source === 'microsoft-defender') {
+      if (!item.providerReviewRequired && can('response.request') && ['confirmed', 'closed'].includes(item.status) && item.alert.source === 'microsoft-defender') {
         form(root, 'Request device response', [['providerAlertId', 'Defender alert ID'], ['machineId', 'Defender device ID'], ['action', 'Action', item.status === 'closed' ? ['unisolate'] : ['isolate', 'unisolate']], ['reason', 'Reason and expected impact', 'text']], async (data) => {
           const response = await api(`${base()}/responses`, { ...data, caseId: item.caseId }); mode = 'responses'; tabs(); await refresh(); await detail(response.responseId);
         }, 'Request approval');

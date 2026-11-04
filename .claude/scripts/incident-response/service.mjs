@@ -21,6 +21,7 @@ export class ResponseService {
     const current = await this.caseStore.getCase(proposal.companyId, proposal.caseId);
     if (!current || current.companyId !== proposal.companyId || current.caseId !== proposal.caseId || !current.confirmedIncidentId
       || !(proposal.action === 'unisolate' ? ['confirmed', 'closed'] : ['confirmed']).includes(current.status)) throw new Error('response requires a confirmed case');
+    if (current.providerReviewRequired) throw new Error('provider update requires analyst review');
     if (proposal.caseRevision !== undefined && current.revision !== proposal.caseRevision) throw new Error('case changed; request a new approval');
     const target = await this.resolveTarget(current, proposal.providerAlertId, proposal.machineId);
     if (!target || target.machineId !== proposal.machineId || !/^[a-f0-9]{64}$/.test(target.evidenceHash || '')

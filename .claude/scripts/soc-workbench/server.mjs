@@ -67,7 +67,7 @@ export function createWorkbenchServer({ auth, caseStore, investigation, response
       }
       const input = await body(req);
       if (collection === 'cases' && operation === 'actions' && /^case_[a-f0-9]{32}$/.test(id)) {
-        const allowed = { start: [], assign: ['owner'], note: ['text'], 'add-evidence': ['ref', 'sha256', 'description'], dismiss: ['reason'], close: [], confirm: ['category', 'affectedDataClassifications'] };
+        const allowed = { 'review-provider-update': ['alertSignature', 'text'], start: [], assign: ['owner'], note: ['text'], 'add-evidence': ['ref', 'sha256', 'description'], dismiss: ['reason'], close: [], confirm: ['category', 'affectedDataClassifications'] };
         if (!Object.hasOwn(allowed, input?.type)) throw new Error('invalid case action');
         fields(input, ['type', 'expectedRevision', ...allowed[input.type]]);
         await auth.authorize(session, companyId, input.type === 'confirm' ? 'case.confirm' : 'case.write');
