@@ -467,8 +467,9 @@ SBOMs, OpenLineage for pipelines, and OpenTelemetry GenAI conventions for sessio
 ### Real-time threat-detection recipes
 
 > **Current scope:** The deployed-ingestion infrastructure targets AWS CloudTrail. Microsoft Entra ID and
-> Defender for Endpoint now have read-only collection, replay and durable polling adapters, with local integration
-> tests. Microsoft live tenant validation, deployment and containment are not yet complete.
+> Defender for Endpoint have read-only collection, replay and durable polling adapters, with local integration
+> tests. Approval-controlled response has a disabled-by-default backend library. Microsoft live tenant validation,
+> deployment and the authenticated analyst workbench remain incomplete.
 
 #### Microsoft telemetry (initial integration)
 
@@ -620,6 +621,69 @@ npm run detect:cloudtrail:sqs -- \
 The alert queue receives only newly persisted candidates. A separate investigation consumer must enrich and confirm
 them before creating incidents. Deployment, IAM attachment, retry and dead-letter operations are documented in
 `.claude/skills/threat-detection/SKILL.md`.
+
+### Approval-controlled Microsoft response (backend integration)
+
+`.claude/scripts/incident-response/service.mjs` implements request, read, approve, deny, cancel, execute and
+reconcile operations. Supported actions are **full isolation** and **release from isolation** of an onboarded
+Defender device. Neither an alert nor a detector can directly execute them. There is deliberately no CLI that
+accepts a caller-supplied `--actor` or role to approve a response.
+
+An action requires a confirmed investigation case (release also permits a closed confirmed case). The target
+resolver reads the provider alert through Graph, verifies that its tenant and normalized snapshot match the
+case, and verifies that the requested device is present as onboarded device evidence. A changed provider
+snapshot or case revision requires fresh case review and a new proposal; the service never silently updates an
+approved target. Cross-tenant targets, unsupported actions and devices missing from the evidence are rejected.
+
+The proposal includes company, case revision, tenant, provider alert, device, evidence hash, action, reason,
+requester and expiry. Approval must supply the exact digest and revision reviewed by a different person.
+Approvals expire after at most fifteen minutes and are consumed by a conditional execution claim. A fresh
+approval is required to release isolation; success does not automatically run rollback. Case revision, current
+provider evidence and host policy are rechecked at approval and execution. DynamoDB transaction conditions
+also check the case revision when saving those transitions.
+
+`DynamoDbResponseStore` in `incident-response/store.mjs` stores response state and append-only transition rows
+atomically in the **same table as the investigation cases**, with no TTL. It uses the supplied document client;
+the host needs `GetItem` and `TransactWriteItems` permissions on that table. Only the executor should have the
+Defender action credentials. Response submission uses a separate token provider configured with
+`resource: 'https://api.securitycenter.microsoft.com'`; telemetry remains on the Graph token audience. The
+Defender API URL uses `api.security.microsoft.com`, but its token audience uses the legacy `securitycenter`
+resource, as described in Microsoft's [application authentication guide](https://learn.microsoft.com/en-us/defender-endpoint/api/exposed-apis-create-app-webapp).
+
+Host integration must supply all of the following before this is usable by analysts:
+
+- `authorize(session, companyId, permission)`: validate the authenticated session and company membership, enforce
+  the requested `response.request|read|approve|cancel|execute|reconcile` permission, and return a trusted
+  `{id, companyId}` principal. Never copy actor IDs or roles from request JSON. An OIDC/SSO-backed HTTP/API host
+  and its session protection are still to be implemented with the workbench.
+- `policy({case, action, target})`: return `true` only for approved company/device scope, supported device/OS,
+  maintenance rules and protected-asset exclusions. There is no permissive default policy.
+- The investigation store, response store, Graph target resolver and Defender response provider. Use a
+  synchronized host clock, protect the response table from untrusted writes, and grant separate read/action
+  application permissions through the operator's normal approval process.
+- Explicit `executionEnabled: true` **only after** operator deployment approval and sandbox validation.
+  The default is `false`; this PR does not turn it on anywhere.
+
+The Defender provider sends one POST only after the durable execution claim is acknowledged. It never retries
+POST, including throttling and transport failures. A successful provider submission is `submitted`, not proof
+the device is isolated. Read-only reconciliation checks the provider action's ID, device, type, isolation scope
+and exact correlation comment before reporting `succeeded` or `failed`. A lost response, timeout or uncertain
+write leaves `unknown`/`executing` non-retryable. If the action ID was lost, an authorized operator must find it
+in Defender and supply it for reconciliation; arbitrary IDs cannot be attached. Unchanged pending status does
+not append duplicate audit transitions. There is no automated retry or claim that an uncertain action failed.
+
+Microsoft documents `Machine.Isolate` for isolation/release and `Machine.ReadWrite.All` for reading machine
+actions; validate these permissions and licensing against the target tenant before deployment. See the
+[isolation API](https://learn.microsoft.com/en-us/defender-endpoint/api/isolate-machine),
+[release API](https://learn.microsoft.com/en-us/defender-endpoint/api/unisolate-machine) and
+[action-status API](https://learn.microsoft.com/en-us/defender-endpoint/api/get-machineaction-object).
+Device isolation can disrupt connectivity, including the Defender channel on full-tunnel VPNs, so the host
+policy and approval UI must make the impact explicit.
+
+Run `node --test .claude/scripts/tests/incident-response.test.mjs` for the mocked case → approval → provider
+submission → reconciliation flow and failure-path tests. These are backend/local tests, not proof of live
+containment or deployed authorization. Workbench/API wiring, real DynamoDB transaction validation and controlled
+tenant/OS tests remain required. No response command was run against Microsoft during development.
 
 ### Incident investigation
 

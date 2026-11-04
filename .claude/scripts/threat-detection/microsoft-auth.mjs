@@ -2,12 +2,13 @@ import { microsoftScope } from './microsoft-adapter.mjs';
 import { readMicrosoftJson } from './microsoft-http.mjs';
 
 // Credentials are supplied by the host; never persist or log token responses.
-export function microsoftClientCredentials({ tenantId, clientId, clientSecret, fetchImpl = fetch, clock = Date.now } = {}) {
+export function microsoftClientCredentials({ tenantId, clientId, clientSecret, resource = 'https://graph.microsoft.com', fetchImpl = fetch, clock = Date.now } = {}) {
   const tenant = microsoftScope({ companyId: 'auth', tenantId }).tenantId;
+  if (!['https://graph.microsoft.com', 'https://api.securitycenter.microsoft.com'].includes(resource)) throw new Error('unsupported Microsoft resource');
   if (!/^[0-9a-f-]{36}$/i.test(clientId || '') || typeof clientSecret !== 'string' || !clientSecret) throw new Error('Microsoft client credentials are required');
   let cached;
   return async ({ tenantId: requestedTenant, scope }) => {
-    if (requestedTenant !== tenant || scope !== 'https://graph.microsoft.com/.default') throw new Error('Microsoft credential scope mismatch');
+    if (requestedTenant !== tenant || scope !== `${resource}/.default`) throw new Error('Microsoft credential scope mismatch');
     if (cached && cached.expiresAt > clock() + 60000) return { tenantId: tenant, accessToken: cached.accessToken };
     const started = clock();
     let response;
