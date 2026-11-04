@@ -467,8 +467,8 @@ SBOMs, OpenLineage for pipelines, and OpenTelemetry GenAI conventions for sessio
 ### Real-time threat-detection recipes
 
 > **Current scope:** The deployed-ingestion infrastructure targets AWS CloudTrail. Microsoft Entra ID and
-> Defender for Endpoint now have read-only collection and offline replay adapters on this branch, with local
-> integration tests. Microsoft continuous ingestion, production validation and containment are not yet complete.
+> Defender for Endpoint now have read-only collection, replay and durable polling adapters, with local integration
+> tests. Microsoft live tenant validation, deployment and containment are not yet complete.
 
 #### Microsoft telemetry (initial integration)
 
@@ -496,7 +496,7 @@ node .claude/scripts/threat-detection/microsoft-run.mjs \
 
 Use `--mode normalize` for normalized Entra events, or `--source defender` for Defender candidate alerts.
 For in-memory detection, order input by event time and keep it within the engine's retention/lateness limits.
-Historical or newest-first API feeds need a durable ordered inbox and replay coordination.
+The durable poller below accepts newest-first API feeds and re-evaluates correlations on duplicate or late events.
 
 For bounded read-only collection, inject `MAXWELL_MICROSOFT_CLIENT_ID` and `MAXWELL_MICROSOFT_CLIENT_SECRET`
 through the host secret manager, then invoke:
@@ -513,11 +513,59 @@ credentials or a checkpoint. A failed run can emit partial output. A production 
 idempotent durable inbox, commit the returned watermark only after all deliveries succeed, and poll with an
 overlap to catch delayed provider data. The library's `deliver` callback is the acknowledgment boundary.
 Authentication failures and exhausted retries leave the checkpoint unchanged. Do not use stdout completion as
-proof that downstream storage succeeded. Live tenant validation, continuous scheduling and health monitoring
-remain pending; no production resources are provisioned by these commands.
+proof that downstream storage succeeded. Continuous polling and health reporting
+are provided by the durable poller below; live tenant validation remains pending. No production resources are
+provisioned by these commands.
 
 Run the offline connector-to-detection-to-case tests with
 `node --test .claude/scripts/tests/microsoft-telemetry.test.mjs`.
+
+#### Durable Microsoft polling and connector health
+
+The durable worker uses the **existing Maxwell detection DynamoDB table** (string `pk`/`sk` keys). It saves Entra
+events and candidate alerts through the durable detection engine; Defender candidate revisions go straight into
+the same alert outbox. The existing DynamoDB Stream → alert SQS → investigation intake deployment must be wired
+to this table for cases to appear. Poll success means data reached the durable outbox, not that the downstream
+case consumer finished. Monitor the intake queue and its dead-letter queue separately.
+
+```bash
+node .claude/scripts/threat-detection/microsoft-poll-run.mjs \
+  --company example-co --tenant 11111111-2222-3333-4444-555555555555 --source entra \
+  --table maxwell-detection --region ap-south-1 --from 2026-11-04T00:00:00.000Z --watch
+```
+
+Run a separate worker with `--source defender`. Omit `--watch` for one bounded poll under an external scheduler.
+Use a current initial `--from` within the supported replay horizon; the date above is illustrative. It is used
+only when the connector first starts. Changing `--from` does not reset an existing cursor. Host credentials need
+the Microsoft permissions above and DynamoDB `GetItem`, `UpdateItem`, `PutItem`, `Query`, and `TransactWriteItems`
+on the existing table. Provisioning the table, modifying IAM, deploying a worker and configuring alarms are
+separate operator actions; this PR does not perform them.
+
+Each connector is scoped by company, tenant and source. A conditional ten-minute lease excludes competing
+workers, renews before every API page and periodically during delivery, and fences checkpoint/health updates
+from expired owners. Progress advances in five-minute chunks with a five-minute overlap and a two-minute
+provider delay allowance. The watch loop polls every minute and backs off to at most five minutes on failure.
+SIGINT/SIGTERM stops further polling. Partial deliveries are replayed idempotently after restart; an event saved
+before an alert-write failure is re-evaluated on replay. A lost response to a checkpoint write is resolved by
+reading the persisted cursor. Detection events are retained for fifteen days; checkpoints have no TTL.
+
+Data older than the fourteen-day engine horizon fails closed instead of silently skipping an outage. Provider
+retention can be shorter, and events arriving later than the overlap can be missed: validate the tenant's
+retention/delivery characteristics and arrange controlled backfills before deployment. Poller errors never
+store raw provider responses or credentials. For worker health (no Microsoft credentials needed):
+
+```bash
+node .claude/scripts/threat-detection/microsoft-poll-run.mjs \
+  --company example-co --tenant 11111111-2222-3333-4444-555555555555 --source entra \
+  --table maxwell-detection --region ap-south-1 --health
+```
+
+Health reports `never-started`, `running`, `healthy`, `failed`, `stalled` (expired worker lease), or `stale`
+(success/checkpoint older than fifteen minutes), plus checkpoint lag and failure counts. The health command exits
+nonzero for unhealthy states. This is an operator-readable health command, not a deployed monitoring service.
+Tests use mocked Graph and in-memory persistence plus SDK request assertions; real DynamoDB, Microsoft consent,
+provider latency, process supervision and the deployed stream-to-case pipeline still require operational validation.
+Run `node --test .claude/scripts/tests/microsoft-*.test.mjs` for both Microsoft test suites.
 
 Maxwell includes a small deterministic engine for normalized security events. It currently detects repeated
 authentication failures, password spraying, a successful login after repeated failures, privileged-access grants
