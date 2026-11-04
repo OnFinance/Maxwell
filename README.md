@@ -466,9 +466,58 @@ SBOMs, OpenLineage for pipelines, and OpenTelemetry GenAI conventions for sessio
 
 ### Real-time threat-detection recipes
 
-> **Current scope:** Maxwell's real-time threat-detection feature currently supports AWS only. Its live ingestion,
-> infrastructure and source adapter are built for AWS CloudTrail; other cloud providers and endpoint sources are not
-> supported yet.
+> **Current scope:** The deployed-ingestion infrastructure targets AWS CloudTrail. Microsoft Entra ID and
+> Defender for Endpoint now have read-only collection and offline replay adapters on this branch, with local
+> integration tests. Microsoft continuous ingestion, production validation and containment are not yet complete.
+
+#### Microsoft telemetry (initial integration)
+
+Entra sign-in records feed the existing authentication recipes. Defender for Endpoint alerts from Microsoft
+Graph `security/alerts_v2` become candidate alerts accepted by the investigation backend; they do not confirm
+incidents or trigger response. Other Defender service sources are excluded. Each updated provider alert is an
+immutable revision with a separate candidate ID; consolidating provider revisions into one analyst case remains
+work for the SOC workbench. This is alert telemetry, not a full endpoint process/network event stream.
+
+An administrator must grant the collector application **AuditLog.Read.All** for sign-ins and
+**SecurityAlert.Read.All** for alerts. Use a dedicated application with only those permissions; no device-action
+permissions are needed. Tenant licensing, retention and available log types must be checked during onboarding.
+The initial connector targets the Microsoft public cloud. See Microsoft's
+[sign-in API](https://learn.microsoft.com/en-us/graph/api/signin-list?view=graph-rest-1.0),
+[security alerts API](https://learn.microsoft.com/en-us/graph/api/security-list-alerts_v2?view=graph-rest-1.0), and
+[application authentication](https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-client-creds-grant-flow).
+
+For offline replay, provide individual Graph records as JSONL (not the enclosing `value` page):
+
+```bash
+node .claude/scripts/threat-detection/microsoft-run.mjs \
+  --company example-co --tenant 11111111-2222-3333-4444-555555555555 \
+  --source entra --mode detect --replay-now 2026-11-04T00:05:00.000Z < signins.jsonl
+```
+
+Use `--mode normalize` for normalized Entra events, or `--source defender` for Defender candidate alerts.
+For in-memory detection, order input by event time and keep it within the engine's retention/lateness limits.
+Historical or newest-first API feeds need a durable ordered inbox and replay coordination.
+
+For bounded read-only collection, inject `MAXWELL_MICROSOFT_CLIENT_ID` and `MAXWELL_MICROSOFT_CLIENT_SECRET`
+through the host secret manager, then invoke:
+
+```bash
+node .claude/scripts/threat-detection/microsoft-collect-run.mjs \
+  --company example-co --tenant 11111111-2222-3333-4444-555555555555 --source entra \
+  --from 2026-11-04T00:00:00.000Z --to 2026-11-04T00:05:00.000Z
+```
+
+The collector follows same-endpoint pagination, bounds pages/records, retries throttling, and fails closed on
+malformed or mismatched records. It prints normalized records to stdout and counts to stderr; it never stores
+credentials or a checkpoint. A failed run can emit partial output. A production host must deliver records to an
+idempotent durable inbox, commit the returned watermark only after all deliveries succeed, and poll with an
+overlap to catch delayed provider data. The library's `deliver` callback is the acknowledgment boundary.
+Authentication failures and exhausted retries leave the checkpoint unchanged. Do not use stdout completion as
+proof that downstream storage succeeded. Live tenant validation, continuous scheduling and health monitoring
+remain pending; no production resources are provisioned by these commands.
+
+Run the offline connector-to-detection-to-case tests with
+`node --test .claude/scripts/tests/microsoft-telemetry.test.mjs`.
 
 Maxwell includes a small deterministic engine for normalized security events. It currently detects repeated
 authentication failures, password spraying, a successful login after repeated failures, privileged-access grants
