@@ -99,7 +99,7 @@ function clientApp() {
     } else {
       const p = item.proposal;
       values(root, { Case: p.caseId, Tenant: p.tenantId, Device: p.machineId, Action: p.action, Requester: p.requestedBy,
-        Reason: p.reason, Expires: new Date(p.expiresAt).toLocaleString(), Revision: item.revision, Digest: item.digest, 'Evidence hash': p.evidenceHash });
+        Reason: p.reason, Expires: new Date(p.expiresAt).toLocaleString(), Revision: item.revision, Digest: item.digest, 'Evidence hash': p.evidenceHash, 'Policy hash': p.policyHash || 'Legacy host policy', 'Policy window ends': p.policyValidUntil ? new Date(p.policyValidUntil).toISOString() : 'Not bound by this host' });
       root.append(node('p', p.action === 'isolate' ? 'Full isolation can interrupt device connectivity and business services. Review the device and impact before approving.' : 'Release restores device connectivity. Confirm remediation before approving.', 'banner'));
       const decision = async (value) => { await api(`${base()}/responses/${item.responseId}/decision`, { expectedRevision: item.revision, digest: item.digest, decision: value }); await detail(item.responseId); };
       if (p.expiresAt <= Date.now()) root.append(node('p', 'This approval has expired. Request a new proposal.', 'muted'));

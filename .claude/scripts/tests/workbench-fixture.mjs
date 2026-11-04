@@ -44,6 +44,6 @@ export async function workbenchFixture(port = 0) {
       companyDetails: { frameworksInScope: ['cert-in-directions-2022'] }, slaTable: { entries: [{ instrument: 'cert-in-directions-2022', topic: 'incident-reporting', severity: 'any', hours: 6 }] } }),
   });
   server.listen(port, '127.0.0.1'); await once(server, 'listening'); auth.origin = `http://127.0.0.1:${server.address().port}`;
-  return { server, auth, cases, responses, incidents, caseId: record.caseId, companyId, machineId, source,
+  return { server, auth, cases, responses, incidents, responseService, caseId: record.caseId, companyId, machineId, source,
     close: async () => { server.closeAllConnections(); await new Promise((resolve) => server.close(resolve)); } };
 }

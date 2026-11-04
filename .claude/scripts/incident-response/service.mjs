@@ -26,8 +26,13 @@ export class ResponseService {
     if (!target || target.machineId !== proposal.machineId || !/^[a-f0-9]{64}$/.test(target.evidenceHash || '')
       || !/^[0-9a-f-]{36}$/i.test(target.tenantId || '')) throw new Error('invalid target evidence');
     if (proposal.evidenceHash && (proposal.evidenceHash !== target.evidenceHash || proposal.tenantId !== target.tenantId)) throw new Error('target evidence changed');
-    if (await this.policy({ case: structuredClone(current), action: proposal.action, target: structuredClone(target) }) !== true) throw new Error('response policy denied');
-    return { current, target };
+    const policy = await this.policy({ case: structuredClone(current), action: proposal.action, target: structuredClone(target) });
+    if (policy !== true && (!policy || policy.allowed !== true || !/^[a-f0-9]{64}$/.test(policy.fingerprint || '')
+      || !Number.isSafeInteger(policy.validUntil) || policy.validUntil <= this.clock())) throw new Error('response policy denied');
+    if (proposal.policyHash && (policy === true || proposal.policyHash !== policy.fingerprint)) throw new Error('response policy changed; request a new approval');
+    // Existing unbound proposals cannot cross into a host that now requires versioned policy.
+    if (proposal.caseRevision !== undefined && !proposal.policyHash && policy !== true) throw new Error('response policy changed; request a new approval');
+    return { current, target, policy };
   }
   async request({ session, companyId, caseId, providerAlertId, machineId, action, reason, expiresInMs = 900000 }) {
     const actor = await this.actor(session, companyId, 'response.request');
@@ -35,11 +40,13 @@ export class ResponseService {
       || !/^[a-f0-9]{40}$/.test(machineId || '') || !['isolate', 'unisolate'].includes(action)) throw new Error('invalid response target/action');
     if (typeof reason !== 'string' || !reason.trim() || reason.length > 500 || /(?:password|secret|access_token)\s*[:=]/i.test(reason)) throw new Error('invalid response reason');
     if (!Number.isSafeInteger(expiresInMs) || expiresInMs < 60000 || expiresInMs > 900000) throw new Error('approval lifetime must be 1–15 minutes');
-    const { current, target } = await this.context({ companyId, caseId, providerAlertId, machineId, action });
+    const { current, target, policy } = await this.context({ companyId, caseId, providerAlertId, machineId, action });
     const now = this.clock();
     const proposal = { companyId, caseId, caseRevision: current.revision, providerAlertId, machineId, action,
       tenantId: target.tenantId, evidenceHash: target.evidenceHash, reason: reason.trim(), requestedBy: actor,
-      createdAt: now, expiresAt: now + expiresInMs };
+      createdAt: now, expiresAt: Math.min(now + expiresInMs, policy === true ? Infinity : policy.validUntil),
+      ...(policy === true ? {} : { policyHash: policy.fingerprint, policyValidUntil: policy.validUntil }) };
+    if (proposal.expiresAt <= now) throw new Error('response policy window expired');
     const record = { schemaVersion: '1', kind: 'maxwell.response', responseId: `rsp_${randomUUID()}`, proposal,
       digest: proposalDigest(proposal), state: 'requested', revision: 1, timeline: [{ at: now, actor, state: 'requested' }] };
     await this.store.create(record, current);

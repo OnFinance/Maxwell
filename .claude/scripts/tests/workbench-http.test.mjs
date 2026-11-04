@@ -110,3 +110,30 @@ test('DynamoDB paginated listings keep cursors tenant-scoped and bounded', async
   await assert.rejects(cases.listCasesPage('example-co', 'other-co#case_x'));
   await assert.rejects(responses.listPage('example-co', 'other-co#rsp_x'));
 });
+
+
+test('HTTP policy prevents protected requests, binds review policy and rejects stale policy approval', async () => {
+  const { createResponsePolicy } = await import('../incident-response/policy.mjs');
+  const f = await workbenchFixture();
+  try {
+    const analyst = await login(f, 'analyst'); const approver = await login(f, 'approver');
+    await confirm(f, analyst);
+    const device = { companyId: f.companyId, tenantId: f.source.tenantId, machineId: f.machineId };
+    const target = { ...device, action: 'isolate' };
+    const now = Math.floor(Date.now() / 1000) * 1000;
+    const config = { protectedDevices: [], windows: [{ ...target, startsAt: new Date(now).toISOString(), endsAt: new Date(now + 300000).toISOString() }] };
+    const request = { caseId: f.caseId, providerAlertId: 'provider-alert', machineId: f.machineId, action: 'isolate', reason: 'Confirmed compromise' };
+    f.responseService.policy = createResponsePolicy({ targets: [target], config: { ...config, protectedDevices: [device] } });
+    assert.equal((await api(f, analyst, '/api/companies/example-co/responses', request)).status, 400);
+    assert.equal(f.responses.size, 0);
+    f.responseService.policy = createResponsePolicy({ targets: [target], config });
+    const { data: r, status } = await api(f, analyst, '/api/companies/example-co/responses', request);
+    assert.equal(status, 201);
+    assert.match(r.proposal.policyHash, /^[a-f0-9]{64}$/);
+    assert.equal(r.proposal.expiresAt, now + 300000);
+    const changed = structuredClone(config); changed.windows[0].endsAt = new Date(now + 360000).toISOString();
+    f.responseService.policy = createResponsePolicy({ targets: [target], config: changed });
+    assert.equal((await api(f, approver, `/api/companies/example-co/responses/${r.responseId}/decision`, { expectedRevision: r.revision, digest: r.digest, decision: 'approve' })).status, 409);
+    assert.equal(f.responses.get(r.responseId).state, 'requested');
+  } finally { await f.close(); }
+});

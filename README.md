@@ -722,9 +722,38 @@ Configure these variables in the host's protected environment, never in committe
   when a subject has both analyst and approver roles.
 - `MAXWELL_WORKBENCH_TARGETS`: optional JSON array of exact `{companyId,tenantId,machineId,action}`
   entries; `action` is `isolate` or `unisolate`. An empty list denies all response proposals.
+- `MAXWELL_RESPONSE_POLICY`: protected-device exclusions and explicit UTC maintenance windows, as below.
+  Missing policy or missing windows deny all new response proposals, including previously allowlisted devices.
 - `MAXWELL_MICROSOFT_CLIENT_ID`, `MAXWELL_MICROSOFT_CLIENT_SECRET`: Graph evidence-read credentials
   needed for response proposals; `MAXWELL_DEFENDER_STATUS_CLIENT_ID` and
   `MAXWELL_DEFENDER_STATUS_CLIENT_SECRET`: separate provider status credentials for reconciliation.
+
+Response policy is operator-owned configuration, not an analyst-editable API field. Both isolation and release
+require a matching allowlist entry and an active window. A protected device always denies both actions, even if
+allowlisted. Example structure (replace all sample identifiers and times before use):
+
+```json
+{
+  "protectedDevices": [
+    {"companyId":"example-co","tenantId":"11111111-2222-3333-4444-555555555555","machineId":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}
+  ],
+  "windows": [
+    {"companyId":"example-co","tenantId":"11111111-2222-3333-4444-555555555555","machineId":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","action":"isolate","startsAt":"2026-11-04T01:00:00.000Z","endsAt":"2026-11-04T01:30:00.000Z"}
+  ]
+}
+```
+
+Windows use UTC timestamps with `.000Z`, include the start and exclude the end. There are no recurring windows,
+timezone conversions, wildcard devices or emergency bypasses. Overlapping windows use the earliest active end.
+Malformed configuration fails startup. The host snapshots policy at startup; edit protected host configuration
+and restart to apply changes (this also invalidates workbench sessions). No live policy-edit endpoint is exposed.
+
+The proposal digest includes the policy hash and window end, displayed during review. Expiry is capped by both
+the window end and the requested approval lifetime. Approval and execution recheck current policy; a changed
+policy requires a new proposal even if it still permits the device. Legacy proposals without a policy hash must
+also be re-requested. Denial/cancellation remain available, and reconciliation remains read-only. The response
+library still accepts trusted boolean policy adapters for other integrations; the workbench always uses this
+versioned policy. Device OS eligibility and production provider validation remain operator prerequisites.
 
 From the repository root, with the existing investigation DynamoDB table and host AWS credentials:
 

@@ -244,3 +244,41 @@ test('Defender action audience uses securitycenter while calls use security.micr
   assert.equal((await f.execute(await f.decide(await f.request()))).state, 'submitted');
   await assert.rejects(getToken({ tenantId, scope: 'https://graph.microsoft.com/.default' }), /scope mismatch/);
 });
+
+test('versioned policy binds proposal digest, caps expiry and rejects policy changes before approval/execution', async () => {
+  const { createResponsePolicy } = await import('../incident-response/policy.mjs');
+  const f = setup();
+  const target = { companyId, tenantId, machineId, action: 'isolate' };
+  const configure = (end) => createResponsePolicy({ targets: [target], config: { protectedDevices: [], windows: [{ ...target, startsAt: new Date(time).toISOString(), endsAt: new Date(end).toISOString() }] }, clock: () => f.now });
+  f.service.policy = configure(time + 120000);
+  const requested = await f.request();
+  assert.equal(requested.proposal.expiresAt, time + 120000);
+  assert.match(requested.proposal.policyHash, /^[a-f0-9]{64}$/);
+  f.service.policy = configure(time + 180000);
+  await assert.rejects(f.decide(requested), /policy changed/);
+  f.service.policy = configure(time + 120000);
+  const approved = await f.decide(requested);
+  f.service.policy = configure(time + 180000);
+  await assert.rejects(f.execute(approved), /policy changed/);
+  assert.equal(f.postCount, 0);
+  f.service.policy = configure(time + 120000);
+  f.now = time + 120000;
+  assert.equal((await f.execute(approved)).state, 'expired');
+  assert.equal(f.postCount, 0);
+});
+
+test('a newly protected device blocks an approved response and old unbound proposals cannot use new policy', async () => {
+  const { createResponsePolicy } = await import('../incident-response/policy.mjs');
+  const f = setup();
+  const device = { companyId, tenantId, machineId };
+  const target = { ...device, action: 'isolate' };
+  const config = { protectedDevices: [], windows: [{ ...target, startsAt: new Date(time).toISOString(), endsAt: new Date(time + 600000).toISOString() }] };
+  const legacy = await f.request();
+  f.service.policy = createResponsePolicy({ targets: [target], config, clock: () => f.now });
+  await assert.rejects(f.decide(legacy), /policy changed/);
+  const approved = await f.decide(await f.request());
+  f.service.policy = createResponsePolicy({ targets: [target], config: { ...config, protectedDevices: [device] }, clock: () => f.now });
+  await assert.rejects(f.execute(approved), /policy denied/);
+  assert.equal(f.postCount, 0);
+  assert.equal((await f.decide(approved, { decision: 'cancel' })).state, 'cancelled');
+});

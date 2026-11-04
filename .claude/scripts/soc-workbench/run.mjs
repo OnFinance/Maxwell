@@ -7,6 +7,7 @@ import { DynamoDbInvestigationStore } from '../incident-investigation/dynamodb-s
 import { InvestigationService } from '../incident-investigation/service.mjs';
 import { ConfirmationCoordinator, LedgerIncidentWriter, loadConfirmationContext } from '../incident-investigation/confirmation.mjs';
 import { DynamoDbResponseStore } from '../incident-response/store.mjs';
+import { createResponsePolicy } from '../incident-response/policy.mjs';
 import { ResponseService } from '../incident-response/service.mjs';
 import { MicrosoftResponseProvider, microsoftTargetResolver } from '../incident-response/microsoft.mjs';
 import { microsoftClientCredentials } from '../threat-detection/microsoft-auth.mjs';
@@ -17,15 +18,14 @@ async function main() {
   const { values } = parseArgs({ options: { origin: { type: 'string' }, issuer: { type: 'string' }, table: { type: 'string' }, region: { type: 'string' },
     port: { type: 'string', default: '8787' }, 'local-http': { type: 'boolean' }, help: { type: 'boolean' } } });
   if (values.help) {
-    console.log('soc-workbench/run.mjs --origin https://soc.example.com --issuer https://login.microsoftonline.com/<tenant>/v2.0 --table <investigation-table> --region <region> [--port 8787]\nBinds 127.0.0.1 only; put behind a TLS reverse proxy preserving Host. Host env: MAXWELL_OIDC_CLIENT_ID, MAXWELL_OIDC_CLIENT_SECRET, MAXWELL_WORKBENCH_BINDINGS (JSON array), MAXWELL_WORKBENCH_TARGETS (JSON array). Optional Microsoft read/status credentials described in README. No execution endpoint; live response stays disabled. --local-http is restricted to a 127.0.0.1 origin for development.');
+    console.log('soc-workbench/run.mjs --origin https://soc.example.com --issuer https://login.microsoftonline.com/<tenant>/v2.0 --table <investigation-table> --region <region> [--port 8787]\nBinds 127.0.0.1 only; put behind a TLS reverse proxy preserving Host. Host env: MAXWELL_OIDC_CLIENT_ID, MAXWELL_OIDC_CLIENT_SECRET, MAXWELL_WORKBENCH_BINDINGS (JSON array), MAXWELL_WORKBENCH_TARGETS (JSON array), MAXWELL_RESPONSE_POLICY (protected devices and UTC windows). Optional Microsoft read/status credentials described in README. No execution endpoint; live response stays disabled. --local-http is restricted to a 127.0.0.1 origin for development.');
     return;
   }
   const port = Number(values.port);
   if (!Number.isSafeInteger(port) || port < 1024 || port > 65535 || !values.table || !values.region) throw new Error('valid port, table and region required');
   const bindings = JSON.parse(process.env.MAXWELL_WORKBENCH_BINDINGS || '[]');
   const targets = JSON.parse(process.env.MAXWELL_WORKBENCH_TARGETS || '[]');
-  if (!Array.isArray(targets) || targets.some((t) => !/^[a-z0-9][a-z0-9-]{0,63}$/.test(t.companyId) || !/^[0-9a-f-]{36}$/i.test(t.tenantId || '')
-    || !/^[a-f0-9]{40}$/.test(t.machineId || '') || !['isolate', 'unisolate'].includes(t.action))) throw new Error('invalid protected response target configuration');
+  const policy = createResponsePolicy({ targets, config: JSON.parse(process.env.MAXWELL_RESPONSE_POLICY || '{"protectedDevices":[],"windows":[]}') });
   const provider = await createOidcProvider({ issuer: values.issuer, origin: values.origin,
     clientId: process.env.MAXWELL_OIDC_CLIENT_ID, clientSecret: process.env.MAXWELL_OIDC_CLIENT_SECRET });
   const auth = new WorkbenchAuth({ origin: values.origin, provider, bindings, allowLocalHttp: values['local-http'] === true });
@@ -44,7 +44,7 @@ async function main() {
   };
   const responses = new ResponseService({ store: responseStore, caseStore, authorize: auth.authorize,
     resolveTarget: microsoftTargetResolver({ getToken: token('https://graph.microsoft.com', 'MAXWELL_MICROSOFT') }),
-    policy: async ({ case: current, action, target }) => targets.some((t) => t.companyId === current.companyId && t.tenantId === target.tenantId && t.machineId === target.machineId && t.action === action),
+    policy,
     provider: new MicrosoftResponseProvider({ getToken: token('https://api.securitycenter.microsoft.com', 'MAXWELL_DEFENDER_STATUS') }),
     executionEnabled: false,
   });
