@@ -32,3 +32,24 @@ test('only confirmed records become findings and rejected records never enter SO
   assert.equal(mapped.observations[0].result, 'inconclusive');
   assert.deepEqual(mapped.excluded, [{ fingerprint: 'c', verdict: 'rejected', reason: 'false trace' }]);
 });
+
+test('bundle identity mismatches fail before persistence', async () => {
+  await assert.rejects(writeAuditBundle({ sessionId: 'other-session', run, architecture, coverage, candidates, finalRecords }), /identity mismatch/);
+  await assert.rejects(writeAuditBundle({ sessionId: 'session-1', run, architecture, coverage: { ...coverage, runId: 'run_other' }, candidates, finalRecords }), /identity mismatch/);
+});
+
+test('persistence CLI writes validated exports and refuses replacement', async () => {
+  const { spawnSync } = await import('node:child_process');
+  const { rm } = await import('node:fs/promises');
+  const root = await mkdtemp(path.join(tmpdir(), 'maxwell-audit-cli-'));
+  const cli = path.resolve('.claude/scripts/security-audit/persist.mjs');
+  const input = JSON.stringify({ sessionId: 'session-1', run, architecture, coverage, candidates, finalRecords });
+  try {
+    const first = spawnSync(process.execPath, [cli], { cwd: root, input, encoding: 'utf8' });
+    assert.equal(first.status, 0, first.stderr);
+    assert.equal(JSON.parse(first.stdout).written.length, 5);
+    const second = spawnSync(process.execPath, [cli], { cwd: root, input, encoding: 'utf8' });
+    assert.equal(second.status, 1);
+    assert.equal(JSON.parse(await readFile(path.join(root, JSON.parse(first.stdout).written[0]), 'utf8')).runId, 'run_1');
+  } finally { await rm(root, { recursive: true, force: true }); }
+});

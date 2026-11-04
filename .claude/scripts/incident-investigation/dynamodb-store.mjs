@@ -53,6 +53,17 @@ export class DynamoDbInvestigationStore {
     return cases;
   }
 
+  async listCasesPage(companyId, after) {
+    if (after !== undefined && !/^case_[a-f0-9]{32}$/.test(after)) throw new Error('invalid case cursor');
+    const pk = `INVESTIGATIONS#${companyId}`;
+    const result = await this.client.send(new QueryCommand({ TableName: this.tableName,
+      KeyConditionExpression: 'pk = :pk AND begins_with(sk, :prefix)',
+      ExpressionAttributeValues: { ':pk': pk, ':prefix': 'CASE#' }, Limit: 50, ConsistentRead: true,
+      ...(after ? { ExclusiveStartKey: { pk, sk: `CASE#${after}` } } : {}),
+    }));
+    return { items: (result.Items || []).map((item) => item.case), next: result.LastEvaluatedKey?.sk.slice(5) || null };
+  }
+
   async saveChange(previous, next, action, now = Date.now()) {
     const key = caseKey(next.companyId, next.caseId);
     const activityKey = { pk: `CASE#${next.caseId}`, sk: `ACTIVITY#${String(now).padStart(13, '0')}#${next.revision}` };

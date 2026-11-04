@@ -307,11 +307,21 @@ flowchart LR
 `execute-scr` uses the `security-audit` skill adapted from Cloudflare's MIT-licensed security-audit method. It maps
 trust boundaries, plans deterministic coverage units, hunts by attack class, challenges coverage with an independent
 critic, and retains three explicit outcomes: `confirmed`, `needs_validation`, and `rejected`. Only twice-verified
-confirmed records may reach SARIF and the SOC ledger. Missing safe execution capability becomes a validation blocker,
+confirmed records reach the SOC ledger. Secure-code reviewers return data rather than publishing unverified SARIF;
+this workflow currently publishes the five audit JSON exports and uses agent-analysis ledger sources. Missing safe execution capability becomes a validation blocker,
 not a clean result.
 
-Use `quick`, `standard` (default), or `deep` scope in workflow arguments. A strict agent budget reserves
-reconnaissance, critic, and verifier calls before hunter work. Audit state is retained as immutable exports under
+Use `securityAuditProfile: "quick"`, `"standard"` (default), or `"deep"` in workflow arguments. Quick groups
+subsystems coarsely; standard reviews each boundary/class; deep asks for lifecycle-specific boundaries and reviews
+each unit twice with independent calls. Conflicting verdicts remain unresolved. All profiles retain both refutation
+and final verification gates. `securityAuditBudget` caps audit agent calls (recon, hunters, refuters, final verifiers,
+critic and export writer), reserving critic/publication calls. Scout, SOC ledger, inline SDLC/DevEnv and reporting
+calls are outside that cap. Small budgets produce incomplete exports, never clean coverage.
+
+Prior run IDs are recorded but do not suppress current work: prior-run reuse is conservatively disabled.
+Skipped source, unavailable reviewers, unresolved evidence and critic gaps prevent a complete audit claim.
+Export failure withholds secure-code findings. The writer uses the deterministic stdin persistence helper,
+which validates the bundle and exclusively creates files; partial write failures require a fresh session. Audit state is retained as immutable exports under
 `kpis/data/raw/sessions/<sessionId>/`; validate one or more files with:
 
 ```bash
@@ -319,7 +329,9 @@ npm run audit:security:validate -- <security-audit.export.json> [...]
 ```
 
 The implementation never runs target-controlled code outside Maxwell's configured sandbox and never probes a
-deployed service as part of source review.
+deployed service as part of source review. Workflow orchestration is tested with mocked agent responses and real
+export validation/persistence (`security-audit-workflow.test.mjs`); this does not validate an actual model's audit
+quality or deployed harness permissions.
 
 ## Controls registry
 
@@ -466,9 +478,107 @@ SBOMs, OpenLineage for pipelines, and OpenTelemetry GenAI conventions for sessio
 
 ### Real-time threat-detection recipes
 
-> **Current scope:** Maxwell's real-time threat-detection feature currently supports AWS only. Its live ingestion,
-> infrastructure and source adapter are built for AWS CloudTrail; other cloud providers and endpoint sources are not
-> supported yet.
+> **Current scope:** The deployed-ingestion infrastructure targets AWS CloudTrail. Microsoft Entra ID and
+> Defender for Endpoint have read-only collection, replay and durable polling adapters, with local integration
+> tests. Approval-controlled response has a disabled-by-default backend library. Microsoft live tenant validation,
+> deployment and production operational validation remain incomplete. The authenticated analyst workbench is implemented locally; browser visual QA is pending.
+
+#### Microsoft telemetry (initial integration)
+
+Entra sign-in records feed the existing authentication recipes. Defender for Endpoint alerts from Microsoft
+Graph `security/alerts_v2` become candidate alerts accepted by the investigation backend; they do not confirm
+incidents or trigger response. Other Defender service sources are excluded. Each updated provider alert is an
+immutable revision with a separate candidate ID. Investigation intake consolidates new revisions into a stable
+company/tenant/provider-identity case, preserving analyst state. This is alert telemetry, not a full endpoint process/network event stream.
+
+An administrator must grant the collector application **AuditLog.Read.All** for sign-ins and
+**SecurityAlert.Read.All** for alerts. Use a dedicated application with only those permissions; no device-action
+permissions are needed. Tenant licensing, retention and available log types must be checked during onboarding.
+The initial connector targets the Microsoft public cloud. See Microsoft's
+[sign-in API](https://learn.microsoft.com/en-us/graph/api/signin-list?view=graph-rest-1.0),
+[security alerts API](https://learn.microsoft.com/en-us/graph/api/security-list-alerts_v2?view=graph-rest-1.0), and
+[application authentication](https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-client-creds-grant-flow).
+
+For offline replay, provide individual Graph records as JSONL (not the enclosing `value` page):
+
+```bash
+node .claude/scripts/threat-detection/microsoft-run.mjs \
+  --company example-co --tenant 11111111-2222-3333-4444-555555555555 \
+  --source entra --mode detect --replay-now 2026-11-04T00:05:00.000Z < signins.jsonl
+```
+
+Use `--mode normalize` for normalized Entra events, or `--source defender` for Defender candidate alerts.
+For in-memory detection, order input by event time and keep it within the engine's retention/lateness limits.
+The durable poller below accepts newest-first API feeds and re-evaluates correlations on duplicate or late events.
+
+For bounded read-only collection, inject `MAXWELL_MICROSOFT_CLIENT_ID` and `MAXWELL_MICROSOFT_CLIENT_SECRET`
+through the host secret manager, then invoke:
+
+```bash
+node .claude/scripts/threat-detection/microsoft-collect-run.mjs \
+  --company example-co --tenant 11111111-2222-3333-4444-555555555555 --source entra \
+  --from 2026-11-04T00:00:00.000Z --to 2026-11-04T00:05:00.000Z
+```
+
+The collector follows same-endpoint pagination, bounds pages/records, retries throttling, and fails closed on
+malformed or mismatched records. It prints normalized records to stdout and counts to stderr; it never stores
+credentials or a checkpoint. A failed run can emit partial output. A production host must deliver records to an
+idempotent durable inbox, commit the returned watermark only after all deliveries succeed, and poll with an
+overlap to catch delayed provider data. The library's `deliver` callback is the acknowledgment boundary.
+Authentication failures and exhausted retries leave the checkpoint unchanged. Do not use stdout completion as
+proof that downstream storage succeeded. Continuous polling and health reporting
+are provided by the durable poller below; live tenant validation remains pending. No production resources are
+provisioned by these commands.
+
+Run the offline connector-to-detection-to-case tests with
+`node --test .claude/scripts/tests/microsoft-telemetry.test.mjs`.
+
+#### Durable Microsoft polling and connector health
+
+The durable worker uses the **existing Maxwell detection DynamoDB table** (string `pk`/`sk` keys). It saves Entra
+events and candidate alerts through the durable detection engine; Defender candidate revisions go straight into
+the same alert outbox. The existing DynamoDB Stream → alert SQS → investigation intake deployment must be wired
+to this table for cases to appear. Poll success means data reached the durable outbox, not that the downstream
+case consumer finished. Monitor the intake queue and its dead-letter queue separately.
+
+```bash
+node .claude/scripts/threat-detection/microsoft-poll-run.mjs \
+  --company example-co --tenant 11111111-2222-3333-4444-555555555555 --source entra \
+  --table maxwell-detection --region ap-south-1 --from 2026-11-04T00:00:00.000Z --watch
+```
+
+Run a separate worker with `--source defender`. Omit `--watch` for one bounded poll under an external scheduler.
+Use a current initial `--from` within the supported replay horizon; the date above is illustrative. It is used
+only when the connector first starts. Changing `--from` does not reset an existing cursor. Host credentials need
+the Microsoft permissions above and DynamoDB `GetItem`, `UpdateItem`, `PutItem`, `Query`, and `TransactWriteItems`
+on the existing table. Provisioning the table, modifying IAM, deploying a worker and configuring alarms are
+separate operator actions; this PR does not perform them.
+
+Each connector is scoped by company, tenant and source. A conditional ten-minute lease excludes competing
+workers, renews before every API page and periodically during delivery, and fences checkpoint/health updates
+from expired owners. Progress advances in five-minute chunks with a five-minute overlap and a two-minute
+provider delay allowance. The watch loop polls every minute and backs off to at most five minutes on failure.
+SIGINT/SIGTERM stops further polling. Partial deliveries are replayed idempotently after restart; an event saved
+before an alert-write failure is re-evaluated on replay. A lost response to a checkpoint write is resolved by
+reading the persisted cursor. Detection events are retained for fifteen days; checkpoints have no TTL.
+
+Data older than the fourteen-day engine horizon fails closed instead of silently skipping an outage. Provider
+retention can be shorter, and events arriving later than the overlap can be missed: validate the tenant's
+retention/delivery characteristics and arrange controlled backfills before deployment. Poller errors never
+store raw provider responses or credentials. For worker health (no Microsoft credentials needed):
+
+```bash
+node .claude/scripts/threat-detection/microsoft-poll-run.mjs \
+  --company example-co --tenant 11111111-2222-3333-4444-555555555555 --source entra \
+  --table maxwell-detection --region ap-south-1 --health
+```
+
+Health reports `never-started`, `running`, `healthy`, `failed`, `stalled` (expired worker lease), or `stale`
+(success/checkpoint older than fifteen minutes), plus checkpoint lag and failure counts. The health command exits
+nonzero for unhealthy states. This is an operator-readable health command, not a deployed monitoring service.
+Tests use mocked Graph and in-memory persistence plus SDK request assertions; real DynamoDB, Microsoft consent,
+provider latency, process supervision and the deployed stream-to-case pipeline still require operational validation.
+Run `node --test .claude/scripts/tests/microsoft-*.test.mjs` for both Microsoft test suites.
 
 Maxwell includes a small deterministic engine for normalized security events. It currently detects repeated
 authentication failures, password spraying, a successful login after repeated failures, privileged-access grants
@@ -524,7 +634,220 @@ The alert queue receives only newly persisted candidates. A separate investigati
 them before creating incidents. Deployment, IAM attachment, retry and dead-letter operations are documented in
 `.claude/skills/threat-detection/SKILL.md`.
 
+### Operational checks for Microsoft collection
+
+Run the existing `microsoft-poll-run.mjs --watch` under your approved process supervisor. The loop polls
+sequentially, waits 60 seconds after success/busy, backs off 120/240/300 seconds after failures, and responds to
+SIGTERM/SIGINT. This PR supplies no supervisor deployment or external alert routing. A separate monitoring job
+must still run when the collector is stopped; checking only from inside the collector cannot detect its absence.
+
+`--health` now fails closed for corrupt/future checkpoints, missing success history, expired leases and stale
+progress, including a worker whose lease remains active. The default freshness limit is 15 minutes. Zero events
+is a valid quiet poll; it does not establish that alert delivery is working. Safe failure codes distinguish
+credential/authentication failures, denied permissions, throttling, provider outages and replay-horizon gaps.
+
+Use the read-only readiness command for the configured connector and an existing recent candidate alert:
+
+```bash
+node .claude/scripts/threat-detection/microsoft-readiness-run.mjs \
+  --company example-co --tenant TENANT_UUID --source defender \
+  --table DETECTION_TABLE --region ap-south-1 \
+  --investigation-table INVESTIGATION_TABLE --alert-id RECENT_ALERT_SHA256
+```
+
+The command uses host AWS credentials and scoped `dynamodb:GetItem` access to the two tables. It performs at most
+three consistent reads (connector, candidate, case), with a 10-second abort timeout on each read. It needs no
+Microsoft credentials, creates no synthetic alerts, sends no notifications, and writes nothing. The optional
+`--stale-seconds` threshold defaults to 900 and accepts 1–86400 seconds. Run it separately for Entra and Defender.
+Use the latest Defender revision when selecting a sample; a newer case snapshot does not prove delivery of an
+older sample. Historical cases using old per-revision IDs do not satisfy the canonical-case check.
+
+Exit codes are 0 when collection and the sample match pass, 2 for failed/unverified checks, and 3 for invalid
+configuration or read failure. Without `--alert-id`, collection is checked but delivery is explicitly unverified
+(exit 2). Do not generate fake production security events just to make this check green. Feed the JSON/exit status
+into your existing monitoring system; select cadence and alert thresholds according to the required detection SLA.
+
+Operator recovery procedure:
+
+1. **Never started/stalled:** inspect the supervisor and worker exit status; restart through the normal runbook.
+   Let the lease expire before a replacement takes ownership. Do not erase the cursor or force ownership.
+2. **Authentication/permission failure:** verify tenant, credential validity and required read permissions using
+   the tenant administrator's process. Keep credentials out of logs. Restart after correcting host configuration.
+3. **Throttling/provider unavailable:** allow bounded retries/backoff; verify progress resumes after recovery.
+4. **Stale progress/replay-horizon exceeded:** inspect backlog and outage duration. Escalate gaps for an approved
+   recovery plan; never advance/reset the checkpoint merely to make health green.
+5. **Sample case missing/mismatched:** inspect detection Stream → alert SQS → investigation intake wiring,
+   intake failures and dead-letter handling. Retry this check with the latest recent sample after recovery.
+
+Readiness is a point-in-time persisted-state check, not proof of current Graph access, supervision, empty queues,
+all-alert delivery, or production reliability. Local tests exercise worker restart, lease contention/loss,
+partial delivery, lost write acknowledgments, recovery, shutdown and readiness failures with mocked providers and
+stores. Real tenant, deployed queue/database and supervisor validation remains pending; no deployed service is
+changed by these tests.
+
+### Approval-controlled Microsoft response (backend integration)
+
+`.claude/scripts/incident-response/service.mjs` implements request, read, approve, deny, cancel, execute and
+reconcile operations. Supported actions are **full isolation** and **release from isolation** of an onboarded
+Defender device. Neither an alert nor a detector can directly execute them. There is deliberately no CLI that
+accepts a caller-supplied `--actor` or role to approve a response.
+
+An action requires a confirmed investigation case (release also permits a closed confirmed case). The target
+resolver reads the provider alert through Graph, verifies that its tenant and normalized snapshot match the
+case, and verifies that the requested device is present as onboarded device evidence. A changed provider
+snapshot or case revision requires fresh case review and a new proposal; the service never silently updates an
+approved target. Cross-tenant targets, unsupported actions and devices missing from the evidence are rejected.
+
+The proposal includes company, case revision, tenant, provider alert, device, evidence hash, action, reason,
+requester and expiry. Approval must supply the exact digest and revision reviewed by a different person.
+Approvals expire after at most fifteen minutes and are consumed by a conditional execution claim. A fresh
+approval is required to release isolation; success does not automatically run rollback. Case revision, current
+provider evidence and host policy are rechecked at approval and execution. DynamoDB transaction conditions
+also check the case revision when saving those transitions.
+
+`DynamoDbResponseStore` in `incident-response/store.mjs` stores response state and append-only transition rows
+atomically in the **same table as the investigation cases**, with no TTL. It uses the supplied document client;
+the host needs `GetItem` and `TransactWriteItems` permissions on that table. Only the executor should have the
+Defender action credentials. Response submission uses a separate token provider configured with
+`resource: 'https://api.securitycenter.microsoft.com'`; telemetry remains on the Graph token audience. The
+Defender API URL uses `api.security.microsoft.com`, but its token audience uses the legacy `securitycenter`
+resource, as described in Microsoft's [application authentication guide](https://learn.microsoft.com/en-us/defender-endpoint/api/exposed-apis-create-app-webapp).
+
+Host integration must supply all of the following before this is usable by analysts:
+
+- `authorize(session, companyId, permission)`: validate the authenticated session and company membership, enforce
+  the requested `response.request|read|approve|cancel|execute|reconcile` permission, and return a trusted
+  `{id, companyId}` principal. Never copy actor IDs or roles from request JSON. The OIDC-backed workbench below supplies this boundary for its exposed permissions; it never grants execution.
+- `policy({case, action, target})`: return `true` only for approved company/device scope, supported device/OS,
+  maintenance rules and protected-asset exclusions. There is no permissive default policy.
+- The investigation store, response store, Graph target resolver and Defender response provider. Use a
+  synchronized host clock, protect the response table from untrusted writes, and grant separate read/action
+  application permissions through the operator's normal approval process.
+- Explicit `executionEnabled: true` **only after** operator deployment approval and sandbox validation.
+  The default is `false`; this PR does not turn it on anywhere.
+
+The Defender provider sends one POST only after the durable execution claim is acknowledged. It never retries
+POST, including throttling and transport failures. A successful provider submission is `submitted`, not proof
+the device is isolated. Read-only reconciliation checks the provider action's ID, device, type, isolation scope
+and exact correlation comment before reporting `succeeded` or `failed`. A lost response, timeout or uncertain
+write leaves `unknown`/`executing` non-retryable. If the action ID was lost, an authorized operator must find it
+in Defender and supply it for reconciliation; arbitrary IDs cannot be attached. Unchanged pending status does
+not append duplicate audit transitions. There is no automated retry or claim that an uncertain action failed.
+
+Microsoft documents `Machine.Isolate` for isolation/release and `Machine.ReadWrite.All` for reading machine
+actions; validate these permissions and licensing against the target tenant before deployment. See the
+[isolation API](https://learn.microsoft.com/en-us/defender-endpoint/api/isolate-machine),
+[release API](https://learn.microsoft.com/en-us/defender-endpoint/api/unisolate-machine) and
+[action-status API](https://learn.microsoft.com/en-us/defender-endpoint/api/get-machineaction-object).
+Device isolation can disrupt connectivity, including the Defender channel on full-tunnel VPNs, so the host
+policy and approval UI must make the impact explicit.
+
+Run `node --test .claude/scripts/tests/incident-response.test.mjs` for the mocked case → approval → provider
+submission → reconciliation flow and failure-path tests. These are backend/local tests, not proof of live
+containment or deployed authorization. Real DynamoDB transaction validation, production OIDC validation and controlled
+tenant/OS tests remain required. No response command was run against Microsoft during development.
+
+### Authenticated SOC analyst workbench
+
+The workbench provides company-scoped case queues, evidence and activity timelines, assignment, notes,
+dismissal, confirmation into the existing incident ledger, and closure. Response reviewers see the exact
+Microsoft tenant/device/action, evidence hash, revision, approval digest, expiry and connectivity impact.
+A separate approver can approve or deny; authorized analysts can cancel or reconcile provider status.
+**The HTTP host exposes no execution route and always disables live response execution.**
+
+OIDC uses authorization code + PKCE, state, nonce, and signed ID-token verification. Server-owned subject
+bindings determine company access and roles; request JSON cannot choose an actor. Sessions use opaque
+HttpOnly, SameSite=Lax, Secure cookies (HTTPS), expire within 15 minutes, and are invalidated on logout.
+Mutations require the exact configured Origin and a session CSRF token. Responses use no-store and a
+restrictive CSP; untrusted case content is rendered as text. Database pagination is company-scoped,
+limited to 50 items per request; the UI filter applies only to loaded items.
+
+Configure these variables in the host's protected environment, never in committed files:
+
+- `MAXWELL_OIDC_CLIENT_ID`, `MAXWELL_OIDC_CLIENT_SECRET`: confidential OIDC application credentials.
+  Register the exact public origin plus `/auth/callback` as the redirect URI.
+- `MAXWELL_WORKBENCH_BINDINGS`: JSON array, for example
+  `[ {"subject":"immutable-oidc-sub","companyId":"example-co","roles":["analyst"]} ]`.
+  Roles are `viewer` (read), `analyst` (case changes, confirmation, response request/cancel/reconcile),
+  and `approver` (response approve/deny/cancel). No role grants execution. Self-approval is rejected even
+  when a subject has both analyst and approver roles.
+- `MAXWELL_WORKBENCH_TARGETS`: optional JSON array of exact `{companyId,tenantId,machineId,action}`
+  entries; `action` is `isolate` or `unisolate`. An empty list denies all response proposals.
+- `MAXWELL_RESPONSE_POLICY`: protected-device exclusions and explicit UTC maintenance windows, as below.
+  Missing policy or missing windows deny all new response proposals, including previously allowlisted devices.
+- `MAXWELL_MICROSOFT_CLIENT_ID`, `MAXWELL_MICROSOFT_CLIENT_SECRET`: Graph evidence-read credentials
+  needed for response proposals; `MAXWELL_DEFENDER_STATUS_CLIENT_ID` and
+  `MAXWELL_DEFENDER_STATUS_CLIENT_SECRET`: separate provider status credentials for reconciliation.
+
+Response policy is operator-owned configuration, not an analyst-editable API field. Both isolation and release
+require a matching allowlist entry and an active window. A protected device always denies both actions, even if
+allowlisted. Example structure (replace all sample identifiers and times before use):
+
+```json
+{
+  "protectedDevices": [
+    {"companyId":"example-co","tenantId":"11111111-2222-3333-4444-555555555555","machineId":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}
+  ],
+  "windows": [
+    {"companyId":"example-co","tenantId":"11111111-2222-3333-4444-555555555555","machineId":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","action":"isolate","startsAt":"2026-11-04T01:00:00.000Z","endsAt":"2026-11-04T01:30:00.000Z"}
+  ]
+}
+```
+
+Windows use UTC timestamps with `.000Z`, include the start and exclude the end. There are no recurring windows,
+timezone conversions, wildcard devices or emergency bypasses. Overlapping windows use the earliest active end.
+Malformed configuration fails startup. The host snapshots policy at startup; edit protected host configuration
+and restart to apply changes (this also invalidates workbench sessions). No live policy-edit endpoint is exposed.
+
+The proposal digest includes the policy hash and window end, displayed during review. Expiry is capped by both
+the window end and the requested approval lifetime. Approval and execution recheck current policy; a changed
+policy requires a new proposal even if it still permits the device. Legacy proposals without a policy hash must
+also be re-requested. Denial/cancellation remain available, and reconciliation remains read-only. The response
+library still accepts trusted boolean policy adapters for other integrations; the workbench always uses this
+versioned policy. Device OS eligibility and production provider validation remain operator prerequisites.
+
+From the repository root, with the existing investigation DynamoDB table and host AWS credentials:
+
+```bash
+node .claude/scripts/soc-workbench/run.mjs \
+  --origin https://soc.example.com \
+  --issuer https://login.microsoftonline.com/TENANT_ID/v2.0 \
+  --table INVESTIGATION_TABLE --region ap-south-1
+```
+
+The process binds `127.0.0.1:8787`. Use a TLS reverse proxy preserving the configured Host, with request
+rate limits. `--port` changes the local port. `--local-http` permits only a `http://127.0.0.1` origin for
+local development; the issuer must still use HTTPS. In-memory sessions require one process (or sticky
+routing) and restart on binding changes; restarting logs everyone out. Incident confirmation requires the
+company details/SLA files and a writable local incident ledger; multi-host ledger coordination is not supplied.
+Do not treat this local host as a validated production deployment.
+
+Run `node --test .claude/scripts/tests/workbench-auth.test.mjs .claude/scripts/tests/workbench-http.test.mjs`.
+Tests verify real OIDC token validation against synthetic signed tokens and the HTTP login → triage →
+confirmation → independent approval flow, plus tenant isolation, CSRF, stale writes, logout and no execution
+route. Provider calls and persistence are mocked; real IdP/tenant/database deployment checks and browser
+visual QA remain pending. No cloud resources are deployed by this command's setup instructions.
+
 ### Incident investigation
+
+Defender case identity now uses company, tenant and the stable provider alert group hash. Newer provider timestamps
+replace the current alert snapshot, increment the case revision and record both old/new snapshots in the atomic
+DynamoDB activity write. Exact replay is a no-op; older updates cannot regress the case; different content at the
+same current timestamp is rejected. Concurrent intake retries optimistic conflicts up to five times before queue
+retry. Source identity and non-Microsoft case IDs remain separate.
+
+A provider update preserves notes, owner, evidence and disposition, and sets `providerReviewRequired`. Analysts
+review the latest alert in the workbench and submit a note bound to its signature and current case revision.
+Confirmation and new response requests are blocked until review; old response approvals fail revision checks.
+Updates never auto-reopen closed/false-positive cases or rewrite a confirmed incident ledger record. Intake
+retries updates while confirmation is pending, so the confirmation snapshot cannot change midway through writing.
+
+**Migration boundary:** Existing cases created using the old per-revision IDs are not rewritten or merged.
+The first delivery under this implementation starts a canonical case; historical cases remain accessible and
+require an operator-reviewed migration if consolidation of old history is needed. No migration or deployment is
+performed by this PR. Activity snapshots retain the existing table retention policy. Automated tests use mocked
+persistence/provider calls; real concurrent DynamoDB and live tenant validation remain pending.
+
 
 Maxwell's investigation worker turns each alert candidate into one durable case. It preserves state across worker
 restarts, rejects conflicting replays, uses revision checks to prevent analyst overwrites, and records an immutable

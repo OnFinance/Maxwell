@@ -19,7 +19,11 @@ const canonical = (value) => {
 };
 
 export const sha256 = (value) => createHash('sha256').update(typeof value === 'string' ? value : canonical(value)).digest('hex');
-export const caseIdFor = (alert) => `case_${sha256([alert.companyId, alert.alertId]).slice(0, 32)}`;
+export const isDefenderAlert = (alert) => alert.source === 'microsoft-defender' && alert.recipeId === 'defender-provider-alert' && alert.recipeVersion === 1
+  && alert.group?.length === 1 && /^[a-f0-9]{64}$/.test(alert.group[0]);
+export const caseIdFor = (alert) => `case_${sha256(isDefenderAlert(alert)
+  ? [alert.companyId, alert.scopeId, alert.source, alert.recipeId, alert.group[0]]
+  : [alert.companyId, alert.alertId]).slice(0, 32)}`;
 export const alertSignature = (alert) => sha256(alert);
 
 function timestamp(value, field) {
@@ -78,7 +82,14 @@ export function applyCaseAction(current, action, now = Date.now()) {
   const at = new Date(now).toISOString();
   const next = structuredClone(current);
   const type = action.type;
-  if (type === 'start') {
+  if (type === 'review-provider-update') {
+    if (!current.providerReviewRequired || current.status === 'confirmation-pending') throw new Error('no provider update available for review');
+    if (action.alertSignature !== current.alertSignature) throw new Error('provider evidence changed');
+    const text = validateText(action.text, 'review note');
+    if (next.notes.length >= 100) throw new Error('note limit reached');
+    next.notes.push({ at, actor: action.actor, text });
+    next.providerReviewRequired = false;
+  } else if (type === 'start') {
     if (current.status !== 'open') throw new Error(`cannot start case from ${current.status}`);
     next.status = 'investigating';
   } else if (type === 'assign') {
@@ -96,6 +107,7 @@ export function applyCaseAction(current, action, now = Date.now()) {
     if (next.notes.length >= 100) throw new Error('note limit reached');
     next.notes.push({ at, actor: action.actor, text: validateText(action.text, 'note') });
   } else if (type === 'prepare-confirmation') {
+    if (current.providerReviewRequired) throw new Error('provider update requires analyst review');
     if (!['open', 'investigating'].includes(current.status)) throw new Error(`cannot confirm case from ${current.status}`);
     if (!next.owner) throw new Error('case must be assigned before confirmation');
     if (!next.evidence.length) throw new Error('case requires evidence before confirmation');
@@ -121,4 +133,21 @@ export function applyCaseAction(current, action, now = Date.now()) {
   next.revision++;
   next.timeline.push({ at, action: type, actor: action.actor });
   return next;
+}
+
+// Provider revisions update evidence, not analyst disposition or the existing incident ledger.
+export function applyProviderUpdate(current, alert, now = Date.now()) {
+  const accepted = validateAlert(alert);
+  if (!isDefenderAlert(accepted) || !isDefenderAlert(current.alert) || caseIdFor(accepted) !== current.caseId) throw new Error('provider case identity mismatch');
+  const signature = alertSignature(accepted);
+  if (signature === current.alertSignature) return null;
+  const order = Date.parse(accepted.windowEnd) - Date.parse(current.alert.windowEnd);
+  if (order < 0) return null; // Stale delivery cannot overwrite newer evidence or analyst work.
+  if (order === 0) throw new Error('provider revision reused with different content');
+  if (current.status === 'confirmation-pending') throw new Error('confirmation pending; retry provider update');
+  const at = new Date(now).toISOString();
+  return { ...structuredClone(current), alert: accepted, alertId: accepted.alertId, alertSignature: signature,
+    title: accepted.title, severity: accepted.priority, revision: current.revision + 1, updatedAt: at,
+    providerReviewRequired: true,
+    timeline: [...current.timeline, { at, action: 'provider-update', actor: 'maxwell-alert-intake', previousAlertId: current.alertId, alertId: accepted.alertId }] };
 }

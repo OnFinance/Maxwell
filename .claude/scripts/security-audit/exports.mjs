@@ -25,6 +25,9 @@ export function auditExportPaths(sessionId, root = 'kpis/data/raw/sessions') {
 export async function writeAuditBundle({ sessionId, run, architecture, coverage, candidates, finalRecords }, { root } = {}) {
   const paths = auditExportPaths(sessionId, root);
   const documents = { run, architecture, coverage, candidates, finalRecords };
+  if (run?.sessionId !== sessionId || Object.values(documents).some((document) => document?.runId !== run?.runId)) {
+    throw new Error('bundle run/session identity mismatch');
+  }
   for (const [key, document] of Object.entries(documents)) {
     const errors = validateAuditExport(document);
     if (errors.length) throw new Error(`${key}: ${errors.join('; ')}`);

@@ -37,15 +37,15 @@ export function parseAlertMessage(body, expectedCompanyId) {
 
 export async function processMessages({ messages, companyId, service, onCase = (value) => writeJson(process.stdout, value), onError = (value) => writeJson(process.stderr, value) }) {
   const acknowledged = [];
-  const stats = { received: messages.length, ignored: 0, created: 0, duplicates: 0, failed: 0 };
+  const stats = { received: messages.length, ignored: 0, created: 0, updated: 0, duplicates: 0, failed: 0 };
   for (const message of messages) {
     try {
       const alert = parseAlertMessage(message.Body, companyId);
       if (!alert) stats.ignored++;
       else {
         const result = await service.intake(alert);
-        stats[result.created ? 'created' : 'duplicates']++;
-        await onCase({ caseId: result.case.caseId, companyId: result.case.companyId, status: result.case.status, created: result.created });
+        stats[result.created ? 'created' : result.updated ? 'updated' : 'duplicates']++;
+        await onCase({ caseId: result.case.caseId, companyId: result.case.companyId, status: result.case.status, created: result.created, updated: result.updated === true });
       }
       acknowledged.push({ Id: message.MessageId, ReceiptHandle: message.ReceiptHandle });
     } catch (error) {
@@ -91,12 +91,12 @@ async function main() {
   const stop = () => controller.abort();
   process.once('SIGINT', stop);
   process.once('SIGTERM', stop);
-  const totals = { polls: 0, received: 0, ignored: 0, created: 0, duplicates: 0, failed: 0, deleteFailed: 0 };
+  const totals = { polls: 0, received: 0, ignored: 0, created: 0, updated: 0, duplicates: 0, failed: 0, deleteFailed: 0 };
   try {
     do {
       const stats = await pollOnce({ sqs, queueUrl: values.queue, companyId: values.company, service, signal: controller.signal });
       totals.polls++;
-      for (const field of ['received', 'ignored', 'created', 'duplicates', 'failed', 'deleteFailed']) totals[field] += stats[field] || 0;
+      for (const field of ['received', 'ignored', 'created', 'updated', 'duplicates', 'failed', 'deleteFailed']) totals[field] += stats[field] || 0;
     } while (!values.once && !controller.signal.aborted);
   } catch (error) {
     if (!controller.signal.aborted) throw error;
