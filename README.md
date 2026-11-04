@@ -634,6 +634,57 @@ The alert queue receives only newly persisted candidates. A separate investigati
 them before creating incidents. Deployment, IAM attachment, retry and dead-letter operations are documented in
 `.claude/skills/threat-detection/SKILL.md`.
 
+### Operational checks for Microsoft collection
+
+Run the existing `microsoft-poll-run.mjs --watch` under your approved process supervisor. The loop polls
+sequentially, waits 60 seconds after success/busy, backs off 120/240/300 seconds after failures, and responds to
+SIGTERM/SIGINT. This PR supplies no supervisor deployment or external alert routing. A separate monitoring job
+must still run when the collector is stopped; checking only from inside the collector cannot detect its absence.
+
+`--health` now fails closed for corrupt/future checkpoints, missing success history, expired leases and stale
+progress, including a worker whose lease remains active. The default freshness limit is 15 minutes. Zero events
+is a valid quiet poll; it does not establish that alert delivery is working. Safe failure codes distinguish
+credential/authentication failures, denied permissions, throttling, provider outages and replay-horizon gaps.
+
+Use the read-only readiness command for the configured connector and an existing recent candidate alert:
+
+```bash
+node .claude/scripts/threat-detection/microsoft-readiness-run.mjs \
+  --company example-co --tenant TENANT_UUID --source defender \
+  --table DETECTION_TABLE --region ap-south-1 \
+  --investigation-table INVESTIGATION_TABLE --alert-id RECENT_ALERT_SHA256
+```
+
+The command uses host AWS credentials and scoped `dynamodb:GetItem` access to the two tables. It performs at most
+three consistent reads (connector, candidate, case), with a 10-second abort timeout on each read. It needs no
+Microsoft credentials, creates no synthetic alerts, sends no notifications, and writes nothing. The optional
+`--stale-seconds` threshold defaults to 900 and accepts 1–86400 seconds. Run it separately for Entra and Defender.
+Use the latest Defender revision when selecting a sample; a newer case snapshot does not prove delivery of an
+older sample. Historical cases using old per-revision IDs do not satisfy the canonical-case check.
+
+Exit codes are 0 when collection and the sample match pass, 2 for failed/unverified checks, and 3 for invalid
+configuration or read failure. Without `--alert-id`, collection is checked but delivery is explicitly unverified
+(exit 2). Do not generate fake production security events just to make this check green. Feed the JSON/exit status
+into your existing monitoring system; select cadence and alert thresholds according to the required detection SLA.
+
+Operator recovery procedure:
+
+1. **Never started/stalled:** inspect the supervisor and worker exit status; restart through the normal runbook.
+   Let the lease expire before a replacement takes ownership. Do not erase the cursor or force ownership.
+2. **Authentication/permission failure:** verify tenant, credential validity and required read permissions using
+   the tenant administrator's process. Keep credentials out of logs. Restart after correcting host configuration.
+3. **Throttling/provider unavailable:** allow bounded retries/backoff; verify progress resumes after recovery.
+4. **Stale progress/replay-horizon exceeded:** inspect backlog and outage duration. Escalate gaps for an approved
+   recovery plan; never advance/reset the checkpoint merely to make health green.
+5. **Sample case missing/mismatched:** inspect detection Stream → alert SQS → investigation intake wiring,
+   intake failures and dead-letter handling. Retry this check with the latest recent sample after recovery.
+
+Readiness is a point-in-time persisted-state check, not proof of current Graph access, supervision, empty queues,
+all-alert delivery, or production reliability. Local tests exercise worker restart, lease contention/loss,
+partial delivery, lost write acknowledgments, recovery, shutdown and readiness failures with mocked providers and
+stores. Real tenant, deployed queue/database and supervisor validation remains pending; no deployed service is
+changed by these tests.
+
 ### Approval-controlled Microsoft response (backend integration)
 
 `.claude/scripts/incident-response/service.mjs` implements request, read, approve, deny, cancel, execute and

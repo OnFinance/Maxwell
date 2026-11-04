@@ -63,12 +63,25 @@ export class MicrosoftStateStore {
 }
 
 export function connectorHealth(state, now = Date.now(), staleMs = 900000) {
-  if (!state) return { status: 'never-started', checkpoint: null, lagMs: null };
-  const lagMs = Math.max(0, now - Date.parse(state.checkpoint));
-  const status = state.status === 'running' ? (state.leaseUntil > now ? 'running' : 'stalled')
+  if (!Number.isSafeInteger(now) || !Number.isSafeInteger(staleMs) || staleMs < 1) throw new Error('invalid health timing');
+  if (!state) return { status: 'never-started', ready: false, checkpoint: null, lagMs: null };
+  const checkpointMs = Date.parse(state.checkpoint);
+  const validCheckpoint = typeof state.checkpoint === 'string' && Number.isFinite(checkpointMs)
+    && new Date(checkpointMs).toISOString() === state.checkpoint && checkpointMs <= now;
+  const validSuccess = Number.isSafeInteger(state.lastSuccessAt) && state.lastSuccessAt <= now && state.lastSuccessAt >= 0;
+  const lagMs = validCheckpoint ? now - checkpointMs : null;
+  const successAgeMs = validSuccess ? now - state.lastSuccessAt : null;
+  const status = !validCheckpoint || (state.lastSuccessAt !== undefined && !validSuccess) || !['running', 'healthy', 'failed'].includes(state.status) ? 'invalid'
     : state.status === 'failed' ? 'failed'
-      : !state.lastSuccessAt || now - state.lastSuccessAt > staleMs || lagMs > staleMs ? 'stale' : 'healthy';
-  return { status, checkpoint: state.checkpoint, lagMs, lastAttemptAt: state.lastAttemptAt,
-    lastSuccessAt: state.lastSuccessAt ?? null, consecutiveFailures: state.consecutiveFailures || 0,
-    failureCode: state.failureCode || null, lastStats: state.lastStats || null };
+      : state.status === 'running' && (!Number.isSafeInteger(state.leaseUntil) || state.leaseUntil <= now) ? 'stalled'
+        : lagMs > staleMs || (validSuccess && successAgeMs > staleMs) ? 'stale'
+          : !validSuccess ? (state.status === 'running' ? 'starting' : 'invalid')
+            : state.status === 'running' ? 'running' : 'healthy';
+  const codes = ['interrupted', 'replay-horizon-exceeded', 'poll-failed', 'authentication-failed', 'permission-denied', 'throttled', 'provider-unavailable'];
+  const lastStats = state.lastStats && ['received', 'delivered', 'pages'].every((k) => Number.isSafeInteger(state.lastStats[k]) && state.lastStats[k] >= 0)
+    ? Object.fromEntries(['received', 'delivered', 'pages'].map((k) => [k, state.lastStats[k]])) : null;
+  return { status, ready: ['healthy', 'running'].includes(status), checkpoint: validCheckpoint ? state.checkpoint : null, lagMs, successAgeMs,
+    lastSuccessAt: validSuccess ? state.lastSuccessAt : null,
+    consecutiveFailures: Number.isSafeInteger(state.consecutiveFailures) && state.consecutiveFailures >= 0 ? state.consecutiveFailures : 0,
+    failureCode: state.failureCode ? (codes.includes(state.failureCode) ? state.failureCode : 'poll-failed') : null, lastStats };
 }

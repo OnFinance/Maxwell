@@ -4,6 +4,7 @@ import { MicrosoftCollector } from '../threat-detection/microsoft-collector.mjs'
 import { MicrosoftPoller } from '../threat-detection/microsoft-poller.mjs';
 import { MicrosoftStateStore, connectorHealth, connectorKey } from '../threat-detection/microsoft-state.mjs';
 import { DurableDetectionEngine } from '../threat-detection/durable-engine.mjs';
+import { checkMicrosoftReadiness } from '../threat-detection/microsoft-readiness.mjs';
 import { InvestigationService } from '../incident-investigation/service.mjs';
 
 const config = { companyId: 'example-co', tenantId: '11111111-2222-3333-4444-555555555555', source: 'entra' };
@@ -81,6 +82,12 @@ test('newest-first Graph to durable detection to cases, restart and overlap are 
   assert.equal(cases.size, 2);
   assert.ok([...cases.values()].every((c) => c.status === 'open'));
   assert.equal(connectorHealth(f.stateStore.state, now).status, 'healthy');
+  const sample = [...f.detectionStore.alerts.values()][0];
+  const readiness = await checkMicrosoftReadiness({ config, detectionTable: 'detection', investigationTable: 'cases', alertId: sample.alertId, now,
+    client: { send: async ({ input }) => ({ Item: input.Key.pk.startsWith('CONNECTOR#') ? f.stateStore.state
+      : input.Key.pk.startsWith('ALERTS#') ? { alert: f.detectionStore.alerts.get(input.Key.sk.slice(6)) }
+        : { case: cases.get(input.Key.sk.slice(5)) } }) } });
+  assert.equal(readiness.ready, true);
 });
 
 test('crash after persisting an event but before alert repairs on replay without advancing checkpoint', async () => {
@@ -207,4 +214,23 @@ test('DynamoDB cursor writes are conditional, strongly read and never use TTL', 
   const conflictStore = new MicrosoftStateStore({ tableName: 'test', documentClient: { send: async () => { throw Object.assign(new Error(), { name: 'ConditionalCheckFailedException' }); } } });
   assert.equal(await conflictStore.acquire(config, { owner: 'other', now, leaseMs: 600000, initialFrom }), null);
   await assert.rejects(conflictStore.renew(config, { owner: 'other', now, leaseMs: 600000 }));
+});
+
+test('operational failures keep checkpoint and expose actionable codes without provider payloads', async () => {
+  for (const [message, code] of [
+    ['Microsoft authentication HTTP 401', 'authentication-failed'],
+    ['Microsoft authentication HTTP 400', 'authentication-failed'],
+    ['Microsoft collection HTTP 403', 'permission-denied'],
+    ['Microsoft retry deferred; checkpoint unchanged', 'throttled'],
+    ['Microsoft collection HTTP 503', 'provider-unavailable'],
+  ]) {
+    const f = setup();
+    const poller = new MicrosoftPoller({ ...f.options, collector: { collect: async () => { throw Error(message); } } });
+    await assert.rejects(poller.poll(), new RegExp(code));
+    assert.equal(f.stateStore.state.checkpoint, initialFrom);
+    assert.equal(f.stateStore.state.failureCode, code);
+    assert.equal(connectorHealth(f.stateStore.state, now).ready, false);
+    await f.poller.poll();
+    assert.equal(connectorHealth(f.stateStore.state, now).ready, true);
+  }
 });

@@ -51,7 +51,11 @@ export class MicrosoftPoller {
       await this.stateStore.complete(this, { owner, now: this.clock(), checkpoint: result.checkpoint, stats });
       return { status: 'completed', checkpoint: result.checkpoint, ...stats };
     } catch (error) {
-      const failureCode = signal?.aborted ? 'interrupted' : /replay horizon/.test(error.message) ? 'replay-horizon-exceeded' : 'poll-failed';
+      const failureCode = signal?.aborted ? 'interrupted' : /replay horizon/.test(error.message) ? 'replay-horizon-exceeded'
+        : /Microsoft (authentication|collection) HTTP 401/.test(error.message) || /Microsoft authentication HTTP 400/.test(error.message) ? 'authentication-failed'
+          : /Microsoft (authentication|collection) HTTP 403/.test(error.message) ? 'permission-denied'
+            : /HTTP 429|Microsoft retry deferred/.test(error.message) ? 'throttled'
+              : /Microsoft collection HTTP 5[0-9]{2}|Microsoft collection transport failed/.test(error.message) ? 'provider-unavailable' : 'poll-failed';
       try { await this.stateStore.fail(this, { owner, now: this.clock(), failureCode }); } catch { /* Lost owners cannot overwrite successor health. Expired leases read as stalled. */ }
       // A lost response to the final database update is ambiguous. The stored
       // cursor is authoritative and replay is safe; never claim it did not commit.

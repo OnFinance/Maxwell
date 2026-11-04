@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { parseArgs } from 'node:util';
-import { setTimeout as sleep } from 'node:timers/promises';
+import { watchMicrosoft } from './microsoft-watch.mjs';
 import { MicrosoftCollector } from './microsoft-collector.mjs';
 import { microsoftClientCredentials } from './microsoft-auth.mjs';
 import { MicrosoftStateStore, connectorHealth, connectorKey } from './microsoft-state.mjs';
@@ -40,23 +40,12 @@ async function main() {
     const stop = () => controller.abort();
     process.once('SIGINT', stop);
     process.once('SIGTERM', stop);
-    let failures = 0;
     try {
-      do {
-        try {
-          const result = await poller.poll({ signal: controller.signal });
-          console.log(JSON.stringify({ ...config, ...result }));
-          failures = 0;
-        } catch (error) {
-          if (controller.signal.aborted) break;
-          if (!values.watch) throw error;
-          failures++;
-          console.error(JSON.stringify({ ...config, status: 'failed', consecutiveWorkerFailures: failures }));
-        }
-        if (!values.watch || controller.signal.aborted) break;
-        try { await sleep(Math.min(300000, 60000 * 2 ** Math.min(failures, 3)), undefined, { signal: controller.signal }); }
-        catch { if (!controller.signal.aborted) throw new Error('scheduler wait failed'); }
-      } while (!controller.signal.aborted);
+      if (values.watch) await watchMicrosoft({ poller, signal: controller.signal,
+        onResult: (result) => console.log(JSON.stringify({ ...config, ...result })),
+        onFailure: (result) => console.error(JSON.stringify({ ...config, ...result })),
+      });
+      else console.log(JSON.stringify({ ...config, ...await poller.poll({ signal: controller.signal }) }));
     } finally {
       process.removeListener('SIGINT', stop);
       process.removeListener('SIGTERM', stop);
