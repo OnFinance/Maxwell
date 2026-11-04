@@ -469,7 +469,7 @@ SBOMs, OpenLineage for pipelines, and OpenTelemetry GenAI conventions for sessio
 > **Current scope:** The deployed-ingestion infrastructure targets AWS CloudTrail. Microsoft Entra ID and
 > Defender for Endpoint have read-only collection, replay and durable polling adapters, with local integration
 > tests. Approval-controlled response has a disabled-by-default backend library. Microsoft live tenant validation,
-> deployment and the authenticated analyst workbench remain incomplete.
+> deployment and production operational validation remain incomplete. The authenticated analyst workbench is implemented locally; browser visual QA is pending.
 
 #### Microsoft telemetry (initial integration)
 
@@ -654,8 +654,7 @@ Host integration must supply all of the following before this is usable by analy
 
 - `authorize(session, companyId, permission)`: validate the authenticated session and company membership, enforce
   the requested `response.request|read|approve|cancel|execute|reconcile` permission, and return a trusted
-  `{id, companyId}` principal. Never copy actor IDs or roles from request JSON. An OIDC/SSO-backed HTTP/API host
-  and its session protection are still to be implemented with the workbench.
+  `{id, companyId}` principal. Never copy actor IDs or roles from request JSON. The OIDC-backed workbench below supplies this boundary for its exposed permissions; it never grants execution.
 - `policy({case, action, target})`: return `true` only for approved company/device scope, supported device/OS,
   maintenance rules and protected-asset exclusions. There is no permissive default policy.
 - The investigation store, response store, Graph target resolver and Defender response provider. Use a
@@ -682,8 +681,60 @@ policy and approval UI must make the impact explicit.
 
 Run `node --test .claude/scripts/tests/incident-response.test.mjs` for the mocked case → approval → provider
 submission → reconciliation flow and failure-path tests. These are backend/local tests, not proof of live
-containment or deployed authorization. Workbench/API wiring, real DynamoDB transaction validation and controlled
+containment or deployed authorization. Real DynamoDB transaction validation, production OIDC validation and controlled
 tenant/OS tests remain required. No response command was run against Microsoft during development.
+
+### Authenticated SOC analyst workbench
+
+The workbench provides company-scoped case queues, evidence and activity timelines, assignment, notes,
+dismissal, confirmation into the existing incident ledger, and closure. Response reviewers see the exact
+Microsoft tenant/device/action, evidence hash, revision, approval digest, expiry and connectivity impact.
+A separate approver can approve or deny; authorized analysts can cancel or reconcile provider status.
+**The HTTP host exposes no execution route and always disables live response execution.**
+
+OIDC uses authorization code + PKCE, state, nonce, and signed ID-token verification. Server-owned subject
+bindings determine company access and roles; request JSON cannot choose an actor. Sessions use opaque
+HttpOnly, SameSite=Lax, Secure cookies (HTTPS), expire within 15 minutes, and are invalidated on logout.
+Mutations require the exact configured Origin and a session CSRF token. Responses use no-store and a
+restrictive CSP; untrusted case content is rendered as text. Database pagination is company-scoped,
+limited to 50 items per request; the UI filter applies only to loaded items.
+
+Configure these variables in the host's protected environment, never in committed files:
+
+- `MAXWELL_OIDC_CLIENT_ID`, `MAXWELL_OIDC_CLIENT_SECRET`: confidential OIDC application credentials.
+  Register the exact public origin plus `/auth/callback` as the redirect URI.
+- `MAXWELL_WORKBENCH_BINDINGS`: JSON array, for example
+  `[ {"subject":"immutable-oidc-sub","companyId":"example-co","roles":["analyst"]} ]`.
+  Roles are `viewer` (read), `analyst` (case changes, confirmation, response request/cancel/reconcile),
+  and `approver` (response approve/deny/cancel). No role grants execution. Self-approval is rejected even
+  when a subject has both analyst and approver roles.
+- `MAXWELL_WORKBENCH_TARGETS`: optional JSON array of exact `{companyId,tenantId,machineId,action}`
+  entries; `action` is `isolate` or `unisolate`. An empty list denies all response proposals.
+- `MAXWELL_MICROSOFT_CLIENT_ID`, `MAXWELL_MICROSOFT_CLIENT_SECRET`: Graph evidence-read credentials
+  needed for response proposals; `MAXWELL_DEFENDER_STATUS_CLIENT_ID` and
+  `MAXWELL_DEFENDER_STATUS_CLIENT_SECRET`: separate provider status credentials for reconciliation.
+
+From the repository root, with the existing investigation DynamoDB table and host AWS credentials:
+
+```bash
+node .claude/scripts/soc-workbench/run.mjs \
+  --origin https://soc.example.com \
+  --issuer https://login.microsoftonline.com/TENANT_ID/v2.0 \
+  --table INVESTIGATION_TABLE --region ap-south-1
+```
+
+The process binds `127.0.0.1:8787`. Use a TLS reverse proxy preserving the configured Host, with request
+rate limits. `--port` changes the local port. `--local-http` permits only a `http://127.0.0.1` origin for
+local development; the issuer must still use HTTPS. In-memory sessions require one process (or sticky
+routing) and restart on binding changes; restarting logs everyone out. Incident confirmation requires the
+company details/SLA files and a writable local incident ledger; multi-host ledger coordination is not supplied.
+Do not treat this local host as a validated production deployment.
+
+Run `node --test .claude/scripts/tests/workbench-auth.test.mjs .claude/scripts/tests/workbench-http.test.mjs`.
+Tests verify real OIDC token validation against synthetic signed tokens and the HTTP login → triage →
+confirmation → independent approval flow, plus tenant isolation, CSRF, stale writes, logout and no execution
+route. Provider calls and persistence are mocked; real IdP/tenant/database deployment checks and browser
+visual QA remain pending. No cloud resources are deployed by this command's setup instructions.
 
 ### Incident investigation
 
