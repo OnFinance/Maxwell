@@ -1033,14 +1033,12 @@
       "permission": {
         "read": "allow",
         "edit": "deny",
-        "write": {
-          "*": "deny",
-          "kpis/data/raw/sessions/**": "allow"
-        },
+        "write": "deny",
         "patch": "deny",
         "bash": {
           "*": "deny",
           "node .claude/scripts/security-audit/validate.mjs *": "allow",
+          "node .claude/scripts/security-audit/persist.mjs": "allow",
           "sops --decrypt *": "deny",
           "sops -d *": "deny",
           "rm -rf *": "deny",

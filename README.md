@@ -307,11 +307,21 @@ flowchart LR
 `execute-scr` uses the `security-audit` skill adapted from Cloudflare's MIT-licensed security-audit method. It maps
 trust boundaries, plans deterministic coverage units, hunts by attack class, challenges coverage with an independent
 critic, and retains three explicit outcomes: `confirmed`, `needs_validation`, and `rejected`. Only twice-verified
-confirmed records may reach SARIF and the SOC ledger. Missing safe execution capability becomes a validation blocker,
+confirmed records reach the SOC ledger. Secure-code reviewers return data rather than publishing unverified SARIF;
+this workflow currently publishes the five audit JSON exports and uses agent-analysis ledger sources. Missing safe execution capability becomes a validation blocker,
 not a clean result.
 
-Use `quick`, `standard` (default), or `deep` scope in workflow arguments. A strict agent budget reserves
-reconnaissance, critic, and verifier calls before hunter work. Audit state is retained as immutable exports under
+Use `securityAuditProfile: "quick"`, `"standard"` (default), or `"deep"` in workflow arguments. Quick groups
+subsystems coarsely; standard reviews each boundary/class; deep asks for lifecycle-specific boundaries and reviews
+each unit twice with independent calls. Conflicting verdicts remain unresolved. All profiles retain both refutation
+and final verification gates. `securityAuditBudget` caps audit agent calls (recon, hunters, refuters, final verifiers,
+critic and export writer), reserving critic/publication calls. Scout, SOC ledger, inline SDLC/DevEnv and reporting
+calls are outside that cap. Small budgets produce incomplete exports, never clean coverage.
+
+Prior run IDs are recorded but do not suppress current work: prior-run reuse is conservatively disabled.
+Skipped source, unavailable reviewers, unresolved evidence and critic gaps prevent a complete audit claim.
+Export failure withholds secure-code findings. The writer uses the deterministic stdin persistence helper,
+which validates the bundle and exclusively creates files; partial write failures require a fresh session. Audit state is retained as immutable exports under
 `kpis/data/raw/sessions/<sessionId>/`; validate one or more files with:
 
 ```bash
@@ -319,7 +329,9 @@ npm run audit:security:validate -- <security-audit.export.json> [...]
 ```
 
 The implementation never runs target-controlled code outside Maxwell's configured sandbox and never probes a
-deployed service as part of source review.
+deployed service as part of source review. Workflow orchestration is tested with mocked agent responses and real
+export validation/persistence (`security-audit-workflow.test.mjs`); this does not validate an actual model's audit
+quality or deployed harness permissions.
 
 ## Controls registry
 
