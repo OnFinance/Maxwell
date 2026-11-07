@@ -370,6 +370,42 @@ transaction or tamper-proof storage. Legacy direct file writers are outside the 
 Test: `node --test .claude/scripts/tests/remediation.test.mjs`. Tests use real temporary Git repositories,
 real export persistence, actual record schemas and ledger appends. No production data is changed.
 
+### Continuous control testing
+
+This feature schedules the revision-bound deterministic checks introduced by remediation verification. Register
+an existing ledger control and one of its exact applicable repository targets. Each attempt produces a
+schema-validated observation: `satisfied`, `not-satisfied`, or `inconclusive`. A passing-to-failing transition
+records drift. A target/check failure is operationally distinct from a failed control and never reports clean
+compliance. Control-definition changes invalidate health until an operator registers an updated schedule.
+
+Use `node .claude/scripts/continuous-controls/run.mjs --help`. Operations take JSON on stdin and a persistent
+`--state-session ses_controls123`. `register` takes company/control/target, full commit `revision`, `check`,
+`intervalMs` (1 minute–30 days) and `evidenceTtlMs` (at least the interval, at most 90 days). `tick` and `health`
+take `companyId` and the returned schedule `id`. `pause` also takes `expectedRevision` and boolean `paused`.
+
+```bash
+node .claude/scripts/continuous-controls/run.mjs --operation register --state-session ses_controls123 < schedule.json
+node .claude/scripts/continuous-controls/run.mjs --operation tick --state-session ses_controls123 --watch < schedule-reference.json
+node .claude/scripts/continuous-controls/run.mjs --operation health --state-session ses_controls123 < schedule-reference.json
+```
+
+The watch process checks one explicit schedule every minute; use an approved process supervisor and external
+health monitor. Restart with the same state session. Missed intervals produce a current check rather than invented
+historical results. There are no deployed cron jobs, live cloud probes, arbitrary shell checks or auto-remediation.
+The initial registry contains only JSON assertions and artifact digest checks on tracked files at clean pinned
+Git commits. An updated commit requires a new schedule; old evidence does not apply to new code.
+
+Durable CAS leases fence competing workers. Results enter a publication intent before ledger writes; restart or
+lost acknowledgments replay that same observation id. Expired owners cannot advance completion. Health exposes
+never-tested, running, publishing, stalled, overdue, check-failed, control-failed, evidence-expired, scope-changed,
+paused and healthy states. Paused is not healthy. Watch shutdown interrupts waits; an in-flight read/check finishes
+or loses its lease. Invalid/pending state must be investigated rather than reset to green.
+
+The local CLI uses OS/filesystem trust. Hosted use must inject authenticated company-scoped permissions through
+`ContinuousControlService`. This is single-host scheduling over the shared session journal; no distributed
+scheduler or cloud operational validation is claimed. Tests cover real observation validation and persistence,
+drift, evidence expiry, unavailable checks, concurrent workers, lease loss and publication recovery.
+
 ## Controls registry
 
 ### How control generation works
