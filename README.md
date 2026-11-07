@@ -406,6 +406,48 @@ The local CLI uses OS/filesystem trust. Hosted use must inject authenticated com
 scheduler or cloud operational validation is claimed. Tests cover real observation validation and persistence,
 drift, evidence expiry, unavailable checks, concurrent workers, lease loss and publication recovery.
 
+### Regulatory change impact
+
+The regulatory-impact feature compares operator-supplied, versioned clause snapshots for one company and one
+instrument. It is an offline review workflow: it neither fetches regulator URLs nor invents legal interpretations.
+Acquire and verify source material through the existing approved regulatory research process (ComplianceOS first
+where applicable). An approved hostname is a source policy restriction, not proof that supplied text is authentic.
+
+Use `node .claude/scripts/regulatory-impact/run.mjs --help`. Set `MAXWELL_REGULATORY_SOURCE_HOSTS` to a protected
+JSON array of approved source hostnames. Inputs are JSON on stdin; use one persistent state session:
+
+```bash
+node .claude/scripts/regulatory-impact/run.mjs --operation importSource --state-session ses_regulatory123 < source.json
+node .claude/scripts/regulatory-impact/run.mjs --operation compare --state-session ses_regulatory123 < comparison.json
+node .claude/scripts/regulatory-impact/run.mjs --operation review --state-session ses_regulatory123 < review.json
+```
+
+`importSource` takes `companyId` and `document: {instrument,version,url,effectiveAt,clauses:[{id,text}]}`.
+Dates use UTC `.000Z`; HTTPS URLs must use an approved hostname and omit credentials, query strings and fragments.
+The instrument must be in the company's existing `frameworksInScope`. Reimport is idempotent; conflicting text
+under the same source/version is rejected. Snapshots are bounded to 1,000 unique clauses and 2 MiB total.
+
+`compare` takes `companyId`, `previousId` and `nextId` from source import. Compatible source URL/instrument and
+forward effective dates are required. Added/changed/removed clauses retain source hashes; exact existing control
+framework references suggest mappings, while unmatched clauses remain explicitly unmapped. Comparisons are
+idempotent for the same source pair and company/control snapshot. Changed company scope requires a new comparison.
+
+`review` takes company/id, `expectedRevision`, the returned review `digest`, `decision: accept|reject`, and `note`.
+Acceptance requires a mapping for every changed clause: `{clauseId,outcome: mapped|not-applicable,rationale,
+controlIds?: [...]}`. Mapped controls must belong to that company and instrument; excluded clauses require explicit
+human rationale. The reviewer must differ from the comparison author. The trusted local CLI uses OS uid identity;
+hosted integrations must supply authenticated company-scoped authorization through `RegulatoryImpactService`.
+
+Accepted impact generates reviewable remediation proposals with affected assets, source evidence, acceptance
+criteria and verification guidance. These are proposals, not schema-valid tasks with owners/deadlines. Review and
+create actual initiatives/tasks through existing change-management workflows. Acceptance appends an inconclusive
+observation recording the review; it does not change obligations, mark a control compliant or close findings.
+Immutable publication intent supports restart/retry without duplicate observations.
+
+The initial feature does not parse PDFs, poll regulatory sites, assess complete legal applicability, auto-create
+tasks, or replace expert review. Tests use explicitly synthetic clauses, real journal persistence and actual
+ledger schema validation; no regulator text was interpreted or company records modified during development.
+
 ## Controls registry
 
 ### How control generation works
