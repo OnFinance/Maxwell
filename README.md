@@ -333,6 +333,121 @@ deployed service as part of source review. Workflow orchestration is tested with
 export validation/persistence (`security-audit-workflow.test.mjs`); this does not validate an actual model's audit
 quality or deployed harness permissions.
 
+### Remediation verification
+
+The separate remediation feature binds an existing finding and change-management task to a deterministic check
+and an exact Git commit. Start with `json-field-equals` or `file-sha256` checks on tracked files in clean local
+repository checkouts. No target code, scanner, deployment or network command is executed. An unavailable, dirty,
+changed, oversized or unsafe target yields an inconclusive result; it cannot justify finding closure.
+
+Use `node .claude/scripts/remediation/run.mjs --help`. All operation inputs are JSON on stdin. Choose one
+`--state-session` per operational journal and retain it across restarts:
+
+```bash
+node .claude/scripts/remediation/run.mjs --operation open --state-session ses_remediation123 < request.json
+node .claude/scripts/remediation/run.mjs --operation verify --state-session ses_remediation123 < verification.json
+node .claude/scripts/remediation/run.mjs --operation close --state-session ses_remediation123 < closure.json
+```
+
+`open` takes `companyId`, `findingId`, `initiativeId`, `taskId`, a full 40-character `revision`, and `check`
+(e.g. `{"type":"json-field-equals","version":1,"path":"settings.json","field":["tls","verify"],"expected":true}`).
+Use the returned verification `id` for subsequent calls. `verify` takes company/id and `expectedRevision`.
+`close` additionally requires the returned `criteriaHash` and a review `note`. The linked task must already be
+`done` with its existing required evidence; this feature does not mark tasks done or rewrite initiative timelines.
+A check proves only its stated assertion. The independent reviewer must assess every acceptance criterion.
+
+The local CLI trusts filesystem access and derives identity from the OS uid. Close under a different OS account
+with appropriate workspace access; no `--actor` option can impersonate a reviewer. A hosted integration must inject
+trusted company/permission authorization through `RemediationService`; do not expose the CLI directly over HTTP.
+
+State is an immutable, digest-chained, compare-and-swap journal under the sanctioned session export directory.
+Verification expires after one hour by default. Closure rechecks target/check/input hashes and appends a
+schema-validated superseding finding. Lost publication acknowledgments can be reconciled without duplicate
+closure. Ledger appends now share a host-local exclusive lock and optional expected-record signature; a stale
+lock fails closed and requires operator review. This is single-host filesystem coordination, not a distributed
+transaction or tamper-proof storage. Legacy direct file writers are outside the helper's locking boundary.
+
+Test: `node --test .claude/scripts/tests/remediation.test.mjs`. Tests use real temporary Git repositories,
+real export persistence, actual record schemas and ledger appends. No production data is changed.
+
+### Continuous control testing
+
+This feature schedules the revision-bound deterministic checks introduced by remediation verification. Register
+an existing ledger control and one of its exact applicable repository targets. Each attempt produces a
+schema-validated observation: `satisfied`, `not-satisfied`, or `inconclusive`. A passing-to-failing transition
+records drift. A target/check failure is operationally distinct from a failed control and never reports clean
+compliance. Control-definition changes invalidate health until an operator registers an updated schedule.
+
+Use `node .claude/scripts/continuous-controls/run.mjs --help`. Operations take JSON on stdin and a persistent
+`--state-session ses_controls123`. `register` takes company/control/target, full commit `revision`, `check`,
+`intervalMs` (1 minute–30 days) and `evidenceTtlMs` (at least the interval, at most 90 days). `tick` and `health`
+take `companyId` and the returned schedule `id`. `pause` also takes `expectedRevision` and boolean `paused`.
+
+```bash
+node .claude/scripts/continuous-controls/run.mjs --operation register --state-session ses_controls123 < schedule.json
+node .claude/scripts/continuous-controls/run.mjs --operation tick --state-session ses_controls123 --watch < schedule-reference.json
+node .claude/scripts/continuous-controls/run.mjs --operation health --state-session ses_controls123 < schedule-reference.json
+```
+
+The watch process checks one explicit schedule every minute; use an approved process supervisor and external
+health monitor. Restart with the same state session. Missed intervals produce a current check rather than invented
+historical results. There are no deployed cron jobs, live cloud probes, arbitrary shell checks or auto-remediation.
+The initial registry contains only JSON assertions and artifact digest checks on tracked files at clean pinned
+Git commits. An updated commit requires a new schedule; old evidence does not apply to new code.
+
+Durable CAS leases fence competing workers. Results enter a publication intent before ledger writes; restart or
+lost acknowledgments replay that same observation id. Expired owners cannot advance completion. Health exposes
+never-tested, running, publishing, stalled, overdue, check-failed, control-failed, evidence-expired, scope-changed,
+paused and healthy states. Paused is not healthy. Watch shutdown interrupts waits; an in-flight read/check finishes
+or loses its lease. Invalid/pending state must be investigated rather than reset to green.
+
+The local CLI uses OS/filesystem trust. Hosted use must inject authenticated company-scoped permissions through
+`ContinuousControlService`. This is single-host scheduling over the shared session journal; no distributed
+scheduler or cloud operational validation is claimed. Tests cover real observation validation and persistence,
+drift, evidence expiry, unavailable checks, concurrent workers, lease loss and publication recovery.
+
+### Regulatory change impact
+
+The regulatory-impact feature compares operator-supplied, versioned clause snapshots for one company and one
+instrument. It is an offline review workflow: it neither fetches regulator URLs nor invents legal interpretations.
+Acquire and verify source material through the existing approved regulatory research process (ComplianceOS first
+where applicable). An approved hostname is a source policy restriction, not proof that supplied text is authentic.
+
+Use `node .claude/scripts/regulatory-impact/run.mjs --help`. Set `MAXWELL_REGULATORY_SOURCE_HOSTS` to a protected
+JSON array of approved source hostnames. Inputs are JSON on stdin; use one persistent state session:
+
+```bash
+node .claude/scripts/regulatory-impact/run.mjs --operation importSource --state-session ses_regulatory123 < source.json
+node .claude/scripts/regulatory-impact/run.mjs --operation compare --state-session ses_regulatory123 < comparison.json
+node .claude/scripts/regulatory-impact/run.mjs --operation review --state-session ses_regulatory123 < review.json
+```
+
+`importSource` takes `companyId` and `document: {instrument,version,url,effectiveAt,clauses:[{id,text}]}`.
+Dates use UTC `.000Z`; HTTPS URLs must use an approved hostname and omit credentials, query strings and fragments.
+The instrument must be in the company's existing `frameworksInScope`. Reimport is idempotent; conflicting text
+under the same source/version is rejected. Snapshots are bounded to 1,000 unique clauses and 2 MiB total.
+
+`compare` takes `companyId`, `previousId` and `nextId` from source import. Compatible source URL/instrument and
+forward effective dates are required. Added/changed/removed clauses retain source hashes; exact existing control
+framework references suggest mappings, while unmatched clauses remain explicitly unmapped. Comparisons are
+idempotent for the same source pair and company/control snapshot. Changed company scope requires a new comparison.
+
+`review` takes company/id, `expectedRevision`, the returned review `digest`, `decision: accept|reject`, and `note`.
+Acceptance requires a mapping for every changed clause: `{clauseId,outcome: mapped|not-applicable,rationale,
+controlIds?: [...]}`. Mapped controls must belong to that company and instrument; excluded clauses require explicit
+human rationale. The reviewer must differ from the comparison author. The trusted local CLI uses OS uid identity;
+hosted integrations must supply authenticated company-scoped authorization through `RegulatoryImpactService`.
+
+Accepted impact generates reviewable remediation proposals with affected assets, source evidence, acceptance
+criteria and verification guidance. These are proposals, not schema-valid tasks with owners/deadlines. Review and
+create actual initiatives/tasks through existing change-management workflows. Acceptance appends an inconclusive
+observation recording the review; it does not change obligations, mark a control compliant or close findings.
+Immutable publication intent supports restart/retry without duplicate observations.
+
+The initial feature does not parse PDFs, poll regulatory sites, assess complete legal applicability, auto-create
+tasks, or replace expert review. Tests use explicitly synthetic clauses, real journal persistence and actual
+ledger schema validation; no regulator text was interpreted or company records modified during development.
+
 ## Controls registry
 
 ### How control generation works
