@@ -333,6 +333,43 @@ deployed service as part of source review. Workflow orchestration is tested with
 export validation/persistence (`security-audit-workflow.test.mjs`); this does not validate an actual model's audit
 quality or deployed harness permissions.
 
+### Remediation verification
+
+The separate remediation feature binds an existing finding and change-management task to a deterministic check
+and an exact Git commit. Start with `json-field-equals` or `file-sha256` checks on tracked files in clean local
+repository checkouts. No target code, scanner, deployment or network command is executed. An unavailable, dirty,
+changed, oversized or unsafe target yields an inconclusive result; it cannot justify finding closure.
+
+Use `node .claude/scripts/remediation/run.mjs --help`. All operation inputs are JSON on stdin. Choose one
+`--state-session` per operational journal and retain it across restarts:
+
+```bash
+node .claude/scripts/remediation/run.mjs --operation open --state-session ses_remediation123 < request.json
+node .claude/scripts/remediation/run.mjs --operation verify --state-session ses_remediation123 < verification.json
+node .claude/scripts/remediation/run.mjs --operation close --state-session ses_remediation123 < closure.json
+```
+
+`open` takes `companyId`, `findingId`, `initiativeId`, `taskId`, a full 40-character `revision`, and `check`
+(e.g. `{"type":"json-field-equals","version":1,"path":"settings.json","field":["tls","verify"],"expected":true}`).
+Use the returned verification `id` for subsequent calls. `verify` takes company/id and `expectedRevision`.
+`close` additionally requires the returned `criteriaHash` and a review `note`. The linked task must already be
+`done` with its existing required evidence; this feature does not mark tasks done or rewrite initiative timelines.
+A check proves only its stated assertion. The independent reviewer must assess every acceptance criterion.
+
+The local CLI trusts filesystem access and derives identity from the OS uid. Close under a different OS account
+with appropriate workspace access; no `--actor` option can impersonate a reviewer. A hosted integration must inject
+trusted company/permission authorization through `RemediationService`; do not expose the CLI directly over HTTP.
+
+State is an immutable, digest-chained, compare-and-swap journal under the sanctioned session export directory.
+Verification expires after one hour by default. Closure rechecks target/check/input hashes and appends a
+schema-validated superseding finding. Lost publication acknowledgments can be reconciled without duplicate
+closure. Ledger appends now share a host-local exclusive lock and optional expected-record signature; a stale
+lock fails closed and requires operator review. This is single-host filesystem coordination, not a distributed
+transaction or tamper-proof storage. Legacy direct file writers are outside the helper's locking boundary.
+
+Test: `node --test .claude/scripts/tests/remediation.test.mjs`. Tests use real temporary Git repositories,
+real export persistence, actual record schemas and ledger appends. No production data is changed.
+
 ## Controls registry
 
 ### How control generation works

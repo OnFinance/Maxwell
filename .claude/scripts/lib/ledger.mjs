@@ -1,7 +1,11 @@
+import { tmpdir } from 'node:os';
+import { createHash } from 'node:crypto';
+import { resolve } from 'node:path';
+import { sha256 } from '../incident-investigation/core.mjs';
 // Append-only access to company-profile/<company_id>/soc/main.jsonl, shared by soc/append.mjs and
 // soc/migrate-instrument.mjs. Existing lines are never rewritten: a record whose id already exists must set
 // "supersedes" to that id (or the caller allows duplicate ids for observations that legitimately repeat).
-import { readFileSync, existsSync, appendFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, existsSync, appendFileSync, mkdirSync, rmdirSync, realpathSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { buildAjv, getValidator, formatErrors } from './schemas.mjs';
 import { controlKeyProblem, loadOverlay, refProblems, walkCo } from './company-catalogs.mjs';
@@ -25,7 +29,13 @@ export function latestById(records) {
 
 // Checks every record (schema, companyId, duplicate ids, dangling supersedes, earlier records of the same batch
 // included) and then appends all of them or none. Returns { appended, problems }.
-export function appendRecords(companyId, records, { root = '.', allowDuplicateIds = false, dryRun = false, validate } = {}) {
+export function appendRecords(companyId, records, options = {}) {
+  const root = realpathSync(resolve(options.root || '.'));
+  const lock = join(tmpdir(), `maxwell-ledger-${createHash('sha256').update(join(root, 'company-profile', companyId)).digest('hex')}`);
+  try { mkdirSync(lock, { mode: 0o700 }); } catch (error) { if (error.code === 'EEXIST') return { appended: 0, problems: ['ledger busy; retry after writer completes; stale locks require operator review'] }; throw error; }
+  try { return appendUnlocked(companyId, records, options); } finally { rmdirSync(lock); }
+}
+function appendUnlocked(companyId, records, { root = '.', allowDuplicateIds = false, dryRun = false, validate, expected } = {}) {
   const check = validate || getValidator(buildAjv().ajv, RECORD_SCHEMA);
   const path = ledgerPathFor(companyId, root);
   const content = existsSync(path) ? readFileSync(path, 'utf8') : '';
@@ -35,6 +45,10 @@ export function appendRecords(companyId, records, { root = '.', allowDuplicateId
     try { ids.add(JSON.parse(line).id); } catch { /* validated elsewhere */ }
   }
   const problems = [];
+  if (expected) {
+    const current = content.split('\n').filter((line) => line.trim()).map((line) => JSON.parse(line)).findLast((record) => record.id === expected.id);
+    if (!current || sha256(current) !== expected.signature) return { appended: 0, problems: ['ledger record changed'] };
+  }
   // Records citing the company's own catalogs ('co:' ids) must cite this company's, and those must exist.
   let overlay = null;
   const coProblems = (record) => {
