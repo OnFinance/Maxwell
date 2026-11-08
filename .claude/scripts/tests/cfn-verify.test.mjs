@@ -7,7 +7,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { chmodSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { chmodSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { createServer } from 'node:net';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -217,6 +217,9 @@ setTimeout(() => process.exit(0), 60000);
 function world({ moto = false } = {}) {
   const d = tmp();
   const bin = join(d, 'bin'); mkdirSync(bin);
+  // The stand-ins run with `#!/usr/bin/env node`: give them this node by itself, wherever it is installed
+  // (Homebrew, nvm, ...), without putting its directory and any CLIs installed beside it on PATH.
+  symlinkSync(process.execPath, join(bin, 'node'));
   for (const [n, body] of Object.entries(STANDINS)) {
     if (n === 'moto_server') continue;
     writeFileSync(join(bin, n), body); chmodSync(join(bin, n), 0o755);
