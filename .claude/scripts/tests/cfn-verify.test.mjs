@@ -7,7 +7,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { chmodSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { chmodSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { createServer } from 'node:net';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -214,9 +214,12 @@ setTimeout(() => process.exit(0), 60000);
 `,
 };
 
-function world({ moto = false } = {}) {
+function world({ moto = false, fallback = ['/usr/local/bin', '/usr/bin', '/bin'] } = {}) {
   const d = tmp();
   const bin = join(d, 'bin'); mkdirSync(bin);
+  // The stand-ins run with `#!/usr/bin/env node`: give them this node by itself, wherever it is installed
+  // (Homebrew, nvm, ...), without putting its directory and any CLIs installed beside it on PATH.
+  symlinkSync(process.execPath, join(bin, 'node'));
   for (const [n, body] of Object.entries(STANDINS)) {
     if (n === 'moto_server') continue;
     writeFileSync(join(bin, n), body); chmodSync(join(bin, n), 0o755);
@@ -231,7 +234,7 @@ function world({ moto = false } = {}) {
   const session = `cfn-test-${app}`;
   return {
     d, bin, app, log: join(d, 'aws.log'), out: `kpis/data/raw/sessions/${session}/probe-iac.${app}.infra-repo.cfn.export.json`,
-    path: [bin, ...(moto ? [join(d, 'moto', '5.2.4', 'bin')] : []), '/usr/local/bin', '/usr/bin', '/bin'].join(':'),
+    path: [bin, ...(moto ? [join(d, 'moto', '5.2.4', 'bin')] : []), ...fallback].join(':'),
     cleanup: () => { rmSync(join(WORKSPACE, 'applications', app), { recursive: true, force: true }); rmSync(join(WORKSPACE, 'kpis', 'data', 'raw', 'sessions', session), { recursive: true, force: true }); rmSync(d, { recursive: true, force: true }); },
   };
 }
@@ -311,6 +314,21 @@ test('the emulator on loopback: create, read back, delete, with throwaway creden
     assert.equal(by('emulator-not-verified')[0].properties.resource, 'Unsupported');
     assert.match(by('emulator-not-verified')[0].message.text, /moto does not model AWS::Pipes::Pipe/);
     assert.equal(by('emulated-s3-public-access-block-off')[0].kind, 'review', 'what the emulator does not model is never a pass');
+  } finally { w.cleanup(); }
+});
+
+// Regression: the stand-ins could not start where node is not in /usr/local/bin, /usr/bin or /bin (Homebrew on Apple
+// Silicon, nvm), failing with "env: node: No such file or directory". With no fallback directories on PATH, the node
+// linked into bin/ is the only one, so this fails on any machine if the link is removed. The emulator run starts both
+// node stand-ins: moto_server, then aws for every call to it.
+test('the stand-ins run on the test\'s own node alone: no fallback directory on PATH', async () => {
+  const w = world({ moto: true, fallback: [] });
+  try {
+    assert.equal(w.path, [w.bin, join(w.d, 'moto', '5.2.4', 'bin')].join(':'));
+    const r = runCli(w, { MAXWELL_CFN_EMULATOR_PORT: String(await freePort()) });
+    assert.equal(r.status, 0, r.stderr);
+    assert.match(JSON.parse(r.stdout).emulator, /^moto 5\.2\.4$/, 'the stand-in moto_server started');
+    assert.ok(calls(w).some((x) => x.op === 'create-stack'), 'the stand-in aws ran');
   } finally { w.cleanup(); }
 });
 
