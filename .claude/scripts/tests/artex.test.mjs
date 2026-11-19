@@ -40,6 +40,10 @@ test('CLI and snapshot imports share identity, schema validation and replay beha
   assert.equal(entry.id, preview.rows[0].id);
   assert.equal(entry.provenance.inputsHash, preview.digest);
   assert.doesNotMatch(JSON.stringify(entry), /Ignored/);
+  const legacy = { ...entry, fingerprint: 'f'.repeat(64), regulatoryRefs: [] };
+  const replay = planArtexImport(assessment, JSON.stringify(legacy));
+  assert.equal(replay.suffix, '');
+  assert.equal(replay.rows[0].id, legacy.id);
   const accepted = { ...entry, status: 'risk-accepted', supersedes: entry.id, statusReason: 'Reviewed', resolvedAt: entry.recordedAt };
   const history = JSON.stringify(entry) + '\n' + JSON.stringify(accepted);
   writeFileSync(ledger, history);

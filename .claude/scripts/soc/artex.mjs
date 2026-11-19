@@ -76,20 +76,28 @@ export function readArtexAssessment({ csv, companyId, application, source, contr
   return { rows, companyId, application, source, regulatoryRef: controlReference(control), digest: hash(csv) };
 }
 
-export function planArtexImport(assessment, ledger, { actor = 'maxwell-cli', legacyOrgId, root } = {}) {
+export function planArtexImport(assessment, ledger, { actor = 'maxwell-cli', root } = {}) {
   const { companyId, application, source, regulatoryRef, digest } = assessment;
   const fingerprints = new Map();
+  const previousHostedIds = new Map();
   for (const line of ledger.split('\n')) {
     if (!line.trim()) continue;
     const record = JSON.parse(line);
-    if (record.kind === 'finding' && record.companyId === companyId) fingerprints.set(record.fingerprint, record.id);
+    if (record.kind !== 'finding' || record.companyId !== companyId) continue;
+    fingerprints.set(record.fingerprint, record.id);
+    // The first hosted adapter used its database org ID in the hash. An exported
+    // workspace still carries the exact source name and external ID in that adapter's provenance.
+    const externalId = record.source?.ruleId;
+    if (record.source?.tool === 'ARTEX' && record.source.kind === 'manual' && record.target?.appId === application &&
+        typeof record.description === 'string' && record.description.startsWith(`ARTEX source ${source}, finding ${externalId}. Evidence references: `)) {
+      previousHostedIds.set(externalId, record.id);
+    }
   }
   const at = new Date().toISOString();
   const records = [];
   const rows = assessment.rows.map(row => {
-    const identity = scope => hash(JSON.stringify(['artex/v1', scope, application, source, row.externalId]));
-    const fingerprint = identity(companyId);
-    const prior = fingerprints.get(fingerprint) ?? (legacyOrgId === undefined ? undefined : fingerprints.get(identity(legacyOrgId)));
+    const fingerprint = hash(JSON.stringify(['artex/v1', companyId, application, source, row.externalId]));
+    const prior = fingerprints.get(fingerprint) ?? previousHostedIds.get(row.externalId);
     const id = prior ?? findingId(fingerprint);
     if (!prior) records.push({
       schemaVersion: '1', kind: 'finding', companyId, id, title: row.title,
