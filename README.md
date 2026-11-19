@@ -601,6 +601,19 @@ npm run import:artex -- --company example-co --app mcp-gateway --source internal
 
 Review the new and existing rows, then repeat with `--confirm` to append new findings to the company's SOC ledger. Replays preserve existing analyst decisions. The digest identifies the original export. Evidence counts and source discovery times are retained and free-form traffic and report bodies are excluded.
 
+#### RBI regulatory sandbox evidence review
+
+Use the RBI template to prepare a worksheet from one completed ARTEX CSV before a human regulatory review. It summarizes finding counts, identifies the exact report by SHA-256 and lists selected framework sections with space for evidence references. Each item starts pending, even for an export with zero findings. A reviewer determines applicability, gathers supporting evidence and records the decision separately. Admission and authorisation are decisions for RBI. The template follows the [RBI Enabling Framework of 28 February 2024](https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=13375&Mode=0).
+
+From the repository root, build the template and run it with the report on standard input. The review container uses a read-only filesystem, runs without network access and needs no workspace mount or credentials.
+
+```sh
+docker build -f .claude/skills/regulatory-catalogs/references/sandboxes/rbi/Dockerfile -t maxwell-rbi-review .
+docker run --rm -i --network none --read-only --cap-drop ALL --security-opt no-new-privileges --memory 128m --pids-limit 32 maxwell-rbi-review < findings.csv
+```
+
+Regulator-specific templates are tracked under `.claude/skills/regulatory-catalogs/references/sandboxes/`. RBI is the first profile. The same worksheet can be generated with `node .claude/scripts/soc/rbi-artex-review.mjs < findings.csv`.
+
 ### Real-time threat-detection recipes
 
 > **Current scope:** The deployed-ingestion infrastructure targets AWS CloudTrail. Microsoft Entra ID and

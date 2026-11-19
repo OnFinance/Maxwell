@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import assert from 'node:assert/strict';
 import { mkdtempSync, mkdirSync, readFileSync, writeFileSync, rmSync, existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -50,4 +51,25 @@ test('CLI and snapshot imports share identity, schema validation and replay beha
   assert.equal(cli('--confirm').written, 0);
   assert.equal(planArtexImport(assessment, history).suffix, '');
   assert.equal(readFileSync(ledger, 'utf8'), history);
+});
+
+test('RBI worksheet attaches aggregate evidence and leaves regulatory decisions to a reviewer', () => {
+  const script = fileURLToPath(new URL('../soc/rbi-artex-review.mjs', import.meta.url));
+  const run = input => spawnSync(process.execPath, [script], { input, encoding: 'utf8' });
+  for (const [report, count] of [[csv, 1], [header, 0]]) {
+    const result = run(report);
+    assert.equal(result.status, 0, result.stderr);
+    const worksheet = JSON.parse(result.stdout);
+    assert.equal(worksheet.findingCount, count);
+    assert.deepEqual(worksheet.severityCounts, count ? { medium: 1 } : {});
+    assert.equal(worksheet.reportSha256, createHash('sha256').update(report).digest('hex'));
+    assert.ok(worksheet.checklist.length > 0);
+    assert.ok(worksheet.checklist.every(item => item.status === 'needs-review' && !item.evidenceReferences.length));
+    assert.doesNotMatch(result.stdout, /Missing header, portal|Ignored/);
+  }
+  for (const bad of ['unexpected header', Buffer.alloc(512 * 1024 + 1), Buffer.from([255])]) {
+    const result = run(bad);
+    assert.equal(result.status, 1);
+    assert.equal(result.stdout, '');
+  }
 });
