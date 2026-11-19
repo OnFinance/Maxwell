@@ -1,3 +1,5 @@
+import { createHash } from 'node:crypto';
+
 const requirements = [
   ['eligibility', '5, 6.3–6.5', 'Document applicant eligibility, exclusions, fitness, readiness and the reason for testing.'],
   ['safeguards', '6.2', 'Record applicable statutory, privacy, data localisation, payment security and KYC/AML/CFT obligations and any written relaxation.'],
@@ -7,6 +9,17 @@ const requirements = [
   ['reporting', '7.2', 'Record test design, agreed metrics, fortnightly progress reports and the final evaluation.'],
   ['exit', '6.6, 8', 'Review exit criteria, customer notification, outstanding obligations and the transition plan.']
 ];
+
+// These search terms locate passages for the human reviewer. A hit has no regulatory weight.
+const topics = {
+  eligibility: ['eligibility', 'incorporation', 'net worth'],
+  safeguards: ['privacy', 'localisation', 'kyc', 'aml'],
+  design: ['test scenario', 'expected outcome', 'mitigation'],
+  limits: ['participant limit', 'transaction ceiling', 'loss cap'],
+  consumers: ['consent', 'indemnity', 'compensation'],
+  reporting: ['fortnightly', 'progress report', 'test result'],
+  exit: ['exit', 'transition', 'outstanding obligation']
+};
 
 export function createWorksheet(reportSha256, rows) {
   const severityCounts = {};
@@ -34,13 +47,19 @@ export function reviewEvidence(previous, edits, finalize) {
     const evidenceReferences = edit.evidenceReferences.map(ref => {
       if (!ref || typeof ref.name !== 'string' || !ref.name.trim() || ref.name.length > 160 || /[\u0000-\u001f]/u.test(ref.name) ||
           typeof ref.sha256 !== 'string' || !/^[a-f0-9]{64}$/.test(ref.sha256)) throw new Error('Invalid evidence reference.');
-      return { name: ref.name.trim(), sha256: ref.sha256 };
+      const reference = { name: ref.name.trim(), sha256: ref.sha256 };
+      if (ref.text === undefined) return reference;
+      if (typeof ref.text !== 'string' || Buffer.byteLength(ref.text) > 4096 ||
+          createHash('sha256').update(ref.text).digest('hex') !== ref.sha256) throw new Error('Invalid text evidence or digest.');
+      const passage = ref.text.split(/\r?\n/).find(line => topics[item.id].some(term => line.toLowerCase().includes(term)));
+      return { ...reference, text: ref.text, passage: passage?.slice(0, 240) ?? '' };
     });
     if (edit.status === 'supported' && !evidenceReferences.length) throw new Error('Attach evidence for each supported decision.');
     if (edit.status !== 'needs-review' && !rationale) throw new Error('Explain each reviewer decision.');
     if (finalize && edit.status === 'needs-review') throw new Error('Decide every item before signing off.');
     return { ...item, status: edit.status, rationale, evidenceReferences,
-      assessment: evidenceReferences.length ? 'reference-present-human-verification-required' : 'missing-evidence' };
+      assessment: evidenceReferences.some(ref => ref.passage) ? 'candidate-passage-for-review' :
+        evidenceReferences.length ? 'reference-present-human-verification-required' : 'missing-evidence' };
   });
   return { ...previous, checklist };
 }
