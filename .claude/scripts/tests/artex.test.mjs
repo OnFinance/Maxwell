@@ -73,3 +73,16 @@ test('RBI worksheet attaches aggregate evidence and leaves regulatory decisions 
     assert.equal(result.stdout, '');
   }
 });
+
+test('RBI sign-off requires a human decision, rationale and evidence for supported items', async () => {
+  const { createWorksheet, reviewEvidence } = await import('../soc/rbi-review-model.mjs');
+  const worksheet = createWorksheet('a'.repeat(64), []);
+  const edits = worksheet.checklist.map(item => ({ ...item, status: 'gap', rationale: 'Document outstanding' }));
+  assert.throws(() => reviewEvidence(worksheet, worksheet.checklist, true));
+  edits[0].status = 'supported';
+  assert.throws(() => reviewEvidence(worksheet, edits, false));
+  edits[0].evidenceReferences = [{ name: 'eligibility.pdf', sha256: 'a'.repeat(64) }];
+  const result = reviewEvidence(worksheet, edits, true);
+  assert.equal(result.checklist[0].assessment, 'reference-present-human-verification-required');
+  assert.equal(worksheet.checklist[0].status, 'needs-review');
+});
