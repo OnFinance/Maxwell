@@ -1,0 +1,9 @@
+**
+!package.json
+!package-lock.json
+!.claude/
+!.claude/scripts/
+!.claude/scripts/soc/
+!.claude/scripts/soc/artex-csv.mjs
+!.claude/scripts/soc/rbi-artex-review.mjs
+!.claude/scripts/soc/rbi-review-model.mjs

@@ -1,0 +1,411 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/artex/attack-path.schema.json",
+  "title": "ARTEX attack path",
+  "description": "An attack path discovered by ARTEX during autonomous red-team reconnaissance and exploitation. Represents a sequence of intents, facts, and findings from ARTEX's dual-graph exploration that demonstrates exploitability of a control gap.",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "kind",
+    "id",
+    "recordedAt",
+    "companyId",
+    "artexTaskId",
+    "goal",
+    "outcome",
+    "steps"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1"
+    },
+    "kind": {
+      "const": "attack-path"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^path_[0-9A-HJKMNP-TV-Z]{26}$",
+      "description": "ULID prefixed with path_"
+    },
+    "recordedAt": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$",
+      "description": "RFC 3339 UTC with trailing Z"
+    },
+    "companyId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "artexTaskId": {
+      "type": "string",
+      "description": "ARTEX task ID from its PostgreSQL graph"
+    },
+    "goal": {
+      "type": "string",
+      "description": "The goal ARTEX was pursuing (e.g., 'establish persistence on prod cluster', 'exfiltrate PII from database')"
+    },
+    "outcome": {
+      "type": "string",
+      "enum": ["goal-proven", "partial-access", "blocked", "inconclusive"],
+      "description": "Whether ARTEX achieved the goal"
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["critical", "high", "medium", "low", "info"]
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["sequence", "intent", "tool", "result"],
+        "properties": {
+          "sequence": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "intent": {
+            "type": "string",
+            "description": "The intent ARTEX dispatched from its planner"
+          },
+          "tool": {
+            "type": "string",
+            "description": "Tool used (nmap, curl, Playwright, ssh, kubectl, etc.)"
+          },
+          "command": {
+            "type": "string",
+            "description": "The actual command executed (sanitized of credentials)"
+          },
+          "result": {
+            "type": "string",
+            "enum": ["success", "partial", "failed", "blocked-by-guard", "blocked-by-human"]
+          },
+          "evidence": {
+            "type": "string",
+            "description": "Path to recording-proxy capture or tool output"
+          },
+          "assetsBefore": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": ["root-domain", "subdomain", "ip", "service", "app", "endpoint"]
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "assetsDiscovered": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": ["root-domain", "subdomain", "ip", "service", "app", "endpoint"]
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "findingIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^fnd_[0-9A-HJKMNP-TV-Z]{26}$"
+            },
+            "description": "Maxwell finding IDs this step exploited"
+          }
+        }
+      }
+    },
+    "targetAssets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["application", "environment", "endpoint", "service"]
+          },
+          "appId": {
+            "type": "string"
+          },
+          "envId": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "relatedFindingIds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^fnd_[0-9A-HJKMNP-TV-Z]{26}$"
+      },
+      "description": "Maxwell findings validated by this attack path"
+    },
+    "exploitabilityScore": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 10,
+      "description": "CVSS exploitability subscore or equivalent (0-10)"
+    },
+    "timeToExploit": {
+      "type": "object",
+      "required": ["duration", "unit"],
+      "properties": {
+        "duration": {
+          "type": "number"
+        },
+        "unit": {
+          "type": "string",
+          "enum": ["minutes", "hours", "days"]
+        }
+      }
+    },
+    "mitre": {
+      "type": "object",
+      "properties": {
+        "tactics": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^TA[0-9]{4}$"
+          }
+        },
+        "techniques": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^T[0-9]{4}(\\.[0-9]{3})?$"
+          }
+        }
+      }
+    },
+    "impactAssessment": {
+      "type": "object",
+      "properties": {
+        "dataAccess": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["personal", "spdi", "financial", "cardholder", "confidential", "public"]
+          }
+        },
+        "privilegeEscalation": {
+          "type": "boolean"
+        },
+        "lateralMovement": {
+          "type": "boolean"
+        },
+        "persistenceAchieved": {
+          "type": "boolean"
+        },
+        "regulatoryScope": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["SEBI", "RBI", "IRDAI", "CERT-In", "DPDP", "PCI-DSS"]
+          }
+        }
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type", "ref"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["recording-proxy", "screenshot", "pcap", "log", "artex-graph-export"]
+          },
+          "ref": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "blockedBy": {
+      "type": "object",
+      "description": "Control that prevented full exploitation",
+      "properties": {
+        "controlId": {
+          "type": "string"
+        },
+        "mechanism": {
+          "type": "string",
+          "description": "What stopped the attack (WAF, MFA, network policy, etc.)"
+        },
+        "evidence": {
+          "type": "string"
+        }
+      }
+    },
+    "remediationPriority": {
+      "type": "string",
+      "enum": ["critical-now", "urgent", "scheduled", "backlog"],
+      "description": "Escalated priority based on proven exploitability"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "notes": {
+      "type": "string"
+    },
+    "provenance": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/provenance"
+    }
+  },
+  "examples": [
+    {
+      "schemaVersion": "1",
+      "kind": "attack-path",
+      "id": "path_01J7Q3V8K2M4N6P8R0S2T4V7A1",
+      "recordedAt": "2026-11-21T14:32:00Z",
+      "companyId": "example-securities",
+      "artexTaskId": "artex-task-89a4bc2d",
+      "goal": "exfiltrate customer PII from production database",
+      "outcome": "partial-access",
+      "severity": "critical",
+      "steps": [
+        {
+          "sequence": 1,
+          "intent": "discover exposed endpoints on trading-api prod",
+          "tool": "nmap",
+          "command": "nmap -p 443,80,8080 -sV trading-api.example.com",
+          "result": "success",
+          "evidence": "artex/tasks/artex-task-89a4bc2d/proxy-captures/step-001.har",
+          "assetsBefore": [
+            {"type": "root-domain", "value": "example.com"}
+          ],
+          "assetsDiscovered": [
+            {"type": "subdomain", "value": "trading-api.example.com"},
+            {"type": "service", "value": "https/443"},
+            {"type": "service", "value": "http/8080"}
+          ]
+        },
+        {
+          "sequence": 2,
+          "intent": "probe admin endpoint on port 8080",
+          "tool": "curl",
+          "command": "curl -i https://trading-api.example.com:8080/admin/metrics",
+          "result": "success",
+          "evidence": "artex/tasks/artex-task-89a4bc2d/proxy-captures/step-002.har",
+          "assetsBefore": [
+            {"type": "service", "value": "http/8080"}
+          ],
+          "assetsDiscovered": [
+            {"type": "endpoint", "value": "/admin/metrics"},
+            {"type": "endpoint", "value": "/admin/db-console"}
+          ],
+          "findingIds": ["fnd_01J7Q3V8K2M4N6P8R0S2T4V6X8"]
+        },
+        {
+          "sequence": 3,
+          "intent": "access database console without authentication",
+          "tool": "Playwright",
+          "command": "browser.goto('https://trading-api.example.com:8080/admin/db-console')",
+          "result": "partial",
+          "evidence": "artex/tasks/artex-task-89a4bc2d/screenshots/step-003-db-console.png",
+          "assetsBefore": [
+            {"type": "endpoint", "value": "/admin/db-console"}
+          ],
+          "findingIds": ["fnd_01J7Q3V8K2M4N6P8R0S2T4V6X8"]
+        },
+        {
+          "sequence": 4,
+          "intent": "query customers table",
+          "tool": "Playwright",
+          "command": "executeQuery('SELECT email, phone, pan FROM customers LIMIT 5')",
+          "result": "blocked-by-guard",
+          "evidence": "artex/tasks/artex-task-89a4bc2d/guard-blocks/step-004.json"
+        }
+      ],
+      "targetAssets": [
+        {
+          "type": "application",
+          "appId": "trading-api"
+        },
+        {
+          "type": "environment",
+          "appId": "trading-api",
+          "envId": "prod"
+        }
+      ],
+      "relatedFindingIds": ["fnd_01J7Q3V8K2M4N6P8R0S2T4V6X8"],
+      "exploitabilityScore": 8.6,
+      "timeToExploit": {
+        "duration": 12,
+        "unit": "minutes"
+      },
+      "mitre": {
+        "tactics": ["TA0001", "TA0009"],
+        "techniques": ["T1190", "T1552.001"]
+      },
+      "impactAssessment": {
+        "dataAccess": ["personal", "spdi", "financial"],
+        "privilegeEscalation": false,
+        "lateralMovement": false,
+        "persistenceAchieved": false,
+        "regulatoryScope": ["SEBI", "DPDP"]
+      },
+      "evidence": [
+        {
+          "type": "recording-proxy",
+          "ref": "artex/tasks/artex-task-89a4bc2d/proxy-captures/complete.har",
+          "sha256": "d4e3d4e3d4e3d4e3d4e3d4e3d4e3d4e3d4e3d4e3d4e3d4e3d4e3d4e3d4e3d4e3"
+        },
+        {
+          "type": "screenshot",
+          "ref": "artex/tasks/artex-task-89a4bc2d/screenshots/step-003-db-console.png",
+          "sha256": "e5f4e5f4e5f4e5f4e5f4e5f4e5f4e5f4e5f4e5f4e5f4e5f4e5f4e5f4e5f4e5f4",
+          "description": "Unauthenticated access to H2 database console showing customer table schema"
+        },
+        {
+          "type": "artex-graph-export",
+          "ref": "artex/tasks/artex-task-89a4bc2d/graph-export.json",
+          "sha256": "f6a5f6a5f6a5f6a5f6a5f6a5f6a5f6a5f6a5f6a5f6a5f6a5f6a5f6a5f6a5f6a5"
+        }
+      ],
+      "blockedBy": {
+        "controlId": "manual-guard-approval",
+        "mechanism": "ARTEX guard intercepted PII query and requested human approval",
+        "evidence": "artex/tasks/artex-task-89a4bc2d/guard-blocks/step-004.json"
+      },
+      "remediationPriority": "critical-now",
+      "tags": ["autonomous-redteam", "exploited", "pii-exposure"],
+      "notes": "Admin endpoint exposed on non-standard port without authentication. Database console accessible but PII query blocked by ARTEX guard before execution.",
+      "provenance": {
+        "harness": "claude-code",
+        "generatedAt": "2026-11-21T14:32:00Z",
+        "sessionId": "ses_abc123def456",
+        "runId": "run_01JCDE4FGHJ0KLMNO2PQRSTU3V",
+        "workflow": "runtime-probe-redteam",
+        "agent": "artex-reconciler"
+      }
+    }
+  ]
+}
