@@ -591,6 +591,16 @@ Maxwell aligns its data to open standards rather than inventing formats: OSCAL f
 2.1.0 for static results, OCSF 1.9 for runtime findings, OSV and OpenVEX for vulnerabilities, CycloneDX 1.6 for
 SBOMs, OpenLineage for pipelines, and OpenTelemetry GenAI conventions for session metrics.
 
+### Import a completed ARTEX assessment
+
+Preview a RuoJi6 ARTEX v0.3.30 Findings CSV from the workspace root. Choose an existing company and application, a stable name for the source installation, and the shared catalog control applicable to every row in the file. Split assessments by application and control when needed.
+
+```sh
+npm run import:artex -- --company example-co --app mcp-gateway --source internal-security --control sebi-cscrf-2024:ID.RA.S1 --file /path/to/findings.csv
+```
+
+Review the new and existing rows, then repeat with `--confirm` to append new findings to the company's SOC ledger. Replays preserve existing analyst decisions. The digest identifies the original export. Evidence counts and source discovery times are retained and free-form traffic and report bodies are excluded.
+
 ### Real-time threat-detection recipes
 
 > **Current scope:** The deployed-ingestion infrastructure targets AWS CloudTrail. Microsoft Entra ID and

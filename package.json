@@ -33,18 +33,20 @@
     "audit:security:validate": "node .claude/scripts/security-audit/validate.mjs",
     "kpis": "node .claude/scripts/kpis/compute.mjs",
     "test": "npm run --silent test:schemas && node --test \".claude/scripts/**/*.test.mjs\"",
-    "test:schemas": "jsonschema test .claude/schemas/tests --resolve .claude/schemas/v1 --resolve .claude/schemas/vocab"
+    "test:schemas": "jsonschema test .claude/schemas/tests --resolve .claude/schemas/v1 --resolve .claude/schemas/vocab",
+    "import:artex": "node .claude/scripts/soc/import-artex.mjs"
   },
   "devDependencies": {
     "@sourcemeta/jsonschema": "^16.10.0",
-    "ajv": "^8.20.0",
-    "ajv-formats": "^3.0.1",
     "gray-matter": "^4.0.3"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "3.1146.0",
     "@aws-sdk/client-sqs": "3.1146.0",
     "@aws-sdk/lib-dynamodb": "3.1146.0",
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
+    "csv-parse": "6.1.0",
     "openid-client": "6.8.8"
   }
 }

@@ -35,10 +35,8 @@ export function appendRecords(companyId, records, options = {}) {
   try { mkdirSync(lock, { mode: 0o700 }); } catch (error) { if (error.code === 'EEXIST') return { appended: 0, problems: ['ledger busy; retry after writer completes; stale locks require operator review'] }; throw error; }
   try { return appendUnlocked(companyId, records, options); } finally { rmdirSync(lock); }
 }
-function appendUnlocked(companyId, records, { root = '.', allowDuplicateIds = false, dryRun = false, validate, expected } = {}) {
+export function prepareLedgerAppend(companyId, records, content, { root = '.', allowDuplicateIds = false, validate, expected } = {}) {
   const check = validate || getValidator(buildAjv().ajv, RECORD_SCHEMA);
-  const path = ledgerPathFor(companyId, root);
-  const content = existsSync(path) ? readFileSync(path, 'utf8') : '';
   const ids = new Set();
   for (const line of content.split('\n')) {
     if (!line.trim()) continue;
@@ -47,7 +45,7 @@ function appendUnlocked(companyId, records, { root = '.', allowDuplicateIds = fa
   const problems = [];
   if (expected) {
     const current = content.split('\n').filter((line) => line.trim()).map((line) => JSON.parse(line)).findLast((record) => record.id === expected.id);
-    if (!current || sha256(current) !== expected.signature) return { appended: 0, problems: ['ledger record changed'] };
+    if (!current || sha256(current) !== expected.signature) return { suffix: '', problems: ['ledger record changed'] };
   }
   // Records citing the company's own catalogs ('co:' ids) must cite this company's, and those must exist.
   let overlay = null;
@@ -69,9 +67,17 @@ function appendUnlocked(companyId, records, { root = '.', allowDuplicateIds = fa
     if (record.supersedes && !ids.has(record.supersedes)) problems.push(`supersedes ${record.supersedes} but no such id exists in the ledger`);
     ids.add(record.id);
   });
-  if (problems.length || dryRun || !records.length) return { appended: 0, problems };
-  mkdirSync(dirname(path), { recursive: true });
+  if (problems.length || !records.length) return { suffix: '', problems };
   const separator = content.length && !content.endsWith('\n') ? '\n' : '';
-  appendFileSync(path, separator + records.map((r) => JSON.stringify(r)).join('\n') + '\n');
+  return { suffix: separator + records.map((r) => JSON.stringify(r)).join('\n') + '\n', problems };
+}
+
+function appendUnlocked(companyId, records, options = {}) {
+  const path = ledgerPathFor(companyId, options.root);
+  const content = existsSync(path) ? readFileSync(path, 'utf8') : '';
+  const { suffix, problems } = prepareLedgerAppend(companyId, records, content, options);
+  if (!suffix || options.dryRun) return { appended: 0, problems };
+  mkdirSync(dirname(path), { recursive: true });
+  appendFileSync(path, suffix);
   return { appended: records.length, problems };
 }
