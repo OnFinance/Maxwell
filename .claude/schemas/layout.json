@@ -21,7 +21,11 @@
     "cves",
     "artex",
     "node_modules",
-    ".git"
+    ".git",
+    "ARTEX-INTEGRATION.md",
+    "ARTEX_QUICKSTART.md",
+    "IMPLEMENTATION_COMPLETE.md",
+    "PR_SUMMARY.md"
   ],
   "harnessDirs": {
     ".claude": [
@@ -377,27 +381,33 @@
     },
     {
       "glob": "artex/tasks/*/artex-config.json",
-      "format": "json"
+      "format": "json",
+      "schema": "https://maxwell.onfinance.ai/schemas/v1/artex/export.schema.json"
     },
     {
       "glob": "artex/tasks/*/asset-graph.json",
-      "format": "json"
+      "format": "json",
+      "schema": "https://maxwell.onfinance.ai/schemas/v1/artex/export.schema.json"
     },
     {
       "glob": "artex/tasks/*/exploration-graph.json",
-      "format": "json"
+      "format": "json",
+      "schema": "https://maxwell.onfinance.ai/schemas/v1/artex/export.schema.json"
     },
     {
       "glob": "artex/tasks/*/tool-executions.json",
-      "format": "json"
+      "format": "json",
+      "schema": "https://maxwell.onfinance.ai/schemas/v1/artex/export.schema.json"
     },
     {
       "glob": "artex/tasks/*/guard-interventions.json",
-      "format": "json"
+      "format": "json",
+      "schema": "https://maxwell.onfinance.ai/schemas/v1/artex/export.schema.json"
     },
     {
       "glob": "artex/tasks/*/export-metadata.json",
-      "format": "json"
+      "format": "json",
+      "schema": "https://maxwell.onfinance.ai/schemas/v1/artex/export.schema.json"
     },
     {
       "glob": "artex/tasks/*/execution.log",
@@ -405,23 +415,50 @@
     },
     {
       "glob": "artex/tasks/*/guard-log.jsonl",
-      "format": "jsonl"
+      "format": "jsonl",
+      "schema": "https://maxwell.onfinance.ai/schemas/v1/artex/export.schema.json"
     },
     {
       "glob": "artex/tasks/*/proxy-captures/*.har",
-      "format": "json"
+      "format": "any"
     },
     {
       "glob": "artex/tasks/*/screenshots/*.png",
-      "format": "binary"
+      "format": "any"
     },
     {
       "glob": "artex/tasks/*/screenshots/*.jpg",
-      "format": "binary"
+      "format": "any"
     },
     {
       "glob": "**/.gitkeep",
       "format": "empty"
+    },
+    {
+      "glob": "ARTEX-INTEGRATION.md",
+      "format": "markdown"
+    },
+    {
+      "glob": "ARTEX_QUICKSTART.md",
+      "format": "markdown"
+    },
+    {
+      "glob": "IMPLEMENTATION_COMPLETE.md",
+      "format": "markdown"
+    },
+    {
+      "glob": "PR_SUMMARY.md",
+      "format": "markdown"
+    },
+    {
+      "glob": "company-profile/*/catalogs/*.catalog.json",
+      "format": "json",
+      "schema": "https://maxwell.onfinance.ai/schemas/v1/company/catalog.schema.json"
+    },
+    {
+      "glob": "company-profile/*/regulators.json",
+      "format": "json",
+      "schema": "https://maxwell.onfinance.ai/schemas/v1/company/regulators.schema.json"
     }
   ],
   "requiredPerCompany": [

@@ -22,7 +22,7 @@ const BANNED = [
 ];
 
 export function extractMeta(source) {
-  const stripped = source.replace(/^\s*(\/\/[^\n]*\n|\/\*[\s\S]*?\*\/\s*)*/, '');
+  const stripped = source.replace(/^\s*(\/\/[^\n]*\n|\/\*[\s\S]*?\*\/\s*)*/, '').trimStart();
   const m = /^export\s+const\s+meta\s*=\s*\{/.exec(stripped);
   if (!m) throw new Error('first statement must be `export const meta = {...}`');
   const start = stripped.indexOf('{', m.index);

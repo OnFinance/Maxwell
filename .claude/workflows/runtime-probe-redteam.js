@@ -104,7 +104,6 @@ const incidents = [];
 const cisoAlerts = [];
 const sessionIds = new Set(argSessionId ? [argSessionId] : []);
 
-const log = (...args) => console.error(`[${WORKFLOW}]`, ...args);
 const skip = (entry) => { 
   skipped.push(entry); 
   log('SKIPPED:', entry.reason); 

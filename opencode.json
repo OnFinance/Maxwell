@@ -128,6 +128,31 @@
       },
       "prompt": "{file:./.agents/agents/app-cataloguer.prompt.md}"
     },
+    "artex-reconciler": {
+      "description": "Reviews existing ARTEX evidence in its declared Maxwell workflow.",
+      "mode": "all",
+      "permission": {
+        "read": "allow",
+        "edit": "deny",
+        "write": "deny",
+        "patch": "deny",
+        "bash": "deny",
+        "webfetch": "deny",
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow",
+        "skill": "deny",
+        "task": "deny",
+        "todowrite": "deny",
+        "todoread": "deny",
+        "external_directory": {
+          "*": "deny",
+          "~/.local/share/opencode/tool-output/*": "allow",
+          "/tmp/opencode/*": "allow"
+        }
+      },
+      "prompt": "{file:./.agents/agents/artex-reconciler.prompt.md}"
+    },
     "change-planner": {
       "description": "Turns open findings and risks in a company's soc ledger into ITIL-typed remediation initiatives for impl-change-management. In that workflow it drafts one initiative per scouted group (owner from details.json contacts, dueAt from the regulatory SLA table, 1 to 6 tasks with testable acceptance criteria, a verification method and a root cause) and returns the draft for refutation, after which the validator writes it; in a standalone run it writes change_management/master.json, initiatives/<init_id>/timeline.json and tasks/task_<n>.json itself. Every initiative stays proposed with no approver; never closes or edits human-edited tasks; never touches the ledger or target systems.",
       "mode": "all",
@@ -752,6 +777,56 @@
         }
       },
       "prompt": "{file:./.agents/agents/pipeline-prober.prompt.md}"
+    },
+    "product-investigator": {
+      "description": "Reconstructs application structure and investigates operational hypotheses for investigate-product using existing source and incident evidence.",
+      "mode": "all",
+      "permission": {
+        "read": "allow",
+        "edit": "deny",
+        "write": "deny",
+        "patch": "deny",
+        "bash": "deny",
+        "webfetch": "deny",
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow",
+        "skill": "deny",
+        "task": "deny",
+        "todowrite": "deny",
+        "todoread": "deny",
+        "external_directory": {
+          "*": "deny",
+          "~/.local/share/opencode/tool-output/*": "allow",
+          "/tmp/opencode/*": "allow"
+        }
+      },
+      "prompt": "{file:./.agents/agents/product-investigator.prompt.md}"
+    },
+    "redteam-orchestrator": {
+      "description": "Reviews existing ARTEX evidence in its declared Maxwell workflow.",
+      "mode": "all",
+      "permission": {
+        "read": "allow",
+        "edit": "deny",
+        "write": "deny",
+        "patch": "deny",
+        "bash": "deny",
+        "webfetch": "deny",
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow",
+        "skill": "deny",
+        "task": "deny",
+        "todowrite": "deny",
+        "todoread": "deny",
+        "external_directory": {
+          "*": "deny",
+          "~/.local/share/opencode/tool-output/*": "allow",
+          "/tmp/opencode/*": "allow"
+        }
+      },
+      "prompt": "{file:./.agents/agents/redteam-orchestrator.prompt.md}"
     },
     "refuter": {
       "description": "Adversarial verifier called before a candidate is written: ledger records, refresh-soc control/transition/SLA proposals, refresh-ctx drift claims, refresh-vendor-ctx changes, refresh-metastore gaps, change-planner drafts and fix-author diffs. Judges one candidate or a keyed batch through one lens (correctness, evidence, regulatory-mapping, exploitability, reproduction, actionability, dates-and-cadence, temporal-validity, entity-identity, source-authenticity, production-safety, or the caller's \"What to check\" text) against the ledger, applications records, cves/data, regulatory catalogs, SLA table, sdlc/policy.json and raw session exports. Returns one verdict per candidate (refuted, confidence, reason, corrections, checked, unverifiable) in the caller's schema. Defaults to refuted=true when evidence is missing. Read-only: never writes or runs commands; only network use is WebFetch of the candidate's cited URL under source-authenticity",

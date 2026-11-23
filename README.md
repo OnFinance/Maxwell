@@ -1156,3 +1156,49 @@ origin only when it, too, comes from the `*Ref` settings. `executor.file` serves
 
 [GNU Affero General Public License v3.0](LICENSE). If you run a modified Maxwell as a network service, you must make
 your source available to its users.
+
+### Product investigation and repair preparation
+
+Run `investigate-product` for one registered application to reconstruct source relationships and investigate
+operational hypotheses from existing workspace evidence. A separate reviewer challenges the conclusions.
+Missing telemetry remains a gap. Configure the harness normally, then run:
+
+```sh
+node .claude/scripts/run-headless.mjs --workflow investigate-product --company example-co --app portal
+```
+
+The deterministic `.claude/scripts/product-lifecycle/` library prepares a JSON field correction against a full
+source revision, verifies that unrelated fields are preserved, and journals operations using the existing feature
+state store. It reuses remediation check definitions. The first profile supports existing primitive fields with
+`json-field-equals`. Static verification does not establish operational recovery.
+
+A trusted host can supply runtime verification, deployment and rollback adapters to `ProductLifecycle`.
+Adapters must serialize and deduplicate effects by operation ID, bind results to the candidate digest, and
+verify restoration of the original revision. Interrupted releases retain their baseline for recovery. Production
+release is excluded from this initial profile. The default hosted implementation prepares changes and exposes
+their evidence; a deployment adapter must be installed before a release can run.
+
+Read-only repository discovery is available independently:
+
+```sh
+node .claude/scripts/product-lifecycle/discover.mjs --checkout /path/to/repo --revision FULL_COMMIT_SHA --app portal --env preview
+```
+
+Discovery is bounded to 100 tracked manifests and deployment documentation. Source import references are
+candidates, not runtime-confirmed dependencies. Optional normalized telemetry is correlated by tested revision.
+It does not automatically prove an incident's root cause. Run state includes source/candidate hashes, actor,
+time and the checks performed. Assessment-provider execution and live cloud mutations are separate adapters.
+
+For Sentry Cloud, the read-only collector calls the project error-event endpoint using
+`SENTRY_AUTH_TOKEN` from the host environment. Use a token scoped to the required project with `project:read`.
+The collector exports only event IDs, timestamps and exact environment/release matches. It reads a bounded
+page for the last 24 hours, explicitly reports incomplete coverage, and excludes message bodies and user data.
+Its output can be supplied as `signals` when preparing a repair. An event's release tag must equal the tested
+full commit. Missing tags remain an evidence gap. Self-hosted Sentry and continuous collection need separate adapters.
+
+```sh
+node .claude/scripts/product-lifecycle/collect-sentry.mjs --organization ORG --project PROJECT --environment preview --revision FULL_COMMIT_SHA
+```
+
+The initial complianceos-basecamp discovery identified its existing PR-preview workflow and documented Sentry
+configuration. A live preview, project mapping, read token and deployment adapter still need operational validation.
