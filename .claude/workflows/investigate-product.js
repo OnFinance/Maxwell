@@ -24,7 +24,8 @@ if (
   !/^[a-z0-9][a-z0-9-]{0,63}$/.test(a.companyId) ||
   !Array.isArray(a.appIds) ||
   a.appIds.length > 1 ||
-  (a.appIds.length && !/^[a-z0-9][a-z0-9-]{0,63}$/.test(a.appIds[0]))
+  (a.appIds.length && !/^[a-z0-9][a-z0-9-]{0,63}$/.test(a.appIds[0])) ||
+  (a.findingId !== undefined && !/^fnd_[0-7][0-9A-HJKMNP-TV-Z]{25}$/.test(a.findingId))
 ) {
   throw new Error('Select one company and application.');
 }
@@ -46,6 +47,21 @@ const claim = {
     statement: { type: 'string', maxLength: 500 },
     status: { enum: ['supported', 'hypothesis', 'rejected'] },
     evidence: { type: 'array', maxItems: 10, items: evidence },
+  },
+};
+const mapping = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['findingId', 'appId', 'repoId', 'envId', 'path', 'revision', 'confidence', 'evidence'],
+  properties: {
+    findingId: { type: 'string', pattern: '^fnd_[0-7][0-9A-HJKMNP-TV-Z]{25}$' },
+    appId: { type: 'string', pattern: '^[a-z0-9][a-z0-9-]{0,63}$' },
+    repoId: { type: 'string', pattern: '^[a-z0-9][a-z0-9-]{0,63}$' },
+    envId: { type: 'string', pattern: '^[a-z0-9][a-z0-9-]{0,63}$' },
+    path: { type: 'string', pattern: '^(?!/)(?!\\.\\./)(?!.*[/]\\.\\./).+$', maxLength: 1024 },
+    revision: { type: 'string', pattern: '^[a-f0-9]{40}$' },
+    confidence: { const: 'confirmed' },
+    evidence: { type: 'array', minItems: 1, maxItems: 20, items: evidence },
   },
 };
 const companyId = args && args.companyId;
@@ -90,6 +106,7 @@ const schema = {
     summary: { type: 'string', maxLength: 2000 },
     gaps: { type: 'array', maxItems: 30, items: { type: 'string', maxLength: 500 } },
     claims: { type: 'array', maxItems: 50, items: claim },
+    mappings: { type: 'array', maxItems: 10, items: mapping },
   },
 };
 const scope = JSON.stringify({
@@ -97,6 +114,7 @@ const scope = JSON.stringify({
   application: a.appIds[0],
   envIds: a.envIds || [],
   dryRun: a.dryRun === true,
+  findingId: a.findingId || null,
 });
 const rules =
   'The scope is ' +
@@ -109,7 +127,7 @@ const rules =
   'Do not change product code, access live endpoints, install tools, deploy, or close findings.';
 function validReport(report) {
   if (!report || !Array.isArray(report.claims) || !Array.isArray(report.gaps)) return false;
-  return report.claims.every(
+  const claimsValid = report.claims.every(
     (c) =>
       c &&
       ['supported', 'hypothesis', 'rejected'].includes(c.status) &&
@@ -123,6 +141,24 @@ function validReport(report) {
             e.path.startsWith('company-profile/' + a.companyId + '/')) &&
           /^[a-f0-9]{40}$/.test(e.revision),
       ),
+  );
+  const mappings = report.mappings || [];
+  return (
+    claimsValid &&
+    Array.isArray(mappings) &&
+    mappings.every(
+      (m) =>
+        m.findingId === a.findingId &&
+        m.appId === a.appIds[0] &&
+        Array.isArray(m.evidence) &&
+        m.evidence.length > 0 &&
+        m.evidence.every(
+          (e) =>
+            e.revision === m.revision &&
+            e.path.startsWith('applications/' + m.appId + '/repos/' + m.repoId + '/') &&
+            !e.path.split('/').includes('..'),
+        ),
+    )
   );
 }
 phase('Understand');
@@ -155,6 +191,9 @@ phase('Diagnose');
 const diagnosis = await ask(
   rules +
     ' Review operational evidence and source changes. Form alternative hypotheses and seek contrary evidence. ' +
+    (a.findingId
+      ? 'For finding ' + a.findingId + ', return every source-supported repository/file mapping in mappings. Each mapping must use one registered repo, its full revision, and evidence under applications/' + a.appIds[0] + '/repos/<repoId>/. Return no mapping when the evidence is ambiguous. '
+      : '') +
     'Application analysis is a proposal to verify: ' +
     JSON.stringify(architecture),
   { agentType: 'product-investigator', label: 'sre-investigation', schema, effort: 'high' },
@@ -170,7 +209,8 @@ if (!validReport(diagnosis))
 phase('Challenge');
 const review = await ask(
   rules +
-    ' Independently challenge all claimed causes and application relationships. ' +
+    ' Independently challenge all claimed causes, application relationships and repository/file mappings. ' +
+    'Return only mappings that are uniquely supported at the exact cited revision. ' +
     'Reject unsupported supported-status claims, stale revisions, missing references and overstatements of coverage. ' +
     JSON.stringify({ architecture, diagnosis }),
   { agentType: 'refuter', label: 'independent-evidence-review', schema, effort: 'high' },
@@ -182,16 +222,28 @@ return {
     validReport(review) &&
     architecture.gaps.length === 0 &&
     diagnosis.gaps.length === 0 &&
-    review.gaps.length === 0,
+    review.gaps.length === 0 &&
+    (!a.findingId || (review.mappings || []).length === 1),
   architecture,
   diagnosis,
   review,
+  mapping:
+    validReport(review) && a.findingId && (review.mappings || []).length === 1
+      ? review.mappings[0]
+      : null,
   observations: 0,
   findings: 0,
   risks: 0,
   initiatives: 0,
   suggestions: 0,
   gaps: validReport(review)
-    ? [...architecture.gaps, ...diagnosis.gaps, ...review.gaps]
+    ? [
+        ...architecture.gaps,
+        ...diagnosis.gaps,
+        ...review.gaps,
+        ...(a.findingId && (review.mappings || []).length !== 1
+          ? ['Finding-to-source mapping requires one uniquely supported candidate.']
+          : []),
+      ]
     : ['Independent evidence review unavailable.'],
 };

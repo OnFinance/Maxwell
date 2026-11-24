@@ -2,18 +2,23 @@ import { actor, timestamp, requireValue } from '../feature-runtime/store.mjs';
 import { digest, inspectProduct, planRepair, verifyRepair } from './model.mjs';
 import { bindFinding } from './finding.mjs';
 
-// load, verifyRuntime, deploy and recover are host-owned adapters, never commands from a request.
+// Source, release-context, CI, deployment, verification, recovery and investigation
+// adapters are host-owned capabilities, never commands accepted from a request.
 export class ProductLifecycle {
   constructor({
     store,
     authorize,
     load,
     loadFinding,
+    loadReleaseContext,
     resolveEnvironment,
     remediation,
+    verifyChecks,
     verifyRuntime,
     deploy,
     recover,
+    investigate,
+    collectEvidence,
     clock = Date.now,
   }) {
     requireValue(
@@ -25,11 +30,15 @@ export class ProductLifecycle {
       authorize,
       load,
       loadFinding,
+      loadReleaseContext,
       resolveEnvironment,
       remediation,
+      verifyChecks,
       verifyRuntime,
       deploy,
       recover,
+      investigate,
+      collectEvidence,
       clock,
     });
   }
@@ -148,7 +157,15 @@ export class ProductLifecycle {
       this.clock(),
     );
   }
-  async release({ session, companyId, id, expectedRevision }) {
+  async release({
+    session,
+    companyId,
+    id,
+    expectedRevision,
+    initiativeId,
+    taskId,
+    suggestionId,
+  }) {
     const by = await actor(this.authorize, session, companyId, 'product.release');
     const current = await this.store.get(companyId, id);
     requireValue(
@@ -160,7 +177,25 @@ export class ProductLifecycle {
       'A trusted deployment adapter and runtime verifier are required.',
     );
     const run = current.value;
-    const environmentTier = await this.releaseEnvironment(companyId, run);
+    const references = { initiativeId, taskId, suggestionId };
+    // A host that installs workspace release-context validation cannot be bypassed by
+    // omitting caller references. Legacy hosts without that adapter retain the original
+    // static candidate-digest path.
+    const usesReleaseContext = typeof this.loadReleaseContext === 'function';
+    requireValue(
+      !usesReleaseContext ||
+        (initiativeId !== undefined && taskId !== undefined && suggestionId !== undefined),
+      'Initiative, task and suggestion are required for managed release.',
+    );
+    let releaseContext;
+    if (usesReleaseContext) {
+      requireValue(
+        typeof this.verifyChecks === 'function' && typeof this.investigate === 'function',
+        'Trusted CI check and failed-verification investigation adapters are required.',
+      );
+      releaseContext = await this.releaseContext(companyId, run, references);
+    }
+    const environmentTier = releaseContext?.environmentTier ?? (await this.releaseEnvironment(companyId, run));
     await this.currentFinding(companyId, run);
     // Re-read source and environment binding immediately before starting external effects.
     const files = await this.load({
@@ -183,6 +218,7 @@ export class ProductLifecycle {
         ...run,
         state: 'releasing',
         environmentTier,
+        ...(releaseContext ? { releaseContext } : {}),
         history: [...run.history, { state: 'releasing', actor: by, at: timestamp(this.clock()) }],
       },
       this.clock(),
@@ -200,10 +236,72 @@ export class ProductLifecycle {
       this.deploy && this.verifyRuntime && this.recover,
       'Deployment adapters unavailable.',
     );
-    const tier = await this.releaseEnvironment(companyId, current.value);
-    requireValue(tier === current.value.environmentTier, 'Environment classification changed.');
+    if (current.value.releaseContext) {
+      requireValue(
+        typeof this.verifyChecks === 'function' && typeof this.investigate === 'function',
+        'CI check or investigation adapter unavailable.',
+      );
+      await this.releaseContext(companyId, current.value, current.value.releaseContext);
+    } else {
+      const tier = await this.releaseEnvironment(companyId, current.value);
+      requireValue(tier === current.value.environmentTier, 'Environment classification changed.');
+    }
     await this.currentFinding(companyId, current.value);
     return this.finishRelease(companyId, id, current, by);
+  }
+  async releaseContext(companyId, run, references) {
+    requireValue(
+      run.finding && run.repository && typeof this.loadReleaseContext === 'function',
+      'A finding-bound workspace release adapter is required.',
+    );
+    const context = await this.loadReleaseContext({
+      companyId,
+      findingId: run.finding.findingId,
+      initiativeId: references.initiativeId,
+      taskId: references.taskId,
+      suggestionId: references.suggestionId,
+      application: run.application,
+      repository: run.repository,
+      environment: run.environment,
+    });
+    requireValue(
+      context?.finding?.id === run.finding.findingId &&
+        context.initiative?.initiativeId === references.initiativeId &&
+        context.task?.taskId === references.taskId &&
+        context.suggestion?.suggestionId === references.suggestionId &&
+        context.repository?.appId === run.application &&
+        context.repository?.repoId === run.repository &&
+        context.environment?.appId === run.application &&
+        context.environment?.envId === run.environment &&
+        /^[a-f0-9]{40}$/.test(context.candidateRevision ?? '') &&
+        Array.isArray(context.approvedChecks) &&
+        context.approvedChecks.length > 0 &&
+        context.approvedChecks.length <= 50 &&
+        new Set(context.approvedChecks).size === context.approvedChecks.length &&
+        context.approvedChecks.every(
+          (check) => typeof check === 'string' && check.length > 0 && check.length <= 200,
+        ),
+      'Invalid workspace release context.',
+    );
+    requireValue(
+      ['dev', 'test', 'devtest', 'sandbox', 'preview', 'qa', 'uat', 'staging'].includes(
+        context.environment.tier,
+      ),
+      'Release requires a registered non-production environment.',
+    );
+    const contextHash = digest(context);
+    if (references.contextHash)
+      requireValue(references.contextHash === contextHash, 'Release context changed.');
+    return {
+      findingId: run.finding.findingId,
+      initiativeId: references.initiativeId,
+      taskId: references.taskId,
+      suggestionId: references.suggestionId,
+      candidateRevision: context.candidateRevision,
+      approvedChecks: structuredClone(context.approvedChecks),
+      environmentTier: context.environment.tier,
+      contextHash,
+    };
   }
   async releaseEnvironment(companyId, run) {
     requireValue(
@@ -292,9 +390,61 @@ export class ProductLifecycle {
       this.clock(),
     );
   }
+  async operationalEvidence(companyId, run, revision, phase) {
+    if (typeof this.collectEvidence !== 'function')
+      return {
+        environment: run.environment,
+        revision,
+        phase,
+        complete: false,
+        collections: [
+          {
+            provider: 'none',
+            revision,
+            signals: [],
+            complete: false,
+            gaps: ['No operational evidence provider was configured.'],
+          },
+        ],
+      };
+    try {
+      const evidence = await this.collectEvidence({
+        companyId,
+        application: run.application,
+        environment: run.environment,
+        revision,
+        phase,
+      });
+      requireValue(
+        evidence?.revision === revision && Array.isArray(evidence.collections),
+        'Operational evidence was not revision-bound.',
+      );
+      return { ...structuredClone(evidence), phase };
+    } catch (error) {
+      return {
+        environment: run.environment,
+        revision,
+        phase,
+        complete: false,
+        collections: [
+          {
+            provider: 'collector',
+            revision,
+            signals: [],
+            complete: false,
+            gaps: [
+              `Collection unavailable: ${error instanceof Error ? error.message.slice(0, 400) : 'unknown provider failure'}`,
+            ],
+          },
+        ],
+      };
+    }
+  }
   async finishRelease(companyId, id, current, by) {
     const run = current.value;
-    // Adapters must serialize effects for this operation key and be idempotent for this operation key and report the active candidate digest.
+    const candidateRevision = run.releaseContext?.candidateRevision;
+    // Effect adapters must serialize and deduplicate by operationId. Managed releases
+    // additionally bind every host result to the merged candidate revision.
     const operation = {
       companyId,
       id,
@@ -303,11 +453,32 @@ export class ProductLifecycle {
       repository: run.repository,
       environment: run.environment,
       baseRevision: run.revision,
+      ...(candidateRevision ? { candidateRevision } : {}),
       plan: run.plan,
     };
-    let state, result;
+    let state, result, ci, deployment, recovery;
+    let evidenceBefore, evidenceAfter;
+    let checksPassed = !run.releaseContext;
     let deploymentAttempted = false;
     try {
+      if (run.releaseContext) {
+        ci = await this.verifyChecks({
+          ...operation,
+          checks: structuredClone(run.releaseContext.approvedChecks),
+        });
+        const outcomes = new Map(
+          Array.isArray(ci?.checks)
+            ? ci.checks.map((item) => [item?.name, item?.outcome])
+            : [],
+        );
+        requireValue(
+          ci?.revision === candidateRevision &&
+            outcomes.size === run.releaseContext.approvedChecks.length &&
+            run.releaseContext.approvedChecks.every((name) => outcomes.get(name) === 'passed'),
+          'Approved CI checks did not pass for the candidate revision.',
+        );
+        checksPassed = true;
+      }
       const baseline =
         run.baseline ?? (await this.verifyRuntime({ ...operation, phase: 'before' }));
       requireValue(
@@ -324,50 +495,82 @@ export class ProductLifecycle {
         );
         run.baseline = baseline;
       }
+      evidenceBefore = await this.operationalEvidence(companyId, run, run.revision, 'before');
       deploymentAttempted = true;
-      const deployment = await this.deploy(operation);
+      deployment = await this.deploy(operation);
       requireValue(
-        deployment?.candidateSha256 === run.plan.candidateSha256,
+        deployment?.candidateSha256 === run.plan.candidateSha256 &&
+          (!candidateRevision || deployment.revision === candidateRevision),
         'Deployment identity mismatch.',
       );
-      const recovery = await this.verifyRuntime({ ...operation, phase: 'after' });
+      recovery = await this.verifyRuntime({ ...operation, phase: 'after' });
       requireValue(
-        recovery?.outcome === 'passed' && recovery.candidateSha256 === run.plan.candidateSha256,
+        recovery?.outcome === 'passed' &&
+          recovery.candidateSha256 === run.plan.candidateSha256 &&
+          (!candidateRevision || recovery.revision === candidateRevision),
         'Recovery not verified.',
       );
+      evidenceAfter = await this.operationalEvidence(
+        companyId,
+        run,
+        candidateRevision ?? run.revision,
+        'after',
+      );
       state = 'recovered';
-      result = { baseline, deployment, recovery };
+      result = {
+        ...(ci ? { ci } : {}),
+        baseline,
+        deployment,
+        recovery,
+        evidence: [evidenceBefore, evidenceAfter],
+      };
     } catch {
       if (!deploymentAttempted) {
-        return this.store.change(
-          companyId,
-          id,
-          current,
-          {
-            ...run,
-            state: 'inconclusive',
-            result: {
-              reason: 'The original behavior was not reproduced; no deployment was attempted.',
-            },
-            history: [
-              ...run.history,
-              { state: 'inconclusive', actor: by, at: timestamp(this.clock()) },
-            ],
-          },
-          this.clock(),
-        );
-      }
-      try {
-        const rollback = await this.recover(operation);
-        requireValue(
-          rollback?.outcome === 'restored' && rollback.revision === run.revision,
-          'Rollback unverified.',
-        );
-        state = 'rolled-back';
-        result = { reason: 'Release or verification failed.', rollback };
-      } catch {
-        state = 'needs-intervention';
-        result = { reason: 'Release or verification failed and restoration was not verified.' };
+        const blocked = !checksPassed;
+        state = blocked ? 'blocked' : 'inconclusive';
+        result = {
+          reason: blocked
+            ? 'Approved CI checks did not pass for the candidate revision; no deployment was attempted.'
+            : 'The original behavior was not reproduced; no deployment was attempted.',
+        };
+      } else {
+        let rollback;
+        try {
+          rollback = await this.recover(operation);
+          requireValue(
+            rollback?.outcome === 'restored' && rollback.revision === run.revision,
+            'Rollback unverified.',
+          );
+          state = 'rolled-back';
+          result = {
+            ...(ci ? { ci } : {}),
+            ...(evidenceBefore ? { evidence: [evidenceBefore] } : {}),
+            reason: 'Release or verification failed.',
+            rollback,
+          };
+        } catch {
+          state = 'needs-intervention';
+          result = {
+            ...(ci ? { ci } : {}),
+            ...(evidenceBefore ? { evidence: [evidenceBefore] } : {}),
+            reason: 'Release or verification failed and restoration was not verified.',
+          };
+        }
+        if (deploymentAttempted && typeof this.investigate === 'function') {
+          let acknowledged = true;
+          try {
+            await this.investigate({
+              ...operation,
+              deployment,
+              verification: recovery,
+              rollback,
+              outcome: state,
+            });
+          } catch {
+            acknowledged = false;
+          }
+          result.investigation = { requested: true, acknowledged };
+        }
       }
     }
     return this.store.change(

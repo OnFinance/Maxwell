@@ -601,6 +601,12 @@ npm run import:artex -- --company example-co --app mcp-gateway --source internal
 
 Review the new and existing rows, then repeat with `--confirm` to append new findings to the company's SOC ledger. Replays preserve existing analyst decisions. The digest identifies the original export. Evidence counts and source discovery times are retained and free-form traffic and report bodies are excluded.
 
+Direct ARTEX execution is disabled. `ArtexVerificationService` defines a future host-broker contract for one existing
+finding in one registered non-production environment at an exact deployed commit. It persists trusted, scope-bound
+authorization before execution and accepts only revision-bound, digest-backed results. The active
+`runtime-probe-redteam` workflow remains unavailable until a legally approved, reproducibly pinned engine can expose
+each target action to Maxwell's policy boundary. See `ARTEX-INTEGRATION.md`.
+
 #### RBI regulatory sandbox evidence review
 
 Use the RBI template to prepare a worksheet from one completed ARTEX CSV before a human regulatory review. It summarizes finding counts, identifies the exact report by SHA-256 and lists selected framework sections with space for evidence references. Each item starts pending, even for an export with zero findings. A reviewer determines applicability, gathers supporting evidence and records the decision separately. Admission and authorisation are decisions for RBI. The template follows the [RBI Enabling Framework of 28 February 2024](https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=13375&Mode=0).
@@ -1172,13 +1178,17 @@ source revision, verifies that unrelated fields are preserved, and journals oper
 state store. It reuses remediation check definitions. The first profile supports existing primitive fields with
 `json-field-equals`. Static verification does not establish operational recovery.
 
-A trusted host can supply runtime verification, deployment and rollback adapters to `ProductLifecycle`.
-Adapters must serialize and deduplicate effects by operation ID, bind results to the candidate digest, and
-verify restoration of the original revision. A trusted `resolveEnvironment` adapter must classify the registered
-environment as non-production; environment names alone are not authorization. Interrupted releases retain their
-baseline and recheck environment policy and finding freshness before recovery. Production release is excluded
-from this initial profile. The default hosted implementation prepares changes and exposes
-their evidence; a deployment adapter must be installed before a release can run.
+A trusted host can supply workspace, CI verification, runtime verification, deployment, rollback and investigation
+adapters to `ProductLifecycle`. `product-lifecycle/workspace.mjs` loads and schema-validates the current finding,
+approved initiative, completed task, merged suggestion, repository and registered environment. It derives the exact
+merged candidate commit and the protected branch's required checks. Failed checks prevent deployment. A mismatched
+deployment or runtime revision fails closed. A failed post-deployment verification triggers rollback and a new
+investigation request; an unverified rollback enters `needs-intervention`.
+
+Adapters must serialize and deduplicate effects by operation ID, bind results to the candidate digest and commit, and
+verify restoration of the original revision. Production and unknown environments are excluded. Interrupted releases
+retain their baseline and recheck environment policy, release context and finding freshness before recovery. Provider-
+specific CI and deployment adapters remain host integrations.
 
 A repair can optionally bind a schema-validated open ledger `findingId` to its application, repository,
 environment and exact file. The run retains a finding digest and rejects releases if the finding changes.
@@ -1207,7 +1217,8 @@ For Sentry Cloud, the read-only collector calls the project error-event endpoint
 The collector exports only event IDs, timestamps and exact environment/release matches. It reads a bounded
 page for the last 24 hours, explicitly reports incomplete coverage, and excludes message bodies and user data.
 Its output can be supplied as `signals` when preparing a repair. An event's release tag must equal the tested
-full commit. Missing tags remain an evidence gap. Self-hosted Sentry and continuous collection need separate adapters.
+full commit. Missing tags remain an evidence gap. `product-lifecycle/evidence.mjs` also composes host-provided,
+metadata-only log and trace collectors. Missing or failed providers stay as explicit gaps; raw payloads are dropped.
 
 ```sh
 node .claude/scripts/product-lifecycle/collect-sentry.mjs --organization ORG --project PROJECT --environment preview --revision FULL_COMMIT_SHA

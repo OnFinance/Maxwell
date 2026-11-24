@@ -129,7 +129,7 @@
       "prompt": "{file:./.agents/agents/app-cataloguer.prompt.md}"
     },
     "artex-reconciler": {
-      "description": "Reviews existing ARTEX evidence in its declared Maxwell workflow.",
+      "description": "Validates imported or broker-produced ARTEX evidence and proposes schema-valid Maxwell records.",
       "mode": "all",
       "permission": {
         "read": "allow",
@@ -804,7 +804,7 @@
       "prompt": "{file:./.agents/agents/product-investigator.prompt.md}"
     },
     "redteam-orchestrator": {
-      "description": "Reviews existing ARTEX evidence in its declared Maxwell workflow.",
+      "description": "Reviews persisted authorization and revision-bound ARTEX verification evidence without executing target commands.",
       "mode": "all",
       "permission": {
         "read": "allow",
