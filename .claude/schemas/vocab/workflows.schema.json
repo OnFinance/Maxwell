@@ -38,6 +38,8 @@
     "connect-sandbox",
     "config",
     "add-company-catalog",
-    "manual"
+    "manual",
+    "investigate-product",
+    "runtime-probe-redteam"
   ]
 }

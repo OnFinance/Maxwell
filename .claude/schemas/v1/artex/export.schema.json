@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maxwell.onfinance.ai/schemas/v1/artex/export.schema.json",
+  "title": "External ARTEX JSON export",
+  "description": "An untrusted structured export retained as evidence without normalizing vendor fields",
+  "examples": [
+    {},
+    []
+  ],
+  "type": [ "object", "array" ]
+}

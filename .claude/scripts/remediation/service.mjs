@@ -18,12 +18,24 @@ export class RemediationService {
     requireValue(data.task.targets?.some((t) => ['type', 'appId', 'repoId', 'envId', 'imageId'].every((k) => t[k] === data.finding.target?.[k])), 'task target does not match finding');
     return data;
   }
-  async open({ session, companyId, findingId, initiativeId, taskId, check, revision }) {
+  async open({ session, companyId, findingId, initiativeId, taskId, check, revision, requestId }) {
     const requestedBy = await actor(this.authorize, session, companyId, 'remediation.request'); validateCheck(check);
     requireValue(/^[a-f0-9]{40}$/.test(revision), 'full target commit required');
+    let verificationId;
+    if (requestId !== undefined) {
+      requireValue(typeof requestId === 'string' && /^[a-f0-9]{64}$/.test(requestId), 'invalid verification request ID');
+      verificationId = 'verify_' + requestId;
+      const existing = await this.store.get(companyId, verificationId);
+      if (existing) {
+        const v = existing.value;
+        requireValue(v.findingId === findingId && v.initiativeId === initiativeId && v.taskId === taskId &&
+          v.targetRevision === revision && sha256(v.check) === sha256(check) && v.requestedBy === requestedBy, 'verification request ID reused');
+        return existing;
+      }
+    }
     const { finding, task } = await this.context(companyId, findingId, initiativeId, taskId);
     requireValue(['open', 'triaged', 'remediating'].includes(finding.status), 'finding not open');
-    const value = { kind: 'maxwell.remediation', id: `verify_${randomUUID()}`, companyId, findingId, initiativeId, taskId,
+    const value = { kind: 'maxwell.remediation', id: verificationId ?? `verify_${randomUUID()}`, companyId, findingId, initiativeId, taskId,
       findingHash: sha256(finding), taskHash: sha256(task), criteriaHash: sha256(task.acceptanceCriteria), check: structuredClone(check), targetRevision: revision,
       requestedBy, state: 'requested', createdAt: this.clock() };
     return this.store.change(companyId, value.id, null, value, this.clock());
