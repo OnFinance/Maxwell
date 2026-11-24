@@ -2,5 +2,9 @@
 # Maxwell git pre-push: full validation and tests before anything leaves the machine.
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
+# Git exports repository-local variables to hooks. Child tests initialize temporary repositories;
+# carrying these values into them redirects their commits and index writes into this checkout.
+# Keep both checks mandatory, but let their subprocesses discover their own repository normally.
+while IFS= read -r name; do unset "$name"; done < <(git rev-parse --local-env-vars)
 npm run --silent validate
 npm test --silent

@@ -84,3 +84,31 @@ test('pre-commit, a failing validator fails the hook and stops it', { skip }, ()
     assert.deepEqual(r.calls, [['node', '.claude/scripts/validate-data.mjs', 'a.json']]);
   } finally { w.cleanup(); }
 });
+
+
+test('pre-push clears repository-local Git variables and preserves both mandatory checks', {skip}, () => {
+  const d = mkdtempSync(join(tmpdir(), 'maxwell-pre-push-'));
+  try {
+    const repo = join(d,'repo'); const bin = join(d,'bin'); const log = join(d,'calls.log');
+    mkdirSync(repo); mkdirSync(bin);
+    const git = spawnSync('git',['init','-q',repo],{encoding:'utf8',env:cleanEnv()});
+    assert.equal(git.status,0,git.stderr);
+    writeFileSync(join(bin,'npm'), `#!/bin/sh
+if [ -n "$GIT_DIR$GIT_WORK_TREE$GIT_INDEX_FILE$GIT_COMMON_DIR$GIT_CONFIG_COUNT" ]; then exit 9; fi
+{ printf '%s' npm; for a in "$@"; do printf '\\t%s' "$a"; done; printf '\\n'; } >> "$HOOK_LOG"
+if [ "$FAIL_ON" = "$1" ]; then exit 7; fi
+`);
+    chmodSync(join(bin,'npm'),0o755);
+    const env = {...cleanEnv(),PATH:bin+':'+process.env.PATH,HOOK_LOG:log,
+      GIT_DIR:join(repo,'.git'),GIT_WORK_TREE:repo,GIT_INDEX_FILE:join(repo,'.git','index'),GIT_COMMON_DIR:join(repo,'.git'),GIT_CONFIG_COUNT:'0'};
+    const hook = join(WORKSPACE,'.claude/hooks/git/pre-push');
+    const run = spawnSync(BASH,[hook],{cwd:repo,encoding:'utf8',env});
+    assert.equal(run.status,0,run.stderr);
+    assert.deepEqual(readFileSync(log,'utf8').trim().split('\n').map(l=>l.split('\t')),
+      [['npm','run','--silent','validate'],['npm','test','--silent']]);
+    writeFileSync(log,'');
+    const failed = spawnSync(BASH,[hook],{cwd:repo,encoding:'utf8',env:{...env,FAIL_ON:'run'}});
+    assert.equal(failed.status,7);
+    assert.equal(readFileSync(log,'utf8').trim().split('\n').length,1);
+  } finally {rmSync(d,{recursive:true,force:true});}
+});
