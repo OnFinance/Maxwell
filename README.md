@@ -1174,9 +1174,22 @@ state store. It reuses remediation check definitions. The first profile supports
 
 A trusted host can supply runtime verification, deployment and rollback adapters to `ProductLifecycle`.
 Adapters must serialize and deduplicate effects by operation ID, bind results to the candidate digest, and
-verify restoration of the original revision. Interrupted releases retain their baseline for recovery. Production
-release is excluded from this initial profile. The default hosted implementation prepares changes and exposes
+verify restoration of the original revision. A trusted `resolveEnvironment` adapter must classify the registered
+environment as non-production; environment names alone are not authorization. Interrupted releases retain their
+baseline and recheck environment policy and finding freshness before recovery. Production release is excluded
+from this initial profile. The default hosted implementation prepares changes and exposes
 their evidence; a deployment adapter must be installed before a release can run.
+
+A repair can optionally bind a schema-validated open ledger `findingId` to its application, repository,
+environment and exact file. The run retains a finding digest and rejects releases if the finding changes.
+Repository and finding identity are included in replay checks.
+
+After recovery, a host with an existing `RemediationService` can call `requestVerification` with the run's
+current journal revision, initiative and task. The deployment adapter must supply the full candidate commit.
+The handoff opens a deterministic remediation request and safely retries interrupted acknowledgements.
+It does **not** resolve the finding: revision-bound verification, completed task criteria and independent
+reviewer closure still run through the existing remediation service. The hosted preparation profile has no
+release adapter or verification handoff endpoint yet.
 
 Read-only repository discovery is available independently:
 

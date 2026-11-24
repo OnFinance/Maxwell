@@ -4,6 +4,7 @@ import { mkdtemp, mkdir, writeFile, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
+import { ProductLifecycle } from '../product-lifecycle/service.mjs';
 import { RemediationService } from '../remediation/service.mjs';
 import { workspaceAdapters } from '../remediation/workspace.mjs';
 import { ExportStateStore } from '../feature-runtime/store.mjs';
@@ -16,6 +17,7 @@ async function setup() {
   const root = await mkdtemp(join(tmpdir(), 'maxwell-remediation-'));
   const finding = structuredClone(findingExample); const task = structuredClone(taskExample);
   finding.target = { type: 'repo', appId: 'test-app', repoId: 'test-repo' };
+  finding.location = { path: 'settings.json' };
   const companyId = finding.companyId; task.companyId = companyId; task.targets = [finding.target];
   const checkout = join(root, 'applications', finding.target.appId, 'repos', finding.target.repoId);
   await mkdir(checkout, { recursive: true });
@@ -83,4 +85,60 @@ test('lost closure acknowledgement is reconciled without duplicate ledger record
     assert.equal((await f.service.close({ ...input, expectedRevision: pending.revision })).value.state, 'closed');
     assert.equal(readLedger(f.companyId, f.root).length, 2);
   } finally { await rm(f.root, { recursive: true, force: true }); }
+});
+
+test('stable verification requests replay safely and reject identity collisions', async () => {
+  const f = await setup(); try {
+    const request = {...f.request, requestId: 'c'.repeat(64)};
+    const opened = await f.service.open(request);
+    assert.equal((await f.service.open(request)).value.id, opened.value.id);
+    await assert.rejects(f.service.open({...request, revision:'b'.repeat(40)}), /reused/);
+    await assert.rejects(f.service.open({...request,session:'reviewer'}), /reused/);
+    await assert.rejects(f.service.open({...request,requestId:'unsafe'}), /request ID/);
+  } finally { await rm(f.root, {recursive:true,force:true}); }
+});
+test('repair recovery hands off once to real commit verification and independent ledger closure', async () => {
+  const f = await setup(); try {
+    const original = f.request.revision;
+    const check = {...f.request.check, expected: false};
+    const lifecycle = new ProductLifecycle({store:f.store, authorize:f.options.authorize,
+      load: async () => [{path:check.path,content:await readFile(join(f.checkout,check.path),'utf8')}],
+      loadFinding: async () => readLedger(f.companyId,f.root).at(-1),
+      resolveEnvironment: async () => ({tier:'test'}), remediation:f.service,
+      verifyRuntime: async op => {
+        const revision = f.git('rev-parse','HEAD');
+        const result = await checkArtifact({checkout:f.checkout,revision,check});
+        return op.phase === 'before' ? {outcome:result.outcome === 'failed' ? 'reproduced' : 'inconclusive',revision}
+          : {outcome:result.outcome,candidateSha256:op.plan.candidateSha256};
+      },
+      deploy: async op => {
+        await writeFile(join(f.checkout,check.path),op.plan.candidate);
+        f.git('add',check.path); f.git('commit','-m','fixture repair');
+        return {candidateSha256:op.plan.candidateSha256,revision:f.git('rev-parse','HEAD')};
+      },
+      recover: async () => {f.git('reset','--hard',original); return {outcome:'restored',revision:original};}
+    });
+    const input = {...f.request,application:'test-app',repository:'test-repo',environment:'test',requestId:'repair-0001',check};
+    const prepared = await lifecycle.start(input);
+    const recovered = await lifecycle.release({...input,id:prepared.key,expectedRevision:1});
+    assert.equal(recovered.value.state,'recovered');
+    const request = {...input,id:prepared.key,expectedRevision:recovered.revision};
+    const open = f.service.open.bind(f.service);
+    let lost = true;
+    f.service.open = async args => {const result = await open(args); if(lost) {lost=false; throw Error('ack lost');} return result;};
+    await assert.rejects(lifecycle.requestVerification(request),/ack lost/);
+    const handoff = await lifecycle.requestVerification(request);
+    const id = handoff.value.verificationRequest.id;
+    assert.equal(handoff.value.state,'verification-requested');
+    assert.equal((await lifecycle.requestVerification({...request,expectedRevision:handoff.revision})).revision,handoff.revision);
+    await assert.rejects(lifecycle.requestVerification({...request,expectedRevision:handoff.revision,taskId:'task_2'}),/task changed/);
+    assert.equal(readLedger(f.companyId,f.root).length,1);
+    const verified = await f.service.verify({...f.request,id,expectedRevision:1});
+    assert.equal(verified.value.state,'verified');
+    assert.equal(verified.value.targetRevision,f.git('rev-parse','HEAD'));
+    await assert.rejects(f.service.close({...f.request,id,expectedRevision:verified.revision,criteriaHash:verified.value.criteriaHash,note:'Reviewed'}),/authorized/);
+    const closed = await f.service.close({...f.request,session:'reviewer',id,expectedRevision:verified.revision,criteriaHash:verified.value.criteriaHash,note:'Reviewed local fixture criteria'});
+    assert.equal(closed.value.state,'closed');
+    assert.equal(readLedger(f.companyId,f.root).at(-1).status,'resolved');
+  } finally { await rm(f.root,{recursive:true,force:true}); }
 });

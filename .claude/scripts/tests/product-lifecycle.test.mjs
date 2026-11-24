@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
-import { mkdtemp, rm } from 'node:fs/promises';
+import { mkdtemp, rm, readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { ProductLifecycle } from '../product-lifecycle/service.mjs';
@@ -51,6 +51,7 @@ async function fixture(t, options = {}) {
         ? { id: session, companyId }
         : null,
     load: async () => structuredClone(files),
+    resolveEnvironment: async () => ({ tier: 'test' }),
     verifyRuntime: async (op) => {
       const res = await fetch(url);
       const body = await res.text();
@@ -158,4 +159,62 @@ test('repair verification detects unrelated changes even when candidate digest i
   // The independent expected-document comparison must still catch this.
   bad.candidateSha256 = digest(bad.candidate);
   assert.throws(() => verifyRepair(model, bad), /unrelated/);
+});
+
+const findingExample = JSON.parse(
+  await readFile('.claude/schemas/v1/soc/record.schema.json', 'utf8'),
+).examples.find((x) => x.kind === 'finding');
+function linkedFinding() {
+  return {
+    ...structuredClone(findingExample),
+    companyId: input.companyId,
+    target: { type: 'repo', appId: input.application, repoId: 'server', envId: input.environment },
+    location: { path: check.path },
+  };
+}
+test('finding binding rejects cross-scope repairs and detects ledger changes before release', async (t) => {
+  const f = await fixture(t);
+  const finding = linkedFinding();
+  f.service.loadFinding = async () => finding;
+  const linked = { ...input, repository: 'server', findingId: finding.id };
+  for (const changed of [
+    { ...finding, companyId: 'other' },
+    { ...finding, status: 'resolved' },
+    { ...finding, target: { ...finding.target, appId: 'other' } },
+    { ...finding, target: { ...finding.target, repoId: 'other' } },
+    { ...finding, target: { ...finding.target, envId: 'production' } },
+    { ...finding, location: { path: 'other.json' } },
+    { ...finding, regulatoryRefs: [] },
+  ]) {
+    f.service.loadFinding = async () => changed;
+    await assert.rejects(f.service.start(linked));
+  }
+  f.service.loadFinding = async () => finding;
+  const run = await f.service.start(linked);
+  assert.equal(run.value.finding.findingId, finding.id);
+  assert.equal(run.value.repository, 'server');
+  await assert.rejects(f.service.start({ ...linked, repository: 'other' }), /reused/);
+  finding.title = 'Updated finding';
+  await assert.rejects(
+    f.service.release({ ...input, id: run.key, expectedRevision: 1 }),
+    /Finding changed/,
+  );
+  assert.equal(f.deployments(), 0);
+});
+test('registered environment classification controls release even for a harmless-looking alias', async (t) => {
+  const f = await fixture(t);
+  const run = await f.service.start(input);
+  for (const tier of ['production', 'prod', undefined]) {
+    f.service.resolveEnvironment = async () => ({ tier });
+    await assert.rejects(
+      f.service.release({ ...input, id: run.key, expectedRevision: 1 }),
+      /non-production/,
+    );
+  }
+  f.service.resolveEnvironment = undefined;
+  await assert.rejects(
+    f.service.release({ ...input, id: run.key, expectedRevision: 1 }),
+    /policy adapter/,
+  );
+  assert.equal(f.deployments(), 0);
 });
