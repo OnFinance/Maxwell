@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/OnFinance/Maxwell/tree/web3/schemas/findings.schema.json",
+  "title": "Specialist reviewer output",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["findings"],
+  "properties": {
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["file", "startLine", "endLine", "category", "severity", "title", "description", "exploitScenario", "remediation", "confidence"],
+        "properties": {
+          "file": { "type": "string", "description": "Path exactly as shown in the FILE header." },
+          "startLine": { "type": "integer", "minimum": 1 },
+          "endLine": { "type": "integer", "minimum": 1 },
+          "category": { "type": "string" },
+          "severity": { "enum": ["critical", "high", "medium", "low", "informational"] },
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "exploitScenario": { "type": "string" },
+          "remediation": { "type": "string" },
+          "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+        }
+      }
+    }
+  }
+}
