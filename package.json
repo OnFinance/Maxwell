@@ -1,0 +1,13 @@
+{
+  "name": "@onfinance/maxwell-web3",
+  "version": "0.1.0",
+  "description": "Maxwell web3: smart-contract security auditor for Ethereum and Solana, run headlessly on Claude Code.",
+  "license": "AGPL-3.0-only",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "repository": { "type": "git", "url": "https://github.com/OnFinance/Maxwell" },
+  "scripts": {
+    "test": "node --test"
+  }
+}
