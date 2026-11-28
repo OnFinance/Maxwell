@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://maxwell.onfinance.ai/schemas/vocab/workflows.schema.json",
   "title": "Maxwell workflow names",
-  "description": "Closed vocabulary of the 26 Maxwell workflows plus the utility entry points. Every workflow has a script at .claude/workflows/<name>.js",
+  "description": "Closed vocabulary of the 27 Maxwell workflows plus the utility entry points. Every workflow has a script at .claude/workflows/<name>.js",
   "examples": [ "refresh-ctx", "probe-iac" ],
   "enum": [
     "refresh-soc",
@@ -27,6 +27,7 @@
     "runtime-probe-datapipeline",
     "runtime-probe-network-perimeter",
     "runtime-probe-identity-access",
+    "runtime-probe-redteam",
     "impl-change-management",
     "impl-auto-improvement",
     "report-audit-findings",

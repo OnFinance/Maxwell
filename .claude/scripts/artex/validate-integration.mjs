@@ -25,8 +25,8 @@ const requiredFiles = [
   '.claude/workflows/runtime-probe-redteam.js',
   '.claude/scripts/artex/run.mjs',
   '.claude/scripts/artex/export-graphs.mjs',
-  'ARTEX-INTEGRATION.md',
-  'PR_SUMMARY.md'
+  '.claude/skills/artex-redteam/references/integration.md',
+  '.claude/skills/artex-redteam/references/quickstart.md'
 ];
 
 for (const file of requiredFiles) {
@@ -83,10 +83,15 @@ if (existsSync('.claude/workflows/runtime-probe-redteam.js')) {
         'runtime-probe-redteam.js: Missing workflow name in meta');
   check(workflow.includes('phases:'),
         'runtime-probe-redteam.js: Missing phases in meta');
-  check(workflow.includes('authorization') && workflow.includes('authorizedBy'),
+  check(workflow.includes('authorization') && workflow.includes('authorized'),
         'runtime-probe-redteam.js: Missing authorization validation');
-  check(workflow.includes('ARTEX_VERSION'),
-        'runtime-probe-redteam.js: Missing ARTEX_VERSION constant');
+}
+
+// The ARTEX version is pinned in the runner script, not the deterministic workflow.
+if (existsSync('.claude/scripts/artex/run.mjs')) {
+  const runner = readFileSync('.claude/scripts/artex/run.mjs', 'utf8');
+  check(runner.includes('ARTEX_VERSION'),
+        'run.mjs: Missing ARTEX_VERSION constant');
 }
 
 // 5. Check agents have proper structure
@@ -100,8 +105,8 @@ for (const agent of agents) {
   if (existsSync(agent)) {
     const content = readFileSync(agent, 'utf8');
     const lines = content.split('\n');
-    check(lines[0].startsWith('# '),
-          `${agent}: Must start with # agent-name`);
+    check(lines[0].trim() === '---',
+          `${agent}: Must start with a YAML frontmatter block (name, description, x-maxwell)`);
     check(content.includes('## Your role') || content.includes('## Your inputs'),
           `${agent}: Should have structured sections`, true);
     check(content.length > 1000,
@@ -137,18 +142,19 @@ for (const file of allFiles) {
 
 // 7. Check documentation
 console.log('7. Validating documentation...');
-if (existsSync('ARTEX-INTEGRATION.md')) {
-  const doc = readFileSync('ARTEX-INTEGRATION.md', 'utf8');
+const integrationDoc = '.claude/skills/artex-redteam/references/integration.md';
+if (existsSync(integrationDoc)) {
+  const doc = readFileSync(integrationDoc, 'utf8');
   check(doc.includes('# ARTEX'),
-        'ARTEX-INTEGRATION.md: Missing main heading');
+        `${integrationDoc}: Missing main heading`);
   check(doc.includes('## Prerequisites'),
-        'ARTEX-INTEGRATION.md: Missing prerequisites section');
+        `${integrationDoc}: Missing prerequisites section`);
   check(doc.includes('## Safety Mechanisms'),
-        'ARTEX-INTEGRATION.md: Missing safety mechanisms section');
+        `${integrationDoc}: Missing safety mechanisms section`);
   check(doc.includes('reconnaissance-only'),
-        'ARTEX-INTEGRATION.md: Missing mode documentation');
+        `${integrationDoc}: Missing mode documentation`);
   check(doc.length > 10000,
-        'ARTEX-INTEGRATION.md: Documentation seems incomplete', true);
+        `${integrationDoc}: Documentation seems incomplete`, true);
 }
 
 // 8. Check scripts are executable
@@ -176,7 +182,6 @@ if (errors.length === 0 && warnings.length === 0) {
   console.log('\nReady to commit. Run:');
   console.log('  git add .');
   console.log('  git commit -m "feat: add autonomous ARTEX red-team integration"');
-  console.log('  git push -u fork HEAD:feat/artex-autonomous-redteam');
   process.exit(0);
 } else {
   if (errors.length > 0) {
