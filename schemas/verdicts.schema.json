@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/OnFinance/Maxwell/tree/web3/schemas/verdicts.schema.json",
+  "title": "Refuter output",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["verdicts"],
+  "properties": {
+    "verdicts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "verdict", "confidence", "severity", "reason"],
+        "properties": {
+          "id": { "type": "integer", "minimum": 0 },
+          "verdict": { "enum": ["confirmed", "refuted"] },
+          "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+          "severity": { "enum": ["critical", "high", "medium", "low", "informational"] },
+          "category": { "type": "string" },
+          "startLine": { "type": "integer", "minimum": 1 },
+          "endLine": { "type": "integer", "minimum": 1 },
+          "reason": { "type": "string" }
+        }
+      }
+    }
+  }
+}
