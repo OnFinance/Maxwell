@@ -2,324 +2,27 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://maxwell.onfinance.ai/schemas/v1/artex/task.schema.json",
   "title": "ARTEX task record",
-  "description": "Metadata for an ARTEX autonomous red-team task executed against a company's applications. One task per run, targeting one or more applications/environments within authorized scope.",
-  "type": "object",
-  "required": [
-    "schemaVersion",
-    "kind",
-    "id",
-    "recordedAt",
-    "companyId",
-    "taskId",
-    "status",
-    "scope",
-    "authorization"
-  ],
-  "properties": {
-    "schemaVersion": {
-      "const": "1"
-    },
-    "kind": {
-      "const": "artex-task"
-    },
-    "id": {
-      "type": "string",
-      "pattern": "^artex_[0-9A-HJKMNP-TV-Z]{26}$",
-      "description": "Maxwell's own ULID for the task, prefixed with artex_"
-    },
-    "recordedAt": {
-      "type": "string",
-      "format": "date-time",
-      "pattern": "Z$"
-    },
-    "companyId": {
-      "type": "string",
-      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
-    },
-    "taskId": {
-      "type": "string",
-      "description": "ARTEX's internal task ID from its PostgreSQL database"
-    },
-    "status": {
-      "type": "string",
-      "enum": ["queued", "running", "completed", "failed", "timeout", "cancelled"]
-    },
-    "scope": {
-      "type": "object",
-      "required": ["mode"],
-      "properties": {
-        "mode": {
-          "type": "string",
-          "enum": ["reconnaissance-only", "limited-exploitation", "full-redteam"],
-          "description": "reconnaissance-only: passive + safe tools only; limited-exploitation: non-destructive exploits with guard approval; full-redteam: all ARTEX capabilities within authorization"
-        },
-        "appIds": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "envIds": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "allowedCIDRs": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "description": "IP ranges ARTEX may probe"
-        },
-        "deniedCIDRs": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "description": "IP ranges explicitly excluded (payment processors, third-party SaaS)"
-        },
-        "allowedDomains": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "goals": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "description": "Goals ARTEX should attempt (e.g., 'access production database', 'escalate to cluster-admin')"
-        },
-        "prohibitedActions": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "enum": [
-              "data-modification",
-              "data-deletion",
-              "service-disruption",
-              "credential-bruteforce",
-              "social-engineering",
-              "physical-access",
-              "third-party-systems"
-            ]
-          }
-        }
-      }
-    },
-    "authorization": {
-      "type": "object",
-      "required": ["authorizedBy", "authorizedAt", "validUntil"],
-      "properties": {
-        "authorizedBy": {
-          "type": "object",
-          "required": ["name", "email", "role"],
-          "properties": {
-            "name": {
-              "type": "string"
-            },
-            "email": {
-              "type": "string",
-              "format": "email"
-            },
-            "role": {
-              "type": "string",
-              "enum": ["CISO", "CTO", "Compliance-Head", "Board-Authorized"]
-            }
-          }
-        },
-        "authorizedAt": {
-          "type": "string",
-          "format": "date-time",
-          "pattern": "Z$"
-        },
-        "validUntil": {
-          "type": "string",
-          "format": "date-time",
-          "pattern": "Z$"
-        },
-        "legalBasis": {
-          "type": "string",
-          "description": "Reference to authorization document (email, signed memo, board resolution)"
-        },
-        "notificationContacts": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "format": "email"
-          },
-          "description": "Contacts to notify on critical findings or authorization violations"
-        }
-      }
-    },
-    "startedAt": {
-      "type": "string",
-      "format": "date-time",
-      "pattern": "Z$"
-    },
-    "completedAt": {
-      "type": "string",
-      "format": "date-time",
-      "pattern": "Z$"
-    },
-    "duration": {
-      "type": "object",
-      "properties": {
-        "value": {
-          "type": "number"
-        },
-        "unit": {
-          "type": "string",
-          "enum": ["seconds", "minutes", "hours"]
-        }
-      }
-    },
-    "resources": {
-      "type": "object",
-      "properties": {
-        "tokensUsed": {
-          "type": "integer",
-          "description": "Total LLM tokens consumed"
-        },
-        "costUSD": {
-          "type": "number"
-        },
-        "workerCount": {
-          "type": "integer",
-          "default": 3
-        },
-        "sandboxProvider": {
-          "type": "string",
-          "enum": ["e2b", "daytona", "modal", "vercel-sandbox", "aws-lambda", "docker", "local"]
-        }
-      }
-    },
-    "results": {
-      "type": "object",
-      "properties": {
-        "assetsDiscovered": {
-          "type": "integer"
-        },
-        "findingsGenerated": {
-          "type": "integer"
-        },
-        "attackPathsProven": {
-          "type": "integer"
-        },
-        "goalsAchieved": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "goalsFailed": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "guardInterventions": {
-          "type": "integer",
-          "description": "Number of times ARTEX guard blocked or requested human approval"
-        },
-        "humanApprovalsRequested": {
-          "type": "integer"
-        },
-        "humanApprovalsGranted": {
-          "type": "integer"
-        }
-      }
-    },
-    "graphExport": {
-      "type": "object",
-      "properties": {
-        "assetGraphPath": {
-          "type": "string",
-          "description": "Path to exported ARTEX asset graph JSON"
-        },
-        "explorationGraphPath": {
-          "type": "string",
-          "description": "Path to exported ARTEX exploration graph JSON"
-        },
-        "sha256": {
-          "type": "string",
-          "pattern": "^[a-f0-9]{64}$"
-        }
-      }
-    },
-    "incidents": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": ["authorization-violation", "scope-breach", "service-disruption", "unintended-data-modification"]
-          },
-          "description": {
-            "type": "string"
-          },
-          "detectedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "resolution": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "reconciliationStatus": {
-      "type": "string",
-      "enum": ["pending", "in-progress", "completed", "failed"],
-      "description": "Status of mapping ARTEX findings back to Maxwell's SOC ledger"
-    },
-    "reconciledFindingIds": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "pattern": "^fnd_[0-9A-HJKMNP-TV-Z]{26}$"
-      },
-      "description": "Maxwell finding IDs created or updated from this ARTEX run"
-    },
-    "reconciledAttackPathIds": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "pattern": "^path_[0-9A-HJKMNP-TV-Z]{26}$"
-      }
-    },
-    "notes": {
-      "type": "string"
-    },
-    "tags": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
-    "provenance": {
-      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/provenance"
-    }
-  },
+  "description": "Metadata for an ARTEX autonomous red-team task executed against a company's applications. One task per run, targeting one or more applications/environments within authorized scope",
   "examples": [
     {
       "schemaVersion": "1",
       "kind": "artex-task",
-      "id": "artex_01J8R4W9L3N5O7Q9S1U3V5X804",
+      "id": "artex_01J8R4W913N507Q9S1V3V5X804",
       "recordedAt": "2026-11-21T14:00:00Z",
       "companyId": "example-securities",
       "taskId": "artex-task-89a4bc2d",
       "status": "completed",
       "scope": {
         "mode": "limited-exploitation",
-        "appIds": ["trading-api", "settlement-engine"],
-        "envIds": ["prod"],
-        "allowedCIDRs": ["13.126.45.0/24", "13.234.10.0/24"],
-        "deniedCIDRs": ["192.168.0.0/16", "10.0.0.0/8"],
-        "allowedDomains": ["example.com", "api.example.com", "trading-api.example.com"],
+        "appIds": [ "trading-api", "settlement-engine" ],
+        "envIds": [ "prod" ],
+        "allowedCIDRs": [ "13.126.45.0/24", "13.234.10.0/24" ],
+        "deniedCIDRs": [ "192.168.0.0/16", "10.0.0.0/8" ],
+        "allowedDomains": [
+          "example.com",
+          "api.example.com",
+          "trading-api.example.com"
+        ],
         "goals": [
           "access production database without authentication",
           "escalate privileges to cluster-admin",
@@ -355,7 +58,7 @@
       },
       "resources": {
         "tokensUsed": 456234000,
-        "costUSD": 36.50,
+        "costUSD": 36.5,
         "workerCount": 3,
         "sandboxProvider": "e2b"
       },
@@ -363,9 +66,7 @@
         "assetsDiscovered": 47,
         "findingsGenerated": 12,
         "attackPathsProven": 3,
-        "goalsAchieved": [
-          "access production database without authentication"
-        ],
+        "goalsAchieved": [ "access production database without authentication" ],
         "goalsFailed": [
           "escalate privileges to cluster-admin",
           "exfiltrate customer PII"
@@ -382,9 +83,9 @@
       "incidents": [],
       "reconciliationStatus": "completed",
       "reconciledFindingIds": [
-        "fnd_01J8R4W9L3N5O7Q9S1U3V5X805",
-        "fnd_01J8R4W9L3N5O7Q9S1U3V5X806",
-        "fnd_01J8R4W9L3N5O7Q9S1U3V5X807"
+        "fnd_01J8R4W913N507Q9S1V3V5X805",
+        "fnd_01J8R4W913N507Q9S1V3V5X806",
+        "fnd_01J8R4W913N507Q9S1V3V5X807"
       ],
       "reconciledAttackPathIds": [
         "path_01J7Q3V8K2M4N6P8R0S2T4V7A1",
@@ -392,15 +93,332 @@
         "path_01J7Q3V8K2M4N6P8R0S2T4V7A3"
       ],
       "notes": "Successful demonstration of unauthenticated database access via exposed admin endpoint. Cluster privilege escalation blocked by RBAC. PII exfiltration attempt blocked by ARTEX guard requiring human approval.",
-      "tags": ["autonomous-redteam", "prod", "high-value-targets"],
+      "tags": [ "autonomous-redteam", "prod", "high-value-targets" ],
       "provenance": {
         "harness": "claude-code",
         "generatedAt": "2026-11-21T19:15:00Z",
         "sessionId": "ses_xyz789ghi012",
-        "runId": "run_01JCDE4FGHJ0KLMNO2PQRSTU3V",
+        "runId": "run_01JCDE4FGHJ0K1MN02PQRSTV3V",
         "workflow": "runtime-probe-redteam",
         "agent": "redteam-orchestrator"
       }
     }
-  ]
+  ],
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "kind",
+    "id",
+    "recordedAt",
+    "companyId",
+    "taskId",
+    "status",
+    "scope",
+    "authorization"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1"
+    },
+    "kind": {
+      "const": "artex-task"
+    },
+    "id": {
+      "description": "Maxwell's own ULID for the task, prefixed with artex_",
+      "type": "string",
+      "pattern": "^artex_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "recordedAt": {
+      "type": "string",
+      "pattern": "Z$",
+      "format": "date-time"
+    },
+    "companyId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "taskId": {
+      "description": "ARTEX's internal task ID from its PostgreSQL database",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "queued",
+        "running",
+        "completed",
+        "failed",
+        "timeout",
+        "cancelled"
+      ]
+    },
+    "scope": {
+      "type": "object",
+      "required": [ "mode" ],
+      "properties": {
+        "mode": {
+          "description": "reconnaissance-only: passive + safe tools only; limited-exploitation: non-destructive exploits with guard approval; full-redteam: all ARTEX capabilities within authorization",
+          "enum": [
+            "reconnaissance-only",
+            "limited-exploitation",
+            "full-redteam"
+          ]
+        },
+        "appIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "envIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "allowedCIDRs": {
+          "description": "IP ranges ARTEX may probe",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "deniedCIDRs": {
+          "description": "IP ranges explicitly excluded (payment processors, third-party SaaS)",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "allowedDomains": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "goals": {
+          "description": "Goals ARTEX should attempt (e.g., 'access production database', 'escalate to cluster-admin')",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "prohibitedActions": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "data-modification",
+              "data-deletion",
+              "service-disruption",
+              "credential-bruteforce",
+              "social-engineering",
+              "physical-access",
+              "third-party-systems"
+            ]
+          }
+        }
+      }
+    },
+    "authorization": {
+      "type": "object",
+      "required": [ "authorizedBy", "authorizedAt", "validUntil" ],
+      "properties": {
+        "authorizedBy": {
+          "type": "object",
+          "required": [ "name", "email", "role" ],
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string",
+              "format": "email"
+            },
+            "role": {
+              "enum": [ "CISO", "CTO", "Compliance-Head", "Board-Authorized" ]
+            }
+          }
+        },
+        "authorizedAt": {
+          "type": "string",
+          "pattern": "Z$",
+          "format": "date-time"
+        },
+        "validUntil": {
+          "type": "string",
+          "pattern": "Z$",
+          "format": "date-time"
+        },
+        "legalBasis": {
+          "description": "Reference to authorization document (email, signed memo, board resolution)",
+          "type": "string"
+        },
+        "notificationContacts": {
+          "description": "Contacts to notify on critical findings or authorization violations",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "email"
+          }
+        }
+      }
+    },
+    "startedAt": {
+      "type": "string",
+      "pattern": "Z$",
+      "format": "date-time"
+    },
+    "completedAt": {
+      "type": "string",
+      "pattern": "Z$",
+      "format": "date-time"
+    },
+    "duration": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "number"
+        },
+        "unit": {
+          "enum": [ "seconds", "minutes", "hours" ]
+        }
+      }
+    },
+    "resources": {
+      "type": "object",
+      "properties": {
+        "tokensUsed": {
+          "description": "Total LLM tokens consumed",
+          "type": "integer"
+        },
+        "costUSD": {
+          "type": "number"
+        },
+        "workerCount": {
+          "default": 3,
+          "type": "integer"
+        },
+        "sandboxProvider": {
+          "enum": [
+            "e2b",
+            "daytona",
+            "modal",
+            "vercel-sandbox",
+            "aws-lambda",
+            "docker",
+            "local"
+          ]
+        }
+      }
+    },
+    "results": {
+      "type": "object",
+      "properties": {
+        "assetsDiscovered": {
+          "type": "integer"
+        },
+        "findingsGenerated": {
+          "type": "integer"
+        },
+        "attackPathsProven": {
+          "type": "integer"
+        },
+        "goalsAchieved": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "goalsFailed": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "guardInterventions": {
+          "description": "Number of times ARTEX guard blocked or requested human approval",
+          "type": "integer"
+        },
+        "humanApprovalsRequested": {
+          "type": "integer"
+        },
+        "humanApprovalsGranted": {
+          "type": "integer"
+        }
+      }
+    },
+    "graphExport": {
+      "type": "object",
+      "properties": {
+        "assetGraphPath": {
+          "description": "Path to exported ARTEX asset graph JSON",
+          "type": "string"
+        },
+        "explorationGraphPath": {
+          "description": "Path to exported ARTEX exploration graph JSON",
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "incidents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "enum": [
+              "authorization-violation",
+              "scope-breach",
+              "service-disruption",
+              "unintended-data-modification"
+            ]
+          },
+          "description": {
+            "type": "string"
+          },
+          "detectedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "resolution": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "reconciliationStatus": {
+      "description": "Status of mapping ARTEX findings back to Maxwell's SOC ledger",
+      "enum": [ "pending", "in-progress", "completed", "failed" ]
+    },
+    "reconciledFindingIds": {
+      "description": "Maxwell finding IDs created or updated from this ARTEX run",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^fnd_[0-9A-HJKMNP-TV-Z]{26}$"
+      }
+    },
+    "reconciledAttackPathIds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^path_[0-9A-HJKMNP-TV-Z]{26}$"
+      }
+    },
+    "notes": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "provenance": {
+      "$ref": "https://maxwell.onfinance.ai/schemas/v1/common.schema.json#/$defs/provenance"
+    }
+  }
 }
